@@ -1,0 +1,41 @@
+{
+  "name": "json-formula",
+  "version": "1.0.0",
+  "description": "JSONFormula Grammar and implementation",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "scripts": {
+    "eslint": "eslint src",
+    "test": "jest",
+    "build": "webpack",
+    "start": "webpack serve --config webpack-devserver.config.babel.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com/adobe/json-formula.git"
+  },
+  "author": "jbrinkma",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "antlr4": "^4.9.2",
+    "ebnf-parser": "^0.1.10",
+    "jmespath": "^0.15.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.15",
+    "@babel/node": "^7.13.13",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/preset-env": "^7.13.15",
+    "babel-loader": "^8.2.2",
+    "eslint": "^7.24.0",
+    "jest": "^26.6.3",
+    "json-loader": "^0.5.7",
+    "raw-loader": "^4.0.2",
+    "webpack": "^5.32.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
