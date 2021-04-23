@@ -22,6 +22,7 @@ expression :  SIGNED_INT # topLevelInt
             | expression postfix_op # postfix
             | '(' expression ')' # braceExpression
             | function_call # functionCall
+            | jmesPathExpression '.@' propertyExpression # propExpression
             | jmesPathExpression # jmesPath
       ;
 
@@ -50,6 +51,8 @@ nonempty_expr_list : parameter | nonempty_expr_list parm_separator parameter;
 expression_list :  /* empty */ | nonempty_expr_list;
 
 parm_separator : ',';
+
+propertyExpression: NAME ('.' NAME)* ;
 
 // JMESPath definition starts here
 jmesPathExpression

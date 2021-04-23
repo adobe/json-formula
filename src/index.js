@@ -23,18 +23,20 @@ const result = document.getElementById("result");
 
    Should allow us to eliminate getFieldProperty()
 */
-class Field {
-  constructor(name, val) {
-    this.value = val;
-    this.name = name;
-    this.readonly = false;
-    this.required = true;
-  }
-  valueOf() { return this.value }
-  toString() { return this.value.toString() }
-  toJSON() { return this.value }
-}
 
+  function createField(name, value, readonly = false, required = true) {
+    class Field {
+      valueOf() { return value }
+      toString() { return value.toString() }
+      toJSON() { return value }
+      // Use getters and scope variables so that the children are not enumerable
+      get value() { return value }
+      get name() { return name }
+      get readonly() { return readonly }
+      get required() { return required }
+    }
+    return new Field();
+}
 function createFields(parent, childref, child) {
   if (child instanceof Array) {
     child.forEach((item, index) => {
@@ -45,8 +47,14 @@ function createFields(parent, childref, child) {
       createFields(child, k, child[k]);
     })
   } else {
-    parent[childref] = new Field(childref, parent[childref]);
+    parent[childref] = createField(childref, parent[childref]);
   }
+}
+
+function isField(test) {
+  return  test !== null &&
+    typeof(test) === "object" &&
+    test.__proto__.constructor.name === "Field";
 }
 
 function run() {
@@ -62,9 +70,10 @@ function run() {
     result.value = e.toString();
     return;
   }
+
   try {
     const r = evaluate(json, input, true);
-    if (r instanceof Field) {
+    if (isField(r)) {
       result.value = r.value;
     } else if (typeof r === "object") {
       result.value = JSON.stringify(r, null, 2);

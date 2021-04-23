@@ -82,6 +82,13 @@ export default class Listener extends JSONFormulaListener {
 		this.stack.push(x);
 	}
 
+	exitPropExpression(ctx) {
+		this.trace(`exitpropExpression ${ctx.getText()}`);
+		const [jpath, prop] = ctx.getText().split(/\.@/);
+		const x = jmespath.search(this.data, jpath);
+		this.stack.push(x[prop]);
+	}
+
 	// Exit a parse tree produced by JSONFormulaParser#topLevelString.
 	exitTopLevelString(ctx) {
 		this.trace(`exitTopLevelString: ${ctx.getText()}`);
