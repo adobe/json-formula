@@ -59,15 +59,6 @@ export default class JSONFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by JSONFormulaParser#propExpression.
-	enterPropExpression(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#propExpression.
-	exitPropExpression(ctx) {
-	}
-
-
 	// Enter a parse tree produced by JSONFormulaParser#braceExpression.
 	enterBraceExpression(ctx) {
 	}
@@ -173,15 +164,6 @@ export default class JSONFormulaListener extends antlr4.tree.ParseTreeListener {
 
 	// Exit a parse tree produced by JSONFormulaParser#parm_separator.
 	exitParm_separator(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#propertyExpression.
-	enterPropertyExpression(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#propertyExpression.
-	exitPropertyExpression(ctx) {
 	}
 
 

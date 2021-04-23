@@ -34,6 +34,10 @@ const result = document.getElementById("result");
       get name() { return name }
       get readonly() { return readonly }
       get required() { return required }
+      get "@value"() { return value }
+      get "@name"() { return name }
+      get "@readonly"() { return readonly }
+      get "@required"() { return required }
     }
     return new Field();
 }
