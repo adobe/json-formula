@@ -10,6 +10,8 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 import path from "path";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import HtmlInlineScriptPlugin from "html-inline-script-webpack-plugin";
 
 const dist = path.resolve(".", "dist");
 const defn = {
@@ -62,6 +64,10 @@ const defn = {
     library: "JSONFormula"
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      template: "src/index.html"
+    }),
+    new HtmlInlineScriptPlugin()
   ]
 };
 export default defn;

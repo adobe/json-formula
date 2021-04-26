@@ -11,18 +11,19 @@ governing permissions and limitations under the License.
 */
 import evaluate from "./evaluate.js";
 
-const data = document.getElementById("data");
-const expression = document.getElementById("expression");
-const result = document.getElementById("result");
+window.addEventListener("load", () => {
+  const data = document.getElementById("data");
+  const expression = document.getElementById("expression");
+  const result = document.getElementById("result");
 
-/*
-  Field class allows objects to evaluate correctly according to context.
-   - if used in an expression, will return a value or string.
-   - for JSON.stringify() returns a scalar
-   - BUT also allows explicit access to properties. e.g. field.required, field.name etc.
+  /*
+    Field class allows objects to evaluate correctly according to context.
+    - if used in an expression, will return a value or string.
+    - for JSON.stringify() returns a scalar
+    - BUT also allows explicit access to properties. e.g. field.required, field.name etc.
 
-   Should allow us to eliminate getFieldProperty()
-*/
+    Should allow us to eliminate getFieldProperty()
+  */
 
   function createField(name, value, readonly = false, required = true) {
     class Field {
@@ -40,59 +41,60 @@ const result = document.getElementById("result");
       get "@required"() { return required }
     }
     return new Field();
-}
-function createFields(parent, childref, child) {
-  if (child instanceof Array) {
-    child.forEach((item, index) => {
-      createFields(child, index, item);
-    });
-  } else if (typeof child === "object") {
-    Object.keys(child).forEach(k => {
-      createFields(child, k, child[k]);
-    })
-  } else {
-    parent[childref] = createField(childref, parent[childref]);
   }
-}
-
-function isField(test) {
-  return  test !== null &&
-    typeof(test) === "object" &&
-    test.__proto__.constructor.name === "Field";
-}
-
-function run() {
-  const input = expression.value;
-
-  let json;
-  try {
-    json = JSON.parse(data.value);
-    if (document.getElementById("use-fields").checked) {
-      createFields(null, null, json);
-    }
-  } catch (e) {
-    result.value = e.toString();
-    return;
-  }
-
-  try {
-    const r = evaluate(json, input, true);
-    if (isField(r)) {
-      result.value = r.value;
-    } else if (typeof r === "object") {
-      result.value = JSON.stringify(r, null, 2);
+  function createFields(parent, childref, child) {
+    if (child instanceof Array) {
+      child.forEach((item, index) => {
+        createFields(child, index, item);
+      });
+    } else if (typeof child === "object") {
+      Object.keys(child).forEach(k => {
+        createFields(child, k, child[k]);
+      })
     } else {
-      result.value = r;
+      parent[childref] = createField(childref, parent[childref]);
     }
-  } catch (e) {
-    result.value = e.toString();
   }
-}
 
-data.addEventListener("blur", run);
-expression.addEventListener("blur", run);
-run();
+  function isField(test) {
+    return  test !== null &&
+      typeof(test) === "object" &&
+      test.__proto__.constructor.name === "Field";
+  }
 
-fetch("./antlr/JSONFormula.g4").then(r => {
-  r.text().then((g4 => document.getElementById("grammar-out").innerHTML = g4));
+  function run() {
+    const input = expression.value;
+
+    let json;
+    try {
+      json = JSON.parse(data.value);
+      if (document.getElementById("use-fields").checked) {
+        createFields(null, null, json);
+      }
+    } catch (e) {
+      result.value = e.toString();
+      return;
+    }
+
+    try {
+      const r = evaluate(json, input, true);
+      if (isField(r)) {
+        result.value = r.value;
+      } else if (typeof r === "object") {
+        result.value = JSON.stringify(r, null, 2);
+      } else {
+        result.value = r;
+      }
+    } catch (e) {
+      result.value = e.toString();
+    }
+  }
+
+  data.addEventListener("blur", run);
+  expression.addEventListener("blur", run);
+  run();
+
+  fetch("../antlr/JSONFormula.g4").then(r => {
+    r.text().then((g4 => document.getElementById("grammar-out").innerHTML = g4));
+  });
 });

@@ -1,4 +1,18 @@
-var JSONFormula;
+<!doctype html><html lang="en"><head><title>Expression Test</title><meta content="text/html; charset=utf-8"/><style>textarea {
+        height: 500px;
+        width: 100%;
+      }
+      td {
+        padding: 4px;
+        width: default;
+      }
+      body {
+        font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+      }
+      table {
+        width: 100%;
+        padding: 4px;
+      }</style><script defer="defer">var JSONFormula;
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -20250,145 +20264,146 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-var data = document.getElementById("data");
-var expression = document.getElementById("expression");
-var result = document.getElementById("result");
-/*
-  Field class allows objects to evaluate correctly according to context.
-   - if used in an expression, will return a value or string.
-   - for JSON.stringify() returns a scalar
-   - BUT also allows explicit access to properties. e.g. field.required, field.name etc.
+window.addEventListener("load", function () {
+  var data = document.getElementById("data");
+  var expression = document.getElementById("expression");
+  var result = document.getElementById("result");
+  /*
+    Field class allows objects to evaluate correctly according to context.
+    - if used in an expression, will return a value or string.
+    - for JSON.stringify() returns a scalar
+    - BUT also allows explicit access to properties. e.g. field.required, field.name etc.
+     Should allow us to eliminate getFieldProperty()
+  */
 
-   Should allow us to eliminate getFieldProperty()
-*/
+  function createField(name, value) {
+    var readonly = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+    var required = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
 
-function createField(name, value) {
-  var readonly = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-  var required = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
-
-  var Field = /*#__PURE__*/function () {
-    function Field() {
-      src_classCallCheck(this, Field);
-    }
-
-    src_createClass(Field, [{
-      key: "valueOf",
-      value: function valueOf() {
-        return value;
+    var Field = /*#__PURE__*/function () {
+      function Field() {
+        src_classCallCheck(this, Field);
       }
-    }, {
-      key: "toString",
-      value: function toString() {
-        return value.toString();
-      }
-    }, {
-      key: "toJSON",
-      value: function toJSON() {
-        return value;
-      } // Use getters and scope variables so that the children are not enumerable
 
-    }, {
-      key: "value",
-      get: function get() {
-        return value;
-      }
-    }, {
-      key: "name",
-      get: function get() {
-        return name;
-      }
-    }, {
-      key: "readonly",
-      get: function get() {
-        return readonly;
-      }
-    }, {
-      key: "required",
-      get: function get() {
-        return required;
-      }
-    }, {
-      key: "@value",
-      get: function get() {
-        return value;
-      }
-    }, {
-      key: "@name",
-      get: function get() {
-        return name;
-      }
-    }, {
-      key: "@readonly",
-      get: function get() {
-        return readonly;
-      }
-    }, {
-      key: "@required",
-      get: function get() {
-        return required;
-      }
-    }]);
+      src_createClass(Field, [{
+        key: "valueOf",
+        value: function valueOf() {
+          return value;
+        }
+      }, {
+        key: "toString",
+        value: function toString() {
+          return value.toString();
+        }
+      }, {
+        key: "toJSON",
+        value: function toJSON() {
+          return value;
+        } // Use getters and scope variables so that the children are not enumerable
 
-    return Field;
-  }();
+      }, {
+        key: "value",
+        get: function get() {
+          return value;
+        }
+      }, {
+        key: "name",
+        get: function get() {
+          return name;
+        }
+      }, {
+        key: "readonly",
+        get: function get() {
+          return readonly;
+        }
+      }, {
+        key: "required",
+        get: function get() {
+          return required;
+        }
+      }, {
+        key: "@value",
+        get: function get() {
+          return value;
+        }
+      }, {
+        key: "@name",
+        get: function get() {
+          return name;
+        }
+      }, {
+        key: "@readonly",
+        get: function get() {
+          return readonly;
+        }
+      }, {
+        key: "@required",
+        get: function get() {
+          return required;
+        }
+      }]);
 
-  return new Field();
-}
+      return Field;
+    }();
 
-function createFields(parent, childref, child) {
-  if (child instanceof Array) {
-    child.forEach(function (item, index) {
-      createFields(child, index, item);
-    });
-  } else if (src_typeof(child) === "object") {
-    Object.keys(child).forEach(function (k) {
-      createFields(child, k, child[k]);
-    });
-  } else {
-    parent[childref] = createField(childref, parent[childref]);
-  }
-}
-
-function isField(test) {
-  return test !== null && src_typeof(test) === "object" && test.__proto__.constructor.name === "Field";
-}
-
-function run() {
-  var input = expression.value;
-  var json;
-
-  try {
-    json = JSON.parse(data.value);
-
-    if (document.getElementById("use-fields").checked) {
-      createFields(null, null, json);
-    }
-  } catch (e) {
-    result.value = e.toString();
-    return;
+    return new Field();
   }
 
-  try {
-    var r = evaluate(json, input, true);
-
-    if (isField(r)) {
-      result.value = r.value;
-    } else if (src_typeof(r) === "object") {
-      result.value = JSON.stringify(r, null, 2);
+  function createFields(parent, childref, child) {
+    if (child instanceof Array) {
+      child.forEach(function (item, index) {
+        createFields(child, index, item);
+      });
+    } else if (src_typeof(child) === "object") {
+      Object.keys(child).forEach(function (k) {
+        createFields(child, k, child[k]);
+      });
     } else {
-      result.value = r;
+      parent[childref] = createField(childref, parent[childref]);
     }
-  } catch (e) {
-    result.value = e.toString();
   }
-}
 
-data.addEventListener("blur", run);
-expression.addEventListener("blur", run);
-run();
-fetch("./antlr/JSONFormula.g4").then(function (r) {
-  r.text().then(function (g4) {
-    return document.getElementById("grammar-out").innerHTML = g4;
+  function isField(test) {
+    return test !== null && src_typeof(test) === "object" && test.__proto__.constructor.name === "Field";
+  }
+
+  function run() {
+    var input = expression.value;
+    var json;
+
+    try {
+      json = JSON.parse(data.value);
+
+      if (document.getElementById("use-fields").checked) {
+        createFields(null, null, json);
+      }
+    } catch (e) {
+      result.value = e.toString();
+      return;
+    }
+
+    try {
+      var r = evaluate(json, input, true);
+
+      if (isField(r)) {
+        result.value = r.value;
+      } else if (src_typeof(r) === "object") {
+        result.value = JSON.stringify(r, null, 2);
+      } else {
+        result.value = r;
+      }
+    } catch (e) {
+      result.value = e.toString();
+    }
+  }
+
+  data.addEventListener("blur", run);
+  expression.addEventListener("blur", run);
+  run();
+  fetch("../antlr/JSONFormula.g4").then(function (r) {
+    r.text().then(function (g4) {
+      return document.getElementById("grammar-out").innerHTML = g4;
+    });
   });
 });
 })();
@@ -20396,4 +20411,27 @@ fetch("./antlr/JSONFormula.g4").then(function (r) {
 JSONFormula = __webpack_exports__;
 /******/ })()
 ;
-//# sourceMappingURL=json-formula.bundle.js.map
+//# sourceMappingURL=json-formula.bundle.js.map</script></head><body><table class="expressions"><caption>Expression Testing</caption><thead><tr><th scope="col" class="data">Input JSON</th><th scope="col" class="expression">Expression</th><th scope="col" class="result">Result</th></tr></thead><tbody><tr><td class="data"><textarea id="data" name="data">
+{
+  "address": {
+    "street": "123 Oak Street",
+    "city": "San Jose",
+    "state": "California",
+    "country": "USA"
+  },
+  "items": [
+    {
+      "desc": "pens",
+      "quantity": 2,
+      "price": 3.23,
+      "subtotal": 6.46
+    },
+    {
+      "desc": "pencils",
+      "quantity": 3,
+      "price": 1.34,
+      "subtotal": 4.02
+    }
+  ]
+}
+ </textarea></td><td class="expression"><textarea id="expression" name="expression">sum(items[*].subtotal)</textarea></td><td class="result"><textarea id="result" name="result" readonly="readonly"></textarea></td></tr><tr><td><label>mimic fields<input type="checkbox" id="use-fields" checked="checked"/></label></td></tr></tbody></table><a href="./doc/JSONFormula.rrd.html">Syntax Railroad Diagram</a><h3>Antlr4 Grammar</h3><pre id="grammar-out" style="border: thin solid black"></pre></body></html>

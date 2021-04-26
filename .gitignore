@@ -6,3 +6,5 @@ antlr/*.class
 antlr/*.interp
 antlr/*.tokens
 log/
+package-lock.json
+
