@@ -4,7 +4,7 @@ This project hosts an implementation of a form expression grammar.
 The grammar is a mashup of [spreadsheet-like](https://www.oasis-open.org/committees/download.php/16826/openformula-spec-20060221.html) functions and operators and [JMESPath](https://jmespath.org/) a JSON query language.
 
 # Demo
-See the expression tester running [here](https://opensource.adobe.com/json-formula/index.html)
+Visit the test page [here](https://opensource.adobe.com/json-formula/dist/index.html)
 
 # Setup
 
