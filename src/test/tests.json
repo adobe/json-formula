@@ -21,10 +21,10 @@
     }
   ],
   [
-    "function: true()",
+    "function: TRUE()",
     {
       "data": "`{}`",
-      "expression": "true()",
+      "expression": "TRUE()",
       "expected": true
     }
   ],

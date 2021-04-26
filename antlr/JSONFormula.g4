@@ -37,9 +37,7 @@ binary_op : COMPARATOR | '<>' | '+' | '-' | '&' | '*' | '/' | '^' ;
 
 postfix_op : '%';
 
-fragment BOOLEANS: 'true' | 'false' ;
-
-FUNCTIONS: BOOLEANS | 'sum' | 'if' ;
+FUNCTIONS: 'TRUE' | 'FALSE' | 'sum' | 'SUM' | 'if' | 'IF' ;
 
 function_call : FUNCTIONS '(' expression_list ')';
 
@@ -134,7 +132,8 @@ identifier
   ;
 
 JSON_CONSTANT
-  : BOOLEANS
+  : 'true'
+  | 'false'
   | 'null'
   ;
 

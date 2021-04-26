@@ -3,4 +3,6 @@ antlr/.antlr
 .DS_Store
 antlr/*.java
 antlr/*.class
+antlr/*.interp
+antlr/*.tokens
 log/
