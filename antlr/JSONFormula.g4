@@ -37,7 +37,15 @@ binary_op : COMPARATOR | '<>' | '+' | '-' | '&' | '*' | '/' | '^' ;
 
 postfix_op : '%';
 
-FUNCTIONS: 'TRUE' | 'FALSE' | 'sum' | 'SUM' | 'if' | 'IF' ;
+FUNCTIONS:
+  'AND'   | 'and' |
+  'FALSE' |
+  'if'    | 'IF'  |
+  'not'   | 'NOT' |
+  'or'    | 'OR'  |
+  'sum'   | 'SUM' |
+  'TRUE'
+  ;
 
 function_call : FUNCTIONS '(' expression_list ')';
 

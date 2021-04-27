@@ -93,7 +93,28 @@ export default class Listener extends JSONFormulaListener {
 	exitFunctionCall(ctx) {
 		this.trace(`exitFunctionCall: ${ctx.getText()}`);
 		const func = ctx.start.text.toLowerCase();
-		if (func === "sum") {
+		if (func === "and") {
+			const choice2 = this.stack.pop();
+			const choice1 = this.stack.pop();
+			this.stack.push(!!choice1 && !!choice2);
+		} else if (func === "if") {
+			const choice2 = this.stack.pop();
+			const choice1 = this.stack.pop();
+			const condition = this.stack.pop();
+			if (condition) {
+				this.stack.push(choice1);
+			} else {
+				this.stack.push(choice2);
+			}
+		} else if (func === "or") {
+			const choice2 = this.stack.pop();
+			const choice1 = this.stack.pop();
+			this.stack.push(!!choice1 || !!choice2);
+		}
+		else if (func === "not") {
+		const choice = this.stack.pop();
+		this.stack.push(!choice);
+	} else if (func === "sum") {
 			let result = 0;
 			while (this.stack.length) {
 				const elem = this.stack.pop();
@@ -104,15 +125,6 @@ export default class Listener extends JSONFormulaListener {
 				}
 			}
 			this.stack.push(result);
-		} else if (func === "if") {
-			const choice2 = this.stack.pop();
-			const choice1 = this.stack.pop();
-			const condition = this.stack.pop();
-			if (condition) {
-				this.stack.push(choice1);
-			} else {
-				this.stack.push(choice2);
-			}
 		} else if (func === "true") {
 			this.stack.push(true);
 		} else if (func === "false") {
@@ -130,6 +142,8 @@ export default class Listener extends JSONFormulaListener {
 	// Exit a parse tree produced by JSONFormulaParser#postfix.
 	exitPostfix(ctx) {
 		this.trace(`exitPostfix: ${ctx.getText()}`);
+		const val = this.stack.pop() / 100.0;
+		this.stack.push(val);
 	}
 
 	// Exit a parse tree produced by JSONFormulaParser#unaryExpression.

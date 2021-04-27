@@ -17,5 +17,9 @@ const tests = require("./tests.json");
 test.each(tests)("%s", (desc, tst) => {
   const data = evaluate(sampleData, tst.data);
   const result = evaluate(data, tst.expression);
-  expect(result).toEqual(tst.expected);
+  if (typeof result === "number") {
+    expect(result).toBeCloseTo(tst.expected, 5);
+  } else {
+    expect(result).toEqual(tst.expected);
+  }
 });
