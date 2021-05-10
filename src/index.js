@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
   const data = document.getElementById("data");
   const expression = document.getElementById("expression");
   const result = document.getElementById("result");
-
+  const allFields = [];
   /*
     Field class allows objects to evaluate correctly according to context.
     - if used in an expression, will return a value or string.
@@ -40,7 +40,9 @@ window.addEventListener("load", () => {
       get "@readonly"() { return readonly }
       get "@required"() { return required }
     }
-    return new Field();
+    const newField = new Field();
+    allFields.push(newField);
+    return newField;
   }
   function createFields(parent, childref, child) {
     if (child instanceof Array) {
@@ -62,12 +64,23 @@ window.addEventListener("load", () => {
       test.__proto__.constructor.name === "Field";
   }
 
+  class Root {
+    constructor(dataRoot) {
+      Object.keys(dataRoot).forEach(key => {
+        this[key] = dataRoot[key];
+      });
+    }
+    get fields() { return allFields }
+  }
+
   function run() {
     const input = expression.value;
 
     let json;
     try {
       json = JSON.parse(data.value);
+      const root = new Root(json);
+      json.$ = root;
       if (document.getElementById("use-fields").checked) {
         createFields(null, null, json);
       }

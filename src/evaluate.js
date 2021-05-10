@@ -13,11 +13,12 @@ governing permissions and limitations under the License.
 import antlr4 from "antlr4";
 import FEParser from "./antlr/JSONFormulaParser.js";
 import FELexer from "./antlr/JSONFormulaLexer.js";
-
+import InputStream from "./InputStream.js"
 import Listener from "./Listener.js";
 
 export default function evaluate(json, expression, trace) {
-  const chars = new antlr4.InputStream(expression);
+  const stream = new antlr4.InputStream(expression);
+  const chars = new InputStream(stream);
   const lexer = new FELexer(chars);
   lexer._interp.debug = true;
   const tokens  = new antlr4.CommonTokenStream(lexer);
@@ -49,11 +50,7 @@ export default function evaluate(json, expression, trace) {
 
 
   let tree;
-  try {
-    tree = parser.formula();
-  } catch (e) {
-    console.log(e);
-  }
+  tree = parser.formula();
   const extractor = new Listener(json, trace);
   antlr4.tree.ParseTreeWalker.DEFAULT.walk(extractor, tree);
   if (parseError) {

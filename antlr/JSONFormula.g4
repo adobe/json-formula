@@ -57,6 +57,8 @@ expression_list :  /* empty */ | nonempty_expr_list;
 
 parm_separator : ',';
 
+ROOT: '$';
+
 // JMESPath definition starts here
 jmesPathExpression
   : jmesPathExpression '.' chainedExpression # chainExpression
@@ -134,7 +136,8 @@ fragment RAW_ESC : '\\' . ;
 literal : '`' jsonValue '`' ;
 
 identifier
-  : NAME
+  : ROOT
+  | NAME
   | STRING
   | JSON_CONSTANT
   ;

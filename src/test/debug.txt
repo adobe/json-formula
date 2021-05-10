@@ -1,1 +1,1 @@
-foo[?key == `false`]
+items[?quantity == `2.0`]
