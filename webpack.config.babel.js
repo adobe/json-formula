@@ -12,6 +12,7 @@ governing permissions and limitations under the License.
 import path from "path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import HtmlInlineScriptPlugin from "html-inline-script-webpack-plugin";
+import CopyPlugin from "copy-webpack-plugin";
 
 const dist = path.resolve(".", "dist");
 const defn = {
@@ -67,7 +68,12 @@ const defn = {
     new HtmlWebpackPlugin({
       template: "src/index.html"
     }),
-    new HtmlInlineScriptPlugin()
+    new HtmlInlineScriptPlugin(),
+    new CopyPlugin({
+      patterns: [
+        { from: "./doc", to: path.resolve(dist, "doc") },
+      ],
+    }),
   ]
 };
 export default defn;
