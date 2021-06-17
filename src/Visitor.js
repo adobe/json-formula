@@ -234,12 +234,6 @@ export default class Visitor extends JSONFormulaVisitor {
     return r && r.length ? r[0] : null;
   }
 
-  // Visit a parse tree produced by JSONFormulaParser#parm_separator.
-  visitParm_separator(ctx) {
-    this.trace(`visitParm_separator: ${ctx.getText()}`);
-    return ",";
-  }
-
   // Visit a parse tree produced by JSONFormulaParser#pipeExpression.
   visitPipeExpression(ctx) {
     this.trace(`visitPipeExpression: ${ctx.getText()}`);
