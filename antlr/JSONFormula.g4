@@ -44,18 +44,18 @@ FUNCTIONS:
   'not'   | 'NOT' |
   'or'    | 'OR'  |
   'sum'   | 'SUM' |
-  'TRUE'
+  'TRUE'  |
+  'tomap' | 'TOMAP' | 'toMap' |
+  'toarray' | 'TOARRAY'
   ;
 
 function_call : FUNCTIONS '(' expression_list ')';
 
 parameter : expression;
 
-nonempty_expr_list : parameter | nonempty_expr_list parm_separator parameter;
+nonempty_expr_list : parameter | nonempty_expr_list ',' parameter;
 
 expression_list :  /* empty */ | nonempty_expr_list;
-
-parm_separator : ',';
 
 ROOT: '$';
 

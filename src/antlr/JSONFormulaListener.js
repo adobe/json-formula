@@ -158,15 +158,6 @@ export default class JSONFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by JSONFormulaParser#parm_separator.
-	enterParm_separator(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#parm_separator.
-	exitParm_separator(ctx) {
-	}
-
-
 	// Enter a parse tree produced by JSONFormulaParser#pipeExpression.
 	enterPipeExpression(ctx) {
 	}
