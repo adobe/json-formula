@@ -44,7 +44,7 @@ function executeTest(desc, tst) {
   let result;
   if (tst.error) return;
   try {
-    result = evaluate(tst.given, tst.expression);
+    result = evaluate(tst.given, tst.expression, false);
   } catch (e) {
     expect(tst.error).not.toBeUndefined();
     return;

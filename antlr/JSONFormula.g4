@@ -44,7 +44,9 @@ FUNCTIONS:
   'not'   | 'NOT' |
   'or'    | 'OR'  |
   'sum'   | 'SUM' |
-  'TRUE'
+  'TRUE'  |
+  'tomap' | 'TOMAP' | 'toMap' |
+  'toarray' | 'TOARRAY'
   ;
 
 function_call : FUNCTIONS '(' expression_list ')';

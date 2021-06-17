@@ -2,6 +2,8 @@
 // jshint ignore: start
 import antlr4 from 'antlr4';
 import JSONFormulaListener from './JSONFormulaListener.js';
+import JSONFormulaVisitor from './JSONFormulaVisitor.js';
+
 
 const serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786",
     "\u5964\u0003%\u012a\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004",
@@ -1798,6 +1800,14 @@ class FormulaContext extends antlr4.ParserRuleContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitFormula(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -1860,6 +1870,14 @@ class BinaryExpressionContext extends ExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitBinaryExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -1886,6 +1904,14 @@ class JmesPathContext extends ExpressionContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitJmesPath(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitJmesPath(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -1916,6 +1942,14 @@ class TopLevelStringContext extends ExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitTopLevelString(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -1942,6 +1976,14 @@ class TopLevelIntContext extends ExpressionContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitTopLevelInt(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitTopLevelInt(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -1972,6 +2014,14 @@ class FunctionCallContext extends ExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitFunctionCall(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -1998,6 +2048,14 @@ class BraceExpressionContext extends ExpressionContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitBraceExpression(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitBraceExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -2032,6 +2090,14 @@ class PostfixContext extends ExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitPostfix(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -2064,6 +2130,14 @@ class UnaryExpressionContext extends ExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitUnaryExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -2090,6 +2164,14 @@ class TopLevelNumberContext extends ExpressionContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitTopLevelNumber(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitTopLevelNumber(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -2122,6 +2204,14 @@ class Unary_opContext extends antlr4.ParserRuleContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitUnary_op(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitUnary_op(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -2159,6 +2249,14 @@ class Binary_opContext extends antlr4.ParserRuleContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitBinary_op(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -2189,6 +2287,14 @@ class Postfix_opContext extends antlr4.ParserRuleContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitPostfix_op(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitPostfix_op(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -2230,6 +2336,14 @@ class Function_callContext extends antlr4.ParserRuleContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitFunction_call(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -2263,6 +2377,14 @@ class ParameterContext extends antlr4.ParserRuleContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitParameter(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitParameter(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -2308,6 +2430,14 @@ class Nonempty_expr_listContext extends antlr4.ParserRuleContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitNonempty_expr_list(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -2343,6 +2473,14 @@ class Expression_listContext extends antlr4.ParserRuleContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitExpression_list(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -2373,6 +2511,14 @@ class Parm_separatorContext extends antlr4.ParserRuleContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitParm_separator(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitParm_separator(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -2433,6 +2579,14 @@ class PipeExpressionContext extends JmesPathExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitPipeExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -2459,6 +2613,14 @@ class IdentifierExpressionContext extends JmesPathExpressionContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitIdentifierExpression(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitIdentifierExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -2489,6 +2651,14 @@ class NotExpressionContext extends JmesPathExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitNotExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -2515,6 +2685,14 @@ class RawStringExpressionContext extends JmesPathExpressionContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitRawStringExpression(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitRawStringExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -2556,6 +2734,14 @@ class ComparisonExpressionContext extends JmesPathExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitComparisonExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -2584,6 +2770,14 @@ class ParenExpressionContext extends JmesPathExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitParenExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -2610,6 +2804,14 @@ class BracketExpressionContext extends JmesPathExpressionContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitBracketExpression(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitBracketExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -2647,6 +2849,14 @@ class OrExpressionContext extends JmesPathExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitOrExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -2673,6 +2883,14 @@ class CurrentNodeExpressionContext extends JmesPathExpressionContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitCurrentNodeExpression(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitCurrentNodeExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -2705,6 +2923,14 @@ class ChainExpressionContext extends JmesPathExpressionContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitChainExpression(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitChainExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -2742,6 +2968,14 @@ class AndExpressionContext extends JmesPathExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitAndExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -2768,6 +3002,14 @@ class MultiSelectHashExpressionContext extends JmesPathExpressionContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitMultiSelectHashExpression(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitMultiSelectHashExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -2798,6 +3040,14 @@ class WildcardExpressionContext extends JmesPathExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitWildcardExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -2826,6 +3076,14 @@ class FunctionCallExpressionContext extends JmesPathExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitFunctionCallExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -2852,6 +3110,14 @@ class MultiSelectListExpressionContext extends JmesPathExpressionContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitMultiSelectListExpression(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitMultiSelectListExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -2886,6 +3152,14 @@ class BracketedExpressionContext extends JmesPathExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitBracketedExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -2912,6 +3186,14 @@ class LiteralExpressionContext extends JmesPathExpressionContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitLiteralExpression(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitLiteralExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -2965,6 +3247,14 @@ class ChainedMultiSelectListContext extends ChainedExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitChainedMultiSelectList(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -2991,6 +3281,14 @@ class ChainedWildcardContext extends ChainedExpressionContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitChainedWildcard(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitChainedWildcard(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -3021,6 +3319,14 @@ class ChainedMultiSelectHashContext extends ChainedExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitChainedMultiSelectHash(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -3049,6 +3355,14 @@ class ChainedIdentifierContext extends ChainedExpressionContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitChainedIdentifier(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -3075,6 +3389,14 @@ class ChainedFunctionExpressionContext extends ChainedExpressionContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitChainedFunctionExpression(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitChainedFunctionExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -3107,6 +3429,14 @@ class WildcardContext extends antlr4.ParserRuleContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitWildcard(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitWildcard(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -3151,6 +3481,14 @@ class MultiSelectListContext extends antlr4.ParserRuleContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitMultiSelectList(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -3193,6 +3531,14 @@ class MultiSelectHashContext extends antlr4.ParserRuleContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitMultiSelectHash(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -3230,6 +3576,14 @@ class KeyvalExprContext extends antlr4.ParserRuleContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitKeyvalExpr(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitKeyvalExpr(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -3283,6 +3637,14 @@ class SelectContext extends BracketSpecifierContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitSelect(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -3306,6 +3668,14 @@ class BracketFlattenContext extends BracketSpecifierContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitBracketFlatten(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitBracketFlatten(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -3336,6 +3706,14 @@ class BracketSliceContext extends BracketSpecifierContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitBracketSlice(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -3364,6 +3742,14 @@ class BracketIndexContext extends BracketSpecifierContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitBracketIndex(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -3387,6 +3773,14 @@ class BracketStarContext extends BracketSpecifierContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitBracketStar(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitBracketStar(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -3435,6 +3829,14 @@ class SliceContext extends antlr4.ParserRuleContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitSlice(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -3481,6 +3883,14 @@ class FunctionExpressionContext extends antlr4.ParserRuleContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitFunctionExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -3520,6 +3930,14 @@ class FunctionArgContext extends antlr4.ParserRuleContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitFunctionArg(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -3550,6 +3968,14 @@ class CurrentNodeContext extends antlr4.ParserRuleContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitCurrentNode(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitCurrentNode(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -3587,6 +4013,14 @@ class ExpressionTypeContext extends antlr4.ParserRuleContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitExpressionType(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -3620,6 +4054,14 @@ class LiteralContext extends antlr4.ParserRuleContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitLiteral(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitLiteral(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -3669,6 +4111,14 @@ class IdentifierContext extends antlr4.ParserRuleContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitIdentifier(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -3711,6 +4161,14 @@ class JsonObjectContext extends antlr4.ParserRuleContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitJsonObject(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -3748,6 +4206,14 @@ class JsonObjectPairContext extends antlr4.ParserRuleContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitJsonObjectPair(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitJsonObjectPair(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -3790,6 +4256,14 @@ class JsonArrayContext extends antlr4.ParserRuleContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitJsonArray(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitJsonArray(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -3843,6 +4317,14 @@ class JsonArrayValueContext extends JsonValueContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitJsonArrayValue(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -3869,6 +4351,14 @@ class JsonStringValueContext extends JsonValueContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitJsonStringValue(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitJsonStringValue(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -3899,6 +4389,14 @@ class JsonObjectValueContext extends JsonValueContext {
 		}
 	}
 
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitJsonObjectValue(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
 
 }
 
@@ -3925,6 +4423,14 @@ class JsonConstantValueContext extends JsonValueContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitJsonConstantValue(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitJsonConstantValue(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -3957,6 +4463,14 @@ class JsonNumberValueContext extends JsonValueContext {
 	    if(listener instanceof JSONFormulaListener ) {
 	        listener.exitJsonNumberValue(this);
 		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JSONFormulaVisitor ) {
+	        return visitor.visitJsonNumberValue(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 

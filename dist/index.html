@@ -11897,7 +11897,7 @@ module.exports.FailedPredicateException = __webpack_require__(337).FailedPredica
 /* unused reexport */ __webpack_require__(114);
 /* unused reexport */ __webpack_require__(390).BailErrorStrategy;
 /* unused reexport */ __webpack_require__(390).DefaultErrorStrategy;
-module.exports.ErrorListener = __webpack_require__(553).ErrorListener;
+/* unused reexport */ __webpack_require__(553).ErrorListener;
 
 
 /***/ }),
@@ -14747,6 +14747,434 @@ var JSONFormulaListener = /*#__PURE__*/function (_antlr4$tree$ParseTre) {
 }(antlr4.tree.ParseTreeListener);
 
 
+;// CONCATENATED MODULE: ./src/antlr/JSONFormulaVisitor.js
+function JSONFormulaVisitor_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { JSONFormulaVisitor_typeof = function _typeof(obj) { return typeof obj; }; } else { JSONFormulaVisitor_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return JSONFormulaVisitor_typeof(obj); }
+
+function JSONFormulaVisitor_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function JSONFormulaVisitor_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function JSONFormulaVisitor_createClass(Constructor, protoProps, staticProps) { if (protoProps) JSONFormulaVisitor_defineProperties(Constructor.prototype, protoProps); if (staticProps) JSONFormulaVisitor_defineProperties(Constructor, staticProps); return Constructor; }
+
+function JSONFormulaVisitor_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) JSONFormulaVisitor_setPrototypeOf(subClass, superClass); }
+
+function JSONFormulaVisitor_setPrototypeOf(o, p) { JSONFormulaVisitor_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return JSONFormulaVisitor_setPrototypeOf(o, p); }
+
+function JSONFormulaVisitor_createSuper(Derived) { var hasNativeReflectConstruct = JSONFormulaVisitor_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = JSONFormulaVisitor_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = JSONFormulaVisitor_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return JSONFormulaVisitor_possibleConstructorReturn(this, result); }; }
+
+function JSONFormulaVisitor_possibleConstructorReturn(self, call) { if (call && (JSONFormulaVisitor_typeof(call) === "object" || typeof call === "function")) { return call; } return JSONFormulaVisitor_assertThisInitialized(self); }
+
+function JSONFormulaVisitor_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function JSONFormulaVisitor_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function JSONFormulaVisitor_getPrototypeOf(o) { JSONFormulaVisitor_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return JSONFormulaVisitor_getPrototypeOf(o); }
+
+// Generated from antlr/JSONFormula.g4 by ANTLR 4.9.2
+// jshint ignore: start
+ // This class defines a complete generic visitor for a parse tree produced by JSONFormulaParser.
+
+var JSONFormulaVisitor = /*#__PURE__*/function (_antlr4$tree$ParseTre) {
+  JSONFormulaVisitor_inherits(JSONFormulaVisitor, _antlr4$tree$ParseTre);
+
+  var _super = JSONFormulaVisitor_createSuper(JSONFormulaVisitor);
+
+  function JSONFormulaVisitor() {
+    JSONFormulaVisitor_classCallCheck(this, JSONFormulaVisitor);
+
+    return _super.apply(this, arguments);
+  }
+
+  JSONFormulaVisitor_createClass(JSONFormulaVisitor, [{
+    key: "visitFormula",
+    value: // Visit a parse tree produced by JSONFormulaParser#formula.
+    function visitFormula(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#binaryExpression.
+
+  }, {
+    key: "visitBinaryExpression",
+    value: function visitBinaryExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jmesPath.
+
+  }, {
+    key: "visitJmesPath",
+    value: function visitJmesPath(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#topLevelString.
+
+  }, {
+    key: "visitTopLevelString",
+    value: function visitTopLevelString(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#topLevelInt.
+
+  }, {
+    key: "visitTopLevelInt",
+    value: function visitTopLevelInt(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#functionCall.
+
+  }, {
+    key: "visitFunctionCall",
+    value: function visitFunctionCall(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#braceExpression.
+
+  }, {
+    key: "visitBraceExpression",
+    value: function visitBraceExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#postfix.
+
+  }, {
+    key: "visitPostfix",
+    value: function visitPostfix(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#unaryExpression.
+
+  }, {
+    key: "visitUnaryExpression",
+    value: function visitUnaryExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#topLevelNumber.
+
+  }, {
+    key: "visitTopLevelNumber",
+    value: function visitTopLevelNumber(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#unary_op.
+
+  }, {
+    key: "visitUnary_op",
+    value: function visitUnary_op(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#binary_op.
+
+  }, {
+    key: "visitBinary_op",
+    value: function visitBinary_op(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#postfix_op.
+
+  }, {
+    key: "visitPostfix_op",
+    value: function visitPostfix_op(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#function_call.
+
+  }, {
+    key: "visitFunction_call",
+    value: function visitFunction_call(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#parameter.
+
+  }, {
+    key: "visitParameter",
+    value: function visitParameter(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#nonempty_expr_list.
+
+  }, {
+    key: "visitNonempty_expr_list",
+    value: function visitNonempty_expr_list(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#expression_list.
+
+  }, {
+    key: "visitExpression_list",
+    value: function visitExpression_list(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#parm_separator.
+
+  }, {
+    key: "visitParm_separator",
+    value: function visitParm_separator(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#pipeExpression.
+
+  }, {
+    key: "visitPipeExpression",
+    value: function visitPipeExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#identifierExpression.
+
+  }, {
+    key: "visitIdentifierExpression",
+    value: function visitIdentifierExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#notExpression.
+
+  }, {
+    key: "visitNotExpression",
+    value: function visitNotExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#rawStringExpression.
+
+  }, {
+    key: "visitRawStringExpression",
+    value: function visitRawStringExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#comparisonExpression.
+
+  }, {
+    key: "visitComparisonExpression",
+    value: function visitComparisonExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#parenExpression.
+
+  }, {
+    key: "visitParenExpression",
+    value: function visitParenExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#bracketExpression.
+
+  }, {
+    key: "visitBracketExpression",
+    value: function visitBracketExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#orExpression.
+
+  }, {
+    key: "visitOrExpression",
+    value: function visitOrExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#currentNodeExpression.
+
+  }, {
+    key: "visitCurrentNodeExpression",
+    value: function visitCurrentNodeExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#chainExpression.
+
+  }, {
+    key: "visitChainExpression",
+    value: function visitChainExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#andExpression.
+
+  }, {
+    key: "visitAndExpression",
+    value: function visitAndExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#multiSelectHashExpression.
+
+  }, {
+    key: "visitMultiSelectHashExpression",
+    value: function visitMultiSelectHashExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#wildcardExpression.
+
+  }, {
+    key: "visitWildcardExpression",
+    value: function visitWildcardExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#functionCallExpression.
+
+  }, {
+    key: "visitFunctionCallExpression",
+    value: function visitFunctionCallExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#multiSelectListExpression.
+
+  }, {
+    key: "visitMultiSelectListExpression",
+    value: function visitMultiSelectListExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#bracketedExpression.
+
+  }, {
+    key: "visitBracketedExpression",
+    value: function visitBracketedExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#literalExpression.
+
+  }, {
+    key: "visitLiteralExpression",
+    value: function visitLiteralExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#chainedIdentifier.
+
+  }, {
+    key: "visitChainedIdentifier",
+    value: function visitChainedIdentifier(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#chainedMultiSelectList.
+
+  }, {
+    key: "visitChainedMultiSelectList",
+    value: function visitChainedMultiSelectList(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#chainedMultiSelectHash.
+
+  }, {
+    key: "visitChainedMultiSelectHash",
+    value: function visitChainedMultiSelectHash(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#chainedFunctionExpression.
+
+  }, {
+    key: "visitChainedFunctionExpression",
+    value: function visitChainedFunctionExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#chainedWildcard.
+
+  }, {
+    key: "visitChainedWildcard",
+    value: function visitChainedWildcard(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#wildcard.
+
+  }, {
+    key: "visitWildcard",
+    value: function visitWildcard(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#multiSelectList.
+
+  }, {
+    key: "visitMultiSelectList",
+    value: function visitMultiSelectList(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#multiSelectHash.
+
+  }, {
+    key: "visitMultiSelectHash",
+    value: function visitMultiSelectHash(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#keyvalExpr.
+
+  }, {
+    key: "visitKeyvalExpr",
+    value: function visitKeyvalExpr(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#bracketIndex.
+
+  }, {
+    key: "visitBracketIndex",
+    value: function visitBracketIndex(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#bracketStar.
+
+  }, {
+    key: "visitBracketStar",
+    value: function visitBracketStar(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#bracketSlice.
+
+  }, {
+    key: "visitBracketSlice",
+    value: function visitBracketSlice(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#bracketFlatten.
+
+  }, {
+    key: "visitBracketFlatten",
+    value: function visitBracketFlatten(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#select.
+
+  }, {
+    key: "visitSelect",
+    value: function visitSelect(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#slice.
+
+  }, {
+    key: "visitSlice",
+    value: function visitSlice(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#functionExpression.
+
+  }, {
+    key: "visitFunctionExpression",
+    value: function visitFunctionExpression(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#functionArg.
+
+  }, {
+    key: "visitFunctionArg",
+    value: function visitFunctionArg(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#currentNode.
+
+  }, {
+    key: "visitCurrentNode",
+    value: function visitCurrentNode(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#expressionType.
+
+  }, {
+    key: "visitExpressionType",
+    value: function visitExpressionType(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#literal.
+
+  }, {
+    key: "visitLiteral",
+    value: function visitLiteral(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#identifier.
+
+  }, {
+    key: "visitIdentifier",
+    value: function visitIdentifier(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jsonObject.
+
+  }, {
+    key: "visitJsonObject",
+    value: function visitJsonObject(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jsonObjectPair.
+
+  }, {
+    key: "visitJsonObjectPair",
+    value: function visitJsonObjectPair(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jsonArray.
+
+  }, {
+    key: "visitJsonArray",
+    value: function visitJsonArray(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jsonStringValue.
+
+  }, {
+    key: "visitJsonStringValue",
+    value: function visitJsonStringValue(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jsonNumberValue.
+
+  }, {
+    key: "visitJsonNumberValue",
+    value: function visitJsonNumberValue(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jsonObjectValue.
+
+  }, {
+    key: "visitJsonObjectValue",
+    value: function visitJsonObjectValue(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jsonArrayValue.
+
+  }, {
+    key: "visitJsonArrayValue",
+    value: function visitJsonArrayValue(ctx) {
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jsonConstantValue.
+
+  }, {
+    key: "visitJsonConstantValue",
+    value: function visitJsonConstantValue(ctx) {
+      return this.visitChildren(ctx);
+    }
+  }]);
+
+  return JSONFormulaVisitor;
+}(antlr4.tree.ParseTreeVisitor);
+
+
 ;// CONCATENATED MODULE: ./src/antlr/JSONFormulaParser.js
 function JSONFormulaParser_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { JSONFormulaParser_typeof = function _typeof(obj) { return typeof obj; }; } else { JSONFormulaParser_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return JSONFormulaParser_typeof(obj); }
 
@@ -14776,6 +15204,7 @@ function JSONFormulaParser_getPrototypeOf(o) { JSONFormulaParser_getPrototypeOf 
 
 // Generated from antlr/JSONFormula.g4 by ANTLR 4.9.2
 // jshint ignore: start
+
 
 
 var serializedATN = ["\x03\u608B\uA72A\u8133\uB9ED\u417C\u3BE7\u7786", "\u5964\x03%\u012A\x04\x02\t\x02\x04\x03\t\x03\x04\x04", "\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07\t\x07", "\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\x0B\t\x0B\x04\f\t\f", "\x04\r\t\r\x04\x0E\t\x0E\x04\x0F\t\x0F\x04\x10\t\x10", "\x04\x11\t\x11\x04\x12\t\x12\x04\x13\t\x13\x04\x14", "\t\x14\x04\x15\t\x15\x04\x16\t\x16\x04\x17\t\x17", "\x04\x18\t\x18\x04\x19\t\x19\x04\x1A\t\x1A\x04\x1B", "\t\x1B\x04\x1C\t\x1C\x04\x1D\t\x1D\x03\x02\x03\x02", "\x03\x02\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03", "\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03", "\x03\x03\x03\x03\x05\x03K\n\x03\x03\x03\x03\x03", "\x03\x03\x03\x03\x03\x03\x03\x03\x07\x03S\n\x03", "\f\x03\x0E\x03V\x0B\x03\x03\x04\x03\x04\x03\x05", "\x03\x05\x03\x06\x03\x06\x03\x07\x03\x07\x03\x07", "\x03\x07\x03\x07\x03\b\x03\b\x03\t\x03\t\x03\t\x03", "\t\x03\t\x03\t\x03\t\x07\tl\n\t\f\t\x0E\to\x0B\t\x03\n", "\x03\n\x05\ns\n\n\x03\x0B\x03\x0B\x03\f\x03\f\x03", "\f\x03\f\x03\f\x03\f\x03\f\x03\f\x03\f\x03\f\x03\f\x03", "\f\x03\f\x03\f\x03\f\x03\f\x05\f\x87\n\f\x03\f\x03\f", "\x03\f\x03\f\x03\f\x03\f\x03\f\x03\f\x03\f\x03\f\x03", "\f\x03\f\x03\f\x03\f\x03\f\x03\f\x03\f\x07\f\x9A\n\f", "\f\f\x0E\f\x9D\x0B\f\x03\r\x03\r\x03\r\x03\r\x03\r\x05", "\r\xA4\n\r\x03\x0E\x03\x0E\x03\x0F\x03\x0F\x03\x0F", "\x03\x0F\x07\x0F\xAC\n\x0F\f\x0F\x0E\x0F\xAF\x0B", "\x0F\x03\x0F\x03\x0F\x03\x10\x03\x10\x03\x10\x03", "\x10\x07\x10\xB7\n\x10\f\x10\x0E\x10\xBA\x0B\x10", "\x03\x10\x03\x10\x03\x11\x03\x11\x03\x11\x03\x11", "\x03\x12\x03\x12\x03\x12\x03\x12\x03\x12\x03\x12", "\x03\x12\x03\x12\x03\x12\x03\x12\x03\x12\x03\x12", "\x03\x12\x03\x12\x03\x12\x03\x12\x05\x12\xD2\n", "\x12\x03\x13\x05\x13\xD5\n\x13\x03\x13\x03\x13", "\x05\x13\xD9\n\x13\x03\x13\x03\x13\x05\x13\xDD", "\n\x13\x05\x13\xDF\n\x13\x03\x14\x03\x14\x03\x14", "\x03\x14\x03\x14\x07\x14\xE6\n\x14\f\x14\x0E\x14", "\xE9\x0B\x14\x03\x14\x03\x14\x03\x14\x03\x14\x03", "\x14\x05\x14\xF0\n\x14\x03\x15\x03\x15\x05\x15", "\xF4\n\x15\x03\x16\x03\x16\x03\x17\x03\x17\x03", "\x17\x03\x18\x03\x18\x03\x18\x03\x18\x03\x19\x03", "\x19\x03\x1A\x03\x1A\x03\x1A\x03\x1A\x07\x1A\u0105", "\n\x1A\f\x1A\x0E\x1A\u0108\x0B\x1A\x03\x1A\x03\x1A", "\x03\x1A\x03\x1A\x05\x1A\u010E\n\x1A\x03\x1B\x03", "\x1B\x03\x1B\x03\x1B\x03\x1C\x03\x1C\x03\x1C\x03", "\x1C\x07\x1C\u0118\n\x1C\f\x1C\x0E\x1C\u011B\x0B\x1C", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x05\x1C\u0121\n", "\x1C\x03\x1D\x03\x1D\x03\x1D\x03\x1D\x03\x1D\x05", "\x1D\u0128\n\x1D\x03\x1D\x02\x05\x04\x10\x16\x1E", "\x02\x04\x06\b\n\f\x0E\x10\x12\x14\x16\x18\x1A\x1C", "\x1E \"$&(*,.02468\x02\x06\x03\x02\x05\x06\x04\x02", "\x05\x0B\x1F\x1F\x04\x02\x1E\x1E!#\x04\x02\x1B", "\x1B$$\x02\u0140\x02:\x03\x02\x02\x02\x04J\x03\x02", "\x02\x02\x06W\x03\x02\x02\x02\bY\x03\x02\x02\x02", "\n[\x03\x02\x02\x02\f]\x03\x02\x02\x02\x0Eb\x03", "\x02\x02\x02\x10d\x03\x02\x02\x02\x12r\x03\x02", "\x02\x02\x14t\x03\x02\x02\x02\x16\x86\x03\x02", "\x02\x02\x18\xA3\x03\x02\x02\x02\x1A\xA5\x03\x02", "\x02\x02\x1C\xA7\x03\x02\x02\x02\x1E\xB2\x03\x02", "\x02\x02 \xBD\x03\x02\x02\x02\"\xD1\x03\x02\x02", "\x02$\xD4\x03\x02\x02\x02&\xEF\x03\x02\x02\x02", "(\xF3\x03\x02\x02\x02*\xF5\x03\x02\x02\x02,\xF7", "\x03\x02\x02\x02.\xFA\x03\x02\x02\x020\xFE\x03", "\x02\x02\x022\u010D\x03\x02\x02\x024\u010F\x03\x02", "\x02\x026\u0120\x03\x02\x02\x028\u0127\x03\x02\x02", "\x02:;\x05\x04\x03\x02;<\x07\x02\x02\x03<\x03\x03", "\x02\x02\x02=>\b\x03\x01\x02>K\x07\x1B\x02\x02?", "K\x07\x1C\x02\x02@K\x07 \x02\x02AB\x05\x06\x04\x02", "BC\x05\x04\x03\x07CK\x03\x02\x02\x02DE\x07\x03\x02", "\x02EF\x05\x04\x03\x02FG\x07\x04\x02\x02GK\x03\x02", "\x02\x02HK\x05\f\x07\x02IK\x05\x16\f\x02J=\x03\x02", "\x02\x02J?\x03\x02\x02\x02J@\x03\x02\x02\x02JA\x03", "\x02\x02\x02JD\x03\x02\x02\x02JH\x03\x02\x02\x02", "JI\x03\x02\x02\x02KT\x03\x02\x02\x02LM\f\b\x02\x02", "MN\x05\b\x05\x02NO\x05\x04\x03\tOS\x03\x02\x02\x02", "PQ\f\x06\x02\x02QS\x05\n\x06\x02RL\x03\x02\x02\x02", "RP\x03\x02\x02\x02SV\x03\x02\x02\x02TR\x03\x02\x02", "\x02TU\x03\x02\x02\x02U\x05\x03\x02\x02\x02VT\x03", "\x02\x02\x02WX\t\x02\x02\x02X\x07\x03\x02\x02\x02", "YZ\t\x03\x02\x02Z\t\x03\x02\x02\x02[\\\x07\f\x02\x02", "\\\x0B\x03\x02\x02\x02]^\x07\x1D\x02\x02^_\x07\x03", "\x02\x02_`\x05\x12\n\x02`a\x07\x04\x02\x02a\r\x03", "\x02\x02\x02bc\x05\x04\x03\x02c\x0F\x03\x02\x02", "\x02de\b\t\x01\x02ef\x05\x0E\b\x02fm\x03\x02\x02\x02", "gh\f\x03\x02\x02hi\x05\x14\x0B\x02ij\x05\x0E\b\x02", "jl\x03\x02\x02\x02kg\x03\x02\x02\x02lo\x03\x02\x02", "\x02mk\x03\x02\x02\x02mn\x03\x02\x02\x02n\x11\x03", "\x02\x02\x02om\x03\x02\x02\x02ps\x03\x02\x02\x02", "qs\x05\x10\t\x02rp\x03\x02\x02\x02rq\x03\x02\x02", "\x02s\x13\x03\x02\x02\x02tu\x07\r\x02\x02u\x15\x03", "\x02\x02\x02vw\b\f\x01\x02w\x87\x05\"\x12\x02x\x87", "\x050\x19\x02yz\x07\x11\x02\x02z\x87\x05\x16\f\f", "{|\x07\x03\x02\x02|}\x05\x16\f\x02}~\x07\x04\x02", "\x02~\x87\x03\x02\x02\x02\x7F\x87\x05\x1A\x0E", "\x02\x80\x87\x05\x1C\x0F\x02\x81\x87\x05\x1E\x10", "\x02\x82\x87\x05.\x18\x02\x83\x87\x05&\x14\x02", "\x84\x87\x07 \x02\x02\x85\x87\x05*\x16\x02\x86", "v\x03\x02\x02\x02\x86x\x03\x02\x02\x02\x86y\x03", "\x02\x02\x02\x86{\x03\x02\x02\x02\x86\x7F\x03", "\x02\x02\x02\x86\x80\x03\x02\x02\x02\x86\x81\x03", "\x02\x02\x02\x86\x82\x03\x02\x02\x02\x86\x83\x03", "\x02\x02\x02\x86\x84\x03\x02\x02\x02\x86\x85\x03", "\x02\x02\x02\x87\x9B\x03\x02\x02\x02\x88\x89\f", "\x10\x02\x02\x89\x8A\x07\x1F\x02\x02\x8A\x9A\x05", "\x16\f\x11\x8B\x8C\f\x0F\x02\x02\x8C\x8D\x07\x0F", "\x02\x02\x8D\x9A\x05\x16\f\x10\x8E\x8F\f\x0E\x02", "\x02\x8F\x90\x07\x10\x02\x02\x90\x9A\x05\x16\f", "\x0F\x91\x92\f\x05\x02\x02\x92\x93\x07\x12\x02", "\x02\x93\x9A\x05\x16\f\x06\x94\x95\f\x13\x02\x02", "\x95\x96\x07\x0E\x02\x02\x96\x9A\x05\x18\r\x02", "\x97\x98\f\x12\x02\x02\x98\x9A\x05\"\x12\x02\x99", "\x88\x03\x02\x02\x02\x99\x8B\x03\x02\x02\x02\x99", "\x8E\x03\x02\x02\x02\x99\x91\x03\x02\x02\x02\x99", "\x94\x03\x02\x02\x02\x99\x97\x03\x02\x02\x02\x9A", "\x9D\x03\x02\x02\x02\x9B\x99\x03\x02\x02\x02\x9B", "\x9C\x03\x02\x02\x02\x9C\x17\x03\x02\x02\x02\x9D", "\x9B\x03\x02\x02\x02\x9E\xA4\x050\x19\x02\x9F", "\xA4\x05\x1C\x0F\x02\xA0\xA4\x05\x1E\x10\x02\xA1", "\xA4\x05&\x14\x02\xA2\xA4\x05\x1A\x0E\x02\xA3", "\x9E\x03\x02\x02\x02\xA3\x9F\x03\x02\x02\x02\xA3", "\xA0\x03\x02\x02\x02\xA3\xA1\x03\x02\x02\x02\xA3", "\xA2\x03\x02\x02\x02\xA4\x19\x03\x02\x02\x02\xA5", "\xA6\x07\t\x02\x02\xA6\x1B\x03\x02\x02\x02\xA7", "\xA8\x07\x13\x02\x02\xA8\xAD\x05\x16\f\x02\xA9", "\xAA\x07\r\x02\x02\xAA\xAC\x05\x16\f\x02\xAB\xA9", "\x03\x02\x02\x02\xAC\xAF\x03\x02\x02\x02\xAD\xAB", "\x03\x02\x02\x02\xAD\xAE\x03\x02\x02\x02\xAE\xB0", "\x03\x02\x02\x02\xAF\xAD\x03\x02\x02\x02\xB0\xB1", "\x07\x14\x02\x02\xB1\x1D\x03\x02\x02\x02\xB2\xB3", "\x07\x15\x02\x02\xB3\xB8\x05 \x11\x02\xB4\xB5", "\x07\r\x02\x02\xB5\xB7\x05 \x11\x02\xB6\xB4\x03", "\x02\x02\x02\xB7\xBA\x03\x02\x02\x02\xB8\xB6\x03", "\x02\x02\x02\xB8\xB9\x03\x02\x02\x02\xB9\xBB\x03", "\x02\x02\x02\xBA\xB8\x03\x02\x02\x02\xBB\xBC\x07", "\x16\x02\x02\xBC\x1F\x03\x02\x02\x02\xBD\xBE\x05", "0\x19\x02\xBE\xBF\x07\x17\x02\x02\xBF\xC0\x05", "\x16\f\x02\xC0!\x03\x02\x02\x02\xC1\xC2\x07\x13", "\x02\x02\xC2\xC3\x07\x1B\x02\x02\xC3\xD2\x07\x14", "\x02\x02\xC4\xC5\x07\x13\x02\x02\xC5\xC6\x07\t", "\x02\x02\xC6\xD2\x07\x14\x02\x02\xC7\xC8\x07\x13", "\x02\x02\xC8\xC9\x05$\x13\x02\xC9\xCA\x07\x14", "\x02\x02\xCA\xD2\x03\x02\x02\x02\xCB\xCC\x07\x13", "\x02\x02\xCC\xD2\x07\x14\x02\x02\xCD\xCE\x07\x18", "\x02\x02\xCE\xCF\x05\x16\f\x02\xCF\xD0\x07\x14", "\x02\x02\xD0\xD2\x03\x02\x02\x02\xD1\xC1\x03\x02", "\x02\x02\xD1\xC4\x03\x02\x02\x02\xD1\xC7\x03\x02", "\x02\x02\xD1\xCB\x03\x02\x02\x02\xD1\xCD\x03\x02", "\x02\x02\xD2#\x03\x02\x02\x02\xD3\xD5\x07\x1B", "\x02\x02\xD4\xD3\x03\x02\x02\x02\xD4\xD5\x03\x02", "\x02\x02\xD5\xD6\x03\x02\x02\x02\xD6\xD8\x07\x17", "\x02\x02\xD7\xD9\x07\x1B\x02\x02\xD8\xD7\x03\x02", "\x02\x02\xD8\xD9\x03\x02\x02\x02\xD9\xDE\x03\x02", "\x02\x02\xDA\xDC\x07\x17\x02\x02\xDB\xDD\x07\x1B", "\x02\x02\xDC\xDB\x03\x02\x02\x02\xDC\xDD\x03\x02", "\x02\x02\xDD\xDF\x03\x02\x02\x02\xDE\xDA\x03\x02", "\x02\x02\xDE\xDF\x03\x02\x02\x02\xDF%\x03\x02", "\x02\x02\xE0\xE1\x07\"\x02\x02\xE1\xE2\x07\x03", "\x02\x02\xE2\xE7\x05(\x15\x02\xE3\xE4\x07\r\x02", "\x02\xE4\xE6\x05(\x15\x02\xE5\xE3\x03\x02\x02", "\x02\xE6\xE9\x03\x02\x02\x02\xE7\xE5\x03\x02\x02", "\x02\xE7\xE8\x03\x02\x02\x02\xE8\xEA\x03\x02\x02", "\x02\xE9\xE7\x03\x02\x02\x02\xEA\xEB\x07\x04\x02", "\x02\xEB\xF0\x03\x02\x02\x02\xEC\xED\x07\"\x02", "\x02\xED\xEE\x07\x03\x02\x02\xEE\xF0\x07\x04\x02", "\x02\xEF\xE0\x03\x02\x02\x02\xEF\xEC\x03\x02\x02", "\x02\xF0'\x03\x02\x02\x02\xF1\xF4\x05\x16\f\x02", "\xF2\xF4\x05,\x17\x02\xF3\xF1\x03\x02\x02\x02", "\xF3\xF2\x03\x02\x02\x02\xF4)\x03\x02\x02\x02", "\xF5\xF6\x07\x19\x02\x02\xF6+\x03\x02\x02\x02", "\xF7\xF8\x07\b\x02\x02\xF8\xF9\x05\x16\f\x02\xF9", "-\x03\x02\x02\x02\xFA\xFB\x07\x1A\x02\x02\xFB", "\xFC\x058\x1D\x02\xFC\xFD\x07\x1A\x02\x02\xFD", "/\x03\x02\x02\x02\xFE\xFF\t\x04\x02\x02\xFF1\x03", "\x02\x02\x02\u0100\u0101\x07\x15\x02\x02\u0101\u0106\x05", "4\x1B\x02\u0102\u0103\x07\r\x02\x02\u0103\u0105\x054\x1B", "\x02\u0104\u0102\x03\x02\x02\x02\u0105\u0108\x03\x02\x02", "\x02\u0106\u0104\x03\x02\x02\x02\u0106\u0107\x03\x02\x02", "\x02\u0107\u0109\x03\x02\x02\x02\u0108\u0106\x03\x02\x02", "\x02\u0109\u010A\x07\x16\x02\x02\u010A\u010E\x03\x02\x02", "\x02\u010B\u010C\x07\x15\x02\x02\u010C\u010E\x07\x16\x02", "\x02\u010D\u0100\x03\x02\x02\x02\u010D\u010B\x03\x02\x02", "\x02\u010E3\x03\x02\x02\x02\u010F\u0110\x07#\x02\x02", "\u0110\u0111\x07\x17\x02\x02\u0111\u0112\x058\x1D\x02", "\u01125\x03\x02\x02\x02\u0113\u0114\x07\x13\x02\x02", "\u0114\u0119\x058\x1D\x02\u0115\u0116\x07\r\x02\x02\u0116", "\u0118\x058\x1D\x02\u0117\u0115\x03\x02\x02\x02\u0118", "\u011B\x03\x02\x02\x02\u0119\u0117\x03\x02\x02\x02\u0119", "\u011A\x03\x02\x02\x02\u011A\u011C\x03\x02\x02\x02\u011B", "\u0119\x03\x02\x02\x02\u011C\u011D\x07\x14\x02\x02\u011D", "\u0121\x03\x02\x02\x02\u011E\u011F\x07\x13\x02\x02\u011F", "\u0121\x07\x14\x02\x02\u0120\u0113\x03\x02\x02\x02\u0120", "\u011E\x03\x02\x02\x02\u01217\x03\x02\x02\x02\u0122", "\u0128\x07#\x02\x02\u0123\u0128\t\x05\x02\x02\u0124\u0128", "\x052\x1A\x02\u0125\u0128\x056\x1C\x02\u0126\u0128\x07", "!\x02\x02\u0127\u0122\x03\x02\x02\x02\u0127\u0123\x03", "\x02\x02\x02\u0127\u0124\x03\x02\x02\x02\u0127\u0125\x03", "\x02\x02\x02\u0127\u0126\x03\x02\x02\x02\u01289\x03", "\x02\x02\x02\x1AJRTmr\x86\x99\x9B\xA3\xAD\xB8\xD1", "\xD4\xD8\xDC\xDE\xE7\xEF\xF3\u0106\u010D\u0119\u0120\u0127"].join("");
@@ -16600,6 +17029,15 @@ var FormulaContext = /*#__PURE__*/function (_antlr4$ParserRuleCon) {
         listener.exitFormula(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitFormula(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return FormulaContext;
@@ -16687,6 +17125,15 @@ var BinaryExpressionContext = /*#__PURE__*/function (_ExpressionContext) {
         listener.exitBinaryExpression(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitBinaryExpression(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return BinaryExpressionContext;
@@ -16728,6 +17175,15 @@ var JmesPathContext = /*#__PURE__*/function (_ExpressionContext2) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitJmesPath(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitJmesPath(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -16773,6 +17229,15 @@ var TopLevelStringContext = /*#__PURE__*/function (_ExpressionContext3) {
         listener.exitTopLevelString(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitTopLevelString(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return TopLevelStringContext;
@@ -16814,6 +17279,15 @@ var TopLevelIntContext = /*#__PURE__*/function (_ExpressionContext4) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitTopLevelInt(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitTopLevelInt(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -16859,6 +17333,15 @@ var FunctionCallContext = /*#__PURE__*/function (_ExpressionContext5) {
         listener.exitFunctionCall(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitFunctionCall(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return FunctionCallContext;
@@ -16900,6 +17383,15 @@ var BraceExpressionContext = /*#__PURE__*/function (_ExpressionContext6) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitBraceExpression(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitBraceExpression(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -16950,6 +17442,15 @@ var PostfixContext = /*#__PURE__*/function (_ExpressionContext7) {
         listener.exitPostfix(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitPostfix(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return PostfixContext;
@@ -16998,6 +17499,15 @@ var UnaryExpressionContext = /*#__PURE__*/function (_ExpressionContext8) {
         listener.exitUnaryExpression(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitUnaryExpression(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return UnaryExpressionContext;
@@ -17039,6 +17549,15 @@ var TopLevelNumberContext = /*#__PURE__*/function (_ExpressionContext9) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitTopLevelNumber(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitTopLevelNumber(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -17084,6 +17603,15 @@ var Unary_opContext = /*#__PURE__*/function (_antlr4$ParserRuleCon3) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitUnary_op(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitUnary_op(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -17134,6 +17662,15 @@ var Binary_opContext = /*#__PURE__*/function (_antlr4$ParserRuleCon4) {
         listener.exitBinary_op(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitBinary_op(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return Binary_opContext;
@@ -17175,6 +17712,15 @@ var Postfix_opContext = /*#__PURE__*/function (_antlr4$ParserRuleCon5) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitPostfix_op(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitPostfix_op(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -17230,6 +17776,15 @@ var Function_callContext = /*#__PURE__*/function (_antlr4$ParserRuleCon6) {
         listener.exitFunction_call(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitFunction_call(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return Function_callContext;
@@ -17276,6 +17831,15 @@ var ParameterContext = /*#__PURE__*/function (_antlr4$ParserRuleCon7) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitParameter(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitParameter(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -17336,6 +17900,15 @@ var Nonempty_expr_listContext = /*#__PURE__*/function (_antlr4$ParserRuleCon8) {
         listener.exitNonempty_expr_list(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitNonempty_expr_list(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return Nonempty_expr_listContext;
@@ -17384,6 +17957,15 @@ var Expression_listContext = /*#__PURE__*/function (_antlr4$ParserRuleCon9) {
         listener.exitExpression_list(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitExpression_list(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return Expression_listContext;
@@ -17425,6 +18007,15 @@ var Parm_separatorContext = /*#__PURE__*/function (_antlr4$ParserRuleCon10) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitParm_separator(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitParm_separator(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -17509,6 +18100,15 @@ var PipeExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo) {
         listener.exitPipeExpression(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitPipeExpression(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return PipeExpressionContext;
@@ -17550,6 +18150,15 @@ var IdentifierExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo2)
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitIdentifierExpression(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitIdentifierExpression(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -17595,6 +18204,15 @@ var NotExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo3) {
         listener.exitNotExpression(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitNotExpression(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return NotExpressionContext;
@@ -17636,6 +18254,15 @@ var RawStringExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo4) 
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitRawStringExpression(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitRawStringExpression(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -17693,6 +18320,15 @@ var ComparisonExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo5)
         listener.exitComparisonExpression(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitComparisonExpression(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return ComparisonExpressionContext;
@@ -17736,6 +18372,15 @@ var ParenExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo6) {
         listener.exitParenExpression(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitParenExpression(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return ParenExpressionContext;
@@ -17777,6 +18422,15 @@ var BracketExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo7) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitBracketExpression(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitBracketExpression(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -17829,6 +18483,15 @@ var OrExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo8) {
         listener.exitOrExpression(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitOrExpression(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return OrExpressionContext;
@@ -17870,6 +18533,15 @@ var CurrentNodeExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo9
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitCurrentNodeExpression(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitCurrentNodeExpression(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -17918,6 +18590,15 @@ var ChainExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo10) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitChainExpression(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitChainExpression(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -17970,6 +18651,15 @@ var AndExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo11) {
         listener.exitAndExpression(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitAndExpression(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return AndExpressionContext;
@@ -18011,6 +18701,15 @@ var MultiSelectHashExpressionContext = /*#__PURE__*/function (_JmesPathExpressio
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitMultiSelectHashExpression(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitMultiSelectHashExpression(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -18056,6 +18755,15 @@ var WildcardExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo13) 
         listener.exitWildcardExpression(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitWildcardExpression(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return WildcardExpressionContext;
@@ -18099,6 +18807,15 @@ var FunctionCallExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo
         listener.exitFunctionCallExpression(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitFunctionCallExpression(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return FunctionCallExpressionContext;
@@ -18140,6 +18857,15 @@ var MultiSelectListExpressionContext = /*#__PURE__*/function (_JmesPathExpressio
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitMultiSelectListExpression(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitMultiSelectListExpression(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -18190,6 +18916,15 @@ var BracketedExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo16)
         listener.exitBracketedExpression(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitBracketedExpression(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return BracketedExpressionContext;
@@ -18231,6 +18966,15 @@ var LiteralExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo17) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitLiteralExpression(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitLiteralExpression(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -18310,6 +19054,15 @@ var ChainedMultiSelectListContext = /*#__PURE__*/function (_ChainedExpressionCon
         listener.exitChainedMultiSelectList(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitChainedMultiSelectList(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return ChainedMultiSelectListContext;
@@ -18351,6 +19104,15 @@ var ChainedWildcardContext = /*#__PURE__*/function (_ChainedExpressionCon2) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitChainedWildcard(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitChainedWildcard(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -18396,6 +19158,15 @@ var ChainedMultiSelectHashContext = /*#__PURE__*/function (_ChainedExpressionCon
         listener.exitChainedMultiSelectHash(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitChainedMultiSelectHash(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return ChainedMultiSelectHashContext;
@@ -18437,6 +19208,15 @@ var ChainedIdentifierContext = /*#__PURE__*/function (_ChainedExpressionCon4) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitChainedIdentifier(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitChainedIdentifier(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -18482,6 +19262,15 @@ var ChainedFunctionExpressionContext = /*#__PURE__*/function (_ChainedExpression
         listener.exitChainedFunctionExpression(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitChainedFunctionExpression(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return ChainedFunctionExpressionContext;
@@ -18525,6 +19314,15 @@ var WildcardContext = /*#__PURE__*/function (_antlr4$ParserRuleCon13) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitWildcard(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitWildcard(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -18583,6 +19381,15 @@ var MultiSelectListContext = /*#__PURE__*/function (_antlr4$ParserRuleCon14) {
         listener.exitMultiSelectList(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitMultiSelectList(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return MultiSelectListContext;
@@ -18639,6 +19446,15 @@ var MultiSelectHashContext = /*#__PURE__*/function (_antlr4$ParserRuleCon15) {
         listener.exitMultiSelectHash(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitMultiSelectHash(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return MultiSelectHashContext;
@@ -18690,6 +19506,15 @@ var KeyvalExprContext = /*#__PURE__*/function (_antlr4$ParserRuleCon16) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitKeyvalExpr(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitKeyvalExpr(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -18767,6 +19592,15 @@ var SelectContext = /*#__PURE__*/function (_BracketSpecifierCont) {
         listener.exitSelect(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitSelect(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return SelectContext;
@@ -18803,6 +19637,15 @@ var BracketFlattenContext = /*#__PURE__*/function (_BracketSpecifierCont2) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitBracketFlatten(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitBracketFlatten(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -18848,6 +19691,15 @@ var BracketSliceContext = /*#__PURE__*/function (_BracketSpecifierCont3) {
         listener.exitBracketSlice(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitBracketSlice(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return BracketSliceContext;
@@ -18891,6 +19743,15 @@ var BracketIndexContext = /*#__PURE__*/function (_BracketSpecifierCont4) {
         listener.exitBracketIndex(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitBracketIndex(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return BracketIndexContext;
@@ -18927,6 +19788,15 @@ var BracketStarContext = /*#__PURE__*/function (_BracketSpecifierCont5) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitBracketStar(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitBracketStar(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -18993,6 +19863,15 @@ var SliceContext = /*#__PURE__*/function (_antlr4$ParserRuleCon18) {
         listener.exitSlice(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitSlice(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return SliceContext;
@@ -19054,6 +19933,15 @@ var FunctionExpressionContext = /*#__PURE__*/function (_antlr4$ParserRuleCon19) 
         listener.exitFunctionExpression(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitFunctionExpression(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return FunctionExpressionContext;
@@ -19107,6 +19995,15 @@ var FunctionArgContext = /*#__PURE__*/function (_antlr4$ParserRuleCon20) {
         listener.exitFunctionArg(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitFunctionArg(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return FunctionArgContext;
@@ -19148,6 +20045,15 @@ var CurrentNodeContext = /*#__PURE__*/function (_antlr4$ParserRuleCon21) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitCurrentNode(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitCurrentNode(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -19198,6 +20104,15 @@ var ExpressionTypeContext = /*#__PURE__*/function (_antlr4$ParserRuleCon22) {
         listener.exitExpressionType(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitExpressionType(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return ExpressionTypeContext;
@@ -19244,6 +20159,15 @@ var LiteralContext = /*#__PURE__*/function (_antlr4$ParserRuleCon23) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitLiteral(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitLiteral(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -19309,6 +20233,15 @@ var IdentifierContext = /*#__PURE__*/function (_antlr4$ParserRuleCon24) {
         listener.exitIdentifier(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitIdentifier(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return IdentifierContext;
@@ -19365,6 +20298,15 @@ var JsonObjectContext = /*#__PURE__*/function (_antlr4$ParserRuleCon25) {
         listener.exitJsonObject(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitJsonObject(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return JsonObjectContext;
@@ -19416,6 +20358,15 @@ var JsonObjectPairContext = /*#__PURE__*/function (_antlr4$ParserRuleCon26) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitJsonObjectPair(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitJsonObjectPair(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -19472,6 +20423,15 @@ var JsonArrayContext = /*#__PURE__*/function (_antlr4$ParserRuleCon27) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitJsonArray(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitJsonArray(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -19549,6 +20509,15 @@ var JsonArrayValueContext = /*#__PURE__*/function (_JsonValueContext) {
         listener.exitJsonArrayValue(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitJsonArrayValue(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return JsonArrayValueContext;
@@ -19590,6 +20559,15 @@ var JsonStringValueContext = /*#__PURE__*/function (_JsonValueContext2) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitJsonStringValue(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitJsonStringValue(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -19635,6 +20613,15 @@ var JsonObjectValueContext = /*#__PURE__*/function (_JsonValueContext3) {
         listener.exitJsonObjectValue(this);
       }
     }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitJsonObjectValue(this);
+      } else {
+        return visitor.visitChildren(this);
+      }
+    }
   }]);
 
   return JsonObjectValueContext;
@@ -19676,6 +20663,15 @@ var JsonConstantValueContext = /*#__PURE__*/function (_JsonValueContext4) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitJsonConstantValue(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitJsonConstantValue(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -19724,6 +20720,15 @@ var JsonNumberValueContext = /*#__PURE__*/function (_JsonValueContext5) {
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
         listener.exitJsonNumberValue(this);
+      }
+    }
+  }, {
+    key: "accept",
+    value: function accept(visitor) {
+      if (visitor instanceof JSONFormulaVisitor) {
+        return visitor.visitJsonNumberValue(this);
+      } else {
+        return visitor.visitChildren(this);
       }
     }
   }]);
@@ -19786,7 +20791,7 @@ function JSONFormulaLexer_getPrototypeOf(o) { JSONFormulaLexer_getPrototypeOf = 
 // Generated from antlr/JSONFormula.g4 by ANTLR 4.9.2
 // jshint ignore: start
 
-var JSONFormulaLexer_serializedATN = ["\x03\u608B\uA72A\u8133\uB9ED\u417C\u3BE7\u7786", "\u5964\x02%\u0131\b\x01\x04\x02\t\x02\x04\x03\t\x03", "\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07", "\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\x0B\t\x0B\x04", "\f\t\f\x04\r\t\r\x04\x0E\t\x0E\x04\x0F\t\x0F\x04\x10", "\t\x10\x04\x11\t\x11\x04\x12\t\x12\x04\x13\t\x13", "\x04\x14\t\x14\x04\x15\t\x15\x04\x16\t\x16\x04\x17", "\t\x17\x04\x18\t\x18\x04\x19\t\x19\x04\x1A\t\x1A", "\x04\x1B\t\x1B\x04\x1C\t\x1C\x04\x1D\t\x1D\x04\x1E", "\t\x1E\x04\x1F\t\x1F\x04 \t \x04!\t!\x04\"\t\"\x04#", "\t#\x04$\t$\x04%\t%\x04&\t&\x04'\t'\x04(\t(\x04)\t)\x04", "*\t*\x03\x02\x03\x02\x03\x03\x03\x03\x03\x04\x03", "\x04\x03\x05\x03\x05\x03\x06\x03\x06\x03\x06\x03", "\x07\x03\x07\x03\b\x03\b\x03\t\x03\t\x03\n\x03\n\x03", "\x0B\x03\x0B\x03\f\x03\f\x03\r\x03\r\x03\x0E\x03", "\x0E\x03\x0E\x03\x0F\x03\x0F\x03\x0F\x03\x10\x03", "\x10\x03\x11\x03\x11\x03\x12\x03\x12\x03\x13\x03", "\x13\x03\x14\x03\x14\x03\x15\x03\x15\x03\x16\x03", "\x16\x03\x17\x03\x17\x03\x17\x03\x18\x03\x18\x03", "\x19\x03\x19\x03\x1A\x05\x1A\x8B\n\x1A\x03\x1A", "\x03\x1A\x03\x1B\x03\x1B\x05\x1B\x91\n\x1B\x03", "\x1B\x07\x1B\x94\n\x1B\f\x1B\x0E\x1B\x97\x0B\x1B", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x05\x1C", "\xBC\n\x1C\x03\x1D\x03\x1D\x03\x1E\x03\x1E\x03", "\x1E\x03\x1E\x03\x1E\x03\x1E\x03\x1E\x03\x1E\x03", "\x1E\x03\x1E\x05\x1E\xCA\n\x1E\x03\x1F\x03\x1F", "\x03\x1F\x07\x1F\xCF\n\x1F\f\x1F\x0E\x1F\xD2\x0B", "\x1F\x03\x1F\x03\x1F\x03 \x03 \x03 \x03!\x03!\x03", "!\x03!\x03!\x03!\x03!\x03!\x03!\x03!\x03!\x03!\x03", "!\x05!\xE6\n!\x03\"\x03\"\x07\"\xEA\n\"\f\"\x0E\"\xED", "\x0B\"\x03#\x03#\x03#\x07#\xF2\n#\f#\x0E#\xF5\x0B", "#\x03#\x03#\x03$\x03$\x03$\x05$\xFC\n$\x03%\x03%\x03", "%\x03%\x03%\x03%\x03&\x03&\x03'\x05'\u0107\n'\x03", "'\x03'\x03'\x06'\u010C\n'\r'\x0E'\u010D\x03'\x05", "'\u0111\n'\x03'\x05'\u0114\n'\x03'\x03'\x03'\x05", "'\u0119\n'\x03(\x03(\x03(\x07(\u011E\n(\f(\x0E(\u0121\x0B", "(\x05(\u0123\n(\x03)\x03)\x05)\u0127\n)\x03)\x03)\x03", "*\x06*\u012C\n*\r*\x0E*\u012D\x03*\x03*\x02\x02+\x03\x03", "\x05\x04\x07\x05\t\x06\x0B\x07\r\b\x0F\t\x11\n\x13", "\x0B\x15\f\x17\r\x19\x0E\x1B\x0F\x1D\x10\x1F\x11", "!\x12#\x13%\x14'\x15)\x16+\x17-\x18/\x191\x1A3\x1B", "5\x1C7\x1D9\x1E;\x1F= ?\x02A!C\"E#G\x02I\x02K\x02M$", "O\x02Q\x02S%\x03\x02\r\x03\x022;\x04\x02))^^\x05\x02", "C\\aac|\x06\x022;C\\aac|\x04\x02$$^^\x0B\x02$$11^^bbddh", "hppttvv\x05\x022;CHch\x03\x023;\x04\x02GGgg\x04\x02", "--//\x05\x02\x0B\f\x0F\x0F\"\"\x02\u014E\x02\x03\x03", "\x02\x02\x02\x02\x05\x03\x02\x02\x02\x02\x07\x03", "\x02\x02\x02\x02\t\x03\x02\x02\x02\x02\x0B\x03", "\x02\x02\x02\x02\r\x03\x02\x02\x02\x02\x0F\x03", "\x02\x02\x02\x02\x11\x03\x02\x02\x02\x02\x13\x03", "\x02\x02\x02\x02\x15\x03\x02\x02\x02\x02\x17\x03", "\x02\x02\x02\x02\x19\x03\x02\x02\x02\x02\x1B\x03", "\x02\x02\x02\x02\x1D\x03\x02\x02\x02\x02\x1F\x03", "\x02\x02\x02\x02!\x03\x02\x02\x02\x02#\x03\x02", "\x02\x02\x02%\x03\x02\x02\x02\x02'\x03\x02\x02", "\x02\x02)\x03\x02\x02\x02\x02+\x03\x02\x02\x02", "\x02-\x03\x02\x02\x02\x02/\x03\x02\x02\x02\x02", "1\x03\x02\x02\x02\x023\x03\x02\x02\x02\x025\x03", "\x02\x02\x02\x027\x03\x02\x02\x02\x029\x03\x02", "\x02\x02\x02;\x03\x02\x02\x02\x02=\x03\x02\x02", "\x02\x02A\x03\x02\x02\x02\x02C\x03\x02\x02\x02", "\x02E\x03\x02\x02\x02\x02M\x03\x02\x02\x02\x02", "S\x03\x02\x02\x02\x03U\x03\x02\x02\x02\x05W\x03", "\x02\x02\x02\x07Y\x03\x02\x02\x02\t[\x03\x02\x02", "\x02\x0B]\x03\x02\x02\x02\r`\x03\x02\x02\x02\x0F", "b\x03\x02\x02\x02\x11d\x03\x02\x02\x02\x13f\x03", "\x02\x02\x02\x15h\x03\x02\x02\x02\x17j\x03\x02", "\x02\x02\x19l\x03\x02\x02\x02\x1Bn\x03\x02\x02", "\x02\x1Dq\x03\x02\x02\x02\x1Ft\x03\x02\x02\x02", "!v\x03\x02\x02\x02#x\x03\x02\x02\x02%z\x03\x02\x02", "\x02'|\x03\x02\x02\x02)~\x03\x02\x02\x02+\x80\x03", "\x02\x02\x02-\x82\x03\x02\x02\x02/\x85\x03\x02", "\x02\x021\x87\x03\x02\x02\x023\x8A\x03\x02\x02", "\x025\x8E\x03\x02\x02\x027\xBB\x03\x02\x02\x02", "9\xBD\x03\x02\x02\x02;\xC9\x03\x02\x02\x02=\xCB", "\x03\x02\x02\x02?\xD5\x03\x02\x02\x02A\xE5\x03", "\x02\x02\x02C\xE7\x03\x02\x02\x02E\xEE\x03\x02", "\x02\x02G\xF8\x03\x02\x02\x02I\xFD\x03\x02\x02", "\x02K\u0103\x03\x02\x02\x02M\u0118\x03\x02\x02\x02", "O\u0122\x03\x02\x02\x02Q\u0124\x03\x02\x02\x02S\u012B", "\x03\x02\x02\x02UV\x07*\x02\x02V\x04\x03\x02\x02", "\x02WX\x07+\x02\x02X\x06\x03\x02\x02\x02YZ\x07-", "\x02\x02Z\b\x03\x02\x02\x02[\\\x07/\x02\x02\\\n\x03", "\x02\x02\x02]^\x07>\x02\x02^_\x07@\x02\x02_\f\x03", "\x02\x02\x02`a\x07(\x02\x02a\x0E\x03\x02\x02\x02", "bc\x07,\x02\x02c\x10\x03\x02\x02\x02de\x071\x02", "\x02e\x12\x03\x02\x02\x02fg\x07`\x02\x02g\x14\x03", "\x02\x02\x02hi\x07'\x02\x02i\x16\x03\x02\x02\x02", "jk\x07.\x02\x02k\x18\x03\x02\x02\x02lm\x070\x02", "\x02m\x1A\x03\x02\x02\x02no\x07(\x02\x02op\x07(", "\x02\x02p\x1C\x03\x02\x02\x02qr\x07~\x02\x02rs\x07", "~\x02\x02s\x1E\x03\x02\x02\x02tu\x07#\x02\x02u ", "\x03\x02\x02\x02vw\x07~\x02\x02w\"\x03\x02\x02\x02", "xy\x07]\x02\x02y$\x03\x02\x02\x02z{\x07_\x02\x02", "{&\x03\x02\x02\x02|}\x07}\x02\x02}(\x03\x02\x02", "\x02~\x7F\x07\x7F\x02\x02\x7F*\x03\x02\x02\x02", "\x80\x81\x07<\x02\x02\x81,\x03\x02\x02\x02\x82", "\x83\x07]\x02\x02\x83\x84\x07A\x02\x02\x84.\x03", "\x02\x02\x02\x85\x86\x07B\x02\x02\x860\x03\x02", "\x02\x02\x87\x88\x07b\x02\x02\x882\x03\x02\x02", "\x02\x89\x8B\x07/\x02\x02\x8A\x89\x03\x02\x02", "\x02\x8A\x8B\x03\x02\x02\x02\x8B\x8C\x03\x02\x02", "\x02\x8C\x8D\x05O(\x02\x8D4\x03\x02\x02\x02\x8E", "\x90\x053\x1A\x02\x8F\x91\x070\x02\x02\x90\x8F", "\x03\x02\x02\x02\x90\x91\x03\x02\x02\x02\x91\x95", "\x03\x02\x02\x02\x92\x94\t\x02\x02\x02\x93\x92", "\x03\x02\x02\x02\x94\x97\x03\x02\x02\x02\x95\x93", "\x03\x02\x02\x02\x95\x96\x03\x02\x02\x02\x966", "\x03\x02\x02\x02\x97\x95\x03\x02\x02\x02\x98\x99", "\x07C\x02\x02\x99\x9A\x07P\x02\x02\x9A\xBC\x07", "F\x02\x02\x9B\x9C\x07c\x02\x02\x9C\x9D\x07p\x02", "\x02\x9D\xBC\x07f\x02\x02\x9E\x9F\x07H\x02\x02", "\x9F\xA0\x07C\x02\x02\xA0\xA1\x07N\x02\x02\xA1", "\xA2\x07U\x02\x02\xA2\xBC\x07G\x02\x02\xA3\xA4", "\x07k\x02\x02\xA4\xBC\x07h\x02\x02\xA5\xA6\x07", "K\x02\x02\xA6\xBC\x07H\x02\x02\xA7\xA8\x07p\x02", "\x02\xA8\xA9\x07q\x02\x02\xA9\xBC\x07v\x02\x02", "\xAA\xAB\x07P\x02\x02\xAB\xAC\x07Q\x02\x02\xAC", "\xBC\x07V\x02\x02\xAD\xAE\x07q\x02\x02\xAE\xBC", "\x07t\x02\x02\xAF\xB0\x07Q\x02\x02\xB0\xBC\x07", "T\x02\x02\xB1\xB2\x07u\x02\x02\xB2\xB3\x07w\x02", "\x02\xB3\xBC\x07o\x02\x02\xB4\xB5\x07U\x02\x02", "\xB5\xB6\x07W\x02\x02\xB6\xBC\x07O\x02\x02\xB7", "\xB8\x07V\x02\x02\xB8\xB9\x07T\x02\x02\xB9\xBA", "\x07W\x02\x02\xBA\xBC\x07G\x02\x02\xBB\x98\x03", "\x02\x02\x02\xBB\x9B\x03\x02\x02\x02\xBB\x9E\x03", "\x02\x02\x02\xBB\xA3\x03\x02\x02\x02\xBB\xA5\x03", "\x02\x02\x02\xBB\xA7\x03\x02\x02\x02\xBB\xAA\x03", "\x02\x02\x02\xBB\xAD\x03\x02\x02\x02\xBB\xAF\x03", "\x02\x02\x02\xBB\xB1\x03\x02\x02\x02\xBB\xB4\x03", "\x02\x02\x02\xBB\xB7\x03\x02\x02\x02\xBC8\x03", "\x02\x02\x02\xBD\xBE\x07&\x02\x02\xBE:\x03\x02", "\x02\x02\xBF\xCA\x07>\x02\x02\xC0\xC1\x07>\x02", "\x02\xC1\xCA\x07?\x02\x02\xC2\xC3\x07?\x02\x02", "\xC3\xCA\x07?\x02\x02\xC4\xC5\x07@\x02\x02\xC5", "\xCA\x07?\x02\x02\xC6\xCA\x07@\x02\x02\xC7\xC8", "\x07#\x02\x02\xC8\xCA\x07?\x02\x02\xC9\xBF\x03", "\x02\x02\x02\xC9\xC0\x03\x02\x02\x02\xC9\xC2\x03", "\x02\x02\x02\xC9\xC4\x03\x02\x02\x02\xC9\xC6\x03", "\x02\x02\x02\xC9\xC7\x03\x02\x02\x02\xCA<\x03", "\x02\x02\x02\xCB\xD0\x07)\x02\x02\xCC\xCF\x05", "? \x02\xCD\xCF\n\x03\x02\x02\xCE\xCC\x03\x02\x02", "\x02\xCE\xCD\x03\x02\x02\x02\xCF\xD2\x03\x02\x02", "\x02\xD0\xCE\x03\x02\x02\x02\xD0\xD1\x03\x02\x02", "\x02\xD1\xD3\x03\x02\x02\x02\xD2\xD0\x03\x02\x02", "\x02\xD3\xD4\x07)\x02\x02\xD4>\x03\x02\x02\x02", "\xD5\xD6\x07^\x02\x02\xD6\xD7\x0B\x02\x02\x02", "\xD7@\x03\x02\x02\x02\xD8\xD9\x07v\x02\x02\xD9", "\xDA\x07t\x02\x02\xDA\xDB\x07w\x02\x02\xDB\xE6", "\x07g\x02\x02\xDC\xDD\x07h\x02\x02\xDD\xDE\x07", "c\x02\x02\xDE\xDF\x07n\x02\x02\xDF\xE0\x07u\x02", "\x02\xE0\xE6\x07g\x02\x02\xE1\xE2\x07p\x02\x02", "\xE2\xE3\x07w\x02\x02\xE3\xE4\x07n\x02\x02\xE4", "\xE6\x07n\x02\x02\xE5\xD8\x03\x02\x02\x02\xE5", "\xDC\x03\x02\x02\x02\xE5\xE1\x03\x02\x02\x02\xE6", "B\x03\x02\x02\x02\xE7\xEB\t\x04\x02\x02\xE8\xEA", "\t\x05\x02\x02\xE9\xE8\x03\x02\x02\x02\xEA\xED", "\x03\x02\x02\x02\xEB\xE9\x03\x02\x02\x02\xEB\xEC", "\x03\x02\x02\x02\xECD\x03\x02\x02\x02\xED\xEB", "\x03\x02\x02\x02\xEE\xF3\x07$\x02\x02\xEF\xF2", "\x05G$\x02\xF0\xF2\n\x06\x02\x02\xF1\xEF\x03\x02", "\x02\x02\xF1\xF0\x03\x02\x02\x02\xF2\xF5\x03\x02", "\x02\x02\xF3\xF1\x03\x02\x02\x02\xF3\xF4\x03\x02", "\x02\x02\xF4\xF6\x03\x02\x02\x02\xF5\xF3\x03\x02", "\x02\x02\xF6\xF7\x07$\x02\x02\xF7F\x03\x02\x02", "\x02\xF8\xFB\x07^\x02\x02\xF9\xFC\t\x07\x02\x02", "\xFA\xFC\x05I%\x02\xFB\xF9\x03\x02\x02\x02\xFB", "\xFA\x03\x02\x02\x02\xFCH\x03\x02\x02\x02\xFD", "\xFE\x07w\x02\x02\xFE\xFF\x05K&\x02\xFF\u0100\x05", "K&\x02\u0100\u0101\x05K&\x02\u0101\u0102\x05K&\x02\u0102J", "\x03\x02\x02\x02\u0103\u0104\t\b\x02\x02\u0104L\x03\x02", "\x02\x02\u0105\u0107\x07/\x02\x02\u0106\u0105\x03\x02", "\x02\x02\u0106\u0107\x03\x02\x02\x02\u0107\u0108\x03\x02", "\x02\x02\u0108\u0109\x05O(\x02\u0109\u010B\x070\x02\x02", "\u010A\u010C\t\x02\x02\x02\u010B\u010A\x03\x02\x02\x02", "\u010C\u010D\x03\x02\x02\x02\u010D\u010B\x03\x02\x02\x02", "\u010D\u010E\x03\x02\x02\x02\u010E\u0110\x03\x02\x02\x02", "\u010F\u0111\x05Q)\x02\u0110\u010F\x03\x02\x02\x02\u0110", "\u0111\x03\x02\x02\x02\u0111\u0119\x03\x02\x02\x02\u0112", "\u0114\x07/\x02\x02\u0113\u0112\x03\x02\x02\x02\u0113", "\u0114\x03\x02\x02\x02\u0114\u0115\x03\x02\x02\x02\u0115", "\u0116\x05O(\x02\u0116\u0117\x05Q)\x02\u0117\u0119\x03\x02", "\x02\x02\u0118\u0106\x03\x02\x02\x02\u0118\u0113\x03\x02", "\x02\x02\u0119N\x03\x02\x02\x02\u011A\u0123\x072\x02", "\x02\u011B\u011F\t\t\x02\x02\u011C\u011E\t\x02\x02\x02\u011D", "\u011C\x03\x02\x02\x02\u011E\u0121\x03\x02\x02\x02\u011F", "\u011D\x03\x02\x02\x02\u011F\u0120\x03\x02\x02\x02\u0120", "\u0123\x03\x02\x02\x02\u0121\u011F\x03\x02\x02\x02\u0122", "\u011A\x03\x02\x02\x02\u0122\u011B\x03\x02\x02\x02\u0123", "P\x03\x02\x02\x02\u0124\u0126\t\n\x02\x02\u0125\u0127\t", "\x0B\x02\x02\u0126\u0125\x03\x02\x02\x02\u0126\u0127\x03", "\x02\x02\x02\u0127\u0128\x03\x02\x02\x02\u0128\u0129\x05", "O(\x02\u0129R\x03\x02\x02\x02\u012A\u012C\t\f\x02\x02", "\u012B\u012A\x03\x02\x02\x02\u012C\u012D\x03\x02\x02\x02", "\u012D\u012B\x03\x02\x02\x02\u012D\u012E\x03\x02\x02\x02", "\u012E\u012F\x03\x02\x02\x02\u012F\u0130\b*\x02\x02\u0130", "T\x03\x02\x02\x02\x18\x02\x8A\x90\x95\xBB\xC9", "\xCE\xD0\xE5\xEB\xF1\xF3\xFB\u0106\u010D\u0110\u0113\u0118", "\u011F\u0122\u0126\u012D\x03\b\x02\x02"].join("");
+var JSONFormulaLexer_serializedATN = ["\x03\u608B\uA72A\u8133\uB9ED\u417C\u3BE7\u7786", "\u5964\x02%\u0149\b\x01\x04\x02\t\x02\x04\x03\t\x03", "\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07", "\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\x0B\t\x0B\x04", "\f\t\f\x04\r\t\r\x04\x0E\t\x0E\x04\x0F\t\x0F\x04\x10", "\t\x10\x04\x11\t\x11\x04\x12\t\x12\x04\x13\t\x13", "\x04\x14\t\x14\x04\x15\t\x15\x04\x16\t\x16\x04\x17", "\t\x17\x04\x18\t\x18\x04\x19\t\x19\x04\x1A\t\x1A", "\x04\x1B\t\x1B\x04\x1C\t\x1C\x04\x1D\t\x1D\x04\x1E", "\t\x1E\x04\x1F\t\x1F\x04 \t \x04!\t!\x04\"\t\"\x04#", "\t#\x04$\t$\x04%\t%\x04&\t&\x04'\t'\x04(\t(\x04)\t)\x04", "*\t*\x03\x02\x03\x02\x03\x03\x03\x03\x03\x04\x03", "\x04\x03\x05\x03\x05\x03\x06\x03\x06\x03\x06\x03", "\x07\x03\x07\x03\b\x03\b\x03\t\x03\t\x03\n\x03\n\x03", "\x0B\x03\x0B\x03\f\x03\f\x03\r\x03\r\x03\x0E\x03", "\x0E\x03\x0E\x03\x0F\x03\x0F\x03\x0F\x03\x10\x03", "\x10\x03\x11\x03\x11\x03\x12\x03\x12\x03\x13\x03", "\x13\x03\x14\x03\x14\x03\x15\x03\x15\x03\x16\x03", "\x16\x03\x17\x03\x17\x03\x17\x03\x18\x03\x18\x03", "\x19\x03\x19\x03\x1A\x05\x1A\x8B\n\x1A\x03\x1A", "\x03\x1A\x03\x1B\x03\x1B\x05\x1B\x91\n\x1B\x03", "\x1B\x07\x1B\x94\n\x1B\f\x1B\x0E\x1B\x97\x0B\x1B", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C", "\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x05\x1C", "\xD4\n\x1C\x03\x1D\x03\x1D\x03\x1E\x03\x1E\x03", "\x1E\x03\x1E\x03\x1E\x03\x1E\x03\x1E\x03\x1E\x03", "\x1E\x03\x1E\x05\x1E\xE2\n\x1E\x03\x1F\x03\x1F", "\x03\x1F\x07\x1F\xE7\n\x1F\f\x1F\x0E\x1F\xEA\x0B", "\x1F\x03\x1F\x03\x1F\x03 \x03 \x03 \x03!\x03!\x03", "!\x03!\x03!\x03!\x03!\x03!\x03!\x03!\x03!\x03!\x03", "!\x05!\xFE\n!\x03\"\x03\"\x07\"\u0102\n\"\f\"\x0E\"\u0105", "\x0B\"\x03#\x03#\x03#\x07#\u010A\n#\f#\x0E#\u010D\x0B", "#\x03#\x03#\x03$\x03$\x03$\x05$\u0114\n$\x03%\x03%\x03", "%\x03%\x03%\x03%\x03&\x03&\x03'\x05'\u011F\n'\x03", "'\x03'\x03'\x06'\u0124\n'\r'\x0E'\u0125\x03'\x05", "'\u0129\n'\x03'\x05'\u012C\n'\x03'\x03'\x03'\x05", "'\u0131\n'\x03(\x03(\x03(\x07(\u0136\n(\f(\x0E(\u0139\x0B", "(\x05(\u013B\n(\x03)\x03)\x05)\u013F\n)\x03)\x03)\x03", "*\x06*\u0144\n*\r*\x0E*\u0145\x03*\x03*\x02\x02+\x03\x03", "\x05\x04\x07\x05\t\x06\x0B\x07\r\b\x0F\t\x11\n\x13", "\x0B\x15\f\x17\r\x19\x0E\x1B\x0F\x1D\x10\x1F\x11", "!\x12#\x13%\x14'\x15)\x16+\x17-\x18/\x191\x1A3\x1B", "5\x1C7\x1D9\x1E;\x1F= ?\x02A!C\"E#G\x02I\x02K\x02M$", "O\x02Q\x02S%\x03\x02\r\x03\x022;\x04\x02))^^\x05\x02", "C\\aac|\x06\x022;C\\aac|\x04\x02$$^^\x0B\x02$$11^^bbddh", "hppttvv\x05\x022;CHch\x03\x023;\x04\x02GGgg\x04\x02", "--//\x05\x02\x0B\f\x0F\x0F\"\"\x02\u016A\x02\x03\x03", "\x02\x02\x02\x02\x05\x03\x02\x02\x02\x02\x07\x03", "\x02\x02\x02\x02\t\x03\x02\x02\x02\x02\x0B\x03", "\x02\x02\x02\x02\r\x03\x02\x02\x02\x02\x0F\x03", "\x02\x02\x02\x02\x11\x03\x02\x02\x02\x02\x13\x03", "\x02\x02\x02\x02\x15\x03\x02\x02\x02\x02\x17\x03", "\x02\x02\x02\x02\x19\x03\x02\x02\x02\x02\x1B\x03", "\x02\x02\x02\x02\x1D\x03\x02\x02\x02\x02\x1F\x03", "\x02\x02\x02\x02!\x03\x02\x02\x02\x02#\x03\x02", "\x02\x02\x02%\x03\x02\x02\x02\x02'\x03\x02\x02", "\x02\x02)\x03\x02\x02\x02\x02+\x03\x02\x02\x02", "\x02-\x03\x02\x02\x02\x02/\x03\x02\x02\x02\x02", "1\x03\x02\x02\x02\x023\x03\x02\x02\x02\x025\x03", "\x02\x02\x02\x027\x03\x02\x02\x02\x029\x03\x02", "\x02\x02\x02;\x03\x02\x02\x02\x02=\x03\x02\x02", "\x02\x02A\x03\x02\x02\x02\x02C\x03\x02\x02\x02", "\x02E\x03\x02\x02\x02\x02M\x03\x02\x02\x02\x02", "S\x03\x02\x02\x02\x03U\x03\x02\x02\x02\x05W\x03", "\x02\x02\x02\x07Y\x03\x02\x02\x02\t[\x03\x02\x02", "\x02\x0B]\x03\x02\x02\x02\r`\x03\x02\x02\x02\x0F", "b\x03\x02\x02\x02\x11d\x03\x02\x02\x02\x13f\x03", "\x02\x02\x02\x15h\x03\x02\x02\x02\x17j\x03\x02", "\x02\x02\x19l\x03\x02\x02\x02\x1Bn\x03\x02\x02", "\x02\x1Dq\x03\x02\x02\x02\x1Ft\x03\x02\x02\x02", "!v\x03\x02\x02\x02#x\x03\x02\x02\x02%z\x03\x02\x02", "\x02'|\x03\x02\x02\x02)~\x03\x02\x02\x02+\x80\x03", "\x02\x02\x02-\x82\x03\x02\x02\x02/\x85\x03\x02", "\x02\x021\x87\x03\x02\x02\x023\x8A\x03\x02\x02", "\x025\x8E\x03\x02\x02\x027\xD3\x03\x02\x02\x02", "9\xD5\x03\x02\x02\x02;\xE1\x03\x02\x02\x02=\xE3", "\x03\x02\x02\x02?\xED\x03\x02\x02\x02A\xFD\x03", "\x02\x02\x02C\xFF\x03\x02\x02\x02E\u0106\x03\x02", "\x02\x02G\u0110\x03\x02\x02\x02I\u0115\x03\x02\x02", "\x02K\u011B\x03\x02\x02\x02M\u0130\x03\x02\x02\x02", "O\u013A\x03\x02\x02\x02Q\u013C\x03\x02\x02\x02S\u0143", "\x03\x02\x02\x02UV\x07*\x02\x02V\x04\x03\x02\x02", "\x02WX\x07+\x02\x02X\x06\x03\x02\x02\x02YZ\x07-", "\x02\x02Z\b\x03\x02\x02\x02[\\\x07/\x02\x02\\\n\x03", "\x02\x02\x02]^\x07>\x02\x02^_\x07@\x02\x02_\f\x03", "\x02\x02\x02`a\x07(\x02\x02a\x0E\x03\x02\x02\x02", "bc\x07,\x02\x02c\x10\x03\x02\x02\x02de\x071\x02", "\x02e\x12\x03\x02\x02\x02fg\x07`\x02\x02g\x14\x03", "\x02\x02\x02hi\x07'\x02\x02i\x16\x03\x02\x02\x02", "jk\x07.\x02\x02k\x18\x03\x02\x02\x02lm\x070\x02", "\x02m\x1A\x03\x02\x02\x02no\x07(\x02\x02op\x07(", "\x02\x02p\x1C\x03\x02\x02\x02qr\x07~\x02\x02rs\x07", "~\x02\x02s\x1E\x03\x02\x02\x02tu\x07#\x02\x02u ", "\x03\x02\x02\x02vw\x07~\x02\x02w\"\x03\x02\x02\x02", "xy\x07]\x02\x02y$\x03\x02\x02\x02z{\x07_\x02\x02", "{&\x03\x02\x02\x02|}\x07}\x02\x02}(\x03\x02\x02", "\x02~\x7F\x07\x7F\x02\x02\x7F*\x03\x02\x02\x02", "\x80\x81\x07<\x02\x02\x81,\x03\x02\x02\x02\x82", "\x83\x07]\x02\x02\x83\x84\x07A\x02\x02\x84.\x03", "\x02\x02\x02\x85\x86\x07B\x02\x02\x860\x03\x02", "\x02\x02\x87\x88\x07b\x02\x02\x882\x03\x02\x02", "\x02\x89\x8B\x07/\x02\x02\x8A\x89\x03\x02\x02", "\x02\x8A\x8B\x03\x02\x02\x02\x8B\x8C\x03\x02\x02", "\x02\x8C\x8D\x05O(\x02\x8D4\x03\x02\x02\x02\x8E", "\x90\x053\x1A\x02\x8F\x91\x070\x02\x02\x90\x8F", "\x03\x02\x02\x02\x90\x91\x03\x02\x02\x02\x91\x95", "\x03\x02\x02\x02\x92\x94\t\x02\x02\x02\x93\x92", "\x03\x02\x02\x02\x94\x97\x03\x02\x02\x02\x95\x93", "\x03\x02\x02\x02\x95\x96\x03\x02\x02\x02\x966", "\x03\x02\x02\x02\x97\x95\x03\x02\x02\x02\x98\x99", "\x07C\x02\x02\x99\x9A\x07P\x02\x02\x9A\xD4\x07", "F\x02\x02\x9B\x9C\x07c\x02\x02\x9C\x9D\x07p\x02", "\x02\x9D\xD4\x07f\x02\x02\x9E\x9F\x07H\x02\x02", "\x9F\xA0\x07C\x02\x02\xA0\xA1\x07N\x02\x02\xA1", "\xA2\x07U\x02\x02\xA2\xD4\x07G\x02\x02\xA3\xA4", "\x07k\x02\x02\xA4\xD4\x07h\x02\x02\xA5\xA6\x07", "K\x02\x02\xA6\xD4\x07H\x02\x02\xA7\xA8\x07p\x02", "\x02\xA8\xA9\x07q\x02\x02\xA9\xD4\x07v\x02\x02", "\xAA\xAB\x07P\x02\x02\xAB\xAC\x07Q\x02\x02\xAC", "\xD4\x07V\x02\x02\xAD\xAE\x07q\x02\x02\xAE\xD4", "\x07t\x02\x02\xAF\xB0\x07Q\x02\x02\xB0\xD4\x07", "T\x02\x02\xB1\xB2\x07u\x02\x02\xB2\xB3\x07w\x02", "\x02\xB3\xD4\x07o\x02\x02\xB4\xB5\x07U\x02\x02", "\xB5\xB6\x07W\x02\x02\xB6\xD4\x07O\x02\x02\xB7", "\xB8\x07V\x02\x02\xB8\xB9\x07T\x02\x02\xB9\xBA", "\x07W\x02\x02\xBA\xD4\x07G\x02\x02\xBB\xBC\x07", "v\x02\x02\xBC\xBD\x07q\x02\x02\xBD\xBE\x07o\x02", "\x02\xBE\xBF\x07c\x02\x02\xBF\xD4\x07r\x02\x02", "\xC0\xC1\x07V\x02\x02\xC1\xC2\x07Q\x02\x02\xC2", "\xC3\x07O\x02\x02\xC3\xC4\x07C\x02\x02\xC4\xD4", "\x07R\x02\x02\xC5\xC6\x07v\x02\x02\xC6\xC7\x07", "q\x02\x02\xC7\xC8\x07c\x02\x02\xC8\xC9\x07t\x02", "\x02\xC9\xCA\x07t\x02\x02\xCA\xCB\x07c\x02\x02", "\xCB\xD4\x07{\x02\x02\xCC\xCD\x07V\x02\x02\xCD", "\xCE\x07Q\x02\x02\xCE\xCF\x07C\x02\x02\xCF\xD0", "\x07T\x02\x02\xD0\xD1\x07T\x02\x02\xD1\xD2\x07", "C\x02\x02\xD2\xD4\x07[\x02\x02\xD3\x98\x03\x02", "\x02\x02\xD3\x9B\x03\x02\x02\x02\xD3\x9E\x03\x02", "\x02\x02\xD3\xA3\x03\x02\x02\x02\xD3\xA5\x03\x02", "\x02\x02\xD3\xA7\x03\x02\x02\x02\xD3\xAA\x03\x02", "\x02\x02\xD3\xAD\x03\x02\x02\x02\xD3\xAF\x03\x02", "\x02\x02\xD3\xB1\x03\x02\x02\x02\xD3\xB4\x03\x02", "\x02\x02\xD3\xB7\x03\x02\x02\x02\xD3\xBB\x03\x02", "\x02\x02\xD3\xC0\x03\x02\x02\x02\xD3\xC5\x03\x02", "\x02\x02\xD3\xCC\x03\x02\x02\x02\xD48\x03\x02", "\x02\x02\xD5\xD6\x07&\x02\x02\xD6:\x03\x02\x02", "\x02\xD7\xE2\x07>\x02\x02\xD8\xD9\x07>\x02\x02", "\xD9\xE2\x07?\x02\x02\xDA\xDB\x07?\x02\x02\xDB", "\xE2\x07?\x02\x02\xDC\xDD\x07@\x02\x02\xDD\xE2", "\x07?\x02\x02\xDE\xE2\x07@\x02\x02\xDF\xE0\x07", "#\x02\x02\xE0\xE2\x07?\x02\x02\xE1\xD7\x03\x02", "\x02\x02\xE1\xD8\x03\x02\x02\x02\xE1\xDA\x03\x02", "\x02\x02\xE1\xDC\x03\x02\x02\x02\xE1\xDE\x03\x02", "\x02\x02\xE1\xDF\x03\x02\x02\x02\xE2<\x03\x02", "\x02\x02\xE3\xE8\x07)\x02\x02\xE4\xE7\x05? \x02", "\xE5\xE7\n\x03\x02\x02\xE6\xE4\x03\x02\x02\x02", "\xE6\xE5\x03\x02\x02\x02\xE7\xEA\x03\x02\x02\x02", "\xE8\xE6\x03\x02\x02\x02\xE8\xE9\x03\x02\x02\x02", "\xE9\xEB\x03\x02\x02\x02\xEA\xE8\x03\x02\x02\x02", "\xEB\xEC\x07)\x02\x02\xEC>\x03\x02\x02\x02\xED", "\xEE\x07^\x02\x02\xEE\xEF\x0B\x02\x02\x02\xEF", "@\x03\x02\x02\x02\xF0\xF1\x07v\x02\x02\xF1\xF2", "\x07t\x02\x02\xF2\xF3\x07w\x02\x02\xF3\xFE\x07", "g\x02\x02\xF4\xF5\x07h\x02\x02\xF5\xF6\x07c\x02", "\x02\xF6\xF7\x07n\x02\x02\xF7\xF8\x07u\x02\x02", "\xF8\xFE\x07g\x02\x02\xF9\xFA\x07p\x02\x02\xFA", "\xFB\x07w\x02\x02\xFB\xFC\x07n\x02\x02\xFC\xFE", "\x07n\x02\x02\xFD\xF0\x03\x02\x02\x02\xFD\xF4", "\x03\x02\x02\x02\xFD\xF9\x03\x02\x02\x02\xFEB", "\x03\x02\x02\x02\xFF\u0103\t\x04\x02\x02\u0100\u0102", "\t\x05\x02\x02\u0101\u0100\x03\x02\x02\x02\u0102\u0105", "\x03\x02\x02\x02\u0103\u0101\x03\x02\x02\x02\u0103\u0104", "\x03\x02\x02\x02\u0104D\x03\x02\x02\x02\u0105\u0103", "\x03\x02\x02\x02\u0106\u010B\x07$\x02\x02\u0107\u010A", "\x05G$\x02\u0108\u010A\n\x06\x02\x02\u0109\u0107\x03\x02", "\x02\x02\u0109\u0108\x03\x02\x02\x02\u010A\u010D\x03\x02", "\x02\x02\u010B\u0109\x03\x02\x02\x02\u010B\u010C\x03\x02", "\x02\x02\u010C\u010E\x03\x02\x02\x02\u010D\u010B\x03\x02", "\x02\x02\u010E\u010F\x07$\x02\x02\u010FF\x03\x02\x02", "\x02\u0110\u0113\x07^\x02\x02\u0111\u0114\t\x07\x02\x02", "\u0112\u0114\x05I%\x02\u0113\u0111\x03\x02\x02\x02\u0113", "\u0112\x03\x02\x02\x02\u0114H\x03\x02\x02\x02\u0115", "\u0116\x07w\x02\x02\u0116\u0117\x05K&\x02\u0117\u0118\x05", "K&\x02\u0118\u0119\x05K&\x02\u0119\u011A\x05K&\x02\u011AJ", "\x03\x02\x02\x02\u011B\u011C\t\b\x02\x02\u011CL\x03\x02", "\x02\x02\u011D\u011F\x07/\x02\x02\u011E\u011D\x03\x02", "\x02\x02\u011E\u011F\x03\x02\x02\x02\u011F\u0120\x03\x02", "\x02\x02\u0120\u0121\x05O(\x02\u0121\u0123\x070\x02\x02", "\u0122\u0124\t\x02\x02\x02\u0123\u0122\x03\x02\x02\x02", "\u0124\u0125\x03\x02\x02\x02\u0125\u0123\x03\x02\x02\x02", "\u0125\u0126\x03\x02\x02\x02\u0126\u0128\x03\x02\x02\x02", "\u0127\u0129\x05Q)\x02\u0128\u0127\x03\x02\x02\x02\u0128", "\u0129\x03\x02\x02\x02\u0129\u0131\x03\x02\x02\x02\u012A", "\u012C\x07/\x02\x02\u012B\u012A\x03\x02\x02\x02\u012B", "\u012C\x03\x02\x02\x02\u012C\u012D\x03\x02\x02\x02\u012D", "\u012E\x05O(\x02\u012E\u012F\x05Q)\x02\u012F\u0131\x03\x02", "\x02\x02\u0130\u011E\x03\x02\x02\x02\u0130\u012B\x03\x02", "\x02\x02\u0131N\x03\x02\x02\x02\u0132\u013B\x072\x02", "\x02\u0133\u0137\t\t\x02\x02\u0134\u0136\t\x02\x02\x02\u0135", "\u0134\x03\x02\x02\x02\u0136\u0139\x03\x02\x02\x02\u0137", "\u0135\x03\x02\x02\x02\u0137\u0138\x03\x02\x02\x02\u0138", "\u013B\x03\x02\x02\x02\u0139\u0137\x03\x02\x02\x02\u013A", "\u0132\x03\x02\x02\x02\u013A\u0133\x03\x02\x02\x02\u013B", "P\x03\x02\x02\x02\u013C\u013E\t\n\x02\x02\u013D\u013F\t", "\x0B\x02\x02\u013E\u013D\x03\x02\x02\x02\u013E\u013F\x03", "\x02\x02\x02\u013F\u0140\x03\x02\x02\x02\u0140\u0141\x05", "O(\x02\u0141R\x03\x02\x02\x02\u0142\u0144\t\f\x02\x02", "\u0143\u0142\x03\x02\x02\x02\u0144\u0145\x03\x02\x02\x02", "\u0145\u0143\x03\x02\x02\x02\u0145\u0146\x03\x02\x02\x02", "\u0146\u0147\x03\x02\x02\x02\u0147\u0148\b*\x02\x02\u0148", "T\x03\x02\x02\x02\x18\x02\x8A\x90\x95\xD3\xE1", "\xE6\xE8\xFD\u0103\u0109\u010B\u0113\u011E\u0125\u0128\u012B\u0130", "\u0137\u013A\u013E\u0145\x03\b\x02\x02"].join("");
 var JSONFormulaLexer_atn = new antlr4.atn.ATNDeserializer().deserialize(JSONFormulaLexer_serializedATN);
 var JSONFormulaLexer_decisionsToDFA = JSONFormulaLexer_atn.decisionToState.map(function (ds, index) {
   return new antlr4.dfa.DFA(ds, index);
@@ -19899,330 +20904,651 @@ Object.defineProperty(InputStream.prototype, "size", {
 });
 // EXTERNAL MODULE: ./node_modules/jmespath/jmespath.js
 var jmespath = __webpack_require__(509);
-;// CONCATENATED MODULE: ./src/Listener.js
-function Listener_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Listener_typeof = function _typeof(obj) { return typeof obj; }; } else { Listener_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Listener_typeof(obj); }
+;// CONCATENATED MODULE: ./src/Visitor.js
+function Visitor_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Visitor_typeof = function _typeof(obj) { return typeof obj; }; } else { Visitor_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Visitor_typeof(obj); }
 
-function Listener_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function Visitor_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function Listener_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function Visitor_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function Listener_createClass(Constructor, protoProps, staticProps) { if (protoProps) Listener_defineProperties(Constructor.prototype, protoProps); if (staticProps) Listener_defineProperties(Constructor, staticProps); return Constructor; }
+function Visitor_createClass(Constructor, protoProps, staticProps) { if (protoProps) Visitor_defineProperties(Constructor.prototype, protoProps); if (staticProps) Visitor_defineProperties(Constructor, staticProps); return Constructor; }
 
-function Listener_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) Listener_setPrototypeOf(subClass, superClass); }
+function Visitor_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) Visitor_setPrototypeOf(subClass, superClass); }
 
-function Listener_setPrototypeOf(o, p) { Listener_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Listener_setPrototypeOf(o, p); }
+function Visitor_setPrototypeOf(o, p) { Visitor_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Visitor_setPrototypeOf(o, p); }
 
-function Listener_createSuper(Derived) { var hasNativeReflectConstruct = Listener_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = Listener_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = Listener_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return Listener_possibleConstructorReturn(this, result); }; }
+function Visitor_createSuper(Derived) { var hasNativeReflectConstruct = Visitor_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = Visitor_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = Visitor_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return Visitor_possibleConstructorReturn(this, result); }; }
 
-function Listener_possibleConstructorReturn(self, call) { if (call && (Listener_typeof(call) === "object" || typeof call === "function")) { return call; } return Listener_assertThisInitialized(self); }
+function Visitor_possibleConstructorReturn(self, call) { if (call && (Visitor_typeof(call) === "object" || typeof call === "function")) { return call; } return Visitor_assertThisInitialized(self); }
 
-function Listener_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function Visitor_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function Listener_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function Visitor_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-function Listener_getPrototypeOf(o) { Listener_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return Listener_getPrototypeOf(o); }
+function Visitor_getPrototypeOf(o) { Visitor_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return Visitor_getPrototypeOf(o); }
 
-/*
-Copyright 2021 Adobe. All rights reserved.
-This file is licensed to you under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License. You may obtain a copy
-of the License at http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under
-the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
-OF ANY KIND, either express or implied. See the License for the specific language
-governing permissions and limitations under the License.
-*/
+// Generated from antlr/JSONFormula.g4 by ANTLR 4.9.2
+// jshint ignore: start
+// import antlr4 from "antlr4";
 
 
+ // import jmespath from "jmespath";
+// This class defines a complete generic visitor for a parse tree produced by JSONFormulaParser.
 
-var Listener = /*#__PURE__*/function (_JSONFormulaListener) {
-  Listener_inherits(Listener, _JSONFormulaListener);
+var Visitor = /*#__PURE__*/function (_JSONFormulaVisitor) {
+  Visitor_inherits(Visitor, _JSONFormulaVisitor);
 
-  var _super = Listener_createSuper(Listener);
+  var _super = Visitor_createSuper(Visitor);
 
-  function Listener(data, traceOn) {
+  function Visitor(data, traceOn) {
     var _this;
 
-    Listener_classCallCheck(this, Listener);
+    Visitor_classCallCheck(this, Visitor);
 
     _this = _super.call(this);
-    _this.stack = [];
     _this.data = data;
     _this.traceOn = traceOn;
     return _this;
   }
 
-  Listener_createClass(Listener, [{
+  Visitor_createClass(Visitor, [{
     key: "trace",
     value: function trace(msg) {
       if (this.traceOn) console.log(msg);
-    } // Enter a parse tree produced by JSONFormulaParser#formula.
+    } // Visit a parse tree produced by JSONFormulaParser#formula.
 
   }, {
-    key: "enterFormula",
-    value: function enterFormula(ctx) {
-      this.trace("enterFormula: ".concat(ctx.getText()));
-    } // Exit a parse tree produced by JSONFormulaParser#formula.
+    key: "visitFormula",
+    value: function visitFormula(ctx) {
+      this.trace("visitFormula: ".concat(ctx.getText()));
+      var r = this.visitChildren(ctx);
+      this.trace("exit visitFormula: ".concat(r[0].toString()));
+      return r[0];
+    } // Visit a parse tree produced by JSONFormulaParser#binaryExpression.
 
   }, {
-    key: "exitFormula",
-    value: function exitFormula(ctx) {
-      this.trace("exitFormula: ".concat(ctx.getText()));
-      this.result = this.stack.pop();
-      this.trace("\n\nRESULT: ".concat(this.result));
-    } // Exit a parse tree produced by JSONFormulaParser#binaryExpression.
-
-  }, {
-    key: "exitBinaryExpression",
-    value: function exitBinaryExpression(ctx) {
-      this.trace("exitBinaryExpression: ".concat(ctx.getText()));
-      var op1 = this.stack.pop();
-      var op = this.stack.pop();
-      var op2 = this.stack.pop();
+    key: "visitBinaryExpression",
+    value: function visitBinaryExpression(ctx) {
+      this.trace("visitBinaryExpression: ".concat(ctx.getText()));
+      var params = this.visitChildren(ctx);
+      var op1 = params.shift();
+      var op = params.shift();
+      var op2 = params.shift();
+      var result;
 
       if (op === "*") {
-        this.stack.push(op2 * op1);
+        result = op2 * op1;
       } else if (op === "/") {
-        this.stack.push(op2 / op1);
+        result = op2 / op1;
       } else if (op === "-") {
-        this.stack.push(op2 - op1);
+        result = op2 - op1;
       } else if (op === "+") {
-        this.stack.push(op2 + op1);
+        result = op2 + op1;
       } else if (op === "<") {
-        this.stack.push(op2 < op1);
+        result = op2 < op1;
       } else if (op === ">") {
-        this.stack.push(op2 > op1);
+        result = op2 > op1;
       } else if (op === "<=") {
-        this.stack.push(op2 <= op1);
+        result = op2 <= op1;
       } else if (op === ">=") {
-        this.stack.push(op2 >= op1);
+        result = op2 >= op1;
       } else if (op === "==") {
-        this.stack.push(op2 == op1);
+        result = op2 == op1;
       } else if (op === "!=" || op === "<>") {
-        this.stack.push(op2 != op1);
+        result = op2 != op1;
       } else if (op === "&") {
-        this.stack.push(op2.toString() + op1.toString());
+        result = op2.toString() + op1.toString();
       } else if (op === "^") {
-        this.stack.push(Math.pow(op2, op1));
+        result = Math.pow(op2, op1);
       }
-    } // Enter a parse tree produced by JSONFormulaParser#jmesPath.
+
+      return result;
+    } // Visit a parse tree produced by JSONFormulaParser#jmesPath.
 
   }, {
-    key: "enterJmesPath",
-    value: function enterJmesPath(ctx) {
-      this.trace("enterJmesPath: ".concat(ctx.getText()));
-    } // Exit a parse tree produced by JSONFormulaParser#jmesPath.
-
-  }, {
-    key: "exitJmesPath",
-    value: function exitJmesPath(ctx) {
-      this.trace("exitJmesPath ".concat(ctx.getText()));
+    key: "visitJmesPath",
+    value: function visitJmesPath(ctx) {
+      this.trace("visitJmesPath: ".concat(ctx.getText()));
       var expr = ctx.getText();
       var x = jmespath.search(this.data, expr);
       this.trace(x);
-      this.stack.push(x);
-    } // Exit a parse tree produced by JSONFormulaParser#topLevelString.
+      return x;
+    } // Visit a parse tree produced by JSONFormulaParser#topLevelString.
 
   }, {
-    key: "exitTopLevelString",
-    value: function exitTopLevelString(ctx) {
-      this.trace("exitTopLevelString: ".concat(ctx.getText()));
+    key: "visitTopLevelString",
+    value: function visitTopLevelString(ctx) {
+      this.trace("visitTopLevelString: ".concat(ctx.getText()));
       var str = ctx.getText().replace(/([^\\]|^)'/g, "$1").replace(/'$/, "").replace(/\\'/g, "'");
-      this.stack.push(str);
-    } // Exit a parse tree produced by JSONFormulaParser#functionCall.
+      return str;
+    } // Visit a parse tree produced by JSONFormulaParser#topLevelInt.
 
   }, {
-    key: "exitFunctionCall",
-    value: function exitFunctionCall(ctx) {
+    key: "visitTopLevelInt",
+    value: function visitTopLevelInt(ctx) {
+      this.trace("visitTopLevelInt: ".concat(ctx.getText()));
+      return ctx.getText() * 1;
+    } // Visit a parse tree produced by JSONFormulaParser#functionCall.
+
+  }, {
+    key: "visitFunctionCall",
+    value: function visitFunctionCall(ctx) {
+      this.trace("visitFunctionCall: ".concat(ctx.getText()));
+      var r = this.visitChildren(ctx);
+      this.trace("exit visitFunctionCall ".concat(r[0].toString()));
+      return r[0];
+    } // Visit a parse tree produced by JSONFormulaParser#braceExpression.
+
+  }, {
+    key: "visitBraceExpression",
+    value: function visitBraceExpression(ctx) {
+      this.trace("visitBraceExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#postfix.
+
+  }, {
+    key: "visitPostfix",
+    value: function visitPostfix(ctx) {
+      this.trace("visitPostfix: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#unaryExpression.
+
+  }, {
+    key: "visitUnaryExpression",
+    value: function visitUnaryExpression(ctx) {
+      this.trace("visitUnaryExpression: ".concat(ctx.getText()));
+      var params = this.visitChildren(ctx);
+      var op = params[0];
+      var op1 = params[1];
+      var result;
+
+      if (op === "-") {
+        result = -op1;
+      } else {
+        result = op1;
+      }
+
+      return result;
+    } // Visit a parse tree produced by JSONFormulaParser#topLevelNumber.
+
+  }, {
+    key: "visitTopLevelNumber",
+    value: function visitTopLevelNumber(ctx) {
+      this.trace("visitTopLevelNumber: ".concat(ctx.getText()));
+      return ctx.getText() * 1.0;
+    } // Visit a parse tree produced by JSONFormulaParser#unary_op.
+
+  }, {
+    key: "visitUnary_op",
+    value: function visitUnary_op(ctx) {
+      this.trace("visitUnary_op: ".concat(ctx.getText()));
+      return ctx.getText();
+    } // Visit a parse tree produced by JSONFormulaParser#binary_op.
+
+  }, {
+    key: "visitBinary_op",
+    value: function visitBinary_op(ctx) {
+      this.trace("visitBinary_op: ".concat(ctx.getText()));
+      return ctx.getText();
+    } // Visit a parse tree produced by JSONFormulaParser#postfix_op.
+
+  }, {
+    key: "visitPostfix_op",
+    value: function visitPostfix_op(ctx) {
+      this.trace("visitPostfix_op: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    }
+  }, {
+    key: "visitRuleChildren",
+    value: function visitRuleChildren(ctx) {
       var _this2 = this;
 
-      this.trace("exitFunctionCall: ".concat(ctx.getText()));
-      var func = ctx.start.text.toLowerCase();
+      var r = ctx.children.filter(function (c) {
+        return c.__proto__.constructor.name !== "TerminalNodeImpl";
+      }).map(function (c) {
+        return c.accept(_this2);
+      });
+      return r.length === 1 ? r[0] : r;
+    } // Visit a parse tree produced by JSONFormulaParser#function_call.
+
+  }, {
+    key: "visitFunction_call",
+    value: function visitFunction_call(ctx) {
+      this.trace("visitFunction_call: ".concat(ctx.getText()));
+      var params = this.visitRuleChildren(ctx);
+      var func = ctx.children[0].getText().toLowerCase();
+      console.log(func);
+      console.dir(params);
+      var result;
 
       if (func === "and") {
-        var choice2 = this.stack.pop();
-        var choice1 = this.stack.pop();
-        this.stack.push(!!choice1 && !!choice2);
+        result = !!params[0] && !!params[1];
       } else if (func === "if") {
-        var _choice = this.stack.pop();
-
-        var _choice2 = this.stack.pop();
-
-        var condition = this.stack.pop();
-
-        if (condition) {
-          this.stack.push(_choice2);
+        if (params[0]) {
+          result = params[1];
         } else {
-          this.stack.push(_choice);
+          result = params[2];
         }
       } else if (func === "or") {
-        var _choice3 = this.stack.pop();
-
-        var _choice4 = this.stack.pop();
-
-        this.stack.push(!!_choice4 || !!_choice3);
+        var choice2 = params.pop();
+        var choice1 = params.pop();
+        result = !!choice1 || !!choice2;
       } else if (func === "not") {
-        var choice = this.stack.pop();
-        this.stack.push(!choice);
+        var choice = params.pop();
+        result = !choice;
       } else if (func === "sum") {
-        (function () {
-          var result = 0;
+        result = 0;
 
-          while (_this2.stack.length) {
-            var elem = _this2.stack.pop();
+        while (params.length) {
+          var elem = params.shift();
 
-            if (elem instanceof Array) {
-              elem.forEach(function (e) {
-                return result = result + e;
-              });
-            } else {
-              result = result + elem;
-            }
+          if (elem instanceof Array) {
+            elem.forEach(function (e) {
+              return result = result + e;
+            });
+          } else {
+            result = result + elem;
           }
-
-          _this2.stack.push(result);
-        })();
+        }
       } else if (func === "true") {
-        this.stack.push(true);
+        result = true;
       } else if (func === "false") {
-        this.stack.push(false);
+        result = false;
+      } else if (func === "tomap") {
+        // Need to check for an even number of arguments
+        result = {};
+
+        while (params.length > 1) {
+          var name = params.shift();
+          var value = params.shift();
+          result[name] = value;
+        }
       } else {
         throw new Error("Unimplemented function: ".concat(func));
       }
-    } // Exit a parse tree produced by JSONFormulaParser#braceExpression.
+
+      console.log("exit visitFunction_call");
+      console.dir(result);
+      return result;
+    } // Visit a parse tree produced by JSONFormulaParser#parameter.
 
   }, {
-    key: "exitBraceExpression",
-    value: function exitBraceExpression(ctx) {
-      this.trace("exitBraceExpression: ".concat(ctx.getText()));
-    } // Exit a parse tree produced by JSONFormulaParser#postfix.
+    key: "visitParameter",
+    value: function visitParameter(ctx) {
+      this.trace("visitParameter: ".concat(ctx.getText()));
+      var p = this.visitChildren(ctx);
+      return p[0];
+    } // Visit a parse tree produced by JSONFormulaParser#nonempty_expr_list.
 
   }, {
-    key: "exitPostfix",
-    value: function exitPostfix(ctx) {
-      this.trace("exitPostfix: ".concat(ctx.getText()));
-      var val = this.stack.pop() / 100.0;
-      this.stack.push(val);
-    } // Exit a parse tree produced by JSONFormulaParser#unaryExpression.
+    key: "visitNonempty_expr_list",
+    value: function visitNonempty_expr_list(ctx) {
+      var _this3 = this;
+
+      var params = [];
+
+      var collectParameters = function collectParameters(children) {
+        children.forEach(function (c) {
+          if (c instanceof JSONFormulaParser.ParameterContext) {
+            params.push(c.accept(_this3));
+          }
+
+          if (c instanceof JSONFormulaParser.Nonempty_expr_listContext) {
+            collectParameters(c.children);
+          }
+        });
+      };
+
+      this.trace("visitNonempty_expr_list: ".concat(ctx.getText()));
+      collectParameters(ctx.children);
+      this.trace("exit visitNonempty_expr_list: ".concat(params.toString()));
+      return params;
+    } // Visit a parse tree produced by JSONFormulaParser#expression_list.
 
   }, {
-    key: "exitUnaryExpression",
-    value: function exitUnaryExpression(ctx) {
-      this.trace("exitUnaryExpression: ".concat(ctx.getText()));
-      var op1 = this.stack.pop();
-      var op = this.stack.pop();
-
-      if (op === "-") {
-        this.stack.push(-op1);
-      } else {
-        this.stack.push(op1);
-      }
-    }
-  }, {
-    key: "exitTopLevelInt",
-    value: function exitTopLevelInt(ctx) {
-      this.trace("exitTopLevelNumber: ".concat(ctx.getText()));
-      this.stack.push(ctx.getText() * 1);
-    } // Exit a parse tree produced by JSONFormulaParser#topLevelNumber.
+    key: "visitExpression_list",
+    value: function visitExpression_list(ctx) {
+      this.trace("visitExpression_list: ".concat(ctx.getText()));
+      var r = this.visitChildren(ctx);
+      this.trace("exit visitExpression_list: ".concat(r[0].toString()));
+      return r[0];
+    } // Visit a parse tree produced by JSONFormulaParser#parm_separator.
 
   }, {
-    key: "exitTopLevelNumber",
-    value: function exitTopLevelNumber(ctx) {
-      this.trace("exitTopLevelNumber: ".concat(ctx.getText()));
-      this.stack.push(ctx.getText() * 1.0);
-    } // Exit a parse tree produced by JSONFormulaParser#unary_op.
+    key: "visitParm_separator",
+    value: function visitParm_separator(ctx) {
+      this.trace("visitParm_separator: ".concat(ctx.getText()));
+      return ",";
+    } // Visit a parse tree produced by JSONFormulaParser#pipeExpression.
 
   }, {
-    key: "exitUnary_op",
-    value: function exitUnary_op(ctx) {
-      this.trace("exitUnary_op: ".concat(ctx.getText()));
-      this.stack.push(ctx.getText());
-    } // Exit a parse tree produced by JSONFormulaParser#binary_op.
+    key: "visitPipeExpression",
+    value: function visitPipeExpression(ctx) {
+      this.trace("visitPipeExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#identifierExpression.
 
   }, {
-    key: "exitBinary_op",
-    value: function exitBinary_op(ctx) {
-      this.trace("exitBinary_op: ".concat(ctx.getText()));
-      this.stack.push(ctx.getText());
-    } // Exit a parse tree produced by JSONFormulaParser#comparison_op.
+    key: "visitIdentifierExpression",
+    value: function visitIdentifierExpression(ctx) {
+      this.trace("visitIdentifierExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#notExpression.
 
   }, {
-    key: "exitComparison_op",
-    value: function exitComparison_op(ctx) {
-      this.trace("exitComparison_op: ".concat(ctx.getText()));
-    } // Exit a parse tree produced by JSONFormulaParser#postfix_op.
+    key: "visitNotExpression",
+    value: function visitNotExpression(ctx) {
+      this.trace("visitNotExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#rawStringExpression.
 
   }, {
-    key: "exitPostfix_op",
-    value: function exitPostfix_op(ctx) {
-      this.trace("exitPostfix_op: ".concat(ctx.getText()));
-    } // Exit a parse tree produced by JSONFormulaParser#function_call.
+    key: "visitRawStringExpression",
+    value: function visitRawStringExpression(ctx) {
+      this.trace("visitRawStringExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#comparisonExpression.
 
   }, {
-    key: "exitFunction_call",
-    value: function exitFunction_call(ctx) {
-      this.trace("exitFunction_call: ".concat(ctx.getText()));
-    } // Exit a parse tree produced by JSONFormulaParser#parameter.
+    key: "visitComparisonExpression",
+    value: function visitComparisonExpression(ctx) {
+      this.trace("visitComparisonExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#parenExpression.
 
   }, {
-    key: "exitParameter",
-    value: function exitParameter(ctx) {
-      this.trace("exitParameter: ".concat(ctx.getText()));
-    } // Exit a parse tree produced by JSONFormulaParser#nonempty_expr_list.
+    key: "visitParenExpression",
+    value: function visitParenExpression(ctx) {
+      this.trace("visitParenExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#bracketExpression.
 
   }, {
-    key: "exitNonempty_expr_list",
-    value: function exitNonempty_expr_list(ctx) {
-      this.trace("exitNonempty_expr_list: ".concat(ctx.getText()));
-    } // Exit a parse tree produced by JSONFormulaParser#expression_list.
+    key: "visitBracketExpression",
+    value: function visitBracketExpression(ctx) {
+      this.trace("visitBracketExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#orExpression.
 
   }, {
-    key: "exitExpression_list",
-    value: function exitExpression_list(ctx) {
-      this.trace("exitExpression_list: ".concat(ctx.getText()));
-    } // Exit a parse tree produced by JSONFormulaParser#intersection_op.
+    key: "visitOrExpression",
+    value: function visitOrExpression(ctx) {
+      this.trace("visitOrExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#currentNodeExpression.
 
   }, {
-    key: "exitIntersection_op",
-    value: function exitIntersection_op(ctx) {
-      this.trace("exitIntersection_op: ".concat(ctx.getText()));
-    } // Exit a parse tree produced by JSONFormulaParser#parm_separator.
+    key: "visitCurrentNodeExpression",
+    value: function visitCurrentNodeExpression(ctx) {
+      this.trace("visitCurrentNodeExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#chainExpression.
 
   }, {
-    key: "exitParm_separator",
-    value: function exitParm_separator(ctx) {
-      this.trace("exitParm_separator: ".concat(ctx.getText()));
+    key: "visitChainExpression",
+    value: function visitChainExpression(ctx) {
+      this.trace("visitChainExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#andExpression.
+
+  }, {
+    key: "visitAndExpression",
+    value: function visitAndExpression(ctx) {
+      this.trace("visitAndExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#multiSelectHashExpression.
+
+  }, {
+    key: "visitMultiSelectHashExpression",
+    value: function visitMultiSelectHashExpression(ctx) {
+      this.trace("visitMultiSelectHashExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#wildcardExpression.
+
+  }, {
+    key: "visitWildcardExpression",
+    value: function visitWildcardExpression(ctx) {
+      this.trace("visitWildcardExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#functionCallExpression.
+
+  }, {
+    key: "visitFunctionCallExpression",
+    value: function visitFunctionCallExpression(ctx) {
+      this.trace("visitFunctionCallExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#multiSelectListExpression.
+
+  }, {
+    key: "visitMultiSelectListExpression",
+    value: function visitMultiSelectListExpression(ctx) {
+      this.trace("visitMultiSelectListExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#bracketedExpression.
+
+  }, {
+    key: "visitBracketedExpression",
+    value: function visitBracketedExpression(ctx) {
+      this.trace("visitBracketedExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#literalExpression.
+
+  }, {
+    key: "visitLiteralExpression",
+    value: function visitLiteralExpression(ctx) {
+      this.trace("visitLiteralExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#chainedIdentifier.
+
+  }, {
+    key: "visitChainedIdentifier",
+    value: function visitChainedIdentifier(ctx) {
+      this.trace("visitChainedIdentifier: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#chainedMultiSelectList.
+
+  }, {
+    key: "visitChainedMultiSelectList",
+    value: function visitChainedMultiSelectList(ctx) {
+      this.trace("visitChainedMultiSelectList: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#chainedMultiSelectHash.
+
+  }, {
+    key: "visitChainedMultiSelectHash",
+    value: function visitChainedMultiSelectHash(ctx) {
+      this.trace("visitChainedMultiSelectHash: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#chainedFunctionExpression.
+
+  }, {
+    key: "visitChainedFunctionExpression",
+    value: function visitChainedFunctionExpression(ctx) {
+      this.trace("visitChainedFunctionExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#chainedWildcard.
+
+  }, {
+    key: "visitChainedWildcard",
+    value: function visitChainedWildcard(ctx) {
+      this.trace("visitChainedWildcard: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#wildcard.
+
+  }, {
+    key: "visitWildcard",
+    value: function visitWildcard(ctx) {
+      this.trace("visitWildcard: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#multiSelectList.
+
+  }, {
+    key: "visitMultiSelectList",
+    value: function visitMultiSelectList(ctx) {
+      this.trace("visitMultiSelectList: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#multiSelectHash.
+
+  }, {
+    key: "visitMultiSelectHash",
+    value: function visitMultiSelectHash(ctx) {
+      this.trace("visitMultiSelectHash: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#keyvalExpr.
+
+  }, {
+    key: "visitKeyvalExpr",
+    value: function visitKeyvalExpr(ctx) {
+      this.trace("visitKeyvalExpr: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#bracketIndex.
+
+  }, {
+    key: "visitBracketIndex",
+    value: function visitBracketIndex(ctx) {
+      this.trace("visitBracketIndex: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#bracketStar.
+
+  }, {
+    key: "visitBracketStar",
+    value: function visitBracketStar(ctx) {
+      this.trace("visitBracketStar: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#bracketSlice.
+
+  }, {
+    key: "visitBracketSlice",
+    value: function visitBracketSlice(ctx) {
+      this.trace("visitBracketSlice: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#bracketFlatten.
+
+  }, {
+    key: "visitBracketFlatten",
+    value: function visitBracketFlatten(ctx) {
+      this.trace("visitBracketFlatten: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#select.
+
+  }, {
+    key: "visitSelect",
+    value: function visitSelect(ctx) {
+      this.trace("visitSelect: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#slice.
+
+  }, {
+    key: "visitSlice",
+    value: function visitSlice(ctx) {
+      this.trace("visitSlice: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#functionExpression.
+
+  }, {
+    key: "visitFunctionExpression",
+    value: function visitFunctionExpression(ctx) {
+      this.trace("visitFunctionExpression: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#functionArg.
+
+  }, {
+    key: "visitFunctionArg",
+    value: function visitFunctionArg(ctx) {
+      this.trace("visitFunctionArg: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#currentNode.
+
+  }, {
+    key: "visitCurrentNode",
+    value: function visitCurrentNode(ctx) {
+      this.trace("visitCurrentNode: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#expressionType.
+
+  }, {
+    key: "visitExpressionType",
+    value: function visitExpressionType(ctx) {
+      this.trace("visitExpressionType: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#literal.
+
+  }, {
+    key: "visitLiteral",
+    value: function visitLiteral(ctx) {
+      this.trace("visitLiteral: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#identifier.
+
+  }, {
+    key: "visitIdentifier",
+    value: function visitIdentifier(ctx) {
+      this.trace("visitIdentifier: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jsonObject.
+
+  }, {
+    key: "visitJsonObject",
+    value: function visitJsonObject(ctx) {
+      this.trace("visitJsonObject: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jsonObjectPair.
+
+  }, {
+    key: "visitJsonObjectPair",
+    value: function visitJsonObjectPair(ctx) {
+      this.trace("visitJsonObjectPair: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jsonArray.
+
+  }, {
+    key: "visitJsonArray",
+    value: function visitJsonArray(ctx) {
+      this.trace("visitJsonArray: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jsonStringValue.
+
+  }, {
+    key: "visitJsonStringValue",
+    value: function visitJsonStringValue(ctx) {
+      this.trace("visitJsonStringValue: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jsonNumberValue.
+
+  }, {
+    key: "visitJsonNumberValue",
+    value: function visitJsonNumberValue(ctx) {
+      this.trace("visitJsonNumberValue: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jsonObjectValue.
+
+  }, {
+    key: "visitJsonObjectValue",
+    value: function visitJsonObjectValue(ctx) {
+      this.trace("visitJsonObjectValue: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jsonArrayValue.
+
+  }, {
+    key: "visitJsonArrayValue",
+    value: function visitJsonArrayValue(ctx) {
+      this.trace("visitJsonArrayValue: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
+    } // Visit a parse tree produced by JSONFormulaParser#jsonConstantValue.
+
+  }, {
+    key: "visitJsonConstantValue",
+    value: function visitJsonConstantValue(ctx) {
+      this.trace("visitJsonConstantValue: ".concat(ctx.getText()));
+      return this.visitChildren(ctx);
     }
   }]);
 
-  return Listener;
-}(JSONFormulaListener);
+  return Visitor;
+}(JSONFormulaVisitor);
 
 
 ;// CONCATENATED MODULE: ./src/evaluate.js
-function evaluate_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { evaluate_typeof = function _typeof(obj) { return typeof obj; }; } else { evaluate_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return evaluate_typeof(obj); }
-
-function evaluate_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function evaluate_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function evaluate_createClass(Constructor, protoProps, staticProps) { if (protoProps) evaluate_defineProperties(Constructor.prototype, protoProps); if (staticProps) evaluate_defineProperties(Constructor, staticProps); return Constructor; }
-
-function evaluate_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) evaluate_setPrototypeOf(subClass, superClass); }
-
-function evaluate_setPrototypeOf(o, p) { evaluate_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return evaluate_setPrototypeOf(o, p); }
-
-function evaluate_createSuper(Derived) { var hasNativeReflectConstruct = evaluate_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = evaluate_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = evaluate_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return evaluate_possibleConstructorReturn(this, result); }; }
-
-function evaluate_possibleConstructorReturn(self, call) { if (call && (evaluate_typeof(call) === "object" || typeof call === "function")) { return call; } return evaluate_assertThisInitialized(self); }
-
-function evaluate_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function evaluate_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function evaluate_getPrototypeOf(o) { evaluate_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return evaluate_getPrototypeOf(o); }
-
 /*
 Copyright 2021 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -20237,6 +21563,7 @@ governing permissions and limitations under the License.
 
 
 
+ // import Listener from "./Listener.js";
 
 
 function evaluate(json, expression, trace) {
@@ -20247,62 +21574,52 @@ function evaluate(json, expression, trace) {
   var tokens = new antlr4.CommonTokenStream(lexer);
   var parser = new JSONFormulaParser(tokens);
   parser.buildParseTrees = true;
-  var parseError;
-
-  var ParseErrorListener = /*#__PURE__*/function (_antlr4$error$ErrorLi) {
-    evaluate_inherits(ParseErrorListener, _antlr4$error$ErrorLi);
-
-    var _super = evaluate_createSuper(ParseErrorListener);
-
-    function ParseErrorListener() {
-      evaluate_classCallCheck(this, ParseErrorListener);
-
-      return _super.apply(this, arguments);
-    }
-
-    evaluate_createClass(ParseErrorListener, [{
-      key: "syntaxError",
-      value: function syntaxError(recognizer, offendingSymbol, line, column, msg) {
-        parseError = "line ".concat(line, ", col ").concat(column, ": ").concat(msg);
-        if (trace) console.log("ERROR: ".concat(parseError));
-      }
-    }]);
-
-    return ParseErrorListener;
-  }(antlr4.error.ErrorListener);
   /*
-  let lexerError;
-  class LexerErrorListener extends antlr4.error.ErrorListener {
+  let parseError;
+  class ParseErrorListener extends antlr4.error.ErrorListener {
     syntaxError(recognizer, offendingSymbol, line, column, msg) {
-      lexerError = `line ${line}, col ${column}: ${msg}`;
-      if (trace) console.log(`ERROR: ${error}`);
+      parseError = `line ${line}, col ${column}: ${msg}`;
+      if (trace) console.log(`ERROR: ${parseError}`);
     }
   }
-  lexer.removeErrorListeners();
-  const lexerErrHandler = new LexerErrorListener();
-  lexer.addErrorListener(lexerErrHandler);
-  */
-
-
-  var parseErrHandler = new ParseErrorListener();
+   const parseErrHandler = new ParseErrorListener();
   parser.removeErrorListeners();
   parser.addErrorListener(parseErrHandler);
+  */
+
   var tree;
   tree = parser.formula();
-  var extractor = new Listener(json, trace);
-  antlr4.tree.ParseTreeWalker.DEFAULT.walk(extractor, tree);
+  var visitor = new Visitor(json, trace);
+  return visitor.visitFormula(tree); // antlr4.tree.ParseTreeWalker.DEFAULT.walk(extractor, tree);
 
+  /*
   if (parseError) {
     if (extractor.result !== undefined) {
       // antlr recovered from the error
       return extractor.result;
     }
-
     throw new Error(parseError);
   }
-
-  return extractor.result;
+  */
 }
+/*
+var SimpleJavaLexer = require('generated/GrammarLexer');
+var SimpleJavaParser = require('generated/GrammarParser');
+var SimpleJavaVisitor = require('generated/GrammarVisitor');
+var Visitor = require('./Visitor');
+
+var input = "TestInput";
+var chars = new antlr4.InputStream(input);
+var lexer = new GrammarLexer.GrammarLexer(chars);
+var tokens = new antlr4.CommonTokenStream(lexer);
+var parser = new GrammarParser.GrammarParser(tokens);
+var visitor = new Visitor.Visitor();
+parser.buildParseTrees = true;
+var tree = parser.parse();
+and call your entry function
+
+visitor.visitTest(tree);
+*/
 ;// CONCATENATED MODULE: ./src/index.js
 function src_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { src_typeof = function _typeof(obj) { return typeof obj; }; } else { src_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return src_typeof(obj); }
 

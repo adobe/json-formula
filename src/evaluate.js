@@ -14,7 +14,7 @@ import antlr4 from "antlr4";
 import FEParser from "./antlr/JSONFormulaParser.js";
 import FELexer from "./antlr/JSONFormulaLexer.js";
 import InputStream from "./InputStream.js"
-import Listener from "./Listener.js";
+import Visitor from "./Visitor.js";
 
 export default function evaluate(json, expression, trace) {
   const stream = new antlr4.InputStream(expression);
@@ -25,6 +25,7 @@ export default function evaluate(json, expression, trace) {
   const parser = new FEParser(tokens);
   parser.buildParseTrees = true;
 
+  /*
   let parseError;
   class ParseErrorListener extends antlr4.error.ErrorListener {
     syntaxError(recognizer, offendingSymbol, line, column, msg) {
@@ -32,27 +33,19 @@ export default function evaluate(json, expression, trace) {
       if (trace) console.log(`ERROR: ${parseError}`);
     }
   }
-  /*
-  let lexerError;
-  class LexerErrorListener extends antlr4.error.ErrorListener {
-    syntaxError(recognizer, offendingSymbol, line, column, msg) {
-      lexerError = `line ${line}, col ${column}: ${msg}`;
-      if (trace) console.log(`ERROR: ${error}`);
-    }
-  }
-  lexer.removeErrorListeners();
-  const lexerErrHandler = new LexerErrorListener();
-  lexer.addErrorListener(lexerErrHandler);
-  */
+
   const parseErrHandler = new ParseErrorListener();
   parser.removeErrorListeners();
   parser.addErrorListener(parseErrHandler);
-
+  */
 
   let tree;
   tree = parser.formula();
-  const extractor = new Listener(json, trace);
-  antlr4.tree.ParseTreeWalker.DEFAULT.walk(extractor, tree);
+  const visitor = new Visitor(json, trace);
+  return visitor.visitFormula(tree);
+
+  // antlr4.tree.ParseTreeWalker.DEFAULT.walk(extractor, tree);
+  /*
   if (parseError) {
     if (extractor.result !== undefined) {
       // antlr recovered from the error
@@ -60,5 +53,24 @@ export default function evaluate(json, expression, trace) {
     }
     throw new Error(parseError);
   }
-  return extractor.result;
+  */
 }
+
+/*
+var SimpleJavaLexer = require('generated/GrammarLexer');
+var SimpleJavaParser = require('generated/GrammarParser');
+var SimpleJavaVisitor = require('generated/GrammarVisitor');
+var Visitor = require('./Visitor');
+
+var input = "TestInput";
+var chars = new antlr4.InputStream(input);
+var lexer = new GrammarLexer.GrammarLexer(chars);
+var tokens = new antlr4.CommonTokenStream(lexer);
+var parser = new GrammarParser.GrammarParser(tokens);
+var visitor = new Visitor.Visitor();
+parser.buildParseTrees = true;
+var tree = parser.parse();
+and call your entry function
+
+visitor.visitTest(tree);
+*/

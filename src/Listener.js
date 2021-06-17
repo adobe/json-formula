@@ -88,6 +88,10 @@ export default class Listener extends JSONFormulaListener {
 		const str = ctx.getText().replace(/([^\\]|^)'/g, "$1").replace(/'$/, "").replace(/\\'/g, "'");
 		this.stack.push(str);
 	}
+	enterFunctionCall(ctx) {
+		this.trace(`enterFunctionCall: ${ctx.getText()}`);
+		this.stack.push("MARK-STACK");
+	}
 
 	// Exit a parse tree produced by JSONFormulaParser#functionCall.
 	exitFunctionCall(ctx) {
@@ -110,11 +114,10 @@ export default class Listener extends JSONFormulaListener {
 			const choice2 = this.stack.pop();
 			const choice1 = this.stack.pop();
 			this.stack.push(!!choice1 || !!choice2);
-		}
-		else if (func === "not") {
-		const choice = this.stack.pop();
-		this.stack.push(!choice);
-	} else if (func === "sum") {
+		} else if (func === "not") {
+			const choice = this.stack.pop();
+			this.stack.push(!choice);
+		} else if (func === "sum") {
 			let result = 0;
 			while (this.stack.length) {
 				const elem = this.stack.pop();
@@ -129,6 +132,18 @@ export default class Listener extends JSONFormulaListener {
 			this.stack.push(true);
 		} else if (func === "false") {
 			this.stack.push(false);
+		} else if (func === "tomap") {
+			let result = {};
+			while (this.stack.length > 1) {
+				const value = this.stack.pop();
+				if (value === "MARK-STACK") {
+					this.stack.push(result);
+					return;
+				}
+				const name = this.stack.pop();
+				result[name] = value;
+			}
+			this.stack.push(result);
 		} else {
 			throw new Error(`Unimplemented function: ${func}`);
 		}

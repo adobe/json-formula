@@ -37,6 +37,14 @@
     }
   ],
   [
+    "function: toMap()",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "toMap('street', address.street, 'city', address.city)",
+      "expected": {"street": "123 Oak Street", "city": "San Jose"}
+    }
+  ],
+  [
     "`true`",
     {
       "data": "`{}`",
