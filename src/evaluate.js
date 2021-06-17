@@ -25,7 +25,7 @@ export default function evaluate(json, expression, trace) {
   const parser = new FEParser(tokens);
   parser.buildParseTrees = true;
 
-  /*
+
   let parseError;
   class ParseErrorListener extends antlr4.error.ErrorListener {
     syntaxError(recognizer, offendingSymbol, line, column, msg) {
@@ -37,23 +37,20 @@ export default function evaluate(json, expression, trace) {
   const parseErrHandler = new ParseErrorListener();
   parser.removeErrorListeners();
   parser.addErrorListener(parseErrHandler);
-  */
 
   let tree;
   tree = parser.formula();
   const visitor = new Visitor(json, trace);
-  return visitor.visitFormula(tree);
+  const result = visitor.visitFormula(tree);
 
-  // antlr4.tree.ParseTreeWalker.DEFAULT.walk(extractor, tree);
-  /*
   if (parseError) {
-    if (extractor.result !== undefined) {
+    if (result !== undefined) {
       // antlr recovered from the error
-      return extractor.result;
+      return result;
     }
     throw new Error(parseError);
   }
-  */
+  return result;
 }
 
 /*
