@@ -13,50 +13,10 @@
     }
   ],
   [
-    "function: AND()",
-    {
-      "data": "`{}`",
-      "expression": "AND(`true`, false())",
-      "expected": false
-    }
-  ],
-  [
-    "function: NOT()",
-    {
-      "data": "`{}`",
-      "expression": "AND(NOT(`true`), not(true())",
-      "expected": false
-    }
-  ],
-  [
-    "function: OR()",
-    {
-      "data": "`{}`",
-      "expression": "OR(NOT(`true`), not(`false`)",
-      "expected": true
-    }
-  ],
-  [
-    "function: toMap()",
-    {
-      "data": "samples.\"purchase-order\"",
-      "expression": "toMap('street', address.street, 'city', address.city)",
-      "expected": {"street": "123 Oak Street", "city": "San Jose"}
-    }
-  ],
-  [
     "`true`",
     {
       "data": "`{}`",
       "expression": "`true`",
-      "expected": true
-    }
-  ],
-  [
-    "function: TRUE()",
-    {
-      "data": "`{}`",
-      "expression": "TRUE()",
       "expected": true
     }
   ],
@@ -85,14 +45,6 @@
     }
   ],
   [
-    "sum(list)",
-    {
-      "data": "samples.\"purchase-order\"",
-      "expression": "sum(items[*].subtotal, 1, 2, 3)",
-      "expected": 16.48
-    }
-  ],
-  [
     "sum(array)",
     {
       "data": "`{}`",
@@ -106,22 +58,6 @@
       "data": "`{}`",
       "expression": "(3 + 2) * 10 / 2 - 5",
       "expected": 20
-    }
-  ],
-  [
-    "power",
-    {
-      "data": "`{}`",
-      "expression": "(1 + 1)^(1+2)",
-      "expected": 8
-    }
-  ],
-  [
-    "string concat",
-    {
-      "data": "samples.\"purchase-order\"",
-      "expression": "items[0].desc & ' + ' & items[1].desc",
-      "expected": "pens + pencils"
     }
   ],
   [
@@ -210,30 +146,6 @@
       "data": "`{}`",
       "expression": "10 != 10",
       "expected": false
-    }
-  ],
-  [
-    "<> true",
-    {
-      "data": "`{}`",
-      "expression": "10 <> 11",
-      "expected": true
-    }
-  ],
-  [
-    "<> false",
-    {
-      "data": "`{}`",
-      "expression": "10 <> 10",
-      "expected": false
-    }
-  ],
-  [
-    "%",
-    {
-      "data": "samples.\"purchase-order\"",
-      "expression": "items[0].subtotal * 10%",
-      "expected": 0.646
     }
   ]
 ]

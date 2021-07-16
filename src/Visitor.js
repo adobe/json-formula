@@ -4,7 +4,7 @@
 
 import JSONFormulaVisitor from "./antlr/JSONFormulaVisitor.js";
 import JSONFormulaParser from "./antlr/JSONFormulaParser.js";
-import jmespath from "jmespath";
+import jmespath from "../jmespath.js/jmespath.js";
 
 // import jmespath from "jmespath";
 // This class defines a complete generic visitor for a parse tree produced by JSONFormulaParser.
