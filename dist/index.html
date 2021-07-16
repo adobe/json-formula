@@ -11897,7 +11897,7 @@ module.exports.FailedPredicateException = __webpack_require__(337).FailedPredica
 /* unused reexport */ __webpack_require__(114);
 /* unused reexport */ __webpack_require__(390).BailErrorStrategy;
 /* unused reexport */ __webpack_require__(390).DefaultErrorStrategy;
-/* unused reexport */ __webpack_require__(553).ErrorListener;
+module.exports.ErrorListener = __webpack_require__(553).ErrorListener;
 
 
 /***/ }),
@@ -11918,9 +11918,9 @@ exports.error = __webpack_require__(984);
 exports.Token = __webpack_require__(994).Token;
 /* unused reexport */ __webpack_require__(443);
 /* unused reexport */ __webpack_require__(994).CommonToken;
-/* unused reexport */ __webpack_require__(796);
+exports.InputStream = __webpack_require__(796);
 /* unused reexport */ __webpack_require__(661);
-/* unused reexport */ __webpack_require__(850);
+exports.CommonTokenStream = __webpack_require__(850);
 exports.Lexer = __webpack_require__(126);
 exports.Parser = __webpack_require__(63);
 var pc = __webpack_require__(259);
@@ -12717,11 +12717,15 @@ module.exports = {...Tree, Trees}
   }
 
   function isNum(ch, includeSign) {
-    return ch >= "0" && ch <= "9" || includeSign && ch === "-";
+    return ch >= "0" && ch <= "9" || includeSign && ch === "-" || ch === '.';
   }
 
   function isAlphaNum(ch) {
     return ch >= "a" && ch <= "z" || ch >= "A" && ch <= "Z" || ch >= "0" && ch <= "9" || ch === "_";
+  }
+
+  function isOperator(tok) {
+    return [TOK_OR, TOK_AND, TOK_ADD, TOK_SUBTRACT, TOK_MULTIPLY, TOK_POWER, TOK_DIVIDE, TOK_EQ, TOK_GT, TOK_LT, TOK_GTE, TOK_LTE, TOK_NE].includes(tok);
   }
 
   function Lexer() {}
@@ -12952,7 +12956,15 @@ module.exports = {...Tree, Trees}
         this._current++;
       }
 
-      var value = parseInt(stream.slice(start, this._current));
+      var n = stream.slice(start, this._current);
+      var value;
+
+      if (n.includes('.')) {
+        value = parseFloat(n);
+      } else {
+        value = parseInt(n);
+      }
+
       return {
         type: TOK_NUMBER,
         value: value,
@@ -13304,7 +13316,7 @@ module.exports = {...Tree, Trees}
           // seeing a comma means that we are not a projection -- assume a list
           // but the cases of [0] and [] are still ambiguous
           // the better solution is to force us down the index expression path after pipe and after identifier
-          if (this._lookahead(1) === TOK_COMMA) {
+          if (this._lookahead(1) === TOK_COMMA || isOperator(this._lookahead(1))) {
             return this._parseMultiselectList();
           }
 
@@ -15096,15 +15108,7 @@ var JSONFormulaListener = /*#__PURE__*/function (_antlr4$tree$ParseTre) {
 
   }, {
     key: "exitMultiSelectHashExpression",
-    value: function exitMultiSelectHashExpression(ctx) {} // Enter a parse tree produced by JSONFormulaParser#stringLiteral.
-
-  }, {
-    key: "enterStringLiteral",
-    value: function enterStringLiteral(ctx) {} // Exit a parse tree produced by JSONFormulaParser#stringLiteral.
-
-  }, {
-    key: "exitStringLiteral",
-    value: function exitStringLiteral(ctx) {} // Enter a parse tree produced by JSONFormulaParser#wildcardExpression.
+    value: function exitMultiSelectHashExpression(ctx) {} // Enter a parse tree produced by JSONFormulaParser#wildcardExpression.
 
   }, {
     key: "enterWildcardExpression",
@@ -15160,47 +15164,15 @@ var JSONFormulaListener = /*#__PURE__*/function (_antlr4$tree$ParseTre) {
 
   }, {
     key: "exitNumberLiteral",
-    value: function exitNumberLiteral(ctx) {} // Enter a parse tree produced by JSONFormulaParser#chainedIdentifier.
+    value: function exitNumberLiteral(ctx) {} // Enter a parse tree produced by JSONFormulaParser#chainedExpression.
 
   }, {
-    key: "enterChainedIdentifier",
-    value: function enterChainedIdentifier(ctx) {} // Exit a parse tree produced by JSONFormulaParser#chainedIdentifier.
+    key: "enterChainedExpression",
+    value: function enterChainedExpression(ctx) {} // Exit a parse tree produced by JSONFormulaParser#chainedExpression.
 
   }, {
-    key: "exitChainedIdentifier",
-    value: function exitChainedIdentifier(ctx) {} // Enter a parse tree produced by JSONFormulaParser#chainedMultiSelectList.
-
-  }, {
-    key: "enterChainedMultiSelectList",
-    value: function enterChainedMultiSelectList(ctx) {} // Exit a parse tree produced by JSONFormulaParser#chainedMultiSelectList.
-
-  }, {
-    key: "exitChainedMultiSelectList",
-    value: function exitChainedMultiSelectList(ctx) {} // Enter a parse tree produced by JSONFormulaParser#chainedMultiSelectHash.
-
-  }, {
-    key: "enterChainedMultiSelectHash",
-    value: function enterChainedMultiSelectHash(ctx) {} // Exit a parse tree produced by JSONFormulaParser#chainedMultiSelectHash.
-
-  }, {
-    key: "exitChainedMultiSelectHash",
-    value: function exitChainedMultiSelectHash(ctx) {} // Enter a parse tree produced by JSONFormulaParser#chainedFunctionExpression.
-
-  }, {
-    key: "enterChainedFunctionExpression",
-    value: function enterChainedFunctionExpression(ctx) {} // Exit a parse tree produced by JSONFormulaParser#chainedFunctionExpression.
-
-  }, {
-    key: "exitChainedFunctionExpression",
-    value: function exitChainedFunctionExpression(ctx) {} // Enter a parse tree produced by JSONFormulaParser#chainedWildcard.
-
-  }, {
-    key: "enterChainedWildcard",
-    value: function enterChainedWildcard(ctx) {} // Exit a parse tree produced by JSONFormulaParser#chainedWildcard.
-
-  }, {
-    key: "exitChainedWildcard",
-    value: function exitChainedWildcard(ctx) {} // Enter a parse tree produced by JSONFormulaParser#wildcard.
+    key: "exitChainedExpression",
+    value: function exitChainedExpression(ctx) {} // Enter a parse tree produced by JSONFormulaParser#wildcard.
 
   }, {
     key: "enterWildcard",
@@ -15548,12 +15520,6 @@ var JSONFormulaVisitor = /*#__PURE__*/function (_antlr4$tree$ParseTre) {
     key: "visitMultiSelectHashExpression",
     value: function visitMultiSelectHashExpression(ctx) {
       return this.visitChildren(ctx);
-    } // Visit a parse tree produced by JSONFormulaParser#stringLiteral.
-
-  }, {
-    key: "visitStringLiteral",
-    value: function visitStringLiteral(ctx) {
-      return this.visitChildren(ctx);
     } // Visit a parse tree produced by JSONFormulaParser#wildcardExpression.
 
   }, {
@@ -15596,35 +15562,11 @@ var JSONFormulaVisitor = /*#__PURE__*/function (_antlr4$tree$ParseTre) {
     key: "visitNumberLiteral",
     value: function visitNumberLiteral(ctx) {
       return this.visitChildren(ctx);
-    } // Visit a parse tree produced by JSONFormulaParser#chainedIdentifier.
+    } // Visit a parse tree produced by JSONFormulaParser#chainedExpression.
 
   }, {
-    key: "visitChainedIdentifier",
-    value: function visitChainedIdentifier(ctx) {
-      return this.visitChildren(ctx);
-    } // Visit a parse tree produced by JSONFormulaParser#chainedMultiSelectList.
-
-  }, {
-    key: "visitChainedMultiSelectList",
-    value: function visitChainedMultiSelectList(ctx) {
-      return this.visitChildren(ctx);
-    } // Visit a parse tree produced by JSONFormulaParser#chainedMultiSelectHash.
-
-  }, {
-    key: "visitChainedMultiSelectHash",
-    value: function visitChainedMultiSelectHash(ctx) {
-      return this.visitChildren(ctx);
-    } // Visit a parse tree produced by JSONFormulaParser#chainedFunctionExpression.
-
-  }, {
-    key: "visitChainedFunctionExpression",
-    value: function visitChainedFunctionExpression(ctx) {
-      return this.visitChildren(ctx);
-    } // Visit a parse tree produced by JSONFormulaParser#chainedWildcard.
-
-  }, {
-    key: "visitChainedWildcard",
-    value: function visitChainedWildcard(ctx) {
+    key: "visitChainedExpression",
+    value: function visitChainedExpression(ctx) {
       return this.visitChildren(ctx);
     } // Visit a parse tree produced by JSONFormulaParser#wildcard.
 
@@ -15821,7 +15763,7 @@ function JSONFormulaParser_getPrototypeOf(o) { JSONFormulaParser_getPrototypeOf 
 
 
 
-var serializedATN = ["\x03\u608B\uA72A\u8133\uB9ED\u417C\u3BE7\u7786", "\u5964\x03\"\xF1\x04\x02\t\x02\x04\x03\t\x03\x04\x04", "\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07\t\x07", "\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\x0B\t\x0B\x04\f\t\f", "\x04\r\t\r\x04\x0E\t\x0E\x04\x0F\t\x0F\x04\x10\t\x10", "\x04\x11\t\x11\x04\x12\t\x12\x04\x13\t\x13\x04\x14", "\t\x14\x04\x15\t\x15\x04\x16\t\x16\x03\x02\x03\x02", "\x03\x02\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03", "\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03", "\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03", "\x03\x03\x03\x03\x03\x03\x05\x03D\n\x03\x03\x03", "\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03", "\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03", "\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03", "\x03\x03\x03\x03\x03\x03\x03\x03\x07\x03]\n\x03", "\f\x03\x0E\x03`\x0B\x03\x03\x04\x03\x04\x03\x04", "\x03\x04\x03\x04\x05\x04g\n\x04\x03\x05\x03\x05", "\x03\x06\x03\x06\x03\x06\x03\x06\x07\x06o\n\x06", "\f\x06\x0E\x06r\x0B\x06\x03\x06\x03\x06\x03\x07", "\x03\x07\x03\x07\x03\x07\x07\x07z\n\x07\f\x07\x0E", "\x07}\x0B\x07\x03\x07\x03\x07\x03\b\x03\b\x03\b", "\x03\b\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03", "\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x05", "\t\x95\n\t\x03\n\x05\n\x98\n\n\x03\n\x03\n\x05\n\x9C", "\n\n\x03\n\x03\n\x05\n\xA0\n\n\x05\n\xA2\n\n\x03\x0B", "\x03\x0B\x03\x0B\x03\x0B\x03\x0B\x07\x0B\xA9\n", "\x0B\f\x0B\x0E\x0B\xAC\x0B\x0B\x03\x0B\x03\x0B", "\x03\x0B\x03\x0B\x03\x0B\x05\x0B\xB3\n\x0B\x03", "\f\x03\f\x05\f\xB7\n\f\x03\r\x03\r\x03\x0E\x03\x0E", "\x03\x0F\x03\x0F\x03\x10\x03\x10\x03\x10\x03\x11", "\x03\x11\x03\x11\x03\x11\x03\x12\x03\x12\x03\x13", "\x03\x13\x03\x13\x03\x13\x07\x13\xCC\n\x13\f\x13", "\x0E\x13\xCF\x0B\x13\x03\x13\x03\x13\x03\x13\x03", "\x13\x05\x13\xD5\n\x13\x03\x14\x03\x14\x03\x14", "\x03\x14\x03\x15\x03\x15\x03\x15\x03\x15\x07\x15", "\xDF\n\x15\f\x15\x0E\x15\xE2\x0B\x15\x03\x15\x03", "\x15\x03\x15\x03\x15\x05\x15\xE8\n\x15\x03\x16", "\x03\x16\x03\x16\x03\x16\x03\x16\x05\x16\xEF\n", "\x16\x03\x16\x02\x03\x04\x17\x02\x04\x06\b\n\f\x0E", "\x10\x12\x14\x16\x18\x1A\x1C\x1E \"$&(*\x02\x06", "\x04\x02\x1A\x1A!!\x03\x02\x04\x05\x03\x02\x06", "\x07\x03\x02\x1E \x02\u010A\x02,\x03\x02\x02\x02", "\x04C\x03\x02\x02\x02\x06f\x03\x02\x02\x02\bh\x03", "\x02\x02\x02\nj\x03\x02\x02\x02\fu\x03\x02\x02\x02", "\x0E\x80\x03\x02\x02\x02\x10\x94\x03\x02\x02\x02", "\x12\x97\x03\x02\x02\x02\x14\xB2\x03\x02\x02\x02", "\x16\xB6\x03\x02\x02\x02\x18\xB8\x03\x02\x02\x02", "\x1A\xBA\x03\x02\x02\x02\x1C\xBC\x03\x02\x02\x02", "\x1E\xBE\x03\x02\x02\x02 \xC1\x03\x02\x02\x02", "\"\xC5\x03\x02\x02\x02$\xD4\x03\x02\x02\x02&\xD6", "\x03\x02\x02\x02(\xE7\x03\x02\x02\x02*\xEE\x03", "\x02\x02\x02,-\x05\x04\x03\x02-.\x07\x02\x02\x03", ".\x03\x03\x02\x02\x02/0\b\x03\x01\x020D\x05\x10", "\t\x021D\x05\"\x12\x0223\x07\n\x02\x023D\x05\x04\x03", "\x1045\x07\x0B\x02\x0256\x05\x04\x03\x0267\x07\f", "\x02\x027D\x03\x02\x02\x028D\x05\b\x05\x029D\x05", "\n\x06\x02:D\x05\f\x07\x02;D\x05 \x11\x02<D\x05\x14", "\x0B\x02=D\x07\x1D\x02\x02>D\x07 \x02\x02?D\t\x02", "\x02\x02@D\x05\x18\r\x02AD\x05\x1A\x0E\x02BD\x05", "\x1C\x0F\x02C/\x03\x02\x02\x02C1\x03\x02\x02\x02", "C2\x03\x02\x02\x02C4\x03\x02\x02\x02C8\x03\x02\x02", "\x02C9\x03\x02\x02\x02C:\x03\x02\x02\x02C;\x03\x02", "\x02\x02C<\x03\x02\x02\x02C=\x03\x02\x02\x02C>\x03", "\x02\x02\x02C?\x03\x02\x02\x02C@\x03\x02\x02\x02", "CA\x03\x02\x02\x02CB\x03\x02\x02\x02D^\x03\x02\x02", "\x02EF\f\x16\x02\x02FG\t\x03\x02\x02G]\x05\x04\x03", "\x17HI\f\x15\x02\x02IJ\t\x04\x02\x02J]\x05\x04\x03", "\x16KL\f\x14\x02\x02LM\x07\x1C\x02\x02M]\x05\x04", "\x03\x15NO\f\x13\x02\x02OP\x07\b\x02\x02P]\x05\x04", "\x03\x14QR\f\x12\x02\x02RS\x07\t\x02\x02S]\x05\x04", "\x03\x13TU\f\t\x02\x02UV\x07\r\x02\x02V]\x05\x04\x03", "\nWX\f\x19\x02\x02XY\x07\x03\x02\x02Y]\x05\x06\x04", "\x02Z[\f\x18\x02\x02[]\x05\x10\t\x02\\E\x03\x02\x02", "\x02\\H\x03\x02\x02\x02\\K\x03\x02\x02\x02\\N\x03", "\x02\x02\x02\\Q\x03\x02\x02\x02\\T\x03\x02\x02\x02", "\\W\x03\x02\x02\x02\\Z\x03\x02\x02\x02]`\x03\x02", "\x02\x02^\\\x03\x02\x02\x02^_\x03\x02\x02\x02_\x05", "\x03\x02\x02\x02`^\x03\x02\x02\x02ag\x05\"\x12\x02", "bg\x05\n\x06\x02cg\x05\f\x07\x02dg\x05\x14\x0B\x02", "eg\x05\b\x05\x02fa\x03\x02\x02\x02fb\x03\x02\x02", "\x02fc\x03\x02\x02\x02fd\x03\x02\x02\x02fe\x03\x02", "\x02\x02g\x07\x03\x02\x02\x02hi\x07\x04\x02\x02", "i\t\x03\x02\x02\x02jk\x07\x0E\x02\x02kp\x05\x04", "\x03\x02lm\x07\x0F\x02\x02mo\x05\x04\x03\x02nl\x03", "\x02\x02\x02or\x03\x02\x02\x02pn\x03\x02\x02\x02", "pq\x03\x02\x02\x02qs\x03\x02\x02\x02rp\x03\x02\x02", "\x02st\x07\x10\x02\x02t\x0B\x03\x02\x02\x02uv\x07", "\x11\x02\x02v{\x05\x0E\b\x02wx\x07\x0F\x02\x02x", "z\x05\x0E\b\x02yw\x03\x02\x02\x02z}\x03\x02\x02", "\x02{y\x03\x02\x02\x02{|\x03\x02\x02\x02|~\x03\x02", "\x02\x02}{\x03\x02\x02\x02~\x7F\x07\x12\x02\x02", "\x7F\r\x03\x02\x02\x02\x80\x81\x05\"\x12\x02\x81", "\x82\x07\x13\x02\x02\x82\x83\x05\x04\x03\x02\x83", "\x0F\x03\x02\x02\x02\x84\x85\x07\x0E\x02\x02\x85", "\x86\x07\x1A\x02\x02\x86\x95\x07\x10\x02\x02\x87", "\x88\x07\x0E\x02\x02\x88\x89\x07\x04\x02\x02\x89", "\x95\x07\x10\x02\x02\x8A\x8B\x07\x0E\x02\x02\x8B", "\x8C\x05\x12\n\x02\x8C\x8D\x07\x10\x02\x02\x8D", "\x95\x03\x02\x02\x02\x8E\x8F\x07\x0E\x02\x02\x8F", "\x95\x07\x10\x02\x02\x90\x91\x07\x14\x02\x02\x91", "\x92\x05\x04\x03\x02\x92\x93\x07\x10\x02\x02\x93", "\x95\x03\x02\x02\x02\x94\x84\x03\x02\x02\x02\x94", "\x87\x03\x02\x02\x02\x94\x8A\x03\x02\x02\x02\x94", "\x8E\x03\x02\x02\x02\x94\x90\x03\x02\x02\x02\x95", "\x11\x03\x02\x02\x02\x96\x98\x07\x1A\x02\x02\x97", "\x96\x03\x02\x02\x02\x97\x98\x03\x02\x02\x02\x98", "\x99\x03\x02\x02\x02\x99\x9B\x07\x13\x02\x02\x9A", "\x9C\x07\x1A\x02\x02\x9B\x9A\x03\x02\x02\x02\x9B", "\x9C\x03\x02\x02\x02\x9C\xA1\x03\x02\x02\x02\x9D", "\x9F\x07\x13\x02\x02\x9E\xA0\x07\x1A\x02\x02\x9F", "\x9E\x03\x02\x02\x02\x9F\xA0\x03\x02\x02\x02\xA0", "\xA2\x03\x02\x02\x02\xA1\x9D\x03\x02\x02\x02\xA1", "\xA2\x03\x02\x02\x02\xA2\x13\x03\x02\x02\x02\xA3", "\xA4\x07\x1F\x02\x02\xA4\xA5\x07\x0B\x02\x02\xA5", "\xAA\x05\x16\f\x02\xA6\xA7\x07\x0F\x02\x02\xA7", "\xA9\x05\x16\f\x02\xA8\xA6\x03\x02\x02\x02\xA9", "\xAC\x03\x02\x02\x02\xAA\xA8\x03\x02\x02\x02\xAA", "\xAB\x03\x02\x02\x02\xAB\xAD\x03\x02\x02\x02\xAC", "\xAA\x03\x02\x02\x02\xAD\xAE\x07\f\x02\x02\xAE", "\xB3\x03\x02\x02\x02\xAF\xB0\x07\x1F\x02\x02\xB0", "\xB1\x07\x0B\x02\x02\xB1\xB3\x07\f\x02\x02\xB2", "\xA3\x03\x02\x02\x02\xB2\xAF\x03\x02\x02\x02\xB3", "\x15\x03\x02\x02\x02\xB4\xB7\x05\x04\x03\x02\xB5", "\xB7\x05\x1E\x10\x02\xB6\xB4\x03\x02\x02\x02\xB6", "\xB5\x03\x02\x02\x02\xB7\x17\x03\x02\x02\x02\xB8", "\xB9\x07\x15\x02\x02\xB9\x19\x03\x02\x02\x02\xBA", "\xBB\x07\x16\x02\x02\xBB\x1B\x03\x02\x02\x02\xBC", "\xBD\x07\x17\x02\x02\xBD\x1D\x03\x02\x02\x02\xBE", "\xBF\x07\x18\x02\x02\xBF\xC0\x05\x04\x03\x02\xC0", "\x1F\x03\x02\x02\x02\xC1\xC2\x07\x19\x02\x02\xC2", "\xC3\x05*\x16\x02\xC3\xC4\x07\x19\x02\x02\xC4", "!\x03\x02\x02\x02\xC5\xC6\t\x05\x02\x02\xC6#\x03", "\x02\x02\x02\xC7\xC8\x07\x11\x02\x02\xC8\xCD\x05", "&\x14\x02\xC9\xCA\x07\x0F\x02\x02\xCA\xCC\x05", "&\x14\x02\xCB\xC9\x03\x02\x02\x02\xCC\xCF\x03", "\x02\x02\x02\xCD\xCB\x03\x02\x02\x02\xCD\xCE\x03", "\x02\x02\x02\xCE\xD0\x03\x02\x02\x02\xCF\xCD\x03", "\x02\x02\x02\xD0\xD1\x07\x12\x02\x02\xD1\xD5\x03", "\x02\x02\x02\xD2\xD3\x07\x11\x02\x02\xD3\xD5\x07", "\x12\x02\x02\xD4\xC7\x03\x02\x02\x02\xD4\xD2\x03", "\x02\x02\x02\xD5%\x03\x02\x02\x02\xD6\xD7\x07", " \x02\x02\xD7\xD8\x07\x13\x02\x02\xD8\xD9\x05", "*\x16\x02\xD9'\x03\x02\x02\x02\xDA\xDB\x07\x0E", "\x02\x02\xDB\xE0\x05*\x16\x02\xDC\xDD\x07\x0F", "\x02\x02\xDD\xDF\x05*\x16\x02\xDE\xDC\x03\x02", "\x02\x02\xDF\xE2\x03\x02\x02\x02\xE0\xDE\x03\x02", "\x02\x02\xE0\xE1\x03\x02\x02\x02\xE1\xE3\x03\x02", "\x02\x02\xE2\xE0\x03\x02\x02\x02\xE3\xE4\x07\x10", "\x02\x02\xE4\xE8\x03\x02\x02\x02\xE5\xE6\x07\x0E", "\x02\x02\xE6\xE8\x07\x10\x02\x02\xE7\xDA\x03\x02", "\x02\x02\xE7\xE5\x03\x02\x02\x02\xE8)\x03\x02", "\x02\x02\xE9\xEF\x07 \x02\x02\xEA\xEF\t\x02\x02", "\x02\xEB\xEF\x05$\x13\x02\xEC\xEF\x05(\x15\x02", "\xED\xEF\x07\x1E\x02\x02\xEE\xE9\x03\x02\x02\x02", "\xEE\xEA\x03\x02\x02\x02\xEE\xEB\x03\x02\x02\x02", "\xEE\xEC\x03\x02\x02\x02\xEE\xED\x03\x02\x02\x02", "\xEF+\x03\x02\x02\x02\x15C\\^fp{\x94\x97\x9B\x9F", "\xA1\xAA\xB2\xB6\xCD\xD4\xE0\xE7\xEE"].join("");
+var serializedATN = ["\x03\u608B\uA72A\u8133\uB9ED\u417C\u3BE7\u7786", "\u5964\x03!\xF0\x04\x02\t\x02\x04\x03\t\x03\x04\x04", "\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07\t\x07", "\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\x0B\t\x0B\x04\f\t\f", "\x04\r\t\r\x04\x0E\t\x0E\x04\x0F\t\x0F\x04\x10\t\x10", "\x04\x11\t\x11\x04\x12\t\x12\x04\x13\t\x13\x04\x14", "\t\x14\x04\x15\t\x15\x04\x16\t\x16\x03\x02\x03\x02", "\x03\x02\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03", "\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03", "\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03", "\x03\x03\x03\x03\x05\x03C\n\x03\x03\x03\x03\x03", "\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03", "\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03", "\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03", "\x03\x03\x03\x03\x03\x03\x07\x03\\\n\x03\f\x03\x0E", "\x03_\x0B\x03\x03\x04\x03\x04\x03\x04\x03\x04", "\x03\x04\x05\x04f\n\x04\x03\x05\x03\x05\x03\x06", "\x03\x06\x03\x06\x03\x06\x07\x06n\n\x06\f\x06\x0E", "\x06q\x0B\x06\x03\x06\x03\x06\x03\x07\x03\x07", "\x03\x07\x03\x07\x07\x07y\n\x07\f\x07\x0E\x07|\x0B", "\x07\x03\x07\x03\x07\x03\b\x03\b\x03\b\x03\b\x03", "\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03", "\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x05\t\x94\n\t", "\x03\n\x05\n\x97\n\n\x03\n\x03\n\x05\n\x9B\n\n\x03\n", "\x03\n\x05\n\x9F\n\n\x05\n\xA1\n\n\x03\x0B\x03\x0B", "\x03\x0B\x03\x0B\x03\x0B\x07\x0B\xA8\n\x0B\f\x0B", "\x0E\x0B\xAB\x0B\x0B\x03\x0B\x03\x0B\x03\x0B\x03", "\x0B\x03\x0B\x05\x0B\xB2\n\x0B\x03\f\x03\f\x05\f", "\xB6\n\f\x03\r\x03\r\x03\x0E\x03\x0E\x03\x0F\x03", "\x0F\x03\x10\x03\x10\x03\x10\x03\x11\x03\x11\x03", "\x11\x03\x11\x03\x12\x03\x12\x03\x13\x03\x13\x03", "\x13\x03\x13\x07\x13\xCB\n\x13\f\x13\x0E\x13\xCE", "\x0B\x13\x03\x13\x03\x13\x03\x13\x03\x13\x05\x13", "\xD4\n\x13\x03\x14\x03\x14\x03\x14\x03\x14\x03", "\x15\x03\x15\x03\x15\x03\x15\x07\x15\xDE\n\x15", "\f\x15\x0E\x15\xE1\x0B\x15\x03\x15\x03\x15\x03", "\x15\x03\x15\x05\x15\xE7\n\x15\x03\x16\x03\x16", "\x03\x16\x03\x16\x03\x16\x05\x16\xEE\n\x16\x03", "\x16\x02\x03\x04\x17\x02\x04\x06\b\n\f\x0E\x10\x12", "\x14\x16\x18\x1A\x1C\x1E \"$&(*\x02\x06\x03\x02", "\x1F \x03\x02\x04\x05\x03\x02\x06\x07\x03\x02", "\x1C\x1E\x02\u0108\x02,\x03\x02\x02\x02\x04B\x03", "\x02\x02\x02\x06e\x03\x02\x02\x02\bg\x03\x02\x02", "\x02\ni\x03\x02\x02\x02\ft\x03\x02\x02\x02\x0E\x7F", "\x03\x02\x02\x02\x10\x93\x03\x02\x02\x02\x12\x96", "\x03\x02\x02\x02\x14\xB1\x03\x02\x02\x02\x16\xB5", "\x03\x02\x02\x02\x18\xB7\x03\x02\x02\x02\x1A\xB9", "\x03\x02\x02\x02\x1C\xBB\x03\x02\x02\x02\x1E\xBD", "\x03\x02\x02\x02 \xC0\x03\x02\x02\x02\"\xC4\x03", "\x02\x02\x02$\xD3\x03\x02\x02\x02&\xD5\x03\x02", "\x02\x02(\xE6\x03\x02\x02\x02*\xED\x03\x02\x02", "\x02,-\x05\x04\x03\x02-.\x07\x02\x02\x03.\x03\x03", "\x02\x02\x02/0\b\x03\x01\x020C\x05\x10\t\x021C\x05", "\"\x12\x0223\x07\n\x02\x023C\x05\x04\x03\x0F45\x07", "\x0B\x02\x0256\x05\x04\x03\x0267\x07\f\x02\x027", "C\x03\x02\x02\x028C\x05\b\x05\x029C\x05\n\x06\x02", ":C\x05\f\x07\x02;C\x05 \x11\x02<C\x05\x14\x0B\x02", "=C\x07\x1B\x02\x02>C\t\x02\x02\x02?C\x05\x18\r\x02", "@C\x05\x1A\x0E\x02AC\x05\x1C\x0F\x02B/\x03\x02\x02", "\x02B1\x03\x02\x02\x02B2\x03\x02\x02\x02B4\x03\x02", "\x02\x02B8\x03\x02\x02\x02B9\x03\x02\x02\x02B:\x03", "\x02\x02\x02B;\x03\x02\x02\x02B<\x03\x02\x02\x02", "B=\x03\x02\x02\x02B>\x03\x02\x02\x02B?\x03\x02\x02", "\x02B@\x03\x02\x02\x02BA\x03\x02\x02\x02C]\x03\x02", "\x02\x02DE\f\x15\x02\x02EF\t\x03\x02\x02F\\\x05\x04", "\x03\x16GH\f\x14\x02\x02HI\t\x04\x02\x02I\\\x05\x04", "\x03\x15JK\f\x13\x02\x02KL\x07\x1A\x02\x02L\\\x05", "\x04\x03\x14MN\f\x12\x02\x02NO\x07\b\x02\x02O\\\x05", "\x04\x03\x13PQ\f\x11\x02\x02QR\x07\t\x02\x02R\\\x05", "\x04\x03\x12ST\f\b\x02\x02TU\x07\r\x02\x02U\\\x05", "\x04\x03\tVW\f\x18\x02\x02WX\x07\x03\x02\x02X\\\x05", "\x06\x04\x02YZ\f\x17\x02\x02Z\\\x05\x10\t\x02[D\x03", "\x02\x02\x02[G\x03\x02\x02\x02[J\x03\x02\x02\x02", "[M\x03\x02\x02\x02[P\x03\x02\x02\x02[S\x03\x02\x02", "\x02[V\x03\x02\x02\x02[Y\x03\x02\x02\x02\\_\x03", "\x02\x02\x02][\x03\x02\x02\x02]^\x03\x02\x02\x02", "^\x05\x03\x02\x02\x02_]\x03\x02\x02\x02`f\x05\"", "\x12\x02af\x05\n\x06\x02bf\x05\f\x07\x02cf\x05\x14", "\x0B\x02df\x05\b\x05\x02e`\x03\x02\x02\x02ea\x03", "\x02\x02\x02eb\x03\x02\x02\x02ec\x03\x02\x02\x02", "ed\x03\x02\x02\x02f\x07\x03\x02\x02\x02gh\x07\x04", "\x02\x02h\t\x03\x02\x02\x02ij\x07\x0E\x02\x02jo", "\x05\x04\x03\x02kl\x07\x0F\x02\x02ln\x05\x04\x03", "\x02mk\x03\x02\x02\x02nq\x03\x02\x02\x02om\x03\x02", "\x02\x02op\x03\x02\x02\x02pr\x03\x02\x02\x02qo\x03", "\x02\x02\x02rs\x07\x10\x02\x02s\x0B\x03\x02\x02", "\x02tu\x07\x11\x02\x02uz\x05\x0E\b\x02vw\x07\x0F", "\x02\x02wy\x05\x0E\b\x02xv\x03\x02\x02\x02y|\x03", "\x02\x02\x02zx\x03\x02\x02\x02z{\x03\x02\x02\x02", "{}\x03\x02\x02\x02|z\x03\x02\x02\x02}~\x07\x12\x02", "\x02~\r\x03\x02\x02\x02\x7F\x80\x05\"\x12\x02\x80", "\x81\x07\x13\x02\x02\x81\x82\x05\x04\x03\x02\x82", "\x0F\x03\x02\x02\x02\x83\x84\x07\x0E\x02\x02\x84", "\x85\x07 \x02\x02\x85\x94\x07\x10\x02\x02\x86", "\x87\x07\x0E\x02\x02\x87\x88\x07\x04\x02\x02\x88", "\x94\x07\x10\x02\x02\x89\x8A\x07\x0E\x02\x02\x8A", "\x8B\x05\x12\n\x02\x8B\x8C\x07\x10\x02\x02\x8C", "\x94\x03\x02\x02\x02\x8D\x8E\x07\x0E\x02\x02\x8E", "\x94\x07\x10\x02\x02\x8F\x90\x07\x14\x02\x02\x90", "\x91\x05\x04\x03\x02\x91\x92\x07\x10\x02\x02\x92", "\x94\x03\x02\x02\x02\x93\x83\x03\x02\x02\x02\x93", "\x86\x03\x02\x02\x02\x93\x89\x03\x02\x02\x02\x93", "\x8D\x03\x02\x02\x02\x93\x8F\x03\x02\x02\x02\x94", "\x11\x03\x02\x02\x02\x95\x97\x07 \x02\x02\x96", "\x95\x03\x02\x02\x02\x96\x97\x03\x02\x02\x02\x97", "\x98\x03\x02\x02\x02\x98\x9A\x07\x13\x02\x02\x99", "\x9B\x07 \x02\x02\x9A\x99\x03\x02\x02\x02\x9A", "\x9B\x03\x02\x02\x02\x9B\xA0\x03\x02\x02\x02\x9C", "\x9E\x07\x13\x02\x02\x9D\x9F\x07 \x02\x02\x9E", "\x9D\x03\x02\x02\x02\x9E\x9F\x03\x02\x02\x02\x9F", "\xA1\x03\x02\x02\x02\xA0\x9C\x03\x02\x02\x02\xA0", "\xA1\x03\x02\x02\x02\xA1\x13\x03\x02\x02\x02\xA2", "\xA3\x07\x1D\x02\x02\xA3\xA4\x07\x0B\x02\x02\xA4", "\xA9\x05\x16\f\x02\xA5\xA6\x07\x0F\x02\x02\xA6", "\xA8\x05\x16\f\x02\xA7\xA5\x03\x02\x02\x02\xA8", "\xAB\x03\x02\x02\x02\xA9\xA7\x03\x02\x02\x02\xA9", "\xAA\x03\x02\x02\x02\xAA\xAC\x03\x02\x02\x02\xAB", "\xA9\x03\x02\x02\x02\xAC\xAD\x07\f\x02\x02\xAD", "\xB2\x03\x02\x02\x02\xAE\xAF\x07\x1D\x02\x02\xAF", "\xB0\x07\x0B\x02\x02\xB0\xB2\x07\f\x02\x02\xB1", "\xA2\x03\x02\x02\x02\xB1\xAE\x03\x02\x02\x02\xB2", "\x15\x03\x02\x02\x02\xB3\xB6\x05\x04\x03\x02\xB4", "\xB6\x05\x1E\x10\x02\xB5\xB3\x03\x02\x02\x02\xB5", "\xB4\x03\x02\x02\x02\xB6\x17\x03\x02\x02\x02\xB7", "\xB8\x07\x15\x02\x02\xB8\x19\x03\x02\x02\x02\xB9", "\xBA\x07\x16\x02\x02\xBA\x1B\x03\x02\x02\x02\xBB", "\xBC\x07\x17\x02\x02\xBC\x1D\x03\x02\x02\x02\xBD", "\xBE\x07\x18\x02\x02\xBE\xBF\x05\x04\x03\x02\xBF", "\x1F\x03\x02\x02\x02\xC0\xC1\x07\x19\x02\x02\xC1", "\xC2\x05*\x16\x02\xC2\xC3\x07\x19\x02\x02\xC3", "!\x03\x02\x02\x02\xC4\xC5\t\x05\x02\x02\xC5#\x03", "\x02\x02\x02\xC6\xC7\x07\x11\x02\x02\xC7\xCC\x05", "&\x14\x02\xC8\xC9\x07\x0F\x02\x02\xC9\xCB\x05", "&\x14\x02\xCA\xC8\x03\x02\x02\x02\xCB\xCE\x03", "\x02\x02\x02\xCC\xCA\x03\x02\x02\x02\xCC\xCD\x03", "\x02\x02\x02\xCD\xCF\x03\x02\x02\x02\xCE\xCC\x03", "\x02\x02\x02\xCF\xD0\x07\x12\x02\x02\xD0\xD4\x03", "\x02\x02\x02\xD1\xD2\x07\x11\x02\x02\xD2\xD4\x07", "\x12\x02\x02\xD3\xC6\x03\x02\x02\x02\xD3\xD1\x03", "\x02\x02\x02\xD4%\x03\x02\x02\x02\xD5\xD6\x07", "\x1E\x02\x02\xD6\xD7\x07\x13\x02\x02\xD7\xD8\x05", "*\x16\x02\xD8'\x03\x02\x02\x02\xD9\xDA\x07\x0E", "\x02\x02\xDA\xDF\x05*\x16\x02\xDB\xDC\x07\x0F", "\x02\x02\xDC\xDE\x05*\x16\x02\xDD\xDB\x03\x02", "\x02\x02\xDE\xE1\x03\x02\x02\x02\xDF\xDD\x03\x02", "\x02\x02\xDF\xE0\x03\x02\x02\x02\xE0\xE2\x03\x02", "\x02\x02\xE1\xDF\x03\x02\x02\x02\xE2\xE3\x07\x10", "\x02\x02\xE3\xE7\x03\x02\x02\x02\xE4\xE5\x07\x0E", "\x02\x02\xE5\xE7\x07\x10\x02\x02\xE6\xD9\x03\x02", "\x02\x02\xE6\xE4\x03\x02\x02\x02\xE7)\x03\x02", "\x02\x02\xE8\xEE\x07\x1E\x02\x02\xE9\xEE\t\x02", "\x02\x02\xEA\xEE\x05$\x13\x02\xEB\xEE\x05(\x15", "\x02\xEC\xEE\x07\x1C\x02\x02\xED\xE8\x03\x02\x02", "\x02\xED\xE9\x03\x02\x02\x02\xED\xEA\x03\x02\x02", "\x02\xED\xEB\x03\x02\x02\x02\xED\xEC\x03\x02\x02", "\x02\xEE+\x03\x02\x02\x02\x15B[]eoz\x93\x96\x9A", "\x9E\xA0\xA9\xB1\xB5\xCC\xD3\xDF\xE6\xED"].join("");
 var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
 var decisionsToDFA = atn.decisionToState.map(function (ds, index) {
   return new antlr4.dfa.DFA(ds, index);
@@ -15856,39 +15798,39 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
     value: function sempred(localctx, ruleIndex, predIndex) {
       switch (ruleIndex) {
         case 1:
-          return this.jmesPathExpression_sempred(localctx, predIndex);
+          return this.expression_sempred(localctx, predIndex);
 
         default:
           throw "No predicate with index:" + ruleIndex;
       }
     }
   }, {
-    key: "jmesPathExpression_sempred",
-    value: function jmesPathExpression_sempred(localctx, predIndex) {
+    key: "expression_sempred",
+    value: function expression_sempred(localctx, predIndex) {
       switch (predIndex) {
         case 0:
-          return this.precpred(this._ctx, 20);
-
-        case 1:
           return this.precpred(this._ctx, 19);
 
-        case 2:
+        case 1:
           return this.precpred(this._ctx, 18);
 
-        case 3:
+        case 2:
           return this.precpred(this._ctx, 17);
 
-        case 4:
+        case 3:
           return this.precpred(this._ctx, 16);
 
+        case 4:
+          return this.precpred(this._ctx, 15);
+
         case 5:
-          return this.precpred(this._ctx, 7);
+          return this.precpred(this._ctx, 6);
 
         case 6:
-          return this.precpred(this._ctx, 23);
+          return this.precpred(this._ctx, 22);
 
         case 7:
-          return this.precpred(this._ctx, 22);
+          return this.precpred(this._ctx, 21);
 
         default:
           throw "No predicate with index:" + predIndex;
@@ -15903,7 +15845,7 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
       try {
         this.enterOuterAlt(localctx, 1);
         this.state = 42;
-        this.jmesPathExpression(0);
+        this.expression(0);
         this.state = 43;
         this.match(JSONFormulaParser.EOF);
       } catch (re) {
@@ -15923,23 +15865,23 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
       return localctx;
     }
   }, {
-    key: "jmesPathExpression",
-    value: function jmesPathExpression(_p) {
+    key: "expression",
+    value: function expression(_p) {
       if (_p === undefined) {
         _p = 0;
       }
 
       var _parentctx = this._ctx;
       var _parentState = this.state;
-      var localctx = new JmesPathExpressionContext(this, this._ctx, _parentState);
+      var localctx = new ExpressionContext(this, this._ctx, _parentState);
       var _prevctx = localctx;
       var _startState = 2;
-      this.enterRecursionRule(localctx, 2, JSONFormulaParser.RULE_jmesPathExpression, _p);
+      this.enterRecursionRule(localctx, 2, JSONFormulaParser.RULE_expression, _p);
       var _la = 0; // Token type
 
       try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 65;
+        this.state = 64;
 
         this._errHandler.sync(this);
 
@@ -15969,7 +15911,7 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
             this.state = 48;
             this.match(JSONFormulaParser.T__7);
             this.state = 49;
-            this.jmesPathExpression(14);
+            this.expression(13);
             break;
 
           case 4:
@@ -15979,7 +15921,7 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
             this.state = 50;
             this.match(JSONFormulaParser.T__8);
             this.state = 51;
-            this.jmesPathExpression(0);
+            this.expression(0);
             this.state = 52;
             this.match(JSONFormulaParser.T__9);
             break;
@@ -16033,21 +15975,13 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
             break;
 
           case 11:
-            localctx = new StringLiteralContext(this, localctx);
-            this._ctx = localctx;
-            _prevctx = localctx;
-            this.state = 60;
-            this.match(JSONFormulaParser.STRING);
-            break;
-
-          case 12:
             localctx = new NumberLiteralContext(this, localctx);
             this._ctx = localctx;
             _prevctx = localctx;
-            this.state = 61;
+            this.state = 60;
             _la = this._input.LA(1);
 
-            if (!(_la === JSONFormulaParser.SIGNED_INT || _la === JSONFormulaParser.REAL_OR_EXPONENT_NUMBER)) {
+            if (!(_la === JSONFormulaParser.REAL_OR_EXPONENT_NUMBER || _la === JSONFormulaParser.SIGNED_INT)) {
               this._errHandler.recoverInline(this);
             } else {
               this._errHandler.reportMatch(this);
@@ -16057,33 +15991,33 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
 
             break;
 
-          case 13:
+          case 12:
             localctx = new CurrentNodeExpressionContext(this, localctx);
             this._ctx = localctx;
             _prevctx = localctx;
-            this.state = 62;
+            this.state = 61;
             this.currentNode();
             break;
 
-          case 14:
+          case 13:
             localctx = new FormExpressionContext(this, localctx);
             this._ctx = localctx;
             _prevctx = localctx;
-            this.state = 63;
+            this.state = 62;
             this.form();
             break;
 
-          case 15:
+          case 14:
             localctx = new CurrentFieldExpressionContext(this, localctx);
             this._ctx = localctx;
             _prevctx = localctx;
-            this.state = 64;
+            this.state = 63;
             this.currentField();
             break;
         }
 
         this._ctx.stop = this._input.LT(-1);
-        this.state = 92;
+        this.state = 91;
 
         this._errHandler.sync(this);
 
@@ -16096,7 +16030,7 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
             }
 
             _prevctx = localctx;
-            this.state = 90;
+            this.state = 89;
 
             this._errHandler.sync(this);
 
@@ -16104,15 +16038,15 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
 
             switch (la_) {
               case 1:
-                localctx = new MultDivExpressionContext(this, new JmesPathExpressionContext(this, _parentctx, _parentState));
-                this.pushNewRecursionContext(localctx, _startState, JSONFormulaParser.RULE_jmesPathExpression);
-                this.state = 67;
+                localctx = new MultDivExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
+                this.pushNewRecursionContext(localctx, _startState, JSONFormulaParser.RULE_expression);
+                this.state = 66;
 
-                if (!this.precpred(this._ctx, 20)) {
-                  throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 20)");
+                if (!this.precpred(this._ctx, 19)) {
+                  throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 19)");
                 }
 
-                this.state = 68;
+                this.state = 67;
                 _la = this._input.LA(1);
 
                 if (!(_la === JSONFormulaParser.T__1 || _la === JSONFormulaParser.T__2)) {
@@ -16123,20 +16057,20 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
                   this.consume();
                 }
 
-                this.state = 69;
-                this.jmesPathExpression(21);
+                this.state = 68;
+                this.expression(20);
                 break;
 
               case 2:
-                localctx = new AddSubtractExpressionContext(this, new JmesPathExpressionContext(this, _parentctx, _parentState));
-                this.pushNewRecursionContext(localctx, _startState, JSONFormulaParser.RULE_jmesPathExpression);
-                this.state = 70;
+                localctx = new AddSubtractExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
+                this.pushNewRecursionContext(localctx, _startState, JSONFormulaParser.RULE_expression);
+                this.state = 69;
 
-                if (!this.precpred(this._ctx, 19)) {
-                  throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 19)");
+                if (!this.precpred(this._ctx, 18)) {
+                  throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 18)");
                 }
 
-                this.state = 71;
+                this.state = 70;
                 _la = this._input.LA(1);
 
                 if (!(_la === JSONFormulaParser.T__3 || _la === JSONFormulaParser.T__4)) {
@@ -16147,101 +16081,101 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
                   this.consume();
                 }
 
-                this.state = 72;
-                this.jmesPathExpression(20);
+                this.state = 71;
+                this.expression(19);
                 break;
 
               case 3:
-                localctx = new ComparisonExpressionContext(this, new JmesPathExpressionContext(this, _parentctx, _parentState));
-                this.pushNewRecursionContext(localctx, _startState, JSONFormulaParser.RULE_jmesPathExpression);
-                this.state = 73;
-
-                if (!this.precpred(this._ctx, 18)) {
-                  throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 18)");
-                }
-
-                this.state = 74;
-                this.match(JSONFormulaParser.COMPARATOR);
-                this.state = 75;
-                this.jmesPathExpression(19);
-                break;
-
-              case 4:
-                localctx = new AndExpressionContext(this, new JmesPathExpressionContext(this, _parentctx, _parentState));
-                this.pushNewRecursionContext(localctx, _startState, JSONFormulaParser.RULE_jmesPathExpression);
-                this.state = 76;
+                localctx = new ComparisonExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
+                this.pushNewRecursionContext(localctx, _startState, JSONFormulaParser.RULE_expression);
+                this.state = 72;
 
                 if (!this.precpred(this._ctx, 17)) {
                   throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 17)");
                 }
 
-                this.state = 77;
-                this.match(JSONFormulaParser.T__5);
-                this.state = 78;
-                this.jmesPathExpression(18);
+                this.state = 73;
+                this.match(JSONFormulaParser.COMPARATOR);
+                this.state = 74;
+                this.expression(18);
                 break;
 
-              case 5:
-                localctx = new OrExpressionContext(this, new JmesPathExpressionContext(this, _parentctx, _parentState));
-                this.pushNewRecursionContext(localctx, _startState, JSONFormulaParser.RULE_jmesPathExpression);
-                this.state = 79;
+              case 4:
+                localctx = new AndExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
+                this.pushNewRecursionContext(localctx, _startState, JSONFormulaParser.RULE_expression);
+                this.state = 75;
 
                 if (!this.precpred(this._ctx, 16)) {
                   throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 16)");
                 }
 
-                this.state = 80;
+                this.state = 76;
+                this.match(JSONFormulaParser.T__5);
+                this.state = 77;
+                this.expression(17);
+                break;
+
+              case 5:
+                localctx = new OrExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
+                this.pushNewRecursionContext(localctx, _startState, JSONFormulaParser.RULE_expression);
+                this.state = 78;
+
+                if (!this.precpred(this._ctx, 15)) {
+                  throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 15)");
+                }
+
+                this.state = 79;
                 this.match(JSONFormulaParser.T__6);
-                this.state = 81;
-                this.jmesPathExpression(17);
+                this.state = 80;
+                this.expression(16);
                 break;
 
               case 6:
-                localctx = new PipeExpressionContext(this, new JmesPathExpressionContext(this, _parentctx, _parentState));
-                this.pushNewRecursionContext(localctx, _startState, JSONFormulaParser.RULE_jmesPathExpression);
-                this.state = 82;
+                localctx = new PipeExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
+                this.pushNewRecursionContext(localctx, _startState, JSONFormulaParser.RULE_expression);
+                this.state = 81;
 
-                if (!this.precpred(this._ctx, 7)) {
-                  throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 7)");
+                if (!this.precpred(this._ctx, 6)) {
+                  throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 6)");
                 }
 
-                this.state = 83;
+                this.state = 82;
                 this.match(JSONFormulaParser.T__10);
-                this.state = 84;
-                this.jmesPathExpression(8);
+                this.state = 83;
+                this.expression(7);
                 break;
 
               case 7:
-                localctx = new ChainExpressionContext(this, new JmesPathExpressionContext(this, _parentctx, _parentState));
-                this.pushNewRecursionContext(localctx, _startState, JSONFormulaParser.RULE_jmesPathExpression);
-                this.state = 85;
-
-                if (!this.precpred(this._ctx, 23)) {
-                  throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 23)");
-                }
-
-                this.state = 86;
-                this.match(JSONFormulaParser.T__0);
-                this.state = 87;
-                this.chainedExpression();
-                break;
-
-              case 8:
-                localctx = new BracketedExpressionContext(this, new JmesPathExpressionContext(this, _parentctx, _parentState));
-                this.pushNewRecursionContext(localctx, _startState, JSONFormulaParser.RULE_jmesPathExpression);
-                this.state = 88;
+                localctx = new ChainExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
+                this.pushNewRecursionContext(localctx, _startState, JSONFormulaParser.RULE_expression);
+                this.state = 84;
 
                 if (!this.precpred(this._ctx, 22)) {
                   throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 22)");
                 }
 
-                this.state = 89;
+                this.state = 85;
+                this.match(JSONFormulaParser.T__0);
+                this.state = 86;
+                this.chainedExpression();
+                break;
+
+              case 8:
+                localctx = new BracketedExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
+                this.pushNewRecursionContext(localctx, _startState, JSONFormulaParser.RULE_expression);
+                this.state = 87;
+
+                if (!this.precpred(this._ctx, 21)) {
+                  throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 21)");
+                }
+
+                this.state = 88;
                 this.bracketSpecifier();
                 break;
             }
           }
 
-          this.state = 94;
+          this.state = 93;
 
           this._errHandler.sync(this);
 
@@ -16270,7 +16204,7 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
       this.enterRule(localctx, 4, JSONFormulaParser.RULE_chainedExpression);
 
       try {
-        this.state = 100;
+        this.state = 99;
 
         this._errHandler.sync(this);
 
@@ -16278,37 +16212,32 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
 
         switch (la_) {
           case 1:
-            localctx = new ChainedIdentifierContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
-            this.state = 95;
+            this.state = 94;
             this.identifier();
             break;
 
           case 2:
-            localctx = new ChainedMultiSelectListContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
-            this.state = 96;
+            this.state = 95;
             this.multiSelectList();
             break;
 
           case 3:
-            localctx = new ChainedMultiSelectHashContext(this, localctx);
             this.enterOuterAlt(localctx, 3);
-            this.state = 97;
+            this.state = 96;
             this.multiSelectHash();
             break;
 
           case 4:
-            localctx = new ChainedFunctionExpressionContext(this, localctx);
             this.enterOuterAlt(localctx, 4);
-            this.state = 98;
+            this.state = 97;
             this.functionExpression();
             break;
 
           case 5:
-            localctx = new ChainedWildcardContext(this, localctx);
             this.enterOuterAlt(localctx, 5);
-            this.state = 99;
+            this.state = 98;
             this.wildcard();
             break;
         }
@@ -16336,7 +16265,7 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
 
       try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 102;
+        this.state = 101;
         this.match(JSONFormulaParser.T__1);
       } catch (re) {
         if (re instanceof antlr4.error.RecognitionException) {
@@ -16363,29 +16292,29 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
 
       try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 104;
+        this.state = 103;
         this.match(JSONFormulaParser.T__11);
-        this.state = 105;
-        this.jmesPathExpression(0);
-        this.state = 110;
+        this.state = 104;
+        this.expression(0);
+        this.state = 109;
 
         this._errHandler.sync(this);
 
         _la = this._input.LA(1);
 
         while (_la === JSONFormulaParser.T__12) {
-          this.state = 106;
+          this.state = 105;
           this.match(JSONFormulaParser.T__12);
-          this.state = 107;
-          this.jmesPathExpression(0);
-          this.state = 112;
+          this.state = 106;
+          this.expression(0);
+          this.state = 111;
 
           this._errHandler.sync(this);
 
           _la = this._input.LA(1);
         }
 
-        this.state = 113;
+        this.state = 112;
         this.match(JSONFormulaParser.T__13);
       } catch (re) {
         if (re instanceof antlr4.error.RecognitionException) {
@@ -16412,29 +16341,29 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
 
       try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 115;
+        this.state = 114;
         this.match(JSONFormulaParser.T__14);
-        this.state = 116;
+        this.state = 115;
         this.keyvalExpr();
-        this.state = 121;
+        this.state = 120;
 
         this._errHandler.sync(this);
 
         _la = this._input.LA(1);
 
         while (_la === JSONFormulaParser.T__12) {
-          this.state = 117;
+          this.state = 116;
           this.match(JSONFormulaParser.T__12);
-          this.state = 118;
+          this.state = 117;
           this.keyvalExpr();
-          this.state = 123;
+          this.state = 122;
 
           this._errHandler.sync(this);
 
           _la = this._input.LA(1);
         }
 
-        this.state = 124;
+        this.state = 123;
         this.match(JSONFormulaParser.T__15);
       } catch (re) {
         if (re instanceof antlr4.error.RecognitionException) {
@@ -16460,12 +16389,12 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
 
       try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 126;
+        this.state = 125;
         this.identifier();
-        this.state = 127;
+        this.state = 126;
         this.match(JSONFormulaParser.T__16);
-        this.state = 128;
-        this.jmesPathExpression(0);
+        this.state = 127;
+        this.expression(0);
       } catch (re) {
         if (re instanceof antlr4.error.RecognitionException) {
           localctx.exception = re;
@@ -16489,7 +16418,7 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
       this.enterRule(localctx, 14, JSONFormulaParser.RULE_bracketSpecifier);
 
       try {
-        this.state = 146;
+        this.state = 145;
 
         this._errHandler.sync(this);
 
@@ -16499,53 +16428,53 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
           case 1:
             localctx = new BracketIndexContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
-            this.state = 130;
+            this.state = 129;
             this.match(JSONFormulaParser.T__11);
-            this.state = 131;
+            this.state = 130;
             this.match(JSONFormulaParser.SIGNED_INT);
-            this.state = 132;
+            this.state = 131;
             this.match(JSONFormulaParser.T__13);
             break;
 
           case 2:
             localctx = new BracketStarContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
-            this.state = 133;
+            this.state = 132;
             this.match(JSONFormulaParser.T__11);
-            this.state = 134;
+            this.state = 133;
             this.match(JSONFormulaParser.T__1);
-            this.state = 135;
+            this.state = 134;
             this.match(JSONFormulaParser.T__13);
             break;
 
           case 3:
             localctx = new BracketSliceContext(this, localctx);
             this.enterOuterAlt(localctx, 3);
-            this.state = 136;
+            this.state = 135;
             this.match(JSONFormulaParser.T__11);
-            this.state = 137;
+            this.state = 136;
             this.slice();
-            this.state = 138;
+            this.state = 137;
             this.match(JSONFormulaParser.T__13);
             break;
 
           case 4:
             localctx = new BracketFlattenContext(this, localctx);
             this.enterOuterAlt(localctx, 4);
-            this.state = 140;
+            this.state = 139;
             this.match(JSONFormulaParser.T__11);
-            this.state = 141;
+            this.state = 140;
             this.match(JSONFormulaParser.T__13);
             break;
 
           case 5:
             localctx = new SelectContext(this, localctx);
             this.enterOuterAlt(localctx, 5);
-            this.state = 142;
+            this.state = 141;
             this.match(JSONFormulaParser.T__17);
+            this.state = 142;
+            this.expression(0);
             this.state = 143;
-            this.jmesPathExpression(0);
-            this.state = 144;
             this.match(JSONFormulaParser.T__13);
             break;
         }
@@ -16574,47 +16503,47 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
 
       try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 149;
+        this.state = 148;
 
         this._errHandler.sync(this);
 
         _la = this._input.LA(1);
 
         if (_la === JSONFormulaParser.SIGNED_INT) {
-          this.state = 148;
+          this.state = 147;
           localctx.start = this.match(JSONFormulaParser.SIGNED_INT);
         }
 
-        this.state = 151;
+        this.state = 150;
         this.match(JSONFormulaParser.T__16);
-        this.state = 153;
+        this.state = 152;
 
         this._errHandler.sync(this);
 
         _la = this._input.LA(1);
 
         if (_la === JSONFormulaParser.SIGNED_INT) {
-          this.state = 152;
+          this.state = 151;
           localctx.stop = this.match(JSONFormulaParser.SIGNED_INT);
         }
 
-        this.state = 159;
+        this.state = 158;
 
         this._errHandler.sync(this);
 
         _la = this._input.LA(1);
 
         if (_la === JSONFormulaParser.T__16) {
-          this.state = 155;
+          this.state = 154;
           this.match(JSONFormulaParser.T__16);
-          this.state = 157;
+          this.state = 156;
 
           this._errHandler.sync(this);
 
           _la = this._input.LA(1);
 
           if (_la === JSONFormulaParser.SIGNED_INT) {
-            this.state = 156;
+            this.state = 155;
             localctx.step = this.match(JSONFormulaParser.SIGNED_INT);
           }
         }
@@ -16642,7 +16571,7 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
       var _la = 0; // Token type
 
       try {
-        this.state = 176;
+        this.state = 175;
 
         this._errHandler.sync(this);
 
@@ -16651,41 +16580,41 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
         switch (la_) {
           case 1:
             this.enterOuterAlt(localctx, 1);
-            this.state = 161;
+            this.state = 160;
             this.match(JSONFormulaParser.NAME);
-            this.state = 162;
+            this.state = 161;
             this.match(JSONFormulaParser.T__8);
-            this.state = 163;
+            this.state = 162;
             this.functionArg();
-            this.state = 168;
+            this.state = 167;
 
             this._errHandler.sync(this);
 
             _la = this._input.LA(1);
 
             while (_la === JSONFormulaParser.T__12) {
-              this.state = 164;
+              this.state = 163;
               this.match(JSONFormulaParser.T__12);
-              this.state = 165;
+              this.state = 164;
               this.functionArg();
-              this.state = 170;
+              this.state = 169;
 
               this._errHandler.sync(this);
 
               _la = this._input.LA(1);
             }
 
-            this.state = 171;
+            this.state = 170;
             this.match(JSONFormulaParser.T__9);
             break;
 
           case 2:
             this.enterOuterAlt(localctx, 2);
-            this.state = 173;
+            this.state = 172;
             this.match(JSONFormulaParser.NAME);
-            this.state = 174;
+            this.state = 173;
             this.match(JSONFormulaParser.T__8);
-            this.state = 175;
+            this.state = 174;
             this.match(JSONFormulaParser.T__9);
             break;
         }
@@ -16712,7 +16641,7 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
       this.enterRule(localctx, 20, JSONFormulaParser.RULE_functionArg);
 
       try {
-        this.state = 180;
+        this.state = 179;
 
         this._errHandler.sync(this);
 
@@ -16727,20 +16656,20 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
           case JSONFormulaParser.T__19:
           case JSONFormulaParser.T__20:
           case JSONFormulaParser.T__22:
-          case JSONFormulaParser.SIGNED_INT:
           case JSONFormulaParser.RAW_STRING:
           case JSONFormulaParser.JSON_CONSTANT:
           case JSONFormulaParser.NAME:
           case JSONFormulaParser.STRING:
           case JSONFormulaParser.REAL_OR_EXPONENT_NUMBER:
+          case JSONFormulaParser.SIGNED_INT:
             this.enterOuterAlt(localctx, 1);
-            this.state = 178;
-            this.jmesPathExpression(0);
+            this.state = 177;
+            this.expression(0);
             break;
 
           case JSONFormulaParser.T__21:
             this.enterOuterAlt(localctx, 2);
-            this.state = 179;
+            this.state = 178;
             this.expressionType();
             break;
 
@@ -16771,7 +16700,7 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
 
       try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 182;
+        this.state = 181;
         this.match(JSONFormulaParser.T__18);
       } catch (re) {
         if (re instanceof antlr4.error.RecognitionException) {
@@ -16797,7 +16726,7 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
 
       try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 184;
+        this.state = 183;
         this.match(JSONFormulaParser.T__19);
       } catch (re) {
         if (re instanceof antlr4.error.RecognitionException) {
@@ -16823,7 +16752,7 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
 
       try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 186;
+        this.state = 185;
         this.match(JSONFormulaParser.T__20);
       } catch (re) {
         if (re instanceof antlr4.error.RecognitionException) {
@@ -16849,10 +16778,10 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
 
       try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 188;
+        this.state = 187;
         this.match(JSONFormulaParser.T__21);
-        this.state = 189;
-        this.jmesPathExpression(0);
+        this.state = 188;
+        this.expression(0);
       } catch (re) {
         if (re instanceof antlr4.error.RecognitionException) {
           localctx.exception = re;
@@ -16877,11 +16806,11 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
 
       try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 191;
+        this.state = 190;
         this.match(JSONFormulaParser.T__22);
-        this.state = 192;
+        this.state = 191;
         this.jsonValue();
-        this.state = 193;
+        this.state = 192;
         this.match(JSONFormulaParser.T__22);
       } catch (re) {
         if (re instanceof antlr4.error.RecognitionException) {
@@ -16908,7 +16837,7 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
 
       try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 195;
+        this.state = 194;
         _la = this._input.LA(1);
 
         if (!((_la & ~0x1f) == 0 && (1 << _la & (1 << JSONFormulaParser.JSON_CONSTANT | 1 << JSONFormulaParser.NAME | 1 << JSONFormulaParser.STRING)) !== 0)) {
@@ -16942,7 +16871,7 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
       var _la = 0; // Token type
 
       try {
-        this.state = 210;
+        this.state = 209;
 
         this._errHandler.sync(this);
 
@@ -16951,37 +16880,37 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
         switch (la_) {
           case 1:
             this.enterOuterAlt(localctx, 1);
-            this.state = 197;
+            this.state = 196;
             this.match(JSONFormulaParser.T__14);
-            this.state = 198;
+            this.state = 197;
             this.jsonObjectPair();
-            this.state = 203;
+            this.state = 202;
 
             this._errHandler.sync(this);
 
             _la = this._input.LA(1);
 
             while (_la === JSONFormulaParser.T__12) {
-              this.state = 199;
+              this.state = 198;
               this.match(JSONFormulaParser.T__12);
-              this.state = 200;
+              this.state = 199;
               this.jsonObjectPair();
-              this.state = 205;
+              this.state = 204;
 
               this._errHandler.sync(this);
 
               _la = this._input.LA(1);
             }
 
-            this.state = 206;
+            this.state = 205;
             this.match(JSONFormulaParser.T__15);
             break;
 
           case 2:
             this.enterOuterAlt(localctx, 2);
-            this.state = 208;
+            this.state = 207;
             this.match(JSONFormulaParser.T__14);
-            this.state = 209;
+            this.state = 208;
             this.match(JSONFormulaParser.T__15);
             break;
         }
@@ -17009,11 +16938,11 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
 
       try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 212;
+        this.state = 211;
         this.match(JSONFormulaParser.STRING);
-        this.state = 213;
+        this.state = 212;
         this.match(JSONFormulaParser.T__16);
-        this.state = 214;
+        this.state = 213;
         this.jsonValue();
       } catch (re) {
         if (re instanceof antlr4.error.RecognitionException) {
@@ -17039,7 +16968,7 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
       var _la = 0; // Token type
 
       try {
-        this.state = 229;
+        this.state = 228;
 
         this._errHandler.sync(this);
 
@@ -17048,37 +16977,37 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
         switch (la_) {
           case 1:
             this.enterOuterAlt(localctx, 1);
-            this.state = 216;
+            this.state = 215;
             this.match(JSONFormulaParser.T__11);
-            this.state = 217;
+            this.state = 216;
             this.jsonValue();
-            this.state = 222;
+            this.state = 221;
 
             this._errHandler.sync(this);
 
             _la = this._input.LA(1);
 
             while (_la === JSONFormulaParser.T__12) {
-              this.state = 218;
+              this.state = 217;
               this.match(JSONFormulaParser.T__12);
-              this.state = 219;
+              this.state = 218;
               this.jsonValue();
-              this.state = 224;
+              this.state = 223;
 
               this._errHandler.sync(this);
 
               _la = this._input.LA(1);
             }
 
-            this.state = 225;
+            this.state = 224;
             this.match(JSONFormulaParser.T__13);
             break;
 
           case 2:
             this.enterOuterAlt(localctx, 2);
-            this.state = 227;
+            this.state = 226;
             this.match(JSONFormulaParser.T__11);
-            this.state = 228;
+            this.state = 227;
             this.match(JSONFormulaParser.T__13);
             break;
         }
@@ -17106,7 +17035,7 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
       var _la = 0; // Token type
 
       try {
-        this.state = 236;
+        this.state = 235;
 
         this._errHandler.sync(this);
 
@@ -17114,18 +17043,18 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
           case JSONFormulaParser.STRING:
             localctx = new JsonStringValueContext(this, localctx);
             this.enterOuterAlt(localctx, 1);
-            this.state = 231;
+            this.state = 230;
             this.match(JSONFormulaParser.STRING);
             break;
 
-          case JSONFormulaParser.SIGNED_INT:
           case JSONFormulaParser.REAL_OR_EXPONENT_NUMBER:
+          case JSONFormulaParser.SIGNED_INT:
             localctx = new JsonNumberValueContext(this, localctx);
             this.enterOuterAlt(localctx, 2);
-            this.state = 232;
+            this.state = 231;
             _la = this._input.LA(1);
 
-            if (!(_la === JSONFormulaParser.SIGNED_INT || _la === JSONFormulaParser.REAL_OR_EXPONENT_NUMBER)) {
+            if (!(_la === JSONFormulaParser.REAL_OR_EXPONENT_NUMBER || _la === JSONFormulaParser.SIGNED_INT)) {
               this._errHandler.recoverInline(this);
             } else {
               this._errHandler.reportMatch(this);
@@ -17138,21 +17067,21 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
           case JSONFormulaParser.T__14:
             localctx = new JsonObjectValueContext(this, localctx);
             this.enterOuterAlt(localctx, 3);
-            this.state = 233;
+            this.state = 232;
             this.jsonObject();
             break;
 
           case JSONFormulaParser.T__11:
             localctx = new JsonArrayValueContext(this, localctx);
             this.enterOuterAlt(localctx, 4);
-            this.state = 234;
+            this.state = 233;
             this.jsonArray();
             break;
 
           case JSONFormulaParser.JSON_CONSTANT:
             localctx = new JsonConstantValueContext(this, localctx);
             this.enterOuterAlt(localctx, 5);
-            this.state = 235;
+            this.state = 234;
             this.match(JSONFormulaParser.JSON_CONSTANT);
             break;
 
@@ -17182,8 +17111,8 @@ var JSONFormulaParser = /*#__PURE__*/function (_antlr4$Parser) {
 
 JSONFormulaParser.grammarFileName = "JSONFormula.g4";
 JSONFormulaParser.literalNames = [null, "'.'", "'*'", "'/'", "'+'", "'-'", "'&&'", "'||'", "'!'", "'('", "')'", "'|'", "'['", "','", "']'", "'{'", "'}'", "':'", "'[?'", "'@'", "'$form'", "'$field'", "'&'", "'`'"];
-JSONFormulaParser.symbolicNames = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "SIGNED_INT", "NUMBER", "COMPARATOR", "RAW_STRING", "JSON_CONSTANT", "NAME", "STRING", "REAL_OR_EXPONENT_NUMBER", "WS"];
-JSONFormulaParser.ruleNames = ["formula", "jmesPathExpression", "chainedExpression", "wildcard", "multiSelectList", "multiSelectHash", "keyvalExpr", "bracketSpecifier", "slice", "functionExpression", "functionArg", "currentNode", "form", "currentField", "expressionType", "literal", "identifier", "jsonObject", "jsonObjectPair", "jsonArray", "jsonValue"];
+JSONFormulaParser.symbolicNames = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "COMPARATOR", "RAW_STRING", "JSON_CONSTANT", "NAME", "STRING", "REAL_OR_EXPONENT_NUMBER", "SIGNED_INT", "WS"];
+JSONFormulaParser.ruleNames = ["formula", "expression", "chainedExpression", "wildcard", "multiSelectList", "multiSelectHash", "keyvalExpr", "bracketSpecifier", "slice", "functionExpression", "functionArg", "currentNode", "form", "currentField", "expressionType", "literal", "identifier", "jsonObject", "jsonObjectPair", "jsonArray", "jsonValue"];
 
 JSONFormulaParser.EOF = antlr4.Token.EOF;
 JSONFormulaParser.T__0 = 1;
@@ -17209,17 +17138,16 @@ JSONFormulaParser.T__19 = 20;
 JSONFormulaParser.T__20 = 21;
 JSONFormulaParser.T__21 = 22;
 JSONFormulaParser.T__22 = 23;
-JSONFormulaParser.SIGNED_INT = 24;
-JSONFormulaParser.NUMBER = 25;
-JSONFormulaParser.COMPARATOR = 26;
-JSONFormulaParser.RAW_STRING = 27;
-JSONFormulaParser.JSON_CONSTANT = 28;
-JSONFormulaParser.NAME = 29;
-JSONFormulaParser.STRING = 30;
-JSONFormulaParser.REAL_OR_EXPONENT_NUMBER = 31;
-JSONFormulaParser.WS = 32;
+JSONFormulaParser.COMPARATOR = 24;
+JSONFormulaParser.RAW_STRING = 25;
+JSONFormulaParser.JSON_CONSTANT = 26;
+JSONFormulaParser.NAME = 27;
+JSONFormulaParser.STRING = 28;
+JSONFormulaParser.REAL_OR_EXPONENT_NUMBER = 29;
+JSONFormulaParser.SIGNED_INT = 30;
+JSONFormulaParser.WS = 31;
 JSONFormulaParser.RULE_formula = 0;
-JSONFormulaParser.RULE_jmesPathExpression = 1;
+JSONFormulaParser.RULE_expression = 1;
 JSONFormulaParser.RULE_chainedExpression = 2;
 JSONFormulaParser.RULE_wildcard = 3;
 JSONFormulaParser.RULE_multiSelectList = 4;
@@ -17265,9 +17193,9 @@ var FormulaContext = /*#__PURE__*/function (_antlr4$ParserRuleCon) {
   }
 
   JSONFormulaParser_createClass(FormulaContext, [{
-    key: "jmesPathExpression",
-    value: function jmesPathExpression() {
-      return this.getTypedRuleContext(JmesPathExpressionContext, 0);
+    key: "expression",
+    value: function expression() {
+      return this.getTypedRuleContext(ExpressionContext, 0);
     }
   }, {
     key: "EOF",
@@ -17302,15 +17230,15 @@ var FormulaContext = /*#__PURE__*/function (_antlr4$ParserRuleCon) {
   return FormulaContext;
 }(antlr4.ParserRuleContext);
 
-var JmesPathExpressionContext = /*#__PURE__*/function (_antlr4$ParserRuleCon2) {
-  JSONFormulaParser_inherits(JmesPathExpressionContext, _antlr4$ParserRuleCon2);
+var ExpressionContext = /*#__PURE__*/function (_antlr4$ParserRuleCon2) {
+  JSONFormulaParser_inherits(ExpressionContext, _antlr4$ParserRuleCon2);
 
-  var _super3 = JSONFormulaParser_createSuper(JmesPathExpressionContext);
+  var _super3 = JSONFormulaParser_createSuper(ExpressionContext);
 
-  function JmesPathExpressionContext(parser, parent, invokingState) {
+  function ExpressionContext(parser, parent, invokingState) {
     var _this3;
 
-    JSONFormulaParser_classCallCheck(this, JmesPathExpressionContext);
+    JSONFormulaParser_classCallCheck(this, ExpressionContext);
 
     if (parent === undefined) {
       parent = null;
@@ -17322,22 +17250,22 @@ var JmesPathExpressionContext = /*#__PURE__*/function (_antlr4$ParserRuleCon2) {
 
     _this3 = _super3.call(this, parent, invokingState);
     _this3.parser = parser;
-    _this3.ruleIndex = JSONFormulaParser.RULE_jmesPathExpression;
+    _this3.ruleIndex = JSONFormulaParser.RULE_expression;
     return _this3;
   }
 
-  JSONFormulaParser_createClass(JmesPathExpressionContext, [{
+  JSONFormulaParser_createClass(ExpressionContext, [{
     key: "copyFrom",
     value: function copyFrom(ctx) {
-      _get(JSONFormulaParser_getPrototypeOf(JmesPathExpressionContext.prototype), "copyFrom", this).call(this, ctx);
+      _get(JSONFormulaParser_getPrototypeOf(ExpressionContext.prototype), "copyFrom", this).call(this, ctx);
     }
   }]);
 
-  return JmesPathExpressionContext;
+  return ExpressionContext;
 }(antlr4.ParserRuleContext);
 
-var PipeExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo) {
-  JSONFormulaParser_inherits(PipeExpressionContext, _JmesPathExpressionCo);
+var PipeExpressionContext = /*#__PURE__*/function (_ExpressionContext) {
+  JSONFormulaParser_inherits(PipeExpressionContext, _ExpressionContext);
 
   var _super4 = JSONFormulaParser_createSuper(PipeExpressionContext);
 
@@ -17348,15 +17276,15 @@ var PipeExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo) {
 
     _this4 = _super4.call(this, parser);
 
-    _this4.jmesPathExpression = function (i) {
+    _this4.expression = function (i) {
       if (i === undefined) {
         i = null;
       }
 
       if (i === null) {
-        return this.getTypedRuleContexts(JmesPathExpressionContext);
+        return this.getTypedRuleContexts(ExpressionContext);
       } else {
-        return this.getTypedRuleContext(JmesPathExpressionContext, i);
+        return this.getTypedRuleContext(ExpressionContext, i);
       }
     };
 
@@ -17391,12 +17319,12 @@ var PipeExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo) {
   }]);
 
   return PipeExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.PipeExpressionContext = PipeExpressionContext;
 
-var IdentifierExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo2) {
-  JSONFormulaParser_inherits(IdentifierExpressionContext, _JmesPathExpressionCo2);
+var IdentifierExpressionContext = /*#__PURE__*/function (_ExpressionContext2) {
+  JSONFormulaParser_inherits(IdentifierExpressionContext, _ExpressionContext2);
 
   var _super5 = JSONFormulaParser_createSuper(IdentifierExpressionContext);
 
@@ -17443,12 +17371,12 @@ var IdentifierExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo2)
   }]);
 
   return IdentifierExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.IdentifierExpressionContext = IdentifierExpressionContext;
 
-var CurrentFieldExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo3) {
-  JSONFormulaParser_inherits(CurrentFieldExpressionContext, _JmesPathExpressionCo3);
+var CurrentFieldExpressionContext = /*#__PURE__*/function (_ExpressionContext3) {
+  JSONFormulaParser_inherits(CurrentFieldExpressionContext, _ExpressionContext3);
 
   var _super6 = JSONFormulaParser_createSuper(CurrentFieldExpressionContext);
 
@@ -17495,12 +17423,12 @@ var CurrentFieldExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo
   }]);
 
   return CurrentFieldExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.CurrentFieldExpressionContext = CurrentFieldExpressionContext;
 
-var MultDivExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo4) {
-  JSONFormulaParser_inherits(MultDivExpressionContext, _JmesPathExpressionCo4);
+var MultDivExpressionContext = /*#__PURE__*/function (_ExpressionContext4) {
+  JSONFormulaParser_inherits(MultDivExpressionContext, _ExpressionContext4);
 
   var _super7 = JSONFormulaParser_createSuper(MultDivExpressionContext);
 
@@ -17511,15 +17439,15 @@ var MultDivExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo4) {
 
     _this7 = _super7.call(this, parser);
 
-    _this7.jmesPathExpression = function (i) {
+    _this7.expression = function (i) {
       if (i === undefined) {
         i = null;
       }
 
       if (i === null) {
-        return this.getTypedRuleContexts(JmesPathExpressionContext);
+        return this.getTypedRuleContexts(ExpressionContext);
       } else {
-        return this.getTypedRuleContext(JmesPathExpressionContext, i);
+        return this.getTypedRuleContext(ExpressionContext, i);
       }
     };
 
@@ -17554,12 +17482,12 @@ var MultDivExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo4) {
   }]);
 
   return MultDivExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.MultDivExpressionContext = MultDivExpressionContext;
 
-var NotExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo5) {
-  JSONFormulaParser_inherits(NotExpressionContext, _JmesPathExpressionCo5);
+var NotExpressionContext = /*#__PURE__*/function (_ExpressionContext5) {
+  JSONFormulaParser_inherits(NotExpressionContext, _ExpressionContext5);
 
   var _super8 = JSONFormulaParser_createSuper(NotExpressionContext);
 
@@ -17576,9 +17504,9 @@ var NotExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo5) {
   }
 
   JSONFormulaParser_createClass(NotExpressionContext, [{
-    key: "jmesPathExpression",
-    value: function jmesPathExpression() {
-      return this.getTypedRuleContext(JmesPathExpressionContext, 0);
+    key: "expression",
+    value: function expression() {
+      return this.getTypedRuleContext(ExpressionContext, 0);
     }
   }, {
     key: "enterRule",
@@ -17606,12 +17534,12 @@ var NotExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo5) {
   }]);
 
   return NotExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.NotExpressionContext = NotExpressionContext;
 
-var RawStringExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo6) {
-  JSONFormulaParser_inherits(RawStringExpressionContext, _JmesPathExpressionCo6);
+var RawStringExpressionContext = /*#__PURE__*/function (_ExpressionContext6) {
+  JSONFormulaParser_inherits(RawStringExpressionContext, _ExpressionContext6);
 
   var _super9 = JSONFormulaParser_createSuper(RawStringExpressionContext);
 
@@ -17658,12 +17586,12 @@ var RawStringExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo6) 
   }]);
 
   return RawStringExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.RawStringExpressionContext = RawStringExpressionContext;
 
-var ComparisonExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo7) {
-  JSONFormulaParser_inherits(ComparisonExpressionContext, _JmesPathExpressionCo7);
+var ComparisonExpressionContext = /*#__PURE__*/function (_ExpressionContext7) {
+  JSONFormulaParser_inherits(ComparisonExpressionContext, _ExpressionContext7);
 
   var _super10 = JSONFormulaParser_createSuper(ComparisonExpressionContext);
 
@@ -17674,15 +17602,15 @@ var ComparisonExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo7)
 
     _this10 = _super10.call(this, parser);
 
-    _this10.jmesPathExpression = function (i) {
+    _this10.expression = function (i) {
       if (i === undefined) {
         i = null;
       }
 
       if (i === null) {
-        return this.getTypedRuleContexts(JmesPathExpressionContext);
+        return this.getTypedRuleContexts(ExpressionContext);
       } else {
-        return this.getTypedRuleContext(JmesPathExpressionContext, i);
+        return this.getTypedRuleContext(ExpressionContext, i);
       }
     };
 
@@ -17722,12 +17650,12 @@ var ComparisonExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo7)
   }]);
 
   return ComparisonExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.ComparisonExpressionContext = ComparisonExpressionContext;
 
-var ParenExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo8) {
-  JSONFormulaParser_inherits(ParenExpressionContext, _JmesPathExpressionCo8);
+var ParenExpressionContext = /*#__PURE__*/function (_ExpressionContext8) {
+  JSONFormulaParser_inherits(ParenExpressionContext, _ExpressionContext8);
 
   var _super11 = JSONFormulaParser_createSuper(ParenExpressionContext);
 
@@ -17744,9 +17672,9 @@ var ParenExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo8) {
   }
 
   JSONFormulaParser_createClass(ParenExpressionContext, [{
-    key: "jmesPathExpression",
-    value: function jmesPathExpression() {
-      return this.getTypedRuleContext(JmesPathExpressionContext, 0);
+    key: "expression",
+    value: function expression() {
+      return this.getTypedRuleContext(ExpressionContext, 0);
     }
   }, {
     key: "enterRule",
@@ -17774,12 +17702,12 @@ var ParenExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo8) {
   }]);
 
   return ParenExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.ParenExpressionContext = ParenExpressionContext;
 
-var FormExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo9) {
-  JSONFormulaParser_inherits(FormExpressionContext, _JmesPathExpressionCo9);
+var FormExpressionContext = /*#__PURE__*/function (_ExpressionContext9) {
+  JSONFormulaParser_inherits(FormExpressionContext, _ExpressionContext9);
 
   var _super12 = JSONFormulaParser_createSuper(FormExpressionContext);
 
@@ -17826,12 +17754,12 @@ var FormExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo9) {
   }]);
 
   return FormExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.FormExpressionContext = FormExpressionContext;
 
-var BracketExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo10) {
-  JSONFormulaParser_inherits(BracketExpressionContext, _JmesPathExpressionCo10);
+var BracketExpressionContext = /*#__PURE__*/function (_ExpressionContext10) {
+  JSONFormulaParser_inherits(BracketExpressionContext, _ExpressionContext10);
 
   var _super13 = JSONFormulaParser_createSuper(BracketExpressionContext);
 
@@ -17878,12 +17806,12 @@ var BracketExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo10) {
   }]);
 
   return BracketExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.BracketExpressionContext = BracketExpressionContext;
 
-var OrExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo11) {
-  JSONFormulaParser_inherits(OrExpressionContext, _JmesPathExpressionCo11);
+var OrExpressionContext = /*#__PURE__*/function (_ExpressionContext11) {
+  JSONFormulaParser_inherits(OrExpressionContext, _ExpressionContext11);
 
   var _super14 = JSONFormulaParser_createSuper(OrExpressionContext);
 
@@ -17894,15 +17822,15 @@ var OrExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo11) {
 
     _this14 = _super14.call(this, parser);
 
-    _this14.jmesPathExpression = function (i) {
+    _this14.expression = function (i) {
       if (i === undefined) {
         i = null;
       }
 
       if (i === null) {
-        return this.getTypedRuleContexts(JmesPathExpressionContext);
+        return this.getTypedRuleContexts(ExpressionContext);
       } else {
-        return this.getTypedRuleContext(JmesPathExpressionContext, i);
+        return this.getTypedRuleContext(ExpressionContext, i);
       }
     };
 
@@ -17937,12 +17865,12 @@ var OrExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo11) {
   }]);
 
   return OrExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.OrExpressionContext = OrExpressionContext;
 
-var CurrentNodeExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo12) {
-  JSONFormulaParser_inherits(CurrentNodeExpressionContext, _JmesPathExpressionCo12);
+var CurrentNodeExpressionContext = /*#__PURE__*/function (_ExpressionContext12) {
+  JSONFormulaParser_inherits(CurrentNodeExpressionContext, _ExpressionContext12);
 
   var _super15 = JSONFormulaParser_createSuper(CurrentNodeExpressionContext);
 
@@ -17989,12 +17917,12 @@ var CurrentNodeExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo1
   }]);
 
   return CurrentNodeExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.CurrentNodeExpressionContext = CurrentNodeExpressionContext;
 
-var ChainExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo13) {
-  JSONFormulaParser_inherits(ChainExpressionContext, _JmesPathExpressionCo13);
+var ChainExpressionContext = /*#__PURE__*/function (_ExpressionContext13) {
+  JSONFormulaParser_inherits(ChainExpressionContext, _ExpressionContext13);
 
   var _super16 = JSONFormulaParser_createSuper(ChainExpressionContext);
 
@@ -18011,9 +17939,9 @@ var ChainExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo13) {
   }
 
   JSONFormulaParser_createClass(ChainExpressionContext, [{
-    key: "jmesPathExpression",
-    value: function jmesPathExpression() {
-      return this.getTypedRuleContext(JmesPathExpressionContext, 0);
+    key: "expression",
+    value: function expression() {
+      return this.getTypedRuleContext(ExpressionContext, 0);
     }
   }, {
     key: "chainedExpression",
@@ -18046,12 +17974,12 @@ var ChainExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo13) {
   }]);
 
   return ChainExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.ChainExpressionContext = ChainExpressionContext;
 
-var AndExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo14) {
-  JSONFormulaParser_inherits(AndExpressionContext, _JmesPathExpressionCo14);
+var AndExpressionContext = /*#__PURE__*/function (_ExpressionContext14) {
+  JSONFormulaParser_inherits(AndExpressionContext, _ExpressionContext14);
 
   var _super17 = JSONFormulaParser_createSuper(AndExpressionContext);
 
@@ -18062,15 +17990,15 @@ var AndExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo14) {
 
     _this17 = _super17.call(this, parser);
 
-    _this17.jmesPathExpression = function (i) {
+    _this17.expression = function (i) {
       if (i === undefined) {
         i = null;
       }
 
       if (i === null) {
-        return this.getTypedRuleContexts(JmesPathExpressionContext);
+        return this.getTypedRuleContexts(ExpressionContext);
       } else {
-        return this.getTypedRuleContext(JmesPathExpressionContext, i);
+        return this.getTypedRuleContext(ExpressionContext, i);
       }
     };
 
@@ -18105,12 +18033,12 @@ var AndExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo14) {
   }]);
 
   return AndExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.AndExpressionContext = AndExpressionContext;
 
-var MultiSelectHashExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo15) {
-  JSONFormulaParser_inherits(MultiSelectHashExpressionContext, _JmesPathExpressionCo15);
+var MultiSelectHashExpressionContext = /*#__PURE__*/function (_ExpressionContext15) {
+  JSONFormulaParser_inherits(MultiSelectHashExpressionContext, _ExpressionContext15);
 
   var _super18 = JSONFormulaParser_createSuper(MultiSelectHashExpressionContext);
 
@@ -18157,77 +18085,25 @@ var MultiSelectHashExpressionContext = /*#__PURE__*/function (_JmesPathExpressio
   }]);
 
   return MultiSelectHashExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.MultiSelectHashExpressionContext = MultiSelectHashExpressionContext;
 
-var StringLiteralContext = /*#__PURE__*/function (_JmesPathExpressionCo16) {
-  JSONFormulaParser_inherits(StringLiteralContext, _JmesPathExpressionCo16);
+var WildcardExpressionContext = /*#__PURE__*/function (_ExpressionContext16) {
+  JSONFormulaParser_inherits(WildcardExpressionContext, _ExpressionContext16);
 
-  var _super19 = JSONFormulaParser_createSuper(StringLiteralContext);
-
-  function StringLiteralContext(parser, ctx) {
-    var _thisSuper16, _this19;
-
-    JSONFormulaParser_classCallCheck(this, StringLiteralContext);
-
-    _this19 = _super19.call(this, parser);
-
-    _get((_thisSuper16 = JSONFormulaParser_assertThisInitialized(_this19), JSONFormulaParser_getPrototypeOf(StringLiteralContext.prototype)), "copyFrom", _thisSuper16).call(_thisSuper16, ctx);
-
-    return _this19;
-  }
-
-  JSONFormulaParser_createClass(StringLiteralContext, [{
-    key: "STRING",
-    value: function STRING() {
-      return this.getToken(JSONFormulaParser.STRING, 0);
-    }
-  }, {
-    key: "enterRule",
-    value: function enterRule(listener) {
-      if (listener instanceof JSONFormulaListener) {
-        listener.enterStringLiteral(this);
-      }
-    }
-  }, {
-    key: "exitRule",
-    value: function exitRule(listener) {
-      if (listener instanceof JSONFormulaListener) {
-        listener.exitStringLiteral(this);
-      }
-    }
-  }, {
-    key: "accept",
-    value: function accept(visitor) {
-      if (visitor instanceof JSONFormulaVisitor) {
-        return visitor.visitStringLiteral(this);
-      } else {
-        return visitor.visitChildren(this);
-      }
-    }
-  }]);
-
-  return StringLiteralContext;
-}(JmesPathExpressionContext);
-
-JSONFormulaParser.StringLiteralContext = StringLiteralContext;
-
-var WildcardExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo17) {
-  JSONFormulaParser_inherits(WildcardExpressionContext, _JmesPathExpressionCo17);
-
-  var _super20 = JSONFormulaParser_createSuper(WildcardExpressionContext);
+  var _super19 = JSONFormulaParser_createSuper(WildcardExpressionContext);
 
   function WildcardExpressionContext(parser, ctx) {
-    var _thisSuper17, _this20;
+    var _thisSuper16, _this19;
 
     JSONFormulaParser_classCallCheck(this, WildcardExpressionContext);
 
-    _this20 = _super20.call(this, parser);
+    _this19 = _super19.call(this, parser);
 
-    _get((_thisSuper17 = JSONFormulaParser_assertThisInitialized(_this20), JSONFormulaParser_getPrototypeOf(WildcardExpressionContext.prototype)), "copyFrom", _thisSuper17).call(_thisSuper17, ctx);
+    _get((_thisSuper16 = JSONFormulaParser_assertThisInitialized(_this19), JSONFormulaParser_getPrototypeOf(WildcardExpressionContext.prototype)), "copyFrom", _thisSuper16).call(_thisSuper16, ctx);
 
-    return _this20;
+    return _this19;
   }
 
   JSONFormulaParser_createClass(WildcardExpressionContext, [{
@@ -18261,25 +18137,25 @@ var WildcardExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo17) 
   }]);
 
   return WildcardExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.WildcardExpressionContext = WildcardExpressionContext;
 
-var FunctionCallExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo18) {
-  JSONFormulaParser_inherits(FunctionCallExpressionContext, _JmesPathExpressionCo18);
+var FunctionCallExpressionContext = /*#__PURE__*/function (_ExpressionContext17) {
+  JSONFormulaParser_inherits(FunctionCallExpressionContext, _ExpressionContext17);
 
-  var _super21 = JSONFormulaParser_createSuper(FunctionCallExpressionContext);
+  var _super20 = JSONFormulaParser_createSuper(FunctionCallExpressionContext);
 
   function FunctionCallExpressionContext(parser, ctx) {
-    var _thisSuper18, _this21;
+    var _thisSuper17, _this20;
 
     JSONFormulaParser_classCallCheck(this, FunctionCallExpressionContext);
 
-    _this21 = _super21.call(this, parser);
+    _this20 = _super20.call(this, parser);
 
-    _get((_thisSuper18 = JSONFormulaParser_assertThisInitialized(_this21), JSONFormulaParser_getPrototypeOf(FunctionCallExpressionContext.prototype)), "copyFrom", _thisSuper18).call(_thisSuper18, ctx);
+    _get((_thisSuper17 = JSONFormulaParser_assertThisInitialized(_this20), JSONFormulaParser_getPrototypeOf(FunctionCallExpressionContext.prototype)), "copyFrom", _thisSuper17).call(_thisSuper17, ctx);
 
-    return _this21;
+    return _this20;
   }
 
   JSONFormulaParser_createClass(FunctionCallExpressionContext, [{
@@ -18313,37 +18189,37 @@ var FunctionCallExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo
   }]);
 
   return FunctionCallExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.FunctionCallExpressionContext = FunctionCallExpressionContext;
 
-var AddSubtractExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo19) {
-  JSONFormulaParser_inherits(AddSubtractExpressionContext, _JmesPathExpressionCo19);
+var AddSubtractExpressionContext = /*#__PURE__*/function (_ExpressionContext18) {
+  JSONFormulaParser_inherits(AddSubtractExpressionContext, _ExpressionContext18);
 
-  var _super22 = JSONFormulaParser_createSuper(AddSubtractExpressionContext);
+  var _super21 = JSONFormulaParser_createSuper(AddSubtractExpressionContext);
 
   function AddSubtractExpressionContext(parser, ctx) {
-    var _thisSuper19, _this22;
+    var _thisSuper18, _this21;
 
     JSONFormulaParser_classCallCheck(this, AddSubtractExpressionContext);
 
-    _this22 = _super22.call(this, parser);
+    _this21 = _super21.call(this, parser);
 
-    _this22.jmesPathExpression = function (i) {
+    _this21.expression = function (i) {
       if (i === undefined) {
         i = null;
       }
 
       if (i === null) {
-        return this.getTypedRuleContexts(JmesPathExpressionContext);
+        return this.getTypedRuleContexts(ExpressionContext);
       } else {
-        return this.getTypedRuleContext(JmesPathExpressionContext, i);
+        return this.getTypedRuleContext(ExpressionContext, i);
       }
     };
 
-    _get((_thisSuper19 = JSONFormulaParser_assertThisInitialized(_this22), JSONFormulaParser_getPrototypeOf(AddSubtractExpressionContext.prototype)), "copyFrom", _thisSuper19).call(_thisSuper19, ctx);
+    _get((_thisSuper18 = JSONFormulaParser_assertThisInitialized(_this21), JSONFormulaParser_getPrototypeOf(AddSubtractExpressionContext.prototype)), "copyFrom", _thisSuper18).call(_thisSuper18, ctx);
 
-    return _this22;
+    return _this21;
   }
 
   JSONFormulaParser_createClass(AddSubtractExpressionContext, [{
@@ -18372,25 +18248,25 @@ var AddSubtractExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo1
   }]);
 
   return AddSubtractExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.AddSubtractExpressionContext = AddSubtractExpressionContext;
 
-var MultiSelectListExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo20) {
-  JSONFormulaParser_inherits(MultiSelectListExpressionContext, _JmesPathExpressionCo20);
+var MultiSelectListExpressionContext = /*#__PURE__*/function (_ExpressionContext19) {
+  JSONFormulaParser_inherits(MultiSelectListExpressionContext, _ExpressionContext19);
 
-  var _super23 = JSONFormulaParser_createSuper(MultiSelectListExpressionContext);
+  var _super22 = JSONFormulaParser_createSuper(MultiSelectListExpressionContext);
 
   function MultiSelectListExpressionContext(parser, ctx) {
-    var _thisSuper20, _this23;
+    var _thisSuper19, _this22;
 
     JSONFormulaParser_classCallCheck(this, MultiSelectListExpressionContext);
 
-    _this23 = _super23.call(this, parser);
+    _this22 = _super22.call(this, parser);
 
-    _get((_thisSuper20 = JSONFormulaParser_assertThisInitialized(_this23), JSONFormulaParser_getPrototypeOf(MultiSelectListExpressionContext.prototype)), "copyFrom", _thisSuper20).call(_thisSuper20, ctx);
+    _get((_thisSuper19 = JSONFormulaParser_assertThisInitialized(_this22), JSONFormulaParser_getPrototypeOf(MultiSelectListExpressionContext.prototype)), "copyFrom", _thisSuper19).call(_thisSuper19, ctx);
 
-    return _this23;
+    return _this22;
   }
 
   JSONFormulaParser_createClass(MultiSelectListExpressionContext, [{
@@ -18424,31 +18300,31 @@ var MultiSelectListExpressionContext = /*#__PURE__*/function (_JmesPathExpressio
   }]);
 
   return MultiSelectListExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.MultiSelectListExpressionContext = MultiSelectListExpressionContext;
 
-var BracketedExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo21) {
-  JSONFormulaParser_inherits(BracketedExpressionContext, _JmesPathExpressionCo21);
+var BracketedExpressionContext = /*#__PURE__*/function (_ExpressionContext20) {
+  JSONFormulaParser_inherits(BracketedExpressionContext, _ExpressionContext20);
 
-  var _super24 = JSONFormulaParser_createSuper(BracketedExpressionContext);
+  var _super23 = JSONFormulaParser_createSuper(BracketedExpressionContext);
 
   function BracketedExpressionContext(parser, ctx) {
-    var _thisSuper21, _this24;
+    var _thisSuper20, _this23;
 
     JSONFormulaParser_classCallCheck(this, BracketedExpressionContext);
 
-    _this24 = _super24.call(this, parser);
+    _this23 = _super23.call(this, parser);
 
-    _get((_thisSuper21 = JSONFormulaParser_assertThisInitialized(_this24), JSONFormulaParser_getPrototypeOf(BracketedExpressionContext.prototype)), "copyFrom", _thisSuper21).call(_thisSuper21, ctx);
+    _get((_thisSuper20 = JSONFormulaParser_assertThisInitialized(_this23), JSONFormulaParser_getPrototypeOf(BracketedExpressionContext.prototype)), "copyFrom", _thisSuper20).call(_thisSuper20, ctx);
 
-    return _this24;
+    return _this23;
   }
 
   JSONFormulaParser_createClass(BracketedExpressionContext, [{
-    key: "jmesPathExpression",
-    value: function jmesPathExpression() {
-      return this.getTypedRuleContext(JmesPathExpressionContext, 0);
+    key: "expression",
+    value: function expression() {
+      return this.getTypedRuleContext(ExpressionContext, 0);
     }
   }, {
     key: "bracketSpecifier",
@@ -18481,25 +18357,25 @@ var BracketedExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo21)
   }]);
 
   return BracketedExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.BracketedExpressionContext = BracketedExpressionContext;
 
-var LiteralExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo22) {
-  JSONFormulaParser_inherits(LiteralExpressionContext, _JmesPathExpressionCo22);
+var LiteralExpressionContext = /*#__PURE__*/function (_ExpressionContext21) {
+  JSONFormulaParser_inherits(LiteralExpressionContext, _ExpressionContext21);
 
-  var _super25 = JSONFormulaParser_createSuper(LiteralExpressionContext);
+  var _super24 = JSONFormulaParser_createSuper(LiteralExpressionContext);
 
   function LiteralExpressionContext(parser, ctx) {
-    var _thisSuper22, _this25;
+    var _thisSuper21, _this24;
 
     JSONFormulaParser_classCallCheck(this, LiteralExpressionContext);
 
-    _this25 = _super25.call(this, parser);
+    _this24 = _super24.call(this, parser);
 
-    _get((_thisSuper22 = JSONFormulaParser_assertThisInitialized(_this25), JSONFormulaParser_getPrototypeOf(LiteralExpressionContext.prototype)), "copyFrom", _thisSuper22).call(_thisSuper22, ctx);
+    _get((_thisSuper21 = JSONFormulaParser_assertThisInitialized(_this24), JSONFormulaParser_getPrototypeOf(LiteralExpressionContext.prototype)), "copyFrom", _thisSuper21).call(_thisSuper21, ctx);
 
-    return _this25;
+    return _this24;
   }
 
   JSONFormulaParser_createClass(LiteralExpressionContext, [{
@@ -18533,25 +18409,25 @@ var LiteralExpressionContext = /*#__PURE__*/function (_JmesPathExpressionCo22) {
   }]);
 
   return LiteralExpressionContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.LiteralExpressionContext = LiteralExpressionContext;
 
-var NumberLiteralContext = /*#__PURE__*/function (_JmesPathExpressionCo23) {
-  JSONFormulaParser_inherits(NumberLiteralContext, _JmesPathExpressionCo23);
+var NumberLiteralContext = /*#__PURE__*/function (_ExpressionContext22) {
+  JSONFormulaParser_inherits(NumberLiteralContext, _ExpressionContext22);
 
-  var _super26 = JSONFormulaParser_createSuper(NumberLiteralContext);
+  var _super25 = JSONFormulaParser_createSuper(NumberLiteralContext);
 
   function NumberLiteralContext(parser, ctx) {
-    var _thisSuper23, _this26;
+    var _thisSuper22, _this25;
 
     JSONFormulaParser_classCallCheck(this, NumberLiteralContext);
 
-    _this26 = _super26.call(this, parser);
+    _this25 = _super25.call(this, parser);
 
-    _get((_thisSuper23 = JSONFormulaParser_assertThisInitialized(_this26), JSONFormulaParser_getPrototypeOf(NumberLiteralContext.prototype)), "copyFrom", _thisSuper23).call(_thisSuper23, ctx);
+    _get((_thisSuper22 = JSONFormulaParser_assertThisInitialized(_this25), JSONFormulaParser_getPrototypeOf(NumberLiteralContext.prototype)), "copyFrom", _thisSuper22).call(_thisSuper22, ctx);
 
-    return _this26;
+    return _this25;
   }
 
   JSONFormulaParser_createClass(NumberLiteralContext, [{
@@ -18590,17 +18466,17 @@ var NumberLiteralContext = /*#__PURE__*/function (_JmesPathExpressionCo23) {
   }]);
 
   return NumberLiteralContext;
-}(JmesPathExpressionContext);
+}(ExpressionContext);
 
 JSONFormulaParser.NumberLiteralContext = NumberLiteralContext;
 
 var ChainedExpressionContext = /*#__PURE__*/function (_antlr4$ParserRuleCon3) {
   JSONFormulaParser_inherits(ChainedExpressionContext, _antlr4$ParserRuleCon3);
 
-  var _super27 = JSONFormulaParser_createSuper(ChainedExpressionContext);
+  var _super26 = JSONFormulaParser_createSuper(ChainedExpressionContext);
 
   function ChainedExpressionContext(parser, parent, invokingState) {
-    var _this27;
+    var _this26;
 
     JSONFormulaParser_classCallCheck(this, ChainedExpressionContext);
 
@@ -18612,92 +18488,33 @@ var ChainedExpressionContext = /*#__PURE__*/function (_antlr4$ParserRuleCon3) {
       invokingState = -1;
     }
 
-    _this27 = _super27.call(this, parent, invokingState);
-    _this27.parser = parser;
-    _this27.ruleIndex = JSONFormulaParser.RULE_chainedExpression;
-    return _this27;
+    _this26 = _super26.call(this, parent, invokingState);
+    _this26.parser = parser;
+    _this26.ruleIndex = JSONFormulaParser.RULE_chainedExpression;
+    return _this26;
   }
 
   JSONFormulaParser_createClass(ChainedExpressionContext, [{
-    key: "copyFrom",
-    value: function copyFrom(ctx) {
-      _get(JSONFormulaParser_getPrototypeOf(ChainedExpressionContext.prototype), "copyFrom", this).call(this, ctx);
+    key: "identifier",
+    value: function identifier() {
+      return this.getTypedRuleContext(IdentifierContext, 0);
     }
-  }]);
-
-  return ChainedExpressionContext;
-}(antlr4.ParserRuleContext);
-
-var ChainedMultiSelectListContext = /*#__PURE__*/function (_ChainedExpressionCon) {
-  JSONFormulaParser_inherits(ChainedMultiSelectListContext, _ChainedExpressionCon);
-
-  var _super28 = JSONFormulaParser_createSuper(ChainedMultiSelectListContext);
-
-  function ChainedMultiSelectListContext(parser, ctx) {
-    var _thisSuper24, _this28;
-
-    JSONFormulaParser_classCallCheck(this, ChainedMultiSelectListContext);
-
-    _this28 = _super28.call(this, parser);
-
-    _get((_thisSuper24 = JSONFormulaParser_assertThisInitialized(_this28), JSONFormulaParser_getPrototypeOf(ChainedMultiSelectListContext.prototype)), "copyFrom", _thisSuper24).call(_thisSuper24, ctx);
-
-    return _this28;
-  }
-
-  JSONFormulaParser_createClass(ChainedMultiSelectListContext, [{
+  }, {
     key: "multiSelectList",
     value: function multiSelectList() {
       return this.getTypedRuleContext(MultiSelectListContext, 0);
     }
   }, {
-    key: "enterRule",
-    value: function enterRule(listener) {
-      if (listener instanceof JSONFormulaListener) {
-        listener.enterChainedMultiSelectList(this);
-      }
+    key: "multiSelectHash",
+    value: function multiSelectHash() {
+      return this.getTypedRuleContext(MultiSelectHashContext, 0);
     }
   }, {
-    key: "exitRule",
-    value: function exitRule(listener) {
-      if (listener instanceof JSONFormulaListener) {
-        listener.exitChainedMultiSelectList(this);
-      }
+    key: "functionExpression",
+    value: function functionExpression() {
+      return this.getTypedRuleContext(FunctionExpressionContext, 0);
     }
   }, {
-    key: "accept",
-    value: function accept(visitor) {
-      if (visitor instanceof JSONFormulaVisitor) {
-        return visitor.visitChainedMultiSelectList(this);
-      } else {
-        return visitor.visitChildren(this);
-      }
-    }
-  }]);
-
-  return ChainedMultiSelectListContext;
-}(ChainedExpressionContext);
-
-JSONFormulaParser.ChainedMultiSelectListContext = ChainedMultiSelectListContext;
-
-var ChainedWildcardContext = /*#__PURE__*/function (_ChainedExpressionCon2) {
-  JSONFormulaParser_inherits(ChainedWildcardContext, _ChainedExpressionCon2);
-
-  var _super29 = JSONFormulaParser_createSuper(ChainedWildcardContext);
-
-  function ChainedWildcardContext(parser, ctx) {
-    var _thisSuper25, _this29;
-
-    JSONFormulaParser_classCallCheck(this, ChainedWildcardContext);
-
-    _this29 = _super29.call(this, parser);
-
-    _get((_thisSuper25 = JSONFormulaParser_assertThisInitialized(_this29), JSONFormulaParser_getPrototypeOf(ChainedWildcardContext.prototype)), "copyFrom", _thisSuper25).call(_thisSuper25, ctx);
-
-    return _this29;
-  }
-
-  JSONFormulaParser_createClass(ChainedWildcardContext, [{
     key: "wildcard",
     value: function wildcard() {
       return this.getTypedRuleContext(WildcardContext, 0);
@@ -18706,195 +18523,37 @@ var ChainedWildcardContext = /*#__PURE__*/function (_ChainedExpressionCon2) {
     key: "enterRule",
     value: function enterRule(listener) {
       if (listener instanceof JSONFormulaListener) {
-        listener.enterChainedWildcard(this);
+        listener.enterChainedExpression(this);
       }
     }
   }, {
     key: "exitRule",
     value: function exitRule(listener) {
       if (listener instanceof JSONFormulaListener) {
-        listener.exitChainedWildcard(this);
+        listener.exitChainedExpression(this);
       }
     }
   }, {
     key: "accept",
     value: function accept(visitor) {
       if (visitor instanceof JSONFormulaVisitor) {
-        return visitor.visitChainedWildcard(this);
+        return visitor.visitChainedExpression(this);
       } else {
         return visitor.visitChildren(this);
       }
     }
   }]);
 
-  return ChainedWildcardContext;
-}(ChainedExpressionContext);
-
-JSONFormulaParser.ChainedWildcardContext = ChainedWildcardContext;
-
-var ChainedMultiSelectHashContext = /*#__PURE__*/function (_ChainedExpressionCon3) {
-  JSONFormulaParser_inherits(ChainedMultiSelectHashContext, _ChainedExpressionCon3);
-
-  var _super30 = JSONFormulaParser_createSuper(ChainedMultiSelectHashContext);
-
-  function ChainedMultiSelectHashContext(parser, ctx) {
-    var _thisSuper26, _this30;
-
-    JSONFormulaParser_classCallCheck(this, ChainedMultiSelectHashContext);
-
-    _this30 = _super30.call(this, parser);
-
-    _get((_thisSuper26 = JSONFormulaParser_assertThisInitialized(_this30), JSONFormulaParser_getPrototypeOf(ChainedMultiSelectHashContext.prototype)), "copyFrom", _thisSuper26).call(_thisSuper26, ctx);
-
-    return _this30;
-  }
-
-  JSONFormulaParser_createClass(ChainedMultiSelectHashContext, [{
-    key: "multiSelectHash",
-    value: function multiSelectHash() {
-      return this.getTypedRuleContext(MultiSelectHashContext, 0);
-    }
-  }, {
-    key: "enterRule",
-    value: function enterRule(listener) {
-      if (listener instanceof JSONFormulaListener) {
-        listener.enterChainedMultiSelectHash(this);
-      }
-    }
-  }, {
-    key: "exitRule",
-    value: function exitRule(listener) {
-      if (listener instanceof JSONFormulaListener) {
-        listener.exitChainedMultiSelectHash(this);
-      }
-    }
-  }, {
-    key: "accept",
-    value: function accept(visitor) {
-      if (visitor instanceof JSONFormulaVisitor) {
-        return visitor.visitChainedMultiSelectHash(this);
-      } else {
-        return visitor.visitChildren(this);
-      }
-    }
-  }]);
-
-  return ChainedMultiSelectHashContext;
-}(ChainedExpressionContext);
-
-JSONFormulaParser.ChainedMultiSelectHashContext = ChainedMultiSelectHashContext;
-
-var ChainedIdentifierContext = /*#__PURE__*/function (_ChainedExpressionCon4) {
-  JSONFormulaParser_inherits(ChainedIdentifierContext, _ChainedExpressionCon4);
-
-  var _super31 = JSONFormulaParser_createSuper(ChainedIdentifierContext);
-
-  function ChainedIdentifierContext(parser, ctx) {
-    var _thisSuper27, _this31;
-
-    JSONFormulaParser_classCallCheck(this, ChainedIdentifierContext);
-
-    _this31 = _super31.call(this, parser);
-
-    _get((_thisSuper27 = JSONFormulaParser_assertThisInitialized(_this31), JSONFormulaParser_getPrototypeOf(ChainedIdentifierContext.prototype)), "copyFrom", _thisSuper27).call(_thisSuper27, ctx);
-
-    return _this31;
-  }
-
-  JSONFormulaParser_createClass(ChainedIdentifierContext, [{
-    key: "identifier",
-    value: function identifier() {
-      return this.getTypedRuleContext(IdentifierContext, 0);
-    }
-  }, {
-    key: "enterRule",
-    value: function enterRule(listener) {
-      if (listener instanceof JSONFormulaListener) {
-        listener.enterChainedIdentifier(this);
-      }
-    }
-  }, {
-    key: "exitRule",
-    value: function exitRule(listener) {
-      if (listener instanceof JSONFormulaListener) {
-        listener.exitChainedIdentifier(this);
-      }
-    }
-  }, {
-    key: "accept",
-    value: function accept(visitor) {
-      if (visitor instanceof JSONFormulaVisitor) {
-        return visitor.visitChainedIdentifier(this);
-      } else {
-        return visitor.visitChildren(this);
-      }
-    }
-  }]);
-
-  return ChainedIdentifierContext;
-}(ChainedExpressionContext);
-
-JSONFormulaParser.ChainedIdentifierContext = ChainedIdentifierContext;
-
-var ChainedFunctionExpressionContext = /*#__PURE__*/function (_ChainedExpressionCon5) {
-  JSONFormulaParser_inherits(ChainedFunctionExpressionContext, _ChainedExpressionCon5);
-
-  var _super32 = JSONFormulaParser_createSuper(ChainedFunctionExpressionContext);
-
-  function ChainedFunctionExpressionContext(parser, ctx) {
-    var _thisSuper28, _this32;
-
-    JSONFormulaParser_classCallCheck(this, ChainedFunctionExpressionContext);
-
-    _this32 = _super32.call(this, parser);
-
-    _get((_thisSuper28 = JSONFormulaParser_assertThisInitialized(_this32), JSONFormulaParser_getPrototypeOf(ChainedFunctionExpressionContext.prototype)), "copyFrom", _thisSuper28).call(_thisSuper28, ctx);
-
-    return _this32;
-  }
-
-  JSONFormulaParser_createClass(ChainedFunctionExpressionContext, [{
-    key: "functionExpression",
-    value: function functionExpression() {
-      return this.getTypedRuleContext(FunctionExpressionContext, 0);
-    }
-  }, {
-    key: "enterRule",
-    value: function enterRule(listener) {
-      if (listener instanceof JSONFormulaListener) {
-        listener.enterChainedFunctionExpression(this);
-      }
-    }
-  }, {
-    key: "exitRule",
-    value: function exitRule(listener) {
-      if (listener instanceof JSONFormulaListener) {
-        listener.exitChainedFunctionExpression(this);
-      }
-    }
-  }, {
-    key: "accept",
-    value: function accept(visitor) {
-      if (visitor instanceof JSONFormulaVisitor) {
-        return visitor.visitChainedFunctionExpression(this);
-      } else {
-        return visitor.visitChildren(this);
-      }
-    }
-  }]);
-
-  return ChainedFunctionExpressionContext;
-}(ChainedExpressionContext);
-
-JSONFormulaParser.ChainedFunctionExpressionContext = ChainedFunctionExpressionContext;
+  return ChainedExpressionContext;
+}(antlr4.ParserRuleContext);
 
 var WildcardContext = /*#__PURE__*/function (_antlr4$ParserRuleCon4) {
   JSONFormulaParser_inherits(WildcardContext, _antlr4$ParserRuleCon4);
 
-  var _super33 = JSONFormulaParser_createSuper(WildcardContext);
+  var _super27 = JSONFormulaParser_createSuper(WildcardContext);
 
   function WildcardContext(parser, parent, invokingState) {
-    var _this33;
+    var _this27;
 
     JSONFormulaParser_classCallCheck(this, WildcardContext);
 
@@ -18906,10 +18565,10 @@ var WildcardContext = /*#__PURE__*/function (_antlr4$ParserRuleCon4) {
       invokingState = -1;
     }
 
-    _this33 = _super33.call(this, parent, invokingState);
-    _this33.parser = parser;
-    _this33.ruleIndex = JSONFormulaParser.RULE_wildcard;
-    return _this33;
+    _this27 = _super27.call(this, parent, invokingState);
+    _this27.parser = parser;
+    _this27.ruleIndex = JSONFormulaParser.RULE_wildcard;
+    return _this27;
   }
 
   JSONFormulaParser_createClass(WildcardContext, [{
@@ -18943,10 +18602,10 @@ var WildcardContext = /*#__PURE__*/function (_antlr4$ParserRuleCon4) {
 var MultiSelectListContext = /*#__PURE__*/function (_antlr4$ParserRuleCon5) {
   JSONFormulaParser_inherits(MultiSelectListContext, _antlr4$ParserRuleCon5);
 
-  var _super34 = JSONFormulaParser_createSuper(MultiSelectListContext);
+  var _super28 = JSONFormulaParser_createSuper(MultiSelectListContext);
 
   function MultiSelectListContext(parser, parent, invokingState) {
-    var _this34;
+    var _this28;
 
     JSONFormulaParser_classCallCheck(this, MultiSelectListContext);
 
@@ -18958,23 +18617,23 @@ var MultiSelectListContext = /*#__PURE__*/function (_antlr4$ParserRuleCon5) {
       invokingState = -1;
     }
 
-    _this34 = _super34.call(this, parent, invokingState);
+    _this28 = _super28.call(this, parent, invokingState);
 
-    _this34.jmesPathExpression = function (i) {
+    _this28.expression = function (i) {
       if (i === undefined) {
         i = null;
       }
 
       if (i === null) {
-        return this.getTypedRuleContexts(JmesPathExpressionContext);
+        return this.getTypedRuleContexts(ExpressionContext);
       } else {
-        return this.getTypedRuleContext(JmesPathExpressionContext, i);
+        return this.getTypedRuleContext(ExpressionContext, i);
       }
     };
 
-    _this34.parser = parser;
-    _this34.ruleIndex = JSONFormulaParser.RULE_multiSelectList;
-    return _this34;
+    _this28.parser = parser;
+    _this28.ruleIndex = JSONFormulaParser.RULE_multiSelectList;
+    return _this28;
   }
 
   JSONFormulaParser_createClass(MultiSelectListContext, [{
@@ -19008,10 +18667,10 @@ var MultiSelectListContext = /*#__PURE__*/function (_antlr4$ParserRuleCon5) {
 var MultiSelectHashContext = /*#__PURE__*/function (_antlr4$ParserRuleCon6) {
   JSONFormulaParser_inherits(MultiSelectHashContext, _antlr4$ParserRuleCon6);
 
-  var _super35 = JSONFormulaParser_createSuper(MultiSelectHashContext);
+  var _super29 = JSONFormulaParser_createSuper(MultiSelectHashContext);
 
   function MultiSelectHashContext(parser, parent, invokingState) {
-    var _this35;
+    var _this29;
 
     JSONFormulaParser_classCallCheck(this, MultiSelectHashContext);
 
@@ -19023,9 +18682,9 @@ var MultiSelectHashContext = /*#__PURE__*/function (_antlr4$ParserRuleCon6) {
       invokingState = -1;
     }
 
-    _this35 = _super35.call(this, parent, invokingState);
+    _this29 = _super29.call(this, parent, invokingState);
 
-    _this35.keyvalExpr = function (i) {
+    _this29.keyvalExpr = function (i) {
       if (i === undefined) {
         i = null;
       }
@@ -19037,9 +18696,9 @@ var MultiSelectHashContext = /*#__PURE__*/function (_antlr4$ParserRuleCon6) {
       }
     };
 
-    _this35.parser = parser;
-    _this35.ruleIndex = JSONFormulaParser.RULE_multiSelectHash;
-    return _this35;
+    _this29.parser = parser;
+    _this29.ruleIndex = JSONFormulaParser.RULE_multiSelectHash;
+    return _this29;
   }
 
   JSONFormulaParser_createClass(MultiSelectHashContext, [{
@@ -19073,10 +18732,10 @@ var MultiSelectHashContext = /*#__PURE__*/function (_antlr4$ParserRuleCon6) {
 var KeyvalExprContext = /*#__PURE__*/function (_antlr4$ParserRuleCon7) {
   JSONFormulaParser_inherits(KeyvalExprContext, _antlr4$ParserRuleCon7);
 
-  var _super36 = JSONFormulaParser_createSuper(KeyvalExprContext);
+  var _super30 = JSONFormulaParser_createSuper(KeyvalExprContext);
 
   function KeyvalExprContext(parser, parent, invokingState) {
-    var _this36;
+    var _this30;
 
     JSONFormulaParser_classCallCheck(this, KeyvalExprContext);
 
@@ -19088,10 +18747,10 @@ var KeyvalExprContext = /*#__PURE__*/function (_antlr4$ParserRuleCon7) {
       invokingState = -1;
     }
 
-    _this36 = _super36.call(this, parent, invokingState);
-    _this36.parser = parser;
-    _this36.ruleIndex = JSONFormulaParser.RULE_keyvalExpr;
-    return _this36;
+    _this30 = _super30.call(this, parent, invokingState);
+    _this30.parser = parser;
+    _this30.ruleIndex = JSONFormulaParser.RULE_keyvalExpr;
+    return _this30;
   }
 
   JSONFormulaParser_createClass(KeyvalExprContext, [{
@@ -19100,9 +18759,9 @@ var KeyvalExprContext = /*#__PURE__*/function (_antlr4$ParserRuleCon7) {
       return this.getTypedRuleContext(IdentifierContext, 0);
     }
   }, {
-    key: "jmesPathExpression",
-    value: function jmesPathExpression() {
-      return this.getTypedRuleContext(JmesPathExpressionContext, 0);
+    key: "expression",
+    value: function expression() {
+      return this.getTypedRuleContext(ExpressionContext, 0);
     }
   }, {
     key: "enterRule",
@@ -19135,10 +18794,10 @@ var KeyvalExprContext = /*#__PURE__*/function (_antlr4$ParserRuleCon7) {
 var BracketSpecifierContext = /*#__PURE__*/function (_antlr4$ParserRuleCon8) {
   JSONFormulaParser_inherits(BracketSpecifierContext, _antlr4$ParserRuleCon8);
 
-  var _super37 = JSONFormulaParser_createSuper(BracketSpecifierContext);
+  var _super31 = JSONFormulaParser_createSuper(BracketSpecifierContext);
 
   function BracketSpecifierContext(parser, parent, invokingState) {
-    var _this37;
+    var _this31;
 
     JSONFormulaParser_classCallCheck(this, BracketSpecifierContext);
 
@@ -19150,10 +18809,10 @@ var BracketSpecifierContext = /*#__PURE__*/function (_antlr4$ParserRuleCon8) {
       invokingState = -1;
     }
 
-    _this37 = _super37.call(this, parent, invokingState);
-    _this37.parser = parser;
-    _this37.ruleIndex = JSONFormulaParser.RULE_bracketSpecifier;
-    return _this37;
+    _this31 = _super31.call(this, parent, invokingState);
+    _this31.parser = parser;
+    _this31.ruleIndex = JSONFormulaParser.RULE_bracketSpecifier;
+    return _this31;
   }
 
   JSONFormulaParser_createClass(BracketSpecifierContext, [{
@@ -19169,24 +18828,24 @@ var BracketSpecifierContext = /*#__PURE__*/function (_antlr4$ParserRuleCon8) {
 var SelectContext = /*#__PURE__*/function (_BracketSpecifierCont) {
   JSONFormulaParser_inherits(SelectContext, _BracketSpecifierCont);
 
-  var _super38 = JSONFormulaParser_createSuper(SelectContext);
+  var _super32 = JSONFormulaParser_createSuper(SelectContext);
 
   function SelectContext(parser, ctx) {
-    var _thisSuper29, _this38;
+    var _thisSuper23, _this32;
 
     JSONFormulaParser_classCallCheck(this, SelectContext);
 
-    _this38 = _super38.call(this, parser);
+    _this32 = _super32.call(this, parser);
 
-    _get((_thisSuper29 = JSONFormulaParser_assertThisInitialized(_this38), JSONFormulaParser_getPrototypeOf(SelectContext.prototype)), "copyFrom", _thisSuper29).call(_thisSuper29, ctx);
+    _get((_thisSuper23 = JSONFormulaParser_assertThisInitialized(_this32), JSONFormulaParser_getPrototypeOf(SelectContext.prototype)), "copyFrom", _thisSuper23).call(_thisSuper23, ctx);
 
-    return _this38;
+    return _this32;
   }
 
   JSONFormulaParser_createClass(SelectContext, [{
-    key: "jmesPathExpression",
-    value: function jmesPathExpression() {
-      return this.getTypedRuleContext(JmesPathExpressionContext, 0);
+    key: "expression",
+    value: function expression() {
+      return this.getTypedRuleContext(ExpressionContext, 0);
     }
   }, {
     key: "enterRule",
@@ -19221,18 +18880,18 @@ JSONFormulaParser.SelectContext = SelectContext;
 var BracketFlattenContext = /*#__PURE__*/function (_BracketSpecifierCont2) {
   JSONFormulaParser_inherits(BracketFlattenContext, _BracketSpecifierCont2);
 
-  var _super39 = JSONFormulaParser_createSuper(BracketFlattenContext);
+  var _super33 = JSONFormulaParser_createSuper(BracketFlattenContext);
 
   function BracketFlattenContext(parser, ctx) {
-    var _thisSuper30, _this39;
+    var _thisSuper24, _this33;
 
     JSONFormulaParser_classCallCheck(this, BracketFlattenContext);
 
-    _this39 = _super39.call(this, parser);
+    _this33 = _super33.call(this, parser);
 
-    _get((_thisSuper30 = JSONFormulaParser_assertThisInitialized(_this39), JSONFormulaParser_getPrototypeOf(BracketFlattenContext.prototype)), "copyFrom", _thisSuper30).call(_thisSuper30, ctx);
+    _get((_thisSuper24 = JSONFormulaParser_assertThisInitialized(_this33), JSONFormulaParser_getPrototypeOf(BracketFlattenContext.prototype)), "copyFrom", _thisSuper24).call(_thisSuper24, ctx);
 
-    return _this39;
+    return _this33;
   }
 
   JSONFormulaParser_createClass(BracketFlattenContext, [{
@@ -19268,18 +18927,18 @@ JSONFormulaParser.BracketFlattenContext = BracketFlattenContext;
 var BracketSliceContext = /*#__PURE__*/function (_BracketSpecifierCont3) {
   JSONFormulaParser_inherits(BracketSliceContext, _BracketSpecifierCont3);
 
-  var _super40 = JSONFormulaParser_createSuper(BracketSliceContext);
+  var _super34 = JSONFormulaParser_createSuper(BracketSliceContext);
 
   function BracketSliceContext(parser, ctx) {
-    var _thisSuper31, _this40;
+    var _thisSuper25, _this34;
 
     JSONFormulaParser_classCallCheck(this, BracketSliceContext);
 
-    _this40 = _super40.call(this, parser);
+    _this34 = _super34.call(this, parser);
 
-    _get((_thisSuper31 = JSONFormulaParser_assertThisInitialized(_this40), JSONFormulaParser_getPrototypeOf(BracketSliceContext.prototype)), "copyFrom", _thisSuper31).call(_thisSuper31, ctx);
+    _get((_thisSuper25 = JSONFormulaParser_assertThisInitialized(_this34), JSONFormulaParser_getPrototypeOf(BracketSliceContext.prototype)), "copyFrom", _thisSuper25).call(_thisSuper25, ctx);
 
-    return _this40;
+    return _this34;
   }
 
   JSONFormulaParser_createClass(BracketSliceContext, [{
@@ -19320,18 +18979,18 @@ JSONFormulaParser.BracketSliceContext = BracketSliceContext;
 var BracketIndexContext = /*#__PURE__*/function (_BracketSpecifierCont4) {
   JSONFormulaParser_inherits(BracketIndexContext, _BracketSpecifierCont4);
 
-  var _super41 = JSONFormulaParser_createSuper(BracketIndexContext);
+  var _super35 = JSONFormulaParser_createSuper(BracketIndexContext);
 
   function BracketIndexContext(parser, ctx) {
-    var _thisSuper32, _this41;
+    var _thisSuper26, _this35;
 
     JSONFormulaParser_classCallCheck(this, BracketIndexContext);
 
-    _this41 = _super41.call(this, parser);
+    _this35 = _super35.call(this, parser);
 
-    _get((_thisSuper32 = JSONFormulaParser_assertThisInitialized(_this41), JSONFormulaParser_getPrototypeOf(BracketIndexContext.prototype)), "copyFrom", _thisSuper32).call(_thisSuper32, ctx);
+    _get((_thisSuper26 = JSONFormulaParser_assertThisInitialized(_this35), JSONFormulaParser_getPrototypeOf(BracketIndexContext.prototype)), "copyFrom", _thisSuper26).call(_thisSuper26, ctx);
 
-    return _this41;
+    return _this35;
   }
 
   JSONFormulaParser_createClass(BracketIndexContext, [{
@@ -19372,18 +19031,18 @@ JSONFormulaParser.BracketIndexContext = BracketIndexContext;
 var BracketStarContext = /*#__PURE__*/function (_BracketSpecifierCont5) {
   JSONFormulaParser_inherits(BracketStarContext, _BracketSpecifierCont5);
 
-  var _super42 = JSONFormulaParser_createSuper(BracketStarContext);
+  var _super36 = JSONFormulaParser_createSuper(BracketStarContext);
 
   function BracketStarContext(parser, ctx) {
-    var _thisSuper33, _this42;
+    var _thisSuper27, _this36;
 
     JSONFormulaParser_classCallCheck(this, BracketStarContext);
 
-    _this42 = _super42.call(this, parser);
+    _this36 = _super36.call(this, parser);
 
-    _get((_thisSuper33 = JSONFormulaParser_assertThisInitialized(_this42), JSONFormulaParser_getPrototypeOf(BracketStarContext.prototype)), "copyFrom", _thisSuper33).call(_thisSuper33, ctx);
+    _get((_thisSuper27 = JSONFormulaParser_assertThisInitialized(_this36), JSONFormulaParser_getPrototypeOf(BracketStarContext.prototype)), "copyFrom", _thisSuper27).call(_thisSuper27, ctx);
 
-    return _this42;
+    return _this36;
   }
 
   JSONFormulaParser_createClass(BracketStarContext, [{
@@ -19419,10 +19078,10 @@ JSONFormulaParser.BracketStarContext = BracketStarContext;
 var SliceContext = /*#__PURE__*/function (_antlr4$ParserRuleCon9) {
   JSONFormulaParser_inherits(SliceContext, _antlr4$ParserRuleCon9);
 
-  var _super43 = JSONFormulaParser_createSuper(SliceContext);
+  var _super37 = JSONFormulaParser_createSuper(SliceContext);
 
   function SliceContext(parser, parent, invokingState) {
-    var _this43;
+    var _this37;
 
     JSONFormulaParser_classCallCheck(this, SliceContext);
 
@@ -19434,9 +19093,9 @@ var SliceContext = /*#__PURE__*/function (_antlr4$ParserRuleCon9) {
       invokingState = -1;
     }
 
-    _this43 = _super43.call(this, parent, invokingState);
+    _this37 = _super37.call(this, parent, invokingState);
 
-    _this43.SIGNED_INT = function (i) {
+    _this37.SIGNED_INT = function (i) {
       if (i === undefined) {
         i = null;
       }
@@ -19448,15 +19107,15 @@ var SliceContext = /*#__PURE__*/function (_antlr4$ParserRuleCon9) {
       }
     };
 
-    _this43.parser = parser;
-    _this43.ruleIndex = JSONFormulaParser.RULE_slice;
-    _this43.start = null; // Token
+    _this37.parser = parser;
+    _this37.ruleIndex = JSONFormulaParser.RULE_slice;
+    _this37.start = null; // Token
 
-    _this43.stop = null; // Token
+    _this37.stop = null; // Token
 
-    _this43.step = null; // Token
+    _this37.step = null; // Token
 
-    return _this43;
+    return _this37;
   }
 
   JSONFormulaParser_createClass(SliceContext, [{
@@ -19490,10 +19149,10 @@ var SliceContext = /*#__PURE__*/function (_antlr4$ParserRuleCon9) {
 var FunctionExpressionContext = /*#__PURE__*/function (_antlr4$ParserRuleCon10) {
   JSONFormulaParser_inherits(FunctionExpressionContext, _antlr4$ParserRuleCon10);
 
-  var _super44 = JSONFormulaParser_createSuper(FunctionExpressionContext);
+  var _super38 = JSONFormulaParser_createSuper(FunctionExpressionContext);
 
   function FunctionExpressionContext(parser, parent, invokingState) {
-    var _this44;
+    var _this38;
 
     JSONFormulaParser_classCallCheck(this, FunctionExpressionContext);
 
@@ -19505,9 +19164,9 @@ var FunctionExpressionContext = /*#__PURE__*/function (_antlr4$ParserRuleCon10) 
       invokingState = -1;
     }
 
-    _this44 = _super44.call(this, parent, invokingState);
+    _this38 = _super38.call(this, parent, invokingState);
 
-    _this44.functionArg = function (i) {
+    _this38.functionArg = function (i) {
       if (i === undefined) {
         i = null;
       }
@@ -19519,9 +19178,9 @@ var FunctionExpressionContext = /*#__PURE__*/function (_antlr4$ParserRuleCon10) 
       }
     };
 
-    _this44.parser = parser;
-    _this44.ruleIndex = JSONFormulaParser.RULE_functionExpression;
-    return _this44;
+    _this38.parser = parser;
+    _this38.ruleIndex = JSONFormulaParser.RULE_functionExpression;
+    return _this38;
   }
 
   JSONFormulaParser_createClass(FunctionExpressionContext, [{
@@ -19560,10 +19219,10 @@ var FunctionExpressionContext = /*#__PURE__*/function (_antlr4$ParserRuleCon10) 
 var FunctionArgContext = /*#__PURE__*/function (_antlr4$ParserRuleCon11) {
   JSONFormulaParser_inherits(FunctionArgContext, _antlr4$ParserRuleCon11);
 
-  var _super45 = JSONFormulaParser_createSuper(FunctionArgContext);
+  var _super39 = JSONFormulaParser_createSuper(FunctionArgContext);
 
   function FunctionArgContext(parser, parent, invokingState) {
-    var _this45;
+    var _this39;
 
     JSONFormulaParser_classCallCheck(this, FunctionArgContext);
 
@@ -19575,16 +19234,16 @@ var FunctionArgContext = /*#__PURE__*/function (_antlr4$ParserRuleCon11) {
       invokingState = -1;
     }
 
-    _this45 = _super45.call(this, parent, invokingState);
-    _this45.parser = parser;
-    _this45.ruleIndex = JSONFormulaParser.RULE_functionArg;
-    return _this45;
+    _this39 = _super39.call(this, parent, invokingState);
+    _this39.parser = parser;
+    _this39.ruleIndex = JSONFormulaParser.RULE_functionArg;
+    return _this39;
   }
 
   JSONFormulaParser_createClass(FunctionArgContext, [{
-    key: "jmesPathExpression",
-    value: function jmesPathExpression() {
-      return this.getTypedRuleContext(JmesPathExpressionContext, 0);
+    key: "expression",
+    value: function expression() {
+      return this.getTypedRuleContext(ExpressionContext, 0);
     }
   }, {
     key: "expressionType",
@@ -19622,10 +19281,10 @@ var FunctionArgContext = /*#__PURE__*/function (_antlr4$ParserRuleCon11) {
 var CurrentNodeContext = /*#__PURE__*/function (_antlr4$ParserRuleCon12) {
   JSONFormulaParser_inherits(CurrentNodeContext, _antlr4$ParserRuleCon12);
 
-  var _super46 = JSONFormulaParser_createSuper(CurrentNodeContext);
+  var _super40 = JSONFormulaParser_createSuper(CurrentNodeContext);
 
   function CurrentNodeContext(parser, parent, invokingState) {
-    var _this46;
+    var _this40;
 
     JSONFormulaParser_classCallCheck(this, CurrentNodeContext);
 
@@ -19637,10 +19296,10 @@ var CurrentNodeContext = /*#__PURE__*/function (_antlr4$ParserRuleCon12) {
       invokingState = -1;
     }
 
-    _this46 = _super46.call(this, parent, invokingState);
-    _this46.parser = parser;
-    _this46.ruleIndex = JSONFormulaParser.RULE_currentNode;
-    return _this46;
+    _this40 = _super40.call(this, parent, invokingState);
+    _this40.parser = parser;
+    _this40.ruleIndex = JSONFormulaParser.RULE_currentNode;
+    return _this40;
   }
 
   JSONFormulaParser_createClass(CurrentNodeContext, [{
@@ -19674,10 +19333,10 @@ var CurrentNodeContext = /*#__PURE__*/function (_antlr4$ParserRuleCon12) {
 var FormContext = /*#__PURE__*/function (_antlr4$ParserRuleCon13) {
   JSONFormulaParser_inherits(FormContext, _antlr4$ParserRuleCon13);
 
-  var _super47 = JSONFormulaParser_createSuper(FormContext);
+  var _super41 = JSONFormulaParser_createSuper(FormContext);
 
   function FormContext(parser, parent, invokingState) {
-    var _this47;
+    var _this41;
 
     JSONFormulaParser_classCallCheck(this, FormContext);
 
@@ -19689,10 +19348,10 @@ var FormContext = /*#__PURE__*/function (_antlr4$ParserRuleCon13) {
       invokingState = -1;
     }
 
-    _this47 = _super47.call(this, parent, invokingState);
-    _this47.parser = parser;
-    _this47.ruleIndex = JSONFormulaParser.RULE_form;
-    return _this47;
+    _this41 = _super41.call(this, parent, invokingState);
+    _this41.parser = parser;
+    _this41.ruleIndex = JSONFormulaParser.RULE_form;
+    return _this41;
   }
 
   JSONFormulaParser_createClass(FormContext, [{
@@ -19726,10 +19385,10 @@ var FormContext = /*#__PURE__*/function (_antlr4$ParserRuleCon13) {
 var CurrentFieldContext = /*#__PURE__*/function (_antlr4$ParserRuleCon14) {
   JSONFormulaParser_inherits(CurrentFieldContext, _antlr4$ParserRuleCon14);
 
-  var _super48 = JSONFormulaParser_createSuper(CurrentFieldContext);
+  var _super42 = JSONFormulaParser_createSuper(CurrentFieldContext);
 
   function CurrentFieldContext(parser, parent, invokingState) {
-    var _this48;
+    var _this42;
 
     JSONFormulaParser_classCallCheck(this, CurrentFieldContext);
 
@@ -19741,10 +19400,10 @@ var CurrentFieldContext = /*#__PURE__*/function (_antlr4$ParserRuleCon14) {
       invokingState = -1;
     }
 
-    _this48 = _super48.call(this, parent, invokingState);
-    _this48.parser = parser;
-    _this48.ruleIndex = JSONFormulaParser.RULE_currentField;
-    return _this48;
+    _this42 = _super42.call(this, parent, invokingState);
+    _this42.parser = parser;
+    _this42.ruleIndex = JSONFormulaParser.RULE_currentField;
+    return _this42;
   }
 
   JSONFormulaParser_createClass(CurrentFieldContext, [{
@@ -19778,10 +19437,10 @@ var CurrentFieldContext = /*#__PURE__*/function (_antlr4$ParserRuleCon14) {
 var ExpressionTypeContext = /*#__PURE__*/function (_antlr4$ParserRuleCon15) {
   JSONFormulaParser_inherits(ExpressionTypeContext, _antlr4$ParserRuleCon15);
 
-  var _super49 = JSONFormulaParser_createSuper(ExpressionTypeContext);
+  var _super43 = JSONFormulaParser_createSuper(ExpressionTypeContext);
 
   function ExpressionTypeContext(parser, parent, invokingState) {
-    var _this49;
+    var _this43;
 
     JSONFormulaParser_classCallCheck(this, ExpressionTypeContext);
 
@@ -19793,16 +19452,16 @@ var ExpressionTypeContext = /*#__PURE__*/function (_antlr4$ParserRuleCon15) {
       invokingState = -1;
     }
 
-    _this49 = _super49.call(this, parent, invokingState);
-    _this49.parser = parser;
-    _this49.ruleIndex = JSONFormulaParser.RULE_expressionType;
-    return _this49;
+    _this43 = _super43.call(this, parent, invokingState);
+    _this43.parser = parser;
+    _this43.ruleIndex = JSONFormulaParser.RULE_expressionType;
+    return _this43;
   }
 
   JSONFormulaParser_createClass(ExpressionTypeContext, [{
-    key: "jmesPathExpression",
-    value: function jmesPathExpression() {
-      return this.getTypedRuleContext(JmesPathExpressionContext, 0);
+    key: "expression",
+    value: function expression() {
+      return this.getTypedRuleContext(ExpressionContext, 0);
     }
   }, {
     key: "enterRule",
@@ -19835,10 +19494,10 @@ var ExpressionTypeContext = /*#__PURE__*/function (_antlr4$ParserRuleCon15) {
 var LiteralContext = /*#__PURE__*/function (_antlr4$ParserRuleCon16) {
   JSONFormulaParser_inherits(LiteralContext, _antlr4$ParserRuleCon16);
 
-  var _super50 = JSONFormulaParser_createSuper(LiteralContext);
+  var _super44 = JSONFormulaParser_createSuper(LiteralContext);
 
   function LiteralContext(parser, parent, invokingState) {
-    var _this50;
+    var _this44;
 
     JSONFormulaParser_classCallCheck(this, LiteralContext);
 
@@ -19850,10 +19509,10 @@ var LiteralContext = /*#__PURE__*/function (_antlr4$ParserRuleCon16) {
       invokingState = -1;
     }
 
-    _this50 = _super50.call(this, parent, invokingState);
-    _this50.parser = parser;
-    _this50.ruleIndex = JSONFormulaParser.RULE_literal;
-    return _this50;
+    _this44 = _super44.call(this, parent, invokingState);
+    _this44.parser = parser;
+    _this44.ruleIndex = JSONFormulaParser.RULE_literal;
+    return _this44;
   }
 
   JSONFormulaParser_createClass(LiteralContext, [{
@@ -19892,10 +19551,10 @@ var LiteralContext = /*#__PURE__*/function (_antlr4$ParserRuleCon16) {
 var IdentifierContext = /*#__PURE__*/function (_antlr4$ParserRuleCon17) {
   JSONFormulaParser_inherits(IdentifierContext, _antlr4$ParserRuleCon17);
 
-  var _super51 = JSONFormulaParser_createSuper(IdentifierContext);
+  var _super45 = JSONFormulaParser_createSuper(IdentifierContext);
 
   function IdentifierContext(parser, parent, invokingState) {
-    var _this51;
+    var _this45;
 
     JSONFormulaParser_classCallCheck(this, IdentifierContext);
 
@@ -19907,10 +19566,10 @@ var IdentifierContext = /*#__PURE__*/function (_antlr4$ParserRuleCon17) {
       invokingState = -1;
     }
 
-    _this51 = _super51.call(this, parent, invokingState);
-    _this51.parser = parser;
-    _this51.ruleIndex = JSONFormulaParser.RULE_identifier;
-    return _this51;
+    _this45 = _super45.call(this, parent, invokingState);
+    _this45.parser = parser;
+    _this45.ruleIndex = JSONFormulaParser.RULE_identifier;
+    return _this45;
   }
 
   JSONFormulaParser_createClass(IdentifierContext, [{
@@ -19959,10 +19618,10 @@ var IdentifierContext = /*#__PURE__*/function (_antlr4$ParserRuleCon17) {
 var JsonObjectContext = /*#__PURE__*/function (_antlr4$ParserRuleCon18) {
   JSONFormulaParser_inherits(JsonObjectContext, _antlr4$ParserRuleCon18);
 
-  var _super52 = JSONFormulaParser_createSuper(JsonObjectContext);
+  var _super46 = JSONFormulaParser_createSuper(JsonObjectContext);
 
   function JsonObjectContext(parser, parent, invokingState) {
-    var _this52;
+    var _this46;
 
     JSONFormulaParser_classCallCheck(this, JsonObjectContext);
 
@@ -19974,9 +19633,9 @@ var JsonObjectContext = /*#__PURE__*/function (_antlr4$ParserRuleCon18) {
       invokingState = -1;
     }
 
-    _this52 = _super52.call(this, parent, invokingState);
+    _this46 = _super46.call(this, parent, invokingState);
 
-    _this52.jsonObjectPair = function (i) {
+    _this46.jsonObjectPair = function (i) {
       if (i === undefined) {
         i = null;
       }
@@ -19988,9 +19647,9 @@ var JsonObjectContext = /*#__PURE__*/function (_antlr4$ParserRuleCon18) {
       }
     };
 
-    _this52.parser = parser;
-    _this52.ruleIndex = JSONFormulaParser.RULE_jsonObject;
-    return _this52;
+    _this46.parser = parser;
+    _this46.ruleIndex = JSONFormulaParser.RULE_jsonObject;
+    return _this46;
   }
 
   JSONFormulaParser_createClass(JsonObjectContext, [{
@@ -20024,10 +19683,10 @@ var JsonObjectContext = /*#__PURE__*/function (_antlr4$ParserRuleCon18) {
 var JsonObjectPairContext = /*#__PURE__*/function (_antlr4$ParserRuleCon19) {
   JSONFormulaParser_inherits(JsonObjectPairContext, _antlr4$ParserRuleCon19);
 
-  var _super53 = JSONFormulaParser_createSuper(JsonObjectPairContext);
+  var _super47 = JSONFormulaParser_createSuper(JsonObjectPairContext);
 
   function JsonObjectPairContext(parser, parent, invokingState) {
-    var _this53;
+    var _this47;
 
     JSONFormulaParser_classCallCheck(this, JsonObjectPairContext);
 
@@ -20039,10 +19698,10 @@ var JsonObjectPairContext = /*#__PURE__*/function (_antlr4$ParserRuleCon19) {
       invokingState = -1;
     }
 
-    _this53 = _super53.call(this, parent, invokingState);
-    _this53.parser = parser;
-    _this53.ruleIndex = JSONFormulaParser.RULE_jsonObjectPair;
-    return _this53;
+    _this47 = _super47.call(this, parent, invokingState);
+    _this47.parser = parser;
+    _this47.ruleIndex = JSONFormulaParser.RULE_jsonObjectPair;
+    return _this47;
   }
 
   JSONFormulaParser_createClass(JsonObjectPairContext, [{
@@ -20086,10 +19745,10 @@ var JsonObjectPairContext = /*#__PURE__*/function (_antlr4$ParserRuleCon19) {
 var JsonArrayContext = /*#__PURE__*/function (_antlr4$ParserRuleCon20) {
   JSONFormulaParser_inherits(JsonArrayContext, _antlr4$ParserRuleCon20);
 
-  var _super54 = JSONFormulaParser_createSuper(JsonArrayContext);
+  var _super48 = JSONFormulaParser_createSuper(JsonArrayContext);
 
   function JsonArrayContext(parser, parent, invokingState) {
-    var _this54;
+    var _this48;
 
     JSONFormulaParser_classCallCheck(this, JsonArrayContext);
 
@@ -20101,9 +19760,9 @@ var JsonArrayContext = /*#__PURE__*/function (_antlr4$ParserRuleCon20) {
       invokingState = -1;
     }
 
-    _this54 = _super54.call(this, parent, invokingState);
+    _this48 = _super48.call(this, parent, invokingState);
 
-    _this54.jsonValue = function (i) {
+    _this48.jsonValue = function (i) {
       if (i === undefined) {
         i = null;
       }
@@ -20115,9 +19774,9 @@ var JsonArrayContext = /*#__PURE__*/function (_antlr4$ParserRuleCon20) {
       }
     };
 
-    _this54.parser = parser;
-    _this54.ruleIndex = JSONFormulaParser.RULE_jsonArray;
-    return _this54;
+    _this48.parser = parser;
+    _this48.ruleIndex = JSONFormulaParser.RULE_jsonArray;
+    return _this48;
   }
 
   JSONFormulaParser_createClass(JsonArrayContext, [{
@@ -20151,10 +19810,10 @@ var JsonArrayContext = /*#__PURE__*/function (_antlr4$ParserRuleCon20) {
 var JsonValueContext = /*#__PURE__*/function (_antlr4$ParserRuleCon21) {
   JSONFormulaParser_inherits(JsonValueContext, _antlr4$ParserRuleCon21);
 
-  var _super55 = JSONFormulaParser_createSuper(JsonValueContext);
+  var _super49 = JSONFormulaParser_createSuper(JsonValueContext);
 
   function JsonValueContext(parser, parent, invokingState) {
-    var _this55;
+    var _this49;
 
     JSONFormulaParser_classCallCheck(this, JsonValueContext);
 
@@ -20166,10 +19825,10 @@ var JsonValueContext = /*#__PURE__*/function (_antlr4$ParserRuleCon21) {
       invokingState = -1;
     }
 
-    _this55 = _super55.call(this, parent, invokingState);
-    _this55.parser = parser;
-    _this55.ruleIndex = JSONFormulaParser.RULE_jsonValue;
-    return _this55;
+    _this49 = _super49.call(this, parent, invokingState);
+    _this49.parser = parser;
+    _this49.ruleIndex = JSONFormulaParser.RULE_jsonValue;
+    return _this49;
   }
 
   JSONFormulaParser_createClass(JsonValueContext, [{
@@ -20185,18 +19844,18 @@ var JsonValueContext = /*#__PURE__*/function (_antlr4$ParserRuleCon21) {
 var JsonArrayValueContext = /*#__PURE__*/function (_JsonValueContext) {
   JSONFormulaParser_inherits(JsonArrayValueContext, _JsonValueContext);
 
-  var _super56 = JSONFormulaParser_createSuper(JsonArrayValueContext);
+  var _super50 = JSONFormulaParser_createSuper(JsonArrayValueContext);
 
   function JsonArrayValueContext(parser, ctx) {
-    var _thisSuper34, _this56;
+    var _thisSuper28, _this50;
 
     JSONFormulaParser_classCallCheck(this, JsonArrayValueContext);
 
-    _this56 = _super56.call(this, parser);
+    _this50 = _super50.call(this, parser);
 
-    _get((_thisSuper34 = JSONFormulaParser_assertThisInitialized(_this56), JSONFormulaParser_getPrototypeOf(JsonArrayValueContext.prototype)), "copyFrom", _thisSuper34).call(_thisSuper34, ctx);
+    _get((_thisSuper28 = JSONFormulaParser_assertThisInitialized(_this50), JSONFormulaParser_getPrototypeOf(JsonArrayValueContext.prototype)), "copyFrom", _thisSuper28).call(_thisSuper28, ctx);
 
-    return _this56;
+    return _this50;
   }
 
   JSONFormulaParser_createClass(JsonArrayValueContext, [{
@@ -20237,18 +19896,18 @@ JSONFormulaParser.JsonArrayValueContext = JsonArrayValueContext;
 var JsonStringValueContext = /*#__PURE__*/function (_JsonValueContext2) {
   JSONFormulaParser_inherits(JsonStringValueContext, _JsonValueContext2);
 
-  var _super57 = JSONFormulaParser_createSuper(JsonStringValueContext);
+  var _super51 = JSONFormulaParser_createSuper(JsonStringValueContext);
 
   function JsonStringValueContext(parser, ctx) {
-    var _thisSuper35, _this57;
+    var _thisSuper29, _this51;
 
     JSONFormulaParser_classCallCheck(this, JsonStringValueContext);
 
-    _this57 = _super57.call(this, parser);
+    _this51 = _super51.call(this, parser);
 
-    _get((_thisSuper35 = JSONFormulaParser_assertThisInitialized(_this57), JSONFormulaParser_getPrototypeOf(JsonStringValueContext.prototype)), "copyFrom", _thisSuper35).call(_thisSuper35, ctx);
+    _get((_thisSuper29 = JSONFormulaParser_assertThisInitialized(_this51), JSONFormulaParser_getPrototypeOf(JsonStringValueContext.prototype)), "copyFrom", _thisSuper29).call(_thisSuper29, ctx);
 
-    return _this57;
+    return _this51;
   }
 
   JSONFormulaParser_createClass(JsonStringValueContext, [{
@@ -20289,18 +19948,18 @@ JSONFormulaParser.JsonStringValueContext = JsonStringValueContext;
 var JsonObjectValueContext = /*#__PURE__*/function (_JsonValueContext3) {
   JSONFormulaParser_inherits(JsonObjectValueContext, _JsonValueContext3);
 
-  var _super58 = JSONFormulaParser_createSuper(JsonObjectValueContext);
+  var _super52 = JSONFormulaParser_createSuper(JsonObjectValueContext);
 
   function JsonObjectValueContext(parser, ctx) {
-    var _thisSuper36, _this58;
+    var _thisSuper30, _this52;
 
     JSONFormulaParser_classCallCheck(this, JsonObjectValueContext);
 
-    _this58 = _super58.call(this, parser);
+    _this52 = _super52.call(this, parser);
 
-    _get((_thisSuper36 = JSONFormulaParser_assertThisInitialized(_this58), JSONFormulaParser_getPrototypeOf(JsonObjectValueContext.prototype)), "copyFrom", _thisSuper36).call(_thisSuper36, ctx);
+    _get((_thisSuper30 = JSONFormulaParser_assertThisInitialized(_this52), JSONFormulaParser_getPrototypeOf(JsonObjectValueContext.prototype)), "copyFrom", _thisSuper30).call(_thisSuper30, ctx);
 
-    return _this58;
+    return _this52;
   }
 
   JSONFormulaParser_createClass(JsonObjectValueContext, [{
@@ -20341,18 +20000,18 @@ JSONFormulaParser.JsonObjectValueContext = JsonObjectValueContext;
 var JsonConstantValueContext = /*#__PURE__*/function (_JsonValueContext4) {
   JSONFormulaParser_inherits(JsonConstantValueContext, _JsonValueContext4);
 
-  var _super59 = JSONFormulaParser_createSuper(JsonConstantValueContext);
+  var _super53 = JSONFormulaParser_createSuper(JsonConstantValueContext);
 
   function JsonConstantValueContext(parser, ctx) {
-    var _thisSuper37, _this59;
+    var _thisSuper31, _this53;
 
     JSONFormulaParser_classCallCheck(this, JsonConstantValueContext);
 
-    _this59 = _super59.call(this, parser);
+    _this53 = _super53.call(this, parser);
 
-    _get((_thisSuper37 = JSONFormulaParser_assertThisInitialized(_this59), JSONFormulaParser_getPrototypeOf(JsonConstantValueContext.prototype)), "copyFrom", _thisSuper37).call(_thisSuper37, ctx);
+    _get((_thisSuper31 = JSONFormulaParser_assertThisInitialized(_this53), JSONFormulaParser_getPrototypeOf(JsonConstantValueContext.prototype)), "copyFrom", _thisSuper31).call(_thisSuper31, ctx);
 
-    return _this59;
+    return _this53;
   }
 
   JSONFormulaParser_createClass(JsonConstantValueContext, [{
@@ -20393,18 +20052,18 @@ JSONFormulaParser.JsonConstantValueContext = JsonConstantValueContext;
 var JsonNumberValueContext = /*#__PURE__*/function (_JsonValueContext5) {
   JSONFormulaParser_inherits(JsonNumberValueContext, _JsonValueContext5);
 
-  var _super60 = JSONFormulaParser_createSuper(JsonNumberValueContext);
+  var _super54 = JSONFormulaParser_createSuper(JsonNumberValueContext);
 
   function JsonNumberValueContext(parser, ctx) {
-    var _thisSuper38, _this60;
+    var _thisSuper32, _this54;
 
     JSONFormulaParser_classCallCheck(this, JsonNumberValueContext);
 
-    _this60 = _super60.call(this, parser);
+    _this54 = _super54.call(this, parser);
 
-    _get((_thisSuper38 = JSONFormulaParser_assertThisInitialized(_this60), JSONFormulaParser_getPrototypeOf(JsonNumberValueContext.prototype)), "copyFrom", _thisSuper38).call(_thisSuper38, ctx);
+    _get((_thisSuper32 = JSONFormulaParser_assertThisInitialized(_this54), JSONFormulaParser_getPrototypeOf(JsonNumberValueContext.prototype)), "copyFrom", _thisSuper32).call(_thisSuper32, ctx);
 
-    return _this60;
+    return _this54;
   }
 
   JSONFormulaParser_createClass(JsonNumberValueContext, [{
@@ -20447,7 +20106,7 @@ var JsonNumberValueContext = /*#__PURE__*/function (_JsonValueContext5) {
 
 JSONFormulaParser.JsonNumberValueContext = JsonNumberValueContext;
 JSONFormulaParser.FormulaContext = FormulaContext;
-JSONFormulaParser.JmesPathExpressionContext = JmesPathExpressionContext;
+JSONFormulaParser.ExpressionContext = ExpressionContext;
 JSONFormulaParser.ChainedExpressionContext = ChainedExpressionContext;
 JSONFormulaParser.WildcardContext = WildcardContext;
 JSONFormulaParser.MultiSelectListContext = MultiSelectListContext;
@@ -20493,7 +20152,7 @@ function JSONFormulaLexer_getPrototypeOf(o) { JSONFormulaLexer_getPrototypeOf = 
 // Generated from antlr/JSONFormula.g4 by ANTLR 4.9.2
 // jshint ignore: start
 
-var JSONFormulaLexer_serializedATN = ["\x03\u608B\uA72A\u8133\uB9ED\u417C\u3BE7\u7786", "\u5964\x02\"\u010A\b\x01\x04\x02\t\x02\x04\x03\t\x03", "\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07", "\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\x0B\t\x0B\x04", "\f\t\f\x04\r\t\r\x04\x0E\t\x0E\x04\x0F\t\x0F\x04\x10", "\t\x10\x04\x11\t\x11\x04\x12\t\x12\x04\x13\t\x13", "\x04\x14\t\x14\x04\x15\t\x15\x04\x16\t\x16\x04\x17", "\t\x17\x04\x18\t\x18\x04\x19\t\x19\x04\x1A\t\x1A", "\x04\x1B\t\x1B\x04\x1C\t\x1C\x04\x1D\t\x1D\x04\x1E", "\t\x1E\x04\x1F\t\x1F\x04 \t \x04!\t!\x04\"\t\"\x04#", "\t#\x04$\t$\x04%\t%\x04&\t&\x04'\t'\x03\x02\x03\x02", "\x03\x03\x03\x03\x03\x04\x03\x04\x03\x05\x03\x05", "\x03\x06\x03\x06\x03\x07\x03\x07\x03\x07\x03\b", "\x03\b\x03\b\x03\t\x03\t\x03\n\x03\n\x03\x0B\x03\x0B", "\x03\f\x03\f\x03\r\x03\r\x03\x0E\x03\x0E\x03\x0F", "\x03\x0F\x03\x10\x03\x10\x03\x11\x03\x11\x03\x12", "\x03\x12\x03\x13\x03\x13\x03\x13\x03\x14\x03\x14", "\x03\x15\x03\x15\x03\x15\x03\x15\x03\x15\x03\x15", "\x03\x16\x03\x16\x03\x16\x03\x16\x03\x16\x03\x16", "\x03\x16\x03\x17\x03\x17\x03\x18\x03\x18\x03\x19", "\x05\x19\x8B\n\x19\x03\x19\x03\x19\x03\x1A\x03", "\x1A\x05\x1A\x91\n\x1A\x03\x1A\x07\x1A\x94\n\x1A", "\f\x1A\x0E\x1A\x97\x0B\x1A\x03\x1B\x03\x1B\x03", "\x1B\x03\x1B\x03\x1B\x03\x1B\x03\x1B\x03\x1B\x03", "\x1B\x03\x1B\x05\x1B\xA3\n\x1B\x03\x1C\x03\x1C", "\x03\x1C\x07\x1C\xA8\n\x1C\f\x1C\x0E\x1C\xAB\x0B", "\x1C\x03\x1C\x03\x1C\x03\x1D\x03\x1D\x03\x1D\x03", "\x1E\x03\x1E\x03\x1E\x03\x1E\x03\x1E\x03\x1E\x03", "\x1E\x03\x1E\x03\x1E\x03\x1E\x03\x1E\x03\x1E\x03", "\x1E\x05\x1E\xBF\n\x1E\x03\x1F\x03\x1F\x07\x1F", "\xC3\n\x1F\f\x1F\x0E\x1F\xC6\x0B\x1F\x03 \x03 \x03", " \x07 \xCB\n \f \x0E \xCE\x0B \x03 \x03 \x03!\x03", "!\x03!\x05!\xD5\n!\x03\"\x03\"\x03\"\x03\"\x03\"\x03", "\"\x03#\x03#\x03$\x05$\xE0\n$\x03$\x03$\x03$\x06$", "\xE5\n$\r$\x0E$\xE6\x03$\x05$\xEA\n$\x03$\x05$\xED", "\n$\x03$\x03$\x03$\x05$\xF2\n$\x03%\x03%\x03%\x07", "%\xF7\n%\f%\x0E%\xFA\x0B%\x05%\xFC\n%\x03&\x03&\x05", "&\u0100\n&\x03&\x03&\x03'\x06'\u0105\n'\r'\x0E'\u0106", "\x03'\x03'\x02\x02(\x03\x03\x05\x04\x07\x05\t", "\x06\x0B\x07\r\b\x0F\t\x11\n\x13\x0B\x15\f\x17\r\x19", "\x0E\x1B\x0F\x1D\x10\x1F\x11!\x12#\x13%\x14'\x15", ")\x16+\x17-\x18/\x191\x1A3\x1B5\x1C7\x1D9\x02;\x1E", "=\x1F? A\x02C\x02E\x02G!I\x02K\x02M\"\x03\x02\r\x03", "\x022;\x04\x02))^^\x05\x02C\\aac|\x06\x022;C\\aac|\x04", "\x02$$^^\x0B\x02$$11^^bbddhhppttvv\x05\x022;CHch\x03\x02", "3;\x04\x02GGgg\x04\x02--//\x05\x02\x0B\f\x0F\x0F\"", "\"\x02\u011C\x02\x03\x03\x02\x02\x02\x02\x05\x03", "\x02\x02\x02\x02\x07\x03\x02\x02\x02\x02\t\x03", "\x02\x02\x02\x02\x0B\x03\x02\x02\x02\x02\r\x03", "\x02\x02\x02\x02\x0F\x03\x02\x02\x02\x02\x11\x03", "\x02\x02\x02\x02\x13\x03\x02\x02\x02\x02\x15\x03", "\x02\x02\x02\x02\x17\x03\x02\x02\x02\x02\x19\x03", "\x02\x02\x02\x02\x1B\x03\x02\x02\x02\x02\x1D\x03", "\x02\x02\x02\x02\x1F\x03\x02\x02\x02\x02!\x03", "\x02\x02\x02\x02#\x03\x02\x02\x02\x02%\x03\x02", "\x02\x02\x02'\x03\x02\x02\x02\x02)\x03\x02\x02", "\x02\x02+\x03\x02\x02\x02\x02-\x03\x02\x02\x02", "\x02/\x03\x02\x02\x02\x021\x03\x02\x02\x02\x02", "3\x03\x02\x02\x02\x025\x03\x02\x02\x02\x027\x03", "\x02\x02\x02\x02;\x03\x02\x02\x02\x02=\x03\x02", "\x02\x02\x02?\x03\x02\x02\x02\x02G\x03\x02\x02", "\x02\x02M\x03\x02\x02\x02\x03O\x03\x02\x02\x02", "\x05Q\x03\x02\x02\x02\x07S\x03\x02\x02\x02\tU\x03", "\x02\x02\x02\x0BW\x03\x02\x02\x02\rY\x03\x02\x02", "\x02\x0F\\\x03\x02\x02\x02\x11_\x03\x02\x02\x02", "\x13a\x03\x02\x02\x02\x15c\x03\x02\x02\x02\x17", "e\x03\x02\x02\x02\x19g\x03\x02\x02\x02\x1Bi\x03", "\x02\x02\x02\x1Dk\x03\x02\x02\x02\x1Fm\x03\x02", "\x02\x02!o\x03\x02\x02\x02#q\x03\x02\x02\x02%s\x03", "\x02\x02\x02'v\x03\x02\x02\x02)x\x03\x02\x02\x02", "+~\x03\x02\x02\x02-\x85\x03\x02\x02\x02/\x87\x03", "\x02\x02\x021\x8A\x03\x02\x02\x023\x8E\x03\x02", "\x02\x025\xA2\x03\x02\x02\x027\xA4\x03\x02\x02", "\x029\xAE\x03\x02\x02\x02;\xBE\x03\x02\x02\x02", "=\xC0\x03\x02\x02\x02?\xC7\x03\x02\x02\x02A\xD1", "\x03\x02\x02\x02C\xD6\x03\x02\x02\x02E\xDC\x03", "\x02\x02\x02G\xF1\x03\x02\x02\x02I\xFB\x03\x02", "\x02\x02K\xFD\x03\x02\x02\x02M\u0104\x03\x02\x02", "\x02OP\x070\x02\x02P\x04\x03\x02\x02\x02QR\x07,", "\x02\x02R\x06\x03\x02\x02\x02ST\x071\x02\x02T\b", "\x03\x02\x02\x02UV\x07-\x02\x02V\n\x03\x02\x02\x02", "WX\x07/\x02\x02X\f\x03\x02\x02\x02YZ\x07(\x02\x02", "Z[\x07(\x02\x02[\x0E\x03\x02\x02\x02\\]\x07~\x02", "\x02]^\x07~\x02\x02^\x10\x03\x02\x02\x02_`\x07#", "\x02\x02`\x12\x03\x02\x02\x02ab\x07*\x02\x02b\x14", "\x03\x02\x02\x02cd\x07+\x02\x02d\x16\x03\x02\x02", "\x02ef\x07~\x02\x02f\x18\x03\x02\x02\x02gh\x07]", "\x02\x02h\x1A\x03\x02\x02\x02ij\x07.\x02\x02j\x1C", "\x03\x02\x02\x02kl\x07_\x02\x02l\x1E\x03\x02\x02", "\x02mn\x07}\x02\x02n \x03\x02\x02\x02op\x07\x7F", "\x02\x02p\"\x03\x02\x02\x02qr\x07<\x02\x02r$\x03", "\x02\x02\x02st\x07]\x02\x02tu\x07A\x02\x02u&\x03", "\x02\x02\x02vw\x07B\x02\x02w(\x03\x02\x02\x02xy", "\x07&\x02\x02yz\x07h\x02\x02z{\x07q\x02\x02{|\x07", "t\x02\x02|}\x07o\x02\x02}*\x03\x02\x02\x02~\x7F", "\x07&\x02\x02\x7F\x80\x07h\x02\x02\x80\x81\x07", "k\x02\x02\x81\x82\x07g\x02\x02\x82\x83\x07n\x02", "\x02\x83\x84\x07f\x02\x02\x84,\x03\x02\x02\x02", "\x85\x86\x07(\x02\x02\x86.\x03\x02\x02\x02\x87", "\x88\x07b\x02\x02\x880\x03\x02\x02\x02\x89\x8B", "\x07/\x02\x02\x8A\x89\x03\x02\x02\x02\x8A\x8B", "\x03\x02\x02\x02\x8B\x8C\x03\x02\x02\x02\x8C\x8D", "\x05I%\x02\x8D2\x03\x02\x02\x02\x8E\x90\x051\x19", "\x02\x8F\x91\x070\x02\x02\x90\x8F\x03\x02\x02", "\x02\x90\x91\x03\x02\x02\x02\x91\x95\x03\x02\x02", "\x02\x92\x94\t\x02\x02\x02\x93\x92\x03\x02\x02", "\x02\x94\x97\x03\x02\x02\x02\x95\x93\x03\x02\x02", "\x02\x95\x96\x03\x02\x02\x02\x964\x03\x02\x02", "\x02\x97\x95\x03\x02\x02\x02\x98\xA3\x07>\x02", "\x02\x99\x9A\x07>\x02\x02\x9A\xA3\x07?\x02\x02", "\x9B\x9C\x07?\x02\x02\x9C\xA3\x07?\x02\x02\x9D", "\x9E\x07@\x02\x02\x9E\xA3\x07?\x02\x02\x9F\xA3", "\x07@\x02\x02\xA0\xA1\x07#\x02\x02\xA1\xA3\x07", "?\x02\x02\xA2\x98\x03\x02\x02\x02\xA2\x99\x03", "\x02\x02\x02\xA2\x9B\x03\x02\x02\x02\xA2\x9D\x03", "\x02\x02\x02\xA2\x9F\x03\x02\x02\x02\xA2\xA0\x03", "\x02\x02\x02\xA36\x03\x02\x02\x02\xA4\xA9\x07", ")\x02\x02\xA5\xA8\x059\x1D\x02\xA6\xA8\n\x03\x02", "\x02\xA7\xA5\x03\x02\x02\x02\xA7\xA6\x03\x02\x02", "\x02\xA8\xAB\x03\x02\x02\x02\xA9\xA7\x03\x02\x02", "\x02\xA9\xAA\x03\x02\x02\x02\xAA\xAC\x03\x02\x02", "\x02\xAB\xA9\x03\x02\x02\x02\xAC\xAD\x07)\x02", "\x02\xAD8\x03\x02\x02\x02\xAE\xAF\x07^\x02\x02", "\xAF\xB0\x0B\x02\x02\x02\xB0:\x03\x02\x02\x02", "\xB1\xB2\x07v\x02\x02\xB2\xB3\x07t\x02\x02\xB3", "\xB4\x07w\x02\x02\xB4\xBF\x07g\x02\x02\xB5\xB6", "\x07h\x02\x02\xB6\xB7\x07c\x02\x02\xB7\xB8\x07", "n\x02\x02\xB8\xB9\x07u\x02\x02\xB9\xBF\x07g\x02", "\x02\xBA\xBB\x07p\x02\x02\xBB\xBC\x07w\x02\x02", "\xBC\xBD\x07n\x02\x02\xBD\xBF\x07n\x02\x02\xBE", "\xB1\x03\x02\x02\x02\xBE\xB5\x03\x02\x02\x02\xBE", "\xBA\x03\x02\x02\x02\xBF<\x03\x02\x02\x02\xC0", "\xC4\t\x04\x02\x02\xC1\xC3\t\x05\x02\x02\xC2\xC1", "\x03\x02\x02\x02\xC3\xC6\x03\x02\x02\x02\xC4\xC2", "\x03\x02\x02\x02\xC4\xC5\x03\x02\x02\x02\xC5>", "\x03\x02\x02\x02\xC6\xC4\x03\x02\x02\x02\xC7\xCC", "\x07$\x02\x02\xC8\xCB\x05A!\x02\xC9\xCB\n\x06\x02", "\x02\xCA\xC8\x03\x02\x02\x02\xCA\xC9\x03\x02\x02", "\x02\xCB\xCE\x03\x02\x02\x02\xCC\xCA\x03\x02\x02", "\x02\xCC\xCD\x03\x02\x02\x02\xCD\xCF\x03\x02\x02", "\x02\xCE\xCC\x03\x02\x02\x02\xCF\xD0\x07$\x02", "\x02\xD0@\x03\x02\x02\x02\xD1\xD4\x07^\x02\x02", "\xD2\xD5\t\x07\x02\x02\xD3\xD5\x05C\"\x02\xD4\xD2", "\x03\x02\x02\x02\xD4\xD3\x03\x02\x02\x02\xD5B", "\x03\x02\x02\x02\xD6\xD7\x07w\x02\x02\xD7\xD8", "\x05E#\x02\xD8\xD9\x05E#\x02\xD9\xDA\x05E#\x02\xDA", "\xDB\x05E#\x02\xDBD\x03\x02\x02\x02\xDC\xDD\t\b", "\x02\x02\xDDF\x03\x02\x02\x02\xDE\xE0\x07/\x02", "\x02\xDF\xDE\x03\x02\x02\x02\xDF\xE0\x03\x02\x02", "\x02\xE0\xE1\x03\x02\x02\x02\xE1\xE2\x05I%\x02", "\xE2\xE4\x070\x02\x02\xE3\xE5\t\x02\x02\x02\xE4", "\xE3\x03\x02\x02\x02\xE5\xE6\x03\x02\x02\x02\xE6", "\xE4\x03\x02\x02\x02\xE6\xE7\x03\x02\x02\x02\xE7", "\xE9\x03\x02\x02\x02\xE8\xEA\x05K&\x02\xE9\xE8", "\x03\x02\x02\x02\xE9\xEA\x03\x02\x02\x02\xEA\xF2", "\x03\x02\x02\x02\xEB\xED\x07/\x02\x02\xEC\xEB", "\x03\x02\x02\x02\xEC\xED\x03\x02\x02\x02\xED\xEE", "\x03\x02\x02\x02\xEE\xEF\x05I%\x02\xEF\xF0\x05", "K&\x02\xF0\xF2\x03\x02\x02\x02\xF1\xDF\x03\x02", "\x02\x02\xF1\xEC\x03\x02\x02\x02\xF2H\x03\x02", "\x02\x02\xF3\xFC\x072\x02\x02\xF4\xF8\t\t\x02\x02", "\xF5\xF7\t\x02\x02\x02\xF6\xF5\x03\x02\x02\x02", "\xF7\xFA\x03\x02\x02\x02\xF8\xF6\x03\x02\x02\x02", "\xF8\xF9\x03\x02\x02\x02\xF9\xFC\x03\x02\x02\x02", "\xFA\xF8\x03\x02\x02\x02\xFB\xF3\x03\x02\x02\x02", "\xFB\xF4\x03\x02\x02\x02\xFCJ\x03\x02\x02\x02", "\xFD\xFF\t\n\x02\x02\xFE\u0100\t\x0B\x02\x02\xFF\xFE", "\x03\x02\x02\x02\xFF\u0100\x03\x02\x02\x02\u0100\u0101", "\x03\x02\x02\x02\u0101\u0102\x05I%\x02\u0102L\x03\x02", "\x02\x02\u0103\u0105\t\f\x02\x02\u0104\u0103\x03\x02\x02", "\x02\u0105\u0106\x03\x02\x02\x02\u0106\u0104\x03\x02\x02", "\x02\u0106\u0107\x03\x02\x02\x02\u0107\u0108\x03\x02\x02", "\x02\u0108\u0109\b'\x02\x02\u0109N\x03\x02\x02\x02\x17", "\x02\x8A\x90\x95\xA2\xA7\xA9\xBE\xC4\xCA\xCC\xD4", "\xDF\xE6\xE9\xEC\xF1\xF8\xFB\xFF\u0106\x03\b\x02", "\x02"].join("");
+var JSONFormulaLexer_serializedATN = ["\x03\u608B\uA72A\u8133\uB9ED\u417C\u3BE7\u7786", "\u5964\x02!\xFE\b\x01\x04\x02\t\x02\x04\x03\t\x03", "\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07", "\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\x0B\t\x0B\x04", "\f\t\f\x04\r\t\r\x04\x0E\t\x0E\x04\x0F\t\x0F\x04\x10", "\t\x10\x04\x11\t\x11\x04\x12\t\x12\x04\x13\t\x13", "\x04\x14\t\x14\x04\x15\t\x15\x04\x16\t\x16\x04\x17", "\t\x17\x04\x18\t\x18\x04\x19\t\x19\x04\x1A\t\x1A", "\x04\x1B\t\x1B\x04\x1C\t\x1C\x04\x1D\t\x1D\x04\x1E", "\t\x1E\x04\x1F\t\x1F\x04 \t \x04!\t!\x04\"\t\"\x04#", "\t#\x04$\t$\x04%\t%\x04&\t&\x03\x02\x03\x02\x03\x03", "\x03\x03\x03\x04\x03\x04\x03\x05\x03\x05\x03\x06", "\x03\x06\x03\x07\x03\x07\x03\x07\x03\b\x03\b\x03", "\b\x03\t\x03\t\x03\n\x03\n\x03\x0B\x03\x0B\x03\f\x03", "\f\x03\r\x03\r\x03\x0E\x03\x0E\x03\x0F\x03\x0F\x03", "\x10\x03\x10\x03\x11\x03\x11\x03\x12\x03\x12\x03", "\x13\x03\x13\x03\x13\x03\x14\x03\x14\x03\x15\x03", "\x15\x03\x15\x03\x15\x03\x15\x03\x15\x03\x16\x03", "\x16\x03\x16\x03\x16\x03\x16\x03\x16\x03\x16\x03", "\x17\x03\x17\x03\x18\x03\x18\x03\x19\x03\x19\x03", "\x19\x03\x19\x03\x19\x03\x19\x03\x19\x03\x19\x03", "\x19\x03\x19\x05\x19\x92\n\x19\x03\x1A\x03\x1A", "\x03\x1A\x07\x1A\x97\n\x1A\f\x1A\x0E\x1A\x9A\x0B", "\x1A\x03\x1A\x03\x1A\x03\x1B\x03\x1B\x03\x1B\x03", "\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03", "\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03", "\x1C\x05\x1C\xAE\n\x1C\x03\x1D\x03\x1D\x07\x1D", "\xB2\n\x1D\f\x1D\x0E\x1D\xB5\x0B\x1D\x03\x1E\x03", "\x1E\x03\x1E\x07\x1E\xBA\n\x1E\f\x1E\x0E\x1E\xBD", "\x0B\x1E\x03\x1E\x03\x1E\x03\x1F\x03\x1F\x03\x1F", "\x05\x1F\xC4\n\x1F\x03 \x03 \x03 \x03 \x03 \x03", " \x03!\x03!\x03\"\x05\"\xCF\n\"\x03\"\x03\"\x03\"\x06", "\"\xD4\n\"\r\"\x0E\"\xD5\x03\"\x05\"\xD9\n\"\x03\"\x05", "\"\xDC\n\"\x03\"\x03\"\x03\"\x05\"\xE1\n\"\x03#\x05", "#\xE4\n#\x03#\x03#\x03$\x03$\x03$\x07$\xEB\n$\f$\x0E", "$\xEE\x0B$\x05$\xF0\n$\x03%\x03%\x05%\xF4\n%\x03%", "\x03%\x03&\x06&\xF9\n&\r&\x0E&\xFA\x03&\x03&\x02\x02", "'\x03\x03\x05\x04\x07\x05\t\x06\x0B\x07\r\b\x0F", "\t\x11\n\x13\x0B\x15\f\x17\r\x19\x0E\x1B\x0F\x1D", "\x10\x1F\x11!\x12#\x13%\x14'\x15)\x16+\x17-\x18", "/\x191\x1A3\x1B5\x027\x1C9\x1D;\x1E=\x02?\x02A\x02", "C\x1FE G\x02I\x02K!\x03\x02\r\x04\x02))^^\x05\x02", "C\\aac|\x06\x022;C\\aac|\x04\x02$$^^\x0B\x02$$11^^bbddh", "hppttvv\x05\x022;CHch\x03\x022;\x03\x023;\x04\x02GG", "gg\x04\x02--//\x05\x02\x0B\f\x0F\x0F\"\"\x02\u010E\x02", "\x03\x03\x02\x02\x02\x02\x05\x03\x02\x02\x02\x02", "\x07\x03\x02\x02\x02\x02\t\x03\x02\x02\x02\x02", "\x0B\x03\x02\x02\x02\x02\r\x03\x02\x02\x02\x02", "\x0F\x03\x02\x02\x02\x02\x11\x03\x02\x02\x02\x02", "\x13\x03\x02\x02\x02\x02\x15\x03\x02\x02\x02\x02", "\x17\x03\x02\x02\x02\x02\x19\x03\x02\x02\x02\x02", "\x1B\x03\x02\x02\x02\x02\x1D\x03\x02\x02\x02\x02", "\x1F\x03\x02\x02\x02\x02!\x03\x02\x02\x02\x02", "#\x03\x02\x02\x02\x02%\x03\x02\x02\x02\x02'\x03", "\x02\x02\x02\x02)\x03\x02\x02\x02\x02+\x03\x02", "\x02\x02\x02-\x03\x02\x02\x02\x02/\x03\x02\x02", "\x02\x021\x03\x02\x02\x02\x023\x03\x02\x02\x02", "\x027\x03\x02\x02\x02\x029\x03\x02\x02\x02\x02", ";\x03\x02\x02\x02\x02C\x03\x02\x02\x02\x02E\x03", "\x02\x02\x02\x02K\x03\x02\x02\x02\x03M\x03\x02", "\x02\x02\x05O\x03\x02\x02\x02\x07Q\x03\x02\x02", "\x02\tS\x03\x02\x02\x02\x0BU\x03\x02\x02\x02\rW", "\x03\x02\x02\x02\x0FZ\x03\x02\x02\x02\x11]\x03", "\x02\x02\x02\x13_\x03\x02\x02\x02\x15a\x03\x02", "\x02\x02\x17c\x03\x02\x02\x02\x19e\x03\x02\x02", "\x02\x1Bg\x03\x02\x02\x02\x1Di\x03\x02\x02\x02", "\x1Fk\x03\x02\x02\x02!m\x03\x02\x02\x02#o\x03\x02", "\x02\x02%q\x03\x02\x02\x02't\x03\x02\x02\x02)v", "\x03\x02\x02\x02+|\x03\x02\x02\x02-\x83\x03\x02", "\x02\x02/\x85\x03\x02\x02\x021\x91\x03\x02\x02", "\x023\x93\x03\x02\x02\x025\x9D\x03\x02\x02\x02", "7\xAD\x03\x02\x02\x029\xAF\x03\x02\x02\x02;\xB6", "\x03\x02\x02\x02=\xC0\x03\x02\x02\x02?\xC5\x03", "\x02\x02\x02A\xCB\x03\x02\x02\x02C\xE0\x03\x02", "\x02\x02E\xE3\x03\x02\x02\x02G\xEF\x03\x02\x02", "\x02I\xF1\x03\x02\x02\x02K\xF8\x03\x02\x02\x02", "MN\x070\x02\x02N\x04\x03\x02\x02\x02OP\x07,\x02", "\x02P\x06\x03\x02\x02\x02QR\x071\x02\x02R\b\x03", "\x02\x02\x02ST\x07-\x02\x02T\n\x03\x02\x02\x02U", "V\x07/\x02\x02V\f\x03\x02\x02\x02WX\x07(\x02\x02", "XY\x07(\x02\x02Y\x0E\x03\x02\x02\x02Z[\x07~\x02", "\x02[\\\x07~\x02\x02\\\x10\x03\x02\x02\x02]^\x07", "#\x02\x02^\x12\x03\x02\x02\x02_`\x07*\x02\x02`\x14", "\x03\x02\x02\x02ab\x07+\x02\x02b\x16\x03\x02\x02", "\x02cd\x07~\x02\x02d\x18\x03\x02\x02\x02ef\x07]", "\x02\x02f\x1A\x03\x02\x02\x02gh\x07.\x02\x02h\x1C", "\x03\x02\x02\x02ij\x07_\x02\x02j\x1E\x03\x02\x02", "\x02kl\x07}\x02\x02l \x03\x02\x02\x02mn\x07\x7F", "\x02\x02n\"\x03\x02\x02\x02op\x07<\x02\x02p$\x03", "\x02\x02\x02qr\x07]\x02\x02rs\x07A\x02\x02s&\x03", "\x02\x02\x02tu\x07B\x02\x02u(\x03\x02\x02\x02vw", "\x07&\x02\x02wx\x07h\x02\x02xy\x07q\x02\x02yz\x07", "t\x02\x02z{\x07o\x02\x02{*\x03\x02\x02\x02|}\x07", "&\x02\x02}~\x07h\x02\x02~\x7F\x07k\x02\x02\x7F\x80", "\x07g\x02\x02\x80\x81\x07n\x02\x02\x81\x82\x07", "f\x02\x02\x82,\x03\x02\x02\x02\x83\x84\x07(\x02", "\x02\x84.\x03\x02\x02\x02\x85\x86\x07b\x02\x02", "\x860\x03\x02\x02\x02\x87\x92\x07>\x02\x02\x88", "\x89\x07>\x02\x02\x89\x92\x07?\x02\x02\x8A\x8B", "\x07?\x02\x02\x8B\x92\x07?\x02\x02\x8C\x8D\x07", "@\x02\x02\x8D\x92\x07?\x02\x02\x8E\x92\x07@\x02", "\x02\x8F\x90\x07#\x02\x02\x90\x92\x07?\x02\x02", "\x91\x87\x03\x02\x02\x02\x91\x88\x03\x02\x02\x02", "\x91\x8A\x03\x02\x02\x02\x91\x8C\x03\x02\x02\x02", "\x91\x8E\x03\x02\x02\x02\x91\x8F\x03\x02\x02\x02", "\x922\x03\x02\x02\x02\x93\x98\x07)\x02\x02\x94", "\x97\x055\x1B\x02\x95\x97\n\x02\x02\x02\x96\x94", "\x03\x02\x02\x02\x96\x95\x03\x02\x02\x02\x97\x9A", "\x03\x02\x02\x02\x98\x96\x03\x02\x02\x02\x98\x99", "\x03\x02\x02\x02\x99\x9B\x03\x02\x02\x02\x9A\x98", "\x03\x02\x02\x02\x9B\x9C\x07)\x02\x02\x9C4\x03", "\x02\x02\x02\x9D\x9E\x07^\x02\x02\x9E\x9F\x0B", "\x02\x02\x02\x9F6\x03\x02\x02\x02\xA0\xA1\x07", "v\x02\x02\xA1\xA2\x07t\x02\x02\xA2\xA3\x07w\x02", "\x02\xA3\xAE\x07g\x02\x02\xA4\xA5\x07h\x02\x02", "\xA5\xA6\x07c\x02\x02\xA6\xA7\x07n\x02\x02\xA7", "\xA8\x07u\x02\x02\xA8\xAE\x07g\x02\x02\xA9\xAA", "\x07p\x02\x02\xAA\xAB\x07w\x02\x02\xAB\xAC\x07", "n\x02\x02\xAC\xAE\x07n\x02\x02\xAD\xA0\x03\x02", "\x02\x02\xAD\xA4\x03\x02\x02\x02\xAD\xA9\x03\x02", "\x02\x02\xAE8\x03\x02\x02\x02\xAF\xB3\t\x03\x02", "\x02\xB0\xB2\t\x04\x02\x02\xB1\xB0\x03\x02\x02", "\x02\xB2\xB5\x03\x02\x02\x02\xB3\xB1\x03\x02\x02", "\x02\xB3\xB4\x03\x02\x02\x02\xB4:\x03\x02\x02", "\x02\xB5\xB3\x03\x02\x02\x02\xB6\xBB\x07$\x02", "\x02\xB7\xBA\x05=\x1F\x02\xB8\xBA\n\x05\x02\x02", "\xB9\xB7\x03\x02\x02\x02\xB9\xB8\x03\x02\x02\x02", "\xBA\xBD\x03\x02\x02\x02\xBB\xB9\x03\x02\x02\x02", "\xBB\xBC\x03\x02\x02\x02\xBC\xBE\x03\x02\x02\x02", "\xBD\xBB\x03\x02\x02\x02\xBE\xBF\x07$\x02\x02", "\xBF<\x03\x02\x02\x02\xC0\xC3\x07^\x02\x02\xC1", "\xC4\t\x06\x02\x02\xC2\xC4\x05? \x02\xC3\xC1\x03", "\x02\x02\x02\xC3\xC2\x03\x02\x02\x02\xC4>\x03", "\x02\x02\x02\xC5\xC6\x07w\x02\x02\xC6\xC7\x05", "A!\x02\xC7\xC8\x05A!\x02\xC8\xC9\x05A!\x02\xC9\xCA", "\x05A!\x02\xCA@\x03\x02\x02\x02\xCB\xCC\t\x07\x02", "\x02\xCCB\x03\x02\x02\x02\xCD\xCF\x07/\x02\x02", "\xCE\xCD\x03\x02\x02\x02\xCE\xCF\x03\x02\x02\x02", "\xCF\xD0\x03\x02\x02\x02\xD0\xD1\x05G$\x02\xD1", "\xD3\x070\x02\x02\xD2\xD4\t\b\x02\x02\xD3\xD2\x03", "\x02\x02\x02\xD4\xD5\x03\x02\x02\x02\xD5\xD3\x03", "\x02\x02\x02\xD5\xD6\x03\x02\x02\x02\xD6\xD8\x03", "\x02\x02\x02\xD7\xD9\x05I%\x02\xD8\xD7\x03\x02", "\x02\x02\xD8\xD9\x03\x02\x02\x02\xD9\xE1\x03\x02", "\x02\x02\xDA\xDC\x07/\x02\x02\xDB\xDA\x03\x02", "\x02\x02\xDB\xDC\x03\x02\x02\x02\xDC\xDD\x03\x02", "\x02\x02\xDD\xDE\x05G$\x02\xDE\xDF\x05I%\x02\xDF", "\xE1\x03\x02\x02\x02\xE0\xCE\x03\x02\x02\x02\xE0", "\xDB\x03\x02\x02\x02\xE1D\x03\x02\x02\x02\xE2", "\xE4\x07/\x02\x02\xE3\xE2\x03\x02\x02\x02\xE3", "\xE4\x03\x02\x02\x02\xE4\xE5\x03\x02\x02\x02\xE5", "\xE6\x05G$\x02\xE6F\x03\x02\x02\x02\xE7\xF0\x07", "2\x02\x02\xE8\xEC\t\t\x02\x02\xE9\xEB\t\b\x02\x02", "\xEA\xE9\x03\x02\x02\x02\xEB\xEE\x03\x02\x02\x02", "\xEC\xEA\x03\x02\x02\x02\xEC\xED\x03\x02\x02\x02", "\xED\xF0\x03\x02\x02\x02\xEE\xEC\x03\x02\x02\x02", "\xEF\xE7\x03\x02\x02\x02\xEF\xE8\x03\x02\x02\x02", "\xF0H\x03\x02\x02\x02\xF1\xF3\t\n\x02\x02\xF2\xF4", "\t\x0B\x02\x02\xF3\xF2\x03\x02\x02\x02\xF3\xF4", "\x03\x02\x02\x02\xF4\xF5\x03\x02\x02\x02\xF5\xF6", "\x05G$\x02\xF6J\x03\x02\x02\x02\xF7\xF9\t\f\x02", "\x02\xF8\xF7\x03\x02\x02\x02\xF9\xFA\x03\x02\x02", "\x02\xFA\xF8\x03\x02\x02\x02\xFA\xFB\x03\x02\x02", "\x02\xFB\xFC\x03\x02\x02\x02\xFC\xFD\b&\x02\x02", "\xFDL\x03\x02\x02\x02\x15\x02\x91\x96\x98\xAD", "\xB3\xB9\xBB\xC3\xCE\xD5\xD8\xDB\xE0\xE3\xEC\xEF", "\xF3\xFA\x03\b\x02\x02"].join("");
 var JSONFormulaLexer_atn = new antlr4.atn.ATNDeserializer().deserialize(JSONFormulaLexer_serializedATN);
 var JSONFormulaLexer_decisionsToDFA = JSONFormulaLexer_atn.decisionToState.map(function (ds, index) {
   return new antlr4.dfa.DFA(ds, index);
@@ -20528,8 +20187,8 @@ JSONFormulaLexer.grammarFileName = "JSONFormula.g4";
 JSONFormulaLexer.channelNames = ["DEFAULT_TOKEN_CHANNEL", "HIDDEN"];
 JSONFormulaLexer.modeNames = ["DEFAULT_MODE"];
 JSONFormulaLexer.literalNames = [null, "'.'", "'*'", "'/'", "'+'", "'-'", "'&&'", "'||'", "'!'", "'('", "')'", "'|'", "'['", "','", "']'", "'{'", "'}'", "':'", "'[?'", "'@'", "'$form'", "'$field'", "'&'", "'`'"];
-JSONFormulaLexer.symbolicNames = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "SIGNED_INT", "NUMBER", "COMPARATOR", "RAW_STRING", "JSON_CONSTANT", "NAME", "STRING", "REAL_OR_EXPONENT_NUMBER", "WS"];
-JSONFormulaLexer.ruleNames = ["T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", "T__7", "T__8", "T__9", "T__10", "T__11", "T__12", "T__13", "T__14", "T__15", "T__16", "T__17", "T__18", "T__19", "T__20", "T__21", "T__22", "SIGNED_INT", "NUMBER", "COMPARATOR", "RAW_STRING", "RAW_ESC", "JSON_CONSTANT", "NAME", "STRING", "ESC", "UNICODE", "HEX", "REAL_OR_EXPONENT_NUMBER", "INT", "EXP", "WS"];
+JSONFormulaLexer.symbolicNames = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "COMPARATOR", "RAW_STRING", "JSON_CONSTANT", "NAME", "STRING", "REAL_OR_EXPONENT_NUMBER", "SIGNED_INT", "WS"];
+JSONFormulaLexer.ruleNames = ["T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", "T__7", "T__8", "T__9", "T__10", "T__11", "T__12", "T__13", "T__14", "T__15", "T__16", "T__17", "T__18", "T__19", "T__20", "T__21", "T__22", "COMPARATOR", "RAW_STRING", "RAW_ESC", "JSON_CONSTANT", "NAME", "STRING", "ESC", "UNICODE", "HEX", "REAL_OR_EXPONENT_NUMBER", "SIGNED_INT", "INT", "EXP", "WS"];
 
 JSONFormulaLexer.EOF = antlr4.Token.EOF;
 JSONFormulaLexer.T__0 = 1;
@@ -20555,15 +20214,14 @@ JSONFormulaLexer.T__19 = 20;
 JSONFormulaLexer.T__20 = 21;
 JSONFormulaLexer.T__21 = 22;
 JSONFormulaLexer.T__22 = 23;
-JSONFormulaLexer.SIGNED_INT = 24;
-JSONFormulaLexer.NUMBER = 25;
-JSONFormulaLexer.COMPARATOR = 26;
-JSONFormulaLexer.RAW_STRING = 27;
-JSONFormulaLexer.JSON_CONSTANT = 28;
-JSONFormulaLexer.NAME = 29;
-JSONFormulaLexer.STRING = 30;
-JSONFormulaLexer.REAL_OR_EXPONENT_NUMBER = 31;
-JSONFormulaLexer.WS = 32;
+JSONFormulaLexer.COMPARATOR = 24;
+JSONFormulaLexer.RAW_STRING = 25;
+JSONFormulaLexer.JSON_CONSTANT = 26;
+JSONFormulaLexer.NAME = 27;
+JSONFormulaLexer.STRING = 28;
+JSONFormulaLexer.REAL_OR_EXPONENT_NUMBER = 29;
+JSONFormulaLexer.SIGNED_INT = 30;
+JSONFormulaLexer.WS = 31;
 ;// CONCATENATED MODULE: ./src/InputStream.js
 /*
 Copyright 2021 Adobe. All rights reserved.
@@ -21239,6 +20897,28 @@ var Visitor = /*#__PURE__*/function (_JSONFormulaVisitor) {
 
 
 ;// CONCATENATED MODULE: ./src/evaluate.js
+function evaluate_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { evaluate_typeof = function _typeof(obj) { return typeof obj; }; } else { evaluate_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return evaluate_typeof(obj); }
+
+function evaluate_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function evaluate_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function evaluate_createClass(Constructor, protoProps, staticProps) { if (protoProps) evaluate_defineProperties(Constructor.prototype, protoProps); if (staticProps) evaluate_defineProperties(Constructor, staticProps); return Constructor; }
+
+function evaluate_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) evaluate_setPrototypeOf(subClass, superClass); }
+
+function evaluate_setPrototypeOf(o, p) { evaluate_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return evaluate_setPrototypeOf(o, p); }
+
+function evaluate_createSuper(Derived) { var hasNativeReflectConstruct = evaluate_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = evaluate_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = evaluate_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return evaluate_possibleConstructorReturn(this, result); }; }
+
+function evaluate_possibleConstructorReturn(self, call) { if (call && (evaluate_typeof(call) === "object" || typeof call === "function")) { return call; } return evaluate_assertThisInitialized(self); }
+
+function evaluate_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function evaluate_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function evaluate_getPrototypeOf(o) { evaluate_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return evaluate_getPrototypeOf(o); }
+
 /*
 Copyright 2021 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -21257,39 +20937,57 @@ governing permissions and limitations under the License.
 
 
 function evaluate(json, expression, trace) {
-  var x = jmespath.search(json, expression);
-  return x;
-  /*
-   const stream = new antlr4.InputStream(expression);
-  const chars = new InputStream(stream);
-  const lexer = new FELexer(chars);
+  // confirm that we pass the parser
+  var stream = new antlr4.InputStream(expression);
+  var chars = new InputStream(stream);
+  var lexer = new JSONFormulaLexer(chars);
   lexer._interp.debug = true;
-  const tokens  = new antlr4.CommonTokenStream(lexer);
-  const parser = new FEParser(tokens);
+  var tokens = new antlr4.CommonTokenStream(lexer);
+  var parser = new JSONFormulaParser(tokens);
   parser.buildParseTrees = true;
-    let parseError;
-  class ParseErrorListener extends antlr4.error.ErrorListener {
-    syntaxError(recognizer, offendingSymbol, line, column, msg) {
-      parseError = `line ${line}, col ${column}: ${msg}`;
-      if (trace) console.log(`ERROR: ${parseError}`);
+  var parseError;
+
+  var ParseErrorListener = /*#__PURE__*/function (_antlr4$error$ErrorLi) {
+    evaluate_inherits(ParseErrorListener, _antlr4$error$ErrorLi);
+
+    var _super = evaluate_createSuper(ParseErrorListener);
+
+    function ParseErrorListener() {
+      evaluate_classCallCheck(this, ParseErrorListener);
+
+      return _super.apply(this, arguments);
     }
-  }
-   const parseErrHandler = new ParseErrorListener();
+
+    evaluate_createClass(ParseErrorListener, [{
+      key: "syntaxError",
+      value: function syntaxError(recognizer, offendingSymbol, line, column, msg) {
+        parseError = "line ".concat(line, ", col ").concat(column, ": ").concat(msg);
+        if (trace) console.log("ERROR: ".concat(parseError));
+      }
+    }]);
+
+    return ParseErrorListener;
+  }(antlr4.error.ErrorListener);
+
+  var parseErrHandler = new ParseErrorListener();
   parser.removeErrorListeners();
-  parser.addErrorListener(parseErrHandler);
-   let tree;
-  tree = parser.formula();
-  const visitor = new Visitor(json, trace);
-  const result = visitor.visitFormula(tree);
-   if (parseError) {
+  parser.addErrorListener(parseErrHandler); // let tree;
+
+  parser.formula(); // const visitor = new Visitor(json, trace);
+  // const result = visitor.visitFormula(tree);
+
+  if (parseError) {
+    /*
     if (result !== undefined) {
       // antlr recovered from the error
       return result;
-    }
+    }*/
     throw new Error(parseError);
-  }
-  return result;
-  */
+  } // return result;
+
+
+  var x = jmespath.search(json, expression);
+  return x;
 }
 /*
 var SimpleJavaLexer = require('generated/GrammarLexer');
