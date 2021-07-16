@@ -14,150 +14,6 @@ export default class JSONFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by JSONFormulaParser#binaryExpression.
-	enterBinaryExpression(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#binaryExpression.
-	exitBinaryExpression(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#jmesPath.
-	enterJmesPath(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#jmesPath.
-	exitJmesPath(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#topLevelString.
-	enterTopLevelString(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#topLevelString.
-	exitTopLevelString(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#topLevelInt.
-	enterTopLevelInt(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#topLevelInt.
-	exitTopLevelInt(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#functionCall.
-	enterFunctionCall(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#functionCall.
-	exitFunctionCall(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#braceExpression.
-	enterBraceExpression(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#braceExpression.
-	exitBraceExpression(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#postfix.
-	enterPostfix(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#postfix.
-	exitPostfix(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#unaryExpression.
-	enterUnaryExpression(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#unaryExpression.
-	exitUnaryExpression(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#topLevelNumber.
-	enterTopLevelNumber(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#topLevelNumber.
-	exitTopLevelNumber(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#unary_op.
-	enterUnary_op(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#unary_op.
-	exitUnary_op(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#binary_op.
-	enterBinary_op(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#binary_op.
-	exitBinary_op(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#postfix_op.
-	enterPostfix_op(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#postfix_op.
-	exitPostfix_op(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#function_call.
-	enterFunction_call(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#function_call.
-	exitFunction_call(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#parameter.
-	enterParameter(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#parameter.
-	exitParameter(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#nonempty_expr_list.
-	enterNonempty_expr_list(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#nonempty_expr_list.
-	exitNonempty_expr_list(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#expression_list.
-	enterExpression_list(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#expression_list.
-	exitExpression_list(ctx) {
-	}
-
-
 	// Enter a parse tree produced by JSONFormulaParser#pipeExpression.
 	enterPipeExpression(ctx) {
 	}
@@ -173,6 +29,24 @@ export default class JSONFormulaListener extends antlr4.tree.ParseTreeListener {
 
 	// Exit a parse tree produced by JSONFormulaParser#identifierExpression.
 	exitIdentifierExpression(ctx) {
+	}
+
+
+	// Enter a parse tree produced by JSONFormulaParser#currentFieldExpression.
+	enterCurrentFieldExpression(ctx) {
+	}
+
+	// Exit a parse tree produced by JSONFormulaParser#currentFieldExpression.
+	exitCurrentFieldExpression(ctx) {
+	}
+
+
+	// Enter a parse tree produced by JSONFormulaParser#multDivExpression.
+	enterMultDivExpression(ctx) {
+	}
+
+	// Exit a parse tree produced by JSONFormulaParser#multDivExpression.
+	exitMultDivExpression(ctx) {
 	}
 
 
@@ -209,6 +83,15 @@ export default class JSONFormulaListener extends antlr4.tree.ParseTreeListener {
 
 	// Exit a parse tree produced by JSONFormulaParser#parenExpression.
 	exitParenExpression(ctx) {
+	}
+
+
+	// Enter a parse tree produced by JSONFormulaParser#formExpression.
+	enterFormExpression(ctx) {
+	}
+
+	// Exit a parse tree produced by JSONFormulaParser#formExpression.
+	exitFormExpression(ctx) {
 	}
 
 
@@ -284,6 +167,15 @@ export default class JSONFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
+	// Enter a parse tree produced by JSONFormulaParser#addSubtractExpression.
+	enterAddSubtractExpression(ctx) {
+	}
+
+	// Exit a parse tree produced by JSONFormulaParser#addSubtractExpression.
+	exitAddSubtractExpression(ctx) {
+	}
+
+
 	// Enter a parse tree produced by JSONFormulaParser#multiSelectListExpression.
 	enterMultiSelectListExpression(ctx) {
 	}
@@ -311,48 +203,21 @@ export default class JSONFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by JSONFormulaParser#chainedIdentifier.
-	enterChainedIdentifier(ctx) {
+	// Enter a parse tree produced by JSONFormulaParser#numberLiteral.
+	enterNumberLiteral(ctx) {
 	}
 
-	// Exit a parse tree produced by JSONFormulaParser#chainedIdentifier.
-	exitChainedIdentifier(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#chainedMultiSelectList.
-	enterChainedMultiSelectList(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#chainedMultiSelectList.
-	exitChainedMultiSelectList(ctx) {
+	// Exit a parse tree produced by JSONFormulaParser#numberLiteral.
+	exitNumberLiteral(ctx) {
 	}
 
 
-	// Enter a parse tree produced by JSONFormulaParser#chainedMultiSelectHash.
-	enterChainedMultiSelectHash(ctx) {
+	// Enter a parse tree produced by JSONFormulaParser#chainedExpression.
+	enterChainedExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by JSONFormulaParser#chainedMultiSelectHash.
-	exitChainedMultiSelectHash(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#chainedFunctionExpression.
-	enterChainedFunctionExpression(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#chainedFunctionExpression.
-	exitChainedFunctionExpression(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JSONFormulaParser#chainedWildcard.
-	enterChainedWildcard(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#chainedWildcard.
-	exitChainedWildcard(ctx) {
+	// Exit a parse tree produced by JSONFormulaParser#chainedExpression.
+	exitChainedExpression(ctx) {
 	}
 
 
@@ -470,6 +335,24 @@ export default class JSONFormulaListener extends antlr4.tree.ParseTreeListener {
 
 	// Exit a parse tree produced by JSONFormulaParser#currentNode.
 	exitCurrentNode(ctx) {
+	}
+
+
+	// Enter a parse tree produced by JSONFormulaParser#form.
+	enterForm(ctx) {
+	}
+
+	// Exit a parse tree produced by JSONFormulaParser#form.
+	exitForm(ctx) {
+	}
+
+
+	// Enter a parse tree produced by JSONFormulaParser#currentField.
+	enterCurrentField(ctx) {
+	}
+
+	// Exit a parse tree produced by JSONFormulaParser#currentField.
+	exitCurrentField(ctx) {
 	}
 
 

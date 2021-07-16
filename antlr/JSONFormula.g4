@@ -14,94 +14,54 @@ grammar JSONFormula;
 
 formula : expression EOF ;
 
-expression :  SIGNED_INT # topLevelInt
-            | NUMBER # topLevelNumber
-            | RAW_STRING # topLevelString
-            | expression binary_op expression # binaryExpression
-            | unary_op expression # unaryExpression
-            | expression postfix_op # postfix
-            | '(' expression ')' # braceExpression
-            | function_call # functionCall
-            | jmesPathExpression # jmesPath
-      ;
-
-SIGNED_INT : '-'? INT ;
-
-NUMBER
-:   SIGNED_INT '.'? [0-9]*
-;
-
-unary_op : '+' | '-';
-
-binary_op : COMPARATOR | '<>' | '+' | '-' | '&' | '*' | '/' | '^' ;
-
-postfix_op : '%';
-
-FUNCTIONS:
-  'AND'   | 'and' |
-  'FALSE' |
-  'if'    | 'IF'  |
-  'not'   | 'NOT' |
-  'or'    | 'OR'  |
-  'sum'   | 'SUM' |
-  'TRUE'  |
-  'tomap' | 'TOMAP' | 'toMap' |
-  'toarray' | 'TOARRAY'
-  ;
-
-function_call : FUNCTIONS '(' expression_list ')';
-
-parameter : expression;
-
-nonempty_expr_list : parameter | nonempty_expr_list ',' parameter;
-
-expression_list :  /* empty */ | nonempty_expr_list;
-
-ROOT: '$';
-
-// JMESPath definition starts here
-jmesPathExpression
-  : jmesPathExpression '.' chainedExpression # chainExpression
-  | jmesPathExpression bracketSpecifier # bracketedExpression
+expression
+  : expression '.' chainedExpression # chainExpression
+  | expression bracketSpecifier # bracketedExpression
   | bracketSpecifier # bracketExpression
-  | jmesPathExpression COMPARATOR jmesPathExpression # comparisonExpression
-  | jmesPathExpression '&&' jmesPathExpression # andExpression
-  | jmesPathExpression '||' jmesPathExpression # orExpression
+  | expression ('*' | '/') expression	# multDivExpression
+	| expression ('+' | '-') expression	# addSubtractExpression
+  | expression COMPARATOR expression # comparisonExpression
+  | expression '&&' expression # andExpression
+  | expression '||' expression # orExpression
   | identifier # identifierExpression
-  | '!' jmesPathExpression # notExpression
-  | '(' jmesPathExpression ')' # parenExpression
+  | '!' expression # notExpression
+  | '(' expression ')' # parenExpression
   | wildcard # wildcardExpression
   | multiSelectList # multiSelectListExpression
   | multiSelectHash # multiSelectHashExpression
   | literal # literalExpression
   | functionExpression # functionCallExpression
-  | jmesPathExpression '|' jmesPathExpression # pipeExpression
+  | expression '|' expression # pipeExpression
   | RAW_STRING # rawStringExpression
+  | (REAL_OR_EXPONENT_NUMBER | SIGNED_INT) # numberLiteral
   | currentNode # currentNodeExpression
+  | form # formExpression
+  | currentField # currentFieldExpression
+
   ;
 
 chainedExpression
-  : identifier #chainedIdentifier
-  | multiSelectList #chainedMultiSelectList
-  | multiSelectHash #chainedMultiSelectHash
-  | functionExpression #chainedFunctionExpression
-  | wildcard #chainedWildcard
+  : identifier
+  | multiSelectList
+  | multiSelectHash
+  | functionExpression
+  | wildcard
   ;
 
 wildcard : '*' ;
 
-multiSelectList : '[' jmesPathExpression (',' jmesPathExpression)* ']' ;
+multiSelectList : '[' expression (',' expression)* ']' ;
 
 multiSelectHash : '{' keyvalExpr (',' keyvalExpr)* '}' ;
 
-keyvalExpr : identifier ':' jmesPathExpression ;
+keyvalExpr : identifier ':' expression ;
 
 bracketSpecifier
   : '[' SIGNED_INT ']' # bracketIndex
   | '[' '*' ']' # bracketStar
   | '[' slice ']' # bracketSlice
   | '[' ']' # bracketFlatten
-  | '[?' jmesPathExpression ']' # select
+  | '[?' expression ']' # select
   ;
 
 slice : start=SIGNED_INT? ':' stop=SIGNED_INT? (':' step=SIGNED_INT?)? ;
@@ -121,13 +81,15 @@ functionExpression
   ;
 
 functionArg
-  : jmesPathExpression
+  : expression
   | expressionType
   ;
 
 currentNode : '@' ;
+form : '$form' ;
+currentField : '$field' ;
 
-expressionType : '&' jmesPathExpression ;
+expressionType : '&' expression ;
 
 RAW_STRING : '\'' (RAW_ESC | ~['\\])* '\'' ;
 
@@ -136,8 +98,7 @@ fragment RAW_ESC : '\\' . ;
 literal : '`' jsonValue '`' ;
 
 identifier
-  : ROOT
-  | NAME
+  : NAME
   | STRING
   | JSON_CONSTANT
   ;
@@ -192,6 +153,8 @@ REAL_OR_EXPONENT_NUMBER
   : '-'? INT '.' [0-9] + EXP?
   | '-'? INT EXP
   ;
+
+SIGNED_INT : '-'? INT ;
 
 fragment INT
   : '0'

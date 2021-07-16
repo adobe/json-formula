@@ -15,8 +15,12 @@ import FEParser from "./antlr/JSONFormulaParser.js";
 import FELexer from "./antlr/JSONFormulaLexer.js";
 import InputStream from "./InputStream.js"
 import Visitor from "./Visitor.js";
+import jmespath from "../jmespath.js/jmespath.js";
 
 export default function evaluate(json, expression, trace) {
+
+  // confirm that we pass the parser
+
   const stream = new antlr4.InputStream(expression);
   const chars = new InputStream(stream);
   const lexer = new FELexer(chars);
@@ -38,19 +42,24 @@ export default function evaluate(json, expression, trace) {
   parser.removeErrorListeners();
   parser.addErrorListener(parseErrHandler);
 
-  let tree;
-  tree = parser.formula();
-  const visitor = new Visitor(json, trace);
-  const result = visitor.visitFormula(tree);
+  // let tree;
+  parser.formula();
+  // const visitor = new Visitor(json, trace);
+  // const result = visitor.visitFormula(tree);
 
   if (parseError) {
+    /*
     if (result !== undefined) {
       // antlr recovered from the error
       return result;
-    }
+    }*/
     throw new Error(parseError);
   }
-  return result;
+  // return result;
+
+  const x = jmespath.search(json, expression);
+  return x;
+
 }
 
 /*

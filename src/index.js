@@ -30,6 +30,11 @@ window.addEventListener("load", () => {
       valueOf() { return value }
       toString() { return value.toString() }
       toJSON() { return value }
+      equals(compare) {
+        if (compare === null || compare === undefined) return this.valueOf() === compare;
+
+        return this.valueOf() === compare.valueOf();
+      }
       // Use getters and scope variables so that the children are not enumerable
       get value() { return value }
       get name() { return name }
