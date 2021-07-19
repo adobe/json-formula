@@ -1,4 +1,4 @@
-(function(exports) {
+function jsonFormula() {
   "use strict";
 
   function isArray(obj) {
@@ -1826,9 +1826,10 @@
       interpreter.$form = data;
       return interpreter.search(node, data);
   }
+  this.tokenize = tokenize;
+  this.compile = compile;
+  this.search = search;
+  this.strictDeepEqual = strictDeepEqual;
+}
 
-  exports.tokenize = tokenize;
-  exports.compile = compile;
-  exports.search = search;
-  exports.strictDeepEqual = strictDeepEqual;
-})(typeof exports === "undefined" ? this.jmespath = {} : exports);
+export default new jsonFormula();
