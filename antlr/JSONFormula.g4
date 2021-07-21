@@ -78,6 +78,7 @@ COMPARATOR
 functionExpression
   : NAME '(' functionArg (',' functionArg)* ')'
   | NAME '(' ')'
+  | JSON_CONSTANT '(' ')'
   ;
 
 functionArg

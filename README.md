@@ -26,7 +26,7 @@ If an expression fails to evaluate, follow these steps to debug:
 
 ```
 # populate src/test/debug.txt with the expression to test
-> cd antlr4
+> cd antlr
 > antlr4 JSONFormula.g4
 > javac *.java
 > grun JSONFormula formula -tokens -tree ../src/test/debug.txt
