@@ -1448,7 +1448,11 @@ function jsonFormula() {
             return actual === expected;
         }
     },
-    _getTypeName: function(obj) {
+    _getTypeName: function(inputObj) {
+        var obj = inputObj;
+        if (typeof(obj) === "object" && obj.constructor.name === "Field") {
+          obj = inputObj["@value"];
+        }
         switch (Object.prototype.toString.call(obj)) {
             case "[object String]":
               return TYPE_STRING;
