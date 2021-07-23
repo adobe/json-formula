@@ -17849,6 +17849,8 @@ Object.defineProperty(InputStream.prototype, "size", {
   }
 });
 ;// CONCATENATED MODULE: ./jmespath.js/jmespath.js
+function jmespath_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { jmespath_typeof = function _typeof(obj) { return typeof obj; }; } else { jmespath_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return jmespath_typeof(obj); }
+
 function jsonFormula() {
   "use strict";
 
@@ -19860,7 +19862,13 @@ function jsonFormula() {
         return actual === expected;
       }
     },
-    _getTypeName: function _getTypeName(obj) {
+    _getTypeName: function _getTypeName(inputObj) {
+      var obj = inputObj;
+
+      if (jmespath_typeof(obj) === "object" && obj.constructor.name === "Field") {
+        obj = inputObj["@value"];
+      }
+
       switch (Object.prototype.toString.call(obj)) {
         case "[object String]":
           return TYPE_STRING;
