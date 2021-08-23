@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 function jsonFormula() {
   "use strict";
 
@@ -148,18 +149,6 @@ function jsonFormula() {
   var TYPE_NULL = 7;
   var TYPE_ARRAY_NUMBER = 8;
   var TYPE_ARRAY_STRING = 9;
-  var TYPE_NAME_TABLE = {
-    0: 'number',
-    1: 'any',
-    2: 'string',
-    3: 'array',
-    4: 'object',
-    5: 'boolean',
-    6: 'expression',
-    7: 'null',
-    8: 'Array<number>',
-    9: 'Array<string>'
-  };
 
   var TOK_EOF = "EOF";
   var TOK_UNQUOTEDIDENTIFIER = "UnquotedIdentifier";
@@ -1332,23 +1321,6 @@ function jsonFormula() {
         "true": {_func: function() {return true;}, _signature: []},
         "false": {_func: function() {return false;}, _signature: []},
         "if": {_func: this._functionIf, _signature: [{types: [TYPE_ANY]}, {types: [TYPE_ANY]}, {types: [TYPE_ANY]}]},
-        /*
-        if (func === "and") {
-          result = !!params[0] && !!params[1];
-        } else if (func === "if") {
-          if (params[0]) {
-            result = params[1];
-          } else {
-            result = params[2];
-          }
-        } else if (func === "or") {
-          const choice2 = params.pop();
-          const choice1 = params.pop();
-          result = !!choice1 || !!choice2;
-        } else if (func === "not") {
-          const choice = params.pop();
-          result = !choice;
-          */
     };
   }
 
@@ -1387,70 +1359,61 @@ function jsonFormula() {
         }
         var currentSpec;
         var actualType;
-        var typeMatched;
         for (var i = 0; i < signature.length; i++) {
-            typeMatched = false;
             currentSpec = signature[i].types;
             actualType = this._getTypeName(args[i]);
             for (var j = 0; j < currentSpec.length; j++) {
-                if (this._typeMatches(actualType, currentSpec[j], args[i])) {
-                    typeMatched = true;
-                    break;
-                }
-            }
-            if (!typeMatched) {
-                var expected = currentSpec
-                    .map(function(typeIdentifier) {
-                        return TYPE_NAME_TABLE[typeIdentifier];
-                    })
-                    .join(',');
-                throw new Error("TypeError: " + name + "() " +
-                                "expected argument " + (i + 1) +
-                                " to be type " + expected +
-                                " but received type " +
-                                TYPE_NAME_TABLE[actualType] + " instead.");
+                args[i] = this._matchType(actualType, currentSpec[j], args[i]);
             }
         }
     },
 
-    _typeMatches: function(actual, expected, argValue) {
-        if (expected === TYPE_ANY) {
-            return true;
+    _matchType: function(actual, expected, argValue) {
+      if (expected === TYPE_ANY || actual === expected) return argValue;
+
+      if (expected === TYPE_ARRAY_STRING ||
+          expected === TYPE_ARRAY_NUMBER ||
+          expected === TYPE_ARRAY) {
+
+          if (expected === TYPE_ARRAY) {
+            if (actual === TYPE_ARRAY_NUMBER || actual === TYPE_ARRAY_STRING) return argValue;
+            return [argValue];
+          }
+          // The expected type can either just be array,
+          // or it can require a specific subtype (array of numbers).
+          var subtype = expected === TYPE_ARRAY_NUMBER ? TYPE_NUMBER : TYPE_STRING;
+          if (actual === TYPE_ARRAY) {
+              // Otherwise we need to check subtypes.
+              for (var i = 0; i < argValue.length; i++) {
+                var indexType = this._getTypeName(argValue[i]);
+                argValue[i] = this._matchType(indexType, subtype, argValue[i]);
+              }
+              return argValue;
+          }
+      } else {
+        if (expected === TYPE_NUMBER) {
+          if (actual === TYPE_STRING) {
+            var temp = parseFloat(argValue);
+            return isNaN(temp) ? 0 : temp;
+          }
+          if (actual === TYPE_BOOLEAN) return argValue ? 1 : 0;
+          if (actual === TYPE_NULL) return 0;
+          /* TYPE_ARRAY, TYPE_EXPREF, TYPE_OBJECT, TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING */
+          return 0;
         }
-        if (expected === TYPE_ARRAY_STRING ||
-            expected === TYPE_ARRAY_NUMBER ||
-            expected === TYPE_ARRAY) {
-            // The expected type can either just be array,
-            // or it can require a specific subtype (array of numbers).
-            //
-            // The simplest case is if "array" with no subtype is specified.
-            if (expected === TYPE_ARRAY) {
-                return actual === TYPE_ARRAY;
-            } else if (actual === TYPE_ARRAY) {
-                // Otherwise we need to check subtypes.
-                // I think this has potential to be improved.
-                var subtype;
-                if (expected === TYPE_ARRAY_NUMBER) {
-                  subtype = TYPE_NUMBER;
-                } else if (expected === TYPE_ARRAY_STRING) {
-                  subtype = TYPE_STRING;
-                }
-                for (var i = 0; i < argValue.length; i++) {
-                    if (!this._typeMatches(
-                            this._getTypeName(argValue[i]), subtype,
-                                             argValue[i])) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        } else {
-            return actual === expected;
+        if (expected === TYPE_STRING) {
+          if (actual === TYPE_NULL) return "";
+          return argValue.toString();
         }
+        if (expected === TYPE_BOOLEAN) {
+          return !!argValue;
+        }
+      }
+      throw new Error("unhandled argument");
     },
     _getTypeName: function(inputObj) {
         var obj = inputObj;
-        if (typeof(obj) === "object" && obj.constructor.name === "Field") {
+        if (obj !== null && typeof(obj) === "object" && obj.constructor.name === "Field") {
           obj = inputObj["@value"];
         }
         switch (Object.prototype.toString.call(obj)) {
