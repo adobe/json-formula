@@ -17849,6 +17849,18 @@ Object.defineProperty(InputStream.prototype, "size", {
   }
 });
 ;// CONCATENATED MODULE: ./jmespath.js/jmespath.js
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function jmespath_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { jmespath_typeof = function _typeof(obj) { return typeof obj; }; } else { jmespath_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return jmespath_typeof(obj); }
 
 /* eslint-disable quotes */
@@ -19531,6 +19543,13 @@ function jsonFormula() {
           types: [TYPE_ARRAY_NUMBER]
         }]
       },
+      concatenate: {
+        _func: this._functionConcatenate,
+        _signature: [{
+          types: [TYPE_STRING, TYPE_ARRAY],
+          variadic: true
+        }]
+      },
       ceil: {
         _func: this._functionCeil,
         _signature: [{
@@ -19780,14 +19799,15 @@ function jsonFormula() {
       for (var i = 0; i < signature.length; i++) {
         currentSpec = signature[i].types;
         actualType = this._getTypeName(args[i]);
-
-        for (var j = 0; j < currentSpec.length; j++) {
-          args[i] = this._matchType(actualType, currentSpec[j], args[i]);
-        }
+        args[i] = this._matchType(actualType, currentSpec, args[i]);
       }
     },
-    _matchType: function _matchType(actual, expected, argValue) {
-      if (expected === TYPE_ANY || actual === expected) return argValue;
+    _matchType: function _matchType(actual, expectedList, argValue) {
+      if (expectedList.findIndex(function (type) {
+        return type === TYPE_ANY || actual === type;
+      }) !== -1) return argValue; // no exact match in the list of possible types, so coerce to the first type
+
+      var expected = expectedList[0];
 
       if (expected === TYPE_ARRAY_STRING || expected === TYPE_ARRAY_NUMBER || expected === TYPE_ARRAY) {
         if (expected === TYPE_ARRAY) {
@@ -19910,6 +19930,17 @@ function jsonFormula() {
       }
 
       return sum / inputArray.length;
+    },
+    _functionConcatenate: function _functionConcatenate(resolvedArgs) {
+      if (resolvedArgs[0] instanceof Array) {
+        var _ref;
+
+        return (_ref = []).concat.apply(_ref, _toConsumableArray(resolvedArgs));
+      }
+
+      return resolvedArgs.map(function (arg) {
+        return arg === null ? "" : arg.toString();
+      }).join("");
     },
     _functionContains: function _functionContains(resolvedArgs) {
       return resolvedArgs[0].indexOf(resolvedArgs[1]) >= 0;

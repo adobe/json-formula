@@ -1253,6 +1253,7 @@ function jsonFormula() {
         // and if not provided is assumed to be false.
         abs: {_func: this._functionAbs, _signature: [{types: [TYPE_NUMBER]}]},
         avg: {_func: this._functionAvg, _signature: [{types: [TYPE_ARRAY_NUMBER]}]},
+        concatenate: {_func: this._functionConcatenate, _signature: [{types: [TYPE_STRING, TYPE_ARRAY], variadic: true}]},
         ceil: {_func: this._functionCeil, _signature: [{types: [TYPE_NUMBER]}]},
         contains: {
             _func: this._functionContains,
@@ -1362,15 +1363,14 @@ function jsonFormula() {
         for (var i = 0; i < signature.length; i++) {
             currentSpec = signature[i].types;
             actualType = this._getTypeName(args[i]);
-            for (var j = 0; j < currentSpec.length; j++) {
-                args[i] = this._matchType(actualType, currentSpec[j], args[i]);
-            }
+            args[i] = this._matchType(actualType, currentSpec, args[i]);
         }
     },
 
-    _matchType: function(actual, expected, argValue) {
-      if (expected === TYPE_ANY || actual === expected) return argValue;
-
+    _matchType: function(actual, expectedList, argValue) {
+      if (expectedList.findIndex(type => type === TYPE_ANY || actual === type) !== -1) return argValue;
+      // no exact match in the list of possible types, so coerce to the first type
+      var expected = expectedList[0];
       if (expected === TYPE_ARRAY_STRING ||
           expected === TYPE_ARRAY_NUMBER ||
           expected === TYPE_ARRAY) {
@@ -1480,7 +1480,12 @@ function jsonFormula() {
         }
         return sum / inputArray.length;
     },
-
+    _functionConcatenate: function(resolvedArgs) {
+      if (resolvedArgs[0] instanceof Array) {
+        return [].concat(...resolvedArgs);
+      }
+      return resolvedArgs.map(arg => arg === null ? "" : arg.toString()).join("");
+    },
     _functionContains: function(resolvedArgs) {
         return resolvedArgs[0].indexOf(resolvedArgs[1]) >= 0;
     },
