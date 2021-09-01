@@ -116,15 +116,16 @@ function jsonFormula() {
     return values;
   }
 
-  function merge(a, b) {
-      var merged = {};
-      for (var key in a) {
-          merged[key] = a[key];
-      }
-      for (var key2 in b) {
-          merged[key2] = b[key2];
-      }
-      return merged;
+  function toNumber(n) {
+    if (typeof n === "number") return n;
+    if (typeof n === "string") {
+      var temp = parseFloat(n);
+      return isNaN(temp) ? 0 : temp;
+    }
+    if (typeof n === "boolean") return n ? 1 : 0;
+    if (n === null) return 0;
+    // more coercions needed...
+    throw "bad number";
   }
 
   var trimLeft;
@@ -1152,7 +1153,24 @@ function jsonFormula() {
               return first - this.visit(node.children[1], value);
             case "MultiplyExpression":
               first = this.visit(node.children[0], value);
-              return first * this.visit(node.children[1], value);
+              second = this.visit(node.children[1], value);
+              if (first instanceof Array && second instanceof Array) {
+                const len = Math.min(first.length, second.length);
+                const result = [];
+                let i;
+                for (i = 0; i < len; i += 1) {
+                  result.push(toNumber(first[i]) * toNumber(second[i]));
+                }
+                for (i = len; i < Math.max(first.length, second.length); i += 1) {
+                  result.push(0);
+                }
+                return result;
+              }
+              if (first instanceof Array || second instanceof Array) {
+                const [arr, scalar] = first instanceof Array ? [first, second] : [second, first];
+                return arr.map(a => toNumber(a) * toNumber(scalar));
+              }
+              return toNumber(first) * toNumber(second);
             case "DivideExpression":
               first = this.visit(node.children[0], value);
               return first / this.visit(node.children[1], value);
@@ -1393,8 +1411,7 @@ function jsonFormula() {
       } else {
         if (expected === TYPE_NUMBER) {
           if (actual === TYPE_STRING) {
-            var temp = parseFloat(argValue);
-            return isNaN(temp) ? 0 : temp;
+            return toNumber(argValue);
           }
           if (actual === TYPE_BOOLEAN) return argValue ? 1 : 0;
           if (actual === TYPE_NULL) return 0;
@@ -1772,7 +1789,6 @@ function jsonFormula() {
       };
       return keyFunc;
     }
-
   };
 
   function compile(stream) {
