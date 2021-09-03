@@ -125,7 +125,122 @@ function jsonFormula() {
     if (typeof n === "boolean") return n ? 1 : 0;
     if (n === null) return 0;
     // more coercions needed...
-    throw "bad number";
+    throw "need to coerce number";
+  }
+
+  function applyOperator(first, second, operator) {
+    if (isArray(first) && isArray(second)) {
+      const len = Math.min(first.length, second.length);
+      const result = [];
+      let i;
+      for (i = 0; i < len; i += 1) {
+        if (operator === '*') {
+          result.push(first[i] * second[i]);
+        } else if (operator === '&') {
+          result.push(first[i] + second[i]);
+        } else throw "unimplemented";
+      }
+      for (i = len; i < Math.max(first.length, second.length); i += 1) {
+        // Result of the operator applied with 'null'
+        if (operator === '&') result.push("");
+        else if (operator === '*') result.push(0);
+      }
+      return result;
+    }
+
+    if (isArray(first) || isArray(second)) {
+      const [arr, scalar] = isArray(first) ? [first, second] : [second, first];
+      if (operator === '*') return arr.map(a => toNumber(a) * toNumber(scalar));
+      if (operator === '&') return arr.map(a => a + scalar);
+    }
+    if (operator === '*') return first * second;
+    if (operator === '&') return first + second;
+  }
+  function matchType(actual, expectedList, argValue) {
+    if (expectedList.findIndex(type => type === TYPE_ANY || actual === type) !== -1) return argValue;
+    // no exact match in the list of possible types, see if we can coerce an array type
+    var expected = -1;
+    if (actual === TYPE_ARRAY) {
+      if (expectedList.includes(TYPE_ARRAY_STRING) && expectedList.includes(TYPE_ARRAY_NUMBER)) {
+        // choose the array type based on the first element
+        if (argValue.length > 0 && typeof argValue[0] === "string") expected = TYPE_ARRAY_STRING;
+        else expected = TYPE_ARRAY_NUMBER;
+      }
+    }
+    if (expected === -1 && [TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER, TYPE_ARRAY].includes(actual)) {
+      expected = expectedList.find(e => [TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER, TYPE_ARRAY].includes(e));
+    }
+    // no match, just take the first type
+    if (expected === -1) expected = expectedList[0];
+    if (expected === TYPE_ARRAY_STRING ||
+        expected === TYPE_ARRAY_NUMBER ||
+        expected === TYPE_ARRAY) {
+
+        if (expected === TYPE_ARRAY) {
+          if (actual === TYPE_ARRAY_NUMBER || actual === TYPE_ARRAY_STRING) return argValue;
+          return argValue === null ? [] : [argValue];
+        }
+        // The expected type can either just be array,
+        // or it can require a specific subtype (array of numbers).
+        var subtype = expected === TYPE_ARRAY_NUMBER ? TYPE_NUMBER : TYPE_STRING;
+        if (actual === TYPE_ARRAY) {
+            // Otherwise we need to check subtypes.
+            // We're going to modify the array, so take a copy
+            const returnArray = argValue.slice();
+            for (var i = 0; i < returnArray.length; i++) {
+              var indexType = getTypeName(returnArray[i]);
+              returnArray[i] = matchType(indexType, [subtype], returnArray[i]);
+            }
+            return returnArray;
+        } else if ([TYPE_NUMBER, TYPE_STRING, TYPE_NULL, TYPE_BOOLEAN].includes(subtype)) {
+          return [matchType(actual, [subtype], argValue)];
+        }
+    } else {
+      if (expected === TYPE_NUMBER) {
+        if (actual === TYPE_STRING) {
+          return toNumber(argValue);
+        }
+        if (actual === TYPE_BOOLEAN) return argValue ? 1 : 0;
+        if (actual === TYPE_NULL) return 0;
+        /* TYPE_ARRAY, TYPE_EXPREF, TYPE_OBJECT, TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING */
+        return 0;
+      }
+      if (expected === TYPE_STRING) {
+        if (actual === TYPE_NULL || actual === TYPE_OBJECT) return "";
+        return argValue.toString();
+      }
+      if (expected === TYPE_BOOLEAN) {
+        return !!argValue;
+      }
+    }
+    throw new Error("unhandled argument");
+  }
+
+  function getTypeName(inputObj) {
+    var obj = inputObj;
+    if (obj !== null && typeof(obj) === "object" && obj.constructor.name === "Field") {
+      obj = inputObj["@value"];
+    }
+    switch (Object.prototype.toString.call(obj)) {
+        case "[object String]":
+          return TYPE_STRING;
+        case "[object Number]":
+          return TYPE_NUMBER;
+        case "[object Array]":
+          return TYPE_ARRAY;
+        case "[object Boolean]":
+          return TYPE_BOOLEAN;
+        case "[object Null]":
+          return TYPE_NULL;
+        case "[object Object]":
+          // Check if it's an expref.  If it has, it's been
+          // tagged with a jmespathType attr of 'Expref';
+          if (obj.jmespathType === TOK_EXPREF) {
+            return TYPE_EXPREF;
+          } else {
+            return TYPE_OBJECT;
+          }
+    }
   }
 
   var trimLeft;
@@ -158,6 +273,7 @@ function jsonFormula() {
   var TOK_RPAREN = "Rparen";
   var TOK_COMMA = "Comma";
   var TOK_COLON = "Colon";
+  var TOK_CONCATENATE = "Concatenate";
   var TOK_RBRACE = "Rbrace";
   var TOK_NUMBER = "Number";
   var TOK_CURRENT = "Current";
@@ -224,10 +340,17 @@ function jsonFormula() {
   };
 
 
-  function isAlpha(ch) {
-      return (ch >= "a" && ch <= "z") ||
-             (ch >= "A" && ch <= "Z") ||
-             ch === "_";
+  function isIdentifier(stream, pos) {
+    const ch = stream[pos];
+    // @ is special -- it's allowed to be part of an identifier if it's the first character
+    // If it's on its own it needs to be recognized as the 'self' token
+    if (ch === '@') {
+      return stream.length > pos && isAlphaNum(stream[pos + 1]);
+    }
+    // return 'isAlpha'
+    return (ch >= "a" && ch <= "z") ||
+            (ch >= "A" && ch <= "Z") ||
+            ch === "_";
   }
 
   function isNum(ch, includeSign) {
@@ -242,7 +365,7 @@ function jsonFormula() {
              ch === "_";
   }
   function isOperator(tok) {
-    return [TOK_OR, TOK_AND, TOK_ADD, TOK_SUBTRACT, TOK_MULTIPLY, TOK_POWER, TOK_DIVIDE, TOK_EQ, TOK_GT, TOK_LT, TOK_GTE, TOK_LTE, TOK_NE].includes(tok);
+    return [TOK_CONCATENATE, TOK_OR, TOK_AND, TOK_ADD, TOK_SUBTRACT, TOK_MULTIPLY, TOK_POWER, TOK_DIVIDE, TOK_EQ, TOK_GT, TOK_LT, TOK_GTE, TOK_LTE, TOK_NE].includes(tok);
   }
   function Lexer() {
   }
@@ -255,7 +378,7 @@ function jsonFormula() {
           var token;
           while (this._current < stream.length) {
             var prev = tokens.length ? tokens.slice(-1)[0].type : null;
-            if (isAlpha(stream[this._current])) {
+            if (isIdentifier(stream, this._current)) {
                   start = this._current;
                   identifier = this._consumeUnquotedIdentifier(stream);
                   tokens.push({type: TOK_UNQUOTEDIDENTIFIER,
@@ -306,7 +429,14 @@ function jsonFormula() {
                       this._current++;
                       tokens.push({type: TOK_AND, value: "&&", start: start});
                   } else {
+
+                    // based on previous token we'll know if this & is a JMESPath expression-type or if it's a concatenation operator
+                    // if we're a function arg then it's an expression-type
+                    if (prev === TOK_COMMA || prev === TOK_LPAREN) {
                       tokens.push({type: TOK_EXPREF, value: "&", start: start});
+                    } else {
+                      tokens.push({type: TOK_CONCATENATE, value: "&", start: start});
+                    }
                   }
               } else if (stream[this._current] === "+") {
                   start = this._current;
@@ -550,6 +680,7 @@ function jsonFormula() {
       bindingPower[TOK_AND] = 3;
       bindingPower[TOK_ADD] = 6;
       bindingPower[TOK_SUBTRACT] = 6;
+      bindingPower[TOK_CONCATENATE] = 7;
       bindingPower[TOK_MULTIPLY] = 7;
       bindingPower[TOK_DIVIDE] = 7;
       bindingPower[TOK_POWER] = 7;
@@ -706,6 +837,9 @@ function jsonFormula() {
       led: function(tokenName, left) {
         var right;
         switch(tokenName) {
+          case TOK_CONCATENATE:
+            right = this.expression(bindingPower.Concatenate);
+            return {type: "ConcatenateExpression", children: [left, right]};
           case TOK_DOT:
             var rbp = bindingPower.Dot;
             if (this._lookahead(0) !== TOK_STAR) {
@@ -1148,29 +1282,19 @@ function jsonFormula() {
             case "AddExpression":
               first = this.visit(node.children[0], value);
               return first + this.visit(node.children[1], value);
+            case "ConcatenateExpression":
+              first = this.visit(node.children[0], value);
+              second = this.visit(node.children[1], value);
+              first = matchType(getTypeName(first), [TYPE_STRING, TYPE_ARRAY_STRING], first);
+              second = matchType(getTypeName(second), [TYPE_STRING, TYPE_ARRAY_STRING], second);
+              return applyOperator(first, second, '&');
             case "SubtractExpression":
               first = this.visit(node.children[0], value);
               return first - this.visit(node.children[1], value);
             case "MultiplyExpression":
               first = this.visit(node.children[0], value);
               second = this.visit(node.children[1], value);
-              if (first instanceof Array && second instanceof Array) {
-                const len = Math.min(first.length, second.length);
-                const result = [];
-                let i;
-                for (i = 0; i < len; i += 1) {
-                  result.push(toNumber(first[i]) * toNumber(second[i]));
-                }
-                for (i = len; i < Math.max(first.length, second.length); i += 1) {
-                  result.push(0);
-                }
-                return result;
-              }
-              if (first instanceof Array || second instanceof Array) {
-                const [arr, scalar] = first instanceof Array ? [first, second] : [second, first];
-                return arr.map(a => toNumber(a) * toNumber(scalar));
-              }
-              return toNumber(first) * toNumber(second);
+              return applyOperator(first, second, '*');
             case "DivideExpression":
               first = this.visit(node.children[0], value);
               return first / this.visit(node.children[1], value);
@@ -1271,7 +1395,6 @@ function jsonFormula() {
         // and if not provided is assumed to be false.
         abs: {_func: this._functionAbs, _signature: [{types: [TYPE_NUMBER]}]},
         avg: {_func: this._functionAvg, _signature: [{types: [TYPE_ARRAY_NUMBER]}]},
-        concatenate: {_func: this._functionConcatenate, _signature: [{types: [TYPE_STRING, TYPE_ARRAY], variadic: true}]},
         ceil: {_func: this._functionCeil, _signature: [{types: [TYPE_NUMBER]}]},
         contains: {
             _func: this._functionContains,
@@ -1298,7 +1421,7 @@ function jsonFormula() {
           _func: this._functionMaxBy,
           _signature: [{types: [TYPE_ARRAY]}, {types: [TYPE_EXPREF]}]
         },
-        sum: {_func: this._functionSum, _signature: [{types: [TYPE_ARRAY]}]},
+        sum: {_func: this._functionSum, _signature: [{types: [TYPE_ARRAY_NUMBER]}]},
         "starts_with": {
             _func: this._functionStartsWith,
             _signature: [{types: [TYPE_STRING]}, {types: [TYPE_STRING]}]},
@@ -1380,78 +1503,8 @@ function jsonFormula() {
         var actualType;
         for (var i = 0; i < signature.length; i++) {
             currentSpec = signature[i].types;
-            actualType = this._getTypeName(args[i]);
-            args[i] = this._matchType(actualType, currentSpec, args[i]);
-        }
-    },
-
-    _matchType: function(actual, expectedList, argValue) {
-      if (expectedList.findIndex(type => type === TYPE_ANY || actual === type) !== -1) return argValue;
-      // no exact match in the list of possible types, so coerce to the first type
-      var expected = expectedList[0];
-      if (expected === TYPE_ARRAY_STRING ||
-          expected === TYPE_ARRAY_NUMBER ||
-          expected === TYPE_ARRAY) {
-
-          if (expected === TYPE_ARRAY) {
-            if (actual === TYPE_ARRAY_NUMBER || actual === TYPE_ARRAY_STRING) return argValue;
-            return [argValue];
-          }
-          // The expected type can either just be array,
-          // or it can require a specific subtype (array of numbers).
-          var subtype = expected === TYPE_ARRAY_NUMBER ? TYPE_NUMBER : TYPE_STRING;
-          if (actual === TYPE_ARRAY) {
-              // Otherwise we need to check subtypes.
-              for (var i = 0; i < argValue.length; i++) {
-                var indexType = this._getTypeName(argValue[i]);
-                argValue[i] = this._matchType(indexType, subtype, argValue[i]);
-              }
-              return argValue;
-          }
-      } else {
-        if (expected === TYPE_NUMBER) {
-          if (actual === TYPE_STRING) {
-            return toNumber(argValue);
-          }
-          if (actual === TYPE_BOOLEAN) return argValue ? 1 : 0;
-          if (actual === TYPE_NULL) return 0;
-          /* TYPE_ARRAY, TYPE_EXPREF, TYPE_OBJECT, TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING */
-          return 0;
-        }
-        if (expected === TYPE_STRING) {
-          if (actual === TYPE_NULL) return "";
-          return argValue.toString();
-        }
-        if (expected === TYPE_BOOLEAN) {
-          return !!argValue;
-        }
-      }
-      throw new Error("unhandled argument");
-    },
-    _getTypeName: function(inputObj) {
-        var obj = inputObj;
-        if (obj !== null && typeof(obj) === "object" && obj.constructor.name === "Field") {
-          obj = inputObj["@value"];
-        }
-        switch (Object.prototype.toString.call(obj)) {
-            case "[object String]":
-              return TYPE_STRING;
-            case "[object Number]":
-              return TYPE_NUMBER;
-            case "[object Array]":
-              return TYPE_ARRAY;
-            case "[object Boolean]":
-              return TYPE_BOOLEAN;
-            case "[object Null]":
-              return TYPE_NULL;
-            case "[object Object]":
-              // Check if it's an expref.  If it has, it's been
-              // tagged with a jmespathType attr of 'Expref';
-              if (obj.jmespathType === TOK_EXPREF) {
-                return TYPE_EXPREF;
-              } else {
-                return TYPE_OBJECT;
-              }
+            actualType = getTypeName(args[i]);
+            args[i] = matchType(actualType, currentSpec, args[i]);
         }
     },
 
@@ -1466,7 +1519,7 @@ function jsonFormula() {
     },
 
     _functionReverse: function(resolvedArgs) {
-        var typeName = this._getTypeName(resolvedArgs[0]);
+        var typeName = getTypeName(resolvedArgs[0]);
         if (typeName === TYPE_STRING) {
           var originalStr = resolvedArgs[0];
           var reversedStr = "";
@@ -1496,12 +1549,6 @@ function jsonFormula() {
             sum += inputArray[i];
         }
         return sum / inputArray.length;
-    },
-    _functionConcatenate: function(resolvedArgs) {
-      if (resolvedArgs[0] instanceof Array) {
-        return [].concat(...resolvedArgs);
-      }
-      return resolvedArgs.map(arg => arg === null ? "" : arg.toString()).join("");
     },
     _functionContains: function(resolvedArgs) {
         return resolvedArgs[0].indexOf(resolvedArgs[1]) >= 0;
@@ -1545,7 +1592,7 @@ function jsonFormula() {
 
     _functionMax: function(resolvedArgs) {
       if (resolvedArgs[0].length > 0) {
-        var typeName = this._getTypeName(resolvedArgs[0][0]);
+        var typeName = getTypeName(resolvedArgs[0][0]);
         if (typeName === TYPE_NUMBER) {
           return Math.max.apply(Math, resolvedArgs[0]);
         } else {
@@ -1565,7 +1612,7 @@ function jsonFormula() {
 
     _functionMin: function(resolvedArgs) {
       if (resolvedArgs[0].length > 0) {
-        var typeName = this._getTypeName(resolvedArgs[0][0]);
+        var typeName = getTypeName(resolvedArgs[0][0]);
         if (typeName === TYPE_NUMBER) {
           return Math.min.apply(Math, resolvedArgs[0]);
         } else {
@@ -1604,7 +1651,7 @@ function jsonFormula() {
       return !resolveArgs[0];
     },
     _functionType: function(resolvedArgs) {
-        switch (this._getTypeName(resolvedArgs[0])) {
+        switch (getTypeName(resolvedArgs[0])) {
           case TYPE_NUMBER:
             return "number";
           case TYPE_STRING:
@@ -1643,7 +1690,7 @@ function jsonFormula() {
     },
 
     _functionToArray: function(resolvedArgs) {
-        if (this._getTypeName(resolvedArgs[0]) === TYPE_ARRAY) {
+        if (getTypeName(resolvedArgs[0]) === TYPE_ARRAY) {
             return resolvedArgs[0];
         } else {
             return [resolvedArgs[0]];
@@ -1651,7 +1698,7 @@ function jsonFormula() {
     },
 
     _functionToString: function(resolvedArgs) {
-        if (this._getTypeName(resolvedArgs[0]) === TYPE_STRING) {
+        if (getTypeName(resolvedArgs[0]) === TYPE_STRING) {
             return resolvedArgs[0];
         } else {
             return JSON.stringify(resolvedArgs[0]);
@@ -1659,22 +1706,18 @@ function jsonFormula() {
     },
 
     _functionToNumber: function(resolvedArgs) {
-        var typeName = this._getTypeName(resolvedArgs[0]);
-        var convertedValue;
+        var typeName = getTypeName(resolvedArgs[0]);
         if (typeName === TYPE_NUMBER) {
             return resolvedArgs[0];
         } else if (typeName === TYPE_STRING) {
-            convertedValue = +resolvedArgs[0];
-            if (!isNaN(convertedValue)) {
-                return convertedValue;
-            }
+            return toNumber(resolvedArgs[0]);
         }
         return null;
     },
 
     _functionNotNull: function(resolvedArgs) {
         for (var i = 0; i < resolvedArgs.length; i++) {
-            if (this._getTypeName(resolvedArgs[i]) !== TYPE_NULL) {
+            if (getTypeName(resolvedArgs[i]) !== TYPE_NULL) {
                 return resolvedArgs[i];
             }
         }
@@ -1694,12 +1737,11 @@ function jsonFormula() {
         }
         var interpreter = this._interpreter;
         var exprefNode = resolvedArgs[1];
-        var requiredType = this._getTypeName(
+        var requiredType = getTypeName(
             interpreter.visit(exprefNode, sortedArray[0]));
         if ([TYPE_NUMBER, TYPE_STRING].indexOf(requiredType) < 0) {
             throw new Error("TypeError");
         }
-        var that = this;
         // In order to get a stable sort out of an unstable
         // sort algorithm, we decorate/sort/undecorate (DSU)
         // by creating a new list of [index, element] pairs.
@@ -1714,14 +1756,14 @@ function jsonFormula() {
         decorated.sort(function(a, b) {
           var exprA = interpreter.visit(exprefNode, a[1]);
           var exprB = interpreter.visit(exprefNode, b[1]);
-          if (that._getTypeName(exprA) !== requiredType) {
+          if (getTypeName(exprA) !== requiredType) {
               throw new Error(
                   "TypeError: expected " + requiredType + ", received " +
-                  that._getTypeName(exprA));
-          } else if (that._getTypeName(exprB) !== requiredType) {
+                  getTypeName(exprA));
+          } else if (getTypeName(exprB) !== requiredType) {
               throw new Error(
                   "TypeError: expected " + requiredType + ", received " +
-                  that._getTypeName(exprB));
+                  getTypeName(exprB));
           }
           if (exprA > exprB) {
             return 1;
@@ -1776,13 +1818,12 @@ function jsonFormula() {
     },
 
     createKeyFunction: function(exprefNode, allowedTypes) {
-      var that = this;
       var interpreter = this._interpreter;
       var keyFunc = function(x) {
         var current = interpreter.visit(exprefNode, x);
-        if (allowedTypes.indexOf(that._getTypeName(current)) < 0) {
+        if (allowedTypes.indexOf(getTypeName(current)) < 0) {
           var msg = "TypeError: expected one of " + allowedTypes +
-                    ", received " + that._getTypeName(current);
+                    ", received " + getTypeName(current);
           throw new Error(msg);
         }
         return current;

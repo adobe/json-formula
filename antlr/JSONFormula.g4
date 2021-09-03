@@ -18,7 +18,7 @@ expression
   : expression '.' chainedExpression # chainExpression
   | expression bracketSpecifier # bracketedExpression
   | bracketSpecifier # bracketExpression
-  | expression ('*' | '/') expression	# multDivExpression
+  | expression ('*' | '/' | '&') expression	# multDivExpression
 	| expression ('+' | '-') expression	# addSubtractExpression
   | expression COMPARATOR expression # comparisonExpression
   | expression '&&' expression # andExpression
@@ -110,7 +110,7 @@ JSON_CONSTANT
   | 'null'
   ;
 
-NAME : [a-zA-Z_] [a-zA-Z0-9_]* ;
+NAME : [@a-zA-Z_] [a-zA-Z0-9_]* ;
 
 jsonObject
   : '{' jsonObjectPair (',' jsonObjectPair)* '}'

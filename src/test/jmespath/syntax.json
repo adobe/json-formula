@@ -209,7 +209,8 @@
       },
       {
         "expression": "*.[0]",
-        "error": "syntax"
+        "result": [[0]],
+        "was": "syntax"
       },
       {
         "expression": "*.[\"0\"]",
@@ -275,7 +276,8 @@
       },
       {
         "expression": "foo.[0]",
-        "error": "syntax"
+        "result": null,
+        "was": "syntax"
       },
       {
         "expression": "foo.[*]",
@@ -334,7 +336,8 @@
       {
         "comment": "Multi-select of a hash using a numeric index",
         "expression": "foo.[abc, 1]",
-        "error": "syntax"
+        "result": null,
+        "was": "syntax"
       },
       {
         "comment": "Multi-select of a hash with a trailing comma",
@@ -349,7 +352,8 @@
       {
         "comment": "Multi-select of a hash using number indices",
         "expression": "foo.[0, 1]",
-        "error": "syntax"
+        "error": null,
+        "was": "syntax"
       }
     ]
   },

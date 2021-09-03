@@ -42,7 +42,6 @@ function toTestFmt(t) {
 
 function executeTest(desc, tst) {
   let result;
-  // if (tst.error) return;
   try {
     result = evaluate(tst.given, tst.expression, false);
   } catch (e) {

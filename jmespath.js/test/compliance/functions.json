@@ -445,7 +445,7 @@
     },
     {
       "expression": "sum(array)",
-      "error": "invalid-type"
+      "result": 111
     },
     {
       "expression": "sum(array[].to_number(@))",

@@ -25,7 +25,8 @@
     },
     {
       "expression": "abs(str)",
-      "error": "invalid-type"
+      "result": 0,
+      "was": "invalid-type"
     },
     {
       "expression": "abs(array[1])",
@@ -37,7 +38,8 @@
     },
     {
       "expression": "abs(`false`)",
-      "error": "invalid-type"
+      "result": 0,
+      "was": "invalid-type"
     },
     {
       "expression": "abs(`-24`)",
@@ -65,23 +67,28 @@
     },
     {
       "expression": "avg(array)",
-      "error": "invalid-type"
+      "result": 18.5,
+      "was": "invalid-type"
     },
     {
       "expression": "avg('abc')",
-      "error": "invalid-type"
+      "result": 0,
+      "was": "invalid-type"
     },
     {
       "expression": "avg(foo)",
-      "error": "invalid-type"
+      "result": -1,
+      "was": "invalid-type"
     },
     {
       "expression": "avg(@)",
-      "error": "invalid-type"
+      "result": 0,
+      "was": "invalid-type"
     },
     {
       "expression": "avg(strings)",
-      "error": "invalid-type"
+      "result": 0,
+      "was": "invalid-type"
     },
     {
       "expression": "ceil(`1.2`)",
@@ -101,7 +108,8 @@
     },
     {
       "expression": "ceil('string')",
-      "error": "invalid-type"
+      "result": 0,
+      "was": "invalid-type"
     },
     {
       "expression": "contains('abc', 'a')",
@@ -113,7 +121,8 @@
     },
     {
       "expression": "contains(`false`, 'd')",
-      "error": "invalid-type"
+      "result": false,
+      "was": "invalid-type"
     },
     {
       "expression": "contains(strings, 'a')",
@@ -149,7 +158,8 @@
     },
     {
       "expression": "ends_with(str, `0`)",
-      "error": "invalid-type"
+      "result": false,
+      "was": "invalid-type"
     },
     {
       "expression": "floor(`1.2`)",
@@ -157,7 +167,8 @@
     },
     {
       "expression": "floor('string')",
-      "error": "invalid-type"
+      "result": 0,
+      "was": "invalid-type"
     },
     {
       "expression": "floor(decimals[0])",
@@ -169,7 +180,8 @@
     },
     {
       "expression": "floor(str)",
-      "error": "invalid-type"
+      "result": 0,
+      "was": "invalid-type"
     },
     {
       "expression": "length('abc')",
@@ -205,11 +217,13 @@
     },
     {
       "expression": "length(`false`)",
-      "error": "invalid-type"
+      "result": 5,
+      "was": "invalid-type"
     },
     {
       "expression": "length(foo)",
-      "error": "invalid-type"
+      "result": 2,
+      "was": "invalid-type"
     },
     {
       "expression": "length(strings[0])",
@@ -229,11 +243,13 @@
     },
     {
       "expression": "max(abc)",
-      "error": "invalid-type"
+      "result": 0,
+      "was": "invalid-type"
     },
     {
       "expression": "max(array)",
-      "error": "invalid-type"
+      "result": 100,
+      "was": "invalid-type"
     },
     {
       "expression": "max(decimals)",
@@ -273,11 +289,13 @@
     },
     {
       "expression": "min(abc)",
-      "error": "invalid-type"
+      "result": 0,
+      "was": "invalid-type"
     },
     {
       "expression": "min(array)",
-      "error": "invalid-type"
+      "result": -1,
+      "was": "invalid-type"
     },
     {
       "expression": "min(empty_list)",
@@ -369,11 +387,13 @@
     },
     {
       "expression": "join(',', `[\"a\", 0]`)",
-      "error": "invalid-type"
+      "result": "a,0",
+      "was": "invalid-type"
     },
     {
       "expression": "join(', ', str)",
-      "error": "invalid-type"
+      "result": "Str",
+      "was": "invalid-type"
     },
     {
       "expression": "join('|', strings)",
@@ -381,11 +401,13 @@
     },
     {
       "expression": "join(`2`, strings)",
-      "error": "invalid-type"
+      "result": "a2b2c",
+      "was": "invalid-type"
     },
     {
       "expression": "join('|', decimals)",
-      "error": "invalid-type"
+      "result": "1.01|1.2|-1.5",
+      "was": "invalid-type"
     },
     {
       "expression": "join('|', decimals[].to_string(@))",
@@ -433,7 +455,8 @@
     },
     {
       "expression": "starts_with(str, `0`)",
-      "error": "invalid-type"
+      "result": false,
+      "was": "invalid-type"
     },
     {
       "expression": "sum(numbers)",
@@ -445,7 +468,8 @@
     },
     {
       "expression": "sum(array)",
-      "error": "invalid-type"
+      "result": 111,
+      "was": "invalid-type"
     },
     {
       "expression": "sum(array[].to_number(@))",
@@ -501,7 +525,8 @@
     },
     {
       "expression": "to_number('notanumber')",
-      "result": null
+      "result": 0,
+      "was": null
     },
     {
       "expression": "to_number(`false`)",
@@ -537,11 +562,13 @@
     },
     {
       "expression": "sort(array)",
-      "error": "invalid-type"
+      "result": [-1, 0, 100, 3, 4, 5],
+      "was": "invalid-type"
     },
     {
       "expression": "sort(abc)",
-      "error": "invalid-type"
+      "result": [""],
+      "was": "invalid-type"
     },
     {
       "expression": "sort(empty_list)",
@@ -549,7 +576,8 @@
     },
     {
       "expression": "sort(@)",
-      "error": "invalid-type"
+      "result": [""],
+      "was": "invalid-type"
     },
     {
       "expression": "not_null(unknown_key, str)",
@@ -579,7 +607,8 @@
     {
       "description": "function projection on single arg function",
       "expression": "array[].to_number(@)",
-      "result": [-1, 3, 4, 5, 100]
+      "result": [-1, 3, 4, 5, 0, 100],
+      "was": [-1, 3, 4, 5, 100]
     }
   ]
 }, {
@@ -777,7 +806,8 @@
     },
     {
       "expression": "map(&a, badkey)",
-      "error": "invalid-type"
+      "result": [],
+      "was": "invalid-type"
     },
     {
       "expression": "map(&foo, empty)",

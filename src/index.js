@@ -16,6 +16,12 @@ window.addEventListener("load", () => {
   const expression = document.getElementById("expression");
   const result = document.getElementById("result");
   const allFields = [];
+
+  const d = window.localStorage.getItem("data");
+  if (d) data.value = d;
+  const exp = window.localStorage.getItem("expression");
+  if (exp) expression.value = exp;
+
   /*
     Field class allows objects to evaluate correctly according to context.
     - if used in an expression, will return a value or string.
@@ -54,7 +60,7 @@ window.addEventListener("load", () => {
       child.forEach((item, index) => {
         createFields(child, index, item);
       });
-    } else if (typeof child === "object") {
+    } else if (child !== null && typeof child === "object") {
       Object.keys(child).forEach(k => {
         createFields(child, k, child[k]);
       })
@@ -79,6 +85,9 @@ window.addEventListener("load", () => {
   }
 
   function run() {
+    // save for next time...
+    window.localStorage.setItem("data", data.value);
+    window.localStorage.setItem("expression", expression.value);
     const input = expression.value;
 
     let json;
