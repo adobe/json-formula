@@ -1281,7 +1281,7 @@ function jsonFormula() {
               return this.visit(node.children[1], value);
             case "AddExpression":
               first = this.visit(node.children[0], value);
-              return first + this.visit(node.children[1], value);
+              return toNumber(first) + toNumber(this.visit(node.children[1], value));
             case "ConcatenateExpression":
               first = this.visit(node.children[0], value);
               second = this.visit(node.children[1], value);
