@@ -18009,13 +18009,16 @@ function jsonFormula() {
   }
 
   function applyOperator(first, second, operator) {
+    // TODO: fill in remaining operators
     if (isArray(first) && isArray(second)) {
       var len = Math.min(first.length, second.length);
       var result = [];
       var i;
 
       for (i = 0; i < len; i += 1) {
-        if (operator === '*') {
+        if (isArray(first[i]) || isArray(second[i])) {
+          result.push(applyOperator(first[i], second[i], operator));
+        } else if (operator === '*') {
           result.push(first[i] * second[i]);
         } else if (operator === '&') {
           result.push(first[i] + second[i]);
@@ -18044,7 +18047,7 @@ function jsonFormula() {
       });
     }
 
-    if (operator === '*') return first * second;
+    if (operator === '*') return toNumber(first) * toNumber(second);
     if (operator === '&') return first + second;
   }
 
@@ -21035,6 +21038,7 @@ function evaluate(json, expression, trace) {
   var tokens = new antlr4.CommonTokenStream(lexer);
   var parser = new JSONFormulaParser(tokens);
   parser.buildParseTrees = true;
+  lexer.removeErrorListeners();
   var parseError;
 
   var ParseErrorListener = /*#__PURE__*/function (_antlr4$error$ErrorLi) {

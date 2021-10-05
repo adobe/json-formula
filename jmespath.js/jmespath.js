@@ -135,18 +135,12 @@ function jsonFormula() {
       const result = [];
       let i;
       for (i = 0; i < len; i += 1) {
-        if (operator === '*') {
-          if (isArray(first[i]) || isArray(second[i])) {
-            result.push(applyOperator(first[i], second[i], operator));
-          } else {
-            result.push(first[i] * second[i]);
-          }
+        if (isArray(first[i]) || isArray(second[i])) {
+          result.push(applyOperator(first[i], second[i], operator));
+        } else if (operator === '*') {
+          result.push(first[i] * second[i]);
         } else if (operator === '&') {
-          if (isArray(first[i]) || isArray(second[i])) {
-            result.push(applyOperator(first[i], second[i], operator));
-          } else {
-            result.push(first[i] + second[i]);
-          }
+          result.push(first[i] + second[i]);
         } else throw "unimplemented";
       }
       for (i = len; i < Math.max(first.length, second.length); i += 1) {
@@ -162,7 +156,7 @@ function jsonFormula() {
       if (operator === '*') return arr.map(a => toNumber(a) * toNumber(scalar));
       if (operator === '&') return arr.map(a => a + scalar);
     }
-    if (operator === '*') return first * second;
+    if (operator === '*') return toNumber(first) * toNumber(second);
     if (operator === '&') return first + second;
   }
   function matchType(actual, expectedList, argValue) {

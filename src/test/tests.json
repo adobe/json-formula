@@ -53,11 +53,27 @@
     }
   ],
   [
+    "sum(array)",
+    {
+      "data": "`{}`",
+      "expression": "sum([2,'4',6,`true`])",
+      "expected": 13
+    }
+  ],
+  [
     "math",
     {
       "data": "`{}`",
       "expression": "(3 + 2) * 10 / 2 - 5",
       "expected": 20
+    }
+  ],
+  [
+    "math",
+    {
+      "data": "`{}`",
+      "expression": "2 * '2b' + `null`",
+      "expected": 4
     }
   ],
   [
@@ -202,6 +218,14 @@
       "data": "`{}`",
       "expression": "[1,'a','b'] & ['b',1,2]",
       "expected": ["1b", "a1", "b2"]
+    }
+  ],
+  [
+    "12 & 34 & 'b' & true()",
+    {
+      "data": "`{}`",
+      "expression": "12 & 34 & 'b' & true()",
+      "expected": "1234btrue"
     }
   ]
 ]

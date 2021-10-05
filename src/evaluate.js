@@ -28,7 +28,7 @@ export default function evaluate(json, expression, trace) {
   const tokens  = new antlr4.CommonTokenStream(lexer);
   const parser = new FEParser(tokens);
   parser.buildParseTrees = true;
-
+  lexer.removeErrorListeners();
 
   let parseError;
   class ParseErrorListener extends antlr4.error.ErrorListener {
