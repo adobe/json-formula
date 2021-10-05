@@ -129,15 +129,24 @@ function jsonFormula() {
   }
 
   function applyOperator(first, second, operator) {
+    // TODO: fill in remaining operators
     if (isArray(first) && isArray(second)) {
       const len = Math.min(first.length, second.length);
       const result = [];
       let i;
       for (i = 0; i < len; i += 1) {
         if (operator === '*') {
-          result.push(first[i] * second[i]);
+          if (isArray(first[i]) || isArray(second[i])) {
+            result.push(applyOperator(first[i], second[i], operator));
+          } else {
+            result.push(first[i] * second[i]);
+          }
         } else if (operator === '&') {
-          result.push(first[i] + second[i]);
+          if (isArray(first[i]) || isArray(second[i])) {
+            result.push(applyOperator(first[i], second[i], operator));
+          } else {
+            result.push(first[i] + second[i]);
+          }
         } else throw "unimplemented";
       }
       for (i = len; i < Math.max(first.length, second.length); i += 1) {
