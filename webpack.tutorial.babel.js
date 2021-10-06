@@ -10,13 +10,14 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 import path from "path";
+import CopyPlugin from "copy-webpack-plugin";
 
 const DIST = path.resolve(".", "dist");
 
 export default {
   mode: "production",
   entry: {
-    "json-formula": "./src/index.js"
+    "tutorial": "./src/tutorial.js",
   },
   devtool: "source-map",
   resolve: { fallback: { fs: false } },
@@ -36,18 +37,32 @@ export default {
             ]
           }
         }
+      },
+      {
+        test: /\.css$/,
+        use: [
+          "style-loader",
+          "css-loader"
+        ]
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/i,
+        loader: "url-loader",
+        options: {
+          esModule: false,
+        },
       }
     ]
   },
-  experiments: {
-    outputModule: true
-  },
   output: {
     path: DIST,
-    filename: "[name].js",
-    library: {
-      type: "module"
-    }
   },
-  plugins: []
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        { from: "./doc", to: path.resolve(DIST, "doc") },
+        { from: "./src/index.html", to: DIST },
+      ],
+    })
+  ]
 };

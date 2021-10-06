@@ -1,16 +1,17 @@
 {
-  "name": "json-formula",
-  "version": "1.0.0",
+  "name": "@adobe/json-formula",
+  "version": "0.1.0",
   "description": "JSONFormula Grammar and implementation",
-  "main": "index.js",
+  "main": "dist/json-formula.js",
   "type": "module",
+  "files": ["dist"],
   "engines": {
     "node": ">=10.0.0"
   },
   "scripts": {
     "eslint": "eslint src",
     "test": "jest",
-    "build": "webpack",
+    "build": "rm -rf ./dist && webpack && webpack --config webpack.tutorial.babel.js",
     "start": "webpack serve --config webpack-devserver.config.babel.js"
   },
   "repository": {
@@ -37,7 +38,7 @@
     "json-loader": "^0.5.7",
     "mocha": "^2.5.3",
     "raw-loader": "^4.0.2",
-    "webpack": "^5.32.0",
+    "webpack": "^5.57.1",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"
   }

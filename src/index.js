@@ -9,119 +9,74 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import evaluate from "./evaluate.js";
 
-window.addEventListener("load", () => {
-  const data = document.getElementById("data");
-  const expression = document.getElementById("expression");
-  const result = document.getElementById("result");
-  const allFields = [];
+import antlr4 from "antlr4";
+import FEParser from "./antlr/JSONFormulaParser.js";
+import FELexer from "./antlr/JSONFormulaLexer.js";
+import InputStream from "./InputStream.js"
+import Visitor from "./Visitor.js";
+import jmespath from "../jmespath.js/jmespath.js";
 
-  const d = window.localStorage.getItem("data");
-  if (d) data.value = d;
-  const exp = window.localStorage.getItem("expression");
-  if (exp) expression.value = exp;
+export function jsonFormula(json, expression, trace) {
 
-  /*
-    Field class allows objects to evaluate correctly according to context.
-    - if used in an expression, will return a value or string.
-    - for JSON.stringify() returns a scalar
-    - BUT also allows explicit access to properties. e.g. field.required, field.name etc.
+  // confirm that we pass the parser
 
-    Should allow us to eliminate getFieldProperty()
-  */
+  const stream = new antlr4.InputStream(expression);
+  const chars = new InputStream(stream);
+  const lexer = new FELexer(chars);
+  lexer._interp.debug = true;
+  const tokens  = new antlr4.CommonTokenStream(lexer);
+  const parser = new FEParser(tokens);
+  parser.buildParseTrees = true;
+  lexer.removeErrorListeners();
 
-  function createField(name, value, readonly = false, required = true) {
-    class Field {
-      valueOf() { return value }
-      toString() { return value.toString() }
-      toJSON() { return value }
-      equals(compare) {
-        if (compare === null || compare === undefined) return this.valueOf() === compare;
-
-        return this.valueOf() === compare.valueOf();
-      }
-      // Use getters and scope variables so that the children are not enumerable
-      get value() { return value }
-      get name() { return name }
-      get readonly() { return readonly }
-      get required() { return required }
-      get "@value"() { return value }
-      get "@name"() { return name }
-      get "@readonly"() { return readonly }
-      get "@required"() { return required }
-    }
-    const newField = new Field();
-    allFields.push(newField);
-    return newField;
-  }
-  function createFields(parent, childref, child) {
-    if (child instanceof Array) {
-      child.forEach((item, index) => {
-        createFields(child, index, item);
-      });
-    } else if (child !== null && typeof child === "object") {
-      Object.keys(child).forEach(k => {
-        createFields(child, k, child[k]);
-      })
-    } else {
-      parent[childref] = createField(childref, parent[childref]);
+  let parseError;
+  class ParseErrorListener extends antlr4.error.ErrorListener {
+    syntaxError(recognizer, offendingSymbol, line, column, msg) {
+      parseError = `line ${line}, col ${column}: ${msg}`;
+      if (trace) console.log(`ERROR: ${parseError}`);
     }
   }
 
-  function isField(test) {
-    return  test !== null &&
-      typeof(test) === "object" &&
-      test.__proto__.constructor.name === "Field";
+  const parseErrHandler = new ParseErrorListener();
+  parser.removeErrorListeners();
+  parser.addErrorListener(parseErrHandler);
+
+  // let tree;
+  parser.formula();
+  // const visitor = new Visitor(json, trace);
+  // const result = visitor.visitFormula(tree);
+
+  if (parseError) {
+    /*
+    if (result !== undefined) {
+      // antlr recovered from the error
+      return result;
+    }*/
+    throw new Error(parseError);
   }
+  // return result;
 
-  class Root {
-    constructor(dataRoot) {
-      Object.keys(dataRoot).forEach(key => {
-        this[key] = dataRoot[key];
-      });
-    }
-    get fields() { return allFields }
-  }
+  const x = jmespath.search(json, expression);
+  return x;
 
-  function run() {
-    // save for next time...
-    window.localStorage.setItem("data", data.value);
-    window.localStorage.setItem("expression", expression.value);
-    const input = expression.value;
+}
 
-    let json;
-    try {
-      json = JSON.parse(data.value);
-      const root = new Root(json);
-      json.$ = root;
-      if (document.getElementById("use-fields").checked) {
-        createFields(null, null, json);
-      }
-    } catch (e) {
-      result.value = e.toString();
-      return;
-    }
+/*
+var SimpleJavaLexer = require('generated/GrammarLexer');
+var SimpleJavaParser = require('generated/GrammarParser');
+var SimpleJavaVisitor = require('generated/GrammarVisitor');
+var Visitor = require('./Visitor');
 
-    try {
-      const r = evaluate(json, input, true);
-      if (isField(r)) {
-        result.value = r.value;
-      } else if (typeof r === "object") {
-        result.value = JSON.stringify(r, null, 2);
-      } else {
-        result.value = r;
-      }
-    } catch (e) {
-      result.value = e.toString();
-    }
-  }
+var input = "TestInput";
+var chars = new antlr4.InputStream(input);
+var lexer = new GrammarLexer.GrammarLexer(chars);
+var tokens = new antlr4.CommonTokenStream(lexer);
+var parser = new GrammarParser.GrammarParser(tokens);
+var visitor = new Visitor.Visitor();
+parser.buildParseTrees = true;
+var tree = parser.parse();
+and call your entry function
 
-  data.addEventListener("blur", run);
-  expression.addEventListener("blur", run);
-  run();
-
-  fetch("../antlr/JSONFormula.g4").then(r => {
-    r.text().then((g4 => document.getElementById("grammar-out").innerHTML = g4));
-  });
-});
+visitor.visitTest(tree);
+*/

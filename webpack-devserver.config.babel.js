@@ -17,7 +17,7 @@ const dist = path.resolve(".", "dist");
 const defn = {
   mode: "production",
   entry: {
-    "json-formula": "./src/index.js"
+    "json-formula": "./src/tutorial.js"
   },
   devtool: "source-map",
   optimization: {
