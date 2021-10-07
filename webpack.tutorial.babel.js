@@ -11,6 +11,7 @@ governing permissions and limitations under the License.
 */
 import path from "path";
 import CopyPlugin from "copy-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 
 const DIST = path.resolve(".", "dist");
 
@@ -56,13 +57,18 @@ export default {
   },
   output: {
     path: DIST,
+    filename: "[name].js",
+    libraryTarget: "var",
+    library: "JSONFormula"
   },
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: "./doc", to: path.resolve(DIST, "doc") },
-        { from: "./src/index.html", to: DIST },
+        { from: "./doc", to: path.resolve(DIST, "doc") }
       ],
+    }),
+    new HtmlWebpackPlugin({
+      template: "src/index.html"
     })
   ]
 };

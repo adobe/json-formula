@@ -12,8 +12,10 @@ governing permissions and limitations under the License.
 import path from "path";
 
 const DIST = path.resolve(".", "dist");
+const CJS = path.resolve(DIST, "cjs");
+const UMD = path.resolve(DIST, "umd");
 
-export default {
+const cjs = {
   mode: "production",
   entry: {
     "json-formula": "./src/index.js"
@@ -39,15 +41,23 @@ export default {
       }
     ]
   },
-  experiments: {
-    outputModule: true
-  },
   output: {
-    path: DIST,
+    path: CJS,
     filename: "[name].js",
     library: {
-      type: "module"
+      type: "commonjs2"
     }
-  },
-  plugins: []
+  }
 };
+
+const umd = Object.assign({}, cjs, {
+  output: {
+    path: UMD,
+    filename: "[name].js",
+    library: {
+      type: "umd"
+    }
+  }
+});
+
+export default [cjs, umd];

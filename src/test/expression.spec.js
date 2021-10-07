@@ -9,15 +9,15 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import evaluate from "../evaluate";
+import { jsonFormula } from "../index";
 
 const sampleData = require("./sampleData.json");
 const tests = require("./tests.json");
 
 test.each(tests)("%s", (desc, tst) => {
-  const data = evaluate(sampleData, tst.data);
+  const data = jsonFormula(sampleData, tst.data);
   try {
-    const result = evaluate(data, tst.expression, false);
+    const result = jsonFormula(data, tst.expression);
     if (typeof result === "number") {
       expect(result).toBeCloseTo(tst.expected, 5);
     } else {

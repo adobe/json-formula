@@ -193,11 +193,13 @@
       },
       {
         "expression": "!Zero",
-        "result": false
+        "result": true,
+        "was": false
       },
       {
         "expression": "!!Zero",
-        "result": true
+        "result": false,
+        "was": true
       }
     ]
   },

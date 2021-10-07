@@ -9,18 +9,22 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
+/*
+Have turned off the antlr-based parser for the time being.
+The generated code was failing when it was minified by terser
 
 import antlr4 from "antlr4";
 import FEParser from "./antlr/JSONFormulaParser.js";
 import FELexer from "./antlr/JSONFormulaLexer.js";
 import InputStream from "./InputStream.js"
 import Visitor from "./Visitor.js";
+*/
 import jmespath from "../jmespath.js/jmespath.js";
 
-export function jsonFormula(json, expression, trace) {
+export function jsonFormula(json, expression) {
 
   // confirm that we pass the parser
-
+/*
   const stream = new antlr4.InputStream(expression);
   const chars = new InputStream(stream);
   const lexer = new FELexer(chars);
@@ -48,15 +52,10 @@ export function jsonFormula(json, expression, trace) {
   // const result = visitor.visitFormula(tree);
 
   if (parseError) {
-    /*
-    if (result !== undefined) {
-      // antlr recovered from the error
-      return result;
-    }*/
     throw new Error(parseError);
   }
   // return result;
-
+*/
   const x = jmespath.search(json, expression);
   return x;
 
