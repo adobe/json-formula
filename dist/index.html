@@ -1,21 +1,4 @@
-<!DOCTYPE html>
-<!--
- Copyright 2021 Adobe. All rights reserved.
- This file is licensed to you under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License. You may obtain a copy
- of the License at http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under
- the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
- OF ANY KIND, either express or implied. See the License for the specific language
- governing permissions and limitations under the License.
--->
-<html lang="en">
-  <head>
-    <title>JSONFormula Test Page</title>
-    <meta content="text/html; charset=utf-8" />
-    <style>
-      textarea {
+<!doctype html><html lang="en"><head><title>JSONFormula Test Page</title><meta content="text/html; charset=utf-8"/><style>textarea {
         height: 500px;
         width: 100%;
         font-size: 16px;
@@ -30,23 +13,7 @@
       table {
         width: 100%;
         padding: 4px;
-      }
-    </style>
-  </head>
-  <body>
-    <table class="expressions">
-      <caption>JSONFormula Testing</caption>
-      <thead>
-      <tr>
-      <th scope="col" class="data">Input JSON</th>
-      <th scope="col" class="expression">Expression</th>
-      <th scope="col" class="result">Result</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="data">
-    <textarea id="data" name="data">
+      }</style><script defer="defer" src="tutorial.js"></script></head><body><table class="expressions"><caption>JSONFormula Testing</caption><thead><tr><th scope="col" class="data">Input JSON</th><th scope="col" class="expression">Expression</th><th scope="col" class="result">Result</th></tr></thead><tbody><tr><td class="data"><textarea id="data" name="data">
 {
   "address": {
     "street": "123 Oak Street",
@@ -69,21 +36,4 @@
     }
   ]
 }
- </textarea>
-</td>
-<td class="expression">
-    <textarea id="expression" name="expression">sum(items[*].subtotal)</textarea>
-  </td>
-  <td class="result">
-    <textarea id="result" name="result" readonly></textarea>
-  </td>
-  </tr>
-  <tr><td><label>mimic fields<input type="checkbox" id="use-fields" checked/></label></td></tr>
-</tbody>
-  </table>
-  <a href="./doc/JSONFormula.rrd.html">Syntax Railroad Diagram</a>
-  <h3>Antlr4 Grammar</h3>
-  <pre id="grammar-out" style="border: thin solid black"></pre>
-  <script src="./tutorial.js"></script>
-  </body>
-</html>
+ </textarea></td><td class="expression"><textarea id="expression" name="expression">sum(items[*].subtotal)</textarea></td><td class="result"><textarea id="result" name="result" readonly="readonly"></textarea></td></tr><tr><td><label>mimic fields<input type="checkbox" id="use-fields" checked="checked"/></label></td></tr></tbody></table><a href="./doc/JSONFormula.rrd.html">Syntax Railroad Diagram</a><h3>Antlr4 Grammar</h3><pre id="grammar-out" style="border: thin solid black"></pre></body></html>

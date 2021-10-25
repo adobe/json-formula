@@ -17,7 +17,7 @@ const dist = path.resolve(".", "dist");
 const defn = {
   mode: "production",
   entry: {
-    "json-formula": "./src/tutorial.js"
+    "tutorial": "./src/tutorial.js"
   },
   devtool: "source-map",
   optimization: {
@@ -63,7 +63,7 @@ const defn = {
   },
   output: {
     path: dist,
-    filename: "[name].bundle.js",
+    filename: "[name].js",
     libraryTarget: "var",
     library: "JSONFormula"
   },

@@ -247,7 +247,8 @@
       {
         "comment": "slice has too many colons",
         "expression": "[:::]",
-        "error": "syntax"
+        "result": null,
+        "was": "syntax"
       },
       {
         "comment": "slice expected number",
@@ -562,7 +563,8 @@
       {
         "comment": "Unknown comparator",
         "expression": "foo[?bar^baz]",
-        "error": "syntax"
+        "result": null,
+        "was": "syntax"
       },
       {
         "expression": "foo[bar==baz]",

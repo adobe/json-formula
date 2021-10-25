@@ -9,7 +9,7 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import * as expressions from "../dist/json-formula.js";
+import { jsonFormula } from "./index";
 
 window.addEventListener("load", () => {
   const data = document.getElementById("data");
@@ -104,7 +104,7 @@ window.addEventListener("load", () => {
     }
 
     try {
-      const r = expressions.jsonFormula(json, input, true);
+      const r = jsonFormula(json, input, true);
       if (isField(r)) {
         result.value = r.value;
       } else if (typeof r === "object") {
@@ -120,8 +120,8 @@ window.addEventListener("load", () => {
   data.addEventListener("blur", run);
   expression.addEventListener("blur", run);
   run();
-/*
+
   fetch("../antlr/JSONFormula.g4").then(r => {
     r.text().then((g4 => document.getElementById("grammar-out").innerHTML = g4));
-  });*/
+  });
 });

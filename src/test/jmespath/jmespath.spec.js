@@ -10,7 +10,7 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import evaluate from "../../evaluate";
+import { jsonFormula } from "../../index";
 
 const basic = require("./basic.json");
 
@@ -43,7 +43,7 @@ function toTestFmt(t) {
 function executeTest(desc, tst) {
   let result;
   try {
-    result = evaluate(tst.given, tst.expression, false);
+    result = jsonFormula(tst.given, tst.expression);
   } catch (e) {
     expect(tst.error).not.toBeUndefined();
     return;

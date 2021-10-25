@@ -78,7 +78,7 @@ function jsonFormula() {
     return false;
   }
 
-  function isFalse(obj) {
+  function isFalse(value) {
     // From the spec:
     // A false value corresponds to the following values:
     // Empty list
@@ -86,8 +86,12 @@ function jsonFormula() {
     // Empty string
     // False boolean
     // null value
+    // (new) use JS truthy evaluation.  This changes the spec behavior.  Where in the past a zero (0) would be True, it's now false
 
     // First check the scalar values.
+    if (value === null) return true;
+    // in case it's an object with a valueOf defined
+    const obj = value.valueOf();
     if (obj === "" || obj === false || obj === null) {
         return true;
     } else if (isArray(obj) && obj.length === 0) {
@@ -99,13 +103,13 @@ function jsonFormula() {
             // If there are any keys, then
             // the object is not empty so the object
             // is not false.
-            if (obj.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
               return false;
             }
         }
         return true;
     } else {
-        return false;
+        return !obj;
     }
   }
 
@@ -118,14 +122,18 @@ function jsonFormula() {
     return values;
   }
 
-  function toNumber(n) {
+  function toNumber(value) {
+    if (value === null) return 0;
+    const n = value.valueOf();  // in case it's an object that implements valueOf()
+    if (n === null) return 0;
+    if (n instanceof Array) return 0;
     if (typeof n === "number") return n;
     if (typeof n === "string") {
       var temp = parseFloat(n);
       return isNaN(temp) ? 0 : temp;
     }
     if (typeof n === "boolean") return n ? 1 : 0;
-    if (n === null) return 0;
+
     // more coercions needed...
     throw "need to coerce number";
   }
@@ -222,10 +230,8 @@ function jsonFormula() {
   }
 
   function getTypeName(inputObj) {
-    var obj = inputObj;
-    if (obj !== null && typeof(obj) === "object" && obj.constructor.name === "Field") {
-      obj = inputObj["@value"];
-    }
+    if (inputObj === null) return TYPE_NULL;
+    var obj = inputObj.valueOf();
     switch (Object.prototype.toString.call(obj)) {
         case "[object String]":
           return TYPE_STRING;

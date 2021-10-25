@@ -423,6 +423,10 @@
         "expression": "foo[?key]",
         "result": [
           {"key": true}, {"key": [0]}, {"key": {"a": "b"}},
+          {"key": 1}
+        ],
+        "was": [
+          {"key": true}, {"key": [0]}, {"key": {"a": "b"}},
           {"key": 0}, {"key": 1}
         ]
       },
@@ -430,6 +434,10 @@
         "comment": "Unary not filter expression",
         "expression": "foo[?!key]",
         "result": [
+          {"key": false}, {"key": []}, {"key": {}},
+          {"key": 0}, {"key": null}, {"notkey": true}
+        ],
+        "was": [
           {"key": false}, {"key": []}, {"key": {}},
           {"key": null}, {"notkey": true}
         ]
