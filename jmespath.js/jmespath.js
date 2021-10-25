@@ -18,7 +18,9 @@ function jsonFormula() {
     }
   }
 
-  function strictDeepEqual(first, second) {
+  function strictDeepEqual(lhs, rhs) {
+    const first = lhs.valueOf();
+    const second = rhs.valueOf();
     // Check the scalar case first.
     if (first === second) {
       return true;
@@ -1642,16 +1644,16 @@ function jsonFormula() {
       return sum;
     },
     _functionAnd: function(resolveArgs) {
-      return !!resolveArgs[0] && !!resolveArgs[1];
+      return !!resolveArgs[0].valueOf() && !!resolveArgs[1].valueOf();
     },
     _functionIf: function(resolveArgs) {
-      return resolveArgs[0] ? resolveArgs[1] : resolveArgs[2];
+      return resolveArgs[0].valueOf() ? resolveArgs[1] : resolveArgs[2];
     },
     _functionOr: function(resolveArgs) {
-      return !!resolveArgs[0] || !!resolveArgs[1];
+      return !!resolveArgs[0].valueOf() || !!resolveArgs[1];
     },
     _functionNot: function(resolveArgs) {
-      return !resolveArgs[0];
+      return !resolveArgs[0].valueOf();
     },
     _functionType: function(resolvedArgs) {
         switch (getTypeName(resolvedArgs[0])) {
