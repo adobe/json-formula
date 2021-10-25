@@ -2,11 +2,16 @@
   "name": "@adobe/json-formula",
   "version": "0.1.0",
   "description": "JSONFormula Grammar and implementation",
-  "main": "dist/json-formula.js",
+  "#browser": "The browser entry point is for a web browser.",
+  "browser": "dist/index.js",
+  "#main": "The main entry point is for a NodeJS-CommonJS context.",
+  "main": "dist/index.js",
+  "#module": "The module entry point is for an ES6 Modules context with import and export.",
+  "module": "dist/mjs/json-formula.js",
   "files": [
     "dist"
   ],
-  "engines": {
+  "devEngines": {
     "node": ">=10.0.0"
   },
   "scripts": {

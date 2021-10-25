@@ -10,6 +10,7 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 import path from "path";
+import CopyPlugin from "copy-webpack-plugin";
 
 const DIST = path.resolve(".", "dist");
 const CJS = path.resolve(DIST, "cjs");
@@ -18,7 +19,7 @@ const UMD = path.resolve(DIST, "umd");
 const cjs = {
   mode: "production",
   entry: {
-    "json-formula": "./src/index.js"
+    "json-formula": "./src/json-formula.js"
   },
   devtool: "source-map",
   resolve: { fallback: { fs: false } },
@@ -47,7 +48,14 @@ const cjs = {
     library: {
       type: "commonjs2"
     }
-  }
+  },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        { from: "./src/index.cjs", to: path.resolve(DIST, "index.js") }
+      ],
+    })
+  ]
 };
 
 const umd = Object.assign({}, cjs, {
