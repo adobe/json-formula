@@ -82,8 +82,7 @@
     },
     {
       "expression": "avg(@)",
-      "result": 0,
-      "was": "invalid-type"
+      "error": "invalid-type"
     },
     {
       "expression": "avg(strings)",
@@ -576,8 +575,7 @@
     },
     {
       "expression": "sort(@)",
-      "result": [""],
-      "was": "invalid-type"
+      "error": "invalid-type"
     },
     {
       "expression": "not_null(unknown_key, str)",

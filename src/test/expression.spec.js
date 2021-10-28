@@ -9,21 +9,21 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import { jsonFormula } from "../json-formula";
+import { jsonFormula } from '../json-formula';
 
-const sampleData = require("./sampleData.json");
-const tests = require("./tests.json");
+const sampleData = require('./sampleData.json');
+const tests = require('./tests.json');
 
-test.each(tests)("%s", (desc, tst) => {
+test.each(tests)('%s', (desc, tst) => {
   const data = jsonFormula(sampleData, tst.data);
   try {
     const result = jsonFormula(data, tst.expression);
-    if (typeof result === "number") {
+    if (typeof result === 'number') {
       expect(result).toBeCloseTo(tst.expected, 5);
     } else {
       expect(result).toEqual(tst.expected);
     }
-  } catch(e) {
-    expect(tst.error).toBe("syntax");
+  } catch (e) {
+    expect(tst.error).toBe('syntax');
   }
 });

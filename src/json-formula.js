@@ -19,63 +19,10 @@ import FELexer from "./antlr/JSONFormulaLexer.js";
 import InputStream from "./InputStream.js"
 import Visitor from "./Visitor.js";
 */
-import jmespath from "../jmespath.js/jmespath.js";
+import jmespath from '../jmespath.js/jmespath';
 
+// eslint-disable-next-line import/prefer-default-export
 export function jsonFormula(json, expression) {
-
-  // confirm that we pass the parser
-/*
-  const stream = new antlr4.InputStream(expression);
-  const chars = new InputStream(stream);
-  const lexer = new FELexer(chars);
-  lexer._interp.debug = true;
-  const tokens  = new antlr4.CommonTokenStream(lexer);
-  const parser = new FEParser(tokens);
-  parser.buildParseTrees = true;
-  lexer.removeErrorListeners();
-
-  let parseError;
-  class ParseErrorListener extends antlr4.error.ErrorListener {
-    syntaxError(recognizer, offendingSymbol, line, column, msg) {
-      parseError = `line ${line}, col ${column}: ${msg}`;
-      if (trace) console.log(`ERROR: ${parseError}`);
-    }
-  }
-
-  const parseErrHandler = new ParseErrorListener();
-  parser.removeErrorListeners();
-  parser.addErrorListener(parseErrHandler);
-
-  // let tree;
-  parser.formula();
-  // const visitor = new Visitor(json, trace);
-  // const result = visitor.visitFormula(tree);
-
-  if (parseError) {
-    throw new Error(parseError);
-  }
-  // return result;
-*/
   const x = jmespath.search(json, expression);
   return x;
-
 }
-
-/*
-var SimpleJavaLexer = require('generated/GrammarLexer');
-var SimpleJavaParser = require('generated/GrammarParser');
-var SimpleJavaVisitor = require('generated/GrammarVisitor');
-var Visitor = require('./Visitor');
-
-var input = "TestInput";
-var chars = new antlr4.InputStream(input);
-var lexer = new GrammarLexer.GrammarLexer(chars);
-var tokens = new antlr4.CommonTokenStream(lexer);
-var parser = new GrammarParser.GrammarParser(tokens);
-var visitor = new Visitor.Visitor();
-parser.buildParseTrees = true;
-var tree = parser.parse();
-and call your entry function
-
-visitor.visitTest(tree);
-*/
