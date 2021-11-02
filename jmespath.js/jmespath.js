@@ -25,7 +25,7 @@ function JsonFormula() {
   const TOK_RBRACE = 'Rbrace';
   const TOK_NUMBER = 'Number';
   const TOK_CURRENT = 'Current';
-  const TOK_SPECIAL = 'Special';
+  const TOK_GLOBAL = 'Global';
   const TOK_FIELD = 'Field';
   const TOK_EXPREF = 'Expref';
   const TOK_PIPE = 'Pipe';
@@ -65,7 +65,7 @@ function JsonFormula() {
     9: 'Array<string>',
   };
 
-  let specialTokens = {};
+  let globalTokens = {};
 
   function isNum(ch, includeSign) {
     return (ch >= '0' && ch <= '9')
@@ -390,7 +390,7 @@ function JsonFormula() {
     '@': TOK_CURRENT,
   };
 
-  const specialStartToken = '$';
+  const globalStartToken = '$';
   const operatorStartToken = {
     '<': true,
     '>': true,
@@ -416,16 +416,16 @@ function JsonFormula() {
             || ch === '_';
   }
 
-  function isSpecial(prev, stream, pos) {
-    // special tokens occur only at the start of an expression
+  function isGlobal(prev, stream, pos) {
+    // global tokens occur only at the start of an expression
     if (prev !== null && prev === TOK_DOT) return false;
     const ch = stream[pos];
-    if (ch !== specialStartToken) return false;
+    if (ch !== globalStartToken) return false;
     // $ is special -- it's allowed to be part of an identifier if it's the first character
     let i = pos + 1;
     while (i < stream.length && isAlphaNum(stream[i])) i += 1;
-    const special = stream.slice(pos, i);
-    return !!specialTokens[special];
+    const global = stream.slice(pos, i);
+    return !!globalTokens[global];
   }
 
   function Lexer() {
@@ -440,8 +440,8 @@ function JsonFormula() {
       while (this._current < stream.length) {
         const prev = tokens.length ? tokens.slice(-1)[0].type : null;
 
-        if (isSpecial(prev, stream, this._current, specialTokens)) {
-          tokens.push(this._consumeSpecial(stream));
+        if (isGlobal(prev, stream, this._current)) {
+          tokens.push(this._consumeGlobal(stream));
         } else if (isIdentifier(stream, this._current)) {
           start = this._current;
           identifier = this._consumeUnquotedIdentifier(stream);
@@ -640,13 +640,13 @@ function JsonFormula() {
       return { type: TOK_LBRACKET, value: '[', start };
     },
 
-    _consumeSpecial(stream) {
+    _consumeGlobal(stream) {
       const start = this._current;
       this._current += 1;
       while (this._current < stream.length && isAlphaNum(stream[this._current])) this._current += 1;
-      const special = stream.slice(start, this._current);
+      const global = stream.slice(start, this._current);
 
-      return { type: TOK_SPECIAL, value: specialTokens[special], start };
+      return { type: TOK_GLOBAL, value: globalTokens[global], start };
     },
 
     _consumeOperator(stream) {
@@ -748,7 +748,7 @@ function JsonFormula() {
   bindingPower[TOK_RBRACE] = 0;
   bindingPower[TOK_NUMBER] = 0;
   bindingPower[TOK_CURRENT] = 0;
-  bindingPower[TOK_SPECIAL] = 0;
+  bindingPower[TOK_GLOBAL] = 0;
   bindingPower[TOK_FIELD] = 0;
   bindingPower[TOK_EXPREF] = 0;
   bindingPower[TOK_PIPE] = 1;
@@ -892,8 +892,8 @@ function JsonFormula() {
           return this._parseMultiselectList();
         case TOK_CURRENT:
           return { type: TOK_CURRENT };
-        case TOK_SPECIAL:
-          return { type: TOK_SPECIAL, value: token.value };
+        case TOK_GLOBAL:
+          return { type: TOK_GLOBAL, value: token.value };
         case TOK_FIELD:
           return { type: TOK_FIELD };
         case TOK_EXPREF:
@@ -1427,7 +1427,7 @@ function JsonFormula() {
           return this.visit(node.children[1], left);
         case TOK_CURRENT:
           return value;
-        case TOK_SPECIAL:
+        case TOK_GLOBAL:
           return node.value;
         case 'Function':
           resolvedArgs = [];
@@ -1978,7 +1978,7 @@ function JsonFormula() {
     return lexer.tokenize(stream);
   }
 
-  function search(data, special, expression) {
+  function search(data, globals, expression) {
     const parser = new Parser();
     // This needs to be improved.  Both the interpreter and runtime depend on
     // each other.  The runtime needs the interpreter to support exprefs.
@@ -1986,7 +1986,7 @@ function JsonFormula() {
     const runtime = new Runtime();
     const interpreter = new TreeInterpreter(runtime);
     runtime._interpreter = interpreter;
-    if (special) specialTokens = special;
+    if (globals) globalTokens = globals;
     const node = parser.parse(expression);
     return interpreter.search(node, data);
   }
