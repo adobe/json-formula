@@ -11,6 +11,7 @@ governing permissions and limitations under the License.
 */
 
 import { jsonFormula } from '../../json-formula';
+import Form from '../../Form';
 
 const basic = require('./basic.json');
 
@@ -45,7 +46,23 @@ function toTestFmt(t) {
 function executeTest(desc, tst) {
   let result;
   try {
-    result = jsonFormula(tst.given, tst.expression);
+    result = jsonFormula(tst.given, {}, tst.expression);
+  } catch (e) {
+    expect(tst.error).not.toBeUndefined();
+    return;
+  }
+  expect(result).toEqual(tst.result === undefined ? tst.error : tst.result);
+}
+
+function executeTestWithFields(desc, tst) {
+  const fieldData = {};
+  const root = new Form(fieldData, tst.given);
+  let result;
+  try {
+    const jsonResult = jsonFormula(fieldData.data,
+      { $form: root, $: {} },
+      tst.expression);
+    result = JSON.parse(JSON.stringify(jsonResult));
   } catch (e) {
     expect(tst.error).not.toBeUndefined();
     return;
@@ -69,3 +86,19 @@ test.each(toTestFmt(slice))('%s', executeTest);
 test.each(toTestFmt(syntax))('%s', executeTest);
 test.each(toTestFmt(unicode))('%s', executeTest);
 test.each(toTestFmt(wildcard))('%s', executeTest);
+
+test.each(toTestFmt(basic))('%s', executeTestWithFields);
+test.each(toTestFmt(boolean))('%s', executeTestWithFields);
+test.each(toTestFmt(current))('%s', executeTestWithFields);
+test.each(toTestFmt(escape))('%s', executeTestWithFields);
+test.each(toTestFmt(filters))('%s', executeTestWithFields);
+test.each(toTestFmt(functions))('%s', executeTestWithFields);
+test.each(toTestFmt(identifiers))('%s', executeTestWithFields);
+test.each(toTestFmt(indices))('%s', executeTestWithFields);
+test.each(toTestFmt(literal))('%s', executeTestWithFields);
+test.each(toTestFmt(multiselect))('%s', executeTestWithFields);
+test.each(toTestFmt(pipe))('%s', executeTestWithFields);
+test.each(toTestFmt(slice))('%s', executeTestWithFields);
+test.each(toTestFmt(syntax))('%s', executeTestWithFields);
+test.each(toTestFmt(unicode))('%s', executeTestWithFields);
+test.each(toTestFmt(wildcard))('%s', executeTestWithFields);

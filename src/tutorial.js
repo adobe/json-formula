@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /*
 Copyright 2021 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -13,100 +14,31 @@ governing permissions and limitations under the License.
 /* eslint-disable class-methods-use-this */
 /* eslint-disable-next-line max-classes-per-file */
 import { jsonFormula } from './json-formula';
+import Form from './Form';
 
 window.addEventListener('load', () => {
-  const data = document.getElementById('data');
+  const dataElement = document.getElementById('data');
   const expression = document.getElementById('expression');
   const result = document.getElementById('result');
-  const allFields = [];
 
   const d = window.localStorage.getItem('data');
-  if (d) data.value = d;
+  if (d) dataElement.value = d;
   const exp = window.localStorage.getItem('expression');
   if (exp) expression.value = exp;
 
-  /*
-    Field class allows objects to evaluate correctly according to context.
-    - if used in an expression, will return a value or string.
-    - for JSON.stringify() returns a scalar
-    - BUT also allows explicit access to properties. e.g. field.required, field.name etc.
-
-    Should allow us to eliminate getFieldProperty()
-  */
-
-  function createField(name, value, readonly = false, required = true) {
-    class Field {
-      valueOf() { return value; }
-
-      toString() { return value.toString(); }
-
-      toJSON() { return value; }
-
-      equals(compare) {
-        if (compare === null || compare === undefined) return this.valueOf() === compare;
-
-        return this.valueOf() === compare.valueOf();
-      }
-
-      // Use getters and scope variables so that the children are not enumerable
-      get value() { return value; }
-
-      get name() { return name; }
-
-      get readonly() { return readonly; }
-
-      get required() { return required; }
-
-      get '@value'() { return value; }
-
-      get '@name'() { return name; }
-
-      get '@readonly'() { return readonly; }
-
-      get '@required'() { return required; }
-    }
-    const newField = new Field();
-    allFields.push(newField);
-    return newField;
-  }
-  function createFields(parent, childref, child) {
-    if (child instanceof Array) {
-      child.forEach((item, index) => {
-        createFields(child, index, item);
-      });
-    } else if (child !== null && typeof child === 'object') {
-      Object.keys(child).forEach(k => {
-        createFields(child, k, child[k]);
-      });
-    } else {
-      // eslint-disable-next-line no-param-reassign
-      parent[childref] = createField(childref, parent[childref]);
-    }
-  }
-
-  class Root {
-    constructor(dataRoot) {
-      Object.keys(dataRoot).forEach(key => {
-        this[key] = dataRoot[key];
-      });
-    }
-
-    get fields() { return allFields; }
-  }
-
   function run() {
     // save for next time...
-    window.localStorage.setItem('data', data.value);
+    window.localStorage.setItem('data', dataElement.value);
     window.localStorage.setItem('expression', expression.value);
     const input = expression.value;
-
-    let json;
+    const useFields = document.getElementById('use-fields').checked;
+    let root = null;
+    const fieldData = {};
+    let jsonData;
     try {
-      json = JSON.parse(data.value);
-      const root = new Root(json);
-      json.$ = root;
-      if (document.getElementById('use-fields').checked) {
-        createFields(null, null, json);
+      jsonData = JSON.parse(dataElement.value);
+      if (useFields) {
+        root = new Form(fieldData, jsonData);
       }
     } catch (e) {
       result.value = e.toString();
@@ -114,7 +46,12 @@ window.addEventListener('load', () => {
     }
 
     try {
-      const jsonResult = jsonFormula(json, input, true);
+      const jsonResult = jsonFormula(
+        useFields ? fieldData.data : jsonData,
+        { $form: root, $: {} },
+        input,
+        true,
+      );
       const r = jsonResult === null || jsonResult === undefined ? jsonResult : jsonResult.valueOf();
       if (typeof r === 'object') {
         result.value = JSON.stringify(r, null, 2);
@@ -126,7 +63,7 @@ window.addEventListener('load', () => {
     }
   }
 
-  data.addEventListener('blur', run);
+  dataElement.addEventListener('blur', run);
   expression.addEventListener('blur', run);
   run();
 

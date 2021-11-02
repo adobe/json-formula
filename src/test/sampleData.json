@@ -10,13 +10,13 @@
       "items": [
         {
           "desc": "pens",
-          "quantity": "2",
+          "quantity": 2,
           "price": 3.23,
           "subtotal": 6.46
         },
         {
           "desc": "pencils",
-          "quantity": "3",
+          "quantity": 3,
           "price": 1.34,
           "subtotal": 4.02
         }

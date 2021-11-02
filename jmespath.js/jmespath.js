@@ -25,7 +25,7 @@ function JsonFormula() {
   const TOK_RBRACE = 'Rbrace';
   const TOK_NUMBER = 'Number';
   const TOK_CURRENT = 'Current';
-  const TOK_FORM = 'Form';
+  const TOK_SPECIAL = 'Special';
   const TOK_FIELD = 'Field';
   const TOK_EXPREF = 'Expref';
   const TOK_PIPE = 'Pipe';
@@ -65,6 +65,8 @@ function JsonFormula() {
     9: 'Array<string>',
   };
 
+  let specialTokens = {};
+
   function isNum(ch, includeSign) {
     return (ch >= '0' && ch <= '9')
              || (includeSign && ch === '-')
@@ -102,6 +104,19 @@ function JsonFormula() {
     return false;
   }
 
+  function valueOf(a) {
+    if (a === null || a === undefined) return a;
+    if (isArray(a)) {
+      return a.map(i => valueOf(i));
+    }
+    return a.valueOf();
+  }
+
+  function toString(a) {
+    if (a === null || a === undefined) return '';
+    return a.toString();
+  }
+
   function isObject(obj) {
     if (obj !== null) {
       return Object.prototype.toString.call(obj) === '[object Object]';
@@ -136,19 +151,11 @@ function JsonFormula() {
   }
 
   function strictDeepEqual(lhs, rhs) {
-    const first = lhs === null || lhs === undefined ? lhs : lhs.valueOf();
-    const second = rhs === null || rhs === undefined ? rhs : rhs.valueOf();
+    const first = valueOf(lhs);
+    const second = valueOf(rhs);
     // Check the scalar case first.
     if (first === second) {
       return true;
-    }
-
-    // check for field comparison
-    if (isObject(first) && typeof first.equals === 'function') {
-      return first.equals(second);
-    }
-    if (isObject(second) && typeof second.equals === 'function') {
-      return second.equals(first);
     }
 
     // Check if they are the same type.
@@ -209,7 +216,7 @@ function JsonFormula() {
     // First check the scalar values.
     if (value === null) return true;
     // in case it's an object with a valueOf defined
-    const obj = value.valueOf();
+    const obj = valueOf(value);
     if (obj === '' || obj === false || obj === null) {
       return true;
     }
@@ -242,8 +249,7 @@ function JsonFormula() {
   }
 
   function toNumber(value) {
-    if (value === null) return 0;
-    const n = value.valueOf(); // in case it's an object that implements valueOf()
+    const n = valueOf(value); // in case it's an object that implements valueOf()
     if (n === null) return 0;
     if (n instanceof Array) return 0;
     if (typeof n === 'number') return n;
@@ -382,8 +388,6 @@ function JsonFormula() {
     '(': TOK_LPAREN,
     ')': TOK_RPAREN,
     '@': TOK_CURRENT,
-    $form: TOK_FORM,
-    $field: TOK_FIELD,
   };
 
   const specialStartToken = '$';
@@ -402,15 +406,26 @@ function JsonFormula() {
 
   function isIdentifier(stream, pos) {
     const ch = stream[pos];
-    // @ is special -- it's allowed to be part of an identifier if it's the first character
-    // If it's on its own it needs to be recognized as the 'self' token
-    if (ch === '@') {
+    // $ is special -- it's allowed to be part of an identifier if it's the first character
+    if (ch === '$') {
       return stream.length > pos && isAlphaNum(stream[pos + 1]);
     }
     // return whether character 'isAlpha'
     return (ch >= 'a' && ch <= 'z')
             || (ch >= 'A' && ch <= 'Z')
             || ch === '_';
+  }
+
+  function isSpecial(prev, stream, pos) {
+    // special tokens occur only at the start of an expression
+    if (prev !== null && prev === TOK_DOT) return false;
+    const ch = stream[pos];
+    if (ch !== specialStartToken) return false;
+    // $ is special -- it's allowed to be part of an identifier if it's the first character
+    let i = pos + 1;
+    while (i < stream.length && isAlphaNum(stream[i])) i += 1;
+    const special = stream.slice(pos, i);
+    return !!specialTokens[special];
   }
 
   function Lexer() {
@@ -424,7 +439,10 @@ function JsonFormula() {
       let token;
       while (this._current < stream.length) {
         const prev = tokens.length ? tokens.slice(-1)[0].type : null;
-        if (isIdentifier(stream, this._current)) {
+
+        if (isSpecial(prev, stream, this._current, specialTokens)) {
+          tokens.push(this._consumeSpecial(stream));
+        } else if (isIdentifier(stream, this._current)) {
           start = this._current;
           identifier = this._consumeUnquotedIdentifier(stream);
           tokens.push({
@@ -471,8 +489,6 @@ function JsonFormula() {
             value: literal,
             start,
           });
-        } else if (stream[this._current] === specialStartToken) {
-          tokens.push(this._consumeSpecial(stream));
         } else if (operatorStartToken[stream[this._current]] !== undefined) {
           tokens.push(this._consumeOperator(stream));
         } else if (skipChars[stream[this._current]] !== undefined) {
@@ -627,14 +643,10 @@ function JsonFormula() {
     _consumeSpecial(stream) {
       const start = this._current;
       this._current += 1;
-      // $form
-      if (stream[this._current + 1] === 'o') {
-        this._current += 4;
-        return { type: TOK_FORM, value: this.data, start };
-      }
-      // $field
-      this._current += 5;
-      return { type: TOK_FIELD, value: {}, start };
+      while (this._current < stream.length && isAlphaNum(stream[this._current])) this._current += 1;
+      const special = stream.slice(start, this._current);
+
+      return { type: TOK_SPECIAL, value: specialTokens[special], start };
     },
 
     _consumeOperator(stream) {
@@ -736,7 +748,7 @@ function JsonFormula() {
   bindingPower[TOK_RBRACE] = 0;
   bindingPower[TOK_NUMBER] = 0;
   bindingPower[TOK_CURRENT] = 0;
-  bindingPower[TOK_FORM] = 0;
+  bindingPower[TOK_SPECIAL] = 0;
   bindingPower[TOK_FIELD] = 0;
   bindingPower[TOK_EXPREF] = 0;
   bindingPower[TOK_PIPE] = 1;
@@ -880,8 +892,8 @@ function JsonFormula() {
           return this._parseMultiselectList();
         case TOK_CURRENT:
           return { type: TOK_CURRENT };
-        case TOK_FORM:
-          return { type: TOK_FORM };
+        case TOK_SPECIAL:
+          return { type: TOK_SPECIAL, value: token.value };
         case TOK_FIELD:
           return { type: TOK_FIELD };
         case TOK_EXPREF:
@@ -1274,7 +1286,7 @@ function JsonFormula() {
         case 'ValueProjection':
           // Evaluate left child.
           base = this.visit(node.children[0], value);
-          if (!isObject(base)) {
+          if (!isObject(valueOf(base))) {
             return null;
           }
           collected = [];
@@ -1415,8 +1427,8 @@ function JsonFormula() {
           return this.visit(node.children[1], left);
         case TOK_CURRENT:
           return value;
-        case TOK_FORM:
-          return this.$form;
+        case TOK_SPECIAL:
+          return node.value;
         case 'Function':
           resolvedArgs = [];
           for (i = 0; i < node.children.length; i += 1) {
@@ -1518,7 +1530,7 @@ function JsonFormula() {
       },
       max: {
         _func: this._functionMax,
-        _signature: [{ types: [TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING] }],
+        _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING] }],
       },
       merge: {
         _func: this._functionMerge,
@@ -1535,7 +1547,7 @@ function JsonFormula() {
       },
       min: {
         _func: this._functionMin,
-        _signature: [{ types: [TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING] }],
+        _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING] }],
       },
       min_by: {
         _func: this._functionMinBy,
@@ -1546,7 +1558,7 @@ function JsonFormula() {
       values: { _func: this._functionValues, _signature: [{ types: [TYPE_OBJECT] }] },
       sort: {
         _func: this._functionSort,
-        _signature: [{ types: [TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] }],
+        _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] }],
       },
       sort_by: {
         _func: this._functionSortBy,
@@ -1625,19 +1637,19 @@ function JsonFormula() {
     },
 
     _functionStartsWith(resolvedArgs) {
-      return resolvedArgs[0].lastIndexOf(resolvedArgs[1]) === 0;
+      return valueOf(resolvedArgs[0]).lastIndexOf(valueOf(resolvedArgs[1])) === 0;
     },
 
     _functionEndsWith(resolvedArgs) {
-      const searchStr = resolvedArgs[0];
-      const suffix = resolvedArgs[1];
+      const searchStr = valueOf(resolvedArgs[0]);
+      const suffix = valueOf(resolvedArgs[1]);
       return searchStr.indexOf(suffix, searchStr.length - suffix.length) !== -1;
     },
 
     _functionReverse(resolvedArgs) {
-      const typeName = getTypeName(resolvedArgs[0]);
+      const originalStr = valueOf(resolvedArgs[0]);
+      const typeName = getTypeName(originalStr);
       if (typeName === TYPE_STRING) {
-        const originalStr = resolvedArgs[0];
         let reversedStr = '';
         for (let i = originalStr.length - 1; i >= 0; i -= 1) {
           reversedStr += originalStr[i];
@@ -1666,7 +1678,7 @@ function JsonFormula() {
       return sum / inputArray.length;
     },
     _functionContains(resolvedArgs) {
-      return resolvedArgs[0].indexOf(resolvedArgs[1]) >= 0;
+      return valueOf(resolvedArgs[0]).indexOf(valueOf(resolvedArgs[1])) >= 0;
     },
 
     _functionFloor(resolvedArgs) {
@@ -1674,12 +1686,10 @@ function JsonFormula() {
     },
 
     _functionLength(resolvedArgs) {
-      if (!isObject(resolvedArgs[0])) {
-        return resolvedArgs[0].length;
-      }
-      // As far as I can tell, there's no way to get the length
-      // of an object without O(n) iteration through the object.
-      return Object.keys(resolvedArgs[0]).length;
+      const arg = valueOf(resolvedArgs[0]);
+      if (isObject(arg)) return Object.keys(arg).length;
+
+      return isArray(arg) ? arg.length : toString(arg).length;
     },
 
     _functionMap(resolvedArgs) {
@@ -1708,16 +1718,15 @@ function JsonFormula() {
       if (resolvedArgs[0].length > 0) {
         const typeName = getTypeName(resolvedArgs[0][0]);
         if (typeName === TYPE_NUMBER) {
-          return Math.max(...resolvedArgs[0]);
+          return resolvedArgs[0].reduce(
+            (prev, cur) => (toNumber(prev) >= toNumber(cur) ? prev : cur),
+            resolvedArgs[0][0],
+          );
         }
-        const elements = resolvedArgs[0];
-        let maxElement = elements[0];
-        for (let i = 1; i < elements.length; i += 1) {
-          if (maxElement.localeCompare(elements[i]) < 0) {
-            maxElement = elements[i];
-          }
-        }
-        return maxElement;
+        return resolvedArgs[0].reduce(
+          (a, b) => (toString(b).localeCompare(toString(a)) < 0 ? a : b),
+          resolvedArgs[0][0],
+        );
       }
       return null;
     },
@@ -1726,12 +1735,15 @@ function JsonFormula() {
       if (resolvedArgs[0].length > 0) {
         const typeName = getTypeName(resolvedArgs[0][0]);
         if (typeName === TYPE_NUMBER) {
-          return Math.min(...resolvedArgs[0]);
+          return resolvedArgs[0].reduce(
+            (prev, cur) => (toNumber(prev) <= toNumber(cur) ? prev : cur),
+            resolvedArgs[0][0],
+          );
         }
         const elements = resolvedArgs[0];
         let minElement = elements[0];
         for (let i = 1; i < elements.length; i += 1) {
-          if (elements[i].localeCompare(minElement) < 0) {
+          if (toString(elements[i]).localeCompare(toString(minElement)) < 0) {
             minElement = elements[i];
           }
         }
@@ -1749,16 +1761,16 @@ function JsonFormula() {
       return sum;
     },
     _functionAnd(resolveArgs) {
-      return !!resolveArgs[0].valueOf() && !!resolveArgs[1].valueOf();
+      return !!valueOf(resolveArgs[0]) && !!valueOf(resolveArgs[1]);
     },
     _functionIf(resolveArgs) {
-      return resolveArgs[0].valueOf() ? resolveArgs[1] : resolveArgs[2];
+      return valueOf(resolveArgs[0]) ? resolveArgs[1] : resolveArgs[2];
     },
     _functionOr(resolveArgs) {
-      return !!resolveArgs[0].valueOf() || !!resolveArgs[1];
+      return !!valueOf(resolveArgs[0]) || !!valueOf(resolveArgs[1]);
     },
     _functionNot(resolveArgs) {
-      return !resolveArgs[0].valueOf();
+      return !valueOf(resolveArgs[0]);
     },
     // eslint-disable-next-line consistent-return
     _functionType(resolvedArgs) {
@@ -1837,7 +1849,16 @@ function JsonFormula() {
 
     _functionSort(resolvedArgs) {
       const sortedArray = resolvedArgs[0].slice(0);
-      sortedArray.sort();
+      if (sortedArray.length > 0) {
+        const normalize = getTypeName(resolvedArgs[0][0]) === TYPE_NUMBER ? toNumber : toString;
+        sortedArray.sort((a, b) => {
+          const va = normalize(a);
+          const vb = normalize(b);
+          if (va < vb) return -1;
+          if (va > vb) return 1;
+          return 0;
+        });
+      }
       return sortedArray;
     },
 
@@ -1957,7 +1978,7 @@ function JsonFormula() {
     return lexer.tokenize(stream);
   }
 
-  function search(data, expression) {
+  function search(data, special, expression) {
     const parser = new Parser();
     // This needs to be improved.  Both the interpreter and runtime depend on
     // each other.  The runtime needs the interpreter to support exprefs.
@@ -1965,8 +1986,8 @@ function JsonFormula() {
     const runtime = new Runtime();
     const interpreter = new TreeInterpreter(runtime);
     runtime._interpreter = interpreter;
+    if (special) specialTokens = special;
     const node = parser.parse(expression);
-    interpreter.$form = data;
     return interpreter.search(node, data);
   }
   this.tokenize = tokenize;

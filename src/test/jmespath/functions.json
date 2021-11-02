@@ -242,12 +242,12 @@
     },
     {
       "expression": "max(abc)",
-      "result": 0,
+      "result": null,
       "was": "invalid-type"
     },
     {
       "expression": "max(array)",
-      "result": 100,
+      "result": "100",
       "was": "invalid-type"
     },
     {
@@ -288,7 +288,7 @@
     },
     {
       "expression": "min(abc)",
-      "result": 0,
+      "result": null,
       "was": "invalid-type"
     },
     {
@@ -561,12 +561,12 @@
     },
     {
       "expression": "sort(array)",
-      "result": [-1, 0, 100, 3, 4, 5],
+      "result": [-1, "a", 3, 4, 5, "100"],
       "was": "invalid-type"
     },
     {
       "expression": "sort(abc)",
-      "result": [""],
+      "result": [],
       "was": "invalid-type"
     },
     {

@@ -10,20 +10,46 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 import { jsonFormula } from '../json-formula';
+import Form from '../Form';
 
 const sampleData = require('./sampleData.json');
 const tests = require('./tests.json');
 
 test.each(tests)('%s', (desc, tst) => {
-  const data = jsonFormula(sampleData, tst.data);
+  if (tst.fieldsOnly) return;
+  const data = jsonFormula(sampleData, {}, tst.data);
+  let result;
   try {
-    const result = jsonFormula(data, tst.expression);
-    if (typeof result === 'number') {
-      expect(result).toBeCloseTo(tst.expected, 5);
-    } else {
-      expect(result).toEqual(tst.expected);
-    }
+    result = jsonFormula(data, {}, tst.expression);
   } catch (e) {
     expect(tst.error).toBe('syntax');
+  }
+  if (typeof result === 'number') {
+    expect(result).toBeCloseTo(tst.expected, 5);
+  } else {
+    expect(result).toEqual(tst.expected);
+  }
+});
+
+// run again -- with field definitions
+test.each(tests)('%s', (desc, tst) => {
+  const data = jsonFormula(sampleData, {}, tst.data);
+  let jsonResult;
+  try {
+    const fieldData = {};
+    const root = new Form(fieldData, data);
+    jsonResult = jsonFormula(
+      fieldData.data,
+      { $form: root, $: {} }, tst.expression,
+    );
+  } catch (e) {
+    expect(tst.error).toBe('syntax');
+  }
+  // stringify/parse so that the comparison doesn't get confused by field objects
+  const result = JSON.parse(JSON.stringify(jsonResult));
+  if (typeof result === 'number') {
+    expect(result).toBeCloseTo(tst.expected, 5);
+  } else {
+    expect(result).toEqual(tst.expected);
   }
 });

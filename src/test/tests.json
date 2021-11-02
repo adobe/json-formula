@@ -1,5 +1,39 @@
 [
   [
+    "value fields",
+    {
+      "fieldsOnly": true,
+      "data": "samples.\"purchase-order\"",
+      "expression": "values(address)[0].$name",
+      "expected": "street"
+    }
+  ],
+  [
+    "map fields",
+    {
+      "fieldsOnly": true,
+      "data": "samples.\"purchase-order\"",
+      "expression": "map(&price, items)[*].$name",
+      "expected": ["price", "price"]
+    }
+  ],
+  [
+    "contains Field",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "contains([2,4,6], items[0].quantity)",
+      "expected": true
+    }
+  ],
+  [
+    "reverse",
+    {
+      "data": "samples.\"purchase-order\".address",
+      "expression": "reverse(street)",
+      "expected": "teertS kaO 321"
+    }
+  ],
+  [
     "get an address",
     {
       "data": "samples.\"purchase-order\"",

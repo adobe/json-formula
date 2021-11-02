@@ -22,7 +22,7 @@ import Visitor from "./Visitor.js";
 import jmespath from '../jmespath.js/jmespath';
 
 // eslint-disable-next-line import/prefer-default-export
-export function jsonFormula(json, expression) {
-  const x = jmespath.search(json, expression);
+export function jsonFormula(json, special, expression) {
+  const x = jmespath.search(json, special, expression);
   return x;
 }
