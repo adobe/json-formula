@@ -9,20 +9,11 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-/*
-Have turned off the antlr-based parser for the time being.
-The generated code was failing when it was minified by terser
-
-import antlr4 from "antlr4";
-import FEParser from "./antlr/JSONFormulaParser.js";
-import FELexer from "./antlr/JSONFormulaLexer.js";
-import InputStream from "./InputStream.js"
-import Visitor from "./Visitor.js";
-*/
 import jmespath from '../jmespath.js/jmespath';
 
-// eslint-disable-next-line import/prefer-default-export
-export function jsonFormula(json, globals, expression) {
-  const x = jmespath.search(json, globals, expression);
+export function jsonFormula(json, globals, expression, customFunctions) {
+  const x = jmespath.search(json, globals, expression, customFunctions);
   return x;
 }
+
+export const { dataTypes } = jmespath.constructor;

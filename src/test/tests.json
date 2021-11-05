@@ -261,5 +261,13 @@
       "expression": "12 & 34 & 'b' & true()",
       "expected": "1234btrue"
     }
+  ],
+  [
+    "upperFirst(a)",
+    {
+      "data": "`{\"a\": \"fred\"}`",
+      "expression": "upperFirst(a)",
+      "expected": "Fred"
+    }
   ]
 ]
