@@ -1,18 +1,22 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
+import dataTypes from './dataTypes';
+import openFormulaFunctions from './openFormulaFunctions';
 
 // Type constants used to define functions.
-const TYPE_NUMBER = 0;
-const TYPE_ANY = 1;
-const TYPE_STRING = 2;
-const TYPE_ARRAY = 3;
-const TYPE_OBJECT = 4;
-const TYPE_BOOLEAN = 5;
-const TYPE_EXPREF = 6;
-const TYPE_NULL = 7;
-const TYPE_ARRAY_NUMBER = 8;
-const TYPE_ARRAY_STRING = 9;
+const {
+  TYPE_NUMBER,
+  TYPE_ANY,
+  TYPE_STRING,
+  TYPE_ARRAY,
+  TYPE_OBJECT,
+  TYPE_BOOLEAN,
+  TYPE_EXPREF,
+  TYPE_NULL,
+  TYPE_ARRAY_NUMBER,
+  TYPE_ARRAY_STRING,
+} = dataTypes;
 
 function JsonFormula() {
   const TOK_EOF = 'EOF';
@@ -1591,6 +1595,7 @@ function JsonFormula() {
         _func: this._functionIf,
         _signature: [{ types: [TYPE_ANY] }, { types: [TYPE_ANY] }, { types: [TYPE_ANY] }],
       },
+      ...openFormulaFunctions,
       ...customFunctions,
     };
   }
@@ -1996,19 +2001,5 @@ function JsonFormula() {
   this.search = search;
   this.strictDeepEqual = strictDeepEqual;
 }
-
-// Type constants used to define functions.
-JsonFormula.dataTypes = {
-  TYPE_NUMBER,
-  TYPE_ANY,
-  TYPE_STRING,
-  TYPE_ARRAY,
-  TYPE_OBJECT,
-  TYPE_BOOLEAN,
-  TYPE_EXPREF,
-  TYPE_NULL,
-  TYPE_ARRAY_NUMBER,
-  TYPE_ARRAY_STRING,
-};
 
 export default new JsonFormula();

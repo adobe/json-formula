@@ -11,17 +11,17 @@ governing permissions and limitations under the License.
 */
 import { jsonFormula } from '../json-formula';
 import Form from '../Form';
-import customFunctions from './customFunctions';
+import functions from '../../jmespath.js/openFormulaFunctions';
 
 const sampleData = require('./sampleData.json');
 const tests = require('./tests.json');
 
 test.each(tests)('%s', (desc, tst) => {
   if (tst.fieldsOnly) return;
-  const data = jsonFormula(sampleData, {}, tst.data, customFunctions);
+  const data = jsonFormula(sampleData, {}, tst.data, functions);
   let result;
   try {
-    result = jsonFormula(data, {}, tst.expression, customFunctions);
+    result = jsonFormula(data, {}, tst.expression, functions);
   } catch (e) {
     expect(tst.error).toBe('syntax');
   }
@@ -34,7 +34,7 @@ test.each(tests)('%s', (desc, tst) => {
 
 // run again -- with field definitions
 test.each(tests)('%s', (desc, tst) => {
-  const data = jsonFormula(sampleData, {}, tst.data, customFunctions);
+  const data = jsonFormula(sampleData, {}, tst.data, functions);
   let jsonResult;
   try {
     const fieldData = {};
@@ -42,7 +42,7 @@ test.each(tests)('%s', (desc, tst) => {
     jsonResult = jsonFormula(
       fieldData.data,
       { $form: root, $: {} }, tst.expression,
-      customFunctions,
+      functions,
     );
   } catch (e) {
     expect(tst.error).toBe('syntax');
