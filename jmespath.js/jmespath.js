@@ -1627,7 +1627,7 @@ function JsonFormula() {
                                 + `takes at least${signature.length}${pluralized
                                 } but received ${args.length}`);
         }
-      } else if (args.length !== signature.length) {
+      } else if (args.length !== signature.length && !signature[signature.length - 1].optional) {
         pluralized = signature.length === 1 ? ' argument' : ' arguments';
         throw new Error(`ArgumentError: ${name}() `
                             + `takes ${signature.length}${pluralized
@@ -1635,7 +1635,8 @@ function JsonFormula() {
       }
       let currentSpec;
       let actualType;
-      for (let i = 0; i < signature.length; i += 1) {
+      const limit = Math.min(signature.length, args.length);
+      for (let i = 0; i < limit; i += 1) {
         currentSpec = signature[i].types;
         actualType = getTypeName(args[i]);
         args[i] = matchType(actualType, currentSpec, args[i], name);

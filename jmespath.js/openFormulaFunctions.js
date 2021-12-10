@@ -25,7 +25,8 @@ export default {
     _signature: [
       { types: [dataTypes.TYPE_STRING] },
       { types: [dataTypes.TYPE_STRING] },
-      { types: [dataTypes.TYPE_STRING], variadic: true },
+      { types: [dataTypes.TYPE_STRING] },
+      { types: [dataTypes.TYPE_NUMBER], optional: true },
     ],
   },
 };
