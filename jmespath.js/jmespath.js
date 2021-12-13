@@ -1435,6 +1435,9 @@ function JsonFormula() {
         case TOK_GLOBAL:
           return node.value;
         case 'Function':
+          if (node.name === 'if') {
+            return this.runtime.callFunction(node.name, node.children, value);
+          }
           resolvedArgs = [];
           for (i = 0; i < node.children.length; i += 1) {
             resolvedArgs.push(this.visit(node.children[i], value));
@@ -1601,13 +1604,13 @@ function JsonFormula() {
   }
 
   Runtime.prototype = {
-    callFunction(name, resolvedArgs) {
+    callFunction(name, resolvedArgs, data) {
       const functionEntry = this.functionTable[name];
       if (functionEntry === undefined) {
         throw new Error(`Unknown function: ${name}()`);
       }
       this._validateArgs(name, resolvedArgs, functionEntry._signature);
-      return functionEntry._func.call(this, resolvedArgs);
+      return functionEntry._func.call(this, resolvedArgs, data);
     },
 
     _validateArgs(name, args, signature) {
@@ -1770,8 +1773,16 @@ function JsonFormula() {
     _functionAnd(resolveArgs) {
       return !!valueOf(resolveArgs[0]) && !!valueOf(resolveArgs[1]);
     },
-    _functionIf(resolveArgs) {
-      return valueOf(resolveArgs[0]) ? resolveArgs[1] : resolveArgs[2];
+    _functionIf(unresolvedArgs, data) {
+      const interpreter = this._interpreter;
+      const conditionNode = unresolvedArgs[0];
+      const leftBranchNode = unresolvedArgs[1];
+      const rightBranchNode = unresolvedArgs[2];
+      const condition = interpreter.visit(conditionNode, data);
+      if (valueOf(condition)) {
+        return interpreter.visit(leftBranchNode, data);
+      }
+      return interpreter.visit(rightBranchNode, data);
     },
     _functionOr(resolveArgs) {
       return !!valueOf(resolveArgs[0]) || !!valueOf(resolveArgs[1]);
