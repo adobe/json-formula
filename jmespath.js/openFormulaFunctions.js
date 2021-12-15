@@ -29,4 +29,16 @@ export default {
       { types: [dataTypes.TYPE_NUMBER], optional: true },
     ],
   },
+  value: {
+    _func: args => {
+      const obj = args[0] || {};
+      const index = args[1];
+      const result = obj[index];
+      return result === undefined ? null : result;
+    },
+    _signature: [
+      { types: [dataTypes.TYPE_OBJECT, dataTypes.TYPE_ARRAY, dataTypes.TYPE_NULL] },
+      { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_NUMBER] },
+    ],
+  },
 };

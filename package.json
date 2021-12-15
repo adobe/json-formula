@@ -1,6 +1,6 @@
 {
   "name": "@adobe/json-formula",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "JSONFormula Grammar and implementation",
   "#browser": "The browser entry point is for a web browser.",
   "browser": "dist/index.js",

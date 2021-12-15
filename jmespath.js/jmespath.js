@@ -1435,6 +1435,9 @@ function JsonFormula() {
         case TOK_GLOBAL:
           return node.value;
         case 'Function':
+          // Special case for if()
+          // we need to make sure the results are called only after the condition is evaluated
+          // Otherwise we end up with both results invoked -- which could include side effects
           if (node.name === 'if') {
             return this.runtime.callFunction(node.name, node.children, value);
           }

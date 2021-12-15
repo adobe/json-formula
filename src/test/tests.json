@@ -285,5 +285,53 @@
       "expression": "substitute(a, b, c, 3)",
       "expected": "abbabba"
     }
+  ],
+  [
+    "value(1)",
+    {
+      "data": "samples",
+      "expression": "value(value(\"purchase-order\", 'address'), 'street')",
+      "expected": "123 Oak Street"
+    }
+  ],
+  [
+    "value(2)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "value(value(items, 0), 'desc')",
+      "expected": "pens"
+    }
+  ],
+  [
+    "value(3)",
+    {
+      "data": "samples",
+      "expression": "value(value(value(@, 'purchase-order'), 'address'),'city')",
+      "expected": "San Jose"
+    }
+  ],
+  [
+    "value(4)",
+    {
+      "data": "samples",
+      "expression": "value(@, 'purchase-orders')",
+      "expected": null
+    }
+  ],
+  [
+    "value(5)",
+    {
+      "data": "`null`",
+      "expression": "value(@, 'purchase-orders')",
+      "expected": null
+    }
+  ],
+  [
+    "value(6)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "value(items, 4)",
+      "expected": null
+    }
   ]
 ]
