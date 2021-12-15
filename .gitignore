@@ -8,3 +8,10 @@ antlr/*.tokens
 log/
 package-lock.json
 
+# Project files
+.idea
+*.iml
+.classpath
+.project
+target/
+.vscode
