@@ -10,6 +10,7 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 import { jsonFormula } from '../json-formula';
+import Form from '../Form';
 
 test('if executes correct branch', () => {
   const expressionTrue = 'if(true(),true_fn(),false_fn())';
@@ -37,4 +38,27 @@ test('if executes correct branch', () => {
   expect(spyTrue).not.toHaveBeenCalled();
   expect(spyFalse).toHaveBeenCalled();
   expect(resultFalse).toEqual(false);
+});
+
+test('can pass field as a function argument', () => {
+  // i.e. make sure it does not resolve to the scalar value of a field
+  const TYPE_OBJECT = 4;
+
+  const getNameFunc = 'getName(address.street)';
+
+  const customFunctions = {
+    getName: {
+      _func: ([fld]) => fld.$name,
+      _signature: [{ types: [TYPE_OBJECT] }],
+    },
+  };
+  const fieldData = {};
+  const root = new Form(fieldData, { data: { address: { street: 'Oak' } } });
+  const result = jsonFormula(
+    root.data,
+    {},
+    getNameFunc,
+    customFunctions,
+  );
+  expect(result).toEqual('street');
 });

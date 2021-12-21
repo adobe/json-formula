@@ -129,9 +129,9 @@ function JsonFormula() {
     return false;
   }
 
-  function getTypeName(inputObj) {
+  function getTypeName(inputObj, useValueOf = true) {
     if (inputObj === null) return TYPE_NULL;
-    const obj = inputObj.valueOf();
+    const obj = useValueOf ? inputObj.valueOf() : inputObj;
     switch (Object.prototype.toString.call(obj)) {
       case '[object String]':
         return TYPE_STRING;
@@ -153,6 +153,14 @@ function JsonFormula() {
       default:
         return TYPE_OBJECT;
     }
+  }
+
+  function getTypeNames(inputObj) {
+    // return the types with and without using valueOf
+    // needed for the cases where we really need an object passed to a function -- not it's value
+    const type1 = getTypeName(inputObj);
+    const type2 = getTypeName(inputObj, false);
+    return [type1, type2];
   }
 
   function strictDeepEqual(lhs, rhs) {
@@ -300,7 +308,8 @@ function JsonFormula() {
     if (operator === '&') return first + second;
     throw new Error(`unimplemented array operator: ${operator}`);
   }
-  function matchType(actual, expectedList, argValue, context) {
+  function matchType(actuals, expectedList, argValue, context) {
+    const actual = actuals[0];
     if (expectedList.findIndex(
       type => type === TYPE_ANY || actual === type,
     ) !== -1
@@ -340,13 +349,13 @@ function JsonFormula() {
         // We're going to modify the array, so take a copy
         const returnArray = argValue.slice();
         for (let i = 0; i < returnArray.length; i += 1) {
-          const indexType = getTypeName(returnArray[i]);
+          const indexType = getTypeNames(returnArray[i]);
           returnArray[i] = matchType(indexType, [subtype], returnArray[i], context);
         }
         return returnArray;
       }
       if ([TYPE_NUMBER, TYPE_STRING, TYPE_NULL, TYPE_BOOLEAN].includes(subtype)) {
-        return [matchType(actual, [subtype], argValue, context)];
+        return [matchType(actuals, [subtype], argValue, context)];
       }
     } else {
       if (expected === TYPE_NUMBER) {
@@ -364,6 +373,9 @@ function JsonFormula() {
       }
       if (expected === TYPE_BOOLEAN) {
         return !!argValue;
+      }
+      if (expected === TYPE_OBJECT && actuals[1] === TYPE_OBJECT) {
+        return argValue;
       }
     }
     throw new Error('unhandled argument');
@@ -1404,8 +1416,8 @@ function JsonFormula() {
         case 'ConcatenateExpression':
           first = this.visit(node.children[0], value);
           second = this.visit(node.children[1], value);
-          first = matchType(getTypeName(first), [TYPE_STRING, TYPE_ARRAY_STRING], first, 'concatenate');
-          second = matchType(getTypeName(second), [TYPE_STRING, TYPE_ARRAY_STRING], second, 'concatenate');
+          first = matchType(getTypeNames(first), [TYPE_STRING, TYPE_ARRAY_STRING], first, 'concatenate');
+          second = matchType(getTypeNames(second), [TYPE_STRING, TYPE_ARRAY_STRING], second, 'concatenate');
           return applyOperator(first, second, '&');
         case 'SubtractExpression':
           first = this.visit(node.children[0], value);
@@ -1564,8 +1576,8 @@ function JsonFormula() {
         _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }],
       },
       type: { _func: this._functionType, _signature: [{ types: [TYPE_ANY] }] },
-      keys: { _func: this._functionKeys, _signature: [{ types: [TYPE_OBJECT] }] },
-      values: { _func: this._functionValues, _signature: [{ types: [TYPE_OBJECT] }] },
+      keys: { _func: this._functionKeys, _signature: [{ types: [TYPE_ANY] }] },
+      values: { _func: this._functionValues, _signature: [{ types: [TYPE_ANY] }] },
       sort: {
         _func: this._functionSort,
         _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] }],
@@ -1644,7 +1656,7 @@ function JsonFormula() {
       const limit = Math.min(signature.length, args.length);
       for (let i = 0; i < limit; i += 1) {
         currentSpec = signature[i].types;
-        actualType = getTypeName(args[i]);
+        actualType = getTypeNames(args[i]);
         args[i] = matchType(actualType, currentSpec, args[i], name);
       }
     },
@@ -1819,13 +1831,7 @@ function JsonFormula() {
     },
 
     _functionValues(resolvedArgs) {
-      const obj = resolvedArgs[0];
-      const keys = Object.keys(obj);
-      const values = [];
-      for (let i = 0; i < keys.length; i += 1) {
-        values.push(obj[keys[i]]);
-      }
-      return values;
+      return Object.values(resolvedArgs[0]);
     },
 
     _functionJoin(resolvedArgs) {
