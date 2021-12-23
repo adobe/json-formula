@@ -16,6 +16,7 @@ const {
   TYPE_NULL,
   TYPE_ARRAY_NUMBER,
   TYPE_ARRAY_STRING,
+  TYPE_CLASS,
 } = dataTypes;
 
 function JsonFormula() {
@@ -127,6 +128,15 @@ function JsonFormula() {
       return Object.prototype.toString.call(obj) === '[object Object]';
     }
     return false;
+  }
+  function isClass(obj) {
+    if (obj === null) return false;
+    if (Array.isArray(obj)) return false;
+    return typeof obj === 'object' && obj.constructor.name !== 'Object';
+  }
+
+  function matchClass(arg, expectedList) {
+    return isClass(arg) && expectedList.includes(TYPE_CLASS);
   }
 
   function getTypeName(inputObj, useValueOf = true) {
@@ -1656,8 +1666,13 @@ function JsonFormula() {
       const limit = Math.min(signature.length, args.length);
       for (let i = 0; i < limit; i += 1) {
         currentSpec = signature[i].types;
-        actualType = getTypeNames(args[i]);
-        args[i] = matchType(actualType, currentSpec, args[i], name);
+        // First check for a match using matchClass
+        // this check will not call valueOf or toString on the object, and so
+        // will not trigger a dependency
+        if (!matchClass(args[i], currentSpec)) {
+          actualType = getTypeNames(args[i]);
+          args[i] = matchType(actualType, currentSpec, args[i], name);
+        }
       }
     },
 

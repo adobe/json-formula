@@ -40,16 +40,16 @@ test('if executes correct branch', () => {
   expect(resultFalse).toEqual(false);
 });
 
-test('can pass field as a function argument', () => {
+test('can pass a class as a function argument', () => {
   // i.e. make sure it does not resolve to the scalar value of a field
-  const TYPE_OBJECT = 4;
+  const TYPE_CLASS = 10;
 
   const getNameFunc = 'getName(address.street)';
 
   const customFunctions = {
     getName: {
       _func: ([fld]) => fld.$name,
-      _signature: [{ types: [TYPE_OBJECT] }],
+      _signature: [{ types: [TYPE_CLASS] }],
     },
   };
   const fieldData = {};
