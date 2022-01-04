@@ -62,3 +62,16 @@ test('can pass a class as a function argument', () => {
   );
   expect(result).toEqual('street');
 });
+
+test('creating second form should not affect first form', () => {
+  const fieldData = {};
+  const data = { data: { address: { street: 'Oak' } } };
+
+  const form1 = new Form(fieldData, data);
+  const numFields1 = form1.$fields.length;
+  const form2 = new Form(fieldData, data);
+  const numFields2 = form2.$fields.length;
+
+  expect(form1.$fields.length).toEqual(numFields1);
+  expect(numFields1).toEqual(numFields2);
+});

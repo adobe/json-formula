@@ -10,9 +10,6 @@
     Should allow us to eliminate getFieldProperty()
   */
 
-const allFields = [];
-allFields.length = 0;
-
 function createField(name, value, readonly = false, required = true) {
   class Field {
     valueOf() { return value; }
@@ -31,40 +28,44 @@ function createField(name, value, readonly = false, required = true) {
     get '$required'() { return required; }
   }
   const newField = new Field();
-  allFields.push(newField);
   return newField;
 }
+
 function createFields(parent, childref, child) {
+  const result = [];
   if (child instanceof Array) {
     parent[childref] = [];
     child.forEach((item, index) => {
-      createFields(parent[childref], index, item);
+      const fields = createFields(parent[childref], index, item);
+      result.push(...fields);
     });
   } else if (child !== null && typeof child === 'object') {
     parent[childref] = {};
     Object.keys(child).forEach(k => {
-      createFields(parent[childref], k, child[k]);
+      const fields = createFields(parent[childref], k, child[k]);
+      result.push(...fields);
     });
   } else {
     // eslint-disable-next-line no-param-reassign
-    parent[childref] = createField(childref, child);
+    const field = createField(childref, child);
+    parent[childref] = field;
+    result.push(field);
   }
+  return result;
 }
-
-let fd;
 
 export default class Form {
   constructor(fieldData, dataRoot) {
-    fd = fieldData;
-    createFields(fieldData, 'data', dataRoot);
+    this.fieldData = fieldData;
+    this.allFields = createFields(fieldData, 'data', dataRoot);
     Object.keys(fieldData.data).forEach(k => {
       this[k] = fieldData.data[k];
     });
   }
 
-  valueOf() { return fd.data; }
+  valueOf() { return this.fieldData; }
 
-  stringify() { return JSON.stringify(fd.data, null, 2); }
+  stringify() { return JSON.stringify(this.fieldData.data, null, 2); }
 
-  get '$fields'() { return allFields; }
+  get '$fields'() { return this.allFields; }
 }
