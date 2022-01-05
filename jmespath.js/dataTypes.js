@@ -10,4 +10,5 @@ export default {
   TYPE_NULL: 7,
   TYPE_ARRAY_NUMBER: 8,
   TYPE_ARRAY_STRING: 9,
+  TYPE_CLASS: 10,
 };

@@ -350,15 +350,18 @@
     },
     {
       "expression": "keys(foo)",
-      "error": "invalid-type"
+      "result": [],
+      "was": "invalid-type"
     },
     {
       "expression": "keys(strings)",
-      "error": "invalid-type"
+      "result": ["0", "1", "2"],
+      "was": "invalid-type"
     },
     {
       "expression": "keys(`false`)",
-      "error": "invalid-type"
+      "result": [],
+      "was": "invalid-type"
     },
     {
       "expression": "sort(values(objects))",
@@ -370,7 +373,8 @@
     },
     {
       "expression": "values(foo)",
-      "error": "invalid-type"
+      "result": [],
+      "was": "invalid-type"
     },
     {
       "expression": "join(', ', strings)",
