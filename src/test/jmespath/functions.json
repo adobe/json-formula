@@ -136,27 +136,27 @@
       "result": false
     },
     {
-      "expression": "ends_with(str, 'r')",
+      "expression": "endsWith(str, 'r')",
       "result": true
     },
     {
-      "expression": "ends_with(str, 'tr')",
+      "expression": "endsWith(str, 'tr')",
       "result": true
     },
     {
-      "expression": "ends_with(str, 'Str')",
+      "expression": "endsWith(str, 'Str')",
       "result": true
     },
     {
-      "expression": "ends_with(str, 'SStr')",
+      "expression": "endsWith(str, 'SStr')",
       "result": false
     },
     {
-      "expression": "ends_with(str, 'foo')",
+      "expression": "endsWith(str, 'foo')",
       "result": false
     },
     {
-      "expression": "ends_with(str, `0`)",
+      "expression": "endsWith(str, `0`)",
       "result": false,
       "was": "invalid-type"
     },
@@ -413,7 +413,7 @@
       "was": "invalid-type"
     },
     {
-      "expression": "join('|', decimals[].to_string(@))",
+      "expression": "join('|', decimals[].toString(@))",
       "result": "1.01|1.2|-1.5"
     },
     {
@@ -441,23 +441,23 @@
       "result": "dlrow olleh"
     },
     {
-      "expression": "starts_with(str, 'S')",
+      "expression": "startsWith(str, 'S')",
       "result": true
     },
     {
-      "expression": "starts_with(str, 'St')",
+      "expression": "startsWith(str, 'St')",
       "result": true
     },
     {
-      "expression": "starts_with(str, 'Str')",
+      "expression": "startsWith(str, 'Str')",
       "result": true
     },
     {
-      "expression": "starts_with(str, 'String')",
+      "expression": "startsWith(str, 'String')",
       "result": false
     },
     {
-      "expression": "starts_with(str, `0`)",
+      "expression": "startsWith(str, `0`)",
       "result": false,
       "was": "invalid-type"
     },
@@ -475,7 +475,7 @@
       "was": "invalid-type"
     },
     {
-      "expression": "sum(array[].to_number(@))",
+      "expression": "sum(array[].toNumber(@))",
       "result": 111
     },
     {
@@ -483,72 +483,72 @@
       "result": 0
     },
     {
-      "expression": "to_array('foo')",
+      "expression": "toArray('foo')",
       "result": ["foo"]
     },
     {
-      "expression": "to_array(`0`)",
+      "expression": "toArray(`0`)",
       "result": [0]
     },
     {
-      "expression": "to_array(objects)",
+      "expression": "toArray(objects)",
       "result": [{"foo": "bar", "bar": "baz"}]
     },
     {
-      "expression": "to_array(`[1, 2, 3]`)",
+      "expression": "toArray(`[1, 2, 3]`)",
       "result": [1, 2, 3]
     },
     {
-      "expression": "to_array(false)",
+      "expression": "toArray(false)",
       "result": [false]
     },
     {
-      "expression": "to_string('foo')",
+      "expression": "toString('foo')",
       "result": "foo"
     },
     {
-      "expression": "to_string(`1.2`)",
+      "expression": "toString(`1.2`)",
       "result": "1.2"
     },
     {
-      "expression": "to_string(`[0, 1]`)",
+      "expression": "toString(`[0, 1]`)",
       "result": "[0,1]"
     },
     {
-      "expression": "to_number('1.0')",
+      "expression": "toNumber('1.0')",
       "result": 1.0
     },
     {
-      "expression": "to_number('1.1')",
+      "expression": "toNumber('1.1')",
       "result": 1.1
     },
     {
-      "expression": "to_number('4')",
+      "expression": "toNumber('4')",
       "result": 4
     },
     {
-      "expression": "to_number('notanumber')",
+      "expression": "toNumber('notanumber')",
       "result": 0,
       "was": null
     },
     {
-      "expression": "to_number(`false`)",
+      "expression": "toNumber(`false`)",
       "result": null
     },
     {
-      "expression": "to_number(`null`)",
+      "expression": "toNumber(`null`)",
       "result": null
     },
     {
-      "expression": "to_number(`[0]`)",
+      "expression": "toNumber(`[0]`)",
       "result": null
     },
     {
-      "expression": "to_number(`{\"foo\": 0}`)",
+      "expression": "toNumber(`{\"foo\": 0}`)",
       "result": null
     },
     {
-      "expression": "\"to_string\"(`1.0`)",
+      "expression": "\"toString\"(`1.0`)",
       "error": "syntax"
     },
     {
@@ -582,33 +582,33 @@
       "error": "invalid-type"
     },
     {
-      "expression": "not_null(unknown_key, str)",
+      "expression": "notNull(unknown_key, str)",
       "result": "Str"
     },
     {
-      "expression": "not_null(unknown_key, foo.bar, empty_list, str)",
+      "expression": "notNull(unknown_key, foo.bar, empty_list, str)",
       "result": []
     },
     {
-      "expression": "not_null(unknown_key, null_key, empty_list, str)",
+      "expression": "notNull(unknown_key, null_key, empty_list, str)",
       "result": []
     },
     {
-      "expression": "not_null(all, expressions, are_null)",
+      "expression": "notNull(all, expressions, are_null)",
       "result": null
     },
     {
-      "expression": "not_null()",
+      "expression": "notNull()",
       "error": "invalid-arity"
     },
     {
       "description": "function projection on single arg function",
-      "expression": "numbers[].to_string(@)",
+      "expression": "numbers[].toString(@)",
       "result": ["-1", "3", "4", "5"]
     },
     {
       "description": "function projection on single arg function",
-      "expression": "array[].to_number(@)",
+      "expression": "array[].toNumber(@)",
       "result": [-1, 3, 4, 5, 0, 100],
       "was": [-1, 3, 4, 5, 100]
     }
@@ -627,7 +627,7 @@
   "cases": [
     {
       "description": "function projection on variadic function",
-      "expression": "foo[].not_null(f, e, d, c, b, a)",
+      "expression": "foo[].notNull(f, e, d, c, b, a)",
       "result": ["b", "c", "d", "e", "f"]
     }
   ]
@@ -645,7 +645,7 @@
   "cases": [
     {
       "description": "sort by field expression",
-      "expression": "sort_by(people, &age)",
+      "expression": "sortBy(people, &age)",
       "result": [
          {"age": 10, "age_str": "10", "bool": true, "name": 3},
          {"age": 20, "age_str": "20", "bool": true, "name": "a", "extra": "foo"},
@@ -655,7 +655,7 @@
       ]
     },
     {
-      "expression": "sort_by(people, &age_str)",
+      "expression": "sortBy(people, &age_str)",
       "result": [
          {"age": 10, "age_str": "10", "bool": true, "name": 3},
          {"age": 20, "age_str": "20", "bool": true, "name": "a", "extra": "foo"},
@@ -666,7 +666,7 @@
     },
     {
       "description": "sort by function expression",
-      "expression": "sort_by(people, &to_number(age_str))",
+      "expression": "sortBy(people, &toNumber(age_str))",
       "result": [
          {"age": 10, "age_str": "10", "bool": true, "name": 3},
          {"age": 20, "age_str": "20", "bool": true, "name": "a", "extra": "foo"},
@@ -676,72 +676,72 @@
       ]
     },
     {
-      "description": "function projection on sort_by function",
-      "expression": "sort_by(people, &age)[].name",
+      "description": "function projection on sortBy function",
+      "expression": "sortBy(people, &age)[].name",
       "result": [3, "a", "c", "b", "d"]
     },
     {
-      "expression": "sort_by(people, &extra)",
+      "expression": "sortBy(people, &extra)",
       "error": "invalid-type"
     },
     {
-      "expression": "sort_by(people, &bool)",
+      "expression": "sortBy(people, &bool)",
       "error": "invalid-type"
     },
     {
-      "expression": "sort_by(people, &name)",
+      "expression": "sortBy(people, &name)",
       "error": "invalid-type"
     },
     {
-      "expression": "sort_by(people, name)",
+      "expression": "sortBy(people, name)",
       "error": "invalid-type"
     },
     {
-      "expression": "sort_by(people, &age)[].extra",
+      "expression": "sortBy(people, &age)[].extra",
       "result": ["foo", "bar"]
     },
     {
-      "expression": "sort_by(`[]`, &age)",
+      "expression": "sortBy(`[]`, &age)",
       "result": []
     },
     {
-      "expression": "max_by(people, &age)",
+      "expression": "maxBy(people, &age)",
       "result": {"age": 50, "age_str": "50", "bool": false, "name": "d"}
     },
     {
-      "expression": "max_by(people, &age_str)",
+      "expression": "maxBy(people, &age_str)",
       "result": {"age": 50, "age_str": "50", "bool": false, "name": "d"}
     },
     {
-      "expression": "max_by(people, &bool)",
+      "expression": "maxBy(people, &bool)",
       "error": "invalid-type"
     },
     {
-      "expression": "max_by(people, &extra)",
+      "expression": "maxBy(people, &extra)",
       "error": "invalid-type"
     },
     {
-      "expression": "max_by(people, &to_number(age_str))",
+      "expression": "maxBy(people, &toNumber(age_str))",
       "result": {"age": 50, "age_str": "50", "bool": false, "name": "d"}
     },
     {
-      "expression": "min_by(people, &age)",
+      "expression": "minBy(people, &age)",
       "result": {"age": 10, "age_str": "10", "bool": true, "name": 3}
     },
     {
-      "expression": "min_by(people, &age_str)",
+      "expression": "minBy(people, &age_str)",
       "result": {"age": 10, "age_str": "10", "bool": true, "name": 3}
     },
     {
-      "expression": "min_by(people, &bool)",
+      "expression": "minBy(people, &bool)",
       "error": "invalid-type"
     },
     {
-      "expression": "min_by(people, &extra)",
+      "expression": "minBy(people, &extra)",
       "error": "invalid-type"
     },
     {
-      "expression": "min_by(people, &to_number(age_str))",
+      "expression": "minBy(people, &toNumber(age_str))",
       "result": {"age": 10, "age_str": "10", "bool": true, "name": 3}
     }
   ]
@@ -765,7 +765,7 @@
   "cases": [
     {
       "description": "stable sort order",
-      "expression": "sort_by(people, &age)",
+      "expression": "sortBy(people, &age)",
       "result": [
          {"age": 10, "order": "1"},
          {"age": 10, "order": "2"},

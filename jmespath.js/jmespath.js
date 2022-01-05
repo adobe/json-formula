@@ -3,6 +3,7 @@
 /* eslint-disable no-underscore-dangle */
 import dataTypes from './dataTypes';
 import openFormulaFunctions from './openFormulaFunctions';
+import functions from './functions';
 
 // Type constants used to define functions.
 const {
@@ -116,11 +117,6 @@ function JsonFormula() {
       return a.map(i => valueOf(i));
     }
     return a.valueOf();
-  }
-
-  function toString(a) {
-    if (a === null || a === undefined) return '';
-    return a.toString();
   }
 
   function isObject(obj) {
@@ -1518,114 +1514,19 @@ function JsonFormula() {
       }
       return actualValue;
     },
-
   };
 
-  function Runtime(customFunctions = {}) {
-    this.functionTable = {
-      // name: [function, <signature>]
-      // The <signature> can be:
-      //
-      // {
-      //   args: [[type1, type2], [type1, type2]],
-      //   variadic: true|false
-      // }
-      //
-      // Each arg in the arg list is a list of valid types
-      // (if the function is overloaded and supports multiple
-      // types.  If the type is "any" then no type checking
-      // occurs on the argument.  Variadic is optional
-      // and if not provided is assumed to be false.
-      abs: { _func: this._functionAbs, _signature: [{ types: [TYPE_NUMBER] }] },
-      avg: { _func: this._functionAvg, _signature: [{ types: [TYPE_ARRAY_NUMBER] }] },
-      ceil: { _func: this._functionCeil, _signature: [{ types: [TYPE_NUMBER] }] },
-      contains: {
-        _func: this._functionContains,
-        _signature: [{ types: [TYPE_STRING, TYPE_ARRAY] },
-          { types: [TYPE_ANY] }],
-      },
-      ends_with: {
-        _func: this._functionEndsWith,
-        _signature: [{ types: [TYPE_STRING] }, { types: [TYPE_STRING] }],
-      },
-      floor: { _func: this._functionFloor, _signature: [{ types: [TYPE_NUMBER] }] },
-      length: {
-        _func: this._functionLength,
-        _signature: [{ types: [TYPE_STRING, TYPE_ARRAY, TYPE_OBJECT] }],
-      },
-      map: {
-        _func: this._functionMap,
-        _signature: [{ types: [TYPE_EXPREF] }, { types: [TYPE_ARRAY] }],
-      },
-      max: {
-        _func: this._functionMax,
-        _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING] }],
-      },
-      merge: {
-        _func: this._functionMerge,
-        _signature: [{ types: [TYPE_OBJECT], variadic: true }],
-      },
-      max_by: {
-        _func: this._functionMaxBy,
-        _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }],
-      },
-      sum: { _func: this._functionSum, _signature: [{ types: [TYPE_ARRAY_NUMBER] }] },
-      starts_with: {
-        _func: this._functionStartsWith,
-        _signature: [{ types: [TYPE_STRING] }, { types: [TYPE_STRING] }],
-      },
-      min: {
-        _func: this._functionMin,
-        _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING] }],
-      },
-      min_by: {
-        _func: this._functionMinBy,
-        _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }],
-      },
-      type: { _func: this._functionType, _signature: [{ types: [TYPE_ANY] }] },
-      keys: { _func: this._functionKeys, _signature: [{ types: [TYPE_ANY] }] },
-      values: { _func: this._functionValues, _signature: [{ types: [TYPE_ANY] }] },
-      sort: {
-        _func: this._functionSort,
-        _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] }],
-      },
-      sort_by: {
-        _func: this._functionSortBy,
-        _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }],
-      },
-      join: {
-        _func: this._functionJoin,
-        _signature: [
-          { types: [TYPE_STRING] },
-          { types: [TYPE_ARRAY_STRING] },
-        ],
-      },
-      reverse: {
-        _func: this._functionReverse,
-        _signature: [{ types: [TYPE_STRING, TYPE_ARRAY] }],
-      },
-      to_array: { _func: this._functionToArray, _signature: [{ types: [TYPE_ANY] }] },
-      to_string: { _func: this._functionToString, _signature: [{ types: [TYPE_ANY] }] },
-      to_number: { _func: this._functionToNumber, _signature: [{ types: [TYPE_ANY] }] },
-      not_null: {
-        _func: this._functionNotNull,
-        _signature: [{ types: [TYPE_ANY], variadic: true }],
-      },
-      and: { _func: this._functionAnd, _signature: [{ types: [TYPE_ANY] }, { types: [TYPE_ANY] }] },
-      or: { _func: this._functionOr, _signature: [{ types: [TYPE_ANY] }, { types: [TYPE_ANY] }] },
-      not: { _func: this._functionNot, _signature: [{ types: [TYPE_ANY] }] },
-      true: { _func() { return true; }, _signature: [] },
-      false: { _func() { return false; }, _signature: [] },
-      if: {
-        _func: this._functionIf,
-        _signature: [{ types: [TYPE_ANY] }, { types: [TYPE_ANY] }, { types: [TYPE_ANY] }],
-      },
-      ...openFormulaFunctions,
-      ...customFunctions,
-    };
-  }
+  function Runtime() {}
 
   Runtime.prototype = {
+    addFunctions(customFunctions = {}) {
+      this.functionTable = {
+        ...functions(this._interpreter, isObject, isArray, toNumber, getTypeName, valueOf),
+        ...openFormulaFunctions(this._interpreter, valueOf),
+        ...customFunctions,
+      };
+    },
+
     callFunction(name, resolvedArgs, data) {
       const functionEntry = this.functionTable[name];
       if (functionEntry === undefined) {
@@ -1672,338 +1573,6 @@ function JsonFormula() {
         }
       }
     },
-
-    _functionStartsWith(resolvedArgs) {
-      return valueOf(resolvedArgs[0]).lastIndexOf(valueOf(resolvedArgs[1])) === 0;
-    },
-
-    _functionEndsWith(resolvedArgs) {
-      const searchStr = valueOf(resolvedArgs[0]);
-      const suffix = valueOf(resolvedArgs[1]);
-      return searchStr.indexOf(suffix, searchStr.length - suffix.length) !== -1;
-    },
-
-    _functionReverse(resolvedArgs) {
-      const originalStr = valueOf(resolvedArgs[0]);
-      const typeName = getTypeName(originalStr);
-      if (typeName === TYPE_STRING) {
-        let reversedStr = '';
-        for (let i = originalStr.length - 1; i >= 0; i -= 1) {
-          reversedStr += originalStr[i];
-        }
-        return reversedStr;
-      }
-      const reversedArray = resolvedArgs[0].slice(0);
-      reversedArray.reverse();
-      return reversedArray;
-    },
-
-    _functionAbs(resolvedArgs) {
-      return Math.abs(resolvedArgs[0]);
-    },
-
-    _functionCeil(resolvedArgs) {
-      return Math.ceil(resolvedArgs[0]);
-    },
-
-    _functionAvg(resolvedArgs) {
-      let sum = 0;
-      const inputArray = resolvedArgs[0];
-      for (let i = 0; i < inputArray.length; i += 1) {
-        sum += inputArray[i];
-      }
-      return sum / inputArray.length;
-    },
-    _functionContains(resolvedArgs) {
-      return valueOf(resolvedArgs[0]).indexOf(valueOf(resolvedArgs[1])) >= 0;
-    },
-
-    _functionFloor(resolvedArgs) {
-      return Math.floor(resolvedArgs[0]);
-    },
-
-    _functionLength(resolvedArgs) {
-      const arg = valueOf(resolvedArgs[0]);
-      if (isObject(arg)) return Object.keys(arg).length;
-
-      return isArray(arg) ? arg.length : toString(arg).length;
-    },
-
-    _functionMap(resolvedArgs) {
-      const mapped = [];
-      const interpreter = this._interpreter;
-      const exprefNode = resolvedArgs[0];
-      const elements = resolvedArgs[1];
-      for (let i = 0; i < elements.length; i += 1) {
-        mapped.push(interpreter.visit(exprefNode, elements[i]));
-      }
-      return mapped;
-    },
-
-    _functionMerge(resolvedArgs) {
-      const merged = {};
-      for (let i = 0; i < resolvedArgs.length; i += 1) {
-        const current = resolvedArgs[i];
-        Object.keys(current).forEach(key => {
-          merged[key] = current[key];
-        });
-      }
-      return merged;
-    },
-
-    _functionMax(resolvedArgs) {
-      if (resolvedArgs[0].length > 0) {
-        const typeName = getTypeName(resolvedArgs[0][0]);
-        if (typeName === TYPE_NUMBER) {
-          return resolvedArgs[0].reduce(
-            (prev, cur) => (toNumber(prev) >= toNumber(cur) ? prev : cur),
-            resolvedArgs[0][0],
-          );
-        }
-        return resolvedArgs[0].reduce(
-          (a, b) => (toString(b).localeCompare(toString(a)) < 0 ? a : b),
-          resolvedArgs[0][0],
-        );
-      }
-      return null;
-    },
-
-    _functionMin(resolvedArgs) {
-      if (resolvedArgs[0].length > 0) {
-        const typeName = getTypeName(resolvedArgs[0][0]);
-        if (typeName === TYPE_NUMBER) {
-          return resolvedArgs[0].reduce(
-            (prev, cur) => (toNumber(prev) <= toNumber(cur) ? prev : cur),
-            resolvedArgs[0][0],
-          );
-        }
-        const elements = resolvedArgs[0];
-        let minElement = elements[0];
-        for (let i = 1; i < elements.length; i += 1) {
-          if (toString(elements[i]).localeCompare(toString(minElement)) < 0) {
-            minElement = elements[i];
-          }
-        }
-        return minElement;
-      }
-      return null;
-    },
-
-    _functionSum(resolvedArgs) {
-      let sum = 0;
-      const listToSum = resolvedArgs[0];
-      for (let i = 0; i < listToSum.length; i += 1) {
-        sum += listToSum[i] * 1;
-      }
-      return sum;
-    },
-    _functionAnd(resolveArgs) {
-      return !!valueOf(resolveArgs[0]) && !!valueOf(resolveArgs[1]);
-    },
-    _functionIf(unresolvedArgs, data) {
-      const interpreter = this._interpreter;
-      const conditionNode = unresolvedArgs[0];
-      const leftBranchNode = unresolvedArgs[1];
-      const rightBranchNode = unresolvedArgs[2];
-      const condition = interpreter.visit(conditionNode, data);
-      if (valueOf(condition)) {
-        return interpreter.visit(leftBranchNode, data);
-      }
-      return interpreter.visit(rightBranchNode, data);
-    },
-    _functionOr(resolveArgs) {
-      return !!valueOf(resolveArgs[0]) || !!valueOf(resolveArgs[1]);
-    },
-    _functionNot(resolveArgs) {
-      return !valueOf(resolveArgs[0]);
-    },
-    // eslint-disable-next-line consistent-return
-    _functionType(resolvedArgs) {
-      // eslint-disable-next-line default-case
-      switch (getTypeName(resolvedArgs[0])) {
-        case TYPE_NUMBER:
-          return 'number';
-        case TYPE_STRING:
-          return 'string';
-        case TYPE_ARRAY:
-          return 'array';
-        case TYPE_OBJECT:
-          return 'object';
-        case TYPE_BOOLEAN:
-          return 'boolean';
-        case TYPE_EXPREF:
-          return 'expref';
-        case TYPE_NULL:
-          return 'null';
-      }
-    },
-
-    _functionKeys(resolvedArgs) {
-      return Object.keys(resolvedArgs[0]);
-    },
-
-    _functionValues(resolvedArgs) {
-      return Object.values(resolvedArgs[0]);
-    },
-
-    _functionJoin(resolvedArgs) {
-      const joinChar = resolvedArgs[0];
-      const listJoin = resolvedArgs[1];
-      return listJoin.join(joinChar);
-    },
-
-    _functionToArray(resolvedArgs) {
-      if (getTypeName(resolvedArgs[0]) === TYPE_ARRAY) {
-        return resolvedArgs[0];
-      }
-      return [resolvedArgs[0]];
-    },
-
-    _functionToString(resolvedArgs) {
-      if (getTypeName(resolvedArgs[0]) === TYPE_STRING) {
-        return resolvedArgs[0];
-      }
-      return JSON.stringify(resolvedArgs[0]);
-    },
-
-    _functionToNumber(resolvedArgs) {
-      const typeName = getTypeName(resolvedArgs[0]);
-      if (typeName === TYPE_NUMBER) {
-        return resolvedArgs[0];
-      }
-      if (typeName === TYPE_STRING) {
-        return toNumber(resolvedArgs[0]);
-      }
-      return null;
-    },
-
-    _functionNotNull(resolvedArgs) {
-      for (let i = 0; i < resolvedArgs.length; i += 1) {
-        if (getTypeName(resolvedArgs[i]) !== TYPE_NULL) {
-          return resolvedArgs[i];
-        }
-      }
-      return null;
-    },
-
-    _functionSort(resolvedArgs) {
-      const sortedArray = resolvedArgs[0].slice(0);
-      if (sortedArray.length > 0) {
-        const normalize = getTypeName(resolvedArgs[0][0]) === TYPE_NUMBER ? toNumber : toString;
-        sortedArray.sort((a, b) => {
-          const va = normalize(a);
-          const vb = normalize(b);
-          if (va < vb) return -1;
-          if (va > vb) return 1;
-          return 0;
-        });
-      }
-      return sortedArray;
-    },
-
-    _functionSortBy(resolvedArgs) {
-      const sortedArray = resolvedArgs[0].slice(0);
-      if (sortedArray.length === 0) {
-        return sortedArray;
-      }
-      const interpreter = this._interpreter;
-      const exprefNode = resolvedArgs[1];
-      const requiredType = getTypeName(
-        interpreter.visit(exprefNode, sortedArray[0]),
-      );
-      if ([TYPE_NUMBER, TYPE_STRING].indexOf(requiredType) < 0) {
-        throw new Error('TypeError');
-      }
-      // In order to get a stable sort out of an unstable
-      // sort algorithm, we decorate/sort/undecorate (DSU)
-      // by creating a new list of [index, element] pairs.
-      // In the cmp function, if the evaluated elements are
-      // equal, then the index will be used as the tiebreaker.
-      // After the decorated list has been sorted, it will be
-      // undecorated to extract the original elements.
-      const decorated = [];
-      for (let i = 0; i < sortedArray.length; i += 1) {
-        decorated.push([i, sortedArray[i]]);
-      }
-      decorated.sort((a, b) => {
-        const exprA = interpreter.visit(exprefNode, a[1]);
-        const exprB = interpreter.visit(exprefNode, b[1]);
-        if (getTypeName(exprA) !== requiredType) {
-          throw new Error(
-            `TypeError: expected ${requiredType}, received ${
-              getTypeName(exprA)}`,
-          );
-        } else if (getTypeName(exprB) !== requiredType) {
-          throw new Error(
-            `TypeError: expected ${requiredType}, received ${
-              getTypeName(exprB)}`,
-          );
-        }
-        if (exprA > exprB) {
-          return 1;
-        }
-        if (exprA < exprB) {
-          return -1;
-        }
-        // If they're equal compare the items by their
-        // order to maintain relative order of equal keys
-        // (i.e. to get a stable sort).
-        return a[0] - b[0];
-      });
-      // Undecorate: extract out the original list elements.
-      for (let j = 0; j < decorated.length; j += 1) {
-        [, sortedArray[j]] = decorated[j];
-      }
-      return sortedArray;
-    },
-
-    _functionMaxBy(resolvedArgs) {
-      const exprefNode = resolvedArgs[1];
-      const resolvedArray = resolvedArgs[0];
-      const keyFunction = this.createKeyFunction(exprefNode, [TYPE_NUMBER, TYPE_STRING]);
-      let maxNumber = -Infinity;
-      let maxRecord;
-      let current;
-      for (let i = 0; i < resolvedArray.length; i += 1) {
-        current = keyFunction(resolvedArray[i]);
-        if (current > maxNumber) {
-          maxNumber = current;
-          maxRecord = resolvedArray[i];
-        }
-      }
-      return maxRecord;
-    },
-
-    _functionMinBy(resolvedArgs) {
-      const exprefNode = resolvedArgs[1];
-      const resolvedArray = resolvedArgs[0];
-      const keyFunction = this.createKeyFunction(exprefNode, [TYPE_NUMBER, TYPE_STRING]);
-      let minNumber = Infinity;
-      let minRecord;
-      let current;
-      for (let i = 0; i < resolvedArray.length; i += 1) {
-        current = keyFunction(resolvedArray[i]);
-        if (current < minNumber) {
-          minNumber = current;
-          minRecord = resolvedArray[i];
-        }
-      }
-      return minRecord;
-    },
-
-    createKeyFunction(exprefNode, allowedTypes) {
-      const interpreter = this._interpreter;
-      const keyFunc = x => {
-        const current = interpreter.visit(exprefNode, x);
-        if (allowedTypes.indexOf(getTypeName(current)) < 0) {
-          const msg = `TypeError: expected one of ${allowedTypes
-          }, received ${getTypeName(current)}`;
-          throw new Error(msg);
-        }
-        return current;
-      };
-      return keyFunc;
-    },
   };
 
   function compile(stream) {
@@ -2025,6 +1594,7 @@ function JsonFormula() {
     const runtime = new Runtime(customFunctions);
     const interpreter = new TreeInterpreter(runtime);
     runtime._interpreter = interpreter;
+    runtime.addFunctions(customFunctions);
     if (globals) globalTokens = globals;
     const node = parser.parse(expression);
     return interpreter.search(node, data);
