@@ -333,5 +333,758 @@
       "expression": "value(items, 4)",
       "expected": null
     }
+  ],
+  [
+    "lower('')",
+    {
+      "data": "`null`",
+      "expression": "lower('')",
+      "expected": ""
+    }
+  ],
+  [
+    "lower('abc')",
+    {
+      "data": "`null`",
+      "expression": "lower('abc')",
+      "expected": "abc"
+    }
+  ],
+  [
+    "lower('aBc')",
+    {
+      "data": "`null`",
+      "expression": "lower('aBc')",
+      "expected": "abc"
+    }
+  ],
+  [
+    "lower(42)",
+    {
+      "data": "`null`",
+      "expression": "lower(42)",
+      "expected": "42"
+    }
+  ],
+  [
+    "upper('')",
+    {
+      "data": "`null`",
+      "expression": "upper('')",
+      "expected": ""
+    }
+  ],
+  [
+    "upper('ABC')",
+    {
+      "data": "`null`",
+      "expression": "upper('ABC')",
+      "expected": "ABC"
+    }
+  ],
+  [
+    "upper('aBc')",
+    {
+      "data": "`null`",
+      "expression": "upper('aBc')",
+      "expected": "ABC"
+    }
+  ],
+  [
+    "upper(42)",
+    {
+      "data": "`null`",
+      "expression": "upper(42)",
+      "expected": "42"
+    }
+  ],
+  [
+    "exp(0)",
+    {
+      "data": "`null`",
+      "expression": "exp(0)",
+      "expected": 1
+    }
+  ],
+  [
+    "exp('0')",
+    {
+      "data": "`null`",
+      "expression": "exp('0')",
+      "expected": 1
+    }
+  ],
+  [
+    "exp(1)",
+    {
+      "data": "`null`",
+      "expression": "exp(1)",
+      "expected": 2.718281828459045
+    }
+  ],
+  [
+    "power(1, 1)",
+    {
+      "data": "`null`",
+      "expression": "power(1, 1)",
+      "expected": 1
+    }
+  ],
+  [
+    "power(2, 3)",
+    {
+      "data": "`null`",
+      "expression": "power(2, 3)",
+      "expected": 8
+    }
+  ],
+  [
+    "power(2, -1)",
+    {
+      "data": "`null`",
+      "expression": "power(2, -1)",
+      "expected": 0.5
+    }
+  ],
+  [
+    "power(-2, -1)",
+    {
+      "data": "`null`",
+      "expression": "power(-2, -1)",
+      "expected": -0.5
+    }
+  ],
+  [
+    "power(2)",
+    {
+      "data": "`null`",
+      "expression": "power(2)",
+      "error": "syntax"
+    }
+  ],
+  [
+    "find('abcdabce', 'a')",
+    {
+      "data": "`null`",
+      "expression": "find('abcdabce', 'a')",
+      "expected": 0
+    }
+  ],
+  [
+    "find('abcdabce', 'b')",
+    {
+      "data": "`null`",
+      "expression": "find('abcdabce', 'b')",
+      "expected": 1
+    }
+  ],
+  [
+    "find('abcdabce', 'abc')",
+    {
+      "data": "`null`",
+      "expression": "find('abcdabce', 'abc')",
+      "expected": 0
+    }
+  ],
+  [
+    "find('abcdabce', 'abce')",
+    {
+      "data": "`null`",
+      "expression": "find('abcdabce', 'abce')",
+      "expected": 4
+    }
+  ],
+  [
+    "find('abcdabce', 'ab', 0)",
+    {
+      "data": "`null`",
+      "expression": "find('abcdabce', 'ab', 0)",
+      "expected": 0
+    }
+  ],
+  [
+    "find('abcdabce', 'ab', 100)",
+    {
+      "data": "`null`",
+      "expression": "find('abcdabce', 'ab', 100)",
+      "expected": -1
+    }
+  ],
+  [
+    "find('abcdabce', 'z', 0)",
+    {
+      "data": "`null`",
+      "expression": "find('abcdabce', 'z', 0)",
+      "expected": -1
+    }
+  ],
+  [
+    "find('abcdabce', 'abc', 1)",
+    {
+      "data": "`null`",
+      "expression": "find('abcdabce', 'abc', 1)",
+      "expected": 4
+    }
+  ],
+  [
+    "left('abc')",
+    {
+      "data": "`null`",
+      "expression": "left('abc')",
+      "expected": "a"
+    }
+  ],
+  [
+    "left('abc', 1)",
+    {
+      "data": "`null`",
+      "expression": "left('abc', 1)",
+      "expected": "a"
+    }
+  ],
+  [
+    "left('abc', 2)",
+    {
+      "data": "`null`",
+      "expression": "left('abc', 2)",
+      "expected": "ab"
+    }
+  ],
+  [
+    "left('abc', 100)",
+    {
+      "data": "`null`",
+      "expression": "left('abc', 100)",
+      "expected": "abc"
+    }
+  ],
+  [
+    "left('abc', 0)",
+    {
+      "data": "`null`",
+      "expression": "left('abc', 0)",
+      "expected": ""
+    }
+  ],
+  [
+    "left('abc', -1)",
+    {
+      "data": "`null`",
+      "expression": "left('abc', -1)",
+      "expected": null
+    }
+  ],
+  [
+    "right('abc')",
+    {
+      "data": "`null`",
+      "expression": "right('abc')",
+      "expected": "c"
+    }
+  ],
+  [
+    "right('abc', 1)",
+    {
+      "data": "`null`",
+      "expression": "right('abc', 1)",
+      "expected": "c"
+    }
+  ],
+  [
+    "right('abc', 2)",
+    {
+      "data": "`null`",
+      "expression": "right('abc', 2)",
+      "expected": "bc"
+    }
+  ],
+  [
+    "right('abc', 100)",
+    {
+      "data": "`null`",
+      "expression": "right('abc', 100)",
+      "expected": "abc"
+    }
+  ],
+  [
+    "right('abc', 0)",
+    {
+      "data": "`null`",
+      "expression": "right('abc', 0)",
+      "expected": ""
+    }
+  ],
+  [
+    "right('abc', -1)",
+    {
+      "data": "`null`",
+      "expression": "right('abc', -1)",
+      "expected": null
+    }
+  ],
+  [
+    "mid('abc', 0, 0)",
+    {
+      "data": "`null`",
+      "expression": "mid('abc', 0, 0)",
+      "expected": ""
+    }
+  ],
+  [
+    "mid('abc', 1, 1)",
+    {
+      "data": "`null`",
+      "expression": "mid('abc', 1, 1)",
+      "expected": "b"
+    }
+  ],
+  [
+    "mid('abc', 1, 100)",
+    {
+      "data": "`null`",
+      "expression": "mid('abc', 1, 100)",
+      "expected": "bc"
+    }
+  ],
+  [
+    "mid('abc', -1, 100)",
+    {
+      "data": "`null`",
+      "expression": "mid('abc', -1, 100)",
+      "expected": null
+    }
+  ],
+  [
+    "mid('abc')",
+    {
+      "data": "`null`",
+      "expression": "mid('abc')",
+      "error": "syntax"
+    }
+  ],
+  [
+    "proper('')",
+    {
+      "data": "`null`",
+      "expression": "proper('')",
+      "expected": ""
+    }
+  ],
+  [
+    "proper('two words')",
+    {
+      "data": "`null`",
+      "expression": "proper('two words')",
+      "expected": "Two Words"
+    }
+  ],
+  [
+    "proper('TWO WORDS')",
+    {
+      "data": "`null`",
+      "expression": "proper('TWO WORDS')",
+      "expected": "Two Words"
+    }
+  ],
+  [
+    "rept('', 10)",
+    {
+      "data": "`null`",
+      "expression": "rept('', 10)",
+      "expected": ""
+    }
+  ],
+  [
+    "rept('a', 2)",
+    {
+      "data": "`null`",
+      "expression": "rept('a', 2)",
+      "expected": "aa"
+    }
+  ],
+  [
+    "rept('abc', 2)",
+    {
+      "data": "`null`",
+      "expression": "rept('abc', 2)",
+      "expected": "abcabc"
+    }
+  ],
+  [
+    "rept('a', 0)",
+    {
+      "data": "`null`",
+      "expression": "rept('a', 0)",
+      "expected": ""
+    }
+  ],
+  [
+    "rept('a', -1)",
+    {
+      "data": "`null`",
+      "expression": "rept('a', -1)",
+      "expected": null
+    }
+  ],
+  [
+    "replace('abcdefg', 2, 2, 'yz')",
+    {
+      "data": "`null`",
+      "expression": "replace('abcdefg', 2, 2, 'yz')",
+      "expected": "abyzefg"
+    }
+  ],
+  [
+    "replace('abcdefg', 2, 0, 'yz')",
+    {
+      "data": "`null`",
+      "expression": "replace('abcdefg', 2, 0, 'yz')",
+      "expected": "abyzcdefg"
+    }
+  ],
+  [
+    "replace('abcdefg', 2, 100, 'yz')",
+    {
+      "data": "`null`",
+      "expression": "replace('abcdefg', 2, 100, 'yz')",
+      "expected": "abyz"
+    }
+  ],
+  [
+    "replace('abcdefg', -1, 100, 'yz')",
+    {
+      "data": "`null`",
+      "expression": "replace('abcdefg', -1, 100, 'yz')",
+      "expected": null
+    }
+  ],
+  [
+    "round(123.456, 0)",
+    {
+      "data": "`null`",
+      "expression": "round(123.456, 0)",
+      "expected": 123
+    }
+  ],
+  [
+    "round(123.456, 1)",
+    {
+      "data": "`null`",
+      "expression": "round(123.456, 1)",
+      "expected": 123.5
+    }
+  ],
+  [
+    "round(123.456, 2)",
+    {
+      "data": "`null`",
+      "expression": "round(123.456, 2)",
+      "expected": 123.46
+    }
+  ],
+  [
+    "round(123.456, 3)",
+    {
+      "data": "`null`",
+      "expression": "round(123.456, 3)",
+      "expected": 123.456
+    }
+  ],
+  [
+    "round(123.456, 4)",
+    {
+      "data": "`null`",
+      "expression": "round(123.456, 4)",
+      "expected": 123.456
+    }
+  ],
+  [
+    "round(123.56, -1)",
+    {
+      "data": "`null`",
+      "expression": "round(123.56, -1)",
+      "expected": 120
+    }
+  ],
+  [
+    "round(123.56, -2)",
+    {
+      "data": "`null`",
+      "expression": "round(123.56, -2)",
+      "expected": 100
+    }
+  ],
+  [
+    "round(123.56, -3)",
+    {
+      "data": "`null`",
+      "expression": "round(123.56, -3)",
+      "expected": 0
+    }
+  ],
+  [
+    "round(501.56, -3)",
+    {
+      "data": "`null`",
+      "expression": "round(501.56, -3)",
+      "expected": 1000
+    }
+  ],
+  [
+    "round(-123.456, 2)",
+    {
+      "data": "`null`",
+      "expression": "round(-123.456, 2)",
+      "expected": -123.46
+    }
+  ],
+  [
+    "round(-123.456, -1)",
+    {
+      "data": "`null`",
+      "expression": "round(-123.456, -1)",
+      "expected": -120
+    }
+  ],
+  [
+    "round(1.24349E2, 2)",
+    {
+      "data": "`null`",
+      "expression": "round(1.24349E2, 2)",
+      "error": "syntax",
+      "was": 124.35
+    }
+  ],
+  [
+    "sqrt(4)",
+    {
+      "data": "`null`",
+      "expression": "sqrt(4)",
+      "expected": 2
+    }
+  ],
+  [
+    "sqrt(3)",
+    {
+      "data": "`null`",
+      "expression": "sqrt(3)",
+      "expected": 1.7320508075688772
+    }
+  ],
+  [
+    "sqrt(-3)",
+    {
+      "data": "`null`",
+      "expression": "sqrt(-3)",
+      "expected": null
+    }
+  ],
+  [
+    "stdev(`[1,2,3]`)",
+    {
+      "data": "`null`",
+      "expression": "stdev(`[1,2,3]`)",
+      "expected": 1
+    }
+  ],
+  [
+    "stdev(`[1]`)",
+    {
+      "data": "`null`",
+      "expression": "stdev(`[1]`)",
+      "expected": null
+    }
+  ],
+  [
+    "stdev(`[]`)",
+    {
+      "data": "`null`",
+      "expression": "stdev(`[]`)",
+      "expected": null
+    }
+  ],
+  [
+    "stdevp(`[2,3]`)",
+    {
+      "data": "`null`",
+      "expression": "stdevp(`[2,3]`)",
+      "expected": 0.5
+    }
+  ],
+  [
+    "stdevp(`[2]`)",
+    {
+      "data": "`null`",
+      "expression": "stdevp(`[2]`)",
+      "expected": 0
+    }
+  ],
+  [
+    "stdevp(`[]`)",
+    {
+      "data": "`null`",
+      "expression": "stdevp(`[]`)",
+      "expected": null
+    }
+  ],
+  [
+    "trim('  abc  def ghi   ')",
+    {
+      "data": "`null`",
+      "expression": "trim('  abc  def ghi   ')",
+      "expected": "abc def ghi"
+    }
+  ],
+  [
+    "trim(' \tabc  def ghi   ')",
+    {
+      "data": "`null`",
+      "expression": "trim(' \tabc  def ghi   ')",
+      "expected": "\tabc def ghi"
+    }
+  ],
+  [
+    "trunc(123.456)",
+    {
+      "data": "`null`",
+      "expression": "trunc(123.456)",
+      "expected": 123
+    }
+  ],
+  [
+    "trunc(123.456, 1)",
+    {
+      "data": "`null`",
+      "expression": "trunc(123.456, 1)",
+      "expected": 123.4
+    }
+  ],
+  [
+    "trunc(123.456, 2)",
+    {
+      "data": "`null`",
+      "expression": "trunc(123.456, 2)",
+      "expected": 123.45
+    }
+  ],
+  [
+    "trunc(123.456, 3)",
+    {
+      "data": "`null`",
+      "expression": "trunc(123.456, 3)",
+      "expected": 123.456
+    }
+  ],
+  [
+    "trunc(123.456, 100)",
+    {
+      "data": "`null`",
+      "expression": "trunc(123.456, 10)",
+      "expected": 123.456
+    }
+  ],
+  [
+    "trunc(123.456, -1)",
+    {
+      "data": "`null`",
+      "expression": "trunc(123.456, -1)",
+      "expected": 120
+    }
+  ],
+  [
+    "trunc(123.456, -2)",
+    {
+      "data": "`null`",
+      "expression": "trunc(123.456, -2)",
+      "expected": 100
+    }
+  ],
+  [
+    "trunc(123.456, -3)",
+    {
+      "data": "`null`",
+      "expression": "trunc(123.456, -3)",
+      "expected": 0
+    }
+  ],
+  [
+    "trunc(123.456, -100)",
+    {
+      "data": "`null`",
+      "expression": "trunc(123.456, -100)",
+      "expected": 0
+    }
+  ],
+  [
+    "trunc(-123.456, 2)",
+    {
+      "data": "`null`",
+      "expression": "trunc(-123.456, 2)",
+      "expected": -123.45
+    }
+  ],
+  [
+    "trunc(-123.456, -1)",
+    {
+      "data": "`null`",
+      "expression": "trunc(-123.456, -1)",
+      "expected": -120
+    }
+  ],
+  [
+    "charCode(13055)",
+    {
+      "data": "`null`",
+      "expression": "charCode(13055)",
+      "expected": "㋿"
+    }
+  ],
+  [
+    "charCode(9)",
+    {
+      "data": "`null`",
+      "expression": "charCode(9)",
+      "expected": "\t"
+    }
+  ],
+  [
+    "charCode(9.123)",
+    {
+      "data": "`null`",
+      "expression": "charCode(9.123)",
+      "expected": null
+    }
+  ],
+  [
+    "codePoint('\t')",
+    {
+      "data": "`null`",
+      "expression": "codePoint('\t')",
+      "expected": 9
+    }
+  ],
+  [
+    "codePoint('㋿')",
+    {
+      "data": "`null`",
+      "expression": "codePoint('㋿')",
+      "expected": 13055
+    }
+  ],
+  [
+    "codePoint('㋿abc')",
+    {
+      "data": "`null`",
+      "expression": "codePoint('㋿abc')",
+      "expected": 13055
+    }
+  ],
+  [
+    "codePoint('')",
+    {
+      "data": "`null`",
+      "expression": "codePoint('')",
+      "expected": null
+    }
   ]
 ]

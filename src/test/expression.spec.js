@@ -24,6 +24,7 @@ test.each(tests)('%s', (desc, tst) => {
     result = jsonFormula(data, {}, tst.expression, functions);
   } catch (e) {
     expect(tst.error).toBe('syntax');
+    return;
   }
   if (typeof result === 'number') {
     expect(result).toBeCloseTo(tst.expected, 5);
@@ -46,6 +47,7 @@ test.each(tests)('%s', (desc, tst) => {
     );
   } catch (e) {
     expect(tst.error).toBe('syntax');
+    return;
   }
   // stringify/parse so that the comparison doesn't get confused by field objects
   const result = JSON.parse(JSON.stringify(jsonResult));
