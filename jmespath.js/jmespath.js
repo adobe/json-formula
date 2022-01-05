@@ -255,7 +255,7 @@ function JsonFormula() {
 
   function toNumber(value) {
     const n = valueOf(value); // in case it's an object that implements valueOf()
-    if (n === null) return 0;
+    if (n === null) return null;
     if (n instanceof Array) return 0;
     if (typeof n === 'number') return n;
     if (typeof n === 'string') {
@@ -325,6 +325,7 @@ function JsonFormula() {
     }
     // no match, just take the first type
     if (expected === -1) [expected] = expectedList;
+    if (expected === TYPE_ANY) return argValue;
     if (expected === TYPE_ARRAY_STRING
         || expected === TYPE_ARRAY_NUMBER
         || expected === TYPE_ARRAY) {
@@ -350,11 +351,7 @@ function JsonFormula() {
       }
     } else {
       if (expected === TYPE_NUMBER) {
-        if (actual === TYPE_STRING) {
-          return toNumber(argValue);
-        }
-        if (actual === TYPE_BOOLEAN) return argValue ? 1 : 0;
-        if (actual === TYPE_NULL) return 0;
+        if ([TYPE_STRING, TYPE_BOOLEAN, TYPE_NULL].includes(actual)) return toNumber(argValue);
         /* TYPE_ARRAY, TYPE_EXPREF, TYPE_OBJECT, TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING */
         return 0;
       }
