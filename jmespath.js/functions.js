@@ -1,7 +1,15 @@
 /* eslint-disable no-underscore-dangle */
 import dataTypes from './dataTypes';
 
-export default function functions(interpreter, isObject, isArray, toNumber, getTypeName, valueOf) {
+export default function functions(
+  interpreter,
+  isObject,
+  isArray,
+  toNumber,
+  getTypeName,
+  valueOf,
+  toString,
+) {
   const {
     TYPE_NUMBER,
     TYPE_ANY,
@@ -14,11 +22,6 @@ export default function functions(interpreter, isObject, isArray, toNumber, getT
     TYPE_ARRAY_NUMBER,
     TYPE_ARRAY_STRING,
   } = dataTypes;
-
-  function toString(a) {
-    if (a === null || a === undefined) return '';
-    return a.toString();
-  }
 
   function createKeyFunction(exprefNode, allowedTypes) {
     const keyFunc = x => {

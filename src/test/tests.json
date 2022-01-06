@@ -335,6 +335,22 @@
     }
   ],
   [
+    "lower(missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "lower(address.missing)",
+      "expected": ""
+    }
+  ],
+  [
+    "lower(street)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "lower(address.street)",
+      "expected": "123 oak street"
+    }
+  ],
+  [
     "lower('')",
     {
       "data": "`null`",
@@ -364,6 +380,22 @@
       "data": "`null`",
       "expression": "lower(42)",
       "expected": "42"
+    }
+  ],
+  [
+    "upper(missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "upper(address.missing)",
+      "expected": ""
+    }
+  ],
+  [
+    "upper(street)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "upper(address.street)",
+      "expected": "123 OAK STREET"
     }
   ],
   [

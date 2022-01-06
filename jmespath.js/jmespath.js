@@ -119,6 +119,11 @@ function JsonFormula() {
     return a.valueOf();
   }
 
+  function toString(a) {
+    if (a === null || a === undefined) return '';
+    return a.toString();
+  }
+
   function isObject(obj) {
     if (obj !== null) {
       return Object.prototype.toString.call(obj) === '[object Object]';
@@ -1521,8 +1526,16 @@ function JsonFormula() {
   Runtime.prototype = {
     addFunctions(customFunctions = {}) {
       this.functionTable = {
-        ...functions(this._interpreter, isObject, isArray, toNumber, getTypeName, valueOf),
-        ...openFormulaFunctions(this._interpreter, valueOf),
+        ...functions(
+          this._interpreter,
+          isObject,
+          isArray,
+          toNumber,
+          getTypeName,
+          valueOf,
+          toString,
+        ),
+        ...openFormulaFunctions(this._interpreter, valueOf, toString),
         ...customFunctions,
       };
     },

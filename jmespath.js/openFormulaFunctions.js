@@ -1,6 +1,6 @@
 import dataTypes from './dataTypes';
 
-export default function openFormulaFunctions(interpreter, valueOf) {
+export default function openFormulaFunctions(interpreter, valueOf, toString) {
   return {
     and: {
       _func: resolveArgs => !!valueOf(resolveArgs[0]) && !!valueOf(resolveArgs[1]),
@@ -86,7 +86,7 @@ export default function openFormulaFunctions(interpreter, valueOf) {
     },
     lower: {
       _func: args => {
-        const value = args[0];
+        const value = toString(args[0]);
         return value.toLowerCase();
       },
       _signature: [
@@ -95,7 +95,7 @@ export default function openFormulaFunctions(interpreter, valueOf) {
     },
     upper: {
       _func: args => {
-        const value = args[0];
+        const value = toString(args[0]);
         return value.toUpperCase();
       },
       _signature: [
