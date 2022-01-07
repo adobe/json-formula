@@ -1535,7 +1535,7 @@ function JsonFormula() {
           valueOf,
           toString,
         ),
-        ...openFormulaFunctions(this._interpreter, valueOf, toString),
+        ...openFormulaFunctions(this._interpreter, valueOf, toString, toNumber),
         ...customFunctions,
       };
     },

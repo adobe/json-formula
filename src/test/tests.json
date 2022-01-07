@@ -431,6 +431,22 @@
     }
   ],
   [
+    "exp(items[0].quantity)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "exp(items[0].quantity)",
+      "expected": 7.38905609893065
+    }
+  ],
+  [
+    "exp(missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "exp(missing)",
+      "expected": 1
+    }
+  ],
+  [
     "exp(0)",
     {
       "data": "`null`",
@@ -452,6 +468,22 @@
       "data": "`null`",
       "expression": "exp(1)",
       "expected": 2.718281828459045
+    }
+  ],
+  [
+    "power(10,items[0].quantity)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "power(10,items[0].quantity)",
+      "expected": 100
+    }
+  ],
+  [
+    "power(missing, 1)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "power(missing, 1)",
+      "expected": 0
     }
   ],
   [
@@ -495,67 +527,99 @@
     }
   ],
   [
-    "find('abcdabce', 'a')",
+    "find('a','abcdabce')",
     {
       "data": "`null`",
-      "expression": "find('abcdabce', 'a')",
+      "expression": "find('a','abcdabce')",
       "expected": 0
     }
   ],
   [
-    "find('abcdabce', 'b')",
+    "find('b','abcdabce')",
     {
       "data": "`null`",
-      "expression": "find('abcdabce', 'b')",
+      "expression": "find('b','abcdabce')",
       "expected": 1
     }
   ],
   [
-    "find('abcdabce', 'abc')",
+    "find('abc','abcdabce')",
     {
       "data": "`null`",
-      "expression": "find('abcdabce', 'abc')",
+      "expression": "find('abc','abcdabce')",
       "expected": 0
     }
   ],
   [
-    "find('abcdabce', 'abce')",
+    "find('abce','abcdabce')",
     {
       "data": "`null`",
-      "expression": "find('abcdabce', 'abce')",
+      "expression": "find('abce','abcdabce')",
       "expected": 4
     }
   ],
   [
-    "find('abcdabce', 'ab', 0)",
+    "find('ab','abcdabce',0)",
     {
       "data": "`null`",
-      "expression": "find('abcdabce', 'ab', 0)",
+      "expression": "find('ab','abcdabce',0)",
       "expected": 0
     }
   ],
   [
-    "find('abcdabce', 'ab', 100)",
+    "find('ab','abcdabce',100)",
     {
       "data": "`null`",
-      "expression": "find('abcdabce', 'ab', 100)",
-      "expected": -1
+      "expression": "find('ab','abcdabce',100)",
+      "expected": null
     }
   ],
   [
-    "find('abcdabce', 'z', 0)",
+    "find('z','abcdabce',0)",
     {
       "data": "`null`",
-      "expression": "find('abcdabce', 'z', 0)",
-      "expected": -1
+      "expression": "find('z','abcdabce',0)",
+      "expected": null
     }
   ],
   [
-    "find('abcdabce', 'abc', 1)",
+    "find('abc','abcdabce',1)",
     {
       "data": "`null`",
-      "expression": "find('abcdabce', 'abc', 1)",
+      "expression": "find('abc','abcdabce',1)",
       "expected": 4
+    }
+  ],
+  [
+    "find('Oak',address.street)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "find('Oak',address.street)",
+      "expected": 4
+    }
+  ],
+  [
+    "find('Oak', missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "find('Oak', missing)",
+      "expected": null
+    }
+  ],
+  [
+    "find(missing, address.street)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "find(missing, address.street)",
+      "expected": 0
+    }
+  ],
+  [
+    "find(missing, missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "find(missing, missing)",
+      "expected": 0
     }
   ],
   [
@@ -607,6 +671,22 @@
     }
   ],
   [
+    "left(address.street)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "left(address.street)",
+      "expected": "1"
+    }
+  ],
+  [
+    "left(missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "left(missing)",
+      "expected": ""
+    }
+  ],
+  [
     "right('abc')",
     {
       "data": "`null`",
@@ -655,6 +735,22 @@
     }
   ],
   [
+    "right(address.street)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "right(address.street)",
+      "expected": "t"
+    }
+  ],
+  [
+    "right(missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "right(missing)",
+      "expected": ""
+    }
+  ],
+  [
     "mid('abc', 0, 0)",
     {
       "data": "`null`",
@@ -695,6 +791,22 @@
     }
   ],
   [
+    "mid(address.street, 0, 1)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "mid(address.street, 0, 1)",
+      "expected": "1"
+    }
+  ],
+  [
+    "mid(missing, 0, 1)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "mid(missing, 0, 1)",
+      "expected": ""
+    }
+  ],
+  [
     "proper('')",
     {
       "data": "`null`",
@@ -716,6 +828,22 @@
       "data": "`null`",
       "expression": "proper('TWO WORDS')",
       "expected": "Two Words"
+    }
+  ],
+  [
+    "proper(address.country)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "proper(address.country)",
+      "expected": "Usa"
+    }
+  ],
+  [
+    "proper(missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "proper(missing)",
+      "expected": ""
     }
   ],
   [
@@ -759,6 +887,30 @@
     }
   ],
   [
+    "rept(address.country, items[0].quantity)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "rept(address.country, items[0].quantity)",
+      "expected": "USAUSA"
+    }
+  ],
+  [
+    "rept(address.country,missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "rept(address.country,missing)",
+      "expected": ""
+    }
+  ],
+  [
+    "rept(missing,3)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "rept(missing,3)",
+      "expected": ""
+    }
+  ],
+  [
     "replace('abcdefg', 2, 2, 'yz')",
     {
       "data": "`null`",
@@ -788,6 +940,30 @@
       "data": "`null`",
       "expression": "replace('abcdefg', -1, 100, 'yz')",
       "expected": null
+    }
+  ],
+  [
+    "replace(address.street,0, 3, '321')",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "replace(address.street,0, 3, '321')",
+      "expected": "321 Oak Street"
+    }
+  ],
+  [
+    "replace(address.street,0, 3, missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "replace(address.street,0, 3, missing)",
+      "expected": " Oak Street"
+    }
+  ],
+  [
+    "replace(missing,0, 1, address.country)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "replace(missing,0, 1, address.country)",
+      "expected": "USA"
     }
   ],
   [
@@ -888,6 +1064,30 @@
     }
   ],
   [
+    "round(items[0].price, 1)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "round(items[0].price, 1)",
+      "expected": 3.2
+    }
+  ],
+  [
+    "round(items[0].price, missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "round(items[0].price, missing)",
+      "expected": 3
+    }
+  ],
+  [
+    "round(missing, 1)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "round(missing, 1)",
+      "expected": 0
+    }
+  ],
+  [
     "sqrt(4)",
     {
       "data": "`null`",
@@ -912,6 +1112,22 @@
     }
   ],
   [
+    "sqrt(items[1].quantity)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "sqrt(items[1].quantity)",
+      "expected": 1.7320508075688772
+    }
+  ],
+  [
+    "sqrt(missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "sqrt(missing)",
+      "expected": 0
+    }
+  ],
+  [
     "stdev(`[1,2,3]`)",
     {
       "data": "`null`",
@@ -932,6 +1148,22 @@
     {
       "data": "`null`",
       "expression": "stdev(`[]`)",
+      "expected": null
+    }
+  ],
+  [
+    "stdev(items[*].quantity)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "stdev(items[*].quantity)",
+      "expected": 0.70710678118654760
+    }
+  ],
+  [
+    "stdev(missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "stdev(missing)",
       "expected": null
     }
   ],
@@ -960,6 +1192,23 @@
     }
   ],
   [
+    "stdevp(items[*].quantity)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "stdevp(items[*].quantity)",
+      "expected": 0.5
+    }
+  ],
+  [
+    "stdevp(missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "stdevp(missing)",
+      "expected": 0,
+      "was": null
+    }
+  ],
+  [
     "trim('  abc  def ghi   ')",
     {
       "data": "`null`",
@@ -973,6 +1222,22 @@
       "data": "`null`",
       "expression": "trim(' \tabc  def ghi   ')",
       "expected": "\tabc def ghi"
+    }
+  ],
+  [
+    "trim(address.street)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "trim(address.street)",
+      "expected": "123 Oak Street"
+    }
+  ],
+  [
+    "trim(missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "trim(missing)",
+      "expected": ""
     }
   ],
   [
@@ -1064,6 +1329,30 @@
     }
   ],
   [
+    "trunc(items[0].price, 1)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "trunc(items[0].price, 1)",
+      "expected": 3.2
+    }
+  ],
+  [
+    "trunc(items[0].price, missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "trunc(items[0].price, missing)",
+      "expected": 3
+    }
+  ],
+  [
+    "trunc(missing, 1)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "trunc(missing, 1)",
+      "expected": 0
+    }
+  ],
+  [
     "charCode(13055)",
     {
       "data": "`null`",
@@ -1084,6 +1373,14 @@
     {
       "data": "`null`",
       "expression": "charCode(9.123)",
+      "expected": null
+    }
+  ],
+  [
+    "charCode(missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "charCode(missing)",
       "expected": null
     }
   ],
@@ -1117,6 +1414,22 @@
       "data": "`null`",
       "expression": "codePoint('')",
       "expected": null
+    }
+  ],
+  [
+    "codePoint(missing)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "codePoint(missing)",
+      "expected": null
+    }
+  ],
+  [
+    "codePoint(address.street)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "codePoint(address.street)",
+      "expected": 49
     }
   ]
 ]
