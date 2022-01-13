@@ -10,6 +10,7 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 import { jsonFormula } from '../json-formula';
+import stringToNumber from './stringToNumber';
 import Form from '../Form';
 
 test('if executes correct branch', () => {
@@ -28,13 +29,13 @@ test('if executes correct branch', () => {
   const spyTrue = jest.spyOn(customFunctions.true_fn, '_func');
   const spyFalse = jest.spyOn(customFunctions.false_fn, '_func');
 
-  const resultTrue = jsonFormula({}, {}, expressionTrue, customFunctions);
+  const resultTrue = jsonFormula({}, {}, expressionTrue, customFunctions, stringToNumber);
   expect(resultTrue).toEqual(true);
   expect(spyTrue).toHaveBeenCalled();
   expect(spyFalse).not.toHaveBeenCalled();
 
   jest.clearAllMocks();
-  const resultFalse = jsonFormula({}, {}, expressionFalse, customFunctions);
+  const resultFalse = jsonFormula({}, {}, expressionFalse, customFunctions, stringToNumber);
   expect(spyTrue).not.toHaveBeenCalled();
   expect(spyFalse).toHaveBeenCalled();
   expect(resultFalse).toEqual(false);
@@ -59,6 +60,7 @@ test('can pass a class as a function argument', () => {
     {},
     getNameFunc,
     customFunctions,
+    stringToNumber,
   );
   expect(result).toEqual('street');
 });

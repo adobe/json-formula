@@ -12,6 +12,7 @@ governing permissions and limitations under the License.
 
 import { jsonFormula } from '../../json-formula';
 import Form from '../../Form';
+import stringToNumber from '../stringToNumber';
 
 const basic = require('./basic.json');
 
@@ -46,7 +47,7 @@ function toTestFmt(t) {
 function executeTest(desc, tst) {
   let result;
   try {
-    result = jsonFormula(tst.given, {}, tst.expression);
+    result = jsonFormula(tst.given, {}, tst.expression, stringToNumber);
   } catch (e) {
     expect(tst.error).not.toBeUndefined();
     return;
@@ -61,7 +62,8 @@ function executeTestWithFields(desc, tst) {
   try {
     const jsonResult = jsonFormula(fieldData.data,
       { $form: root, $: {} },
-      tst.expression);
+      tst.expression,
+      stringToNumber);
     result = JSON.parse(JSON.stringify(jsonResult));
   } catch (e) {
     expect(tst.error).not.toBeUndefined();

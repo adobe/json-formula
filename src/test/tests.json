@@ -106,7 +106,7 @@
     "math",
     {
       "data": "`{}`",
-      "expression": "2 * '2b' + `null`",
+      "expression": "2 * '$2' + `null`",
       "expected": 4
     }
   ],

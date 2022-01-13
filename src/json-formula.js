@@ -12,7 +12,7 @@ governing permissions and limitations under the License.
 import jmespath from '../jmespath.js/jmespath';
 
 // eslint-disable-next-line import/prefer-default-export
-export function jsonFormula(json, globals, expression, customFunctions = {}) {
-  const x = jmespath.search(json, globals, expression, { ...customFunctions });
+export function jsonFormula(json, globals, expression, customFunctions = {}, stringToNumber) {
+  const x = jmespath.search(json, globals, expression, { ...customFunctions }, stringToNumber);
   return x;
 }

@@ -73,6 +73,7 @@ function JsonFormula() {
   };
 
   let globalTokens = {};
+  let stringToNumber = null;
 
   function isNum(ch, includeSign) {
     return (ch >= '0' && ch <= '9')
@@ -278,7 +279,7 @@ function JsonFormula() {
     if (n instanceof Array) return 0;
     if (typeof n === 'number') return n;
     if (typeof n === 'string') {
-      const temp = parseFloat(n);
+      const temp = stringToNumber(n);
       return Number.isNaN(temp) ? 0 : temp;
     }
     if (typeof n === 'boolean') return n ? 1 : 0;
@@ -1599,7 +1600,7 @@ function JsonFormula() {
     return lexer.tokenize(stream);
   }
 
-  function search(data, globals, expression, customFunctions) {
+  function search(data, globals, expression, customFunctions, stringToNumberFn) {
     const parser = new Parser();
     // This needs to be improved.  Both the interpreter and runtime depend on
     // each other.  The runtime needs the interpreter to support exprefs.
@@ -1609,6 +1610,10 @@ function JsonFormula() {
     runtime._interpreter = interpreter;
     runtime.addFunctions(customFunctions);
     if (globals) globalTokens = globals;
+    stringToNumber = stringToNumberFn || (str => {
+      const n = +str;
+      return Number.isNaN(n) ? 0 : n;
+    });
     const node = parser.parse(expression);
     return interpreter.search(node, data);
   }
