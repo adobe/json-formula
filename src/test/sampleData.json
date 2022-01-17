@@ -21,6 +21,20 @@
           "subtotal": 4.02
         }
       ]
+    },
+    "datetime": {
+      "epoch": {
+        "date": 1,
+        "month": 1,
+        "year": 1970,
+        "value": 0
+      },
+      "noon": {
+        "hour": 12,
+        "minute": 0,
+        "second": 0,
+        "value": 0.5
+      }
     }
   }
 }

@@ -74,6 +74,31 @@ test('creating second form should not affect first form', () => {
   const form2 = new Form(fieldData, data);
   const numFields2 = form2.$fields.length;
 
-  expect(form1.$fields.length).toEqual(numFields1);
+  expect(form1.$fields).toHaveLength(numFields1);
   expect(numFields1).toEqual(numFields2);
+});
+
+describe('current datetime tests', () => {
+  beforeEach(() => {
+    jest.useFakeTimers('modern');
+    // 2nd Jan 1970 12 PM
+    const datetime = 1.296e8;
+    jest.setSystemTime(datetime);
+  });
+
+  test('now returns the correct value', () => {
+    const expression = 'now()';
+    const result = jsonFormula({}, {}, expression, {}, stringToNumber);
+    expect(result).toEqual(1.5);
+  });
+
+  test('today returns the correct value', () => {
+    const expression = 'today()';
+    const result = jsonFormula({}, {}, expression, {}, stringToNumber);
+    expect(result).toEqual(1.0);
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
 });
