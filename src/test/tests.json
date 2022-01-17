@@ -263,6 +263,14 @@
     }
   ],
   [
+    "subtract expressions",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "items[0].quantity - 2",
+      "expected": 0
+    }
+  ],
+  [
     "substitute(1)",
     {
       "data": "`{\"a\": \"abbabba\", \"b\": \"abba\", \"c\": \"a\"}`",
