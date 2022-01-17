@@ -11,8 +11,24 @@ governing permissions and limitations under the License.
 */
 import jmespath from '../jmespath.js/jmespath';
 
+export class Formula {
+  constructor(expression, customFunctions = {}, stringToNumber) {
+    this.expression = expression;
+    this.customFunctions = customFunctions;
+    this.stringToNumber = stringToNumber;
+    this.node = jmespath.compile(expression);
+  }
+
+  search(json, globals) {
+    const result = jmespath.search(this.node, json, globals, { ...this.customFunctions },
+      this.stringToNumber);
+    return result;
+  }
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export function jsonFormula(json, globals, expression, customFunctions = {}, stringToNumber) {
-  const x = jmespath.search(json, globals, expression, { ...customFunctions }, stringToNumber);
-  return x;
+  const formula = new Formula(expression, customFunctions, stringToNumber);
+  const result = formula.search(json, globals, { ...customFunctions }, stringToNumber);
+  return result;
 }
