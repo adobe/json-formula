@@ -1600,8 +1600,7 @@ function JsonFormula() {
     return lexer.tokenize(stream);
   }
 
-  function search(data, globals, expression, customFunctions, stringToNumberFn) {
-    const parser = new Parser();
+  function search(node, data, globals, customFunctions, stringToNumberFn) {
     // This needs to be improved.  Both the interpreter and runtime depend on
     // each other.  The runtime needs the interpreter to support exprefs.
     // There's likely a clean way to avoid the cyclic dependency.
@@ -1614,7 +1613,6 @@ function JsonFormula() {
       const n = +str;
       return Number.isNaN(n) ? 0 : n;
     });
-    const node = parser.parse(expression);
     return interpreter.search(node, data);
   }
   this.tokenize = tokenize;
