@@ -342,5 +342,158 @@ export default function openFormulaFunctions(interpreter, valueOf, toString, toN
         { types: [dataTypes.TYPE_STRING] },
       ],
     },
+    date: {
+      _func: args => {
+        const year = toNumber(args[0]);
+        const month = toNumber(args[1]);
+        const day = toNumber(args[2]);
+        // javascript months starts from 0
+        const jsDate = Date.UTC(year, month - 1, day);
+        return Math.floor(jsDate / 86400000);
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [dataTypes.TYPE_NUMBER] },
+      ],
+    },
+    day: {
+      _func: args => {
+        const date = toNumber(args[0]);
+        const jsDate = new Date(date * 86400000);
+        return jsDate.getUTCDate();
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_NUMBER] },
+      ],
+    },
+    month: {
+      _func: args => {
+        const date = toNumber(args[0]);
+        const jsDate = new Date(date * 86400000);
+        // javascript months start from 0
+        return jsDate.getUTCMonth() + 1;
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_NUMBER] },
+      ],
+    },
+    year: {
+      _func: args => {
+        const date = toNumber(args[0]);
+        const jsDate = new Date(date * 86400000);
+        return jsDate.getUTCFullYear();
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_NUMBER] },
+      ],
+    },
+    time: {
+      _func: args => {
+        const hours = toNumber(args[0]);
+        const minutes = toNumber(args[1]);
+        const seconds = toNumber(args[2]);
+        const time = (hours * 3600 + minutes * 60 + seconds) / 86400;
+        if (time < 0) {
+          return null;
+        }
+        return time - Math.floor(time);
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [dataTypes.TYPE_NUMBER] },
+      ],
+    },
+    hour: {
+      _func: args => {
+        const time = toNumber(args[0]);
+        if (time < 0) {
+          return null;
+        }
+        const hour = (time * 86400) / 3600;
+        return hour % 24;
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_NUMBER] },
+      ],
+    },
+    minute: {
+      _func: args => {
+        const time = toNumber(args[0]);
+        if (time < 0) {
+          return null;
+        }
+        const minute = (time * 1440);
+        return minute % 60;
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_NUMBER] },
+      ],
+    },
+    second: {
+      _func: args => {
+        const time = toNumber(args[0]);
+        if (time < 0) {
+          return null;
+        }
+        const seconds = (time * 86400);
+        return seconds % 60;
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_NUMBER] },
+      ],
+    },
+    now: {
+      _func: () => {
+        const localDateTime = new Date();
+        const year = localDateTime.getFullYear();
+        const month = localDateTime.getMonth();
+        const date = localDateTime.getDate();
+        const hours = localDateTime.getHours();
+        const minutes = localDateTime.getMinutes();
+        const seconds = localDateTime.getSeconds();
+        const result = Date.UTC(year, month, date, hours, minutes, seconds) / 86400000;
+        return result;
+      },
+      _signature: [],
+    },
+    today: {
+      _func: () => {
+        const localDateTime = new Date();
+        const year = localDateTime.getFullYear();
+        const month = localDateTime.getMonth();
+        const date = localDateTime.getDate();
+        const result = Math.floor(Date.UTC(year, month, date) / 86400000);
+        return result;
+      },
+      _signature: [],
+    },
+    weekday: {
+      _func: args => {
+        const date = toNumber(args[0]);
+        const type = args.length > 1 ? toNumber(args[1]) : 1;
+        const jsDate = new Date(date * 86400000);
+        const day = jsDate.getUTCDay();
+        // day is in range [0-7) with 0 mapping to sunday
+        switch (type) {
+          case 1:
+            // range = [1, 7], sunday = 1
+            return day + 1;
+          case 2:
+            // range = [1, 7] sunday = 7
+            return ((day + 6) % 7) + 1;
+          case 3:
+            // range = [0, 6] sunday = 6
+            return (day + 6) % 7;
+          default:
+            return null;
+        }
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [dataTypes.TYPE_NUMBER], optional: true },
+      ],
+    },
   };
 }

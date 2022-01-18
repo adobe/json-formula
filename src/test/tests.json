@@ -263,6 +263,14 @@
     }
   ],
   [
+    "subtract expressions",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "items[0].quantity - 2",
+      "expected": 0
+    }
+  ],
+  [
     "substitute(1)",
     {
       "data": "`{\"a\": \"abbabba\", \"b\": \"abba\", \"c\": \"a\"}`",
@@ -1431,5 +1439,365 @@
       "expression": "codePoint(address.street)",
       "expected": 49
     }
+  ],
+  [
+    "date(1970,1,1)",
+    {
+      "data": "`null`",
+      "expression": "date(1970,1,1)",
+      "expected": 0
+    }
+  ],
+  [
+    "date('1970',1,1)",
+    {
+      "data": "`null`",
+      "expression": "date('1970',1,1)",
+      "expected": 0
+    }
+  ],
+  [
+    "date(1969,12,31)",
+    {
+      "data": "`null`",
+      "expression": "date(1969,12,31)",
+      "expected": -1
+    }
+  ],
+  [
+    "date(2020,2,29)",
+    {
+      "data": "`null`",
+      "expression": "date(2020,2,29)",
+      "expected": 18321
+    }
+  ],
+  [
+    "date(2020,3,1)",
+    {
+      "data": "`null`",
+      "expression": "date(2020,3,1)",
+      "expected": 18322
+    }
+  ],
+  [
+    "date(date(epoch.year, epoch.month, epoch.date))",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "date(epoch.year, epoch.month, epoch.date)",
+      "expected": 0
+    }
+  ],
+  [
+    "date(1970,1,1) | day(@)",
+    {
+      "data": "`null`",
+      "expression": "date(1970,1,1) | day(@)",
+      "expected": 1
+    }
+  ],
+  [
+    "day(0)",
+    {
+      "data": "`null`",
+      "expression": "day(0)",
+      "expected": 1
+    }
+  ],
+  [
+    "day(1.5)",
+    {
+      "data": "`null`",
+      "expression": "day(1.5)",
+      "expected": 2
+    }
+  ],
+  [
+    "day(epoch.value)",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "day(epoch.value)",
+      "expected": 1
+    }
+  ],
+  [
+    "date(1970,1,1) | month(@)",
+    {
+      "data": "`null`",
+      "expression": "date(1970,1,1) | month(@)",
+      "expected": 1
+    }
+  ],
+  [
+    "date(2020,2,29) | month(@)",
+    {
+      "data": "`null`",
+      "expression": "date(2020,2,29) | month(@)",
+      "expected": 2
+    }
+  ],
+  [
+    "date(2020,2,30) | month(@)",
+    {
+      "data": "`null`",
+      "expression": "date(2020,2,30) | month(@)",
+      "expected": 3
+    }
+  ],
+  [
+    "month(epoch.value)",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "month(epoch.value)",
+      "expected": 1
+    }
+  ],
+  [
+    "date(1970,1,1) | year(@)",
+    {
+      "data": "`null`",
+      "expression": "date(1970,1,1) | year(@)",
+      "expected": 1970
+    }
+  ],
+  [
+    "date(1969,1,1) | year(@)",
+    {
+      "data": "`null`",
+      "expression": "date(1969,1,1) | year(@)",
+      "expected": 1969
+    }
+  ],
+  [
+    "date(1969,1,1) | year(@)",
+    {
+      "data": "`null`",
+      "expression": "date(1969,1,1) | year(@)",
+      "expected": 1969
+    }
+  ],
+  [
+    "year(epoch.value)",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "year(epoch.value)",
+      "expected": 1970
+    }
+  ],
+  [
+    "time(0, 0, 0)",
+    {
+      "data": "`null`",
+      "expression": "time(0, 0, 0)",
+      "expected": 0
+    }
+  ],
+  [
+    "time(6, 0, 0)",
+    {
+      "data": "`null`",
+      "expression": "time(6, 0, 0)",
+      "expected": 0.25
+    }
+  ],
+  [
+    "time('6', '0', '0')",
+    {
+      "data": "`null`",
+      "expression": "time('6', '0', '0')",
+      "expected": 0.25
+    }
+  ],
+  [
+    "time(noon.hour, noon.minute, noon.second)",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "time(noon.hour, noon.minute, noon.second)",
+      "expected": 0.5
+    }
+  ],
+  [
+    "hour(0.25)",
+    {
+      "data": "`null`",
+      "expression": "hour(0.25)",
+      "expected": 6
+    }
+  ],
+  [
+    "hour(-0.1)",
+    {
+      "data": "`null`",
+      "expression": "hour(-0.1)",
+      "expected": null
+    }
+  ],
+  [
+    "hour(3.33333333333)",
+    {
+      "data": "`null`",
+      "expression": "hour(3.33333333333)",
+      "expected": 8
+    }
+  ],
+  [
+    "hour(noon.value)", {
+      "data": "samples.\"datetime\"",
+      "expression": "hour(noon.value)",
+      "expected": 12
+    }
+  ],
+  [
+    "minute(0.0375)",
+    {
+      "data": "`null`",
+      "expression": "minute(0.0375)",
+      "expected": 54
+    }
+  ],
+  [
+    "minute(-0.1)",
+    {
+      "data": "`null`",
+      "expression": "minute(-0.1)",
+      "expected": null
+    }
+  ],
+  [
+    "minute(3.0375)",
+    {
+      "data": "`null`",
+      "expression": "minute(3.0375)",
+      "expected": 54
+    }
+  ],
+  [
+    "minute(noon.value)",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "minute(noon.value)",
+      "expected": 0
+    }
+  ],
+  [
+    "second(0.000625)",
+    {
+      "data": "`null`",
+      "expression": "second(0.000625)",
+      "expected": 54
+    }
+  ],
+  [
+    "second(-0.1)",
+    {
+      "data": "`null`",
+      "expression": "second(-0.1)",
+      "expected": null
+    }
+  ],
+  [
+    "second(3.000625)",
+    {
+      "data": "`null`",
+      "expression": "second(3.000625)",
+      "expected": 54
+    }
+  ],
+  [
+    "second(noon.value)",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "second(noon.value)",
+      "expected": 0
+    }
+  ],
+  [
+    "weekday(date(1970, 1, 1))",
+    {
+      "data": "`null`",
+      "expression": "weekday(date(1970, 1, 1))",
+      "expected": 5
+    }
+  ],
+  [
+    "weekday(epoch.value)",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "weekday(epoch.value)",
+      "expected": 5
+    }
+  ],
+  [
+    "weekday(epoch.value + 2)",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "weekday(epoch.value + 2)",
+      "expected": 7
+    }
+  ],
+  [
+    "weekday((epoch.value - 5))",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "weekday(epoch.value - 5)",
+      "expected": 7
+    }
+  ],
+  [
+    "weekday(epoch.value + 3)",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "weekday(epoch.value + 3)",
+      "expected": 1
+    }
+  ],
+  [
+    "weekday(epoch.value + 3, 1)",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "weekday(epoch.value + 3, 1)",
+      "expected": 1
+    }
+  ],
+  [
+    "weekday(epoch.value + 3, 2)",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "weekday(epoch.value + 3, 2)",
+      "expected": 7
+    }
+  ],
+  [
+    "weekday(epoch.value + 4, 2)",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "weekday(epoch.value + 4, 2)",
+      "expected": 1
+    }
+  ],
+  [
+    "weekday(epoch.value + 3, 3)",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "weekday(epoch.value + 3, 3)",
+      "expected": 6
+    }
+  ],
+  [
+    "weekday(epoch.value, 4)",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "weekday(epoch.value, 4)",
+      "expected": null
+    }
+  ],
+  [
+    "weekday(epoch.value, -1)",
+    {
+      "data": "samples.\"datetime\"",
+      "expression": "weekday(epoch.value, -1)",
+      "expected": null
+    }
   ]
 ]
+
