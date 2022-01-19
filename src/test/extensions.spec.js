@@ -102,3 +102,58 @@ describe('current datetime tests', () => {
     jest.useRealTimers();
   });
 });
+
+describe('expressions with globals', () => {
+  const fieldData = {};
+  const data = { data: { address: { street: 'Oak' } } };
+  const form = new Form(fieldData, data);
+
+  test('should extract value from global', () => {
+    const expression = '$form.address.street';
+    const globals = {
+      $form: form.data,
+    };
+    const result = jsonFormula({}, globals, expression, {}, stringToNumber);
+    expect(result.valueOf()).toEqual(globals.$form.address.street.valueOf());
+  });
+
+  test('should extract correct value for common name in global and data', () => {
+    const expression = '$form.address.street';
+    const globals = {
+      $form: form.data,
+    };
+    const json = {
+      $form: 'ignore',
+    };
+    const result = jsonFormula(json, globals, expression, {}, stringToNumber);
+    expect(result.valueOf()).toEqual(globals.$form.address.street.valueOf());
+  });
+
+  test('should ignore globals not at top level', () => {
+    const expression = 'address.$form';
+    const globals = {
+      $form: 'ignore',
+    };
+    const json = {
+      address: {
+        $form: 'value',
+      },
+    };
+    const result = jsonFormula(json, globals, expression, {}, stringToNumber);
+    expect(result.valueOf()).toEqual(json.address.$form);
+  });
+
+  test('should not extract invalid globals', () => {
+    const globals = {
+      '#form': 'ignore',
+      form: 'ignore',
+    };
+    const json = {
+      '#form': 'value',
+    };
+    const result1 = jsonFormula(json, globals, '"#form"', {}, stringToNumber);
+    expect(result1).toEqual(json['#form']);
+    const result2 = jsonFormula(json, globals, 'form', {}, stringToNumber);
+    expect(result2).toEqual(null);
+  });
+});
