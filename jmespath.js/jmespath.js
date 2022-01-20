@@ -442,19 +442,8 @@ function JsonFormula() {
             || ch === '_';
   }
 
-  function isGlobal(prev, stream, pos) {
-    // global tokens occur only at the start of an expression
-    if (prev !== null && prev === TOK_DOT) return false;
-    const ch = stream[pos];
-    if (ch !== globalStartToken) return false;
-    // $ is special -- it's allowed to be part of an identifier if it's the first character
-    let i = pos + 1;
-    while (i < stream.length && isAlphaNum(stream[i])) i += 1;
-    const global = stream.slice(pos, i);
-    return !!globalTokens[global];
-  }
-
-  function Lexer() {
+  function Lexer(allowedGlobalNames = []) {
+    this._allowedGlobalNames = allowedGlobalNames;
   }
   Lexer.prototype = {
     tokenize(stream) {
@@ -466,7 +455,7 @@ function JsonFormula() {
       while (this._current < stream.length) {
         const prev = tokens.length ? tokens.slice(-1)[0].type : null;
 
-        if (isGlobal(prev, stream, this._current)) {
+        if (this._isGlobal(prev, stream, this._current)) {
           tokens.push(this._consumeGlobal(stream));
         } else if (isIdentifier(stream, this._current)) {
           start = this._current;
@@ -666,15 +655,25 @@ function JsonFormula() {
       return { type: TOK_LBRACKET, value: '[', start };
     },
 
+    _isGlobal(prev, stream, pos) {
+      // global tokens occur only at the start of an expression
+      if (prev !== null && prev === TOK_DOT) return false;
+      const ch = stream[pos];
+      if (ch !== globalStartToken) return false;
+      // $ is special -- it's allowed to be part of an identifier if it's the first character
+      let i = pos + 1;
+      while (i < stream.length && isAlphaNum(stream[i])) i += 1;
+      const global = stream.slice(pos, i);
+      return this._allowedGlobalNames.includes(global);
+    },
     _consumeGlobal(stream) {
       const start = this._current;
       this._current += 1;
       while (this._current < stream.length && isAlphaNum(stream[this._current])) this._current += 1;
       const global = stream.slice(start, this._current);
 
-      return { type: TOK_GLOBAL, value: globalTokens[global], start };
+      return { type: TOK_GLOBAL, name: global, start };
     },
-
     _consumeOperator(stream) {
       const start = this._current;
       const startingChar = stream[start];
@@ -801,7 +800,8 @@ function JsonFormula() {
   bindingPower[TOK_LBRACKET] = 55;
   bindingPower[TOK_LPAREN] = 60;
 
-  function Parser() {
+  function Parser(allowedGlobalNames = []) {
+    this._allowedGlobalNames = allowedGlobalNames;
   }
 
   Parser.prototype = {
@@ -821,7 +821,7 @@ function JsonFormula() {
     },
 
     _loadTokens(expression) {
-      const lexer = new Lexer();
+      const lexer = new Lexer(this._allowedGlobalNames);
       const tokens = lexer.tokenize(expression);
       tokens.push({ type: TOK_EOF, value: '', start: expression.length });
       this.tokens = tokens;
@@ -919,7 +919,7 @@ function JsonFormula() {
         case TOK_CURRENT:
           return { type: TOK_CURRENT };
         case TOK_GLOBAL:
-          return { type: TOK_GLOBAL, value: token.value };
+          return { type: TOK_GLOBAL, name: token.name };
         case TOK_FIELD:
           return { type: TOK_FIELD };
         case TOK_EXPREF:
@@ -1205,8 +1205,9 @@ function JsonFormula() {
     },
   };
 
-  function TreeInterpreter(runtime) {
+  function TreeInterpreter(runtime, globals = {}) {
     this.runtime = runtime;
+    this.globals = globals;
   }
 
   TreeInterpreter.prototype = {
@@ -1454,7 +1455,11 @@ function JsonFormula() {
         case TOK_CURRENT:
           return value;
         case TOK_GLOBAL:
-          return node.value;
+          result = this.globals[node.name];
+          if (result === undefined) {
+            return null;
+          }
+          return result;
         case 'Function':
           // Special case for if()
           // we need to make sure the results are called only after the condition is evaluated
@@ -1589,8 +1594,8 @@ function JsonFormula() {
     },
   };
 
-  function compile(stream) {
-    const parser = new Parser();
+  function compile(stream, allowedGlobalNames = []) {
+    const parser = new Parser(allowedGlobalNames);
     const ast = parser.parse(stream);
     return ast;
   }
@@ -1605,10 +1610,9 @@ function JsonFormula() {
     // each other.  The runtime needs the interpreter to support exprefs.
     // There's likely a clean way to avoid the cyclic dependency.
     const runtime = new Runtime(customFunctions);
-    const interpreter = new TreeInterpreter(runtime);
+    const interpreter = new TreeInterpreter(runtime, globals);
     runtime._interpreter = interpreter;
     runtime.addFunctions(customFunctions);
-    if (globals) globalTokens = globals;
     stringToNumber = stringToNumberFn || (str => {
       const n = +str;
       return Number.isNaN(n) ? 0 : n;
