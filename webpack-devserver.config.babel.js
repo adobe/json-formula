@@ -9,23 +9,23 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import path from "path";
-import HtmlWebpackPlugin from "html-webpack-plugin";
+import path from 'path';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-const dist = path.resolve(".", "dist");
+const dist = path.resolve('.', 'dist');
 
 const defn = {
-  mode: "production",
+  mode: 'production',
   entry: {
-    "tutorial": "./src/tutorial.js"
+    tutorial: './src/tutorial.js',
   },
-  devtool: "source-map",
+  devtool: 'source-map',
   optimization: {
-    minimize: false
+    minimize: false,
   },
   devServer: {
     port: 8085,
-    publicPath: "/",
   },
   resolve: { fallback: { fs: false } },
   module: {
@@ -34,44 +34,53 @@ const defn = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             presets: [
-              "@babel/preset-env",
+              '@babel/preset-env',
               {
-                "plugins": ["@babel/plugin-proposal-class-properties"]
-              }
-            ]
-          }
-        }
+                plugins: [
+                  ['@babel/plugin-proposal-class-properties', { loose: true }],
+                  ['@babel/plugin-proposal-private-property-in-object', { loose: true }],
+                  ['@babel/plugin-proposal-private-methods', { loose: true }],
+                ],
+              },
+            ],
+          },
+        },
       },
       {
         test: /\.css$/,
         use: [
-          "style-loader",
-          "css-loader"
-        ]
+          'style-loader',
+          'css-loader',
+        ],
       },
       {
         test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/i,
-        loader: "url-loader",
+        loader: 'url-loader',
         options: {
           esModule: false,
         },
-      }
-    ]
+      },
+    ],
   },
   output: {
     path: dist,
-    filename: "[name].js",
-    libraryTarget: "var",
-    library: "JSONFormula"
+    filename: '[name].js',
+    libraryTarget: 'var',
+    library: 'JSONFormula',
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "src/index.html"
-    })
-  ]
+      template: 'src/index.html',
+    }),
+  ],
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
+  },
 };
 
 export default defn;

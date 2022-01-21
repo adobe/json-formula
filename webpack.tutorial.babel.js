@@ -9,18 +9,20 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import path from "path";
-import CopyPlugin from "copy-webpack-plugin";
-import HtmlWebpackPlugin from "html-webpack-plugin";
+import path from 'path';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import CopyPlugin from 'copy-webpack-plugin';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-const DIST = path.resolve(".", "dist");
+const DIST = path.resolve('.', 'dist');
 
 export default {
-  mode: "production",
+  mode: 'production',
   entry: {
-    "tutorial": "./src/tutorial.js",
+    tutorial: './src/tutorial.js',
   },
-  devtool: "source-map",
+  devtool: 'source-map',
   resolve: { fallback: { fs: false } },
   module: {
     rules: [
@@ -28,47 +30,51 @@ export default {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             presets: [
-              "@babel/preset-env",
+              '@babel/preset-env',
               {
-                "plugins": ["@babel/plugin-proposal-class-properties"]
-              }
-            ]
-          }
-        }
+                plugins: [
+                  ['@babel/plugin-proposal-class-properties', { loose: true }],
+                  ['@babel/plugin-proposal-private-property-in-object', { loose: true }],
+                  ['@babel/plugin-proposal-private-methods', { loose: true }],
+                ],
+              },
+            ],
+          },
+        },
       },
       {
         test: /\.css$/,
         use: [
-          "style-loader",
-          "css-loader"
-        ]
+          'style-loader',
+          'css-loader',
+        ],
       },
       {
         test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/i,
-        loader: "url-loader",
+        loader: 'url-loader',
         options: {
           esModule: false,
         },
-      }
-    ]
+      },
+    ],
   },
   output: {
     path: DIST,
-    filename: "[name].js",
-    libraryTarget: "var",
-    library: "JSONFormula"
+    filename: '[name].js',
+    libraryTarget: 'var',
+    library: 'JSONFormula',
   },
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: "./doc", to: path.resolve(DIST, "doc") }
+        { from: './doc', to: path.resolve(DIST, 'doc') },
       ],
     }),
     new HtmlWebpackPlugin({
-      template: "src/index.html"
-    })
-  ]
+      template: 'src/index.html',
+    }),
+  ],
 };

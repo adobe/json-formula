@@ -1,5 +1,5 @@
 {
-  "presets": [["@babel/preset-env", {"targets": {"node": "current"}}]],
+  "presets": [["@babel/preset-env", {"targets": {"node": "current"}, "loose": true}]],
   "plugins": [
     [
       "@babel/plugin-proposal-class-properties",

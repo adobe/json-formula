@@ -9,19 +9,19 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import path from "path";
-import CopyPlugin from "copy-webpack-plugin";
+import path from 'path';
+import CopyPlugin from 'copy-webpack-plugin';
 
-const DIST = path.resolve(".", "dist");
-const CJS = path.resolve(DIST, "cjs");
-const UMD = path.resolve(DIST, "umd");
+const DIST = path.resolve('.', 'dist');
+const CJS = path.resolve(DIST, 'cjs');
+const UMD = path.resolve(DIST, 'umd');
 
 const cjs = {
-  mode: "production",
+  mode: 'production',
   entry: {
-    "json-formula": "./src/json-formula.js"
+    'json-formula': './src/json-formula.js',
   },
-  devtool: "source-map",
+  devtool: 'source-map',
   resolve: { fallback: { fs: false } },
   module: {
     rules: [
@@ -29,43 +29,48 @@ const cjs = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             presets: [
-              "@babel/preset-env",
+              '@babel/preset-env',
               {
-                "plugins": ["@babel/plugin-proposal-class-properties"]
-              }
-            ]
-          }
-        }
-      }
-    ]
+                plugins: [
+                  ['@babel/plugin-proposal-class-properties', { loose: true }],
+                  ['@babel/plugin-proposal-private-property-in-object', { loose: true }],
+                  ['@babel/plugin-proposal-private-methods', { loose: true }],
+                ],
+              },
+            ],
+          },
+        },
+      },
+    ],
   },
   output: {
     path: CJS,
-    filename: "[name].js",
+    filename: '[name].js',
     library: {
-      type: "commonjs2"
-    }
+      type: 'commonjs2',
+    },
   },
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: "./src/index.cjs", to: path.resolve(DIST, "index.js") }
+        { from: './src/index.cjs', to: path.resolve(DIST, 'index.js') },
       ],
-    })
-  ]
+    }),
+  ],
 };
 
-const umd = Object.assign({}, cjs, {
+const umd = {
+  ...cjs,
   output: {
     path: UMD,
-    filename: "[name].js",
+    filename: '[name].js',
     library: {
-      type: "umd"
-    }
-  }
-});
+      type: 'umd',
+    },
+  },
+};
 
 export default [cjs, umd];

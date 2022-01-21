@@ -9,10 +9,10 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import jmespath from '../jmespath.js/jmespath';
+import jmespath from './jmespath/jmespath';
 
 export class Formula {
-  constructor(expression, customFunctions = {}, stringToNumber, allowedGlobalNames) {
+  constructor(expression, customFunctions = {}, stringToNumber = null, allowedGlobalNames = []) {
     this.expression = expression;
     this.customFunctions = customFunctions;
     this.stringToNumber = stringToNumber;
@@ -20,14 +20,25 @@ export class Formula {
   }
 
   search(json, globals) {
-    const result = jmespath.search(this.node, json, globals, { ...this.customFunctions },
-      this.stringToNumber);
+    const result = jmespath.search(
+      this.node,
+      json,
+      globals,
+      { ...this.customFunctions },
+      this.stringToNumber,
+    );
     return result;
   }
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export function jsonFormula(json, globals, expression, customFunctions = {}, stringToNumber) {
+export function jsonFormula(
+  json,
+  globals,
+  expression,
+  customFunctions = {},
+  stringToNumber = null,
+) {
   const formula = new Formula(expression, customFunctions, stringToNumber, Object.keys(globals));
   const result = formula.search(json, globals, { ...customFunctions }, stringToNumber);
   return result;

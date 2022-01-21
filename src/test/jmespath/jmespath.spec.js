@@ -60,10 +60,12 @@ function executeTestWithFields(desc, tst) {
   const root = new Form(fieldData, tst.given);
   let result;
   try {
-    const jsonResult = jsonFormula(fieldData.data,
+    const jsonResult = jsonFormula(
+      fieldData.data,
       { $form: root, $: {} },
       tst.expression,
-      stringToNumber);
+      stringToNumber,
+    );
     result = JSON.parse(JSON.stringify(jsonResult));
   } catch (e) {
     expect(tst.error).not.toBeUndefined();

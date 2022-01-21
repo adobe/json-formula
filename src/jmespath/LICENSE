@@ -1,3 +1,4 @@
+/*
 Copyright 2014 James Saryerwinnie
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,3 +12,18 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+NOTE:
+This file is substantially modified from the original source taken from:
+https://github.com/jmespath/jmespath.js
+
+Broadly speaking, the changes are:
+- Modernized to ES6
+- Refactored into multiple JS files
+- Much less strict evaluation.  Allow arguments to be coerced to correct type.
+- Allow arguments to be objects exposing toString() and valueOf()
+- Added Math and String Operators
+- camelCase functions
+- Add many Level 1 Openformula functions
+
+*/
