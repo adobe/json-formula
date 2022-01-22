@@ -13,11 +13,13 @@ governing permissions and limitations under the License.
 /* global window, document, fetch */
 import { jsonFormula } from './json-formula';
 import Form from './Form';
+import stringToNumber from './test/stringToNumber';
 
 window.addEventListener('load', () => {
   const dataElement = document.getElementById('data');
   const expression = document.getElementById('expression');
   const result = document.getElementById('result');
+  const debug = document.getElementById('debug');
 
   const d = window.localStorage.getItem('data');
   if (d) dataElement.value = d;
@@ -43,13 +45,17 @@ window.addEventListener('load', () => {
       return;
     }
 
+    const debugInfo = [];
     try {
       const jsonResult = jsonFormula(
         useFields ? fieldData.data : jsonData,
         { $form: root, $: {} },
         input,
         true,
+        stringToNumber,
+        debugInfo,
       );
+      debug.innerHTML = debugInfo.join('\n');
       const r = jsonResult === null || jsonResult === undefined ? jsonResult : jsonResult.valueOf();
       if (typeof r === 'object') {
         result.value = JSON.stringify(r, null, 2);
@@ -58,6 +64,7 @@ window.addEventListener('load', () => {
       }
     } catch (e) {
       result.value = e.toString();
+      debug.innerHTML = debugInfo.join('\n');
     }
   }
 

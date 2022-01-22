@@ -98,8 +98,9 @@ function isIdentifier(stream, pos) {
 }
 
 export default class Lexer {
-  constructor(allowedGlobalNames = []) {
+  constructor(allowedGlobalNames = [], debug = []) {
     this._allowedGlobalNames = allowedGlobalNames;
+    this.debug = debug;
   }
 
   tokenize(stream) {
@@ -245,9 +246,11 @@ export default class Lexer {
     const start = this._current;
     this._current += 1;
     const maxLength = stream.length;
+    let foundNonAlpha = !isIdentifier(stream, start + 1);
     while (stream[this._current] !== '"' && this._current < maxLength) {
       // You can escape a double quote and you can escape an escape.
       let current = this._current;
+      if (!isAlphaNum(current)) foundNonAlpha = true;
       if (stream[current] === '\\' && (stream[current + 1] === '\\'
                                              || stream[current + 1] === '"')) {
         current += 2;
@@ -257,6 +260,14 @@ export default class Lexer {
       this._current = current;
     }
     this._current += 1;
+    if (!foundNonAlpha) {
+      const val = stream.slice(start, this._current);
+      try {
+        this.debug.push(`Unnecessary quotes: ${val}`);
+        this.debug.push(`Did you intend a literal? '${val.replace(/"/g, '')}'`);
+      // eslint-disable-next-line no-empty
+      } catch (e) {}
+    }
     return JSON.parse(stream.slice(start, this._current));
   }
 

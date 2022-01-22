@@ -10,7 +10,11 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-export default function stringToNumber(n) {
+export default function stringToNumber(n, debug) {
   const ret = +(n.replace(/\$/, ''));
-  return Number.isNaN(ret) ? 0 : ret;
+  if (Number.isNaN(ret)) {
+    if (debug) debug.push(`Failed to convert ${n} to number`);
+    return 0;
+  }
+  return ret;
 }

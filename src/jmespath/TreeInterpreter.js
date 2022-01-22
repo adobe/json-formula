@@ -72,10 +72,11 @@ function objValues(obj) {
 }
 
 export default class TreeInterpreter {
-  constructor(runtime, globals, toNumber) {
+  constructor(runtime, globals, toNumber, debug) {
     this.runtime = runtime;
     this.globals = globals;
     this.toNumber = toNumber;
+    this.debug = debug;
   }
 
   search(node, value) {
@@ -87,7 +88,16 @@ export default class TreeInterpreter {
       Field: (node, value) => {
         if (value !== null && isObject(value)) {
           const field = value[node.name];
-          return (field === undefined) ? null : field;
+          if (field === undefined) {
+            try {
+              this.debug.push(`Failed to find: '${node.name}'`);
+              const available = Object.keys(value);
+              if (available.length) this.debug.push(`Available fields: ${available.map(a => `'${a}'`).toString()}`);
+            // eslint-disable-next-line no-empty
+            } catch (e) {}
+            return null;
+          }
+          return field;
         }
         return null;
       },
@@ -114,7 +124,10 @@ export default class TreeInterpreter {
           index = value.length + index;
         }
         const result = value[index];
-        if (result === undefined) return null;
+        if (result === undefined) {
+          this.debug.push(`Array index ${index} out of range`);
+          return null;
+        }
         return result;
       },
 
@@ -293,6 +306,7 @@ export default class TreeInterpreter {
 
       [TOK_GLOBAL]: node => {
         const result = this.globals[node.name];
+        this.debug.push(`Missing global property: ${node.name}`);
         return result === undefined ? null : result;
       },
 
@@ -316,9 +330,8 @@ export default class TreeInterpreter {
         return refNode;
       },
     };
-    const fn = visitFunctions[n.type];
-    if (!fn) throw new Error(`Unknown node type: ${n.type}`);
-
+    const fn = n && visitFunctions[n.type];
+    if (!fn) throw new Error(`Unknown/missing node type ${(n && n.type) || ''}`);
     return fn(n, v);
   }
 

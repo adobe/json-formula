@@ -13,7 +13,7 @@
       table {
         width: 100%;
         padding: 4px;
-      }</style><script defer="defer" src="tutorial.js"></script></head><body><table class="expressions"><caption>JSONFormula Testing</caption><thead><tr><th scope="col" class="data">Input JSON</th><th scope="col" class="expression">Expression</th><th scope="col" class="result">Result</th></tr></thead><tbody><tr><td class="data"><textarea id="data" name="data">
+      }</style><script defer="defer" src="tutorial.js"></script></head><body><table class="expressions"><caption>JSONFormula Testing</caption><thead><tr><th scope="col" class="data">Input JSON</th><th scope="col" class="expression">Expression</th><th scope="col" class="result">Result</th><th scope="col" class="debug">Debug Info</th></tr></thead><tbody><tr><td class="data"><textarea id="data" name="data">
 {
   "address": {
     "street": "123 Oak Street",
@@ -36,4 +36,4 @@
     }
   ]
 }
- </textarea></td><td class="expression"><textarea id="expression" name="expression">sum(items[*].subtotal)</textarea></td><td class="result"><textarea id="result" name="result" readonly="readonly"></textarea></td></tr><tr><td><label>mimic fields<input type="checkbox" id="use-fields" checked="checked"/></label></td></tr></tbody></table><a href="./doc/JSONFormula.rrd.html">Syntax Railroad Diagram</a><h3>Antlr4 Grammar</h3><pre id="grammar-out" style="border: thin solid black"></pre></body></html>
+ </textarea></td><td class="expression"><textarea id="expression" name="expression">sum(items[*].subtotal)</textarea></td><td class="result"><textarea id="result" name="result" readonly="readonly"></textarea></td><td class="debug"><textarea id="debug" name="debug" readonly="readonly"></textarea></td></tr><tr><td><label>mimic fields<input type="checkbox" id="use-fields" checked="checked"/></label></td></tr></tbody></table><a href="./doc/JSONFormula.rrd.html">Syntax Railroad Diagram</a><h3>Antlr4 Grammar</h3><pre id="grammar-out" style="border: thin solid black"></pre></body></html>

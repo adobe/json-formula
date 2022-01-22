@@ -103,8 +103,8 @@ export default class Parser {
     this._allowedGlobalNames = allowedGlobalNames;
   }
 
-  parse(expression) {
-    this._loadTokens(expression);
+  parse(expression, debug) {
+    this._loadTokens(expression, debug);
     this.index = 0;
     const ast = this.expression(0);
     if (this._lookahead(0) !== TOK_EOF) {
@@ -118,8 +118,8 @@ export default class Parser {
     return ast;
   }
 
-  _loadTokens(expression) {
-    const lexer = new Lexer(this._allowedGlobalNames);
+  _loadTokens(expression, debug) {
+    const lexer = new Lexer(this._allowedGlobalNames, debug);
     const tokens = lexer.tokenize(expression);
     tokens.push({ type: TOK_EOF, value: '', start: expression.length });
     this.tokens = tokens;
@@ -402,7 +402,7 @@ export default class Parser {
         parts[index] = this._lookaheadToken(0).value;
         this._advance();
       } else {
-        const t = this._lookahead(0);
+        const t = this._lookaheadToken(0);
         const error = new Error(`Syntax error, unexpected token: ${
           t.value}(${t.type})`);
         error.name = 'Parsererror';
