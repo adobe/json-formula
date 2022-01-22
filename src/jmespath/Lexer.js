@@ -250,7 +250,7 @@ export default class Lexer {
     while (stream[this._current] !== '"' && this._current < maxLength) {
       // You can escape a double quote and you can escape an escape.
       let current = this._current;
-      if (!isAlphaNum(current)) foundNonAlpha = true;
+      if (!isAlphaNum(stream[current])) foundNonAlpha = true;
       if (stream[current] === '\\' && (stream[current + 1] === '\\'
                                              || stream[current + 1] === '"')) {
         current += 2;
@@ -260,15 +260,19 @@ export default class Lexer {
       this._current = current;
     }
     this._current += 1;
-    if (!foundNonAlpha) {
-      const val = stream.slice(start, this._current);
-      try {
-        this.debug.push(`Unnecessary quotes: ${val}`);
-        this.debug.push(`Did you intend a literal? '${val.replace(/"/g, '')}'`);
-      // eslint-disable-next-line no-empty
-      } catch (e) {}
-    }
-    return JSON.parse(stream.slice(start, this._current));
+    const val = stream.slice(start, this._current);
+    // Check for unnecessary double quotes.
+    // json-formula uses double quotes to escape characters that don't belong in names names.
+    // e.g. "purchase-order".address
+    // If we find a double-quoted entity with spaces or all legal characters, issue a warning
+    try {
+      if (!foundNonAlpha || val.includes(' ')) {
+        this.debug.push(`Suspicious quotes: ${val}`);
+        this.debug.push(`Did you intend a literal? '${val.replace(/"/g, '')}'?`);
+      }
+    // eslint-disable-next-line no-empty
+    } catch (e) {}
+    return JSON.parse(val);
   }
 
   _consumeRawStringLiteral(stream) {

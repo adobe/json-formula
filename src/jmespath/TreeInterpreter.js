@@ -125,7 +125,7 @@ export default class TreeInterpreter {
         }
         const result = value[index];
         if (result === undefined) {
-          this.debug.push(`Array index ${index} out of range`);
+          this.debug.push(`Index ${index} out of range`);
           return null;
         }
         return result;
@@ -306,7 +306,6 @@ export default class TreeInterpreter {
 
       [TOK_GLOBAL]: node => {
         const result = this.globals[node.name];
-        this.debug.push(`Missing global property: ${node.name}`);
         return result === undefined ? null : result;
       },
 
