@@ -11,7 +11,7 @@ governing permissions and limitations under the License.
 */
 import dataTypes from './dataTypes';
 
-export default function openFormulaFunctions(interpreter, valueOf, toString, toNumber) {
+export default function openFormulaFunctions(valueOf, toString, toNumber) {
   return {
     and: {
       _func: resolveArgs => !!valueOf(resolveArgs[0]) && !!valueOf(resolveArgs[1]),
@@ -39,7 +39,7 @@ export default function openFormulaFunctions(interpreter, valueOf, toString, toN
     },
 
     if: {
-      _func: (unresolvedArgs, data) => {
+      _func: (unresolvedArgs, data, interpreter) => {
         const conditionNode = unresolvedArgs[0];
         const leftBranchNode = unresolvedArgs[1];
         const rightBranchNode = unresolvedArgs[2];
