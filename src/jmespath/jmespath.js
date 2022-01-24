@@ -62,7 +62,7 @@ function JsonFormula() {
           getValueOf,
           toString,
         ),
-        ...openFormulaFunctions(this._interpreter, getValueOf, toString, toNumber),
+        ...openFormulaFunctions(getValueOf, toString, toNumber),
         ...customFunctions,
       };
     }
@@ -106,11 +106,11 @@ function JsonFormula() {
       }
     }
 
-    callFunction(name, resolvedArgs, data) {
+    callFunction(name, resolvedArgs, data, interpreter) {
       const functionEntry = this.functionTable[name];
       if (functionEntry === undefined) throw new Error(`Unknown function: ${name}()`);
       this._validateArgs(name, resolvedArgs, functionEntry._signature);
-      return functionEntry._func.call(this, resolvedArgs, data);
+      return functionEntry._func.call(this, resolvedArgs, data, interpreter);
     }
   }
 

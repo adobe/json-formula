@@ -156,4 +156,21 @@ describe('expressions with globals', () => {
     const result2 = jsonFormula(json, globals, 'form', {}, stringToNumber);
     expect(result2).toEqual(null);
   });
+
+  test('access globals in custom functions', () => {
+    const globals = {
+      element: 'value',
+    };
+    const customFunctions = {
+      customFunc: {
+        _func: (args, searchData, interpreter) => {
+          return interpreter.globals.element;
+        },
+        _signature: [],
+      },
+    };
+    const expression = 'customFunc()';
+    const result = jsonFormula({}, globals, expression, customFunctions, stringToNumber);
+    expect(result).toEqual(globals.element);
+  });
 });
