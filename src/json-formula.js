@@ -18,12 +18,14 @@ export class Formula {
     stringToNumber = null,
     allowedGlobalNames = [],
     debug = [],
+    language = 'en-US',
   ) {
     this.expression = expression;
     this.customFunctions = customFunctions;
     this.stringToNumber = stringToNumber;
     this.node = jmespath.compile(expression, allowedGlobalNames, debug);
     this.debug = debug;
+    this.language = language;
   }
 
   search(json, globals) {
@@ -34,6 +36,7 @@ export class Formula {
       { ...this.customFunctions },
       this.stringToNumber,
       this.debug,
+      this.language,
     );
     return result;
   }
@@ -47,6 +50,7 @@ export function jsonFormula(
   customFunctions = {},
   stringToNumber = null,
   debug = [],
+  language = 'en-US',
 ) {
   const formula = new Formula(
     expression,
@@ -54,7 +58,15 @@ export function jsonFormula(
     stringToNumber,
     Object.keys(globals),
     debug,
+    language,
   );
-  const result = formula.search(json, globals, { ...customFunctions }, stringToNumber, debug);
+  const result = formula.search(
+    json,
+    globals,
+    { ...customFunctions },
+    stringToNumber,
+    debug,
+    language,
+  );
   return result;
 }

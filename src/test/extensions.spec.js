@@ -10,7 +10,7 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 import { jsonFormula } from '../json-formula';
-import stringToNumber from './stringToNumber';
+import stringToNumber from '../jmespath/stringToNumber';
 import Form from '../Form';
 
 test('if executes correct branch', () => {
@@ -163,9 +163,7 @@ describe('expressions with globals', () => {
     };
     const customFunctions = {
       customFunc: {
-        _func: (args, searchData, interpreter) => {
-          return interpreter.globals.element;
-        },
+        _func: (args, searchData, interpreter) => interpreter.globals.element,
         _signature: [],
       },
     };

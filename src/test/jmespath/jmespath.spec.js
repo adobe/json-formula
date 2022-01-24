@@ -12,7 +12,7 @@ governing permissions and limitations under the License.
 
 import { jsonFormula } from '../../json-formula';
 import Form from '../../Form';
-import stringToNumber from '../stringToNumber';
+import stringToNumber from '../../jmespath/stringToNumber';
 
 const basic = require('./basic.json');
 

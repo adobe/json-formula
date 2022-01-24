@@ -72,11 +72,12 @@ function objValues(obj) {
 }
 
 export default class TreeInterpreter {
-  constructor(runtime, globals, toNumber, debug) {
+  constructor(runtime, globals, toNumber, debug, language) {
     this.runtime = runtime;
     this.globals = globals;
     this.toNumber = toNumber;
     this.debug = debug;
+    this.language = language;
   }
 
   search(node, value) {

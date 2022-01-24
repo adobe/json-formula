@@ -35,6 +35,12 @@
         "second": 0,
         "value": 0.5
       }
+    },
+    "casefold": {
+      "test1": {"str1": "Σίσυφος", "str2": "ΣΊΣΥΦΟΣ"},
+      "test2": {"str1": "Straße", "str2": "Strasse"},
+      "test3": {"str1": "I", "str2": "ı"},
+      "test4": {"str1": "İ", "str2": "i"}
     }
   }
 }

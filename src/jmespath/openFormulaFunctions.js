@@ -13,6 +13,27 @@ import dataTypes from './dataTypes';
 
 export default function openFormulaFunctions(valueOf, toString, toNumber) {
   return {
+    casefold: {
+      _func: (args, data, interpreter) => {
+        const str = toString(args[0]);
+        return str.toLocaleUpperCase(interpreter.language).toLocaleLowerCase(interpreter.language);
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_STRING] },
+      ],
+    },
+    toMap: {
+      _func: args => {
+        const key = args[0];
+        const value = args[1];
+        return { [key]: value };
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_STRING] },
+        { types: [dataTypes.TYPE_ANY] },
+      ],
+    },
+
     and: {
       _func: resolveArgs => !!valueOf(resolveArgs[0]) && !!valueOf(resolveArgs[1]),
       _signature: [{ types: [dataTypes.TYPE_ANY] }, { types: [dataTypes.TYPE_ANY] }],

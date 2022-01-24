@@ -1483,7 +1483,7 @@
   [
     "date(date(epoch.year, epoch.month, epoch.date))",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "date(epoch.year, epoch.month, epoch.date)",
       "expected": 0
     }
@@ -1515,7 +1515,7 @@
   [
     "day(epoch.value)",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "day(epoch.value)",
       "expected": 1
     }
@@ -1547,7 +1547,7 @@
   [
     "month(epoch.value)",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "month(epoch.value)",
       "expected": 1
     }
@@ -1579,7 +1579,7 @@
   [
     "year(epoch.value)",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "year(epoch.value)",
       "expected": 1970
     }
@@ -1611,7 +1611,7 @@
   [
     "time(noon.hour, noon.minute, noon.second)",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "time(noon.hour, noon.minute, noon.second)",
       "expected": 0.5
     }
@@ -1642,7 +1642,7 @@
   ],
   [
     "hour(noon.value)", {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "hour(noon.value)",
       "expected": 12
     }
@@ -1674,7 +1674,7 @@
   [
     "minute(noon.value)",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "minute(noon.value)",
       "expected": 0
     }
@@ -1706,7 +1706,7 @@
   [
     "second(noon.value)",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "second(noon.value)",
       "expected": 0
     }
@@ -1722,7 +1722,7 @@
   [
     "weekday(epoch.value)",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "weekday(epoch.value)",
       "expected": 5
     }
@@ -1730,7 +1730,7 @@
   [
     "weekday(epoch.value + 2)",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "weekday(epoch.value + 2)",
       "expected": 7
     }
@@ -1738,7 +1738,7 @@
   [
     "weekday((epoch.value - 5))",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "weekday(epoch.value - 5)",
       "expected": 7
     }
@@ -1746,7 +1746,7 @@
   [
     "weekday(epoch.value + 3)",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "weekday(epoch.value + 3)",
       "expected": 1
     }
@@ -1754,7 +1754,7 @@
   [
     "weekday(epoch.value + 3, 1)",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "weekday(epoch.value + 3, 1)",
       "expected": 1
     }
@@ -1762,7 +1762,7 @@
   [
     "weekday(epoch.value + 3, 2)",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "weekday(epoch.value + 3, 2)",
       "expected": 7
     }
@@ -1770,7 +1770,7 @@
   [
     "weekday(epoch.value + 4, 2)",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "weekday(epoch.value + 4, 2)",
       "expected": 1
     }
@@ -1778,7 +1778,7 @@
   [
     "weekday(epoch.value + 3, 3)",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "weekday(epoch.value + 3, 3)",
       "expected": 6
     }
@@ -1786,7 +1786,7 @@
   [
     "weekday(epoch.value, 4)",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "weekday(epoch.value, 4)",
       "expected": null
     }
@@ -1794,9 +1794,53 @@
   [
     "weekday(epoch.value, -1)",
     {
-      "data": "samples.\"datetime\"",
+      "data": "samples.datetime",
       "expression": "weekday(epoch.value, -1)",
       "expected": null
+    }
+  ],
+  [
+    "casefold-null",
+    {
+      "data": "samples.casefold",
+      "expression": "casefold(notfound)",
+      "expected": ""
+    }
+  ],
+  [
+    "casefold1",
+    {
+      "data": "samples.casefold.test1",
+      "expression": "casefold(str1) == casefold(str2)",
+      "expected": true,
+      "language": "el-GR"
+    }
+  ],
+  [
+    "casefold2",
+    {
+      "data": "samples.casefold.test2",
+      "expression": "casefold(str1) == casefold(str2)",
+      "expected": true,
+      "language": "de-DE"
+    }
+  ],
+  [
+    "casefold3",
+    {
+      "data": "samples.casefold.test3",
+      "expression": "casefold(str1) == casefold(str2)",
+      "expected": true,
+      "language": "tr-TR"
+    }
+  ],
+  [
+    "casefold4",
+    {
+      "data": "samples.casefold.test4",
+      "expression": "casefold(str1) == casefold(str2)",
+      "expected": true,
+      "language": "tr-TR"
     }
   ]
 ]

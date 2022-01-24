@@ -126,7 +126,7 @@ function JsonFormula() {
     return ast;
   }
 
-  function search(node, data, globals, customFunctions, stringToNumberFn, debug = []) {
+  function search(node, data, globals, customFunctions, stringToNumberFn, debug = [], language = 'en-US') {
     // This needs to be improved.  Both the interpreter and runtime depend on
     // each other.  The runtime needs the interpreter to support exprefs.
     // There's likely a clean way to avoid the cyclic dependency.
@@ -137,7 +137,7 @@ function JsonFormula() {
       return Number.isNaN(n) ? 0 : n;
     });
     toNumber = getToNumber(stringToNumberFn || defaultStringToNumber, debug);
-    const interpreter = new TreeInterpreter(runtime, globals, toNumber, debug);
+    const interpreter = new TreeInterpreter(runtime, globals, toNumber, debug, language);
     runtime._interpreter = interpreter;
     runtime.addFunctions(customFunctions);
 
