@@ -1842,6 +1842,14 @@
       "expected": true,
       "language": "tr-TR"
     }
+  ],
+  [
+    "ignore functions",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "address.valueOf",
+      "expected": null
+    }
   ]
 ]
 

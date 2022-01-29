@@ -56,7 +56,10 @@ window.addEventListener('load', () => {
         debugInfo,
       );
       debug.innerHTML = debugInfo.join('\n');
-      const r = jsonResult === null || jsonResult === undefined ? jsonResult : jsonResult.valueOf();
+      let r = jsonResult;
+      if (jsonResult !== null && jsonResult !== undefined) {
+        r = Object.getPrototypeOf(jsonResult).valueOf.call(jsonResult);
+      }
       if (typeof r === 'object') {
         result.value = JSON.stringify(r, null, 2);
       } else {

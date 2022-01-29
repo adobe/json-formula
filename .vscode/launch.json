@@ -5,6 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+          "type": "pwa-chrome",
+          "name": "http://localhost:8085",
+          "request": "launch",
+          "url": "http://localhost:8085"
+        },
+        {
             "name": "antlr4-expression",
             "type": "antlr-debug",
             "request": "launch",

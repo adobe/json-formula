@@ -33,7 +33,7 @@ const TYPE_NAME_TABLE = {
 
 export function getTypeName(inputObj, useValueOf = true) {
   if (inputObj === null) return TYPE_NULL;
-  const obj = useValueOf ? inputObj.valueOf() : inputObj;
+  const obj = useValueOf ? Object.getPrototypeOf(inputObj).valueOf.call(inputObj) : inputObj;
   switch (Object.prototype.toString.call(obj)) {
     case '[object String]':
       return TYPE_STRING;
@@ -123,7 +123,7 @@ export function matchType(actuals, expectedList, argValue, context, toNumber) {
     }
     if (expected === TYPE_STRING) {
       if (actual === TYPE_NULL || actual === TYPE_OBJECT) return '';
-      return argValue.toString();
+      return Object.getPrototypeOf(argValue).toString.call(argValue);
     }
     if (expected === TYPE_BOOLEAN) {
       return !!argValue;

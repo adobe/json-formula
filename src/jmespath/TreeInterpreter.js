@@ -88,7 +88,10 @@ export default class TreeInterpreter {
     const visitFunctions = {
       Field: (node, value) => {
         if (value !== null && isObject(value)) {
-          const field = value[node.name];
+          let field = value[node.name];
+          // fields can be objects with overridden methods. e.g. valueOf
+          // so don't resolve to a function...
+          if (typeof field === 'function') field = undefined;
           if (field === undefined) {
             try {
               this.debug.push(`Failed to find: '${node.name}'`);

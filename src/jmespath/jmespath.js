@@ -37,7 +37,7 @@ function JsonFormula() {
 
   function toString(a) {
     if (a === null || a === undefined) return '';
-    return a.toString();
+    return Object.getPrototypeOf(a).toString.call(a);
   }
 
   function isClass(obj) {
