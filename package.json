@@ -17,8 +17,9 @@
   "scripts": {
     "eslint": "eslint src",
     "test": "jest",
-    "build": "rm -rf ./dist && webpack && webpack --config webpack.tutorial.babel.js",
-    "start": "webpack serve --config webpack-devserver.config.babel.js"
+    "build": "rm -rf ./dist && webpack && webpack --config webpack.tutorial.babel.js && npm run docs",
+    "start": "webpack serve --config webpack-devserver.config.babel.js",
+    "docs": "jsdoc2md -d dist -f src/jmespath/*unctions.js > dist/functions.md"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,7 @@
     "html-inline-script-webpack-plugin": "^2.0.3",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^27.4.7",
+    "jsdoc-to-markdown": "^7.1.1",
     "json-loader": "^0.5.7",
     "raw-loader": "^4.0.2",
     "webpack": "^5.66.0",

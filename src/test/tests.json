@@ -295,6 +295,14 @@
     }
   ],
   [
+    "substitute(4)",
+    {
+      "data": "`{}`",
+      "expression": "substitute('deed', 'd', 'f', 0)",
+      "expected": "deed"
+    }
+  ],
+  [
     "value(1)",
     {
       "data": "samples",

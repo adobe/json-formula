@@ -46,3 +46,7 @@ Contributions are welcomed! Read the [Contributing Guide](./CONTRIBUTING.md) for
 
 ## Licensing
 This project is licensed under the Apache V2 License. See [LICENSE](./LICENSE) for more information.
+
+## Function Reference
+
+Available functions defined [here](./dist/functions.md)

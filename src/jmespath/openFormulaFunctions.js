@@ -13,6 +13,13 @@ import dataTypes from './dataTypes';
 
 export default function openFormulaFunctions(valueOf, toString, toNumber) {
   return {
+  /**
+   * Return a lower-case string using locale-specific mappings.
+   * e.g. Strings with German lowercase letter 'ß' can be compared to 'ss'
+   * @param {string} - input string
+   * @returns {string} A new string converted to lower case
+   * @function
+   */
     casefold: {
       _func: (args, data, interpreter) => {
         const str = toString(args[0]);
@@ -22,6 +29,16 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         { types: [dataTypes.TYPE_STRING] },
       ],
     },
+    /**
+     * Create a new map by providing expressions for the key and value
+     * @param {string} - key name
+     * @param {any} Any data to be specified as the value
+     * @returns {map} The resulting map
+     * @example
+     * toMap('key', 'value')
+     * // {key: 'value'}
+     * @function
+     */
     toMap: {
       _func: args => {
         const key = args[0];
@@ -33,32 +50,80 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         { types: [dataTypes.TYPE_ANY] },
       ],
     },
-
+    /**
+     * Returns the logical AND result of two parameters
+     * @param {any} - any data type -- will be cast to boolean
+     * @param {any} - any data type -- will be cast to boolean
+     * @returns {boolean} The logical result of applying AND to both parameters
+     * @example
+     * and(10 > 8, length('foo') < 5)
+     * // true
+     * @function
+     */
     and: {
       _func: resolveArgs => !!valueOf(resolveArgs[0]) && !!valueOf(resolveArgs[1]),
       _signature: [{ types: [dataTypes.TYPE_ANY] }, { types: [dataTypes.TYPE_ANY] }],
     },
-
+    /**
+     * Returns the logical OR result of two parameters
+     * @param {any} - any data type -- will be cast to boolean
+     * @param {any} - any data type -- will be cast to boolean
+     * @returns {boolean} The logical result of applying OR to both parameters
+     * @example
+     * or((x / 2) == y, (y * 2) == x)
+     * // true
+     * @function
+     */
     or: {
       _func: resolveArgs => !!valueOf(resolveArgs[0]) || !!valueOf(resolveArgs[1]),
       _signature: [{ types: [dataTypes.TYPE_ANY] }, { types: [dataTypes.TYPE_ANY] }],
     },
-
+    /**
+     * Compute logical NOT
+     * Note that it is also possible to use the logical and operator: `A && B`
+     * @param {any} - any data type -- will be cast to boolean
+     * @returns {boolean} The logical NOT applied to the input parameter
+     * @example
+     * not(length('bar') > 0)
+     * // false
+     * @function
+     */
     not: {
       _func: resolveArgs => !valueOf(resolveArgs[0]),
       _signature: [{ types: [dataTypes.TYPE_ANY] }],
     },
 
+    /**
+     * Return constant boolean true value.
+     * Note that expressions may also use the JSON literal true: `` `true` ``
+     * @returns {boolean} True
+     * @function
+     */
     true: {
       _func: () => true,
       _signature: [],
     },
 
+    /**
+     * Return constant boolean false value.
+     * Note that expressions may also use the JSON literal false: `` `false` ``
+     * @returns {boolean} False
+     * @function
+     */
     false: {
       _func: () => false,
       _signature: [],
     },
 
+    /**
+     * Return one of two values, depending on a condition
+     * @returns {boolean} True
+     * @param {any} Logical condition
+     * @param {any} result1 if logical condition is true
+     * @param {any} result2 if logical condition is false
+     * @return {any} either result1 or result2
+     * @function
+     */
     if: {
       _func: (unresolvedArgs, data, interpreter) => {
         const conditionNode = unresolvedArgs[0];
@@ -76,7 +141,20 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         { types: [dataTypes.TYPE_ANY] }],
     },
 
-    // SUBSTITUTE(Text T ; Text Old ; Text New [; Number Which ])
+    /**
+     * Returns input `text`, with text `old` replaced by text `new` (when searching from the left).
+     * If `which` parameter is omitted, every occurrence of `old` is replaced with `new`;
+     * If `which` is provided, only that occurrence of `old` is replaced by `new`
+     * (starting the count from 1).
+     * If there is no match, or if `old` has length 0, `text` is returned unchanged.
+     * Note that `old` and `new` may have different lengths. If `which` < 1, return `text` unchanged
+     * @param {string} text
+     * @param {string} old text
+     * @param {string} new text
+     * @param {integer} which (optional) which occurence to replace
+     * @returns {string} replaced string
+     * @function
+     */
     substitute: {
       _func: args => {
         const src = toString(args[0]);
@@ -85,6 +163,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         // no third parameter? replace all instances
         if (args.length <= 3) return src.replace(new RegExp(old, 'g'), replacement);
         const whch = toNumber(args[3]);
+        if (whch < 1) return src;
         // find the instance to replace
         let pos = -1;
         for (let i = 0; i < whch; i += 1) {
@@ -104,6 +183,13 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         { types: [dataTypes.TYPE_NUMBER], optional: true },
       ],
     },
+    /**
+     * Perform an indexed lookup on a map or array
+     * @param {map | array} object on which to perform the lookup
+     * @param {string | integer} index: a named child for a map or an integer offset for an array
+     * @returns {any} the result of the lookup -- or `null` if not found.
+     * @function
+     */
     value: {
       _func: args => {
         const obj = args[0] || {};
