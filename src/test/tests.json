@@ -55,6 +55,38 @@
     }
   ],
   [
+    "and(1)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "and(length(address.street) > 2, `true`, true())",
+      "expected": true
+    }
+  ],
+  [
+    "and(2)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "and(length(address.street) > 2, notFound)",
+      "expected": false
+    }
+  ],
+  [
+    "or(1)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "or(`false`, length(address.street) > 2, `true`, true())",
+      "expected": true
+    }
+  ],
+  [
+    "or(2)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "or(length(address.street) > 20, notFound)",
+      "expected": false
+    }
+  ],
+  [
     "if() first condition",
     {
       "data": "samples.\"purchase-order\"",

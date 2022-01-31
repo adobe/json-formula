@@ -1,6 +1,6 @@
 {
   "name": "@adobe/json-formula",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "JSONFormula Grammar and implementation",
   "#browser": "The browser entry point is for a web browser.",
   "browser": "dist/index.js",
@@ -19,7 +19,7 @@
     "test": "jest",
     "build": "rm -rf ./dist && webpack && webpack --config webpack.tutorial.babel.js && npm run docs",
     "start": "webpack serve --config webpack-devserver.config.babel.js",
-    "docs": "jsdoc2md -d dist -f src/jmespath/*unctions.js > dist/functions.md"
+    "docs": "jsdoc2md -f src/jmespath/*unctions.js -g none > dist/functions.md"
   },
   "repository": {
     "type": "git",

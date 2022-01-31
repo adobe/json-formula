@@ -16,7 +16,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
   /**
    * Return a lower-case string using locale-specific mappings.
    * e.g. Strings with German lowercase letter 'ß' can be compared to 'ss'
-   * @param {string} - input string
+   * @param {string} input string to casefold
    * @returns {string} A new string converted to lower case
    * @function
    */
@@ -31,8 +31,8 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
     },
     /**
      * Create a new map by providing expressions for the key and value
-     * @param {string} - key name
-     * @param {any} Any data to be specified as the value
+     * @param {string} key name of the key
+     * @param {any} value data to be specified as the value
      * @returns {map} The resulting map
      * @example
      * toMap('key', 'value')
@@ -51,32 +51,44 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
       ],
     },
     /**
-     * Returns the logical AND result of two parameters
-     * @param {any} - any data type -- will be cast to boolean
-     * @param {any} - any data type -- will be cast to boolean
-     * @returns {boolean} The logical result of applying AND to both parameters
+     * Returns the logical AND result of all parameters
+     * @param {any} first logical expression -- will be cast to boolean
+     * @param {...any} operand any number of additional expressions
+     * @returns {boolean} The logical result of applying AND to all parameters
      * @example
      * and(10 > 8, length('foo') < 5)
      * // true
      * @function
      */
     and: {
-      _func: resolveArgs => !!valueOf(resolveArgs[0]) && !!valueOf(resolveArgs[1]),
-      _signature: [{ types: [dataTypes.TYPE_ANY] }, { types: [dataTypes.TYPE_ANY] }],
+      _func: resolvedArgs => {
+        let result = !!valueOf(resolvedArgs[0]);
+        resolvedArgs.slice(1).forEach(arg => {
+          result = result && !!valueOf(arg);
+        });
+        return result;
+      },
+      _signature: [{ types: [dataTypes.TYPE_ANY], variadic: true }],
     },
     /**
      * Returns the logical OR result of two parameters
-     * @param {any} - any data type -- will be cast to boolean
-     * @param {any} - any data type -- will be cast to boolean
-     * @returns {boolean} The logical result of applying OR to both parameters
+     * @param {any} first logical expression -- will be cast to boolean
+     * @param {...any} operand any number of additional expressions
+     * @returns {boolean} The logical result of applying OR to all parameters
      * @example
      * or((x / 2) == y, (y * 2) == x)
      * // true
      * @function
      */
     or: {
-      _func: resolveArgs => !!valueOf(resolveArgs[0]) || !!valueOf(resolveArgs[1]),
-      _signature: [{ types: [dataTypes.TYPE_ANY] }, { types: [dataTypes.TYPE_ANY] }],
+      _func: resolvedArgs => {
+        let result = !!valueOf(resolvedArgs[0]);
+        resolvedArgs.slice(1).forEach(arg => {
+          result = result || !!valueOf(arg);
+        });
+        return result;
+      },
+      _signature: [{ types: [dataTypes.TYPE_ANY], variadic: true }],
     },
     /**
      * Compute logical NOT
@@ -118,7 +130,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
     /**
      * Return one of two values, depending on a condition
      * @returns {boolean} True
-     * @param {any} Logical condition
+     * @param {any} condition logical expression to evaluate
      * @param {any} result1 if logical condition is true
      * @param {any} result2 if logical condition is false
      * @return {any} either result1 or result2
