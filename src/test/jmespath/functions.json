@@ -457,6 +457,10 @@
       "result": false
     },
     {
+      "expression": "startsWith('ALABAMA', 'A')",
+      "result": true
+    },
+    {
       "expression": "startsWith(str, `0`)",
       "result": false,
       "was": "invalid-type"

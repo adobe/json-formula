@@ -12,6 +12,7 @@ const {
   TYPE_NULL,
   TYPE_ARRAY_NUMBER,
   TYPE_ARRAY_STRING,
+  TYPE_CLASS,
 } = dataTypes;
 
 const {
@@ -19,16 +20,17 @@ const {
 } = tokenDefinitions;
 
 const TYPE_NAME_TABLE = {
-  0: 'number',
-  1: 'any',
-  2: 'string',
-  3: 'array',
-  4: 'object',
-  5: 'boolean',
-  6: 'expression',
-  7: 'null',
-  8: 'Array<number>',
-  9: 'Array<string>',
+  [TYPE_NUMBER]: 'number',
+  [TYPE_ANY]: 'any',
+  [TYPE_STRING]: 'string',
+  [TYPE_ARRAY]: 'array',
+  [TYPE_OBJECT]: 'object',
+  [TYPE_BOOLEAN]: 'boolean',
+  [TYPE_EXPREF]: 'expression',
+  [TYPE_NULL]: 'null',
+  [TYPE_ARRAY_NUMBER]: 'Array<number>',
+  [TYPE_ARRAY_STRING]: 'Array<string>',
+  [TYPE_CLASS]: 'class',
 };
 
 export function getTypeName(inputObj, useValueOf = true) {
@@ -71,8 +73,9 @@ export function matchType(actuals, expectedList, argValue, context, toNumber) {
     type => type === TYPE_ANY || actual === type,
   ) !== -1
   ) return argValue;
-  // Can't coerce Objects to any other type
-  if (actual === TYPE_OBJECT) {
+  // Can't coerce Objects to any other type,
+  // and cannot coerce anything to a Class
+  if (actual === TYPE_OBJECT || (expectedList.length === 1 && expectedList[0] === TYPE_CLASS)) {
     throw new Error(`TypeError: ${context} expected argument to be type ${TYPE_NAME_TABLE[expectedList[0]]} but received type ${TYPE_NAME_TABLE[actual]} instead.`);
   }
   // no exact match in the list of possible types, see if we can coerce an array type

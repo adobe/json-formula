@@ -199,7 +199,7 @@ export default function functions(
     },
 
     startsWith: {
-      _func: resolvedArgs => valueOf(resolvedArgs[0]).lastIndexOf(valueOf(resolvedArgs[1])) === 0,
+      _func: resolvedArgs => valueOf(resolvedArgs[0]).startsWith(valueOf(resolvedArgs[1])),
       _signature: [{ types: [TYPE_STRING] }, { types: [TYPE_STRING] }],
     },
 
