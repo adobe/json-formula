@@ -16,7 +16,7 @@ formula : expression EOF ;
 
 expression
   : expression '.' chainedExpression # chainExpression
-  | expression bracketSpecifier # bracketedExpression
+  | expression chainedBracketSpecifier # bracketedExpression
   | bracketSpecifier # bracketExpression
   | expression ('*' | '/' | '&') expression	# multDivExpression
 	| expression ('+' | '-') expression	# addSubtractExpression
@@ -62,6 +62,11 @@ bracketSpecifier
   | '[' slice ']' # bracketSlice
   | '[' ']' # bracketFlatten
   | '[?' expression ']' # select
+  ;
+
+chainedBracketSpecifier
+  : bracketSpecifier # chainedBracket
+  | '[' expression ']' # chainedBracketIndex
   ;
 
 slice : start=SIGNED_INT? ':' stop=SIGNED_INT? (':' step=SIGNED_INT?)? ;

@@ -150,6 +150,14 @@ export default class Parser {
     this.index += 1;
   }
 
+  _getIndex() {
+    return this.index;
+  }
+
+  _setIndex(index) {
+    this.index = index
+  }
+
   // eslint-disable-next-line consistent-return
   nud(token) {
     let left;
@@ -192,19 +200,8 @@ export default class Parser {
         right = this._parseProjectionRHS(bindingPower.Flatten);
         return { type: 'Projection', children: [left, right] };
       case TOK_LBRACKET:
-        // seeing a comma means that we are not a projection -- assume a list
-        // but the cases of [0] and [] are still ambiguous
-        // the better solution is to force us down the index expression path
-        // after pipe and after identifier
-        if (this._lookahead(1) === TOK_COMMA || isOperator(this._lookahead(1))) {
-          return this._parseMultiselectList();
-        }
-        if (this._lookahead(0) === TOK_NUMBER || this._lookahead(0) === TOK_COLON) {
-          right = this._parseIndexExpression();
-          return this._projectIfSlice({ type: 'Identity' }, right);
-        }
         if (this._lookahead(0) === TOK_STAR
-                     && this._lookahead(1) === TOK_RBRACKET) {
+            && this._lookahead(1) === TOK_RBRACKET) {
           this._advance();
           this._advance();
           right = this._parseProjectionRHS(bindingPower.Star);
@@ -213,7 +210,7 @@ export default class Parser {
             children: [{ type: 'Identity' }, right],
           };
         }
-        return this._parseMultiselectList();
+        return this._parseUnchainedIndexExpression();
       case TOK_CURRENT:
         return { type: TOK_CURRENT };
       case TOK_GLOBAL:
@@ -252,7 +249,6 @@ export default class Parser {
     let rbp;
     let leftNode;
     let rightNode;
-    let token;
     switch (tokenName) {
       case TOK_CONCATENATE:
         right = this.expression(bindingPower.Concatenate);
@@ -330,15 +326,15 @@ export default class Parser {
       case TOK_LTE:
         return this._parseComparator(left, tokenName);
       case TOK_LBRACKET:
-        token = this._lookaheadToken(0);
-        if (token.type === TOK_NUMBER || token.type === TOK_COLON) {
-          right = this._parseIndexExpression();
-          return this._projectIfSlice(left, right);
+        if (this._lookahead(0) === TOK_STAR
+            && this._lookahead(1) === TOK_RBRACKET) {
+          this._advance();
+          this._advance();
+          right = this._parseProjectionRHS(bindingPower.Star);
+          return { type: 'Projection', children: [left, right] };
         }
-        this._match(TOK_STAR);
-        this._match(TOK_RBRACKET);
-        right = this._parseProjectionRHS(bindingPower.Star);
-        return { type: 'Projection', children: [left, right] };
+        right = this._parseChainedIndexExpression();
+        return this._projectIfSlice(left, right);
       default:
         this._errorToken(this._lookaheadToken(0));
     }
@@ -364,17 +360,53 @@ export default class Parser {
     throw error;
   }
 
-  _parseIndexExpression() {
-    if (this._lookahead(0) === TOK_COLON || this._lookahead(1) === TOK_COLON) {
+  _parseChainedIndexExpression() {
+    const oldIndex = this._getIndex();
+    if (this._lookahead(0) === TOK_COLON) {
       return this._parseSliceExpression();
     }
-    const node = {
-      type: 'Index',
-      value: this._lookaheadToken(0).value,
-    };
-    this._advance();
+    // look ahead of the first expression to determine the type
+    const first = this.expression(0);
+    const token = this._lookahead(0);
+    if (token === TOK_COLON) {
+      // now that we know the type revert back to the old position and parse
+      this._setIndex(oldIndex);
+      return this._parseSliceExpression();
+    }
     this._match(TOK_RBRACKET);
-    return node;
+    return {
+      type: 'Index',
+      value: first,
+    };
+  }
+
+  _parseUnchainedIndexExpression() {
+    const oldIndex = this._getIndex();
+    const firstToken = this._lookahead(0);
+    if (firstToken === TOK_COLON) {
+      const right = this._parseSliceExpression();
+      return this._projectIfSlice({ type: 'Identity' }, right);
+    }
+    const first = this.expression(0);
+    const currentToken = this._lookahead(0);
+    if (currentToken === TOK_COMMA) {
+      this._setIndex(oldIndex);
+      return this._parseMultiselectList();
+    }
+    if (currentToken === TOK_COLON) {
+      this._setIndex(oldIndex);
+      const right = this._parseSliceExpression();
+      return this._projectIfSlice({ type: 'Identity' }, right);
+    }
+    if (firstToken === TOK_NUMBER) {
+      this._match(TOK_RBRACKET);
+      return {
+        type: 'Index',
+        value: first,
+      };
+    }
+    this._setIndex(oldIndex);
+    return this._parseMultiselectList();
   }
 
   _projectIfSlice(left, right) {
@@ -398,15 +430,16 @@ export default class Parser {
       if (currentToken === TOK_COLON) {
         index += 1;
         this._advance();
-      } else if (currentToken === TOK_NUMBER) {
-        parts[index] = this._lookaheadToken(0).value;
-        this._advance();
       } else {
-        const t = this._lookaheadToken(0);
-        const error = new Error(`Syntax error, unexpected token: ${
-          t.value}(${t.type})`);
-        error.name = 'Parsererror';
-        throw error;
+        parts[index] = this.expression(0);
+        // check next token to be either colon or rbracket
+        const t = this._lookahead(0);
+        if (t !== TOK_COLON && t !== TOK_RBRACKET) {
+          const error = new Error(`Syntax error, unexpected token: ${
+            t.value}(${t.type})`);
+          error.name = 'Parsererror';
+          throw error;
+        }
       }
       currentToken = this._lookahead(0);
     }

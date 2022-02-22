@@ -123,7 +123,7 @@ export default class TreeInterpreter {
 
       Index: (node, value) => {
         if (!isArray(value)) return null;
-        let index = node.value;
+        let index = this.toNumber(this.visit(node.value, value));
         if (index < 0) {
           index = value.length + index;
         }
@@ -137,7 +137,9 @@ export default class TreeInterpreter {
 
       Slice: (node, value) => {
         if (!isArray(value)) return null;
-        const sliceParams = node.children.slice(0);
+        const sliceParams = node.children.slice(0).map(
+          param => (param != null ? this.toNumber(this.visit(param, value)) : null),
+        );
         const computed = this.computeSliceParams(value.length, sliceParams);
         const [start, stop, step] = computed;
         const result = [];
