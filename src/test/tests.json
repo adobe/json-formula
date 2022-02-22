@@ -1890,6 +1890,14 @@
       "expression": "address.valueOf",
       "expected": null
     }
+  ],
+  [
+    "index using expressions",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "items[length(@)-1].desc",
+      "expected": "pencils"
+    }
   ]
 ]
 

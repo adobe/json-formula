@@ -172,3 +172,41 @@ describe('expressions with globals', () => {
     expect(result).toEqual(globals.element);
   });
 });
+
+test('expressions in brackets', () => {
+  const sample = {
+    array: [0, 1, 2, 3, 4],
+    zero: 0,
+    one: 1,
+    two: 2,
+    three: 3,
+    ten: 10,
+  };
+  const testcases = [
+    ['array[$form.zero]', 0],
+    ['array[$form.one + $form.two]', 3],
+    ['array[$form.zero:]', [0, 1, 2, 3, 4]],
+    ['array[0:$form.two]', [0, 1]],
+    ['array[$form.zero:length(@)-1:$form.one]', [0, 1, 2, 3]],
+    ['array | [$form.ten]', [10]],
+    ['array | [::$form.two]', [0, 2, 4]],
+    ['array | [0::$form.two]', [0, 2, 4]],
+    ['array | [$form.zero::$form.two]', [0, 2, 4]],
+  ];
+  const globals = {
+    $form: sample,
+  };
+  testcases.forEach(([expression, expected]) => {
+    const result = jsonFormula(sample, globals, expression, {}, stringToNumber);
+    expect(result).toEqual(expected);
+  });
+
+  const failures = [
+    'array[3 3]',
+    'array[$form.zero:$form.ten:$form.one:$form.one]',
+    'array[$form.zero, $form.one]',
+  ];
+  failures.forEach(expression => {
+    expect(() => jsonFormula(sample, globals, expression, {}, stringToNumber)).toThrow();
+  });
+});
