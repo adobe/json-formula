@@ -72,10 +72,11 @@ function objValues(obj) {
 }
 
 export default class TreeInterpreter {
-  constructor(runtime, globals, toNumber, debug, language) {
+  constructor(runtime, globals, toNumber, toString, debug, language) {
     this.runtime = runtime;
     this.globals = globals;
     this.toNumber = toNumber;
+    this.toString = toString;
     this.debug = debug;
     this.language = language;
   }
@@ -122,17 +123,29 @@ export default class TreeInterpreter {
       },
 
       Index: (node, value) => {
-        if (!isArray(value)) return null;
-        let index = this.toNumber(this.visit(node.value, value));
-        if (index < 0) {
-          index = value.length + index;
+        if (isArray(value)) {
+          let index = this.toNumber(this.visit(node.value, value));
+          if (index < 0) {
+            index = value.length + index;
+          }
+          const result = value[index];
+          if (result === undefined) {
+            this.debug.push(`Index ${index} out of range`);
+            return null;
+          }
+          return result;
         }
-        const result = value[index];
-        if (result === undefined) {
-          this.debug.push(`Index ${index} out of range`);
-          return null;
+        if (isObject(value)) {
+          const key = this.toString(this.visit(node.value, value));
+          const result = value[key];
+          if (result === undefined) {
+            this.debug.push(`Key ${key} does not exist`);
+            return null;
+          }
+          return result;
         }
-        return result;
+        this.debug.push(`left side of index expression ${value} is not an array or object.`);
+        return null;
       },
 
       Slice: (node, value) => {

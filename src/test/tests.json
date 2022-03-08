@@ -1898,6 +1898,38 @@
       "expression": "items[length(@)-1].desc",
       "expected": "pencils"
     }
+  ],
+  [
+    "index objects using strings",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "address['street']",
+      "expected": "123 Oak Street"
+    }
+  ],
+  [
+    "index objects using literals",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "address[`street`]",
+      "expected": "123 Oak Street"
+    }
+  ],
+  [
+    "index objects using expressions",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "address[lower(`STREET`)]",
+      "expected": "123 Oak Street"
+    }
+  ],
+  [
+    "index objects using objects",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "address[toMap('a', 'b')]",
+      "expected": null
+    }
   ]
 ]
 
