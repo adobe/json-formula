@@ -137,7 +137,7 @@ function JsonFormula() {
       return Number.isNaN(n) ? 0 : n;
     });
     toNumber = getToNumber(stringToNumberFn || defaultStringToNumber, debug);
-    const interpreter = new TreeInterpreter(runtime, globals, toNumber, debug, language);
+    const interpreter = new TreeInterpreter(runtime, globals, toNumber, toString, debug, language);
     runtime._interpreter = interpreter;
     runtime.addFunctions(customFunctions);
 
