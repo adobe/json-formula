@@ -239,12 +239,21 @@ export default class JSONFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by JSONFormulaParser#multiSelectHash.
-	enterMultiSelectHash(ctx) {
+	// Enter a parse tree produced by JSONFormulaParser#emptyHash.
+	enterEmptyHash(ctx) {
 	}
 
-	// Exit a parse tree produced by JSONFormulaParser#multiSelectHash.
-	exitMultiSelectHash(ctx) {
+	// Exit a parse tree produced by JSONFormulaParser#emptyHash.
+	exitEmptyHash(ctx) {
+	}
+
+
+	// Enter a parse tree produced by JSONFormulaParser#nonEmptyHash.
+	enterNonEmptyHash(ctx) {
+	}
+
+	// Exit a parse tree produced by JSONFormulaParser#nonEmptyHash.
+	exitNonEmptyHash(ctx) {
 	}
 
 
@@ -299,6 +308,24 @@ export default class JSONFormulaListener extends antlr4.tree.ParseTreeListener {
 
 	// Exit a parse tree produced by JSONFormulaParser#select.
 	exitSelect(ctx) {
+	}
+
+
+	// Enter a parse tree produced by JSONFormulaParser#chainedBracket.
+	enterChainedBracket(ctx) {
+	}
+
+	// Exit a parse tree produced by JSONFormulaParser#chainedBracket.
+	exitChainedBracket(ctx) {
+	}
+
+
+	// Enter a parse tree produced by JSONFormulaParser#chainedBracketIndex.
+	enterChainedBracketIndex(ctx) {
+	}
+
+	// Exit a parse tree produced by JSONFormulaParser#chainedBracketIndex.
+	exitChainedBracketIndex(ctx) {
 	}
 
 

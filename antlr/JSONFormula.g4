@@ -52,7 +52,10 @@ wildcard : '*' ;
 
 multiSelectList : '[' expression (',' expression)* ']' ;
 
-multiSelectHash : '{' keyvalExpr (',' keyvalExpr)* '}' ;
+multiSelectHash 
+  : '{}' #emptyHash
+  | '{' keyvalExpr (',' keyvalExpr)* '}'  #nonEmptyHash
+  ;
 
 keyvalExpr : identifier ':' expression ;
 

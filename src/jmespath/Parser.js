@@ -155,7 +155,7 @@ export default class Parser {
   }
 
   _setIndex(index) {
-    this.index = index
+    this.index = index;
   }
 
   // eslint-disable-next-line consistent-return
@@ -514,6 +514,10 @@ export default class Parser {
     const identifierTypes = [TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER];
     let keyToken; let keyName; let value; let
       node;
+    if (this._lookahead(0) === TOK_RBRACE) {
+      this._advance();
+      return { type: 'MultiSelectHash', children: [] };
+    }
     for (;;) {
       keyToken = this._lookaheadToken(0);
       if (identifierTypes.indexOf(keyToken.type) < 0) {

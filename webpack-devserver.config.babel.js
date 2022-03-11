@@ -26,6 +26,9 @@ const defn = {
   },
   devServer: {
     port: 8085,
+    static: {
+      directory: __dirname,
+    },
   },
   resolve: { fallback: { fs: false } },
   module: {
