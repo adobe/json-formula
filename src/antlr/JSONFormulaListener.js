@@ -1,4 +1,4 @@
-// Generated from antlr/JSONFormula.g4 by ANTLR 4.9.2
+// Generated from antlr/JSONFormula.g4 by ANTLR 4.9
 // jshint ignore: start
 import antlr4 from 'antlr4';
 
@@ -299,6 +299,24 @@ export default class JSONFormulaListener extends antlr4.tree.ParseTreeListener {
 
 	// Exit a parse tree produced by JSONFormulaParser#select.
 	exitSelect(ctx) {
+	}
+
+
+	// Enter a parse tree produced by JSONFormulaParser#chainedBracket.
+	enterChainedBracket(ctx) {
+	}
+
+	// Exit a parse tree produced by JSONFormulaParser#chainedBracket.
+	exitChainedBracket(ctx) {
+	}
+
+
+	// Enter a parse tree produced by JSONFormulaParser#chainedBracketIndex.
+	enterChainedBracketIndex(ctx) {
+	}
+
+	// Exit a parse tree produced by JSONFormulaParser#chainedBracketIndex.
+	exitChainedBracketIndex(ctx) {
 	}
 
 

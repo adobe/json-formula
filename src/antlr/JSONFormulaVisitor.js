@@ -1,4 +1,4 @@
-// Generated from antlr/JSONFormula.g4 by ANTLR 4.9.2
+// Generated from antlr/JSONFormula.g4 by ANTLR 4.9
 // jshint ignore: start
 import antlr4 from 'antlr4';
 
@@ -200,6 +200,18 @@ export default class JSONFormulaVisitor extends antlr4.tree.ParseTreeVisitor {
 
 	// Visit a parse tree produced by JSONFormulaParser#select.
 	visitSelect(ctx) {
+	  return this.visitChildren(ctx);
+	}
+
+
+	// Visit a parse tree produced by JSONFormulaParser#chainedBracket.
+	visitChainedBracket(ctx) {
+	  return this.visitChildren(ctx);
+	}
+
+
+	// Visit a parse tree produced by JSONFormulaParser#chainedBracketIndex.
+	visitChainedBracketIndex(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
