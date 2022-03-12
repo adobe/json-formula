@@ -31,6 +31,7 @@ const syntax = require('./syntax.json');
 const unicode = require('./unicode.json');
 const wildcard = require('./wildcard.json');
 
+// eslint-disable-next-line import/prefer-default-export
 function toTestFmt(t) {
   const tests = [];
   t.forEach(tst => {

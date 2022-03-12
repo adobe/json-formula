@@ -53,7 +53,7 @@ wildcard : '*' ;
 multiSelectList : '[' expression (',' expression)* ']' ;
 
 multiSelectHash 
-  : '{}' #emptyHash
+  : '{' '}' #emptyHash
   | '{' keyvalExpr (',' keyvalExpr)* '}'  #nonEmptyHash
   ;
 

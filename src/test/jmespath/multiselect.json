@@ -401,7 +401,8 @@
        {
          "comment": "Empty object",
          "expression": "{}",
-         "result": {}
+         "result": {},
+         "was": "syntax"
        }
    ]
 },
@@ -411,7 +412,8 @@
        {
          "comment": "Empty object inside if",
          "expression": "if(foo == 'bar', {}, 'foo != bar')",
-         "result": {}
+         "result": {},
+         "was": "syntax"
        }
    ]
 },
@@ -421,7 +423,8 @@
        {
          "comment": "Empty object inside array",
          "expression": "[{}]",
-         "result": [{}]
+         "result": [{}],
+         "was": "syntax"
        }
    ]
 },
@@ -431,7 +434,8 @@
        {
          "comment": "Empty object inside object",
          "expression": "{a : {}, b : foo}",
-         "result": {"a" : {}, "b": "bar"}
+         "result": {"a" : {}, "b": "bar"},
+         "was": "syntax"
        }
    ]
 },
@@ -441,7 +445,8 @@
       {
          "comment": "Missing key-value pair",
          "expression": "foo.{}",
-         "result": {}
+         "result": {},
+         "was": "syntax"
        } 
    ]
 }
