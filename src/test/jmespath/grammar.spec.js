@@ -119,3 +119,15 @@ describe('unicode', () => {
 describe('wildcard', () => {
   test.each(toTestFmt(wildcard))('%s', executeTest);
 });
+
+// Uncomment to debug a single test
+
+// const json = {
+//   "comment": "Literal char not escaped",
+//   "expression": "foo[?bar==`[\"foo`bar\"]`]",
+//   "error": "syntax"
+// }
+
+// test('test', () => {
+//   executeTest('test', json);
+// });
