@@ -248,8 +248,7 @@
       {
         "comment": "slice has too many colons",
         "expression": "[:::]",
-        "result": null,
-        "was": "syntax"
+        "error": "syntax"
       },
       {
         "comment": "slice expected number",
@@ -412,11 +411,6 @@
       },
       {
         "expression": "a{foo: 0}",
-        "error": "syntax"
-      },
-      {
-        "comment": "Missing key-value pair",
-        "expression": "a.{}",
         "error": "syntax"
       },
       {

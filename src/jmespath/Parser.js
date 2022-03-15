@@ -155,7 +155,7 @@ export default class Parser {
   }
 
   _setIndex(index) {
-    this.index = index
+    this.index = index;
   }
 
   // eslint-disable-next-line consistent-return
@@ -427,7 +427,7 @@ export default class Parser {
     let index = 0;
     let currentToken = this._lookahead(0);
     while (currentToken !== TOK_RBRACKET && index < 3) {
-      if (currentToken === TOK_COLON) {
+      if (currentToken === TOK_COLON && index < 2) { // there can't be more than 2 colons
         index += 1;
         this._advance();
       } else {
@@ -514,6 +514,10 @@ export default class Parser {
     const identifierTypes = [TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER];
     let keyToken; let keyName; let value; let
       node;
+    if (this._lookahead(0) === TOK_RBRACE) {
+      this._advance();
+      return { type: 'MultiSelectHash', children: [] };
+    }
     for (;;) {
       keyToken = this._lookaheadToken(0);
       if (identifierTypes.indexOf(keyToken.type) < 0) {

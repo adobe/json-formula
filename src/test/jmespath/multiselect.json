@@ -394,5 +394,60 @@
           "result": null
         }
     ]
+},
+{
+   "given": {},
+   "cases": [
+       {
+         "comment": "Empty object",
+         "expression": "{}",
+         "result": {},
+         "was": "syntax"
+       }
+   ]
+},
+{
+   "given": {"foo" : "bar"},
+   "cases": [
+       {
+         "comment": "Empty object inside if",
+         "expression": "if(foo == 'bar', {}, 'foo != bar')",
+         "result": {},
+         "was": "syntax"
+       }
+   ]
+},
+{
+   "given": {"foo" : "bar"},
+   "cases": [
+       {
+         "comment": "Empty object inside array",
+         "expression": "[{}]",
+         "result": [{}],
+         "was": "syntax"
+       }
+   ]
+},
+{
+   "given": {"foo" : "bar"},
+   "cases": [
+       {
+         "comment": "Empty object inside object",
+         "expression": "{a : {}, b : foo}",
+         "result": {"a" : {}, "b": "bar"},
+         "was": "syntax"
+       }
+   ]
+},
+{
+   "given" : {"foo" : {"bar" : 1}},
+   "cases" : [
+      {
+         "comment": "Missing key-value pair",
+         "expression": "foo.{}",
+         "result": {},
+         "was": "syntax"
+       } 
+   ]
 }
 ]

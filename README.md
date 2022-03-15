@@ -41,6 +41,13 @@ To compare with the jmespath equivalent:
 > grun jmespath jmesPathExpression -tokens -tree ../src/test/debug.txt
 ```
 
+## Running Tests
+
+To run the tests, [re]generation of JavaScript code is a must using the command `source generate.sh`
+
+```
+npm run test
+```
 ## Contributing
 Contributions are welcomed! Read the [Contributing Guide](./CONTRIBUTING.md) for more information.
 

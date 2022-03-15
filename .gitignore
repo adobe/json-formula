@@ -15,3 +15,5 @@ package-lock.json
 .project
 target/
 .vscode
+
+src/test/antlr
