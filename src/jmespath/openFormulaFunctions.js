@@ -173,7 +173,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         const old = toString(args[1]);
         const replacement = toString(args[2]);
         // no third parameter? replace all instances
-        if (args.length <= 3) return src.replace(new RegExp(old, 'g'), replacement);
+        if (args.length <= 3) return src.replaceAll(old, replacement);
         const whch = toNumber(args[3]);
         if (whch < 1) return src;
         // find the instance to replace
@@ -185,8 +185,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
           if (nextFind === -1) return src;
           pos += nextFind;
         }
-        const result = src.slice(0, pos) + src.slice(pos).replace(old, replacement);
-        return result;
+        return src.slice(0, pos) + src.slice(pos).replace(old, replacement);
       },
       _signature: [
         { types: [dataTypes.TYPE_STRING] },
@@ -429,8 +428,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         const text = toString(args[0]);
         // only removes the space character
         // other whitespace characters like \t \n left intact
-        const trimmed = text.split(' ').filter(x => x).join(' ');
-        return trimmed;
+        return text.split(' ').filter(x => x).join(' ');
       },
       _signature: [
         { types: [dataTypes.TYPE_STRING] },
@@ -583,8 +581,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         const hours = localDateTime.getHours();
         const minutes = localDateTime.getMinutes();
         const seconds = localDateTime.getSeconds();
-        const result = Date.UTC(year, month, date, hours, minutes, seconds) / 86400000;
-        return result;
+        return Date.UTC(year, month, date, hours, minutes, seconds) / 86400000;
       },
       _signature: [],
     },
@@ -594,8 +591,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         const year = localDateTime.getFullYear();
         const month = localDateTime.getMonth();
         const date = localDateTime.getDate();
-        const result = Math.floor(Date.UTC(year, month, date) / 86400000);
-        return result;
+        return Math.floor(Date.UTC(year, month, date) / 86400000);
       },
       _signature: [],
     },
@@ -623,6 +619,32 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
         { types: [dataTypes.TYPE_NUMBER], optional: true },
+      ],
+    },
+    entries: {
+      _func: args => {
+        const obj = valueOf(args[0]);
+        return Object.entries(obj);
+      },
+      _signature: [
+        {
+          types: [
+            dataTypes.TYPE_NUMBER,
+            dataTypes.TYPE_STRING,
+            dataTypes.TYPE_ARRAY,
+            dataTypes.TYPE_OBJECT,
+            dataTypes.TYPE_BOOLEAN,
+          ],
+        },
+      ],
+    },
+    fromEntries: {
+      _func: args => {
+        const array = args[0];
+        return Object.fromEntries(array);
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_ARRAY_ARRAY] },
       ],
     },
   };

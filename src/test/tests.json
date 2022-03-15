@@ -1930,6 +1930,82 @@
       "expression": "address[toMap('a', 'b')]",
       "expected": null
     }
+  ],
+  [
+   "entries literal",
+   {
+     "data": "`null`",
+     "expression": "entries(`{\"a\": 1, \"b\": 2}`)",
+     "expected": [["a", 1], ["b", 2]]
+   }
+  ],
+  [
+    "entries array",
+    {
+      "data": "`{}`",
+      "expression": "entries(['a', 1])",
+      "expected": [["0","a"],["1",1]]
+    }
+  ],
+  [
+    "entries null",
+    {
+      "data": "`null`",
+      "expression": "entries(`null`)",
+      "error": "syntax"
+    }
+  ],
+  [
+    "entries string",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "entries(address.country)",
+      "expected": [["0", "U"], ["1", "S"], ["2", "A"]]
+    }
+  ],
+  [
+    "fromEntries list",
+    {
+      "data": "`{}`",
+      "expression": "fromEntries([['a', 1], ['b', 2, 4], ['a', 3]])",
+      "expected": {"a": 3, "b": 2}
+    }
+  ],
+  [
+    "entries",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "entries(address)",
+      "expected": [["street", "123 Oak Street"],["city", "San Jose"],["state", "California"],["country", "USA"]]
+    }
+  ],
+  [
+    "fromEntries",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "fromEntries(entries(address))",
+      "expected": {
+        "street": "123 Oak Street",
+        "city": "San Jose",
+        "state": "California",
+        "country": "USA"
+      }
+    }
+  ],
+  [
+    "fromEntries list",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "fromEntries(address.street)",
+      "error": "syntax"
+    }
+  ],
+  [
+    "fromEntries wrong array",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "fromEntries(items)",
+      "error": "syntax"
+    }
   ]
 ]
-

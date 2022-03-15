@@ -1,6 +1,7 @@
 import Lexer from './Lexer';
 import tokenDefinitions from './tokenDefinitions';
 
+/* eslint-disable no-underscore-dangle */
 const {
   TOK_LITERAL,
   TOK_COLON,
@@ -40,25 +41,6 @@ const {
   TOK_LBRACKET,
   TOK_LPAREN,
 } = tokenDefinitions;
-
-/* eslint-disable no-underscore-dangle */
-function isOperator(tok) {
-  return [
-    TOK_CONCATENATE,
-    TOK_OR,
-    TOK_AND,
-    TOK_ADD,
-    TOK_SUBTRACT,
-    TOK_MULTIPLY,
-    TOK_POWER,
-    TOK_DIVIDE,
-    TOK_EQ,
-    TOK_GT,
-    TOK_LT,
-    TOK_GTE,
-    TOK_LTE,
-    TOK_NE].includes(tok);
-}
 
 const bindingPower = {
   [TOK_EOF]: 0,

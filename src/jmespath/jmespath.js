@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 import TreeInterpreter from './TreeInterpreter';
 import Parser from './Parser';
@@ -101,6 +99,7 @@ function JsonFormula() {
         // will not trigger a dependency
         if (!matchClass(args[i], currentSpec)) {
           actualType = getTypeNames(args[i]);
+          // eslint-disable-next-line no-param-reassign
           args[i] = matchType(actualType, currentSpec, args[i], argName, toNumber);
         }
       }

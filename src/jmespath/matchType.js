@@ -13,6 +13,7 @@ const {
   TYPE_ARRAY_NUMBER,
   TYPE_ARRAY_STRING,
   TYPE_CLASS,
+  TYPE_ARRAY_ARRAY,
 } = dataTypes;
 
 const {
@@ -31,6 +32,7 @@ const TYPE_NAME_TABLE = {
   [TYPE_ARRAY_NUMBER]: 'Array<number>',
   [TYPE_ARRAY_STRING]: 'Array<string>',
   [TYPE_CLASS]: 'class',
+  [TYPE_ARRAY_ARRAY]: 'Array<array>',
 };
 
 export function getTypeName(inputObj, useValueOf = true) {
@@ -75,7 +77,23 @@ export function matchType(actuals, expectedList, argValue, context, toNumber) {
   ) return argValue;
   // Can't coerce Objects to any other type,
   // and cannot coerce anything to a Class
+  let wrongType = false;
   if (actual === TYPE_OBJECT || (expectedList.length === 1 && expectedList[0] === TYPE_CLASS)) {
+    wrongType = true;
+  }
+  if (actual === TYPE_ARRAY && (expectedList.length === 1 && expectedList[0] === TYPE_OBJECT)) {
+    wrongType = true;
+  }
+  if (expectedList.includes(TYPE_ARRAY_ARRAY)) {
+    if (actual === TYPE_ARRAY) {
+      argValue.forEach(a => {
+        if (!(a instanceof Array)) wrongType = true;
+      });
+      if (!wrongType) return argValue;
+    }
+    wrongType = true;
+  }
+  if (wrongType) {
     throw new Error(`TypeError: ${context} expected argument to be type ${TYPE_NAME_TABLE[expectedList[0]]} but received type ${TYPE_NAME_TABLE[actual]} instead.`);
   }
   // no exact match in the list of possible types, see if we can coerce an array type
