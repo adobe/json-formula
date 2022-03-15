@@ -73,7 +73,7 @@ chainedBracketSpecifier
   | '[' expression ']' # chainedBracketIndex
   ;
 
-slice : start=SIGNED_INT? ':' stop=SIGNED_INT? (':' step=SIGNED_INT?)? ;
+slice : start=expression? ':' stop=expression? (':' step=expression?)? ;
 
 COMPARATOR
   : '<'

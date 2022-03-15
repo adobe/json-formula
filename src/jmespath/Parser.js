@@ -427,7 +427,7 @@ export default class Parser {
     let index = 0;
     let currentToken = this._lookahead(0);
     while (currentToken !== TOK_RBRACKET && index < 3) {
-      if (currentToken === TOK_COLON) {
+      if (currentToken === TOK_COLON && index < 2) { // there can't be more than 2 colons
         index += 1;
         this._advance();
       } else {
