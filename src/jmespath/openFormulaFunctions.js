@@ -30,27 +30,6 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
       ],
     },
     /**
-     * Create a new map by providing expressions for the key and value
-     * @param {string} key name of the key
-     * @param {any} value data to be specified as the value
-     * @returns {map} The resulting map
-     * @example
-     * toMap('key', 'value')
-     * // {key: 'value'}
-     * @function
-     */
-    toMap: {
-      _func: args => {
-        const key = args[0];
-        const value = args[1];
-        return { [key]: value };
-      },
-      _signature: [
-        { types: [dataTypes.TYPE_STRING] },
-        { types: [dataTypes.TYPE_ANY] },
-      ],
-    },
-    /**
      * Returns the logical AND result of all parameters
      * @param {any} first logical expression -- will be cast to boolean
      * @param {...any} operand any number of additional expressions
@@ -192,25 +171,6 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         { types: [dataTypes.TYPE_STRING] },
         { types: [dataTypes.TYPE_STRING] },
         { types: [dataTypes.TYPE_NUMBER], optional: true },
-      ],
-    },
-    /**
-     * Perform an indexed lookup on a map or array
-     * @param {map | array} object on which to perform the lookup
-     * @param {string | integer} index: a named child for a map or an integer offset for an array
-     * @returns {any} the result of the lookup -- or `null` if not found.
-     * @function
-     */
-    value: {
-      _func: args => {
-        const obj = args[0] || {};
-        const index = args[1];
-        const result = obj[index];
-        return result === undefined ? null : result;
-      },
-      _signature: [
-        { types: [dataTypes.TYPE_OBJECT, dataTypes.TYPE_ARRAY, dataTypes.TYPE_NULL] },
-        { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_NUMBER] },
       ],
     },
     lower: {
@@ -645,6 +605,17 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
       },
       _signature: [
         { types: [dataTypes.TYPE_ARRAY_ARRAY] },
+      ],
+    },
+    split: {
+      _func: args => {
+        const str = toString(args[0]);
+        const separator = toString(args[1]);
+        return str.split(separator);
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_STRING] },
+        { types: [dataTypes.TYPE_STRING] },
       ],
     },
   };

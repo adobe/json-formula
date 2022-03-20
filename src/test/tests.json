@@ -335,54 +335,6 @@
     }
   ],
   [
-    "value(1)",
-    {
-      "data": "samples",
-      "expression": "value(value(\"purchase-order\", 'address'), 'street')",
-      "expected": "123 Oak Street"
-    }
-  ],
-  [
-    "value(2)",
-    {
-      "data": "samples.\"purchase-order\"",
-      "expression": "value(value(items, 0), 'desc')",
-      "expected": "pens"
-    }
-  ],
-  [
-    "value(3)",
-    {
-      "data": "samples",
-      "expression": "value(value(value(@, 'purchase-order'), 'address'),'city')",
-      "expected": "San Jose"
-    }
-  ],
-  [
-    "value(4)",
-    {
-      "data": "samples",
-      "expression": "value(@, 'purchase-orders')",
-      "expected": null
-    }
-  ],
-  [
-    "value(5)",
-    {
-      "data": "`null`",
-      "expression": "value(@, 'purchase-orders')",
-      "expected": null
-    }
-  ],
-  [
-    "value(6)",
-    {
-      "data": "samples.\"purchase-order\"",
-      "expression": "value(items, 4)",
-      "expected": null
-    }
-  ],
-  [
     "lower(missing)",
     {
       "data": "samples.\"purchase-order\"",
@@ -1924,14 +1876,6 @@
     }
   ],
   [
-    "index objects using objects",
-    {
-      "data": "samples.\"purchase-order\"",
-      "expression": "address[toMap('a', 'b')]",
-      "expected": null
-    }
-  ],
-  [
    "entries literal",
    {
      "data": "`null`",
@@ -2006,6 +1950,46 @@
       "data": "samples.\"purchase-order\"",
       "expression": "fromEntries(items)",
       "error": "syntax"
+    }
+  ],
+  [
+    "split street",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "split(address.street, ' ')",
+      "expected": ["123", "Oak", "Street"]
+    }
+  ],
+  [
+    "split country",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "split(address.country, '')",
+      "expected": ["U", "S", "A"]
+    }
+  ],
+  [
+    "split country(2)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "split(address.country, `null`)",
+      "expected": ["U", "S", "A"]
+    }
+  ],
+  [
+    "split null",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "split(no, where)",
+      "expected": []
+    }
+  ],
+  [
+    "split null",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "split(address.street, ',')",
+      "expected": ["123 Oak Street"]
     }
   ]
 ]

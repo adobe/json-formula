@@ -11,24 +11,6 @@ e.g. Strings with German lowercase letter 'ß' can be compared to 'ss'
 | --- | --- | --- |
 | input | <code>string</code> | string to casefold |
 
-<a name="toMap"></a>
-
-## toMap(key, value) ⇒ <code>map</code>
-Create a new map by providing expressions for the key and value
-
-**Kind**: global function  
-**Returns**: <code>map</code> - The resulting map  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>string</code> | name of the key |
-| value | <code>any</code> | data to be specified as the value |
-
-**Example**  
-```js
-toMap('key', 'value')
-// {key: 'value'}
-```
 <a name="and"></a>
 
 ## and(first, ...operand) ⇒ <code>boolean</code>
@@ -132,17 +114,4 @@ Note that `old` and `new` may have different lengths. If `which` < 1, return `te
 | old | <code>string</code> | text |
 | new | <code>string</code> | text |
 | which | <code>integer</code> | (optional) which occurence to replace |
-
-<a name="value"></a>
-
-## value(object, index:) ⇒ <code>any</code>
-Perform an indexed lookup on a map or array
-
-**Kind**: global function  
-**Returns**: <code>any</code> - the result of the lookup -- or `null` if not found.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| object | <code>map</code> \| <code>array</code> | on which to perform the lookup |
-| index: | <code>string</code> \| <code>integer</code> | a named child for a map or an integer offset for an array |
 
