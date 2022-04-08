@@ -1991,5 +1991,13 @@
       "expression": "split(address.street, ',')",
       "expected": ["123 Oak Street"]
     }
+  ],
+  [
+    "context expression",
+    {
+      "data": "`null`",
+      "expression": "12.222 | round(@ * 2, 2)",
+      "expected": 24.44
+    }
   ]
 ]

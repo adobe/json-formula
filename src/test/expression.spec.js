@@ -17,7 +17,7 @@ import stringToNumber from '../jmespath/stringToNumber';
 const sampleData = require('./sampleData.json');
 const tests = require('./tests.json');
 
-test.each(tests)('%s', (desc, tst) => {
+test.each(tests)('%s', (_desc, tst) => {
   if (tst.fieldsOnly) return;
   const language = tst.language || 'en-US';
   const data = jsonFormula(sampleData, {}, tst.data, functions, stringToNumber);
@@ -36,7 +36,7 @@ test.each(tests)('%s', (desc, tst) => {
 });
 
 // run again -- with field definitions
-test.each(tests)('%s', (desc, tst) => {
+test.each(tests)('%s', (_desc, tst) => {
   const language = tst.language || 'en-US';
   const data = jsonFormula(sampleData, {}, tst.data, functions, stringToNumber);
   let jsonResult;
