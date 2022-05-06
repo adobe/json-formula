@@ -1991,5 +1991,21 @@
       "expression": "split(address.street, ',')",
       "expected": ["123 Oak Street"]
     }
+  ],
+  [
+    "bad divide 1",
+    {
+      "data": "{}",
+      "expression": "null/0",
+      "expected": null
+    }
+  ],
+  [
+    "bad divide 2",
+    {
+      "data": "{}",
+      "expression": "4/0",
+      "expected": null
+    }
   ]
 ]

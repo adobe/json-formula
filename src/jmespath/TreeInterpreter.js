@@ -299,7 +299,8 @@ export default class TreeInterpreter {
 
       DivideExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
-        return first / this.visit(node.children[1], value);
+        const result = first / this.visit(node.children[1], value);
+        return Number.isFinite(result) ? result : null;
       },
 
       PowerExpression: (node, value) => {
