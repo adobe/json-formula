@@ -29,7 +29,7 @@ export class Formula {
   }
 
   search(json, globals) {
-    const result = jmespath.search(
+    return jmespath.search(
       this.node,
       json,
       globals,
@@ -38,7 +38,6 @@ export class Formula {
       this.debug,
       this.language,
     );
-    return result;
   }
 }
 
@@ -60,7 +59,7 @@ export function jsonFormula(
     debug,
     language,
   );
-  const result = formula.search(
+  return formula.search(
     json,
     globals,
     { ...customFunctions },
@@ -68,5 +67,4 @@ export function jsonFormula(
     debug,
     language,
   );
-  return result;
 }

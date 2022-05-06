@@ -41,6 +41,22 @@ test('if executes correct branch', () => {
   expect(resultFalse).toEqual(false);
 });
 
+test('handle function that throws', () => {
+  const customFunctions = {
+    throw: {
+      _func: () => {
+        throw new RangeError('big mistake');
+      },
+      _signature: [],
+    },
+  };
+
+  const debug = [];
+  expect(() => jsonFormula({}, {}, 'throw()', customFunctions, stringToNumber, debug)).toThrow('big mistake');
+  expect(debug).toHaveLength(1);
+  expect(debug[0]).toEqual('big mistake');
+});
+
 test('can pass a class as a function argument', () => {
   // i.e. make sure it does not resolve to the scalar value of a field
   const TYPE_CLASS = 10;
@@ -163,7 +179,7 @@ describe('expressions with globals', () => {
     };
     const customFunctions = {
       customFunc: {
-        _func: (args, searchData, interpreter) => interpreter.globals.element,
+        _func: (_args, _searchData, interpreter) => interpreter.globals.element,
         _signature: [],
       },
     };

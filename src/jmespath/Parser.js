@@ -273,12 +273,7 @@ export default class Parser {
         name = left.name;
         args = [];
         while (this._lookahead(0) !== TOK_RPAREN) {
-          if (this._lookahead(0) === TOK_CURRENT) {
-            expression = { type: TOK_CURRENT };
-            this._advance();
-          } else {
-            expression = this.expression(0);
-          }
+          expression = this.expression(0);
           if (this._lookahead(0) === TOK_COMMA) {
             this._match(TOK_COMMA);
           }

@@ -63,12 +63,7 @@ function isFalse(value) {
 }
 
 function objValues(obj) {
-  const keys = Object.keys(obj);
-  const values = [];
-  for (let i = 0; i < keys.length; i += 1) {
-    values.push(obj[keys[i]]);
-  }
-  return values;
+  return Object.values(obj);
 }
 
 export default class TreeInterpreter {
@@ -96,8 +91,8 @@ export default class TreeInterpreter {
           if (field === undefined) {
             try {
               this.debug.push(`Failed to find: '${node.name}'`);
-              const available = Object.keys(value);
-              if (available.length) this.debug.push(`Available fields: ${available.map(a => `'${a}'`).toString()}`);
+              const available = Object.keys(value).map(a => `'${a}'`).toString();
+              if (available.length) this.debug.push(`Available fields: ${available}`);
             // eslint-disable-next-line no-empty
             } catch (e) {}
             return null;
@@ -118,8 +113,7 @@ export default class TreeInterpreter {
 
       IndexExpression: (node, value) => {
         const left = this.visit(node.children[0], value);
-        const right = this.visit(node.children[1], left);
-        return right;
+        return this.visit(node.children[1], left);
       },
 
       Index: (node, value) => {
@@ -173,12 +167,12 @@ export default class TreeInterpreter {
         const base = this.visit(node.children[0], value);
         if (!isArray(base)) return null;
         const collected = [];
-        for (let i = 0; i < base.length; i += 1) {
-          const current = this.visit(node.children[1], base[i]);
+        base.forEach(b => {
+          const current = this.visit(node.children[1], b);
           if (current !== null) {
             collected.push(current);
           }
-        }
+        });
         return collected;
       },
 
@@ -188,26 +182,26 @@ export default class TreeInterpreter {
         if (!isObject(getValueOf(projection))) return null;
         const collected = [];
         const values = objValues(projection);
-        for (let i = 0; i < values.length; i += 1) {
-          const current = this.visit(node.children[1], values[i]);
+        values.forEach(val => {
+          const current = this.visit(node.children[1], val);
           if (current !== null) collected.push(current);
-        }
+        });
         return collected;
       },
 
       FilterProjection: (node, value) => {
         const base = this.visit(node.children[0], value);
         if (!isArray(base)) return null;
-        const filtered = [];
+        const filtered = base.filter(b => {
+          const matched = this.visit(node.children[2], b);
+          return !isFalse(matched);
+        });
+
         const finalResults = [];
-        for (let i = 0; i < base.length; i += 1) {
-          const matched = this.visit(node.children[2], base[i]);
-          if (!isFalse(matched)) filtered.push(base[i]);
-        }
-        for (let j = 0; j < filtered.length; j += 1) {
-          const current = this.visit(node.children[1], filtered[j]);
+        filtered.forEach(f => {
+          const current = this.visit(node.children[1], f);
           if (current !== null) finalResults.push(current);
-        }
+        });
         return finalResults;
       },
 
@@ -228,35 +222,29 @@ export default class TreeInterpreter {
         const original = this.visit(node.children[0], value);
         if (!isArray(original)) return null;
         const merged = [];
-        for (let i = 0; i < original.length; i += 1) {
-          const current = original[i];
+        original.forEach(current => {
           if (isArray(current)) {
             merged.push(...current);
           } else {
             merged.push(current);
           }
-        }
+        });
         return merged;
       },
 
-      Identity: (node, value) => value,
+      Identity: (_node, value) => value,
 
       MultiSelectList: (node, value) => {
         if (value === null) return null;
-        const collected = [];
-        for (let i = 0; i < node.children.length; i += 1) {
-          collected.push(this.visit(node.children[i], value));
-        }
-        return collected;
+        return node.children.map(child => this.visit(child, value));
       },
 
       MultiSelectHash: (node, value) => {
         if (value === null) return null;
         const collected = {};
-        for (let i = 0; i < node.children.length; i += 1) {
-          const child = node.children[i];
+        node.children.forEach(child => {
           collected[child.name] = this.visit(child.value, value);
-        }
+        });
         return collected;
       },
 
@@ -322,7 +310,7 @@ export default class TreeInterpreter {
         return this.visit(node.children[1], left);
       },
 
-      [TOK_CURRENT]: (node, value) => value,
+      [TOK_CURRENT]: (_node, value) => value,
 
       [TOK_GLOBAL]: node => {
         const result = this.globals[node.name];
@@ -334,10 +322,7 @@ export default class TreeInterpreter {
       // we need to make sure the results are called only after the condition is evaluated
       // Otherwise we end up with both results invoked -- which could include side effects
         if (node.name === 'if') return this.runtime.callFunction(node.name, node.children, value, this);
-        const resolvedArgs = [];
-        for (let i = 0; i < node.children.length; i += 1) {
-          resolvedArgs.push(this.visit(node.children[i], value));
-        }
+        const resolvedArgs = node.children.map(child => this.visit(child, value));
         return this.runtime.callFunction(node.name, resolvedArgs, value, this);
       },
 
@@ -356,23 +341,20 @@ export default class TreeInterpreter {
 
   // eslint-disable-next-line class-methods-use-this
   computeSliceParams(arrayLength, sliceParams) {
-    function capSliceRange(arrayLen, actual, step) {
+    function capSliceRange(arrayLen, actual, stp) {
       let actualValue = actual;
       if (actualValue < 0) {
         actualValue += arrayLen;
         if (actualValue < 0) {
-          actualValue = step < 0 ? -1 : 0;
+          actualValue = stp < 0 ? -1 : 0;
         }
       } else if (actualValue >= arrayLen) {
-        actualValue = step < 0 ? arrayLen - 1 : arrayLen;
+        actualValue = stp < 0 ? arrayLen - 1 : arrayLen;
       }
       return actualValue;
     }
 
-    let start = sliceParams[0];
-    let stop = sliceParams[1];
-    let step = sliceParams[2];
-    const computed = [null, null, null];
+    let [start, stop, step] = sliceParams;
     if (step === null) {
       step = 1;
     } else if (step === 0) {
@@ -393,10 +375,7 @@ export default class TreeInterpreter {
     } else {
       stop = capSliceRange(arrayLength, stop, step);
     }
-    computed[0] = start;
-    computed[1] = stop;
-    computed[2] = step;
-    return computed;
+    return [start, stop, step];
   }
 
   applyOperator(first, second, operator) {

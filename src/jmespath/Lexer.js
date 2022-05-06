@@ -381,23 +381,14 @@ export default class Lexer {
   }
 
   _consumeLiteral(stream) {
-    function _looksLikeJSON(literalString) {
-      const startingChars = '[{"';
-      const jsonLiterals = ['true', 'false', 'null'];
-      const numberLooking = '-0123456789';
+    function _looksLikeJSON(str) {
+      if (str === '') return false;
+      if ('[{"'.includes(str[0])) return true;
+      if (['true', 'false', 'null'].includes(str)) return true;
 
-      if (literalString === '') {
-        return false;
-      }
-      if (startingChars.indexOf(literalString[0]) >= 0) {
-        return true;
-      }
-      if (jsonLiterals.indexOf(literalString) >= 0) {
-        return true;
-      }
-      if (numberLooking.indexOf(literalString[0]) >= 0) {
+      if ('-0123456789'.includes(str[0])) {
         try {
-          JSON.parse(literalString);
+          JSON.parse(str);
           return true;
         } catch (ex) {
           return false;

@@ -17,18 +17,19 @@ const {
 function JsonFormula() {
   let toNumber;
 
-  function getToNumber(stringToNumber, debug) {
+  function getToNumber(stringToNumber, debug = []) {
     return value => {
       const n = getValueOf(value); // in case it's an object that implements valueOf()
       if (n === null) return null;
       if (n instanceof Array) {
-        if (debug) debug.push('Converted array to zero');
+        debug.push('Converted array to zero');
         return 0;
       }
-      if (typeof n === 'number') return n;
-      if (typeof n === 'string') return stringToNumber(n, debug);
-      if (typeof n === 'boolean') return n ? 1 : 0;
-      if (debug) debug.push('Converted object to zero');
+      const type = typeof n;
+      if (type === 'number') return n;
+      if (type === 'string') return stringToNumber(n, debug);
+      if (type === 'boolean') return n ? 1 : 0;
+      debug.push('Converted object to zero');
       return 0;
     };
   }
@@ -143,7 +144,7 @@ function JsonFormula() {
     try {
       return interpreter.search(node, data);
     } catch (e) {
-      debug.push(e.toString());
+      debug.push(e.message || e.toString());
       throw e;
     }
   }

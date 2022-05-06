@@ -45,7 +45,7 @@ export default function functions(
   } = dataTypes;
 
   function createKeyFunction(exprefNode, allowedTypes) {
-    const keyFunc = x => {
+    return x => {
       const current = interpreter.visit(exprefNode, x);
       if (allowedTypes.indexOf(getTypeName(current)) < 0) {
         const msg = `TypeError: expected one of ${allowedTypes
@@ -54,7 +54,6 @@ export default function functions(
       }
       return current;
     };
-    return keyFunc;
   }
 
   return {
@@ -79,9 +78,9 @@ export default function functions(
       _func: resolvedArgs => {
         let sum = 0;
         const inputArray = resolvedArgs[0];
-        for (let i = 0; i < inputArray.length; i += 1) {
-          sum += inputArray[i];
-        }
+        inputArray.forEach(a => {
+          sum += a;
+        });
         return sum / inputArray.length;
       },
       _signature: [{ types: [TYPE_ARRAY_NUMBER] }],
@@ -121,13 +120,8 @@ export default function functions(
 
     map: {
       _func: resolvedArgs => {
-        const mapped = [];
         const exprefNode = resolvedArgs[0];
-        const elements = resolvedArgs[1];
-        for (let i = 0; i < elements.length; i += 1) {
-          mapped.push(interpreter.visit(exprefNode, elements[i]));
-        }
-        return mapped;
+        return resolvedArgs[1].map(arg => interpreter.visit(exprefNode, arg));
       },
       _signature: [{ types: [TYPE_EXPREF] }, { types: [TYPE_ARRAY] }],
     },
@@ -155,12 +149,11 @@ export default function functions(
     merge: {
       _func: resolvedArgs => {
         const merged = {};
-        for (let i = 0; i < resolvedArgs.length; i += 1) {
-          const current = resolvedArgs[i];
-          Object.keys(current).forEach(key => {
-            merged[key] = current[key];
+        resolvedArgs.forEach(current => {
+          Object.entries(current).forEach(([key, value]) => {
+            merged[key] = value;
           });
-        }
+        });
         return merged;
       },
       _signature: [{ types: [TYPE_OBJECT], variadic: true }],
@@ -174,13 +167,13 @@ export default function functions(
         let maxNumber = -Infinity;
         let maxRecord;
         let current;
-        for (let i = 0; i < resolvedArray.length; i += 1) {
-          current = keyFunction(resolvedArray[i]);
+        resolvedArray.forEach(arg => {
+          current = keyFunction(arg);
           if (current > maxNumber) {
             maxNumber = current;
-            maxRecord = resolvedArray[i];
+            maxRecord = arg;
           }
-        }
+        });
         return maxRecord;
       },
       _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }],
@@ -189,10 +182,9 @@ export default function functions(
     sum: {
       _func: resolvedArgs => {
         let sum = 0;
-        const listToSum = resolvedArgs[0];
-        for (let i = 0; i < listToSum.length; i += 1) {
-          sum += listToSum[i] * 1;
-        }
+        resolvedArgs[0].forEach(arg => {
+          sum += arg * 1;
+        });
         return sum;
       },
       _signature: [{ types: [TYPE_ARRAY_NUMBER] }],
@@ -235,13 +227,13 @@ export default function functions(
         let minNumber = Infinity;
         let minRecord;
         let current;
-        for (let i = 0; i < resolvedArray.length; i += 1) {
-          current = keyFunction(resolvedArray[i]);
+        resolvedArray.forEach(arg => {
+          current = keyFunction(arg);
           if (current < minNumber) {
             minNumber = current;
-            minRecord = resolvedArray[i];
+            minRecord = arg;
           }
-        }
+        });
         return minRecord;
       },
       _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }],
@@ -413,14 +405,7 @@ export default function functions(
     },
 
     notNull: {
-      _func: resolvedArgs => {
-        for (let i = 0; i < resolvedArgs.length; i += 1) {
-          if (getTypeName(resolvedArgs[i]) !== TYPE_NULL) {
-            return resolvedArgs[i];
-          }
-        }
-        return null;
-      },
+      _func: resolvedArgs => resolvedArgs.find(arg => getTypeName(arg) !== TYPE_NULL) || null,
       _signature: [{ types: [TYPE_ANY], variadic: true }],
     },
   };
