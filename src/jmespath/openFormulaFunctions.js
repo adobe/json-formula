@@ -230,45 +230,49 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
     },
     left: {
       _func: args => {
-        const text = toString(args[0]);
-        const numChars = args.length > 1 ? toNumber(args[1]) : 1;
-        if (numChars < 0) {
-          return null;
+        const numEntries = args.length > 1 ? toNumber(args[1]) : 1;
+        if (numEntries < 0) return null;
+        if (args[0] instanceof Array) {
+          return args[0].slice(0, numEntries);
         }
-        return text.substr(0, numChars);
+        const text = toString(args[0]);
+        return text.substr(0, numEntries);
       },
       _signature: [
-        { types: [dataTypes.TYPE_STRING] },
+        { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_ARRAY] },
         { types: [dataTypes.TYPE_NUMBER], optional: true },
       ],
     },
     right: {
       _func: args => {
-        const text = toString(args[0]);
-        const numChars = args.length > 1 ? toNumber(args[1]) : 1;
-        if (numChars < 0) {
-          return null;
+        const numEntries = args.length > 1 ? toNumber(args[1]) : 1;
+        if (numEntries < 0) return null;
+        if (args[0] instanceof Array) {
+          if (numEntries === 0) return [];
+          return args[0].slice(numEntries * -1);
         }
-        const start = text.length - numChars;
-        return text.substr(start, numChars);
+        const text = toString(args[0]);
+        const start = text.length - numEntries;
+        return text.substr(start, numEntries);
       },
       _signature: [
-        { types: [dataTypes.TYPE_STRING] },
+        { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_ARRAY] },
         { types: [dataTypes.TYPE_NUMBER], optional: true },
       ],
     },
     mid: {
       _func: args => {
-        const text = toString(args[0]);
         const startPos = toNumber(args[1]);
-        if (startPos < 0) {
-          return null;
+        const numEntries = toNumber(args[2]);
+        if (startPos < 0) return null;
+        if (args[0] instanceof Array) {
+          return args[0].slice(startPos, startPos + numEntries);
         }
-        const numChars = toNumber(args[2]);
-        return text.substr(startPos, numChars);
+        const text = toString(args[0]);
+        return text.substr(startPos, numEntries);
       },
       _signature: [
-        { types: [dataTypes.TYPE_STRING] },
+        { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_ARRAY] },
         { types: [dataTypes.TYPE_NUMBER] },
         { types: [dataTypes.TYPE_NUMBER] },
       ],

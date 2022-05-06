@@ -807,6 +807,166 @@
     }
   ],
   [
+    "left(split('abc', ''))",
+    {
+      "data": "`null`",
+      "expression": "left(split('abc', ''))",
+      "expected": ["a"]
+    }
+  ],
+  [
+    "left(split('abc', ''), 1)",
+    {
+      "data": "`null`",
+      "expression": "left(split('abc', ''), 1)",
+      "expected": ["a"]
+    }
+  ],
+  [
+    "left(split('abc', ''), 2)",
+    {
+      "data": "`null`",
+      "expression": "left(split('abc', ''), 2)",
+      "expected": ["a", "b"]
+    }
+  ],
+  [
+    "left(split('abc', ''), 100)",
+    {
+      "data": "`null`",
+      "expression": "left(split('abc', ''), 100)",
+      "expected": ["a","b","c"]
+    }
+  ],
+  [
+    "left(split('abc', ''), 0)",
+    {
+      "data": "`null`",
+      "expression": "left(split('abc', ''), 0)",
+      "expected": []
+    }
+  ],
+  [
+    "left(split('abc', ''), -1)",
+    {
+      "data": "`null`",
+      "expression": "left(split('abc', ''), -1)",
+      "expected": null
+    }
+  ],
+  [
+    "left(split(address.street, ''))",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "left(split(address.street, ''))",
+      "expected": ["1"]
+    }
+  ],
+  [
+    "right(split('abc', ''))",
+    {
+      "data": "`null`",
+      "expression": "right(split('abc', ''))",
+      "expected": ["c"]
+    }
+  ],
+  [
+    "right(split('abc', ''), 1)",
+    {
+      "data": "`null`",
+      "expression": "right(split('abc', ''), 1)",
+      "expected": ["c"]
+    }
+  ],
+  [
+    "right(split('abc', ''), 2)",
+    {
+      "data": "`null`",
+      "expression": "right(split('abc', ''), 2)",
+      "expected": ["b", "c"]
+    }
+  ],
+  [
+    "right(split('abc', ''), 100)",
+    {
+      "data": "`null`",
+      "expression": "right(split('abc', ''), 100)",
+      "expected": ["a","b","c"]
+    }
+  ],
+  [
+    "right(split('abc', ''), 0)",
+    {
+      "data": "`null`",
+      "expression": "right(split('abc', ''), 0)",
+      "expected": []
+    }
+  ],
+  [
+    "right(split('abc', ''), -1)",
+    {
+      "data": "`null`",
+      "expression": "right(split('abc', ''), -1)",
+      "expected": null
+    }
+  ],
+  [
+    "right(address.street)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "right(split(address.street, ''))",
+      "expected": ["t"]
+    }
+  ],
+  [
+    "mid(split('abc', ''), 0, 0)",
+    {
+      "data": "`null`",
+      "expression": "mid(split('abc', ''), 0, 0)",
+      "expected": []
+    }
+  ],
+  [
+    "mid(split('abc', ''), 1, 1)",
+    {
+      "data": "`null`",
+      "expression": "mid(split('abc', ''), 1, 1)",
+      "expected": ["b"]
+    }
+  ],
+  [
+    "mid(split('abc', ''), 1, 100)",
+    {
+      "data": "`null`",
+      "expression": "mid(split('abc', ''), 1, 100)",
+      "expected": ["b", "c"]
+    }
+  ],
+  [
+    "mid(split('abc', ''), -1, 100)",
+    {
+      "data": "`null`",
+      "expression": "mid(split('abc', ''), -1, 100)",
+      "expected": null
+    }
+  ],
+  [
+    "mid(split('abc', ''))",
+    {
+      "data": "`null`",
+      "expression": "mid(split('abc', ''))",
+      "error": "syntax"
+    }
+  ],
+  [
+    "mid(split(address.street, ''), 0, 1)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "mid(split(address.street, ''), 0, 1)",
+      "expected": ["1"]
+    }
+  ],
+  [
     "proper('')",
     {
       "data": "`null`",
