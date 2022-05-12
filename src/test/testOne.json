@@ -3,8 +3,8 @@
     "expression ref",
     {
       "data": "[1,2,3,4]",
-      "expression": "map(&(@ + 1), @)",
-      "expected": [2,3,4,5]
+      "expression": "map(&@ - 1, @)",
+      "expected": [0,1,2,3]
     }
   ]
 ]

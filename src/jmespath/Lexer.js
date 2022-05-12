@@ -129,7 +129,7 @@ export default class Lexer {
           start: this._current,
         });
         this._current += 1;
-      } else if ((stream[this._current] === '-' && ![TOK_NUMBER, TOK_RPAREN, TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER].includes(prev)) || isNum(stream[this._current], false)) {
+      } else if ((stream[this._current] === '-' && ![TOK_CURRENT, TOK_NUMBER, TOK_RPAREN, TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER].includes(prev)) || isNum(stream[this._current], false)) {
         token = this._consumeNumber(stream);
         tokens.push(token);
       } else if (stream[this._current] === '[') {
