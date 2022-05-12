@@ -2175,5 +2175,13 @@
       "expression": "12.222 | round(@ * 2, 2)",
       "expected": 24.44
     }
+  ],
+  [
+    "expression ref",
+    {
+      "data": "[1,2,3,4]",
+      "expression": "map(&(@ + 1), @)",
+      "expected": [2,3,4,5]
+    }
   ]
 ]

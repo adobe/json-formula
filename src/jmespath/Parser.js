@@ -205,12 +205,7 @@ export default class Parser {
       case TOK_LPAREN:
         args = [];
         while (this._lookahead(0) !== TOK_RPAREN) {
-          if (this._lookahead(0) === TOK_CURRENT) {
-            expression = { type: TOK_CURRENT };
-            this._advance();
-          } else {
-            expression = this.expression(0);
-          }
+          expression = this.expression(0);
           args.push(expression);
         }
         this._match(TOK_RPAREN);
