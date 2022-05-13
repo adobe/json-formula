@@ -1,11 +1,10 @@
 [
   [
-    "expression ref",
+    "index using expressions",
     {
-      "data": "[1,2,3,4]",
-      "expression": "map(&@ - 1, @)",
-      "expected": [0,1,2,3]
+      "data": "samples.\"purchase-order\"",
+      "expression": "items[length(@)-1].desc",
+      "expected": "pencils"
     }
   ]
 ]
-

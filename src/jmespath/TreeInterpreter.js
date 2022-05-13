@@ -263,7 +263,8 @@ export default class TreeInterpreter {
 
       AddExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
-        return this.toNumber(first) + this.toNumber(this.visit(node.children[1], value));
+        const second = this.visit(node.children[1], value);
+        return this.applyOperator(first, second, '+');
       },
 
       ConcatenateExpression: (node, value) => {
@@ -276,7 +277,8 @@ export default class TreeInterpreter {
 
       SubtractExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
-        return first - this.visit(node.children[1], value);
+        const second = this.visit(node.children[1], value);
+        return this.applyOperator(first, second, '-');
       },
 
       MultiplyExpression: (node, value) => {
@@ -287,13 +289,14 @@ export default class TreeInterpreter {
 
       DivideExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
-        const result = first / this.visit(node.children[1], value);
-        return Number.isFinite(result) ? result : null;
+        const second = this.visit(node.children[1], value);
+        return this.applyOperator(first, second, '/');
       },
 
       PowerExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
-        return first ** this.visit(node.children[1], value);
+        const second = this.visit(node.children[1], value);
+        return this.applyOperator(first, second, '^');
       },
 
       NotExpression: (node, value) => {
@@ -379,35 +382,35 @@ export default class TreeInterpreter {
   }
 
   applyOperator(first, second, operator) {
-    // TODO: fill in remaining operators
     if (isArray(first) && isArray(second)) {
-      const len = Math.min(first.length, second.length);
+      // balance the size of the arrays
+      const shorter = first.length < second.length ? first : second;
+      const diff = Math.abs(first.length - second.length);
+      shorter.length += diff;
+      shorter.fill(null, shorter.length - diff);
       const result = [];
-      let i;
-      for (i = 0; i < len; i += 1) {
-        if (isArray(first[i]) || isArray(second[i])) {
-          result.push(this.applyOperator(first[i], second[i], operator));
-        } else if (operator === '*') {
-          result.push(first[i] * second[i]);
-        } else if (operator === '&') {
-          result.push(first[i] + second[i]);
-        } else throw new Error('unimplemented');
-      }
-      for (i = len; i < Math.max(first.length, second.length); i += 1) {
-        // Result of the operator applied with 'null'
-        if (operator === '&') result.push('');
-        else if (operator === '*') result.push(0);
+      for (let i = 0; i < first.length; i += 1) {
+        result.push(this.applyOperator(first[i], second[i], operator));
       }
       return result;
     }
 
-    if (isArray(first) || isArray(second)) {
-      const [arr, scalar] = isArray(first) ? [first, second] : [second, first];
-      if (operator === '*') return arr.map(a => this.toNumber(a) * this.toNumber(scalar));
-      if (operator === '&') return arr.map(a => a + scalar);
-    }
+    if (isArray(first)) return first.map(a => this.applyOperator(a, second, operator));
+    if (isArray(second)) return second.map(a => this.applyOperator(first, a, operator));
+
     if (operator === '*') return this.toNumber(first) * this.toNumber(second);
     if (operator === '&') return first + second;
-    throw new Error(`unimplemented array operator: ${operator}`);
+    if (operator === '+') {
+      return this.toNumber(first) + this.toNumber(second);
+    }
+    if (operator === '-') return this.toNumber(first) - this.toNumber(second);
+    if (operator === '/') {
+      const result = first / second;
+      return Number.isFinite(result) ? result : null;
+    }
+    if (operator === '^') {
+      return first ** second;
+    }
+    throw new Error(`Unknown operator: ${operator}`);
   }
 }
