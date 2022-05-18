@@ -36,7 +36,8 @@ function JsonFormula() {
 
   function toString(a) {
     if (a === null || a === undefined) return '';
-    return a.toString();
+    // don't call a 'toString' method, since we could have a child named 'toString()'
+    return Object.getPrototypeOf(a).toString.call(a);
   }
 
   function isClass(obj) {
@@ -107,8 +108,10 @@ function JsonFormula() {
     }
 
     callFunction(name, resolvedArgs, data, interpreter) {
+      // this check will weed out 'valueOf', 'toString' etc
+      if (!Object.prototype.hasOwnProperty.call(this.functionTable, name)) throw new Error(`Unknown function: ${name}()`);
+
       const functionEntry = this.functionTable[name];
-      if (functionEntry === undefined) throw new Error(`Unknown function: ${name}()`);
       this._validateArgs(name, resolvedArgs, functionEntry._signature);
       return functionEntry._func.call(this, resolvedArgs, data, interpreter);
     }
