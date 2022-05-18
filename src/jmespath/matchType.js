@@ -144,6 +144,8 @@ export function matchType(actuals, expectedList, argValue, context, toNumber) {
     }
     if (expected === TYPE_STRING) {
       if (actual === TYPE_NULL || actual === TYPE_OBJECT) return '';
+      // using Object.getPrototypeOf() ensures that we don't inadvertently reference a
+      // child object such as 'valueof'
       return Object.getPrototypeOf(argValue).toString.call(argValue);
     }
     if (expected === TYPE_BOOLEAN) {

@@ -324,7 +324,9 @@ export default class TreeInterpreter {
       // Special case for if()
       // we need to make sure the results are called only after the condition is evaluated
       // Otherwise we end up with both results invoked -- which could include side effects
-        if (node.name === 'if') return this.runtime.callFunction(node.name, node.children, value, this);
+      // For "if", the last parameter to callFunction is false (bResolved) to indicate there's
+      // no point in validating the argument type.
+        if (node.name === 'if') return this.runtime.callFunction(node.name, node.children, value, this, false);
         const resolvedArgs = node.children.map(child => this.visit(child, value));
         return this.runtime.callFunction(node.name, resolvedArgs, value, this);
       },

@@ -17,7 +17,7 @@ export function getValueOf(a) {
   if (isArray(a)) {
     return a.map(i => getValueOf(i));
   }
-  return a.valueOf();
+  return Object.getPrototypeOf(a).valueOf.call(a);
 }
 
 export function strictDeepEqual(lhs, rhs) {
