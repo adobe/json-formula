@@ -43,7 +43,7 @@ function JsonFormula() {
   function isClass(obj) {
     if (obj === null) return false;
     if (Array.isArray(obj)) return false;
-    return typeof obj === 'object' && obj.constructor.name !== 'Object';
+    return Object.getPrototypeOf(obj).constructor.name !== 'Object';
   }
 
   function matchClass(arg, expectedList) {
@@ -68,7 +68,7 @@ function JsonFormula() {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    _validateArgs(argName, args, signature) {
+    _validateArgs(argName, args, signature, bResolved) {
       // Validating the args requires validating
       // the correct arity and the correct type of each arg.
       // If the last argument is declared as variadic, then we need
@@ -91,6 +91,8 @@ function JsonFormula() {
         + `takes ${signature.length}${pluralized
         } but received ${args.length}`);
       }
+      // if the arguments are unresolved, there's no point in validating types
+      if (!bResolved) return;
       let currentSpec;
       let actualType;
       const limit = Math.min(signature.length, args.length);
@@ -107,12 +109,12 @@ function JsonFormula() {
       }
     }
 
-    callFunction(name, resolvedArgs, data, interpreter) {
+    callFunction(name, resolvedArgs, data, interpreter, bResolved = true) {
       // this check will weed out 'valueOf', 'toString' etc
       if (!Object.prototype.hasOwnProperty.call(this.functionTable, name)) throw new Error(`Unknown function: ${name}()`);
 
       const functionEntry = this.functionTable[name];
-      this._validateArgs(name, resolvedArgs, functionEntry._signature);
+      this._validateArgs(name, resolvedArgs, functionEntry._signature, bResolved);
       return functionEntry._func.call(this, resolvedArgs, data, interpreter);
     }
   }
