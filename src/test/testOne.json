@@ -2,9 +2,9 @@
   [
     "index using expressions",
     {
-      "data": "samples.\"purchase-order\"",
-      "expression": "items[length(@)-1].desc",
-      "expected": "pencils"
+      "data": "`{}`",
+      "expression": "map(&[@[0],@[1]-1], [[1,2],[2,3]])",
+      "expected": [[1,1],[2,2]]
     }
   ]
 ]
