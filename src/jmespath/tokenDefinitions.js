@@ -20,6 +20,7 @@ export default {
   TOK_SUBTRACT: 'Subtract',
   TOK_MULTIPLY: 'Multiply',
   TOK_POWER: 'Power',
+  TOK_UNION: 'Union',
   TOK_DIVIDE: 'Divide',
   TOK_EQ: 'EQ',
   TOK_GT: 'GT',

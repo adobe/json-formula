@@ -126,6 +126,23 @@ export default function functions(
       _signature: [{ types: [TYPE_EXPREF] }, { types: [TYPE_ARRAY] }],
     },
 
+    reduce: {
+      _func: resolvedArgs => {
+        const exprefNode = resolvedArgs[0];
+        return resolvedArgs[1].reduce(
+          (previous, current, index, array) => interpreter.visit(exprefNode, {
+            previous, current, index, array,
+          }),
+          resolvedArgs.length === 3 ? resolvedArgs[2] : null,
+        );
+      },
+      _signature: [
+        { types: [TYPE_EXPREF] },
+        { types: [TYPE_ARRAY] },
+        { types: [TYPE_ANY], optional: true },
+      ],
+    },
+
     max: {
       _func: resolvedArgs => {
         if (resolvedArgs[0].length > 0) {

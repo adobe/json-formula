@@ -115,3 +115,16 @@ Note that `old` and `new` may have different lengths. If `which` < 1, return `te
 | new | <code>string</code> | text |
 | which | <code>integer</code> | (optional) which occurence to replace |
 
+<a name="value"></a>
+
+## value(object, index:) ⇒ <code>any</code>
+Perform an indexed lookup on a map or array
+
+**Kind**: global function  
+**Returns**: <code>any</code> - the result of the lookup -- or `null` if not found.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| object | <code>map</code> \| <code>array</code> | on which to perform the lookup |
+| index: | <code>string</code> \| <code>integer</code> | a named child for a map or an integer offset for an array |
+

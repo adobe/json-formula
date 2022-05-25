@@ -18,8 +18,8 @@ expression
   : expression '.' chainedExpression # chainExpression
   | expression chainedBracketSpecifier # bracketedExpression
   | bracketSpecifier # bracketExpression
-  | expression ('^') expression	# powerExpression 
-  | expression ('*' | '/' | '&') expression	# multDivExpression
+  | expression ('^') expression	# powerExpression
+  | expression ('*' | '/' | '&' | '~') expression	# multDivExpression
   | expression ('+' | '-') expression	# addSubtractExpression
   | expression COMPARATOR expression # comparisonExpression
   | expression '&&' expression # andExpression
@@ -53,7 +53,7 @@ wildcard : '*' ;
 
 multiSelectList : '[' expression (',' expression)* ']' ;
 
-multiSelectHash 
+multiSelectHash
   : '{' '}' #emptyHash
   | '{' keyvalExpr (',' keyvalExpr)* '}'  #nonEmptyHash
   ;
