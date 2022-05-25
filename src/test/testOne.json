@@ -1,10 +1,10 @@
 [
   [
-    "index using expressions",
+    "mod1",
     {
       "data": "`{}`",
-      "expression": "map(&[@[0],@[1]-1], [[1,2],[2,3]])",
-      "expected": [[1,1],[2,2]]
+      "expression": "mod(3, 2)",
+      "expected": 1
     }
   ]
 ]

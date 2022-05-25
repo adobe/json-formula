@@ -21,7 +21,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
    * @function
    */
     casefold: {
-      _func: (args, data, interpreter) => {
+      _func: (args, _data, interpreter) => {
         const str = toString(args[0]);
         return str.toLocaleUpperCase(interpreter.language).toLocaleLowerCase(interpreter.language);
       },
@@ -173,6 +173,25 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         { types: [dataTypes.TYPE_NUMBER], optional: true },
       ],
     },
+    /**
+     * Perform an indexed lookup on a map or array
+     * @param {map | array} object on which to perform the lookup
+     * @param {string | integer} index: a named child for a map or an integer offset for an array
+     * @returns {any} the result of the lookup -- or `null` if not found.
+     * @function
+     */
+    value: {
+      _func: args => {
+        const obj = args[0] || {};
+        const index = args[1];
+        const result = obj[index];
+        return result === undefined ? null : result;
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_OBJECT, dataTypes.TYPE_ARRAY, dataTypes.TYPE_NULL] },
+        { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_NUMBER] },
+      ],
+    },
     lower: {
       _func: args => {
         const value = toString(args[0]);
@@ -273,6 +292,17 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
       },
       _signature: [
         { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_ARRAY] },
+        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [dataTypes.TYPE_NUMBER] },
+      ],
+    },
+    mod: {
+      _func: args => {
+        const p1 = toNumber(args[0]);
+        const p2 = toNumber(args[1]);
+        return p1 % p2;
+      },
+      _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
         { types: [dataTypes.TYPE_NUMBER] },
       ],

@@ -444,6 +444,54 @@
     }
   ],
   [
+    "value(1)",
+    {
+      "data": "samples",
+      "expression": "value(value(\"purchase-order\", 'address'), 'street')",
+      "expected": "123 Oak Street"
+    }
+  ],
+  [
+    "value(2)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "value(value(items, 0), 'desc')",
+      "expected": "pens"
+    }
+  ],
+  [
+    "value(3)",
+    {
+      "data": "samples",
+      "expression": "value(value(value(@, 'purchase-order'), 'address'),'city')",
+      "expected": "San Jose"
+    }
+  ],
+  [
+    "value(4)",
+    {
+      "data": "samples",
+      "expression": "value(@, 'purchase-orders')",
+      "expected": null
+    }
+  ],
+  [
+    "value(5)",
+    {
+      "data": "`null`",
+      "expression": "value(@, 'purchase-orders')",
+      "expected": null
+    }
+  ],
+  [
+    "value(6)",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "value(items, 4)",
+      "expected": null
+    }
+  ],
+  [
     "lower(missing)",
     {
       "data": "samples.\"purchase-order\"",
@@ -2307,6 +2355,54 @@
       "data": "samples.\"purchase-order\".items[*].quantity",
       "expression": "@ + 2",
       "expected": [4, 5]
+    }
+  ],
+  [
+    "mod1",
+    {
+      "data": "samples.\"purchase-order\".items[0].quantity",
+      "expression": "mod(@, 2)",
+      "expected": 0
+    }
+  ],
+  [
+    "mod2",
+    {
+      "data": "`{}`",
+      "expression": "mod(7, 4)",
+      "expected": 3
+    }
+  ],
+  [
+    "union1",
+    {
+      "data": "samples.\"purchase-order\".items[*]",
+      "expression": "[].price ~ [].quantity ~ [].desc",
+      "expected": [3.23, 1.34, 2, 3, "pens", "pencils"]
+    }
+  ],
+  [
+    "union2",
+    {
+      "data": "samples.\"purchase-order\".items[*]",
+      "expression": "1 ~ [].quantity ~ '4'",
+      "expected": [1, 2, 3, "4"]
+    }
+  ],
+  [
+    "union3",
+    {
+      "data": "`{}`",
+      "expression": "[{a:1}, {b:2}, 3] ~ [[4,5],6]",
+      "expected": [{"a":1}, {"b":2}, 3, [4,5], 6]
+    }
+  ],
+  [
+    "union bad",
+    {
+      "data": "samples.\"purchase-order\".items[*]",
+      "expression": "[].quantity ~ {a: 4}",
+      "error": "syntax"
     }
   ]
 ]

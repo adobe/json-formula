@@ -22,6 +22,7 @@ const {
   TOK_MULTIPLY,
   TOK_POWER,
   TOK_DIVIDE,
+  TOK_UNION,
   TOK_EQ,
   TOK_GT,
   TOK_LT,
@@ -180,6 +181,10 @@ export default class Lexer {
         } else {
           tokens.push({ type: TOK_CONCATENATE, value: '&', start });
         }
+      } else if (stream[this._current] === '~') {
+        start = this._current;
+        this._current += 1;
+        tokens.push({ type: TOK_UNION, value: '~', start });
       } else if (stream[this._current] === '+') {
         start = this._current;
         this._current += 1;
