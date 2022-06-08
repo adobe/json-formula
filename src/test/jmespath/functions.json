@@ -16,31 +16,31 @@
   },
   "cases": [
     {
-      "expression": "reduce(&@.previous + @.current, numbers)",
+      "expression": "reduce(&@.accumulated + @.current, numbers)",
       "result": 11
     },
     {
-      "expression": "reduce(&@.previous & @.current, strings, ':')",
+      "expression": "reduce(&@.accumulated & @.current, strings, ':')",
       "result": ":abc"
     },
     {
-      "expression": "reduce(&@.previous - @.current, numbers, 100)",
+      "expression": "reduce(&@.accumulated - @.current, numbers, 100)",
       "result": 89
     },
     {
-      "expression": "reduce(&if(abs(mod(@.current, 2)) == 1, {odd: @.previous.odd + 1, even: @.previous.even},{odd: @.previous.odd, even: @.previous.even + 1}), numbers, {odd: 0, even: 0})",
+      "expression": "reduce(&if(abs(mod(@.current, 2)) == 1, {odd: @.accumulated.odd + 1, even: @.accumulated.even},{odd: @.accumulated.odd, even: @.accumulated.even + 1}), numbers, {odd: 0, even: 0})",
       "result": {"odd": 3, "even": 1}
     },
     {
-      "expression": "reduce(&value(`{\"0\":0,\"1\":1,\"2\":2,\"3\":3,\"4\":4,\"5\":5,\"6\":6,\"7\":7,\"8\":8,\"9\":9,\"A\":10,\"B\":11,\"C\":12,\"D\":13,\"E\":14,\"F\":15}`, @.current) + 16*@.previous, split('A2',''), 0)",
+      "expression": "reduce(&value(`{\"0\":0,\"1\":1,\"2\":2,\"3\":3,\"4\":4,\"5\":5,\"6\":6,\"7\":7,\"8\":8,\"9\":9,\"A\":10,\"B\":11,\"C\":12,\"D\":13,\"E\":14,\"F\":15}`, @.current) + 16*@.accumulated, split('A2',''), 0)",
       "result": 162
     },
     {
-      "expression": "reduce(&if(@.current == 'apple', @.index, @.previous), ['orange', 'apple', 'banana'], -1)",
+      "expression": "reduce(&if(@.current == 'apple', @.index, @.accumulated), ['orange', 'apple', 'banana'], -1)",
       "result": 1
     },
     {
-      "expression": "reduce(&if (@.index+1 == length(@.array),(@.previous + @.current)/length(@.array),@.previous + @.current),numbers, 0)",
+      "expression": "reduce(&if (@.index+1 == length(@.array),(@.accumulated + @.current)/length(@.array),@.accumulated + @.current),numbers, 0)",
       "result": 2.75
     },
     {

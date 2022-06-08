@@ -37,7 +37,14 @@ const TYPE_NAME_TABLE = {
 
 export function getTypeName(inputObj, useValueOf = true) {
   if (inputObj === null) return TYPE_NULL;
-  const obj = useValueOf ? Object.getPrototypeOf(inputObj).valueOf.call(inputObj) : inputObj;
+  let obj = inputObj;
+  if (useValueOf) {
+    const proto = Object.getPrototypeOf(inputObj);
+    // check for the case where there's a child named 'valueOf' that's not a function
+    // if so, then it's an object...
+    if (typeof proto.valueOf === 'function') obj = proto.valueOf.call(inputObj);
+    else return TYPE_OBJECT;
+  }
   switch (Object.prototype.toString.call(obj)) {
     case '[object String]':
       return TYPE_STRING;

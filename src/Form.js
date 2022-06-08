@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /*
 Copyright 2021 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -39,20 +40,54 @@ function createField(name, value, readonly = false, required = true) {
 
     get '$required'() { return required; }
   }
-  const newField = new Field();
-  return newField;
+  return new Field();
+}
+
+function getProxy(f) {
+  const handler = {
+    getPrototypeOf() {
+      return f;
+    },
+    get() {
+      return Reflect.get(...arguments);
+    },
+  };
+
+  return new Proxy(f, handler);
+}
+
+function createFieldset(fsname, isObj, fields) {
+  class FieldsetObj {
+    get '$name'() { return fsname; }
+
+    get '$fields'() { return fields; }
+
+    _add(k, v) { this[k] = v; }
+  }
+  class FieldsetArray extends Array {
+    get '$name'() { return fsname; }
+
+    get '$fields'() { return fields; }
+
+    _add(k, v) { this[k] = v; }
+  }
+  const fieldset = isObj ? new FieldsetObj() : new FieldsetArray();
+  const obj = isObj ? getProxy(fieldset) : fieldset;
+  // const obj = fieldset;
+  return obj;
 }
 
 function createFields(parent, childref, child) {
   const result = [];
   if (child instanceof Array) {
-    parent[childref] = [];
+    // parent._add(childref, createFieldset(childref, false));
+    parent._add(childref, createFieldset(childref, false, result));
     child.forEach((item, index) => {
       const fields = createFields(parent[childref], index, item);
       result.push(...fields);
     });
   } else if (child !== null && typeof child === 'object') {
-    parent[childref] = {};
+    parent._add(childref, createFieldset(childref, true, result));
     Object.keys(child).forEach(k => {
       const fields = createFields(parent[childref], k, child[k]);
       result.push(...fields);
@@ -66,18 +101,14 @@ function createFields(parent, childref, child) {
   return result;
 }
 
-export default class Form {
-  constructor(fieldData, dataRoot) {
-    this.fieldData = fieldData;
-    this.allFields = createFields(fieldData, 'data', dataRoot);
-    Object.keys(fieldData.data).forEach(k => {
-      this[k] = fieldData.data[k];
-    });
-  }
+export default function createForm(dataRoot) {
+  // if it's not an object or array (a scalar) then don't bother trying to create a form
+  if (dataRoot === null || typeof dataRoot !== 'object') return dataRoot;
 
-  valueOf() { return this.fieldData; }
-
-  stringify() { return JSON.stringify(this.fieldData.data, null, 2); }
-
-  get '$fields'() { return this.allFields; }
+  const allFields = [];
+  const form = createFieldset('', !Array.isArray(dataRoot), allFields);
+  Object.entries(dataRoot).forEach(([k, v]) => {
+    allFields.push(...createFields(form, k, v));
+  });
+  return form;
 }

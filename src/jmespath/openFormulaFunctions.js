@@ -470,7 +470,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         const month = toNumber(args[1]);
         const day = toNumber(args[2]);
         // javascript months starts from 0
-        const jsDate = Date.UTC(year, month - 1, day);
+        const jsDate = new Date(year, month - 1, day);
         return Math.floor(jsDate / 86400000);
       },
       _signature: [
@@ -483,7 +483,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
       _func: args => {
         const date = toNumber(args[0]);
         const jsDate = new Date(date * 86400000);
-        return jsDate.getUTCDate();
+        return jsDate.getDate();
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -493,8 +493,8 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
       _func: args => {
         const date = toNumber(args[0]);
         const jsDate = new Date(date * 86400000);
-        // javascript months start from 0
-        return jsDate.getUTCMonth() + 1;
+        // javascript months start from 0ß
+        return jsDate.getMonth() + 1;
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -504,7 +504,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
       _func: args => {
         const date = toNumber(args[0]);
         const jsDate = new Date(date * 86400000);
-        return jsDate.getUTCFullYear();
+        return jsDate.getFullYear();
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -567,26 +567,11 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
       ],
     },
     now: {
-      _func: () => {
-        const localDateTime = new Date();
-        const year = localDateTime.getFullYear();
-        const month = localDateTime.getMonth();
-        const date = localDateTime.getDate();
-        const hours = localDateTime.getHours();
-        const minutes = localDateTime.getMinutes();
-        const seconds = localDateTime.getSeconds();
-        return Date.UTC(year, month, date, hours, minutes, seconds) / 86400000;
-      },
+      _func: () => Date.now() / 86400000,
       _signature: [],
     },
     today: {
-      _func: () => {
-        const localDateTime = new Date();
-        const year = localDateTime.getFullYear();
-        const month = localDateTime.getMonth();
-        const date = localDateTime.getDate();
-        return Math.floor(Date.UTC(year, month, date) / 86400000);
-      },
+      _func: () => Math.floor(Date.now() / 86400000),
       _signature: [],
     },
     weekday: {
@@ -594,7 +579,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         const date = toNumber(args[0]);
         const type = args.length > 1 ? toNumber(args[1]) : 1;
         const jsDate = new Date(date * 86400000);
-        const day = jsDate.getUTCDay();
+        const day = jsDate.getDay();
         // day is in range [0-7) with 0 mapping to sunday
         switch (type) {
           case 1:
