@@ -12,6 +12,7 @@ import {
 // Type constants used to define functions.
 const {
   TYPE_CLASS,
+  TYPE_ANY,
 } = dataTypes;
 
 function JsonFormula() {
@@ -47,7 +48,8 @@ function JsonFormula() {
   }
 
   function matchClass(arg, expectedList) {
-    return isClass(arg) && expectedList.includes(TYPE_CLASS);
+    // checking isClass() generates a dependency -- so call it only if necessary
+    return expectedList.includes(TYPE_CLASS) && isClass(arg);
   }
 
   class Runtime {
@@ -98,10 +100,8 @@ function JsonFormula() {
       const limit = Math.min(signature.length, args.length);
       for (let i = 0; i < limit; i += 1) {
         currentSpec = signature[i].types;
-        // First check for a match using matchClass
-        // this check will not call valueOf or toString on the object, and so
-        // will not trigger a dependency
-        if (!matchClass(args[i], currentSpec)) {
+        // Try to avoid checks that will introspect the object and generate dependencies
+        if (!matchClass(args[i], currentSpec) && !currentSpec.includes(TYPE_ANY)) {
           actualType = getTypeNames(args[i]);
           // eslint-disable-next-line no-param-reassign
           args[i] = matchType(actualType, currentSpec, args[i], argName, toNumber);
