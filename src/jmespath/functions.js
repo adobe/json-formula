@@ -130,8 +130,8 @@ export default function functions(
       _func: resolvedArgs => {
         const exprefNode = resolvedArgs[0];
         return resolvedArgs[1].reduce(
-          (previous, current, index, array) => interpreter.visit(exprefNode, {
-            previous, current, index, array,
+          (accumulated, current, index, array) => interpreter.visit(exprefNode, {
+            accumulated, current, index, array,
           }),
           resolvedArgs.length === 3 ? resolvedArgs[2] : null,
         );

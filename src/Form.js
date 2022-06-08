@@ -39,8 +39,14 @@ function createField(name, value, readonly = false, required = true) {
 
     get '$required'() { return required; }
   }
-  const newField = new Field();
-  return newField;
+  return new Field();
+}
+
+function createFieldset(fsname) {
+  class Fieldset {
+    get '$name'() { return fsname; }
+  }
+  return new Fieldset();
 }
 
 function createFields(parent, childref, child) {
@@ -52,7 +58,7 @@ function createFields(parent, childref, child) {
       result.push(...fields);
     });
   } else if (child !== null && typeof child === 'object') {
-    parent[childref] = {};
+    parent[childref] = createFieldset(childref);
     Object.keys(child).forEach(k => {
       const fields = createFields(parent[childref], k, child[k]);
       result.push(...fields);

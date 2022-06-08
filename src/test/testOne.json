@@ -1,10 +1,10 @@
 [
   [
-    "mod1",
+    "valueOf",
     {
-      "data": "`{}`",
-      "expression": "mod(3, 2)",
-      "expected": 1
+      "data": "{\"root\": {\"valueOf\": 42}}",
+      "expression": "root & 'w'",
+      "expected": "w"
     }
   ]
 ]
