@@ -11,7 +11,7 @@ governing permissions and limitations under the License.
 */
 import { jsonFormula } from '../json-formula';
 import stringToNumber from '../jmespath/stringToNumber';
-import Form from '../Form';
+import createForm from '../Form';
 
 test('if executes correct branch', () => {
   const expressionTrue = 'if(true(),true_fn(),false_fn())';
@@ -69,10 +69,9 @@ test('can pass a class as a function argument', () => {
       _signature: [{ types: [TYPE_CLASS] }],
     },
   };
-  const fieldData = {};
-  const root = new Form(fieldData, { data: { address: { street: 'Oak' } } });
+  const root = createForm({ address: { street: 'Oak' } });
   const result = jsonFormula(
-    root.data,
+    root,
     {},
     getNameFunc,
     customFunctions,
@@ -82,12 +81,11 @@ test('can pass a class as a function argument', () => {
 });
 
 test('creating second form should not affect first form', () => {
-  const fieldData = {};
   const data = { data: { address: { street: 'Oak' } } };
 
-  const form1 = new Form(fieldData, data);
+  const form1 = createForm(data);
   const numFields1 = form1.$fields.length;
-  const form2 = new Form(fieldData, data);
+  const form2 = createForm(data);
   const numFields2 = form2.$fields.length;
 
   expect(form1.$fields).toHaveLength(numFields1);
@@ -120,9 +118,8 @@ describe('current datetime tests', () => {
 });
 
 describe('expressions with globals', () => {
-  const fieldData = {};
   const data = { data: { address: { street: 'Oak' } } };
-  const form = new Form(fieldData, data);
+  const form = createForm(data);
 
   test('should extract value from global', () => {
     const expression = '$form.address.street';

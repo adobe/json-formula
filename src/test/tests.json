@@ -2404,5 +2404,13 @@
       "expression": "[].quantity ~ {a: 4}",
       "error": "syntax"
     }
+  ],
+  [
+    "valueOf conflict",
+    {
+      "data": "`{\"root\": {\"valueOf\": 42}}`",
+      "expression": "type(root)",
+      "expected": "object"
+    }
   ]
 ]

@@ -12,7 +12,7 @@ governing permissions and limitations under the License.
 
 /* global window, document, fetch */
 import { jsonFormula } from './json-formula';
-import Form from './Form';
+import createForm from './Form';
 import stringToNumber from './jmespath/stringToNumber';
 
 window.addEventListener('load', () => {
@@ -32,13 +32,11 @@ window.addEventListener('load', () => {
     window.localStorage.setItem('expression', expression.value);
     const input = expression.value;
     const useFields = document.getElementById('use-fields').checked;
-    let root = null;
-    const fieldData = {};
     let jsonData;
     try {
       jsonData = JSON.parse(dataElement.value);
       if (useFields) {
-        root = new Form(fieldData, jsonData);
+        jsonData = createForm(jsonData);
       }
     } catch (e) {
       result.value = e.toString();
@@ -48,8 +46,8 @@ window.addEventListener('load', () => {
     const debugInfo = [];
     try {
       const jsonResult = jsonFormula(
-        useFields ? fieldData.data : jsonData,
-        { $form: root, $: {} },
+        jsonData,
+        { $form: jsonData, $: {} },
         input,
         true,
         stringToNumber,

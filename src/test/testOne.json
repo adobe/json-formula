@@ -1,10 +1,10 @@
 [
   [
-    "valueOf",
+    "valueOf conflict",
     {
-      "data": "{\"root\": {\"valueOf\": 42}}",
-      "expression": "root & 'w'",
-      "expected": "w"
+      "data": "`{\"root\": {\"valueOf\": 42}}`",
+      "expression": "type(root)",
+      "expected": "object"
     }
   ]
 ]

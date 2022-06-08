@@ -11,7 +11,7 @@ governing permissions and limitations under the License.
 */
 
 import { jsonFormula } from '../../json-formula';
-import Form from '../../Form';
+import createForm from '../../Form';
 import stringToNumber from '../../jmespath/stringToNumber';
 
 const basic = require('./basic.json');
@@ -57,12 +57,11 @@ function executeTest(desc, tst) {
 }
 
 function executeTestWithFields(desc, tst) {
-  const fieldData = {};
-  const root = new Form(fieldData, tst.given);
+  const root = createForm(tst.given);
   let result;
   try {
     const jsonResult = jsonFormula(
-      fieldData.data,
+      root,
       { $form: root, $: {} },
       tst.expression,
       stringToNumber,
