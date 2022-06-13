@@ -1,10 +1,10 @@
 [
   [
-    "valueOf conflict",
+    "escape quotes",
     {
-      "data": "`{\"root\": {\"valueOf\": 42}}`",
-      "expression": "type(root)",
-      "expected": "object"
+      "data": "`{}`",
+      "expression": "'\\'abc\\''",
+      "expected": "'abc'"
     }
   ]
 ]

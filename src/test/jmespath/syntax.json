@@ -543,13 +543,18 @@
         "result": null
       },
       {
-        "comment": "Literal char not escaped",
+        "comment": "Literal char inside quotes",
         "expression": "foo[?bar==`[\"foo`bar\"]`]",
-        "error": "syntax"
+        "error": null
       },
       {
         "comment": "Literal char escaped",
         "expression": "foo[?bar==`[\"foo\\`bar\"]`]",
+        "result": null
+      },
+      {
+        "comment": "Literal char escaped",
+        "expression": "foo[?bar==`[\"foo\\\"baz`bar\"]`]",
         "result": null
       },
       {
@@ -577,6 +582,11 @@
         "comment": "Quoted identifier in filter expression with spaces",
         "expression": "[?\"\\\\\" > `\"foo\"`]",
         "result": null
+      },
+      {
+        "comment": "escaped literals",
+        "expression": "'abc\\'abc\\'abc'",
+        "result": "abc'abc'abc"
       }
     ]
   },

@@ -297,7 +297,7 @@ export default class Lexer {
     }
     this._current += 1;
     const literal = stream.slice(start + 1, this._current - 1);
-    return literal.replace("\\'", "'");
+    return literal.replaceAll("\\'", "'");
   }
 
   _consumeNumber(stream) {
@@ -407,19 +407,26 @@ export default class Lexer {
     const start = this._current;
     const maxLength = stream.length;
     let literal;
-    while (stream[this._current] !== '`' && this._current < maxLength) {
-      // You can escape a literal char or you can escape the escape.
+    let inQuotes = false;
+    while ((inQuotes || stream[this._current] !== '`') && this._current < maxLength) {
       let current = this._current;
-      if (stream[current] === '\\' && (stream[current + 1] === '\\'
-                                             || stream[current + 1] === '`')) {
-        current += 2;
-      } else {
-        current += 1;
+      // bypass escaped double quotes when we're inside quotes
+      if (inQuotes && stream[current] === '\\' && stream[current + 1] === '"') current += 2;
+      else {
+        if (stream[current] === '"') inQuotes = !inQuotes;
+        if (inQuotes && stream[current + 1] === '`') current += 2;
+        else if (stream[current] === '\\' && (stream[current + 1] === '\\'
+                                              || stream[current + 1] === '`')) {
+        // You can escape a literal char or you can escape the escape.
+          current += 2;
+        } else {
+          current += 1;
+        }
       }
       this._current = current;
     }
     let literalString = stream.slice(start, this._current).trimStart();
-    literalString = literalString.replace('\\`', '`');
+    literalString = literalString.replaceAll('\\`', '`');
     if (_looksLikeJSON(literalString)) {
       literal = JSON.parse(literalString);
     } else {

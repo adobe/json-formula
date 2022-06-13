@@ -17,7 +17,7 @@ const pipe = require('./pipe.json');
 const slice = require('./slice.json');
 const syntax = require('./syntax.json');
 const unicode = require('./unicode.json');
-const wildcard = require('./wildcard.json'); 
+const wildcard = require('./wildcard.json');
 
 class FormulaErrorListener extends antlr4.error.ErrorListener {
   // eslint-disable-next-line class-methods-use-this
