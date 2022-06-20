@@ -1750,58 +1750,58 @@
     }
   ],
   [
-    "date(1970,1,1)",
+    "datetime(1970,1,1)",
     {
       "data": "`null`",
-      "expression": "date(1970,1,1)",
+      "expression": "datetime(1970,1,1)",
       "expected": 0
     }
   ],
   [
-    "date('1970',1,1)",
+    "datetime('1970',1,1)",
     {
       "data": "`null`",
-      "expression": "date('1970',1,1)",
+      "expression": "datetime('1970',1,1)",
       "expected": 0
     }
   ],
   [
-    "date(1969,12,31)",
+    "datetime(1969,12,31)",
     {
       "data": "`null`",
-      "expression": "date(1969,12,31)",
+      "expression": "datetime(1969,12,31)",
       "expected": -1
     }
   ],
   [
-    "date(2020,2,29)",
+    "datetime(2020,2,29)",
     {
       "data": "`null`",
-      "expression": "date(2020,2,29)",
+      "expression": "datetime(2020,2,29)",
       "expected": 18321
     }
   ],
   [
-    "date(2020,3,1)",
+    "datetime(2020,3,1)",
     {
       "data": "`null`",
-      "expression": "date(2020,3,1)",
+      "expression": "datetime(2020,3,1)",
       "expected": 18322
     }
   ],
   [
-    "date(date(epoch.year, epoch.month, epoch.date))",
+    "datetime(datetime(epoch.year, epoch.month, epoch.date))",
     {
       "data": "samples.datetime",
-      "expression": "date(epoch.year, epoch.month, epoch.date)",
+      "expression": "datetime(epoch.year, epoch.month, epoch.date)",
       "expected": 0
     }
   ],
   [
-    "date(1970,1,1) | day(@)",
+    "datetime(1970,1,1) | day(@)",
     {
       "data": "`null`",
-      "expression": "date(1970,1,1) | day(@)",
+      "expression": "datetime(1970,1,1) | day(@)",
       "expected": 1
     }
   ],
@@ -1830,26 +1830,26 @@
     }
   ],
   [
-    "date(1970,1,1) | month(@)",
+    "datetime(1970,1,1) | month(@)",
     {
       "data": "`null`",
-      "expression": "date(1970,1,1) | month(@)",
+      "expression": "datetime(1970,1,1) | month(@)",
       "expected": 1
     }
   ],
   [
-    "date(2020,2,29) | month(@)",
+    "datetime(2020,2,29) | month(@)",
     {
       "data": "`null`",
-      "expression": "date(2020,2,29) | month(@)",
+      "expression": "datetime(2020,2,29) | month(@)",
       "expected": 2
     }
   ],
   [
-    "date(2020,2,30) | month(@)",
+    "datetime(2020,2,30) | month(@)",
     {
       "data": "`null`",
-      "expression": "date(2020,2,30) | month(@)",
+      "expression": "datetime(2020,2,30) | month(@)",
       "expected": 3
     }
   ],
@@ -1862,26 +1862,26 @@
     }
   ],
   [
-    "date(1970,1,1) | year(@)",
+    "datetime(1970,1,1) | year(@)",
     {
       "data": "`null`",
-      "expression": "date(1970,1,1) | year(@)",
+      "expression": "datetime(1970,1,1) | year(@)",
       "expected": 1970
     }
   ],
   [
-    "date(1969,1,1) | year(@)",
+    "datetime(1969,1,1) | year(@)",
     {
       "data": "`null`",
-      "expression": "date(1969,1,1) | year(@)",
+      "expression": "datetime(1969,1,1) | year(@)",
       "expected": 1969
     }
   ],
   [
-    "date(1969,1,1) | year(@)",
+    "datetime(1969,1,1) | year(@)",
     {
       "data": "`null`",
-      "expression": "date(1969,1,1) | year(@)",
+      "expression": "datetime(1969,1,1) | year(@)",
       "expected": 1969
     }
   ],
@@ -2021,10 +2021,10 @@
     }
   ],
   [
-    "weekday(date(1970, 1, 1))",
+    "weekday(datetime(1970, 1, 1))",
     {
       "data": "`null`",
-      "expression": "weekday(date(1970, 1, 1))",
+      "expression": "weekday(datetime(1970, 1, 1))",
       "expected": 5
     }
   ],
@@ -2411,6 +2411,46 @@
       "data": "`{\"root\": {\"valueOf\": 42}}`",
       "expression": "type(root)",
       "expected": "object"
+    }
+  ],
+  [
+    "datedif 1d",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-20\", d2: samples.datedif.\"2022-06-21\"}",
+      "expression": "datedif(d1, d2, 'd')",
+      "expected": 1
+    }
+  ],
+  [
+    "datedif null",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2022-06-20\"}",
+      "expression": "datedif(d1, d2, 'd')",
+      "expected": null
+    }
+  ],
+  [
+    "datedif 30d",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2022-07-21\"}",
+      "expression": "datedif(d1, d2, 'd')",
+      "expected": 30
+    }
+  ],
+  [
+    "datedif 364d",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2023-06-20\"}",
+      "expression": "datedif(d1, d2, 'd')",
+      "expected": 364
+    }
+  ],
+  [
+    "datedif 2963d",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2030-08-01\"}",
+      "expression": "datedif(d1, d2, 'd')",
+      "expected": 2963
     }
   ]
 ]

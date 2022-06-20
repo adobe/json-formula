@@ -11,6 +11,37 @@ governing permissions and limitations under the License.
 */
 import dataTypes from './dataTypes';
 
+// get the offset in MS, given a date and timezone
+// timezone is an IANA name. e.g. 'America/New_York'
+function offsetMS(dateObj, timeZone) {
+  const tzOffset = new Intl.DateTimeFormat('en-US', { timeZone, timeZoneName: 'longOffset' }).format(dateObj);
+  const offset = /GMT([+\-−])?(\d{1,2}):?(\d{0,2})?/.exec(tzOffset);
+  if (!offset) return 0;
+  const [sign, hours, minutes] = offset.slice(1);
+  const result = (((hours || 0) * 60) + 1 * (minutes || 0)) * 60 * 1000;
+  return sign === '-' ? result * -1 : result;
+}
+
+// If we create a non-UTC date, then we need to adjust from the default JavaScript timezone
+// to the default timezone
+export function adjustTimeZone(dateObj, timeZone) {
+  if (dateObj === null) return null;
+  let baseDate = Date.UTC(
+    dateObj.getFullYear(),
+    dateObj.getMonth(),
+    dateObj.getDate(),
+    dateObj.getHours(),
+    dateObj.getMinutes(),
+    dateObj.getSeconds(),
+    dateObj.getMilliseconds(),
+  );
+  baseDate -= offsetMS(dateObj, timeZone);
+
+  // get the offset for the default JS environment
+  // return days since the epoch
+  return new Date(baseDate);
+}
+
 export default function openFormulaFunctions(valueOf, toString, toNumber) {
   return {
   /**
@@ -464,19 +495,55 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         { types: [dataTypes.TYPE_STRING] },
       ],
     },
-    date: {
+    datetime: {
       _func: args => {
         const year = toNumber(args[0]);
         const month = toNumber(args[1]);
         const day = toNumber(args[2]);
+        const hours = args.length > 2 ? toNumber(args[3]) : 0;
+        const minutes = args.length > 2 ? toNumber(args[4]) : 0;
+        const seconds = args.length > 2 ? toNumber(args[5]) : 0;
+        const ms = args.length > 2 ? toNumber(args[6]) : 0;
+        const tz = args.length > 2 ? toNumber(args[7]) : null;
         // javascript months starts from 0
-        const jsDate = new Date(year, month - 1, day);
+        let jsDate = new Date(year, month - 1, day, hours, minutes, seconds, ms);
+        if (tz) {
+          jsDate = adjustTimeZone(jsDate, tz);
+        }
         return Math.floor(jsDate / 86400000);
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
         { types: [dataTypes.TYPE_NUMBER] },
         { types: [dataTypes.TYPE_NUMBER] },
+        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [dataTypes.TYPE_STRING], optional: true },
+      ],
+    },
+    datedif: {
+      _func: args => {
+        const d1 = toNumber(args[0]);
+        const d2 = toNumber(args[1]);
+        const fmt = toString(args[2]).toLowerCase();
+        /*
+          y Years
+          m Months. If there is not a complete month between the dates, 0 will be returned.
+          d Days
+          md Days, ignoring months and years
+          ym Months, ignoring years
+          yd Days, ignoring years
+        */
+        if (d2 === d1) return 0;
+        if (d2 < d1) return null;
+        if (fmt === 'd') return Math.floor(d2 - d1);
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [dataTypes.TYPE_STRING] },
       ],
     },
     day: {
