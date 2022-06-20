@@ -1806,6 +1806,22 @@
     }
   ],
   [
+    "datetime(2022, 6, 20, 10, 9, 8, 0 'America/New_York') - datetime(2022, 6, 20, 10, 9, 8, 0 'America/Los_Angeles')",
+    {
+      "data": "`null`",
+      "expression": "datetime(2022, 6, 20, 10, 9, 8, 0 'America/New_York') - datetime(2022, 6, 20, 10, 9, 8, 0 'America/Los_Angeles')",
+      "expected": 0.125
+    }
+  ],
+  [
+    "datetime(1970,1,1,13,12,11,123) | {h: hour(@), m: minute(@), s: second(@), ms: mod(@ * 24 * 60 * 60 * 100, 1000)}",
+    {
+      "data": "`null`",
+      "expression": "datetime(1970,1,1,13,12,11,0) | {h: hour(@), m: minute(@), s: second(@) ms: mod(@ * 24 * 60 * 60 * 100, 1000)}",
+      "expected": {"h": 13, "m": 12, "s": 11, "ms": 100}
+    }
+  ],
+  [
     "day(0)",
     {
       "data": "`null`",
@@ -1945,8 +1961,32 @@
     "hour(3.33333333333)",
     {
       "data": "`null`",
-      "expression": "hour(3.33333333333)",
+      "expression": "hour(3.3333333333333333)",
       "expected": 8
+    }
+  ],
+  [
+    "hour(4/3)",
+    {
+      "data": "`null`",
+      "expression": "hour(4/3)",
+      "expected": 8
+    }
+  ],
+  [
+    "minute(1/24/15)",
+    {
+      "data": "`null`",
+      "expression": "minute(1/24/15)",
+      "expected": 4
+    }
+  ],
+  [
+    "second(1/24/60/20)",
+    {
+      "data": "`null`",
+      "expression": "second(1/24/60/20)",
+      "expected": 3
     }
   ],
   [
@@ -2451,6 +2491,78 @@
       "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2030-08-01\"}",
       "expression": "datedif(d1, d2, 'd')",
       "expected": 2963
+    }
+  ],
+  [
+    "(datetime(2022, 6, 20, 10, 9, 8, 0, 'America/New_York') - datetime(2022, 6, 20, 10, 9, 8, 0, 'Etc/GMT')) * 24",
+    {
+      "data": "`null`",
+      "expression": "(datetime(2022, 6, 20, 10, 9, 8, 0, 'America/New_York') - datetime(2022, 6, 20, 10, 9, 8, 0, 'Etc/GMT')) * 24",
+      "expected": -4
+    }
+  ],
+  [
+    "datedif 0y",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-20\", d2: samples.datedif.\"2022-06-21\"}",
+      "expression": "datedif(d1, d2, 'y')",
+      "expected": 0
+    }
+  ],
+  [
+    "datedif 0y",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2022-07-21\"}",
+      "expression": "datedif(d1, d2, 'y')",
+      "expected": 0
+    }
+  ],
+  [
+    "datedif 0y",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2023-06-20\"}",
+      "expression": "datedif(d1, d2, 'y')",
+      "expected": 0
+    }
+  ],
+  [
+    "datedif 7y",
+    {
+      "data": "{d1: samples.datedif.\"2023-06-21\", d2: samples.datedif.\"2030-08-01\"}",
+      "expression": "datedif(d1, d2, 'y')",
+      "expected": 7
+    }
+  ],
+  [
+    "datedif 12m",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-20\", d2: samples.datedif.\"2022-06-21\"}",
+      "expression": "datedif(d1, d2, 'm')",
+      "expected": 0
+    }
+  ],
+  [
+    "datedif 1m",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2022-07-21\"}",
+      "expression": "datedif(d1, d2, 'm')",
+      "expected": 1
+    }
+  ],
+  [
+    "datedif 11m",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2023-06-20\"}",
+      "expression": "datedif(d1, d2, 'm')",
+      "expected": 11
+    }
+  ],
+  [
+    "datedif 85m",
+    {
+      "data": "{d1: samples.datedif.\"2023-06-21\", d2: samples.datedif.\"2030-08-01\"}",
+      "expression": "datedif(d1, d2, 'm')",
+      "expected": 85
     }
   ]
 ]
