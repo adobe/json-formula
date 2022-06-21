@@ -11,6 +11,44 @@ governing permissions and limitations under the License.
 */
 import dataTypes from './dataTypes';
 
+// get the offset in MS, given a date and timezone
+// timezone is an IANA name. e.g. 'America/New_York'
+function offsetMS(dateObj, timeZone) {
+  const tzOffset = new Intl.DateTimeFormat('en-US', { timeZone, timeZoneName: 'longOffset' }).format(dateObj);
+  const offset = /GMT([+\-−])?(\d{1,2}):?(\d{0,2})?/.exec(tzOffset);
+  if (!offset) return 0;
+  const [sign, hours, minutes] = offset.slice(1);
+  const result = (((hours || 0) * 60) + 1 * (minutes || 0)) * 60 * 1000;
+  return sign === '-' ? result * -1 : result;
+}
+
+function round(num, digits) {
+  const precision = 10 ** digits;
+  return Math.round(num * precision) / precision;
+}
+
+const MS_IN_DAY = 24 * 60 * 60 * 1000;
+
+// If we create a non-UTC date, then we need to adjust from the default JavaScript timezone
+// to the default timezone
+export function adjustTimeZone(dateObj, timeZone) {
+  if (dateObj === null) return null;
+  let baseDate = Date.UTC(
+    dateObj.getFullYear(),
+    dateObj.getMonth(),
+    dateObj.getDate(),
+    dateObj.getHours(),
+    dateObj.getMinutes(),
+    dateObj.getSeconds(),
+    dateObj.getMilliseconds(),
+  );
+  baseDate += offsetMS(dateObj, timeZone);
+
+  // get the offset for the default JS environment
+  // return days since the epoch
+  return new Date(baseDate);
+}
+
 export default function openFormulaFunctions(valueOf, toString, toNumber) {
   return {
   /**
@@ -358,7 +396,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
       _func: args => {
         const number = toNumber(args[0]);
         const digits = toNumber(args[1]);
-        return Math.round(number * 10 ** digits) / 10 ** digits;
+        return round(number, digits);
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -464,17 +502,123 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         { types: [dataTypes.TYPE_STRING] },
       ],
     },
-    date: {
+    /**
+     * Return a date/time value.
+     * @param {integer} year
+     * @param {integer} day
+     * @param {integer} hours
+     * @param {integer} (optional) minutes
+     * @param {integer} (optional) seconds
+     * @param {integer} (optional) milliseconds
+     * @param {string} (optional) time zone name --
+     * according to IANA time zone names. e.g. "America/Toronto"
+     * @returns {number} the new date/time value
+     * @function
+     */
+    datetime: {
       _func: args => {
         const year = toNumber(args[0]);
         const month = toNumber(args[1]);
         const day = toNumber(args[2]);
+        const hours = args.length > 3 ? toNumber(args[3]) : 0;
+        const minutes = args.length > 4 ? toNumber(args[4]) : 0;
+        const seconds = args.length > 5 ? toNumber(args[5]) : 0;
+        const ms = args.length > 6 ? toNumber(args[6]) : 0;
+        const tz = args.length > 7 ? toString(args[7]) : null;
         // javascript months starts from 0
-        const jsDate = new Date(year, month - 1, day);
-        return Math.floor(jsDate / 86400000);
+        let jsDate = new Date(year, month - 1, day, hours, minutes, seconds, ms);
+        if (tz) {
+          jsDate = adjustTimeZone(jsDate, tz);
+        }
+        return jsDate.getTime() / MS_IN_DAY;
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
+        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [dataTypes.TYPE_STRING], optional: true },
+      ],
+    },
+    /**
+     * Return a datetime value.
+     * @param {number} start_date The starting date
+     * @param {number} end_date The end date -- must be greater or equal to start_date
+     * @param {string} unit  One of:
+          `y` the number of whole years between start_date and end_date
+          `m` the number of whole months between start_date and end_date.
+          `d` the number of days between start_date and end_date
+          `md` the number of days between start_date and end_date after subtracting whole months.
+          `ym` the number of whole months between start_date and end_date
+             after subtracting whole years.
+          `yd` the number of days between start_date and end_date, assuming start_date
+             and end_date were no more than one year apart
+      * @returns {integer} The number of days/months/years difference
+      * @function
+      */
+    datedif: {
+      _func: args => {
+        const d1 = toNumber(args[0]);
+        const d2 = toNumber(args[1]);
+        const unit = toString(args[2]).toLowerCase();
+        if (d2 === d1) return 0;
+        if (d2 < d1) return null;
+        if (unit === 'd') return Math.floor(d2 - d1);
+        const date1 = new Date(d1 * MS_IN_DAY);
+        const date2 = new Date(d2 * MS_IN_DAY);
+        const yearDiff = date2.getFullYear() - date1.getFullYear();
+        let monthDiff = date2.getMonth() - date1.getMonth();
+        const dayDiff = date2.getDate() - date1.getDate();
+
+        if (unit === 'y') {
+          let y = yearDiff;
+          if (monthDiff < 0) y -= 1;
+          if (monthDiff === 0 && dayDiff < 0) y -= 1;
+          return y;
+        }
+        if (unit === 'm') {
+          return yearDiff * 12 + monthDiff + (dayDiff < 0 ? -1 : 0);
+        }
+        if (unit === 'ym') {
+          if (dayDiff < 0) monthDiff -= 1;
+          if (monthDiff <= 0 && yearDiff > 0) return 12 + monthDiff;
+          return monthDiff;
+        }
+        if (unit === 'yd') {
+          if (dayDiff < 0) monthDiff -= 1;
+          if (monthDiff < 0) date2.setFullYear(date1.getFullYear() + 1);
+          else date2.setFullYear(date1.getFullYear());
+          return Math.floor((date2.getTime() - date1.getTime()) / MS_IN_DAY);
+        }
+        throw new TypeError(`Unrecognized unit parameter "${unit}" for datedif()`);
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [dataTypes.TYPE_STRING] },
+      ],
+    },
+    /**
+      * Summary: Returns the serial number of the end of a month, given date plus MonthAdd months
+      * @param {number} startDate The base date to start from
+      * @param {integer} monthAdd Number of months to add to start date
+      * @return {integer} the number of days in the computed month
+      * @function
+      */
+    eomonth: {
+      _func: args => {
+        const date = toNumber(args[0]);
+        const months = toNumber(args[1]);
+        const jsDate = new Date(date * MS_IN_DAY);
+        // We can give the constructor a month value > 11 and it will increment the years
+        // Since day is 1-based, giving zero will yield the last day of the previous month
+        const newDate = new Date(jsDate.getFullYear(), jsDate.getMonth() + months + 1, 0);
+        return newDate.getTime() / MS_IN_DAY;
+      },
+      _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
         { types: [dataTypes.TYPE_NUMBER] },
       ],
@@ -482,7 +626,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
     day: {
       _func: args => {
         const date = toNumber(args[0]);
-        const jsDate = new Date(date * 86400000);
+        const jsDate = new Date(date * MS_IN_DAY);
         return jsDate.getDate();
       },
       _signature: [
@@ -492,7 +636,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
     month: {
       _func: args => {
         const date = toNumber(args[0]);
-        const jsDate = new Date(date * 86400000);
+        const jsDate = new Date(date * MS_IN_DAY);
         // javascript months start from 0ß
         return jsDate.getMonth() + 1;
       },
@@ -503,7 +647,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
     year: {
       _func: args => {
         const date = toNumber(args[0]);
-        const jsDate = new Date(date * 86400000);
+        const jsDate = new Date(date * MS_IN_DAY);
         return jsDate.getFullYear();
       },
       _signature: [
@@ -529,12 +673,17 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
     },
     hour: {
       _func: args => {
-        const time = toNumber(args[0]);
+        // grab just the fraction part
+        const time = toNumber(args[0]) % 1;
         if (time < 0) {
           return null;
         }
-        const hour = (time * 86400) / 3600;
-        return hour % 24;
+        // Normally we'd round to 15 digits, but since we're also multiplying by 24,
+        // a reasonable precision is around 14 digits.
+
+        const hour = round(time * 24, 14);
+
+        return Math.floor(hour % 24);
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -542,12 +691,15 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
     },
     minute: {
       _func: args => {
-        const time = toNumber(args[0]);
+        const time = toNumber(args[0]) % 1;
         if (time < 0) {
           return null;
         }
-        const minute = (time * 1440);
-        return minute % 60;
+
+        // Normally we'd round to 15 digits, but since we're also multiplying by 1440,
+        // a reasonable precision is around 10 digits.
+        const minute = Math.round(time * 1440, 10);
+        return Math.floor(minute % 60);
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -555,30 +707,33 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
     },
     second: {
       _func: args => {
-        const time = toNumber(args[0]);
+        const time = toNumber(args[0]) % 1;
         if (time < 0) {
           return null;
         }
-        const seconds = (time * 86400);
-        return seconds % 60;
+
+        // Normally we'd round to 15 digits, but since we're also multiplying by 86400,
+        // a reasonable precision is around 10 digits.
+        const seconds = round(time * 86400, 10);
+        return Math.floor(seconds % 60);
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
       ],
     },
     now: {
-      _func: () => Date.now() / 86400000,
+      _func: () => Date.now() / MS_IN_DAY,
       _signature: [],
     },
     today: {
-      _func: () => Math.floor(Date.now() / 86400000),
+      _func: () => Math.floor(Date.now() / MS_IN_DAY),
       _signature: [],
     },
     weekday: {
       _func: args => {
         const date = toNumber(args[0]);
         const type = args.length > 1 ? toNumber(args[1]) : 1;
-        const jsDate = new Date(date * 86400000);
+        const jsDate = new Date(date * MS_IN_DAY);
         const day = jsDate.getDay();
         // day is in range [0-7) with 0 mapping to sunday
         switch (type) {
