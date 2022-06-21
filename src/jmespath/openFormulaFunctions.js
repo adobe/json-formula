@@ -27,7 +27,7 @@ function round(num, digits) {
   return Math.round(num * precision) / precision;
 }
 
-const MS_IN_YEAR = 24 * 60 * 60 * 1000;
+const MS_IN_DAY = 24 * 60 * 60 * 1000;
 
 // If we create a non-UTC date, then we need to adjust from the default JavaScript timezone
 // to the default timezone
@@ -502,6 +502,19 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         { types: [dataTypes.TYPE_STRING] },
       ],
     },
+    /**
+     * Return a date/time value.
+     * @param {integer} year
+     * @param {integer} day
+     * @param {integer} hours
+     * @param {integer} (optional) minutes
+     * @param {integer} (optional) seconds
+     * @param {integer} (optional) milliseconds
+     * @param {string} (optional) time zone name --
+     * according to IANA time zone names. e.g. "America/Toronto"
+     * @returns {number} the new date/time value
+     * @function
+     */
     datetime: {
       _func: args => {
         const year = toNumber(args[0]);
@@ -517,7 +530,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         if (tz) {
           jsDate = adjustTimeZone(jsDate, tz);
         }
-        return jsDate.getTime() / MS_IN_YEAR;
+        return jsDate.getTime() / MS_IN_DAY;
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -530,37 +543,57 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         { types: [dataTypes.TYPE_STRING], optional: true },
       ],
     },
+    /**
+     * Return a datetime value.
+     * @param {number} start_date The starting date
+     * @param {number} end_date The end date -- must be greater or equal to start_date
+     * @param {string} unit.  One of:
+          `y` the number of whole years between start_date and end_date
+          `m` the number of whole months between start_date and end_date.
+          `d` the number of days between start_date and end_date
+          `md` the number of days between start_date and end_date after subtracting whole months.
+          `ym` the number of whole months between start_date and end_date
+             after subtracting whole years.
+          `yd` the number of days between start_date and end_date, assuming start_date
+             and end_date were no more than one year apart
+      * @returns {integer} The number of days/months/years difference
+      * @function
+      */
     datedif: {
       _func: args => {
         const d1 = toNumber(args[0]);
         const d2 = toNumber(args[1]);
-        const fmt = toString(args[2]).toLowerCase();
-        /*
-          y Years
-          m Months. If there is not a complete month between the dates, 0 will be returned.
-          d Days
-          md Days, ignoring months and years
-          ym Months, ignoring years
-          yd Days, ignoring years
-        */
+        const unit = toString(args[2]).toLowerCase();
         if (d2 === d1) return 0;
         if (d2 < d1) return null;
-        if (fmt === 'd') return Math.floor(d2 - d1);
-        const date1 = new Date(d1 * MS_IN_YEAR);
-        const date2 = new Date(d2 * MS_IN_YEAR);
+        if (unit === 'd') return Math.floor(d2 - d1);
+        const date1 = new Date(d1 * MS_IN_DAY);
+        const date2 = new Date(d2 * MS_IN_DAY);
         const yearDiff = date2.getFullYear() - date1.getFullYear();
-        const monthDiff = date2.getMonth() - date1.getMonth();
+        let monthDiff = date2.getMonth() - date1.getMonth();
         const dayDiff = date2.getDate() - date1.getDate();
 
-        if (fmt === 'y') {
+        if (unit === 'y') {
           let y = yearDiff;
           if (monthDiff < 0) y -= 1;
           if (monthDiff === 0 && dayDiff < 0) y -= 1;
           return y;
         }
-        if (fmt === 'm') {
+        if (unit === 'm') {
           return yearDiff * 12 + monthDiff + (dayDiff < 0 ? -1 : 0);
         }
+        if (unit === 'ym') {
+          if (dayDiff < 0) monthDiff -= 1;
+          if (monthDiff <= 0 && yearDiff > 0) return 12 + monthDiff;
+          return monthDiff;
+        }
+        if (unit === 'yd') {
+          if (dayDiff < 0) monthDiff -= 1;
+          if (monthDiff < 0) date2.setFullYear(date1.getFullYear() + 1);
+          else date2.setFullYear(date1.getFullYear());
+          return Math.floor((date2.getTime() - date1.getTime()) / MS_IN_DAY);
+        }
+        throw new TypeError(`Unrecognized unit parameter "${unit}" for datedif()`);
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -571,7 +604,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
     day: {
       _func: args => {
         const date = toNumber(args[0]);
-        const jsDate = new Date(date * MS_IN_YEAR);
+        const jsDate = new Date(date * MS_IN_DAY);
         return jsDate.getDate();
       },
       _signature: [
@@ -581,7 +614,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
     month: {
       _func: args => {
         const date = toNumber(args[0]);
-        const jsDate = new Date(date * MS_IN_YEAR);
+        const jsDate = new Date(date * MS_IN_DAY);
         // javascript months start from 0ß
         return jsDate.getMonth() + 1;
       },
@@ -592,7 +625,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
     year: {
       _func: args => {
         const date = toNumber(args[0]);
-        const jsDate = new Date(date * MS_IN_YEAR);
+        const jsDate = new Date(date * MS_IN_DAY);
         return jsDate.getFullYear();
       },
       _signature: [
@@ -667,18 +700,18 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
       ],
     },
     now: {
-      _func: () => Date.now() / MS_IN_YEAR,
+      _func: () => Date.now() / MS_IN_DAY,
       _signature: [],
     },
     today: {
-      _func: () => Math.floor(Date.now() / MS_IN_YEAR),
+      _func: () => Math.floor(Date.now() / MS_IN_DAY),
       _signature: [],
     },
     weekday: {
       _func: args => {
         const date = toNumber(args[0]);
         const type = args.length > 1 ? toNumber(args[1]) : 1;
-        const jsDate = new Date(date * MS_IN_YEAR);
+        const jsDate = new Date(date * MS_IN_DAY);
         const day = jsDate.getDay();
         // day is in range [0-7) with 0 mapping to sunday
         switch (type) {

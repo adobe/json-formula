@@ -2564,5 +2564,69 @@
       "expression": "datedif(d1, d2, 'm')",
       "expected": 85
     }
+  ],
+  [
+    "datedif 0ym",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-20\", d2: samples.datedif.\"2022-06-21\"}",
+      "expression": "datedif(d1, d2, 'ym')",
+      "expected": 0
+    }
+  ],
+  [
+    "datedif 1ym",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2022-07-21\"}",
+      "expression": "datedif(d1, d2, 'ym')",
+      "expected": 1
+    }
+  ],
+  [
+    "datedif 11ym",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2023-06-20\"}",
+      "expression": "datedif(d1, d2, 'ym')",
+      "expected": 11
+    }
+  ],
+  [
+    "datedif 1ym",
+    {
+      "data": "{d1: samples.datedif.\"2023-06-21\", d2: samples.datedif.\"2030-08-01\"}",
+      "expression": "datedif(d1, d2, 'ym')",
+      "expected": 1
+    }
+  ],
+  [
+    "datedif 1yd",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-20\", d2: samples.datedif.\"2022-06-21\"}",
+      "expression": "datedif(d1, d2, 'yd')",
+      "expected": 1
+    }
+  ],
+  [
+    "datedif 30yd",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2022-07-21\"}",
+      "expression": "datedif(d1, d2, 'yd')",
+      "expected": 30
+    }
+  ],
+  [
+    "datedif 364yd",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2023-06-20\"}",
+      "expression": "datedif(d1, d2, 'yd')",
+      "expected": 364
+    }
+  ],
+  [
+    "datedif 41yd",
+    {
+      "data": "{d1: samples.datedif.\"2023-06-21\", d2: samples.datedif.\"2030-08-01\"}",
+      "expression": "datedif(d1, d2, 'yd')",
+      "expected": 41
+    }
   ]
 ]
