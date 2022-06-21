@@ -425,5 +425,28 @@ export default function functions(
       _func: resolvedArgs => resolvedArgs.find(arg => getTypeName(arg) !== TYPE_NULL) || null,
       _signature: [{ types: [TYPE_ANY], variadic: true }],
     },
+    /**
+     * Returns a convolved (zipped) array containing grouped arrays of values from
+     * the array arguments from index 0, 1, 2, etc.
+     * This function accepts a variable number of arguments.
+     * The length of the returned array is equal to the length of the shortest array.
+     * @param {...array} arrays array of arrays to zip together
+     * @returns {array} An array of arrays with elements zipped together
+     * @function
+     */
+    zip: {
+      _func: args => {
+        const count = args.reduce((min, current) => Math.min(min, current.length), args[0].length);
+        const result = new Array(count);
+        for (let i = 0; i < count; i += 1) {
+          result[i] = []
+          args.forEach(a => {
+            result[i].push(a[i]);
+          });
+        }
+        return result;
+      },
+      _signature: [{ types: [TYPE_ARRAY], variadic: true }],
+    },
   };
 }

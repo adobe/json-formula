@@ -547,7 +547,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
      * Return a datetime value.
      * @param {number} start_date The starting date
      * @param {number} end_date The end date -- must be greater or equal to start_date
-     * @param {string} unit.  One of:
+     * @param {string} unit  One of:
           `y` the number of whole years between start_date and end_date
           `m` the number of whole months between start_date and end_date.
           `d` the number of days between start_date and end_date
@@ -599,6 +599,28 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         { types: [dataTypes.TYPE_NUMBER] },
         { types: [dataTypes.TYPE_NUMBER] },
         { types: [dataTypes.TYPE_STRING] },
+      ],
+    },
+    /**
+      * Summary: Returns the serial number of the end of a month, given date plus MonthAdd months
+      * @param {number} startDate The base date to start from
+      * @param {integer} monthAdd Number of months to add to start date
+      * @return {integer} the number of days in the computed month
+      * @function
+      */
+    eomonth: {
+      _func: args => {
+        const date = toNumber(args[0]);
+        const months = toNumber(args[1]);
+        const jsDate = new Date(date * MS_IN_DAY);
+        // We can give the constructor a month value > 11 and it will increment the years
+        // Since day is 1-based, giving zero will yield the last day of the previous month
+        const newDate = new Date(jsDate.getFullYear(), jsDate.getMonth() + months + 1, 0);
+        return newDate.getTime() / MS_IN_DAY;
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [dataTypes.TYPE_NUMBER] },
       ],
     },
     day: {

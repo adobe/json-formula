@@ -2628,5 +2628,69 @@
       "expression": "datedif(d1, d2, 'yd')",
       "expected": 41
     }
+  ],
+  [
+    "eomonth 6-30",
+    {
+      "data": "{d1: samples.datedif.\"2022-06-21\"}",
+      "expression": "eomonth(d1, 0) | year(@) & '-' & month(@) & '-' & day(@)",
+      "expected": "2022-6-30"
+    }
+  ],
+  [
+    "eomonth 5-31",
+    {
+      "data": "{d1: samples.datedif.\"2022-07-21\"}",
+      "expression": "eomonth(d1, -2) | year(@) & '-' & month(@) & '-' & day(@)",
+      "expected": "2022-5-31"
+    }
+  ],
+  [
+    "eomonth 7-31",
+    {
+      "data": "{d1: samples.datedif.\"2023-06-20\"}",
+      "expression": "eomonth(d1, 13) | year(@) & '-' & month(@) & '-' & day(@)",
+      "expected": "2024-7-31"
+    }
+  ],
+  [
+    "eomonth 2-29",
+    {
+      "data": "{d1: samples.datedif.\"2030-08-01\"}",
+      "expression": "eomonth(d1, 18) | year(@) & '-' & month(@) & '-' & day(@)",
+      "expected": "2032-2-29"
+    }
+  ],
+  [
+    "zip 1",
+    {
+      "data": "{}",
+      "expression": "zip([1,2,3], [4,5,6])",
+      "expected": [[1,4] ,[2,5], [3,6]]
+    }
+  ],
+  [
+    "zip 2",
+    {
+      "data": "{}",
+      "expression": "zip([1,2,3],[4,5],[7,8,9])",
+      "expected": [[1,4,7], [2,5,8]]
+    }
+  ],
+  [
+    "zip 3",
+    {
+      "data": "{}",
+      "expression": "zip([1,2,3])",
+      "expected": [[1], [2], [3]]
+    }
+  ],
+  [
+    "zip 4",
+    {
+      "data": "{}",
+      "expression": "zip([])",
+      "expected": []
+    }
   ]
 ]

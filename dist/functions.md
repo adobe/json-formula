@@ -1,3 +1,18 @@
+<a name="zip"></a>
+
+## zip(...arrays) ⇒ <code>array</code>
+Returns a convolved (zipped) array containing grouped arrays of values from
+the array arguments from index 0, 1, 2, etc.
+This function accepts a variable number of arguments.
+The length of the returned array is equal to the length of the shortest array.
+
+**Kind**: global function  
+**Returns**: <code>array</code> - An array of arrays with elements zipped together  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ...arrays | <code>array</code> | array of arrays to zip together |
+
 <a name="casefold"></a>
 
 ## casefold(input) ⇒ <code>string</code>
@@ -127,4 +142,49 @@ Perform an indexed lookup on a map or array
 | --- | --- | --- |
 | object | <code>map</code> \| <code>array</code> | on which to perform the lookup |
 | index: | <code>string</code> \| <code>integer</code> | a named child for a map or an integer offset for an array |
+
+<a name="datetime"></a>
+
+## datetime(year, day, hours, (optional), (optional), (optional), (optional)) ⇒ <code>number</code>
+Return a date/time value.
+
+**Kind**: global function  
+**Returns**: <code>number</code> - the new date/time value  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| year | <code>integer</code> |  |
+| day | <code>integer</code> |  |
+| hours | <code>integer</code> |  |
+| (optional) | <code>integer</code> | minutes |
+| (optional) | <code>integer</code> | seconds |
+| (optional) | <code>integer</code> | milliseconds |
+| (optional) | <code>string</code> | time zone name -- according to IANA time zone names. e.g. "America/Toronto" |
+
+<a name="datedif"></a>
+
+## datedif(start_date, end_date, unit) ⇒ <code>integer</code>
+Return a datetime value.
+
+**Kind**: global function  
+**Returns**: <code>integer</code> - The number of days/months/years difference  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| start_date | <code>number</code> | The starting date |
+| end_date | <code>number</code> | The end date -- must be greater or equal to start_date |
+| unit | <code>string</code> | One of:           `y` the number of whole years between start_date and end_date           `m` the number of whole months between start_date and end_date.           `d` the number of days between start_date and end_date           `md` the number of days between start_date and end_date after subtracting whole months.           `ym` the number of whole months between start_date and end_date              after subtracting whole years.           `yd` the number of days between start_date and end_date, assuming start_date              and end_date were no more than one year apart |
+
+<a name="eomonth"></a>
+
+## eomonth(startDate, monthAdd) ⇒ <code>integer</code>
+Summary: Returns the serial number of the end of a month, given date plus MonthAdd months
+
+**Kind**: global function  
+**Returns**: <code>integer</code> - the number of days in the computed month  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| startDate | <code>number</code> | The base date to start from |
+| monthAdd | <code>integer</code> | Number of months to add to start date |
 
