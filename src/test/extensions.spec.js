@@ -92,6 +92,16 @@ test('creating second form should not affect first form', () => {
   expect(numFields1).toEqual(numFields2);
 });
 
+test('Access properties of array-based fieldset', () => {
+  const items = [100, 200, 300];
+
+  const form1 = createForm(items);
+  const expression = 'length($form.$fields)';
+  const result = jsonFormula(form1, { $form: form1 }, expression, {}, stringToNumber);
+
+  expect(result).toBe(3);
+});
+
 describe('current datetime tests', () => {
   beforeEach(() => {
     jest.useFakeTimers('modern');

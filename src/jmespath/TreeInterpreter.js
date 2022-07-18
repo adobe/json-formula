@@ -84,7 +84,9 @@ export default class TreeInterpreter {
   visit(n, v) {
     const visitFunctions = {
       Field: (node, value) => {
-        if (value !== null && isObject(value)) {
+        // we used to check isObject(value) here -- but it is possible for an array-based
+        // object to have properties.  So we'll allow the child check on objects and arrays.
+        if (value !== null && (isObject(value) || isArray(value))) {
           let field = value[node.name];
           // fields can be objects with overridden methods. e.g. valueOf
           // so don't resolve to a function...
