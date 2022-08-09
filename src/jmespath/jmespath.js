@@ -38,13 +38,13 @@ function JsonFormula() {
   function toString(a) {
     if (a === null || a === undefined) return '';
     // don't call a 'toString' method, since we could have a child named 'toString()'
-    return Object.getPrototypeOf(a).toString.call(a);
+    return a.toString();
   }
 
   function isClass(obj) {
     if (obj === null) return false;
     if (Array.isArray(obj)) return false;
-    return Object.getPrototypeOf(obj).constructor.name !== 'Object';
+    return obj.constructor.name !== 'Object';
   }
 
   function matchClass(arg, expectedList) {
@@ -104,7 +104,7 @@ function JsonFormula() {
         if (!matchClass(args[i], currentSpec) && !currentSpec.includes(TYPE_ANY)) {
           actualType = getTypeNames(args[i]);
           // eslint-disable-next-line no-param-reassign
-          args[i] = matchType(actualType, currentSpec, args[i], argName, toNumber);
+          args[i] = matchType(actualType, currentSpec, args[i], argName, toNumber, toString);
         }
       }
     }

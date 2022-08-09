@@ -43,19 +43,6 @@ function createField(name, value, readonly = false, required = true) {
   return new Field();
 }
 
-function getProxy(f) {
-  const handler = {
-    getPrototypeOf() {
-      return f;
-    },
-    get() {
-      return Reflect.get(...arguments);
-    },
-  };
-
-  return new Proxy(f, handler);
-}
-
 function createFieldset(fsname, isObj, fields) {
   class FieldsetObj {
     get '$name'() { return fsname; }
@@ -72,9 +59,7 @@ function createFieldset(fsname, isObj, fields) {
     _add(k, v) { this[k] = v; }
   }
   const fieldset = isObj ? new FieldsetObj() : new FieldsetArray();
-  const obj = isObj ? getProxy(fieldset) : fieldset;
-  // const obj = fieldset;
-  return obj;
+  return fieldset;
 }
 
 function createFields(parent, childref, child) {

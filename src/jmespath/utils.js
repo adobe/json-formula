@@ -17,7 +17,10 @@ export function getValueOf(a) {
   if (isArray(a)) {
     return a.map(i => getValueOf(i));
   }
-  return Object.getPrototypeOf(a).valueOf.call(a);
+  // if we have a child named 'valueOf' then we're an object,
+  // and just return the object.
+  if (typeof (a.valueOf) !== 'function') return a;
+  return a.valueOf();
 }
 
 export function strictDeepEqual(lhs, rhs) {

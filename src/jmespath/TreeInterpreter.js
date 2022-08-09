@@ -273,16 +273,16 @@ export default class TreeInterpreter {
       ConcatenateExpression: (node, value) => {
         let first = this.visit(node.children[0], value);
         let second = this.visit(node.children[1], value);
-        first = matchType(getTypeNames(first), [TYPE_STRING, TYPE_ARRAY_STRING], first, 'concatenate', this.toNumber);
-        second = matchType(getTypeNames(second), [TYPE_STRING, TYPE_ARRAY_STRING], second, 'concatenate', this.toNumber);
+        first = matchType(getTypeNames(first), [TYPE_STRING, TYPE_ARRAY_STRING], first, 'concatenate', this.toNumber, this.toString);
+        second = matchType(getTypeNames(second), [TYPE_STRING, TYPE_ARRAY_STRING], second, 'concatenate', this.toNumber, this.toString);
         return this.applyOperator(first, second, '&');
       },
 
       UnionExpression: (node, value) => {
         let first = this.visit(node.children[0], value);
         let second = this.visit(node.children[1], value);
-        first = matchType(getTypeNames(first), [TYPE_ARRAY], first, 'union', this.toNumber);
-        second = matchType(getTypeNames(second), [TYPE_ARRAY], second, 'union', this.toNumber);
+        first = matchType(getTypeNames(first), [TYPE_ARRAY], first, 'union', this.toNumber, this.toString);
+        second = matchType(getTypeNames(second), [TYPE_ARRAY], second, 'union', this.toNumber, this.toString);
         return first.concat(second);
       },
 

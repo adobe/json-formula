@@ -39,10 +39,9 @@ export function getTypeName(inputObj, useValueOf = true) {
   if (inputObj === null) return TYPE_NULL;
   let obj = inputObj;
   if (useValueOf) {
-    const proto = Object.getPrototypeOf(inputObj);
     // check for the case where there's a child named 'valueOf' that's not a function
     // if so, then it's an object...
-    if (typeof proto.valueOf === 'function') obj = proto.valueOf.call(inputObj);
+    if (typeof inputObj.valueOf === 'function') obj = inputObj.valueOf.call(inputObj);
     else return TYPE_OBJECT;
   }
   switch (Object.prototype.toString.call(obj)) {
@@ -76,7 +75,7 @@ export function getTypeNames(inputObj) {
   return [type1, type2];
 }
 
-export function matchType(actuals, expectedList, argValue, context, toNumber) {
+export function matchType(actuals, expectedList, argValue, context, toNumber, toString) {
   const actual = actuals[0];
   if (expectedList.findIndex(
     type => type === TYPE_ANY || actual === type,
@@ -136,12 +135,14 @@ export function matchType(actuals, expectedList, argValue, context, toNumber) {
       const returnArray = argValue.slice();
       for (let i = 0; i < returnArray.length; i += 1) {
         const indexType = getTypeNames(returnArray[i]);
-        returnArray[i] = matchType(indexType, [subtype], returnArray[i], context, toNumber);
+        returnArray[i] = matchType(
+          indexType, [subtype], returnArray[i], context, toNumber, toString,
+        );
       }
       return returnArray;
     }
     if ([TYPE_NUMBER, TYPE_STRING, TYPE_NULL, TYPE_BOOLEAN].includes(subtype)) {
-      return [matchType(actuals, [subtype], argValue, context, toNumber)];
+      return [matchType(actuals, [subtype], argValue, context, toNumber, toString)];
     }
   } else {
     if (expected === TYPE_NUMBER) {
@@ -151,9 +152,7 @@ export function matchType(actuals, expectedList, argValue, context, toNumber) {
     }
     if (expected === TYPE_STRING) {
       if (actual === TYPE_NULL || actual === TYPE_OBJECT) return '';
-      // using Object.getPrototypeOf() ensures that we don't inadvertently reference a
-      // child object such as 'valueof'
-      return Object.getPrototypeOf(argValue).toString.call(argValue);
+      return toString(argValue);
     }
     if (expected === TYPE_BOOLEAN) {
       return !!argValue;
