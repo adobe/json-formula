@@ -2692,5 +2692,91 @@
       "expression": "zip([])",
       "expected": []
     }
+  ],
+  [
+    "null1",
+    {
+      "data": "{}",
+      "expression": "null() == `null`",
+      "expected": true
+    }
+  ],
+  [
+    "null2",
+    {
+      "data": "{}",
+      "expression": "null() == notfound",
+      "expected": true
+    }
+  ],
+  [
+    "unique letters",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "unique(values(address.state))",
+      "expected": ["C","a","l","i","f","o","r","n"]
+    }
+  ],
+  [
+    "unique fields",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "unique([address.country,address.country])",
+      "expected": ["USA"]
+    }
+  ],
+  [
+    "unique fields",
+    {
+      "fieldsOnly": true,
+      "data": "samples.\"purchase-order\"",
+      "expression": "unique([address.country, address.country])|[0].$name",
+      "expected": "country"
+    }
+  ],
+  [
+    "unique keys",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "unique([keys(items[0]),keys(items[1])][])",
+      "expected": [
+        "desc",
+        "quantity",
+        "price",
+        "subtotal"
+      ]
+    }
+  ],
+  [
+    "encodeUrl",
+    {
+      "data": "`{\"url\": \"https://example.com/?foo=[a%]\"}`",
+      "expression": "encodeUrl(url)",
+      "expected": "https://example.com/?foo=%5Ba%25%5D"
+    }
+  ],
+  [
+    "encodeUrlComponent",
+    {
+      "data": "{}",
+      "expression": "encodeUrlComponent(';,/?:@&=+$')",
+      "expected": "%3B%2C%2F%3F%3A%40%26%3D%2B%24"
+    }
+  ],
+  [
+    "decodeUrl",
+    {
+      "data": "{}",
+      "expression": "decodeUrl('https://example.com/?foo=%5Ba%25%5D')",
+      "expected": "https://example.com/?foo=[a%]"
+    }
+  ],
+  [
+    "decodeUrlComponent",
+    {
+      "data": "{}",
+      "expression": "decodeUrlComponent('%3B%2C%2F%3F%3A%40%26%3D%2B%24')",
+      "expected": ";,/?:@&=+$"
+    }
   ]
 ]

@@ -80,6 +80,14 @@ Note that it is also possible to use the logical and operator: `A && B`
 not(length('bar') > 0)
 // false
 ```
+<a name="null"></a>
+
+## null() ⇒ <code>boolean</code>
+Return constant null value.
+Note that expressions may also use the JSON literal null: `` `null` ``
+
+**Kind**: global function  
+**Returns**: <code>boolean</code> - True  
 <a name="true"></a>
 
 ## true() ⇒ <code>boolean</code>

@@ -275,7 +275,7 @@ export default function functions(
     },
 
     values: {
-      _func: resolvedArgs => Object.values(resolvedArgs[0]),
+      _func: resolvedArgs => Object.values(valueOf(resolvedArgs[0])),
       _signature: [{ types: [TYPE_ANY] }],
     },
 
@@ -439,7 +439,7 @@ export default function functions(
         const count = args.reduce((min, current) => Math.min(min, current.length), args[0].length);
         const result = new Array(count);
         for (let i = 0; i < count; i += 1) {
-          result[i] = []
+          result[i] = [];
           args.forEach(a => {
             result[i].push(a[i]);
           });

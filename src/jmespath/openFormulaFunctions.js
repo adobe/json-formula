@@ -123,6 +123,17 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
     },
 
     /**
+     * Return constant null value.
+     * Note that expressions may also use the JSON literal null: `` `null` ``
+     * @returns {boolean} True
+     * @function
+     */
+    null: {
+      _func: () => null,
+      _signature: [],
+    },
+
+    /**
      * Return constant boolean true value.
      * Note that expressions may also use the JSON literal true: `` `true` ``
      * @returns {boolean} True
@@ -789,6 +800,41 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
       },
       _signature: [
         { types: [dataTypes.TYPE_STRING] },
+        { types: [dataTypes.TYPE_STRING] },
+      ],
+    },
+    unique: {
+      _func: args => {
+        // create an array of values for searching.  That way if the array elements are
+        // represented by objects with a valueOf(), then we'll locate them in the valueArray
+        const valueArray = args[0].map(a => valueOf(a));
+        return args[0].filter((v, index) => valueArray.indexOf(valueOf(v)) === index);
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_ARRAY] },
+      ],
+    },
+    encodeUrlComponent: {
+      _func: args => encodeURIComponent(args[0]),
+      _signature: [
+        { types: [dataTypes.TYPE_STRING] },
+      ],
+    },
+    encodeUrl: {
+      _func: args => encodeURI(args[0]),
+      _signature: [
+        { types: [dataTypes.TYPE_STRING] },
+      ],
+    },
+    decodeUrlComponent: {
+      _func: args => decodeURIComponent(args[0]),
+      _signature: [
+        { types: [dataTypes.TYPE_STRING] },
+      ],
+    },
+    decodeUrl: {
+      _func: args => decodeURI(args[0]),
+      _signature: [
         { types: [dataTypes.TYPE_STRING] },
       ],
     },
