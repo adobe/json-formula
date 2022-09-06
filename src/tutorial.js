@@ -71,6 +71,10 @@ window.addEventListener('load', () => {
 
   dataElement.addEventListener('blur', run);
   expression.addEventListener('blur', run);
+  document.getElementById('canned').addEventListener('change', e => {
+    expression.value = e.target.value;
+    run();
+  });
   run();
 
   fetch('../antlr/JSONFormula.g4').then(r => {
