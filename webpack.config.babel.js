@@ -46,9 +46,10 @@ const cjs = {
       },
     ],
   },
+  target: 'node',
   output: {
     path: CJS,
-    filename: '[name].js',
+    filename: '[name].cjs',
     library: {
       type: 'commonjs2',
     },
@@ -64,6 +65,7 @@ const cjs = {
 
 const umd = {
   ...cjs,
+  target: 'web',
   output: {
     path: UMD,
     filename: '[name].js',

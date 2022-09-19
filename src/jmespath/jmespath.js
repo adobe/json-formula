@@ -80,6 +80,7 @@ function JsonFormula() {
         return;
       }
       let pluralized;
+      const argsNeeded = signature.filter(arg => !arg.optional).length;
       if (signature[signature.length - 1].variadic) {
         if (args.length < signature.length) {
           pluralized = signature.length === 1 ? ' argument' : ' arguments';
@@ -87,7 +88,7 @@ function JsonFormula() {
           + `takes at least${signature.length}${pluralized
           } but received ${args.length}`);
         }
-      } else if (args.length !== signature.length && !signature[signature.length - 1].optional) {
+      } else if (args.length < argsNeeded || args.length > signature.length) {
         pluralized = signature.length === 1 ? ' argument' : ' arguments';
         throw new Error(`ArgumentError: ${argName}() `
         + `takes ${signature.length}${pluralized
