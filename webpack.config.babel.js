@@ -49,7 +49,7 @@ const cjs = {
   target: 'node',
   output: {
     path: CJS,
-    filename: '[name].cjs',
+    filename: '[name].js',
     library: {
       type: 'commonjs2',
     },
