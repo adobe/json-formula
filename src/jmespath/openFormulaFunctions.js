@@ -241,6 +241,13 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_NUMBER] },
       ],
     },
+    /**
+     * Converts all the alphabetic characters in a string to lowercase. If the value is not a string it will be converted into string
+     * using the default toString method
+     * @param {string} input input string
+     * @returns {string} the lower case value of the input string
+     * @function
+     */
     lower: {
       _func: args => {
         const value = toString(args[0]);
@@ -250,6 +257,13 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         { types: [dataTypes.TYPE_STRING] },
       ],
     },
+    /**
+     * Converts all the alphabetic characters in a string to uppercase. If the value is not a string it will be converted into string
+     * using the default toString method
+     * @param {string} input input string
+     * @returns {string} the upper case value of the input string
+     * @function
+     */
     upper: {
       _func: args => {
         const value = toString(args[0]);
@@ -259,6 +273,12 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         { types: [dataTypes.TYPE_STRING] },
       ],
     },
+    /**
+     * Returns e (the base of natural logarithms) raised to a power x
+     * @param x A numeric expression representing the power of e.
+     * @returns {number}  e (the base of natural logarithms) raised to a power x
+     * @function
+     */
     exp: {
       _func: args => {
         const value = toNumber(args[0]);
@@ -268,6 +288,12 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         { types: [dataTypes.TYPE_NUMBER] },
       ],
     },
+    /**
+     * Computes `a` raised to a power `x`
+     * @param {number} a
+     * @param {number} x
+     * @function power
+     */
     power: {
       _func: args => {
         const base = toNumber(args[0]);
@@ -279,6 +305,16 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         { types: [dataTypes.TYPE_NUMBER] },
       ],
     },
+
+    /**
+     * finds and returns the index of query in text from a start position
+     * @param {string} query string to search
+     * @param {string} text text in which the query has to be searched
+     * @param {number} [start] starting position: defaults to 0
+     * @returns {number|null} the index of the query to be searched in the text. If not found
+     * returns null
+     * @function find
+     */
     find: {
       _func: args => {
         const query = toString(args[0]);
