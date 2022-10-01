@@ -1,6 +1,6 @@
 {
   "name": "@adobe/json-formula",
-  "version": "0.1.39",
+  "version": "0.1.40",
   "description": "JSONFormula Grammar and implementation",
   "#browser": "The browser entry point is for a web browser.",
   "browser": "dist/index.js",
@@ -12,7 +12,7 @@
     "dist"
   ],
   "devEngines": {
-    "node": ">=10.0.0"
+    "node": ">=17.0.0"
   },
   "scripts": {
     "eslint": "eslint src",
@@ -27,23 +27,21 @@
   },
   "author": "jbrinkma",
   "license": "Apache-2.0",
-  "dependencies": {
-    "antlr4": "^4.9.2",
-    "ebnf-parser": "^0.1.10",
-    "FileList": "^0.10.2"
-  },
   "devDependencies": {
     "@babel/core": "^7.16.10",
     "@babel/node": "^7.16.8",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-transform-modules-commonjs": "^7.16.8",
     "@babel/preset-env": "^7.16.11",
+    "antlr4": "4.9.2",
     "babel-loader": "^8.2.3",
     "copy-webpack-plugin": "^10.2.1",
+    "ebnf-parser": "^0.1.10",
     "eslint": "^8.7.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jest": "^25.7.0",
+    "FileList": "^0.10.2",
     "html-inline-script-webpack-plugin": "^2.0.3",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^27.4.7",
@@ -51,6 +49,7 @@
     "json-loader": "^0.5.7",
     "raw-loader": "^4.0.2",
     "webpack": "^5.66.0",
+    "webpack-bundle-analyzer": "^4.6.1",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.7.3"
   }

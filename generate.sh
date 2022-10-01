@@ -9,4 +9,7 @@
 # governing permissions and limitations under the License.
 rm -rf src/test/antlr
 mkdir src/test/antlr
+export CLASSPATH=".:/usr/local/lib/antlr-4.9.2-complete.jar:$CLASSPATH"
+alias antlr4='java -jar /usr/local/lib/antlr-4.9.2-complete.jar'
+alias grun='java org.antlr.v4.gui.TestRig'
 antlr4 -Dlanguage=JavaScript -visitor antlr/JSONFormula.g4 -o src/test/antlr

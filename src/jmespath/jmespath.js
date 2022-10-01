@@ -53,7 +53,7 @@ function JsonFormula() {
   }
 
   class Runtime {
-    addFunctions(customFunctions = {}) {
+    addFunctions(debug, customFunctions = {}) {
       this.functionTable = {
         ...functions(
           this._interpreter,
@@ -64,7 +64,7 @@ function JsonFormula() {
           getValueOf,
           toString,
         ),
-        ...openFormulaFunctions(getValueOf, toString, toNumber),
+        ...openFormulaFunctions(getValueOf, toString, toNumber, debug),
         ...customFunctions,
       };
     }
@@ -145,7 +145,7 @@ function JsonFormula() {
     toNumber = getToNumber(stringToNumberFn || defaultStringToNumber, debug);
     const interpreter = new TreeInterpreter(runtime, globals, toNumber, toString, debug, language);
     runtime._interpreter = interpreter;
-    runtime.addFunctions(customFunctions);
+    runtime.addFunctions(debug, customFunctions);
 
     try {
       return interpreter.search(node, data);
