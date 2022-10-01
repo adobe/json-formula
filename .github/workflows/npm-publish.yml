@@ -13,7 +13,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@master
         with:
-          node-version: 10.0.0
+          node-version: 16.x
       - name: Publish if version has been updated
         uses: mkiki/npm-publish-action@c4315ef5790b7bcec2cbb75b34e37681a409d78d
         with: # All of theses inputs are optional
