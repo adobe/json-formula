@@ -53,7 +53,7 @@ function JsonFormula() {
   }
 
   class Runtime {
-    addFunctions(customFunctions = {}) {
+    addFunctions(debug, customFunctions = {}) {
       this.functionTable = {
         ...functions(
           this._interpreter,
@@ -64,7 +64,7 @@ function JsonFormula() {
           getValueOf,
           toString,
         ),
-        ...openFormulaFunctions(getValueOf, toString, toNumber),
+        ...openFormulaFunctions(getValueOf, toString, toNumber, debug),
         ...customFunctions,
       };
     }
@@ -80,6 +80,7 @@ function JsonFormula() {
         return;
       }
       let pluralized;
+      const argsNeeded = signature.filter(arg => !arg.optional).length;
       if (signature[signature.length - 1].variadic) {
         if (args.length < signature.length) {
           pluralized = signature.length === 1 ? ' argument' : ' arguments';
@@ -87,7 +88,7 @@ function JsonFormula() {
           + `takes at least${signature.length}${pluralized
           } but received ${args.length}`);
         }
-      } else if (args.length !== signature.length && !signature[signature.length - 1].optional) {
+      } else if (args.length < argsNeeded || args.length > signature.length) {
         pluralized = signature.length === 1 ? ' argument' : ' arguments';
         throw new Error(`ArgumentError: ${argName}() `
         + `takes ${signature.length}${pluralized
@@ -144,7 +145,7 @@ function JsonFormula() {
     toNumber = getToNumber(stringToNumberFn || defaultStringToNumber, debug);
     const interpreter = new TreeInterpreter(runtime, globals, toNumber, toString, debug, language);
     runtime._interpreter = interpreter;
-    runtime.addFunctions(customFunctions);
+    runtime.addFunctions(debug, customFunctions);
 
     try {
       return interpreter.search(node, data);

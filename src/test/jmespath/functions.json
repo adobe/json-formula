@@ -400,9 +400,17 @@
       "result": []
     },
     {
+      "expression": "keys(`null`)",
+      "result": []
+    },
+    {
       "expression": "values(foo)",
       "result": [],
       "was": "invalid-type"
+    },
+    {
+      "expression": "values(null())",
+      "result": []
     },
     {
       "expression": "join(', ', strings)",

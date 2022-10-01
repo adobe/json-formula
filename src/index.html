@@ -50,30 +50,30 @@
     <textarea id="data" name="data">
 {
   "address": {
-    "street": "123 Oak Street",
+    "street": "12 Oak St",
     "city": "San Jose",
-    "state": "California",
-    "country": "USA"
+    "state": "CA",
+    "country": "USA",
+    "phone": "1234561234"
   },
   "items": [
     {
       "desc": "pens",
       "quantity": 2,
-      "price": 3.23,
-      "subtotal": 6.46
+      "price": 3.23
     },
     {
       "desc": "pencils",
       "quantity": 3,
-      "price": 1.34,
-      "subtotal": 4.02
+      "price": 1.34
     }
-  ]
+  ],
+  "tax": 1.13
 }
  </textarea>
 </td>
 <td class="expression">
-    <textarea id="expression" name="expression">sum(items[*].subtotal)</textarea>
+    <textarea id="expression" name="expression">sum(items[*].price * items[*].quantity)</textarea>
   </td>
   <td class="result">
     <textarea id="result" name="result" readonly></textarea>
@@ -82,7 +82,25 @@
     <textarea id="debug" name="debug" readonly></textarea>
   </td>
   </tr>
-  <tr><td><label>mimic fields<input type="checkbox" id="use-fields" checked/></label></td></tr>
+  <tr><td><label>mimic fields<input type="checkbox" id="use-fields" checked/></label><br/>
+  <label for="canned">Select Expression</label>
+  <select id="canned">
+    <option></option>
+    <option>address.street</option>
+    <option>substitute(address.street, 'Oak', 'Maple')</option>
+    <option>items[*]</option>
+    <option>items[? @.price > 2]</option>
+    <option>items[*].price</option>
+    <option>items[*].price * items[*].quantity</option>
+    <option>sum(items[*].price * items[*].quantity)</option>
+    <option>map(&price * quantity, items)</option>
+    <option>map(&{subtotal: price * quantity}, items)</option>
+    <option>map(&merge({subtotal: price * quantity},@), items)</option>
+    <option>sum(items[*].price * items[*].quantity) * tax</option>
+    <option>round(sum(items[*].price * items[*].quantity) * tax, 2)</option>
+    <option>address.phone | '(' & mid(@, 0, 3) & ')' & mid(@, 3, 3) & '-' & mid(@, 6, 4)</option>
+  </select>
+  </td></tr>
 </tbody>
   </table>
   <a href="./doc/JSONFormula.rrd.html">Syntax Railroad Diagram</a>

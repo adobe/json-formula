@@ -270,12 +270,19 @@ export default function functions(
     },
 
     keys: {
-      _func: resolvedArgs => Object.keys(resolvedArgs[0]),
+      _func: resolvedArgs => {
+        if (resolvedArgs[0] === null) return [];
+        return Object.keys(resolvedArgs[0]);
+      },
       _signature: [{ types: [TYPE_ANY] }],
     },
 
     values: {
-      _func: resolvedArgs => Object.values(valueOf(resolvedArgs[0])),
+      _func: resolvedArgs => {
+        const arg = valueOf(resolvedArgs[0]);
+        if (arg === null) return [];
+        return Object.values(arg);
+      },
       _signature: [{ types: [TYPE_ANY] }],
     },
 

@@ -11,6 +11,7 @@ governing permissions and limitations under the License.
 */
 import path from 'path';
 import CopyPlugin from 'copy-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const DIST = path.resolve('.', 'dist');
 const CJS = path.resolve(DIST, 'cjs');
@@ -46,6 +47,7 @@ const cjs = {
       },
     ],
   },
+  target: 'node',
   output: {
     path: CJS,
     filename: '[name].js',
@@ -59,11 +61,20 @@ const cjs = {
         { from: './src/index.cjs', to: path.resolve(DIST, 'index.js') },
       ],
     }),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      reportFilename: path.resolve(DIST, 'bundle-analyzer.html'),
+      generateStatsFile: true,
+      statsFilename: path.resolve(DIST, 'stats.json'),
+      openAnalyzer: false,
+      defaultSizes: 'stat',
+    }),
   ],
 };
 
 const umd = {
   ...cjs,
+  target: 'web',
   output: {
     path: UMD,
     filename: '[name].js',

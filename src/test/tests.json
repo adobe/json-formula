@@ -1822,6 +1822,14 @@
     }
   ],
   [
+    "datetime(1970,1)",
+    {
+      "data": "`null`",
+      "expression": "datetime(1970,1)",
+      "error": "syntax"
+    }
+  ],
+  [
     "day(0)",
     {
       "data": "`null`",

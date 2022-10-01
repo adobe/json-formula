@@ -49,7 +49,7 @@ export function adjustTimeZone(dateObj, timeZone) {
   return new Date(baseDate);
 }
 
-export default function openFormulaFunctions(valueOf, toString, toNumber) {
+export default function openFormulaFunctions(valueOf, toString, toNumber, debug = []) {
   return {
   /**
    * Return a lower-case string using locale-specific mappings.
@@ -234,7 +234,14 @@ export default function openFormulaFunctions(valueOf, toString, toNumber) {
         const obj = args[0] || {};
         const index = args[1];
         const result = obj[index];
-        return result === undefined ? null : result;
+        if (result === undefined) {
+          debug.push(`Failed to find: '${index}'`);
+          const available = Object.keys(obj).map(a => `'${a}'`).toString();
+          if (available.length) debug.push(`Available fields: ${available}`);
+
+          return null;
+        }
+        return result;
       },
       _signature: [
         { types: [dataTypes.TYPE_OBJECT, dataTypes.TYPE_ARRAY, dataTypes.TYPE_NULL] },
