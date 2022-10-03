@@ -1,6 +1,6 @@
 {
   "name": "@adobe/json-formula",
-  "version": "0.1.40",
+  "version": "0.1.41",
   "description": "JSONFormula Grammar and implementation",
   "#browser": "The browser entry point is for a web browser.",
   "browser": "dist/index.js",
@@ -12,7 +12,7 @@
     "dist"
   ],
   "devEngines": {
-    "node": ">=17.0.0"
+    "node": ">=16.0.0"
   },
   "scripts": {
     "eslint": "eslint src",
