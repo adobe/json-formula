@@ -57,3 +57,7 @@ This project is licensed under the Apache V2 License. See [LICENSE](./LICENSE) f
 ## Function Reference
 
 Available functions defined [here](./dist/functions.md)
+
+## Releasing to npm
+
+To release the package to npm create a commit with the message `Release <version_number>` where the `version_number` is the version number in the package.json file.
