@@ -70,10 +70,25 @@ export default function functions(
     // types.  If the type is "any" then no type checking
     // occurs on the argument.  Variadic is optional
     // and if not provided is assumed to be false.
+    /**
+     * Returns the absolute value of the provided argument $value.
+     * @param {number} value
+     * @return {number} returns the absolute value of the $value argument
+     * @function
+     * @category functions
+     */
     abs: {
       _func: resolvedArgs => Math.abs(resolvedArgs[0]),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
+    /**
+     * Returns the average of the elements in the provided array.
+     * An empty array will produce a return value of null.
+     * @param {number[]} elements
+     * @return {number} average value
+     * @function
+     * @category functions
+     */
     avg: {
       _func: resolvedArgs => {
         let sum = 0;
@@ -85,15 +100,42 @@ export default function functions(
       },
       _signature: [{ types: [TYPE_ARRAY_NUMBER] }],
     },
+
+    /**
+     * Returns the next highest integer value by rounding up if necessary.
+     * @param {number} value
+     * @function
+     * @category functions
+     */
     ceil: {
       _func: resolvedArgs => Math.ceil(resolvedArgs[0]),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
+    /**
+     * Returns true if the given $subject contains the provided $search string.
+     * If $subject is an array, this function returns true if one of the elements
+     * in the array is equal to the provided $search value. If the provided $subject
+     *  is a string, this function returns true if the string contains the provided 
+     * $search argument.
+     * @param {array|string} subject
+     * @param {any} search
+     * @return {boolean}
+     * @function
+     * @category functions
+     */
     contains: {
       _func: resolvedArgs => valueOf(resolvedArgs[0]).indexOf(valueOf(resolvedArgs[1])) >= 0,
       _signature: [{ types: [TYPE_STRING, TYPE_ARRAY] },
         { types: [TYPE_ANY] }],
     },
+    /**
+     * Returns true if the $subject ends with the $prefix, otherwise this function returns false.
+     * @param {string} subject
+     * @param {string} prefix
+     * @return {boolean}
+     * @function
+     * @category functions
+     */
     endsWith: {
       _func: resolvedArgs => {
         const searchStr = valueOf(resolvedArgs[0]);
@@ -103,11 +145,28 @@ export default function functions(
       _signature: [{ types: [TYPE_STRING] }, { types: [TYPE_STRING] }],
     },
 
+    /**
+     * Returns the next lowest integer value by rounding down if necessary.
+     * @param {number} value
+     * @return {number}
+     * @function
+     * @category functions
+     */
     floor: {
       _func: resolvedArgs => Math.floor(resolvedArgs[0]),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
+    /**
+     * Returns the length of the given argument using the following types rules:
+     * string: returns the number of code points in the string
+     * array: returns the number of elements in the array
+     * object: returns the number of key-value pairs in the object
+     * @param {string | array | object} subject
+     * @return {number}
+     * @function
+     * @category functions
+     */
     length: {
       _func: resolvedArgs => {
         const arg = valueOf(resolvedArgs[0]);
@@ -118,6 +177,17 @@ export default function functions(
       _signature: [{ types: [TYPE_STRING, TYPE_ARRAY, TYPE_OBJECT] }],
     },
 
+    /**
+     * Apply the expr to every element in the elements array and return the array of results.
+     * An elements of length N will produce a return array of length N. Unlike a projection,
+     * ([*].bar), map() will include the result of applying the expr for every element
+     * in the elements array, even if the result if null.
+     * @param {expression} expr
+     * @param {array} elements
+     * @return {array}
+     * @function
+     * @category functions
+     */
     map: {
       _func: resolvedArgs => {
         const exprefNode = resolvedArgs[0];
@@ -143,6 +213,14 @@ export default function functions(
       ],
     },
 
+    /**
+     * Returns the highest found number in the provided array argument.
+     * An empty array will produce a return value of null.
+     * @param {number[]|string[]} collection
+     * @return number
+     * @function
+     * @category functions
+     */
     max: {
       _func: resolvedArgs => {
         if (resolvedArgs[0].length > 0) {
@@ -163,6 +241,17 @@ export default function functions(
       _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING] }],
     },
 
+    /**
+     * Accepts 0 or more objects as arguments, and returns a single object with
+     * subsequent objects merged. Each subsequent object’s key/value pairs are
+     * added to the preceding object. This function is used to combine multiple
+     * objects into one. You can think of this as the first object being the base object,
+     * and each subsequent argument being overrides that are applied to the base object.
+     * @param {...object} args
+     * @return object
+     * @function
+     * @category functions
+     */
     merge: {
       _func: resolvedArgs => {
         const merged = {};
@@ -176,6 +265,15 @@ export default function functions(
       _signature: [{ types: [TYPE_OBJECT], variadic: true }],
     },
 
+    /**
+     * Return the maximum element in an array using the expression expr as the comparison key.
+     * The entire maximum element is returned.
+     * @param {array} elements
+     * @param {expression} expr
+     * @return any
+     * @function
+     * @category functions
+     */
     maxBy: {
       _func: resolvedArgs => {
         const exprefNode = resolvedArgs[1];
@@ -196,6 +294,14 @@ export default function functions(
       _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }],
     },
 
+    /**
+     * Returns the sum of the provided array argument.
+     * An empty array will produce a return value of 0.
+     * @param {number[]} collection
+     * @return number
+     * @function
+     * @category functions
+     */
     sum: {
       _func: resolvedArgs => {
         let sum = 0;
@@ -207,11 +313,26 @@ export default function functions(
       _signature: [{ types: [TYPE_ARRAY_NUMBER] }],
     },
 
+    /**
+     * Returns true if the $subject starts with the $prefix, otherwise this function returns false.
+     * @param {string} subject
+     * @param {string} prefix
+     * @returns {boolean}
+     * @function
+     * @category functions
+     */
     startsWith: {
       _func: resolvedArgs => valueOf(resolvedArgs[0]).startsWith(valueOf(resolvedArgs[1])),
       _signature: [{ types: [TYPE_STRING] }, { types: [TYPE_STRING] }],
     },
 
+    /**
+     * Returns the lowest found number in the provided $collection argument.
+     * @param {number[]|string[]} collection
+     * @returns {number}
+     * @function
+     * @category functions
+     */
     min: {
       _func: resolvedArgs => {
         if (resolvedArgs[0].length > 0) {
@@ -236,6 +357,13 @@ export default function functions(
       _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING] }],
     },
 
+    /**
+     * Return the minimum element in an array using the expression expr as the comparison key. 
+     * The entire maximum element is returned.
+     * @param {array} elements
+     * @param {expression} expr expression that returns either a string or a number
+     * @return {any}
+     */
     minBy: {
       _func: resolvedArgs => {
         const exprefNode = resolvedArgs[1];
@@ -256,6 +384,20 @@ export default function functions(
       _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }],
     },
 
+    /**
+     * Returns the JavaScript type of the given $subject argument as a string value.
+     * The return value MUST be one of the following:
+     * number
+     * string
+     * boolean
+     * array
+     * object
+     * null
+     * @param {any} subject
+     * @return {string}
+     * @category functions
+     * @function
+     */
     type: {
       _func: resolvedArgs => ({
         [TYPE_NUMBER]: 'number',
@@ -277,6 +419,15 @@ export default function functions(
       _signature: [{ types: [TYPE_ANY] }],
     },
 
+    /**
+     * Returns the values of the provided object. Note that because JSON hashes are
+     * inheritently unordered, the values associated with the provided object obj are
+     * inheritently unordered.
+     * @param {object} obj
+     * @return {array}
+     * @functions
+     * @category functions
+     */
     values: {
       _func: resolvedArgs => {
         const arg = valueOf(resolvedArgs[0]);
@@ -286,6 +437,15 @@ export default function functions(
       _signature: [{ types: [TYPE_ANY] }],
     },
 
+    /**
+     * This function accepts an array $list argument and returns the sorted elements of
+     * the $list as an array. The array must be a list of strings or numbers.
+     * Sorting strings is based on code points. Locale is not taken into account.
+     * @param {number[]|string[]} list
+     * @return {number[]|string[]}
+     * @functions
+     * @category functions
+     */
     sort: {
       _func: resolvedArgs => {
         const sortedArray = resolvedArgs[0].slice(0);
@@ -304,6 +464,18 @@ export default function functions(
       _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] }],
     },
 
+    /**
+     * Sort an array using an expression expr as the sort key. For each element
+     * in the array of elements, the expr expression is applied and the resulting
+     * value is used as the key used when sorting the elements. If the result of
+     * evaluating the expr against the current array element results in type
+     * other than a number or a string, a type error will occur.
+     * @param {array} elements
+     * @param {expression} expr
+     * @return {array}
+     * @functions
+     * @category functions
+     */
     sortBy: {
       _func: resolvedArgs => {
         const sortedArray = resolvedArgs[0].slice(0);
@@ -362,6 +534,15 @@ export default function functions(
       _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }],
     },
 
+    /**
+     * Returns all of the elements from the provided $stringsarray
+     * array joined together using the $glue argument as a separator between each.
+     * @param {string} glue
+     * @param {string[]} stringsarray
+     * @return string
+     * @function
+     * @category functions
+     */
     join: {
       _func: resolvedArgs => {
         const joinChar = resolvedArgs[0];
@@ -374,6 +555,13 @@ export default function functions(
       ],
     },
 
+    /**
+     * Reverses the order of the $argument.
+     * @param {string|array} argument
+     * @return array
+     * @function
+     * @category functions
+     */
     reverse: {
       _func: resolvedArgs => {
         const originalStr = valueOf(resolvedArgs[0]);
@@ -392,6 +580,15 @@ export default function functions(
       _signature: [{ types: [TYPE_STRING, TYPE_ARRAY] }],
     },
 
+    /**
+     * converts the passed arg to an array
+     * array - Returns the passed in value.
+     * number/string/object/boolean - Returns a one element array containing the passed in argument.
+     * @param {any} arg
+     * @return {array}
+     * @function
+     * @category functions
+     */
     toArray: {
       _func: resolvedArgs => {
         if (getTypeName(resolvedArgs[0]) === TYPE_ARRAY) {
@@ -403,6 +600,15 @@ export default function functions(
       _signature: [{ types: [TYPE_ANY] }],
     },
 
+    /**
+     * converts the passed arg to a string
+     * string - Returns the passed in value.
+     * number/array/object/boolean - The JSON encoded value of the object.
+     * @param {any} arg
+     * @return {string}
+     * @function
+     * @category functions
+     */
     toString: {
       _func: resolvedArgs => {
         if (getTypeName(resolvedArgs[0]) === TYPE_STRING) {
@@ -414,6 +620,19 @@ export default function functions(
       _signature: [{ types: [TYPE_ANY] }],
     },
 
+    /**
+     * converts the passed arg to a number
+     * string - Returns the parsed number.
+     * number - Returns the passed in value.
+     * array - null
+     * object - null
+     * boolean - null
+     * null - null
+     * @param {any} arg
+     * @return {number}
+     * @function
+     * @category functions
+     */
     toNumber: {
       _func: resolvedArgs => {
         const typeName = getTypeName(resolvedArgs[0]);
@@ -428,6 +647,16 @@ export default function functions(
       _signature: [{ types: [TYPE_ANY] }],
     },
 
+    /**
+     * Returns the first argument that does not resolve to null.
+     * This function accepts one or more arguments, and will evaluate
+     * them in order until a non null argument is encounted. If all
+     * arguments values resolve to null, then a value of null is returned.
+     * @param {...any} argument
+     * @return {any}
+     * @function
+     * @category functions
+     */
     notNull: {
       _func: resolvedArgs => resolvedArgs.find(arg => getTypeName(arg) !== TYPE_NULL) || null,
       _signature: [{ types: [TYPE_ANY], variadic: true }],
@@ -440,6 +669,7 @@ export default function functions(
      * @param {...array} arrays array of arrays to zip together
      * @returns {array} An array of arrays with elements zipped together
      * @function
+     * @category functions
      */
     zip: {
       _func: args => {

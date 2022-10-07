@@ -56,6 +56,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
    * e.g. Strings with German lowercase letter 'ß' can be compared to 'ss'
    * @param {string} input string to casefold
    * @returns {string} A new string converted to lower case
+   * @category functions
    * @function
    */
     casefold: {
@@ -72,6 +73,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {any} first logical expression -- will be cast to boolean
      * @param {...any} operand any number of additional expressions
      * @returns {boolean} The logical result of applying AND to all parameters
+     * @category functions
      * @example
      * and(10 > 8, length('foo') < 5)
      * // true
@@ -96,6 +98,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * or((x / 2) == y, (y * 2) == x)
      * // true
      * @function
+     * @category functions
      */
     or: {
       _func: resolvedArgs => {
@@ -116,6 +119,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * not(length('bar') > 0)
      * // false
      * @function
+     * @category functions
      */
     not: {
       _func: resolveArgs => !valueOf(resolveArgs[0]),
@@ -126,6 +130,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * Return constant null value.
      * Note that expressions may also use the JSON literal null: `` `null` ``
      * @returns {boolean} True
+     * @category functions
      * @function
      */
     null: {
@@ -138,6 +143,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * Note that expressions may also use the JSON literal true: `` `true` ``
      * @returns {boolean} True
      * @function
+     * @category functions
      */
     true: {
       _func: () => true,
@@ -148,6 +154,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * Return constant boolean false value.
      * Note that expressions may also use the JSON literal false: `` `false` ``
      * @returns {boolean} False
+     * @category functions
      * @function
      */
     false: {
@@ -162,6 +169,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {any} result1 if logical condition is true
      * @param {any} result2 if logical condition is false
      * @return {any} either result1 or result2
+     * @category functions
      * @function
      */
     if: {
@@ -193,6 +201,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {string} new text
      * @param {integer} which (optional) which occurence to replace
      * @returns {string} replaced string
+     * @category functions
      * @function
      */
     substitute: {
@@ -227,6 +236,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {map | array} object on which to perform the lookup
      * @param {string | integer} index: a named child for a map or an integer offset for an array
      * @returns {any} the result of the lookup -- or `null` if not found.
+     * @category functions
      * @function
      */
     value: {
@@ -249,10 +259,12 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
       ],
     },
     /**
-     * Converts all the alphabetic characters in a string to lowercase. If the value is not a string it will be converted into string
+     * Converts all the alphabetic characters in a string to lowercase. If the value 
+     * is not a string it will be converted into string
      * using the default toString method
      * @param {string} input input string
      * @returns {string} the lower case value of the input string
+     * @category functions
      * @function
      */
     lower: {
@@ -265,10 +277,12 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
       ],
     },
     /**
-     * Converts all the alphabetic characters in a string to uppercase. If the value is not a string it will be converted into string
+     * Converts all the alphabetic characters in a string to uppercase.
+     * If the value is not a string it will be converted into string
      * using the default toString method
      * @param {string} input input string
      * @returns {string} the upper case value of the input string
+     * @category functions
      * @function
      */
     upper: {
@@ -284,6 +298,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * Returns e (the base of natural logarithms) raised to a power x
      * @param x A numeric expression representing the power of e.
      * @returns {number}  e (the base of natural logarithms) raised to a power x
+     * @category functions
      * @function
      */
     exp: {
@@ -300,6 +315,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {number} a
      * @param {number} x
      * @function power
+     * @category functions
      */
     power: {
       _func: args => {
@@ -320,6 +336,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {number} [start] starting position: defaults to 0
      * @returns {number|null} the index of the query to be searched in the text. If not found
      * returns null
+     * @category functions
      * @function find
      */
     find: {
@@ -567,6 +584,8 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {string} (optional) time zone name --
      * according to IANA time zone names. e.g. "America/Toronto"
      * @returns {number} the new date/time value
+     * @category functions
+     * @kind function
      * @function
      */
     datetime: {
@@ -611,6 +630,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
           `yd` the number of days between start_date and end_date, assuming start_date
              and end_date were no more than one year apart
       * @returns {integer} The number of days/months/years difference
+      * @category functions
       * @function
       */
     datedif: {
@@ -660,6 +680,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
       * @param {number} startDate The base date to start from
       * @param {integer} monthAdd Number of months to add to start date
       * @return {integer} the number of days in the computed month
+      * @category functions
       * @function
       */
     eomonth: {
