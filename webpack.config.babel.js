@@ -14,8 +14,9 @@ import CopyPlugin from 'copy-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const DIST = path.resolve('.', 'dist');
-const CJS = path.resolve(DIST, 'cjs');
-const UMD = path.resolve(DIST, 'umd');
+const LIB = path.resolve('.', 'lib');
+const CJS = path.resolve(LIB, 'cjs');
+const UMD = path.resolve(LIB, 'umd');
 
 const cjs = {
   mode: 'production',
@@ -58,7 +59,7 @@ const cjs = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: './src/index.cjs', to: path.resolve(DIST, 'index.js') },
+        { from: './src/index.cjs', to: path.resolve(LIB, 'index.js') },
       ],
     }),
     new BundleAnalyzerPlugin({

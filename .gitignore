@@ -17,3 +17,5 @@ target/
 .vscode
 
 src/test/antlr
+
+.gitignore
