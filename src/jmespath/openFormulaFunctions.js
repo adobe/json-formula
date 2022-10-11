@@ -356,6 +356,16 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         { types: [dataTypes.TYPE_NUMBER], optional: true },
       ],
     },
+    /**
+     * Return a selected number of text characters from the left or
+     * in case of array selected number of elements from the start
+     * Returns null if the number of elements is less than 0
+     * @param {string|array} subject
+     * @param {number} [elements] number of elements to pick. Defaults to 1
+     * @return {string|array}
+     * @function
+     * @category functions
+     */
     left: {
       _func: args => {
         const numEntries = args.length > 1 ? toNumber(args[1]) : 1;
@@ -371,6 +381,16 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         { types: [dataTypes.TYPE_NUMBER], optional: true },
       ],
     },
+    /**
+     * Return a selected number of text characters from the right or
+     * in case of array selected number of elements from the end
+     * Returns null if the number of elements is less than 0
+     * @param {string|array} subject
+     * @param {number} [elements] number of elements to pick. Defaults to 1
+     * @return {string|array}
+     * @function
+     * @category functions
+     */
     right: {
       _func: args => {
         const numEntries = args.length > 1 ? toNumber(args[1]) : 1;
@@ -388,6 +408,18 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         { types: [dataTypes.TYPE_NUMBER], optional: true },
       ],
     },
+    /**
+     * Returns extracted text, given an original text, starting position, and length.
+     * or in case of array, extracts a subset of the array from start till the length
+     * number of elements.
+     * Returns null
+     * @param {string|array} subject
+     * @param {number} startPos
+     * @param {number} length
+     * @return {string|array}
+     * @function
+     * @category functions
+     */
     mid: {
       _func: args => {
         const startPos = toNumber(args[1]);

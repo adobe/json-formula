@@ -6,7 +6,8 @@
     "allowUnknownTags": ["category"]
   },
   "plugins": [
-      "node_modules/better-docs/category"
+      "node_modules/better-docs/category",
+      "plugins/markdown"
   ],
   "source": {
     "include" : ["src/", "src/jmespath/"],

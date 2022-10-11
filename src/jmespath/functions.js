@@ -74,8 +74,7 @@ export default function functions(
      * Returns the absolute value of the provided argument $value.
      * @param {number} value
      * @return {number} returns the absolute value of the $value argument
-     * @function
-     * @category functions
+     * @function abs
      */
     abs: {
       _func: resolvedArgs => Math.abs(resolvedArgs[0]),
@@ -86,8 +85,7 @@ export default function functions(
      * An empty array will produce a return value of null.
      * @param {number[]} elements
      * @return {number} average value
-     * @function
-     * @category functions
+     * @function avg
      */
     avg: {
       _func: resolvedArgs => {
@@ -104,8 +102,7 @@ export default function functions(
     /**
      * Returns the next highest integer value by rounding up if necessary.
      * @param {number} value
-     * @function
-     * @category functions
+     * @function ceil
      */
     ceil: {
       _func: resolvedArgs => Math.ceil(resolvedArgs[0]),
@@ -120,8 +117,7 @@ export default function functions(
      * @param {array|string} subject
      * @param {any} search
      * @return {boolean}
-     * @function
-     * @category functions
+     * @function contains
      */
     contains: {
       _func: resolvedArgs => valueOf(resolvedArgs[0]).indexOf(valueOf(resolvedArgs[1])) >= 0,
@@ -133,8 +129,7 @@ export default function functions(
      * @param {string} subject
      * @param {string} prefix
      * @return {boolean}
-     * @function
-     * @category functions
+     * @function endsWith
      */
     endsWith: {
       _func: resolvedArgs => {
@@ -149,8 +144,7 @@ export default function functions(
      * Returns the next lowest integer value by rounding down if necessary.
      * @param {number} value
      * @return {number}
-     * @function
-     * @category functions
+     * @function floor
      */
     floor: {
       _func: resolvedArgs => Math.floor(resolvedArgs[0]),
@@ -164,8 +158,7 @@ export default function functions(
      * object: returns the number of key-value pairs in the object
      * @param {string | array | object} subject
      * @return {number}
-     * @function
-     * @category functions
+     * @function length
      */
     length: {
       _func: resolvedArgs => {
@@ -185,8 +178,7 @@ export default function functions(
      * @param {expression} expr
      * @param {array} elements
      * @return {array}
-     * @function
-     * @category functions
+     * @function map
      */
     map: {
       _func: resolvedArgs => {
@@ -196,6 +188,15 @@ export default function functions(
       _signature: [{ types: [TYPE_EXPREF] }, { types: [TYPE_ARRAY] }],
     },
 
+    /**
+     * The reduce() method executes a user-supplied "reducer" expression on each element of the
+     * array, in order, passing in the return value from the calculation on the preceding element.
+     * The final result of running the reducer across all elements of the array is a single value.
+     * @param {expression} expr
+     * @param {array} elements
+     * @return {any}
+     * @function reduce
+     */
     reduce: {
       _func: resolvedArgs => {
         const exprefNode = resolvedArgs[0];
@@ -218,8 +219,7 @@ export default function functions(
      * An empty array will produce a return value of null.
      * @param {number[]|string[]} collection
      * @return number
-     * @function
-     * @category functions
+     * @function max
      */
     max: {
       _func: resolvedArgs => {
@@ -249,8 +249,7 @@ export default function functions(
      * and each subsequent argument being overrides that are applied to the base object.
      * @param {...object} args
      * @return object
-     * @function
-     * @category functions
+     * @function merge
      */
     merge: {
       _func: resolvedArgs => {
@@ -271,8 +270,7 @@ export default function functions(
      * @param {array} elements
      * @param {expression} expr
      * @return any
-     * @function
-     * @category functions
+     * @function maxBy
      */
     maxBy: {
       _func: resolvedArgs => {
@@ -299,8 +297,7 @@ export default function functions(
      * An empty array will produce a return value of 0.
      * @param {number[]} collection
      * @return number
-     * @function
-     * @category functions
+     * @function sum
      */
     sum: {
       _func: resolvedArgs => {
@@ -318,8 +315,7 @@ export default function functions(
      * @param {string} subject
      * @param {string} prefix
      * @returns {boolean}
-     * @function
-     * @category functions
+     * @function startsWith
      */
     startsWith: {
       _func: resolvedArgs => valueOf(resolvedArgs[0]).startsWith(valueOf(resolvedArgs[1])),
@@ -330,8 +326,7 @@ export default function functions(
      * Returns the lowest found number in the provided $collection argument.
      * @param {number[]|string[]} collection
      * @returns {number}
-     * @function
-     * @category functions
+     * @function min
      */
     min: {
       _func: resolvedArgs => {
@@ -363,6 +358,7 @@ export default function functions(
      * @param {array} elements
      * @param {expression} expr expression that returns either a string or a number
      * @return {any}
+     * @function minBy
      */
     minBy: {
       _func: resolvedArgs => {
@@ -395,7 +391,7 @@ export default function functions(
      * null
      * @param {any} subject
      * @return {string}
-     * @category functions
+     *
      * @function
      */
     type: {
@@ -411,6 +407,13 @@ export default function functions(
       _signature: [{ types: [TYPE_ANY] }],
     },
 
+    /**
+     * Returns an array containing the keys of the provided object. If the passed
+     * object is null, the value returned is an empty array
+     * @param {object} obj
+     * @return {array}
+     * @function keys
+     */
     keys: {
       _func: resolvedArgs => {
         if (resolvedArgs[0] === null) return [];
@@ -425,8 +428,7 @@ export default function functions(
      * inheritently unordered.
      * @param {object} obj
      * @return {array}
-     * @functions
-     * @category functions
+     * @function values
      */
     values: {
       _func: resolvedArgs => {
@@ -443,8 +445,7 @@ export default function functions(
      * Sorting strings is based on code points. Locale is not taken into account.
      * @param {number[]|string[]} list
      * @return {number[]|string[]}
-     * @functions
-     * @category functions
+     * @function sort
      */
     sort: {
       _func: resolvedArgs => {
@@ -473,8 +474,7 @@ export default function functions(
      * @param {array} elements
      * @param {expression} expr
      * @return {array}
-     * @functions
-     * @category functions
+     * @function sortBy
      */
     sortBy: {
       _func: resolvedArgs => {
@@ -540,8 +540,7 @@ export default function functions(
      * @param {string} glue
      * @param {string[]} stringsarray
      * @return string
-     * @function
-     * @category functions
+     * @function join
      */
     join: {
       _func: resolvedArgs => {
@@ -559,8 +558,7 @@ export default function functions(
      * Reverses the order of the $argument.
      * @param {string|array} argument
      * @return array
-     * @function
-     * @category functions
+     * @function reverse
      */
     reverse: {
       _func: resolvedArgs => {
@@ -586,8 +584,7 @@ export default function functions(
      * number/string/object/boolean - Returns a one element array containing the passed in argument.
      * @param {any} arg
      * @return {array}
-     * @function
-     * @category functions
+     * @function toArray
      */
     toArray: {
       _func: resolvedArgs => {
@@ -606,8 +603,7 @@ export default function functions(
      * number/array/object/boolean - The JSON encoded value of the object.
      * @param {any} arg
      * @return {string}
-     * @function
-     * @category functions
+     * @function toString
      */
     toString: {
       _func: resolvedArgs => {
@@ -630,8 +626,7 @@ export default function functions(
      * null - null
      * @param {any} arg
      * @return {number}
-     * @function
-     * @category functions
+     * @function toNumber
      */
     toNumber: {
       _func: resolvedArgs => {
@@ -654,8 +649,7 @@ export default function functions(
      * arguments values resolve to null, then a value of null is returned.
      * @param {...any} argument
      * @return {any}
-     * @function
-     * @category functions
+     * @function notNull
      */
     notNull: {
       _func: resolvedArgs => resolvedArgs.find(arg => getTypeName(arg) !== TYPE_NULL) || null,
@@ -668,8 +662,7 @@ export default function functions(
      * The length of the returned array is equal to the length of the shortest array.
      * @param {...array} arrays array of arrays to zip together
      * @returns {array} An array of arrays with elements zipped together
-     * @function
-     * @category functions
+     * @function zip
      */
     zip: {
       _func: args => {
