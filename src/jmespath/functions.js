@@ -102,6 +102,7 @@ export default function functions(
     /**
      * Returns the next highest integer value by rounding up if necessary.
      * @param {number} value
+     * @return {number}
      * @function ceil
      */
     ceil: {
@@ -115,7 +116,7 @@ export default function functions(
      *  is a string, this function returns true if the string contains the provided 
      * $search argument.
      * @param {array|string} subject
-     * @param {any} search
+     * @param {string|boolean|number|date} search
      * @return {boolean}
      * @function contains
      */
@@ -218,7 +219,7 @@ export default function functions(
      * Returns the highest found number in the provided array argument.
      * An empty array will produce a return value of null.
      * @param {number[]|string[]} collection
-     * @return number
+     * @return {number}
      * @function max
      */
     max: {
@@ -248,7 +249,7 @@ export default function functions(
      * objects into one. You can think of this as the first object being the base object,
      * and each subsequent argument being overrides that are applied to the base object.
      * @param {...object} args
-     * @return object
+     * @return {object}
      * @function merge
      */
     merge: {
@@ -269,7 +270,7 @@ export default function functions(
      * The entire maximum element is returned.
      * @param {array} elements
      * @param {expression} expr
-     * @return any
+     * @return {any}
      * @function maxBy
      */
     maxBy: {
@@ -296,7 +297,7 @@ export default function functions(
      * Returns the sum of the provided array argument.
      * An empty array will produce a return value of 0.
      * @param {number[]} collection
-     * @return number
+     * @return {number}
      * @function sum
      */
     sum: {
@@ -314,7 +315,7 @@ export default function functions(
      * Returns true if the $subject starts with the $prefix, otherwise this function returns false.
      * @param {string} subject
      * @param {string} prefix
-     * @returns {boolean}
+     * @return {boolean}
      * @function startsWith
      */
     startsWith: {
@@ -325,7 +326,7 @@ export default function functions(
     /**
      * Returns the lowest found number in the provided $collection argument.
      * @param {number[]|string[]} collection
-     * @returns {number}
+     * @return {number}
      * @function min
      */
     min: {
@@ -392,7 +393,7 @@ export default function functions(
      * @param {any} subject
      * @return {string}
      *
-     * @function
+     * @function type
      */
     type: {
       _func: resolvedArgs => ({
@@ -539,7 +540,7 @@ export default function functions(
      * array joined together using the $glue argument as a separator between each.
      * @param {string} glue
      * @param {string[]} stringsarray
-     * @return string
+     * @return {string}
      * @function join
      */
     join: {
@@ -557,7 +558,7 @@ export default function functions(
     /**
      * Reverses the order of the $argument.
      * @param {string|array} argument
-     * @return array
+     * @return {array}
      * @function reverse
      */
     reverse: {
@@ -661,7 +662,7 @@ export default function functions(
      * This function accepts a variable number of arguments.
      * The length of the returned array is equal to the length of the shortest array.
      * @param {...array} arrays array of arrays to zip together
-     * @returns {array} An array of arrays with elements zipped together
+     * @return {array} An array of arrays with elements zipped together
      * @function zip
      */
     zip: {
