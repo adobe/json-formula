@@ -44,6 +44,20 @@ Returns the logical AND result of all parameters
 and(10 > 8, length('foo') < 5)
 // true
 ```
+<a name="deepScan"></a>
+
+## deepScan(The) ⇒ <code>string</code>
+Search a nested hierarchy of objects to return an aray of elements that match a name.
+The name can be either a key into a map or an array index.
+This is similar to the JSONPath deep scan operator (..)
+
+**Kind**: global function  
+**Returns**: <code>string</code> - The name (or index position) of the elements to find  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| The | <code>object</code> | starting object or array where we start the search |
+
 <a name="or"></a>
 
 ## or(first, ...operand) ⇒ <code>boolean</code>
@@ -150,6 +164,71 @@ Perform an indexed lookup on a map or array
 | --- | --- | --- |
 | object | <code>map</code> \| <code>array</code> | on which to perform the lookup |
 | index: | <code>string</code> \| <code>integer</code> | a named child for a map or an integer offset for an array |
+
+<a name="lower"></a>
+
+## lower(input) ⇒ <code>string</code>
+Converts all the alphabetic characters in a string to lowercase. If the value is not a string it will be converted into string
+using the default toString method
+
+**Kind**: global function  
+**Returns**: <code>string</code> - the lower case value of the input string  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| input | <code>string</code> | input string |
+
+<a name="upper"></a>
+
+## upper(input) ⇒ <code>string</code>
+Converts all the alphabetic characters in a string to uppercase. If the value is not a string it will be converted into string
+using the default toString method
+
+**Kind**: global function  
+**Returns**: <code>string</code> - the upper case value of the input string  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| input | <code>string</code> | input string |
+
+<a name="exp"></a>
+
+## exp(x) ⇒ <code>number</code>
+Returns e (the base of natural logarithms) raised to a power x
+
+**Kind**: global function  
+**Returns**: <code>number</code> - e (the base of natural logarithms) raised to a power x  
+
+| Param | Description |
+| --- | --- |
+| x | A numeric expression representing the power of e. |
+
+<a name="power"></a>
+
+## power(a, x)
+Computes `a` raised to a power `x`
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| a | <code>number</code> | 
+| x | <code>number</code> | 
+
+<a name="find"></a>
+
+## find(query, text, [start]) ⇒ <code>number</code> \| [<code>null</code>](#null)
+finds and returns the index of query in text from a start position
+
+**Kind**: global function  
+**Returns**: <code>number</code> \| [<code>null</code>](#null) - the index of the query to be searched in the text. If not found
+returns null  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| query | <code>string</code> | string to search |
+| text | <code>string</code> | text in which the query has to be searched |
+| [start] | <code>number</code> | starting position: defaults to 0 |
 
 <a name="datetime"></a>
 

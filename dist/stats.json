@@ -1,8 +1,8 @@
 {
-  "hash": "7279124a04b5017907e5",
-  "version": "5.74.0",
-  "time": 5183,
-  "builtAt": 1664970883611,
+  "hash": "2eb30a078c60d81ab58f",
+  "version": "5.70.0",
+  "time": 4456,
+  "builtAt": 1666126079132,
   "publicPath": "auto",
   "outputPath": "C:\\Users\\jbrinkma\\dev\\json-formula\\dist\\umd",
   "assetsByChunkName": {
@@ -14,7 +14,7 @@
     {
       "type": "asset",
       "name": "json-formula.js",
-      "size": 48496,
+      "size": 49025,
       "emitted": true,
       "comparedForEmit": false,
       "cached": false,
@@ -24,7 +24,7 @@
         "related": {
           "sourceMap": "json-formula.js.map"
         },
-        "size": 48496
+        "size": 49025
       },
       "chunkNames": [
         "json-formula"
@@ -37,13 +37,13 @@
         {
           "type": "sourceMap",
           "name": "json-formula.js.map",
-          "size": 164885,
+          "size": 168265,
           "emitted": true,
           "comparedForEmit": false,
           "cached": false,
           "info": {
             "development": true,
-            "size": 164885
+            "size": 168265
           },
           "chunkNames": [],
           "chunkIdHints": [],
@@ -94,9 +94,9 @@
       "initial": true,
       "entry": true,
       "recorded": false,
-      "size": 133837,
+      "size": 138799,
       "sizes": {
-        "javascript": 133167,
+        "javascript": 138129,
         "runtime": 670
       },
       "names": [
@@ -112,7 +112,7 @@
       "auxiliaryFiles": [
         "json-formula.js.map"
       ],
-      "hash": "1a93195533f04600941d",
+      "hash": "9735d25aa4582be59b35",
       "childrenByOrder": {},
       "id": 168,
       "siblings": [],
@@ -123,9 +123,9 @@
           "type": "module",
           "moduleType": "javascript/esm",
           "layer": null,
-          "size": 133167,
+          "size": 138129,
           "sizes": {
-            "javascript": 133167
+            "javascript": 138129
           },
           "built": true,
           "codeGenerated": true,
@@ -191,9 +191,9 @@
               "type": "module",
               "moduleType": "javascript/auto",
               "layer": null,
-              "size": 4296,
+              "size": 6227,
               "sizes": {
-                "javascript": 4296
+                "javascript": 6227
               },
               "built": true,
               "codeGenerated": false,
@@ -295,7 +295,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./jmespath/jmespath",
-                  "loc": "38:16-32",
+                  "loc": "56:16-32",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -309,7 +309,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./jmespath/jmespath",
-                  "loc": "46:13-28",
+                  "loc": "71:13-28",
                   "moduleId": null,
                   "resolvedModuleId": null
                 }
@@ -1142,7 +1142,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "24:0-36",
+                  "loc": "26:0-36",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1156,7 +1156,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "77:16-37",
+                  "loc": "79:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1170,7 +1170,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "100:16-34",
+                  "loc": "102:16-34",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1184,7 +1184,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "124:16-34",
+                  "loc": "140:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1198,7 +1198,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "144:16-34",
+                  "loc": "140:39-59",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1212,7 +1212,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "210:16-34",
+                  "loc": "140:61-80",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1226,7 +1226,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "212:16-34",
+                  "loc": "142:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1240,7 +1240,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "214:16-34",
+                  "loc": "142:39-60",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1254,7 +1254,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "255:16-37",
+                  "loc": "165:16-34",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1268,7 +1268,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "257:16-37",
+                  "loc": "185:16-34",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1282,7 +1282,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "259:16-37",
+                  "loc": "251:16-34",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1296,7 +1296,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "261:16-37",
+                  "loc": "253:16-34",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1310,7 +1310,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "291:16-37",
+                  "loc": "255:16-34",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1324,7 +1324,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "291:39-59",
+                  "loc": "296:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1338,7 +1338,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "291:61-80",
+                  "loc": "298:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1352,21 +1352,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "293:16-37",
-                  "moduleId": null,
-                  "resolvedModuleId": null
-                },
-                {
-                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "module": "./src/jmespath/openFormulaFunctions.js",
-                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
-                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-                  "type": "harmony import specifier",
-                  "active": true,
-                  "explanation": "",
-                  "userRequest": "./dataTypes",
-                  "loc": "293:39-60",
+                  "loc": "300:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1394,48 +1380,6 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "311:16-37",
-                  "moduleId": null,
-                  "resolvedModuleId": null
-                },
-                {
-                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "module": "./src/jmespath/openFormulaFunctions.js",
-                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
-                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-                  "type": "harmony import specifier",
-                  "active": true,
-                  "explanation": "",
-                  "userRequest": "./dataTypes",
-                  "loc": "320:16-37",
-                  "moduleId": null,
-                  "resolvedModuleId": null
-                },
-                {
-                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "module": "./src/jmespath/openFormulaFunctions.js",
-                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
-                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-                  "type": "harmony import specifier",
-                  "active": true,
-                  "explanation": "",
-                  "userRequest": "./dataTypes",
-                  "loc": "330:16-37",
-                  "moduleId": null,
-                  "resolvedModuleId": null
-                },
-                {
-                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "module": "./src/jmespath/openFormulaFunctions.js",
-                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
-                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-                  "type": "harmony import specifier",
-                  "active": true,
-                  "explanation": "",
-                  "userRequest": "./dataTypes",
                   "loc": "332:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
@@ -1450,7 +1394,49 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "349:16-37",
+                  "loc": "332:39-59",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "332:61-80",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "334:16-37",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "334:39-60",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1478,7 +1464,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "353:16-37",
+                  "loc": "368:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1492,7 +1478,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "370:16-37",
+                  "loc": "384:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1506,7 +1492,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "370:39-59",
+                  "loc": "401:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1520,7 +1506,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "372:16-37",
+                  "loc": "403:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1534,7 +1520,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "391:16-37",
+                  "loc": "430:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1548,7 +1534,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "391:39-59",
+                  "loc": "432:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1562,7 +1548,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "393:16-37",
+                  "loc": "434:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1576,7 +1562,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "411:16-37",
+                  "loc": "451:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1590,7 +1576,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "411:39-59",
+                  "loc": "451:39-59",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1604,7 +1590,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "413:16-37",
+                  "loc": "453:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1618,7 +1604,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "415:16-37",
+                  "loc": "472:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1632,7 +1618,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "425:16-37",
+                  "loc": "472:39-59",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1646,105 +1632,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "427:16-37",
-                  "moduleId": null,
-                  "resolvedModuleId": null
-                },
-                {
-                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "module": "./src/jmespath/openFormulaFunctions.js",
-                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
-                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-                  "type": "harmony import specifier",
-                  "active": true,
-                  "explanation": "",
-                  "userRequest": "./dataTypes",
-                  "loc": "440:16-37",
-                  "moduleId": null,
-                  "resolvedModuleId": null
-                },
-                {
-                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "module": "./src/jmespath/openFormulaFunctions.js",
-                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
-                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-                  "type": "harmony import specifier",
-                  "active": true,
-                  "explanation": "",
-                  "userRequest": "./dataTypes",
-                  "loc": "455:16-37",
-                  "moduleId": null,
-                  "resolvedModuleId": null
-                },
-                {
-                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "module": "./src/jmespath/openFormulaFunctions.js",
-                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
-                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-                  "type": "harmony import specifier",
-                  "active": true,
-                  "explanation": "",
-                  "userRequest": "./dataTypes",
-                  "loc": "457:16-37",
-                  "moduleId": null,
-                  "resolvedModuleId": null
-                },
-                {
-                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "module": "./src/jmespath/openFormulaFunctions.js",
-                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
-                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-                  "type": "harmony import specifier",
-                  "active": true,
-                  "explanation": "",
-                  "userRequest": "./dataTypes",
-                  "loc": "476:16-37",
-                  "moduleId": null,
-                  "resolvedModuleId": null
-                },
-                {
-                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "module": "./src/jmespath/openFormulaFunctions.js",
-                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
-                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-                  "type": "harmony import specifier",
-                  "active": true,
-                  "explanation": "",
-                  "userRequest": "./dataTypes",
-                  "loc": "478:16-37",
-                  "moduleId": null,
-                  "resolvedModuleId": null
-                },
-                {
-                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "module": "./src/jmespath/openFormulaFunctions.js",
-                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
-                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-                  "type": "harmony import specifier",
-                  "active": true,
-                  "explanation": "",
-                  "userRequest": "./dataTypes",
-                  "loc": "480:16-37",
-                  "moduleId": null,
-                  "resolvedModuleId": null
-                },
-                {
-                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "module": "./src/jmespath/openFormulaFunctions.js",
-                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
-                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-                  "type": "harmony import specifier",
-                  "active": true,
-                  "explanation": "",
-                  "userRequest": "./dataTypes",
-                  "loc": "482:16-37",
+                  "loc": "474:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1772,7 +1660,49 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
+                  "loc": "492:39-59",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
                   "loc": "494:16-37",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "496:16-37",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "506:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1800,7 +1730,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "538:16-43",
+                  "loc": "521:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1814,7 +1744,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "568:16-43",
+                  "loc": "536:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1828,7 +1758,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "581:16-37",
+                  "loc": "538:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1842,7 +1772,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "592:16-37",
+                  "loc": "557:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1856,7 +1786,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "594:16-37",
+                  "loc": "559:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1870,7 +1800,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "609:16-37",
+                  "loc": "561:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1884,7 +1814,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "623:16-37",
+                  "loc": "563:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1898,7 +1828,63 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "660:16-37",
+                  "loc": "573:16-37",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "575:16-37",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "589:16-37",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "619:16-43",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "649:16-43",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1926,49 +1912,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "664:16-37",
-                  "moduleId": null,
-                  "resolvedModuleId": null
-                },
-                {
-                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "module": "./src/jmespath/openFormulaFunctions.js",
-                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
-                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-                  "type": "harmony import specifier",
-                  "active": true,
-                  "explanation": "",
-                  "userRequest": "./dataTypes",
-                  "loc": "666:16-37",
-                  "moduleId": null,
-                  "resolvedModuleId": null
-                },
-                {
-                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "module": "./src/jmespath/openFormulaFunctions.js",
-                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
-                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-                  "type": "harmony import specifier",
-                  "active": true,
-                  "explanation": "",
-                  "userRequest": "./dataTypes",
-                  "loc": "669:16-37",
-                  "moduleId": null,
-                  "resolvedModuleId": null
-                },
-                {
-                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "module": "./src/jmespath/openFormulaFunctions.js",
-                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
-                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-                  "type": "harmony import specifier",
-                  "active": true,
-                  "explanation": "",
-                  "userRequest": "./dataTypes",
-                  "loc": "672:16-37",
+                  "loc": "673:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -1996,7 +1940,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "678:16-37",
+                  "loc": "690:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2010,7 +1954,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "739:16-37",
+                  "loc": "704:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2052,7 +1996,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "765:16-37",
+                  "loc": "745:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2066,7 +2010,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "767:16-37",
+                  "loc": "747:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2080,7 +2024,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "777:16-37",
+                  "loc": "750:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2094,7 +2038,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "788:16-37",
+                  "loc": "753:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2108,7 +2052,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "798:16-37",
+                  "loc": "756:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2122,7 +2066,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "815:16-37",
+                  "loc": "759:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2136,7 +2080,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "817:16-37",
+                  "loc": "820:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2150,7 +2094,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "819:16-37",
+                  "loc": "822:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2164,7 +2108,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "837:16-37",
+                  "loc": "824:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2178,7 +2122,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "854:16-37",
+                  "loc": "846:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2192,7 +2136,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "871:16-37",
+                  "loc": "848:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2206,7 +2150,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "911:16-37",
+                  "loc": "858:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2220,7 +2164,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "913:16-37",
+                  "loc": "869:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2234,7 +2178,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "923:16-37",
+                  "loc": "879:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2248,7 +2192,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "923:39-60",
+                  "loc": "896:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2262,7 +2206,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "923:62-82",
+                  "loc": "898:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2276,7 +2220,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "923:84-105",
+                  "loc": "900:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2290,7 +2234,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "923:107-129",
+                  "loc": "918:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2304,7 +2248,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "932:16-42",
+                  "loc": "935:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2318,7 +2262,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "942:16-37",
+                  "loc": "952:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2332,7 +2276,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "944:16-37",
+                  "loc": "992:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2346,7 +2290,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "959:16-36",
+                  "loc": "994:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2360,7 +2304,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "967:16-37",
+                  "loc": "1004:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2374,7 +2318,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "975:16-37",
+                  "loc": "1004:39-60",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2388,7 +2332,7 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "983:16-37",
+                  "loc": "1004:62-82",
                   "moduleId": null,
                   "resolvedModuleId": null
                 },
@@ -2402,7 +2346,133 @@
                   "active": true,
                   "explanation": "",
                   "userRequest": "./dataTypes",
-                  "loc": "991:16-37",
+                  "loc": "1004:84-105",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "1004:107-129",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "1013:16-42",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "1023:16-37",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "1025:16-37",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "1040:16-36",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "1048:16-37",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "1056:16-37",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "1064:16-37",
+                  "moduleId": null,
+                  "resolvedModuleId": null
+                },
+                {
+                  "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "module": "./src/jmespath/openFormulaFunctions.js",
+                  "moduleName": "./src/jmespath/openFormulaFunctions.js",
+                  "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+                  "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+                  "type": "harmony import specifier",
+                  "active": true,
+                  "explanation": "",
+                  "userRequest": "./dataTypes",
+                  "loc": "1072:16-37",
                   "moduleId": null,
                   "resolvedModuleId": null
                 }
@@ -2960,9 +3030,9 @@
               "type": "module",
               "moduleType": "javascript/auto",
               "layer": null,
-              "size": 30276,
+              "size": 33307,
               "sizes": {
-                "javascript": 30276
+                "javascript": 33307
               },
               "built": true,
               "codeGenerated": false,
@@ -3038,7 +3108,7 @@
                 "default"
               ],
               "optimizationBailout": [
-                "Dependency (harmony side effect evaluation) with side effects at 24:0-36"
+                "Dependency (harmony side effect evaluation) with side effects at 26:0-36"
               ],
               "depth": 2
             },
@@ -3150,8 +3220,8 @@
               "optional": false,
               "orphan": false,
               "dependent": true,
-              "issuer": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\TreeInterpreter.js",
-              "issuerName": "./src/jmespath/TreeInterpreter.js",
+              "issuer": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\matchType.js",
+              "issuerName": "./src/jmespath/matchType.js",
               "issuerPath": [
                 {
                   "identifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\json-formula.js",
@@ -3164,8 +3234,8 @@
                   "id": null
                 },
                 {
-                  "identifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\TreeInterpreter.js",
-                  "name": "./src/jmespath/TreeInterpreter.js",
+                  "identifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\matchType.js",
+                  "name": "./src/jmespath/matchType.js",
                   "id": null
                 }
               ],
@@ -4666,9 +4736,9 @@
       "type": "module",
       "moduleType": "javascript/esm",
       "layer": null,
-      "size": 133167,
+      "size": 138129,
       "sizes": {
-        "javascript": 133167
+        "javascript": 138129
       },
       "built": true,
       "codeGenerated": true,
@@ -4733,9 +4803,9 @@
           "type": "module",
           "moduleType": "javascript/auto",
           "layer": null,
-          "size": 4296,
+          "size": 6227,
           "sizes": {
-            "javascript": 4296
+            "javascript": 6227
           },
           "built": true,
           "codeGenerated": false,
@@ -4835,7 +4905,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./jmespath/jmespath",
-              "loc": "38:16-32",
+              "loc": "56:16-32",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -4849,7 +4919,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./jmespath/jmespath",
-              "loc": "46:13-28",
+              "loc": "71:13-28",
               "moduleId": null,
               "resolvedModuleId": null
             }
@@ -5679,7 +5749,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "24:0-36",
+              "loc": "26:0-36",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -5693,7 +5763,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "77:16-37",
+              "loc": "79:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -5707,7 +5777,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "100:16-34",
+              "loc": "102:16-34",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -5721,7 +5791,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "124:16-34",
+              "loc": "140:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -5735,7 +5805,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "144:16-34",
+              "loc": "140:39-59",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -5749,7 +5819,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "210:16-34",
+              "loc": "140:61-80",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -5763,7 +5833,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "212:16-34",
+              "loc": "142:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -5777,7 +5847,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "214:16-34",
+              "loc": "142:39-60",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -5791,7 +5861,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "255:16-37",
+              "loc": "165:16-34",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -5805,7 +5875,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "257:16-37",
+              "loc": "185:16-34",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -5819,7 +5889,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "259:16-37",
+              "loc": "251:16-34",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -5833,7 +5903,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "261:16-37",
+              "loc": "253:16-34",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -5847,7 +5917,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "291:16-37",
+              "loc": "255:16-34",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -5861,7 +5931,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "291:39-59",
+              "loc": "296:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -5875,7 +5945,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "291:61-80",
+              "loc": "298:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -5889,21 +5959,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "293:16-37",
-              "moduleId": null,
-              "resolvedModuleId": null
-            },
-            {
-              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "module": "./src/jmespath/openFormulaFunctions.js",
-              "moduleName": "./src/jmespath/openFormulaFunctions.js",
-              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-              "type": "harmony import specifier",
-              "active": true,
-              "explanation": "",
-              "userRequest": "./dataTypes",
-              "loc": "293:39-60",
+              "loc": "300:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -5931,48 +5987,6 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "311:16-37",
-              "moduleId": null,
-              "resolvedModuleId": null
-            },
-            {
-              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "module": "./src/jmespath/openFormulaFunctions.js",
-              "moduleName": "./src/jmespath/openFormulaFunctions.js",
-              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-              "type": "harmony import specifier",
-              "active": true,
-              "explanation": "",
-              "userRequest": "./dataTypes",
-              "loc": "320:16-37",
-              "moduleId": null,
-              "resolvedModuleId": null
-            },
-            {
-              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "module": "./src/jmespath/openFormulaFunctions.js",
-              "moduleName": "./src/jmespath/openFormulaFunctions.js",
-              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-              "type": "harmony import specifier",
-              "active": true,
-              "explanation": "",
-              "userRequest": "./dataTypes",
-              "loc": "330:16-37",
-              "moduleId": null,
-              "resolvedModuleId": null
-            },
-            {
-              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "module": "./src/jmespath/openFormulaFunctions.js",
-              "moduleName": "./src/jmespath/openFormulaFunctions.js",
-              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-              "type": "harmony import specifier",
-              "active": true,
-              "explanation": "",
-              "userRequest": "./dataTypes",
               "loc": "332:16-37",
               "moduleId": null,
               "resolvedModuleId": null
@@ -5987,7 +6001,49 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "349:16-37",
+              "loc": "332:39-59",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "332:61-80",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "334:16-37",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "334:39-60",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6015,7 +6071,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "353:16-37",
+              "loc": "368:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6029,7 +6085,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "370:16-37",
+              "loc": "384:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6043,7 +6099,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "370:39-59",
+              "loc": "401:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6057,7 +6113,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "372:16-37",
+              "loc": "403:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6071,7 +6127,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "391:16-37",
+              "loc": "430:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6085,7 +6141,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "391:39-59",
+              "loc": "432:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6099,7 +6155,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "393:16-37",
+              "loc": "434:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6113,7 +6169,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "411:16-37",
+              "loc": "451:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6127,7 +6183,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "411:39-59",
+              "loc": "451:39-59",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6141,7 +6197,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "413:16-37",
+              "loc": "453:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6155,7 +6211,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "415:16-37",
+              "loc": "472:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6169,7 +6225,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "425:16-37",
+              "loc": "472:39-59",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6183,105 +6239,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "427:16-37",
-              "moduleId": null,
-              "resolvedModuleId": null
-            },
-            {
-              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "module": "./src/jmespath/openFormulaFunctions.js",
-              "moduleName": "./src/jmespath/openFormulaFunctions.js",
-              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-              "type": "harmony import specifier",
-              "active": true,
-              "explanation": "",
-              "userRequest": "./dataTypes",
-              "loc": "440:16-37",
-              "moduleId": null,
-              "resolvedModuleId": null
-            },
-            {
-              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "module": "./src/jmespath/openFormulaFunctions.js",
-              "moduleName": "./src/jmespath/openFormulaFunctions.js",
-              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-              "type": "harmony import specifier",
-              "active": true,
-              "explanation": "",
-              "userRequest": "./dataTypes",
-              "loc": "455:16-37",
-              "moduleId": null,
-              "resolvedModuleId": null
-            },
-            {
-              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "module": "./src/jmespath/openFormulaFunctions.js",
-              "moduleName": "./src/jmespath/openFormulaFunctions.js",
-              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-              "type": "harmony import specifier",
-              "active": true,
-              "explanation": "",
-              "userRequest": "./dataTypes",
-              "loc": "457:16-37",
-              "moduleId": null,
-              "resolvedModuleId": null
-            },
-            {
-              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "module": "./src/jmespath/openFormulaFunctions.js",
-              "moduleName": "./src/jmespath/openFormulaFunctions.js",
-              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-              "type": "harmony import specifier",
-              "active": true,
-              "explanation": "",
-              "userRequest": "./dataTypes",
-              "loc": "476:16-37",
-              "moduleId": null,
-              "resolvedModuleId": null
-            },
-            {
-              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "module": "./src/jmespath/openFormulaFunctions.js",
-              "moduleName": "./src/jmespath/openFormulaFunctions.js",
-              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-              "type": "harmony import specifier",
-              "active": true,
-              "explanation": "",
-              "userRequest": "./dataTypes",
-              "loc": "478:16-37",
-              "moduleId": null,
-              "resolvedModuleId": null
-            },
-            {
-              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "module": "./src/jmespath/openFormulaFunctions.js",
-              "moduleName": "./src/jmespath/openFormulaFunctions.js",
-              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-              "type": "harmony import specifier",
-              "active": true,
-              "explanation": "",
-              "userRequest": "./dataTypes",
-              "loc": "480:16-37",
-              "moduleId": null,
-              "resolvedModuleId": null
-            },
-            {
-              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "module": "./src/jmespath/openFormulaFunctions.js",
-              "moduleName": "./src/jmespath/openFormulaFunctions.js",
-              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-              "type": "harmony import specifier",
-              "active": true,
-              "explanation": "",
-              "userRequest": "./dataTypes",
-              "loc": "482:16-37",
+              "loc": "474:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6309,7 +6267,49 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
+              "loc": "492:39-59",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
               "loc": "494:16-37",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "496:16-37",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "506:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6337,7 +6337,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "538:16-43",
+              "loc": "521:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6351,7 +6351,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "568:16-43",
+              "loc": "536:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6365,7 +6365,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "581:16-37",
+              "loc": "538:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6379,7 +6379,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "592:16-37",
+              "loc": "557:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6393,7 +6393,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "594:16-37",
+              "loc": "559:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6407,7 +6407,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "609:16-37",
+              "loc": "561:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6421,7 +6421,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "623:16-37",
+              "loc": "563:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6435,7 +6435,63 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "660:16-37",
+              "loc": "573:16-37",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "575:16-37",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "589:16-37",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "619:16-43",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "649:16-43",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6463,49 +6519,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "664:16-37",
-              "moduleId": null,
-              "resolvedModuleId": null
-            },
-            {
-              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "module": "./src/jmespath/openFormulaFunctions.js",
-              "moduleName": "./src/jmespath/openFormulaFunctions.js",
-              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-              "type": "harmony import specifier",
-              "active": true,
-              "explanation": "",
-              "userRequest": "./dataTypes",
-              "loc": "666:16-37",
-              "moduleId": null,
-              "resolvedModuleId": null
-            },
-            {
-              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "module": "./src/jmespath/openFormulaFunctions.js",
-              "moduleName": "./src/jmespath/openFormulaFunctions.js",
-              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-              "type": "harmony import specifier",
-              "active": true,
-              "explanation": "",
-              "userRequest": "./dataTypes",
-              "loc": "669:16-37",
-              "moduleId": null,
-              "resolvedModuleId": null
-            },
-            {
-              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "module": "./src/jmespath/openFormulaFunctions.js",
-              "moduleName": "./src/jmespath/openFormulaFunctions.js",
-              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-              "type": "harmony import specifier",
-              "active": true,
-              "explanation": "",
-              "userRequest": "./dataTypes",
-              "loc": "672:16-37",
+              "loc": "673:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6533,7 +6547,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "678:16-37",
+              "loc": "690:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6547,7 +6561,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "739:16-37",
+              "loc": "704:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6589,7 +6603,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "765:16-37",
+              "loc": "745:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6603,7 +6617,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "767:16-37",
+              "loc": "747:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6617,7 +6631,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "777:16-37",
+              "loc": "750:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6631,7 +6645,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "788:16-37",
+              "loc": "753:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6645,7 +6659,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "798:16-37",
+              "loc": "756:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6659,7 +6673,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "815:16-37",
+              "loc": "759:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6673,7 +6687,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "817:16-37",
+              "loc": "820:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6687,7 +6701,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "819:16-37",
+              "loc": "822:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6701,7 +6715,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "837:16-37",
+              "loc": "824:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6715,7 +6729,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "854:16-37",
+              "loc": "846:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6729,7 +6743,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "871:16-37",
+              "loc": "848:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6743,7 +6757,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "911:16-37",
+              "loc": "858:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6757,7 +6771,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "913:16-37",
+              "loc": "869:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6771,7 +6785,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "923:16-37",
+              "loc": "879:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6785,7 +6799,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "923:39-60",
+              "loc": "896:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6799,7 +6813,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "923:62-82",
+              "loc": "898:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6813,7 +6827,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "923:84-105",
+              "loc": "900:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6827,7 +6841,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "923:107-129",
+              "loc": "918:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6841,7 +6855,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "932:16-42",
+              "loc": "935:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6855,7 +6869,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "942:16-37",
+              "loc": "952:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6869,7 +6883,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "944:16-37",
+              "loc": "992:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6883,7 +6897,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "959:16-36",
+              "loc": "994:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6897,7 +6911,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "967:16-37",
+              "loc": "1004:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6911,7 +6925,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "975:16-37",
+              "loc": "1004:39-60",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6925,7 +6939,7 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "983:16-37",
+              "loc": "1004:62-82",
               "moduleId": null,
               "resolvedModuleId": null
             },
@@ -6939,7 +6953,133 @@
               "active": true,
               "explanation": "",
               "userRequest": "./dataTypes",
-              "loc": "991:16-37",
+              "loc": "1004:84-105",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "1004:107-129",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "1013:16-42",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "1023:16-37",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "1025:16-37",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "1040:16-36",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "1048:16-37",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "1056:16-37",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "1064:16-37",
+              "moduleId": null,
+              "resolvedModuleId": null
+            },
+            {
+              "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "module": "./src/jmespath/openFormulaFunctions.js",
+              "moduleName": "./src/jmespath/openFormulaFunctions.js",
+              "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+              "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+              "type": "harmony import specifier",
+              "active": true,
+              "explanation": "",
+              "userRequest": "./dataTypes",
+              "loc": "1072:16-37",
               "moduleId": null,
               "resolvedModuleId": null
             }
@@ -7495,9 +7635,9 @@
           "type": "module",
           "moduleType": "javascript/auto",
           "layer": null,
-          "size": 30276,
+          "size": 33307,
           "sizes": {
-            "javascript": 30276
+            "javascript": 33307
           },
           "built": true,
           "codeGenerated": false,
@@ -7572,7 +7712,7 @@
             "default"
           ],
           "optimizationBailout": [
-            "Dependency (harmony side effect evaluation) with side effects at 24:0-36"
+            "Dependency (harmony side effect evaluation) with side effects at 26:0-36"
           ],
           "depth": 2
         },
@@ -7682,8 +7822,8 @@
           "cacheable": true,
           "optional": false,
           "orphan": false,
-          "issuer": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\TreeInterpreter.js",
-          "issuerName": "./src/jmespath/TreeInterpreter.js",
+          "issuer": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\matchType.js",
+          "issuerName": "./src/jmespath/matchType.js",
           "issuerPath": [
             {
               "identifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\json-formula.js",
@@ -7696,8 +7836,8 @@
               "id": null
             },
             {
-              "identifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\TreeInterpreter.js",
-              "name": "./src/jmespath/TreeInterpreter.js",
+              "identifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\matchType.js",
+              "name": "./src/jmespath/matchType.js",
               "id": null
             }
           ],
@@ -9135,7 +9275,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./jmespath/jmespath",
-          "loc": "38:16-32",
+          "loc": "56:16-32",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -9149,7 +9289,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./jmespath/jmespath",
-          "loc": "46:13-28",
+          "loc": "71:13-28",
           "moduleId": null,
           "resolvedModuleId": null
         }
@@ -9979,7 +10119,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "24:0-36",
+          "loc": "26:0-36",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -9993,7 +10133,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "77:16-37",
+          "loc": "79:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10007,7 +10147,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "100:16-34",
+          "loc": "102:16-34",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10021,7 +10161,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "124:16-34",
+          "loc": "140:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10035,7 +10175,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "144:16-34",
+          "loc": "140:39-59",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10049,7 +10189,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "210:16-34",
+          "loc": "140:61-80",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10063,7 +10203,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "212:16-34",
+          "loc": "142:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10077,7 +10217,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "214:16-34",
+          "loc": "142:39-60",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10091,7 +10231,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "255:16-37",
+          "loc": "165:16-34",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10105,7 +10245,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "257:16-37",
+          "loc": "185:16-34",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10119,7 +10259,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "259:16-37",
+          "loc": "251:16-34",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10133,7 +10273,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "261:16-37",
+          "loc": "253:16-34",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10147,7 +10287,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "291:16-37",
+          "loc": "255:16-34",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10161,7 +10301,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "291:39-59",
+          "loc": "296:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10175,7 +10315,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "291:61-80",
+          "loc": "298:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10189,21 +10329,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "293:16-37",
-          "moduleId": null,
-          "resolvedModuleId": null
-        },
-        {
-          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "module": "./src/jmespath/openFormulaFunctions.js",
-          "moduleName": "./src/jmespath/openFormulaFunctions.js",
-          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-          "type": "harmony import specifier",
-          "active": true,
-          "explanation": "",
-          "userRequest": "./dataTypes",
-          "loc": "293:39-60",
+          "loc": "300:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10231,48 +10357,6 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "311:16-37",
-          "moduleId": null,
-          "resolvedModuleId": null
-        },
-        {
-          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "module": "./src/jmespath/openFormulaFunctions.js",
-          "moduleName": "./src/jmespath/openFormulaFunctions.js",
-          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-          "type": "harmony import specifier",
-          "active": true,
-          "explanation": "",
-          "userRequest": "./dataTypes",
-          "loc": "320:16-37",
-          "moduleId": null,
-          "resolvedModuleId": null
-        },
-        {
-          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "module": "./src/jmespath/openFormulaFunctions.js",
-          "moduleName": "./src/jmespath/openFormulaFunctions.js",
-          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-          "type": "harmony import specifier",
-          "active": true,
-          "explanation": "",
-          "userRequest": "./dataTypes",
-          "loc": "330:16-37",
-          "moduleId": null,
-          "resolvedModuleId": null
-        },
-        {
-          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "module": "./src/jmespath/openFormulaFunctions.js",
-          "moduleName": "./src/jmespath/openFormulaFunctions.js",
-          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-          "type": "harmony import specifier",
-          "active": true,
-          "explanation": "",
-          "userRequest": "./dataTypes",
           "loc": "332:16-37",
           "moduleId": null,
           "resolvedModuleId": null
@@ -10287,7 +10371,49 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "349:16-37",
+          "loc": "332:39-59",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "332:61-80",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "334:16-37",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "334:39-60",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10315,7 +10441,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "353:16-37",
+          "loc": "368:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10329,7 +10455,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "370:16-37",
+          "loc": "384:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10343,7 +10469,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "370:39-59",
+          "loc": "401:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10357,7 +10483,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "372:16-37",
+          "loc": "403:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10371,7 +10497,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "391:16-37",
+          "loc": "430:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10385,7 +10511,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "391:39-59",
+          "loc": "432:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10399,7 +10525,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "393:16-37",
+          "loc": "434:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10413,7 +10539,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "411:16-37",
+          "loc": "451:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10427,7 +10553,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "411:39-59",
+          "loc": "451:39-59",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10441,7 +10567,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "413:16-37",
+          "loc": "453:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10455,7 +10581,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "415:16-37",
+          "loc": "472:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10469,7 +10595,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "425:16-37",
+          "loc": "472:39-59",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10483,105 +10609,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "427:16-37",
-          "moduleId": null,
-          "resolvedModuleId": null
-        },
-        {
-          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "module": "./src/jmespath/openFormulaFunctions.js",
-          "moduleName": "./src/jmespath/openFormulaFunctions.js",
-          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-          "type": "harmony import specifier",
-          "active": true,
-          "explanation": "",
-          "userRequest": "./dataTypes",
-          "loc": "440:16-37",
-          "moduleId": null,
-          "resolvedModuleId": null
-        },
-        {
-          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "module": "./src/jmespath/openFormulaFunctions.js",
-          "moduleName": "./src/jmespath/openFormulaFunctions.js",
-          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-          "type": "harmony import specifier",
-          "active": true,
-          "explanation": "",
-          "userRequest": "./dataTypes",
-          "loc": "455:16-37",
-          "moduleId": null,
-          "resolvedModuleId": null
-        },
-        {
-          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "module": "./src/jmespath/openFormulaFunctions.js",
-          "moduleName": "./src/jmespath/openFormulaFunctions.js",
-          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-          "type": "harmony import specifier",
-          "active": true,
-          "explanation": "",
-          "userRequest": "./dataTypes",
-          "loc": "457:16-37",
-          "moduleId": null,
-          "resolvedModuleId": null
-        },
-        {
-          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "module": "./src/jmespath/openFormulaFunctions.js",
-          "moduleName": "./src/jmespath/openFormulaFunctions.js",
-          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-          "type": "harmony import specifier",
-          "active": true,
-          "explanation": "",
-          "userRequest": "./dataTypes",
-          "loc": "476:16-37",
-          "moduleId": null,
-          "resolvedModuleId": null
-        },
-        {
-          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "module": "./src/jmespath/openFormulaFunctions.js",
-          "moduleName": "./src/jmespath/openFormulaFunctions.js",
-          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-          "type": "harmony import specifier",
-          "active": true,
-          "explanation": "",
-          "userRequest": "./dataTypes",
-          "loc": "478:16-37",
-          "moduleId": null,
-          "resolvedModuleId": null
-        },
-        {
-          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "module": "./src/jmespath/openFormulaFunctions.js",
-          "moduleName": "./src/jmespath/openFormulaFunctions.js",
-          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-          "type": "harmony import specifier",
-          "active": true,
-          "explanation": "",
-          "userRequest": "./dataTypes",
-          "loc": "480:16-37",
-          "moduleId": null,
-          "resolvedModuleId": null
-        },
-        {
-          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "module": "./src/jmespath/openFormulaFunctions.js",
-          "moduleName": "./src/jmespath/openFormulaFunctions.js",
-          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-          "type": "harmony import specifier",
-          "active": true,
-          "explanation": "",
-          "userRequest": "./dataTypes",
-          "loc": "482:16-37",
+          "loc": "474:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10609,7 +10637,49 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
+          "loc": "492:39-59",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
           "loc": "494:16-37",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "496:16-37",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "506:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10637,7 +10707,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "538:16-43",
+          "loc": "521:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10651,7 +10721,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "568:16-43",
+          "loc": "536:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10665,7 +10735,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "581:16-37",
+          "loc": "538:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10679,7 +10749,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "592:16-37",
+          "loc": "557:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10693,7 +10763,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "594:16-37",
+          "loc": "559:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10707,7 +10777,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "609:16-37",
+          "loc": "561:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10721,7 +10791,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "623:16-37",
+          "loc": "563:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10735,7 +10805,63 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "660:16-37",
+          "loc": "573:16-37",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "575:16-37",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "589:16-37",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "619:16-43",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "649:16-43",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10763,49 +10889,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "664:16-37",
-          "moduleId": null,
-          "resolvedModuleId": null
-        },
-        {
-          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "module": "./src/jmespath/openFormulaFunctions.js",
-          "moduleName": "./src/jmespath/openFormulaFunctions.js",
-          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-          "type": "harmony import specifier",
-          "active": true,
-          "explanation": "",
-          "userRequest": "./dataTypes",
-          "loc": "666:16-37",
-          "moduleId": null,
-          "resolvedModuleId": null
-        },
-        {
-          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "module": "./src/jmespath/openFormulaFunctions.js",
-          "moduleName": "./src/jmespath/openFormulaFunctions.js",
-          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-          "type": "harmony import specifier",
-          "active": true,
-          "explanation": "",
-          "userRequest": "./dataTypes",
-          "loc": "669:16-37",
-          "moduleId": null,
-          "resolvedModuleId": null
-        },
-        {
-          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "module": "./src/jmespath/openFormulaFunctions.js",
-          "moduleName": "./src/jmespath/openFormulaFunctions.js",
-          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
-          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
-          "type": "harmony import specifier",
-          "active": true,
-          "explanation": "",
-          "userRequest": "./dataTypes",
-          "loc": "672:16-37",
+          "loc": "673:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10833,7 +10917,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "678:16-37",
+          "loc": "690:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10847,7 +10931,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "739:16-37",
+          "loc": "704:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10889,7 +10973,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "765:16-37",
+          "loc": "745:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10903,7 +10987,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "767:16-37",
+          "loc": "747:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10917,7 +11001,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "777:16-37",
+          "loc": "750:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10931,7 +11015,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "788:16-37",
+          "loc": "753:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10945,7 +11029,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "798:16-37",
+          "loc": "756:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10959,7 +11043,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "815:16-37",
+          "loc": "759:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10973,7 +11057,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "817:16-37",
+          "loc": "820:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -10987,7 +11071,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "819:16-37",
+          "loc": "822:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11001,7 +11085,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "837:16-37",
+          "loc": "824:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11015,7 +11099,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "854:16-37",
+          "loc": "846:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11029,7 +11113,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "871:16-37",
+          "loc": "848:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11043,7 +11127,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "911:16-37",
+          "loc": "858:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11057,7 +11141,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "913:16-37",
+          "loc": "869:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11071,7 +11155,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "923:16-37",
+          "loc": "879:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11085,7 +11169,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "923:39-60",
+          "loc": "896:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11099,7 +11183,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "923:62-82",
+          "loc": "898:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11113,7 +11197,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "923:84-105",
+          "loc": "900:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11127,7 +11211,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "923:107-129",
+          "loc": "918:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11141,7 +11225,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "932:16-42",
+          "loc": "935:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11155,7 +11239,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "942:16-37",
+          "loc": "952:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11169,7 +11253,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "944:16-37",
+          "loc": "992:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11183,7 +11267,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "959:16-36",
+          "loc": "994:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11197,7 +11281,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "967:16-37",
+          "loc": "1004:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11211,7 +11295,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "975:16-37",
+          "loc": "1004:39-60",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11225,7 +11309,7 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "983:16-37",
+          "loc": "1004:62-82",
           "moduleId": null,
           "resolvedModuleId": null
         },
@@ -11239,7 +11323,133 @@
           "active": true,
           "explanation": "",
           "userRequest": "./dataTypes",
-          "loc": "991:16-37",
+          "loc": "1004:84-105",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "1004:107-129",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "1013:16-42",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "1023:16-37",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "1025:16-37",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "1040:16-36",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "1048:16-37",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "1056:16-37",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "1064:16-37",
+          "moduleId": null,
+          "resolvedModuleId": null
+        },
+        {
+          "moduleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "module": "./src/jmespath/openFormulaFunctions.js",
+          "moduleName": "./src/jmespath/openFormulaFunctions.js",
+          "resolvedModuleIdentifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\openFormulaFunctions.js",
+          "resolvedModule": "./src/jmespath/openFormulaFunctions.js",
+          "type": "harmony import specifier",
+          "active": true,
+          "explanation": "",
+          "userRequest": "./dataTypes",
+          "loc": "1072:16-37",
           "moduleId": null,
           "resolvedModuleId": null
         }
@@ -11795,9 +12005,9 @@
       "type": "module",
       "moduleType": "javascript/auto",
       "layer": null,
-      "size": 30276,
+      "size": 33307,
       "sizes": {
-        "javascript": 30276
+        "javascript": 33307
       },
       "built": true,
       "codeGenerated": false,
@@ -11872,7 +12082,7 @@
         "default"
       ],
       "optimizationBailout": [
-        "Dependency (harmony side effect evaluation) with side effects at 24:0-36"
+        "Dependency (harmony side effect evaluation) with side effects at 26:0-36"
       ],
       "depth": 2
     },
@@ -11982,8 +12192,8 @@
       "cacheable": true,
       "optional": false,
       "orphan": true,
-      "issuer": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\TreeInterpreter.js",
-      "issuerName": "./src/jmespath/TreeInterpreter.js",
+      "issuer": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\matchType.js",
+      "issuerName": "./src/jmespath/matchType.js",
       "issuerPath": [
         {
           "identifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\json-formula.js",
@@ -11996,8 +12206,8 @@
           "id": null
         },
         {
-          "identifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\TreeInterpreter.js",
-          "name": "./src/jmespath/TreeInterpreter.js",
+          "identifier": "C:\\Users\\jbrinkma\\dev\\json-formula\\node_modules\\babel-loader\\lib\\index.js??ruleSet[1].rules[0].use!C:\\Users\\jbrinkma\\dev\\json-formula\\src\\jmespath\\matchType.js",
+          "name": "./src/jmespath/matchType.js",
           "id": null
         }
       ],
@@ -13485,19 +13695,19 @@
       "assets": [
         {
           "name": "json-formula.js",
-          "size": 48496
+          "size": 49025
         }
       ],
       "filteredAssets": 0,
-      "assetsSize": 48496,
+      "assetsSize": 49025,
       "auxiliaryAssets": [
         {
           "name": "json-formula.js.map",
-          "size": 164885
+          "size": 168265
         }
       ],
       "filteredAuxiliaryAssets": 0,
-      "auxiliaryAssetsSize": 164885,
+      "auxiliaryAssetsSize": 168265,
       "children": {},
       "childAssets": {},
       "isOverSizeLimit": false
@@ -13512,19 +13722,19 @@
       "assets": [
         {
           "name": "json-formula.js",
-          "size": 48496
+          "size": 49025
         }
       ],
       "filteredAssets": 0,
-      "assetsSize": 48496,
+      "assetsSize": 49025,
       "auxiliaryAssets": [
         {
           "name": "json-formula.js.map",
-          "size": 164885
+          "size": 168265
         }
       ],
       "filteredAuxiliaryAssets": 0,
-      "auxiliaryAssetsSize": 164885,
+      "auxiliaryAssetsSize": 168265,
       "children": {},
       "childAssets": {},
       "isOverSizeLimit": false
