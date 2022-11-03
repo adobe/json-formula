@@ -56,8 +56,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
    * e.g. Strings with German lowercase letter 'ß' can be compared to 'ss'
    * @param {string} input string to casefold
    * @returns {string} A new string converted to lower case
-   * @category functions
-   * @function
+   * @function casefold
    */
     casefold: {
       _func: (args, _data, interpreter) => {
@@ -73,7 +72,6 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {any} first logical expression -- will be cast to boolean
      * @param {...any} operand any number of additional expressions
      * @returns {boolean} The logical result of applying AND to all parameters
-     * @category functions
      * @example
      * and(10 > 8, length('foo') < 5)
      * // true
@@ -98,7 +96,6 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * or((x / 2) == y, (y * 2) == x)
      * // true
      * @function
-     * @category functions
      */
     or: {
       _func: resolvedArgs => {
@@ -119,7 +116,6 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * not(length('bar') > 0)
      * // false
      * @function
-     * @category functions
      */
     not: {
       _func: resolveArgs => !valueOf(resolveArgs[0]),
@@ -130,7 +126,6 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * Return constant null value.
      * Note that expressions may also use the JSON literal null: `` `null` ``
      * @returns {boolean} True
-     * @category functions
      * @function
      */
     null: {
@@ -143,7 +138,6 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * Note that expressions may also use the JSON literal true: `` `true` ``
      * @returns {boolean} True
      * @function
-     * @category functions
      */
     true: {
       _func: () => true,
@@ -154,7 +148,6 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * Return constant boolean false value.
      * Note that expressions may also use the JSON literal false: `` `false` ``
      * @returns {boolean} False
-     * @category functions
      * @function
      */
     false: {
@@ -169,7 +162,6 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {any} result1 if logical condition is true
      * @param {any} result2 if logical condition is false
      * @return {any} either result1 or result2
-     * @category functions
      * @function
      */
     if: {
@@ -201,7 +193,6 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {string} new text
      * @param {integer} which (optional) which occurence to replace
      * @returns {string} replaced string
-     * @category functions
      * @function
      */
     substitute: {
@@ -236,8 +227,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {map | array} object on which to perform the lookup
      * @param {string | integer} index: a named child for a map or an integer offset for an array
      * @returns {any} the result of the lookup -- or `null` if not found.
-     * @category functions
-     * @function
+    * @function
      */
     value: {
       _func: args => {
@@ -259,13 +249,12 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
       ],
     },
     /**
-     * Converts all the alphabetic characters in a string to lowercase. If the value 
+     * Converts all the alphabetic characters in a string to lowercase. If the value
      * is not a string it will be converted into string
      * using the default toString method
      * @param {string} input input string
      * @returns {string} the lower case value of the input string
-     * @category functions
-     * @function
+     * @function lower
      */
     lower: {
       _func: args => {
@@ -282,8 +271,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * using the default toString method
      * @param {string} input input string
      * @returns {string} the upper case value of the input string
-     * @category functions
-     * @function
+     * @function upper
      */
     upper: {
       _func: args => {
@@ -296,10 +284,9 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     },
     /**
      * Returns e (the base of natural logarithms) raised to a power x
-     * @param x A numeric expression representing the power of e.
+     * @param x {number} A numeric expression representing the power of e.
      * @returns {number}  e (the base of natural logarithms) raised to a power x
-     * @category functions
-     * @function
+     * @function exp
      */
     exp: {
       _func: args => {
@@ -314,8 +301,8 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * Computes `a` raised to a power `x`
      * @param {number} a
      * @param {number} x
+     * @return {number}
      * @function power
-     * @category functions
      */
     power: {
       _func: args => {
@@ -336,8 +323,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {number} [start] starting position: defaults to 0
      * @returns {number|null} the index of the query to be searched in the text. If not found
      * returns null
-     * @category functions
-     * @function find
+     * @function
      */
     find: {
       _func: args => {
@@ -363,8 +349,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {string|array} subject
      * @param {number} [elements] number of elements to pick. Defaults to 1
      * @return {string|array}
-     * @function
-     * @category functions
+     * @function left
      */
     left: {
       _func: args => {
@@ -388,8 +373,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {string|array} subject
      * @param {number} [elements] number of elements to pick. Defaults to 1
      * @return {string|array}
-     * @function
-     * @category functions
+     * @function right
      */
     right: {
       _func: args => {
@@ -417,8 +401,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {number} startPos
      * @param {number} length
      * @return {string|array}
-     * @function
-     * @category functions
+     * @function mid
      */
     mid: {
       _func: args => {
@@ -437,6 +420,13 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         { types: [dataTypes.TYPE_NUMBER] },
       ],
     },
+    /**
+     * Return the remainder when one number is divided by another number.
+     * @param {number} dividend
+     * @param {number} divisor
+     * @return {number} Computes the remainder of dividend/dividend.
+     * @function mod
+     */
     mod: {
       _func: args => {
         const p1 = toNumber(args[0]);
@@ -448,6 +438,13 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         { types: [dataTypes.TYPE_NUMBER] },
       ],
     },
+    /**
+     * Return the input string with the first letter of each word converted to an
+     * uppercase letter and the rest of the letters in the word converted to lowercase.
+     * @param {string} text
+     * @returns {string}
+     * @function proper
+     */
     proper: {
       _func: args => {
         const text = toString(args[0]);
@@ -460,6 +457,13 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         { types: [dataTypes.TYPE_STRING] },
       ],
     },
+    /**
+     * Return text repeated Count times. rept('x', 5) returns 'xxxxx'
+     * @param {string} text text to repeat
+     * @param {number} count number of times to repeat the text
+     * @returns {string}
+     * @function rept
+     */
     rept: {
       _func: args => {
         const text = toString(args[0]);
@@ -474,6 +478,16 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         { types: [dataTypes.TYPE_NUMBER] },
       ],
     },
+    /**
+     * Returns text where an old text is substituted at a given start position and
+     * length, with a new text.
+     * @param {string} text original text
+     * @param {number} start index in the original text from where to begin the replacement.
+     * @param {number} length number of characters to be replaced
+     * @param {string} replacement string to replace at the start index
+     * @returns {string}
+     * @function replace
+     */
     replace: {
       _func: args => {
         const oldText = toString(args[0]);
@@ -495,6 +509,14 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         { types: [dataTypes.TYPE_STRING] },
       ],
     },
+    /**
+     * Round a number to a specified precision. If precision is not specified, round to the nearest
+     * integer
+     * @param {number} num number to round off
+     * @param {number} precision number is rounded to the specified precision
+     * @returns {number}
+     * @function round
+     */
     round: {
       _func: args => {
         const number = toNumber(args[0]);
@@ -506,6 +528,12 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         { types: [dataTypes.TYPE_NUMBER] },
       ],
     },
+    /**
+     * Return the square root of a number
+     * @param {number} num number whose square root has to be calculated
+     * @return {number}
+     * @function sqrt
+     */
     sqrt: {
       _func: args => {
         const result = Math.sqrt(toNumber(args[0]));
@@ -558,6 +586,14 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         { types: [dataTypes.TYPE_ARRAY_NUMBER] },
       ],
     },
+    /**
+     * Remove leading and trailing spaces, and replace all internal multiple spaces
+     * with a single space.
+     * @param {string} text string to trim
+     * @return {string} removes all leading and trailing space.
+     * Any other sequence of 2 or more spaces is replaced with a single space.
+     * @function trim
+     */
     trim: {
       _func: args => {
         const text = toString(args[0]);
@@ -569,6 +605,13 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         { types: [dataTypes.TYPE_STRING] },
       ],
     },
+    /**
+     * Truncate a number to a specified number of digits.
+     * @param {number} numA number to truncate
+     * @param {number} numB number of digits to truncate the number to
+     * @return {number}
+     * @function trunc
+     */
     trunc: {
       _func: args => {
         const number = toNumber(args[0]);
@@ -616,7 +659,6 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {string} (optional) time zone name --
      * according to IANA time zone names. e.g. "America/Toronto"
      * @returns {number} the new date/time value
-     * @category functions
      * @kind function
      * @function
      */
@@ -662,7 +704,6 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
           `yd` the number of days between start_date and end_date, assuming start_date
              and end_date were no more than one year apart
       * @returns {integer} The number of days/months/years difference
-      * @category functions
       * @function
       */
     datedif: {
@@ -712,7 +753,6 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
       * @param {number} startDate The base date to start from
       * @param {integer} monthAdd Number of months to add to start date
       * @return {integer} the number of days in the computed month
-      * @category functions
       * @function
       */
     eomonth: {
@@ -828,10 +868,20 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         { types: [dataTypes.TYPE_NUMBER] },
       ],
     },
+    /**
+     * returns the time since epoch with days as exponent and time of day as fraction
+     * @return number
+     * @function now
+     */
     now: {
       _func: () => Date.now() / MS_IN_DAY,
       _signature: [],
     },
+    /**
+     * returns the number of days since epoch
+     * @return number
+     * @function today
+     */
     today: {
       _func: () => Math.floor(Date.now() / MS_IN_DAY),
       _signature: [],
@@ -888,6 +938,13 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         { types: [dataTypes.TYPE_ARRAY_ARRAY] },
       ],
     },
+    /**
+     * split a string into an array, given a separator
+     * @param {string} string string to split
+     * @param {string} separator separator where the split should occur
+     * @return {string[]}
+     * @function split
+     */
     split: {
       _func: args => {
         const str = toString(args[0]);
@@ -899,6 +956,12 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         { types: [dataTypes.TYPE_STRING] },
       ],
     },
+    /**
+     * takes an array and returns unique elements within it
+     * @param {array} input input array
+     * @return {array} array with duplicate elements removed
+     * @function unique
+     */
     unique: {
       _func: args => {
         // create an array of values for searching.  That way if the array elements are
