@@ -1,10 +1,10 @@
 [
   [
-    "zip 2",
+    "deepScan(samples, 'desc')",
     {
-      "data": "{}",
-      "expression": "zip([1,2,3],[4,5],[7,8,9])",
-      "expected": [[1,4,7], [2,5,8]]
+      "data": "samples",
+      "expression": "deepScan(\"purchase-order\", 'desc')",
+      "expected": ["pens", "pencils"]
     }
   ]
 ]

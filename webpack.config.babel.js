@@ -13,7 +13,13 @@ import path from 'path';
 import CopyPlugin from 'copy-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
+// artifacts to be distributed. Playground and docs
 const DIST = path.resolve('.', 'dist');
+
+// Build directory. Ignored from github
+const BUILD = path.resolve('.', 'build');
+
+//Library to be distributed on npm
 const LIB = path.resolve('.', 'lib');
 const CJS = path.resolve(LIB, 'cjs');
 const UMD = path.resolve(LIB, 'umd');
@@ -64,9 +70,9 @@ const cjs = {
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
-      reportFilename: path.resolve(DIST, 'bundle-analyzer.html'),
+      reportFilename: path.resolve(BUILD, 'bundle-analyzer.html'),
       generateStatsFile: true,
-      statsFilename: path.resolve(DIST, 'stats.json'),
+      statsFilename: path.resolve(BUILD, 'stats.json'),
       openAnalyzer: false,
       defaultSizes: 'stat',
     }),

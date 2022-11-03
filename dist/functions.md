@@ -44,6 +44,20 @@ Returns the logical AND result of all parameters
 and(10 > 8, length('foo') < 5)
 // true
 ```
+<a name="deepScan"></a>
+
+## deepScan(The) ⇒ <code>string</code>
+Search a nested hierarchy of objects to return an aray of elements that match a name.
+The name can be either a key into a map or an array index.
+This is similar to the JSONPath deep scan operator (..)
+
+**Kind**: global function  
+**Returns**: <code>string</code> - The name (or index position) of the elements to find  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| The | <code>object</code> | starting object or array where we start the search |
+
 <a name="or"></a>
 
 ## or(first, ...operand) ⇒ <code>boolean</code>
