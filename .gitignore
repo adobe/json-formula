@@ -15,6 +15,5 @@ log/
 target/
 .vscode
 
-src/test/antlr
 build
 lib/
