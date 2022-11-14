@@ -3,13 +3,13 @@
   "version": "0.1.44",
   "description": "JSONFormula Grammar and implementation",
   "#browser": "The browser entry point is for a web browser.",
-  "browser": "dist/index.js",
+  "browser": "lib/index.js",
   "#main": "The main entry point is for a NodeJS-CommonJS context.",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "#module": "The module entry point is for an ES6 Modules context with import and export.",
   "module": "dist/mjs/json-formula.js",
   "files": [
-    "dist"
+    "lib"
   ],
   "devEngines": {
     "node": ">=16.0.0"
@@ -17,7 +17,7 @@
   "scripts": {
     "eslint": "eslint src",
     "test": "jest",
-    "build": "rm -rf ./dist && webpack && webpack --config webpack.tutorial.babel.js && npm run docs",
+    "build": "rm -rf ./dist && rm -rf ./lib && webpack && webpack --config webpack.tutorial.babel.js && npm run docs",
     "start": "webpack serve --config webpack-devserver.config.babel.js",
     "docs": "jsdoc2md -f src/jmespath/*unctions.js -g none > dist/functions.md"
   },

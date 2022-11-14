@@ -6,7 +6,6 @@ antlr/*.class
 antlr/*.interp
 antlr/*.tokens
 log/
-package-lock.json
 
 # Project files
 .idea
@@ -17,3 +16,5 @@ target/
 .vscode
 
 src/test/antlr
+build
+lib/
