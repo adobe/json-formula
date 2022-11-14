@@ -9,7 +9,7 @@
   "#module": "The module entry point is for an ES6 Modules context with import and export.",
   "module": "dist/mjs/json-formula.js",
   "files": [
-    "dist"
+    "lib"
   ],
   "devEngines": {
     "node": ">=16.0.0"
@@ -17,7 +17,7 @@
   "scripts": {
     "eslint": "eslint src",
     "test": "jest",
-    "build": "rm -rf ./dist && webpack && webpack --config webpack.tutorial.babel.js && npm run docs",
+    "build": "rm -rf ./dist && rm -rf ./lib && webpack && webpack --config webpack.tutorial.babel.js && npm run docs",
     "start": "webpack serve --config webpack-devserver.config.babel.js",
     "docs": "jsdoc2md -f src/jmespath/*unctions.js -g none > dist/functions.md"
   },

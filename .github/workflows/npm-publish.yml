@@ -14,6 +14,9 @@ jobs:
         uses: actions/setup-node@master
         with:
           node-version: 16.x
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
       - name: Publish if version has been updated
         uses: mkiki/npm-publish-action@master
         with: # All of theses inputs are optional

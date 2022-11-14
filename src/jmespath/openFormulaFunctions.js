@@ -88,6 +88,34 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
       _signature: [{ types: [dataTypes.TYPE_ANY], variadic: true }],
     },
     /**
+     * Search a nested hierarchy of objects to return an aray of elements that match a name.
+     * The name can be either a key into a map or an array index.
+     * This is similar to the JSONPath deep scan operator (..)
+     * @param {object} The starting object or array where we start the search
+     * @returns {string} The name (or index position) of the elements to find
+     * @function
+     */
+    deepScan: {
+      _func: resolvedArgs => {
+        const [source, n] = resolvedArgs;
+        const name = n.toString();
+        const items = [];
+        if (source === null) return items;
+        function scan(node) {
+          Object.entries(node).forEach(([k, v]) => {
+            if (k === name) items.push(v);
+            if (typeof v === 'object') scan(v);
+          });
+        }
+        scan(source);
+        return items;
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_OBJECT, dataTypes.TYPE_ARRAY, dataTypes.TYPE_NULL] },
+        { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_NUMBER] },
+      ],
+    },
+    /**
      * Returns the logical OR result of two parameters
      * @param {any} first logical expression -- will be cast to boolean
      * @param {...any} operand any number of additional expressions

@@ -2786,5 +2786,50 @@
       "expression": "decodeUrlComponent('%3B%2C%2F%3F%3A%40%26%3D%2B%24')",
       "expected": ";,/?:@&=+$"
     }
+  ],
+  [
+    "deepScan(samples, 'desc')",
+    {
+      "data": "samples",
+      "expression": "deepScan(\"purchase-order\", 'desc')",
+      "expected": ["pens", "pencils"]
+    }
+  ],
+  [
+    "deepScan(samples, 1)",
+    {
+      "data": "samples",
+      "expression": "deepScan(\"purchase-order\", 1)",
+      "expected": [{
+        "desc": "pencils",
+        "quantity": 3,
+        "price": 1.34,
+        "subtotal": 4.02
+      }]
+    }
+  ],
+  [
+    "deepScan(null(), 'desc')",
+    {
+      "data": "samples",
+      "expression": "deepScan(null(), 'desc')",
+      "expected": []
+    }
+  ],
+  [
+    "deepScan(address, 'foo')",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "deepScan(address, 'foo')",
+      "expected": []
+    }
+  ],
+  [
+    "deepScan([{a1: [address]}, {a2: [address]}], 'street'), 'street')",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "deepScan([{a1: [address]}, {a2: [address]}], 'street')",
+      "expected": ["123 Oak Street", "123 Oak Street"]
+    }
   ]
 ]
