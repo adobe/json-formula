@@ -2510,6 +2510,14 @@
     }
   ],
   [
+    "(datetime(2022, 11, 10, 10, 9, 8, 0, 'America/New_York') - datetime(2022, 11, 10, 10, 9, 8, 0, 'Etc/GMT')) * 24",
+    {
+      "data": "`null`",
+      "expression": "(datetime(2022, 11, 10, 10, 9, 8, 0, 'America/New_York') - datetime(2022, 11, 10, 10, 9, 8, 0, 'Etc/GMT')) * 24",
+      "expected": -5
+    }
+  ],
+  [
     "datedif 0y",
     {
       "data": "{d1: samples.datedif.\"2022-06-20\", d2: samples.datedif.\"2022-06-21\"}",
