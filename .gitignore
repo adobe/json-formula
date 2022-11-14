@@ -18,3 +18,4 @@ target/
 
 src/test/antlr
 build
+lib/
