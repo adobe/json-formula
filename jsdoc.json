@@ -11,7 +11,7 @@
       "plugins/markdown"
   ],
   "source": {
-    "include" : ["src/", "src/jmespath/"],
+    "include" : ["src/jmespath/"],
     "includePattern": "\\.js$"
   }
 }
