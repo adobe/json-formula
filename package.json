@@ -17,9 +17,9 @@
   "scripts": {
     "eslint": "eslint src",
     "test": "jest",
-    "build": "rm -rf ./dist && rm -rf ./lib && webpack && webpack --config webpack.tutorial.babel.js && npm run docs",
+    "build": "rm -rf ./dist/ && rm -rf ./lib && webpack && webpack --config webpack.tutorial.babel.js && npm run docs",
     "start": "webpack serve --config webpack-devserver.config.babel.js",
-    "docs": "jsdoc2md -f src/jmespath/*unctions.js -g none > dist/functions.md",
+    "docs": "jsdoc2md -f src/jmespath/*unctions.js -g none > dist/functions.md && npm run jsdocs",
     "jsdocs" : "jsdoc2md -f src/json-formula.js -g none > build/Readme.md && jsdoc -c jsdoc.json -R build/Readme.md"
   },
   "repository": {
