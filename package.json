@@ -43,7 +43,6 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jest": "^25.7.0",
-    "extract-comments": "^1.1.0",
     "FileList": "^0.10.2",
     "html-inline-script-webpack-plugin": "^2.0.3",
     "html-webpack-plugin": "^5.5.0",
