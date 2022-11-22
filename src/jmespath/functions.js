@@ -77,6 +77,7 @@ export default function functions(
      * @function abs
      * @example
      * abs(-1) //returns 1
+     * @category jmespath
      */
     abs: {
       _func: resolvedArgs => Math.abs(resolvedArgs[0]),
