@@ -1,4 +1,91 @@
-/*
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> openFormulaFunctions.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>JSONFormula</h2><h3>Global</h3><ul><li><a href="global.html#casefold">casefold</a></li><li><a href="global.html#datetime">datetime</a></li><li><a href="global.html#deepScan">deepScan</a></li><li><a href="global.html#entries">entries</a></li><li><a href="global.html#fromEntries">fromEntries</a></li><li><a href="global.html#null">null</a></li><li><a href="global.html#unique">unique</a></li><li><a href="global.html#value">value</a></li></ul></div><div class="category"><h2>jmespath</h2><h3>Global</h3><ul><li><a href="global.html#abs">abs</a></li><li><a href="global.html#avg">avg</a></li><li><a href="global.html#ceil">ceil</a></li><li><a href="global.html#contains">contains</a></li><li><a href="global.html#endsWith">endsWith</a></li><li><a href="global.html#floor">floor</a></li><li><a href="global.html#join">join</a></li><li><a href="global.html#keys">keys</a></li><li><a href="global.html#length">length</a></li><li><a href="global.html#map">map</a></li><li><a href="global.html#max">max</a></li><li><a href="global.html#maxBy">maxBy</a></li><li><a href="global.html#merge">merge</a></li><li><a href="global.html#min">min</a></li><li><a href="global.html#minBy">minBy</a></li><li><a href="global.html#notNull">notNull</a></li><li><a href="global.html#reduce">reduce</a></li><li><a href="global.html#reverse">reverse</a></li><li><a href="global.html#sort">sort</a></li><li><a href="global.html#sortBy">sortBy</a></li><li><a href="global.html#startsWith">startsWith</a></li><li><a href="global.html#sum">sum</a></li><li><a href="global.html#toArray">toArray</a></li><li><a href="global.html#toNumber">toNumber</a></li><li><a href="global.html#toString">toString</a></li><li><a href="global.html#type">type</a></li><li><a href="global.html#values">values</a></li><li><a href="global.html#zip">zip</a></li></ul></div><div class="category"><h2>openFormula</h2><h3>Global</h3><ul><li><a href="global.html#and">and</a></li><li><a href="global.html#datedif">datedif</a></li><li><a href="global.html#day">day</a></li><li><a href="global.html#eomonth">eomonth</a></li><li><a href="global.html#exp">exp</a></li><li><a href="global.html#false">false</a></li><li><a href="global.html#find">find</a></li><li><a href="global.html#hour">hour</a></li><li><a href="global.html#if">if</a></li><li><a href="global.html#left">left</a></li><li><a href="global.html#lower">lower</a></li><li><a href="global.html#mid">mid</a></li><li><a href="global.html#minute">minute</a></li><li><a href="global.html#mod">mod</a></li><li><a href="global.html#month">month</a></li><li><a href="global.html#not">not</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#or">or</a></li><li><a href="global.html#power">power</a></li><li><a href="global.html#proper">proper</a></li><li><a href="global.html#replace">replace</a></li><li><a href="global.html#rept">rept</a></li><li><a href="global.html#right">right</a></li><li><a href="global.html#round">round</a></li><li><a href="global.html#second">second</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#sqrt">sqrt</a></li><li><a href="global.html#stdev">stdev</a></li><li><a href="global.html#stdevp">stdevp</a></li><li><a href="global.html#substitute">substitute</a></li><li><a href="global.html#time">time</a></li><li><a href="global.html#today">today</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#true">true</a></li><li><a href="global.html#trunc">trunc</a></li><li><a href="global.html#upper">upper</a></li><li><a href="global.html#weekday">weekday</a></li><li><a href="global.html#year">year</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>openFormulaFunctions.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
 Copyright 2021 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License. You may obtain a copy
@@ -63,9 +150,9 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {...any} [additionalOperands] any number of additional expressions
      * @returns {boolean} The logical result of applying AND to all parameters
      * @example
-     * and(10 > 8, length('foo') < 5) // returns true
+     * and(10 > 8, length('foo') &lt; 5) // returns true
      * @example
-     * and(`null`, length('foo') < 5) // returns false
+     * and(`null`, length('foo') &lt; 5) // returns false
      * @function
      * @category openFormula
      */
@@ -73,7 +160,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
       _func: resolvedArgs => {
         let result = !!valueOf(resolvedArgs[0]);
         resolvedArgs.slice(1).forEach(arg => {
-          result = result && !!valueOf(arg);
+          result = result &amp;&amp; !!valueOf(arg);
         });
         return result;
       },
@@ -133,7 +220,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         const d2 = toNumber(args[1]);
         const unit = toString(args[2]).toLowerCase();
         if (d2 === d1) return 0;
-        if (d2 < d1) return null;
+        if (d2 &lt; d1) return null;
         if (unit === 'd') return Math.floor(d2 - d1);
         const date1 = new Date(d1 * MS_IN_DAY);
         const date2 = new Date(d2 * MS_IN_DAY);
@@ -143,21 +230,21 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
 
         if (unit === 'y') {
           let y = yearDiff;
-          if (monthDiff < 0) y -= 1;
-          if (monthDiff === 0 && dayDiff < 0) y -= 1;
+          if (monthDiff &lt; 0) y -= 1;
+          if (monthDiff === 0 &amp;&amp; dayDiff &lt; 0) y -= 1;
           return y;
         }
         if (unit === 'm') {
-          return yearDiff * 12 + monthDiff + (dayDiff < 0 ? -1 : 0);
+          return yearDiff * 12 + monthDiff + (dayDiff &lt; 0 ? -1 : 0);
         }
         if (unit === 'ym') {
-          if (dayDiff < 0) monthDiff -= 1;
-          if (monthDiff <= 0 && yearDiff > 0) return 12 + monthDiff;
+          if (dayDiff &lt; 0) monthDiff -= 1;
+          if (monthDiff &lt;= 0 &amp;&amp; yearDiff > 0) return 12 + monthDiff;
           return monthDiff;
         }
         if (unit === 'yd') {
-          if (dayDiff < 0) monthDiff -= 1;
-          if (monthDiff < 0) date2.setFullYear(date1.getFullYear() + 1);
+          if (dayDiff &lt; 0) monthDiff -= 1;
+          if (monthDiff &lt; 0) date2.setFullYear(date1.getFullYear() + 1);
           else date2.setFullYear(date1.getFullYear());
           return Math.floor((date2.getTime() - date1.getTime()) / MS_IN_DAY);
         }
@@ -335,7 +422,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     },
 
     /**
-     * Returns e (the base of natural logarithms) raised to a power x. (i.e. e<sup>x</sup>)
+     * Returns e (the base of natural logarithms) raised to a power x. (i.e. e&lt;sup>x&lt;/sup>)
      * @param x {number} A numeric expression representing the power of e.
      * @returns {number} e (the base of natural logarithms) raised to a power x
      * @function exp
@@ -435,7 +522,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
       _func: args => {
         // grab just the fraction part
         const time = toNumber(args[0]) % 1;
-        if (time < 0) {
+        if (time &lt; 0) {
           return null;
         }
         // Normally we'd round to 15 digits, but since we're also multiplying by 24,
@@ -499,7 +586,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     left: {
       _func: args => {
         const numEntries = args.length > 1 ? toNumber(args[1]) : 1;
-        if (numEntries < 0) return null;
+        if (numEntries &lt; 0) return null;
         if (args[0] instanceof Array) {
           return args[0].slice(0, numEntries);
         }
@@ -557,7 +644,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
       _func: args => {
         const startPos = toNumber(args[1]);
         const numEntries = toNumber(args[2]);
-        if (startPos < 0) return null;
+        if (startPos &lt; 0) return null;
         if (args[0] instanceof Array) {
           return args[0].slice(startPos, startPos + numEntries);
         }
@@ -585,7 +672,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     minute: {
       _func: args => {
         const time = toNumber(args[0]) % 1;
-        if (time < 0) {
+        if (time &lt; 0) {
           return null;
         }
 
@@ -655,7 +742,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * * string -> false if the string is empty, true otherwise. String "false" resolves to true
      * * array -> true
      * * object -> true
-     * Note that it is also possible to use the logical and operator: `A && B`
+     * Note that it is also possible to use the logical and operator: `A &amp;&amp; B`
      * @param {any} value - any data type
      * @returns {boolean} The logical NOT applied to the input parameter
      * @example
@@ -726,7 +813,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     },
 
     /**
-     * Computes `a` raised to a power `x`. (a<sup>x</sup>)
+     * Computes `a` raised to a power `x`. (a&lt;sup>x&lt;/sup>)
      * @param {number} a The base number. It can be any real number.
      * @param {number} x The exponent to which the base number is raised.
      * @return {number}
@@ -797,7 +884,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         const startNum = toNumber(args[1]);
         const numChars = toNumber(args[2]);
         const newText = toString(args[3]);
-        if (startNum < 0) {
+        if (startNum &lt; 0) {
           return null;
         }
 
@@ -827,7 +914,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
       _func: args => {
         const text = toString(args[0]);
         const count = toNumber(args[1]);
-        if (count < 0) {
+        if (count &lt; 0) {
           return null;
         }
         return text.repeat(count);
@@ -857,7 +944,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     right: {
       _func: args => {
         const numEntries = args.length > 1 ? toNumber(args[1]) : 1;
-        if (numEntries < 0) return null;
+        if (numEntries &lt; 0) return null;
         if (args[0] instanceof Array) {
           if (numEntries === 0) return [];
           return args[0].slice(numEntries * -1);
@@ -920,7 +1007,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     second: {
       _func: args => {
         const time = toNumber(args[0]) % 1;
-        if (time < 0) {
+        if (time &lt; 0) {
           return null;
         }
 
@@ -996,7 +1083,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     stdev: {
       _func: args => {
         const values = args[0] || [];
-        if (values.length <= 1) {
+        if (values.length &lt;= 1) {
           return null;
         }
         const coercedValues = values.map(value => toNumber(value));
@@ -1053,7 +1140,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * If `which` is provided, only that occurrence of `old` is replaced by `new`
      * (starting the count from 1).
      * If there is no match, or if `old` has length 0, `text` is returned unchanged.
-     * Note that `old` and `new` may have different lengths. If `which` < 1, return `text` unchanged
+     * Note that `old` and `new` may have different lengths. If `which` &lt; 1, return `text` unchanged
      * @param {string} text The text or the reference to a cell containing text for which you want to substitute characters.
      * @param {string} old The text you want to replace.
      * @param {string} new The text you want to replace `old` with.
@@ -1074,12 +1161,12 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         const old = toString(args[1]);
         const replacement = toString(args[2]);
         // no third parameter? replace all instances
-        if (args.length <= 3) return src.replaceAll(old, replacement);
+        if (args.length &lt;= 3) return src.replaceAll(old, replacement);
         const whch = toNumber(args[3]);
-        if (whch < 1) return src;
+        if (whch &lt; 1) return src;
         // find the instance to replace
         let pos = -1;
-        for (let i = 0; i < whch; i += 1) {
+        for (let i = 0; i &lt; whch; i += 1) {
           pos += 1;
           const nextFind = src.slice(pos).indexOf(old);
           // no instance to match 'Which'
@@ -1116,7 +1203,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         const minutes = toNumber(args[1]);
         const seconds = toNumber(args[2]);
         const time = (hours * 3600 + minutes * 60 + seconds) / 86400;
-        if (time < 0) {
+        if (time &lt; 0) {
           return null;
         }
         return time - Math.floor(time);
@@ -1396,3 +1483,33 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     },
   };
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

@@ -1,8 +1,17 @@
 {
   "opts": {
-    "template": "node_modules/better-docs"
+    "template": "node_modules/better-docs",
+    "destination" : "./dist/jsdocs/"
   },
+  "tags": {
+    "allowUnknownTags": ["category"]
+  },
+  "plugins": [
+      "node_modules/better-docs/category",
+      "plugins/markdown"
+  ],
   "source": {
+    "include" : ["src/jmespath/"],
     "includePattern": "\\.js$"
   }
 }

@@ -1,4 +1,91 @@
-/*
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> functions.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>JSONFormula</h2><h3>Global</h3><ul><li><a href="global.html#casefold">casefold</a></li><li><a href="global.html#datetime">datetime</a></li><li><a href="global.html#deepScan">deepScan</a></li><li><a href="global.html#entries">entries</a></li><li><a href="global.html#fromEntries">fromEntries</a></li><li><a href="global.html#null">null</a></li><li><a href="global.html#unique">unique</a></li><li><a href="global.html#value">value</a></li></ul></div><div class="category"><h2>jmespath</h2><h3>Global</h3><ul><li><a href="global.html#abs">abs</a></li><li><a href="global.html#avg">avg</a></li><li><a href="global.html#ceil">ceil</a></li><li><a href="global.html#contains">contains</a></li><li><a href="global.html#endsWith">endsWith</a></li><li><a href="global.html#floor">floor</a></li><li><a href="global.html#join">join</a></li><li><a href="global.html#keys">keys</a></li><li><a href="global.html#length">length</a></li><li><a href="global.html#map">map</a></li><li><a href="global.html#max">max</a></li><li><a href="global.html#maxBy">maxBy</a></li><li><a href="global.html#merge">merge</a></li><li><a href="global.html#min">min</a></li><li><a href="global.html#minBy">minBy</a></li><li><a href="global.html#notNull">notNull</a></li><li><a href="global.html#reduce">reduce</a></li><li><a href="global.html#reverse">reverse</a></li><li><a href="global.html#sort">sort</a></li><li><a href="global.html#sortBy">sortBy</a></li><li><a href="global.html#startsWith">startsWith</a></li><li><a href="global.html#sum">sum</a></li><li><a href="global.html#toArray">toArray</a></li><li><a href="global.html#toNumber">toNumber</a></li><li><a href="global.html#toString">toString</a></li><li><a href="global.html#type">type</a></li><li><a href="global.html#values">values</a></li><li><a href="global.html#zip">zip</a></li></ul></div><div class="category"><h2>openFormula</h2><h3>Global</h3><ul><li><a href="global.html#and">and</a></li><li><a href="global.html#datedif">datedif</a></li><li><a href="global.html#day">day</a></li><li><a href="global.html#eomonth">eomonth</a></li><li><a href="global.html#exp">exp</a></li><li><a href="global.html#false">false</a></li><li><a href="global.html#find">find</a></li><li><a href="global.html#hour">hour</a></li><li><a href="global.html#if">if</a></li><li><a href="global.html#left">left</a></li><li><a href="global.html#lower">lower</a></li><li><a href="global.html#mid">mid</a></li><li><a href="global.html#minute">minute</a></li><li><a href="global.html#mod">mod</a></li><li><a href="global.html#month">month</a></li><li><a href="global.html#not">not</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#or">or</a></li><li><a href="global.html#power">power</a></li><li><a href="global.html#proper">proper</a></li><li><a href="global.html#replace">replace</a></li><li><a href="global.html#rept">rept</a></li><li><a href="global.html#right">right</a></li><li><a href="global.html#round">round</a></li><li><a href="global.html#second">second</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#sqrt">sqrt</a></li><li><a href="global.html#stdev">stdev</a></li><li><a href="global.html#stdevp">stdevp</a></li><li><a href="global.html#substitute">substitute</a></li><li><a href="global.html#time">time</a></li><li><a href="global.html#today">today</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#true">true</a></li><li><a href="global.html#trunc">trunc</a></li><li><a href="global.html#upper">upper</a></li><li><a href="global.html#weekday">weekday</a></li><li><a href="global.html#year">year</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>functions.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
 Copyright 2014 James Saryerwinnie
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +134,7 @@ export default function functions(
   function createKeyFunction(exprefNode, allowedTypes) {
     return x => {
       const current = interpreter.visit(exprefNode, x);
-      if (allowedTypes.indexOf(getTypeName(current)) < 0) {
+      if (allowedTypes.indexOf(getTypeName(current)) &lt; 0) {
         const msg = `TypeError: expected one of ${allowedTypes
         }, received ${getTypeName(current)}`;
         throw new Error(msg);
@@ -57,8 +144,8 @@ export default function functions(
   }
 
   return {
-    // name: [function, <signature>]
-    // The <signature> can be:
+    // name: [function, &lt;signature>]
+    // The &lt;signature> can be:
     //
     // {
     //   args: [[type1, type2], [type1, type2]],
@@ -267,9 +354,9 @@ export default function functions(
      * @return {array}
      * @function map
      * @example
-     * map(&(@ + 1), [1, 2, 3, 4]) // returns [2, 3, 4, 5]
+     * map(&amp;(@ + 1), [1, 2, 3, 4]) // returns [2, 3, 4, 5]
      * @example
-     * map(&length(@), ['doe', 'nick', 'chris']) // returns [3,4, 5]
+     * map(&amp;length(@), ['doe', 'nick', 'chris']) // returns [3,4, 5]
      * @category jmespath
      */
     map: {
@@ -305,7 +392,7 @@ export default function functions(
             );
           }
           return resolvedArgs[0].reduce(
-            (a, b) => (toString(b).localeCompare(toString(a)) < 0 ? a : b),
+            (a, b) => (toString(b).localeCompare(toString(a)) &lt; 0 ? a : b),
             resolvedArgs[0][0],
           );
         }
@@ -322,9 +409,9 @@ export default function functions(
      * @return {any}
      * @function maxBy
      * @example
-     * maxBy(['abcd', 'e', 'def'], &length(@)) //returns 'abcd'
+     * maxBy(['abcd', 'e', 'def'], &amp;length(@)) //returns 'abcd'
      * @example
-     * maxBy([{year: 2010}, {year: 2020}, {year: 1910}], &year) //returns {year: 2020}
+     * maxBy([{year: 2010}, {year: 2020}, {year: 1910}], &amp;year) //returns {year: 2020}
      * @category jmespath
      */
     maxBy: {
@@ -395,14 +482,14 @@ export default function functions(
           const typeName = getTypeName(resolvedArgs[0][0]);
           if (typeName === TYPE_NUMBER) {
             return resolvedArgs[0].reduce(
-              (prev, cur) => (toNumber(prev) <= toNumber(cur) ? prev : cur),
+              (prev, cur) => (toNumber(prev) &lt;= toNumber(cur) ? prev : cur),
               resolvedArgs[0][0],
             );
           }
           const elements = resolvedArgs[0];
           let minElement = elements[0];
-          for (let i = 1; i < elements.length; i += 1) {
-            if (toString(elements[i]).localeCompare(toString(minElement)) < 0) {
+          for (let i = 1; i &lt; elements.length; i += 1) {
+            if (toString(elements[i]).localeCompare(toString(minElement)) &lt; 0) {
               minElement = elements[i];
             }
           }
@@ -420,9 +507,9 @@ export default function functions(
      * @return {any}
      * @function minBy
      * @example
-     * minBy(['abcd', 'e', 'def'], &length(@)) //returns 'e'
+     * minBy(['abcd', 'e', 'def'], &amp;length(@)) //returns 'e'
      * @example
-     * minBy([{year: 2010}, {year: 2020}, {year: 1910}], &year) //returns {year: 1910}
+     * minBy([{year: 2010}, {year: 2020}, {year: 1910}], &amp;year) //returns {year: 1910}
      * @category jmespath
      */
     minBy: {
@@ -435,7 +522,7 @@ export default function functions(
         let current;
         resolvedArray.forEach(arg => {
           current = keyFunction(arg);
-          if (current < minNumber) {
+          if (current &lt; minNumber) {
             minNumber = current;
             minRecord = arg;
           }
@@ -478,11 +565,11 @@ export default function functions(
      * @return {any}
      * @function reduce
      * @example
-     * reduce(&(accumulated + current), [1, 2, 3]) //returns 6
+     * reduce(&amp;(accumulated + current), [1, 2, 3]) //returns 6
      * @example
-     * reduce(&(accumulated - current), [3, 3, 3]) //returns -9
+     * reduce(&amp;(accumulated - current), [3, 3, 3]) //returns -9
      * @example
-     * reduce(&if(accumulated == `null`, current, accumulated * current), [3, 3, 3]) //returns 27
+     * reduce(&amp;if(accumulated == `null`, current, accumulated * current), [3, 3, 3]) //returns 27
      * @category jmespath
      */
     reduce: {
@@ -549,7 +636,7 @@ export default function functions(
           sortedArray.sort((a, b) => {
             const va = normalize(a);
             const vb = normalize(b);
-            if (va < vb) return -1;
+            if (va &lt; vb) return -1;
             if (va > vb) return 1;
             return 0;
           });
@@ -570,9 +657,9 @@ export default function functions(
      * @return {array}
      * @function sortBy
      * @example
-     * sortBy(['abcd', 'e', 'def'], &length(@)) //returns ['e', 'def', 'abcd']
+     * sortBy(['abcd', 'e', 'def'], &amp;length(@)) //returns ['e', 'def', 'abcd']
      * @example
-     * sortBy([{year: 2010}, {year: 2020}, {year: 1910}], &year) //returns [{year: 1910}, {year: 2010}, {year: 2020}]
+     * sortBy([{year: 2010}, {year: 2020}, {year: 1910}], &amp;year) //returns [{year: 1910}, {year: 2010}, {year: 2020}]
      * @category jmespath
      */
     sortBy: {
@@ -585,7 +672,7 @@ export default function functions(
         const requiredType = getTypeName(
             interpreter.visit(exprefNode, sortedArray[0]),
         );
-        if ([TYPE_NUMBER, TYPE_STRING].indexOf(requiredType) < 0) {
+        if ([TYPE_NUMBER, TYPE_STRING].indexOf(requiredType) &lt; 0) {
           throw new Error('TypeError');
         }
         // In order to get a stable sort out of an unstable
@@ -596,7 +683,7 @@ export default function functions(
         // After the decorated list has been sorted, it will be
         // undecorated to extract the original elements.
         const decorated = [];
-        for (let i = 0; i < sortedArray.length; i += 1) {
+        for (let i = 0; i &lt; sortedArray.length; i += 1) {
           decorated.push([i, sortedArray[i]]);
         }
         decorated.sort((a, b) => {
@@ -616,7 +703,7 @@ export default function functions(
           if (exprA > exprB) {
             return 1;
           }
-          if (exprA < exprB) {
+          if (exprA &lt; exprB) {
             return -1;
           }
           // If they're equal compare the items by their
@@ -625,7 +712,7 @@ export default function functions(
           return a[0] - b[0];
         });
         // Undecorate: extract out the original list elements.
-        for (let j = 0; j < decorated.length; j += 1) {
+        for (let j = 0; j &lt; decorated.length; j += 1) {
           [, sortedArray[j]] = decorated[j];
         }
         return sortedArray;
@@ -822,7 +909,7 @@ export default function functions(
       _func: args => {
         const count = args.reduce((min, current) => Math.min(min, current.length), args[0].length);
         const result = new Array(count);
-        for (let i = 0; i < count; i += 1) {
+        for (let i = 0; i &lt; count; i += 1) {
           result[i] = [];
           args.forEach(a => {
             result[i].push(a[i]);
@@ -834,3 +921,33 @@ export default function functions(
     },
   };
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>
