@@ -3,9 +3,9 @@
   "version": "0.1.44",
   "description": "JSONFormula Grammar and implementation",
   "#browser": "The browser entry point is for a web browser.",
-  "browser": "dist/index.js",
+  "browser": "lib/index.js",
   "#main": "The main entry point is for a NodeJS-CommonJS context.",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "#module": "The module entry point is for an ES6 Modules context with import and export.",
   "module": "dist/mjs/json-formula.js",
   "files": [
