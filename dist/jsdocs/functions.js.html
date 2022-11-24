@@ -501,7 +501,8 @@ export default function functions(
     },
 
     /**
-     * Returns the minimum element in `elements` array using the expression `expr` as the comparison key.
+     * Returns the minimum element in `elements` array using the expression `expr`
+     * as the comparison key.
      * @param {array} elements
      * @param {expression} expr expression that returns either a string or a number
      * @return {any}
@@ -554,9 +555,10 @@ export default function functions(
     /**
      * executes a user-supplied reducer expression `expr` on each element of the
      * array, in order, passing in the return value from the calculation on the preceding element.
-     * The final result of running the reducer across all elements of the `elements` array is a single value.
+     * The final result of running the reducer across all elements of the `elements` array is a
+     * single value.
      * The expression can access the following properties
-     * * accumulated : accumulated value till now based on the previous calculations. The initial value is `null`
+     * * accumulated: accumulated value based on the previous calculations. Initial value is `null`
      * * current: current element to process
      * * index: index of the `current` element in the array
      * * array: original array
@@ -576,10 +578,10 @@ export default function functions(
       _func: resolvedArgs => {
         const exprefNode = resolvedArgs[0];
         return resolvedArgs[1].reduce(
-            (accumulated, current, index, array) => interpreter.visit(exprefNode, {
-              accumulated, current, index, array,
-            }),
-            resolvedArgs.length === 3 ? resolvedArgs[2] : null,
+          (accumulated, current, index, array) => interpreter.visit(exprefNode, {
+            accumulated, current, index, array,
+          }),
+          resolvedArgs.length === 3 ? resolvedArgs[2] : null,
         );
       },
       _signature: [
@@ -615,7 +617,6 @@ export default function functions(
       },
       _signature: [{ types: [TYPE_STRING, TYPE_ARRAY] }],
     },
-
 
     /**
      * This function accepts an array `list` argument and returns the sorted elements of
@@ -659,7 +660,8 @@ export default function functions(
      * @example
      * sortBy(['abcd', 'e', 'def'], &amp;length(@)) //returns ['e', 'def', 'abcd']
      * @example
-     * sortBy([{year: 2010}, {year: 2020}, {year: 1910}], &amp;year) //returns [{year: 1910}, {year: 2010}, {year: 2020}]
+     * // returns [{year: 1910}, {year: 2010}, {year: 2020}]
+     * sortBy([{year: 2010}, {year: 2020}, {year: 1910}], &amp;year)
      * @category jmespath
      */
     sortBy: {
@@ -670,7 +672,7 @@ export default function functions(
         }
         const exprefNode = resolvedArgs[1];
         const requiredType = getTypeName(
-            interpreter.visit(exprefNode, sortedArray[0]),
+          interpreter.visit(exprefNode, sortedArray[0]),
         );
         if ([TYPE_NUMBER, TYPE_STRING].indexOf(requiredType) &lt; 0) {
           throw new Error('TypeError');
@@ -691,13 +693,13 @@ export default function functions(
           const exprB = interpreter.visit(exprefNode, b[1]);
           if (getTypeName(exprA) !== requiredType) {
             throw new Error(
-                `TypeError: expected ${requiredType}, received ${
-                    getTypeName(exprA)}`,
+              `TypeError: expected ${requiredType}, received ${
+                getTypeName(exprA)}`,
             );
           } else if (getTypeName(exprB) !== requiredType) {
             throw new Error(
-                `TypeError: expected ${requiredType}, received ${
-                    getTypeName(exprB)}`,
+              `TypeError: expected ${requiredType}, received ${
+                getTypeName(exprB)}`,
             );
           }
           if (exprA > exprB) {
@@ -721,7 +723,7 @@ export default function functions(
     },
 
     /**
-     * Returns true if the `subject` starts with the `prefix`, otherwise this function returns false.
+     * Returns true if the `subject` starts with the `prefix`, otherwise returns false.
      * @param {string} subject subject in which the `prefix` is being searched for
      * @param {string} prefix prefix to search in the subject
      * @return {boolean}
@@ -759,7 +761,7 @@ export default function functions(
     /**
      * converts the passed `arg` to an array. The conversion happens as per the following rules
      * * array - Returns the passed in value.
-     * * number/string/object/boolean - Returns a one element array containing the passed in argument.
+     * * number/string/object/boolean - Returns a one element array containing the argument.
      * @param {any} arg
      * @return {array}
      * @function toArray
@@ -871,7 +873,6 @@ export default function functions(
       }[getTypeName(resolvedArgs[0])]),
       _signature: [{ types: [TYPE_ANY] }],
     },
-
 
     /**
      * Returns the values of the provided object `obj`. Note that because JSON hashes are

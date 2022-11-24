@@ -186,22 +186,22 @@ export default class JSONFormulaLexer extends antlr4.Lexer {
     static grammarFileName = "JSONFormula.g4";
     static channelNames = [ "DEFAULT_TOKEN_CHANNEL", "HIDDEN" ];
 	static modeNames = [ "DEFAULT_MODE" ];
-	static literalNames = [ null, "'.'", "'^'", "'*'", "'/'", "'&'", "'~'", 
-                         "'+'", "'-'", "'&&'", "'||'", "'!'", "'('", "')'", 
-                         "'|'", "'['", "','", "']'", "'{'", "'}'", "':'", 
+	static literalNames = [ null, "'.'", "'^'", "'*'", "'/'", "'&'", "'~'",
+                         "'+'", "'-'", "'&&'", "'||'", "'!'", "'('", "')'",
+                         "'|'", "'['", "','", "']'", "'{'", "'}'", "':'",
                          "'[?'", "'@'", "'$form'", "'$field'", "'`'" ];
-	static symbolicNames = [ null, null, null, null, null, null, null, null, 
-                          null, null, null, null, null, null, null, null, 
-                          null, null, null, null, null, null, null, null, 
-                          null, null, "COMPARATOR", "RAW_STRING", "JSON_CONSTANT", 
-                          "NAME", "STRING", "REAL_OR_EXPONENT_NUMBER", "SIGNED_INT", 
+	static symbolicNames = [ null, null, null, null, null, null, null, null,
+                          null, null, null, null, null, null, null, null,
+                          null, null, null, null, null, null, null, null,
+                          null, null, "COMPARATOR", "RAW_STRING", "JSON_CONSTANT",
+                          "NAME", "STRING", "REAL_OR_EXPONENT_NUMBER", "SIGNED_INT",
                           "WS" ];
-	static ruleNames = [ "T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", 
-                      "T__7", "T__8", "T__9", "T__10", "T__11", "T__12", 
-                      "T__13", "T__14", "T__15", "T__16", "T__17", "T__18", 
-                      "T__19", "T__20", "T__21", "T__22", "T__23", "T__24", 
-                      "COMPARATOR", "RAW_STRING", "RAW_ESC", "JSON_CONSTANT", 
-                      "NAME", "STRING", "ESC", "UNICODE", "HEX", "REAL_OR_EXPONENT_NUMBER", 
+	static ruleNames = [ "T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6",
+                      "T__7", "T__8", "T__9", "T__10", "T__11", "T__12",
+                      "T__13", "T__14", "T__15", "T__16", "T__17", "T__18",
+                      "T__19", "T__20", "T__21", "T__22", "T__23", "T__24",
+                      "COMPARATOR", "RAW_STRING", "RAW_ESC", "JSON_CONSTANT",
+                      "NAME", "STRING", "ESC", "UNICODE", "HEX", "REAL_OR_EXPONENT_NUMBER",
                       "SIGNED_INT", "INT", "EXP", "WS" ];
 
     constructor(input) {

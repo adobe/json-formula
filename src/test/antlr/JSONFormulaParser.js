@@ -187,23 +187,23 @@ const sharedContextCache = new antlr4.PredictionContextCache();
 export default class JSONFormulaParser extends antlr4.Parser {
 
     static grammarFileName = "JSONFormula.g4";
-    static literalNames = [ null, "'.'", "'^'", "'*'", "'/'", "'&'", "'~'", 
-                            "'+'", "'-'", "'&&'", "'||'", "'!'", "'('", 
-                            "')'", "'|'", "'['", "','", "']'", "'{'", "'}'", 
-                            "':'", "'[?'", "'@'", "'$form'", "'$field'", 
+    static literalNames = [ null, "'.'", "'^'", "'*'", "'/'", "'&'", "'~'",
+                            "'+'", "'-'", "'&&'", "'||'", "'!'", "'('",
+                            "')'", "'|'", "'['", "','", "']'", "'{'", "'}'",
+                            "':'", "'[?'", "'@'", "'$form'", "'$field'",
                             "'`'" ];
-    static symbolicNames = [ null, null, null, null, null, null, null, null, 
-                             null, null, null, null, null, null, null, null, 
-                             null, null, null, null, null, null, null, null, 
-                             null, null, "COMPARATOR", "RAW_STRING", "JSON_CONSTANT", 
-                             "NAME", "STRING", "REAL_OR_EXPONENT_NUMBER", 
+    static symbolicNames = [ null, null, null, null, null, null, null, null,
+                             null, null, null, null, null, null, null, null,
+                             null, null, null, null, null, null, null, null,
+                             null, null, "COMPARATOR", "RAW_STRING", "JSON_CONSTANT",
+                             "NAME", "STRING", "REAL_OR_EXPONENT_NUMBER",
                              "SIGNED_INT", "WS" ];
-    static ruleNames = [ "formula", "expression", "chainedExpression", "wildcard", 
-                         "multiSelectList", "multiSelectHash", "keyvalExpr", 
-                         "bracketSpecifier", "chainedBracketSpecifier", 
-                         "slice", "functionExpression", "functionArg", "currentNode", 
-                         "form", "currentField", "expressionType", "literal", 
-                         "identifier", "jsonObject", "jsonObjectPair", "jsonArray", 
+    static ruleNames = [ "formula", "expression", "chainedExpression", "wildcard",
+                         "multiSelectList", "multiSelectHash", "keyvalExpr",
+                         "bracketSpecifier", "chainedBracketSpecifier",
+                         "slice", "functionExpression", "functionArg", "currentNode",
+                         "form", "currentField", "expressionType", "literal",
+                         "identifier", "jsonObject", "jsonObjectPair", "jsonArray",
                          "jsonValue" ];
 
     constructor(input) {
@@ -567,7 +567,7 @@ export default class JSONFormulaParser extends antlr4.Parser {
 	                    this.chainedBracketSpecifier();
 	                    break;
 
-	                } 
+	                }
 	            }
 	            this.state = 98;
 	            this._errHandler.sync(this);
@@ -1568,7 +1568,7 @@ class ExpressionContext extends antlr4.ParserRuleContext {
     }
 
 
-	 
+
 		copyFrom(ctx) {
 			super.copyFrom(ctx);
 		}
@@ -2633,7 +2633,7 @@ class MultiSelectHashContext extends antlr4.ParserRuleContext {
     }
 
 
-	 
+
 		copyFrom(ctx) {
 			super.copyFrom(ctx);
 		}
@@ -2779,7 +2779,7 @@ class BracketSpecifierContext extends antlr4.ParserRuleContext {
     }
 
 
-	 
+
 		copyFrom(ctx) {
 			super.copyFrom(ctx);
 		}
@@ -2976,7 +2976,7 @@ class ChainedBracketSpecifierContext extends antlr4.ParserRuleContext {
     }
 
 
-	 
+
 		copyFrom(ctx) {
 			super.copyFrom(ctx);
 		}
@@ -3633,7 +3633,7 @@ class JsonValueContext extends antlr4.ParserRuleContext {
     }
 
 
-	 
+
 		copyFrom(ctx) {
 			super.copyFrom(ctx);
 		}
@@ -3826,25 +3826,25 @@ class JsonNumberValueContext extends JsonValueContext {
 JSONFormulaParser.JsonNumberValueContext = JsonNumberValueContext;
 
 
-JSONFormulaParser.FormulaContext = FormulaContext; 
-JSONFormulaParser.ExpressionContext = ExpressionContext; 
-JSONFormulaParser.ChainedExpressionContext = ChainedExpressionContext; 
-JSONFormulaParser.WildcardContext = WildcardContext; 
-JSONFormulaParser.MultiSelectListContext = MultiSelectListContext; 
-JSONFormulaParser.MultiSelectHashContext = MultiSelectHashContext; 
-JSONFormulaParser.KeyvalExprContext = KeyvalExprContext; 
-JSONFormulaParser.BracketSpecifierContext = BracketSpecifierContext; 
-JSONFormulaParser.ChainedBracketSpecifierContext = ChainedBracketSpecifierContext; 
-JSONFormulaParser.SliceContext = SliceContext; 
-JSONFormulaParser.FunctionExpressionContext = FunctionExpressionContext; 
-JSONFormulaParser.FunctionArgContext = FunctionArgContext; 
-JSONFormulaParser.CurrentNodeContext = CurrentNodeContext; 
-JSONFormulaParser.FormContext = FormContext; 
-JSONFormulaParser.CurrentFieldContext = CurrentFieldContext; 
-JSONFormulaParser.ExpressionTypeContext = ExpressionTypeContext; 
-JSONFormulaParser.LiteralContext = LiteralContext; 
-JSONFormulaParser.IdentifierContext = IdentifierContext; 
-JSONFormulaParser.JsonObjectContext = JsonObjectContext; 
-JSONFormulaParser.JsonObjectPairContext = JsonObjectPairContext; 
-JSONFormulaParser.JsonArrayContext = JsonArrayContext; 
-JSONFormulaParser.JsonValueContext = JsonValueContext; 
+JSONFormulaParser.FormulaContext = FormulaContext;
+JSONFormulaParser.ExpressionContext = ExpressionContext;
+JSONFormulaParser.ChainedExpressionContext = ChainedExpressionContext;
+JSONFormulaParser.WildcardContext = WildcardContext;
+JSONFormulaParser.MultiSelectListContext = MultiSelectListContext;
+JSONFormulaParser.MultiSelectHashContext = MultiSelectHashContext;
+JSONFormulaParser.KeyvalExprContext = KeyvalExprContext;
+JSONFormulaParser.BracketSpecifierContext = BracketSpecifierContext;
+JSONFormulaParser.ChainedBracketSpecifierContext = ChainedBracketSpecifierContext;
+JSONFormulaParser.SliceContext = SliceContext;
+JSONFormulaParser.FunctionExpressionContext = FunctionExpressionContext;
+JSONFormulaParser.FunctionArgContext = FunctionArgContext;
+JSONFormulaParser.CurrentNodeContext = CurrentNodeContext;
+JSONFormulaParser.FormContext = FormContext;
+JSONFormulaParser.CurrentFieldContext = CurrentFieldContext;
+JSONFormulaParser.ExpressionTypeContext = ExpressionTypeContext;
+JSONFormulaParser.LiteralContext = LiteralContext;
+JSONFormulaParser.IdentifierContext = IdentifierContext;
+JSONFormulaParser.JsonObjectContext = JsonObjectContext;
+JSONFormulaParser.JsonObjectPairContext = JsonObjectPairContext;
+JSONFormulaParser.JsonArrayContext = JsonArrayContext;
+JSONFormulaParser.JsonValueContext = JsonValueContext;

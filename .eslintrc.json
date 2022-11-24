@@ -1,0 +1,21 @@
+{
+  "root": true,
+  "extends": "eslint-config-airbnb-base",
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2020
+  },
+  "plugins": ["jest"],
+  "rules": {
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error",
+    "arrow-parens": ["error", "as-needed"]
+  },
+  "env": {
+    "jest/globals": true
+  }
+}
