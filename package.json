@@ -22,7 +22,7 @@
     "type": "git",
     "url": "git@github.com/adobe/json-formula.git"
   },
-  "author": "jbrinkma",
+  "author": "",
   "license": "Apache-2.0",
   "devDependencies": {
     "@babel/core": "^7.20.2",
