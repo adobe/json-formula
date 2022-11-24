@@ -22,7 +22,7 @@ casefold('AbC') // returns 'abc'
 Return a date/time value.
 
 **Kind**: global function  
-**Returns**: <code>number</code> - the new date/time value represented by number of seconds since 1 January 1970.  
+**Returns**: <code>number</code> - A date/time value represented by number of seconds since 1 January 1970.  
 **Category**: JSONFormula  
 
 | Param | Type | Description |
@@ -474,7 +474,8 @@ min(['a', 'a1', 'b']) // returns 'a'
 <a name="minBy"></a>
 
 ## minBy(elements, expr) ⇒ <code>any</code>
-Returns the minimum element in `elements` array using the expression `expr` as the comparison key.
+Returns the minimum element in `elements` array using the expression `expr`
+as the comparison key.
 
 **Kind**: global function  
 **Category**: jmespath  
@@ -520,9 +521,10 @@ notNull(`null`, 2, 3, 4, `null`) //returns 2
 ## reduce(expr, elements) ⇒ <code>any</code>
 executes a user-supplied reducer expression `expr` on each element of the
 array, in order, passing in the return value from the calculation on the preceding element.
-The final result of running the reducer across all elements of the `elements` array is a single value.
+The final result of running the reducer across all elements of the `elements` array is a
+single value.
 The expression can access the following properties
-* accumulated : accumulated value till now based on the previous calculations. The initial value is `null`
+* accumulated: accumulated value based on the previous calculations. Initial value is `null`
 * current: current element to process
 * index: index of the `current` element in the array
 * array: original array
@@ -604,12 +606,13 @@ sortBy(['abcd', 'e', 'def'], &length(@)) //returns ['e', 'def', 'abcd']
 ```
 **Example**  
 ```js
-sortBy([{year: 2010}, {year: 2020}, {year: 1910}], &year) //returns [{year: 1910}, {year: 2010}, {year: 2020}]
+// returns [{year: 1910}, {year: 2010}, {year: 2020}]
+sortBy([{year: 2010}, {year: 2020}, {year: 1910}], &year)
 ```
 <a name="startsWith"></a>
 
 ## startsWith(subject, prefix) ⇒ <code>boolean</code>
-Returns true if the `subject` starts with the `prefix`, otherwise this function returns false.
+Returns true if the `subject` starts with the `prefix`, otherwise returns false.
 
 **Kind**: global function  
 **Category**: jmespath  
@@ -645,7 +648,7 @@ sum([1, 2, 3]) //returns 6
 ## toArray(arg) ⇒ <code>array</code>
 converts the passed `arg` to an array. The conversion happens as per the following rules
 * array - Returns the passed in value.
-* number/string/object/boolean - Returns a one element array containing the passed in argument.
+* number/string/object/boolean - Returns a one element array containing the argument.
 
 **Kind**: global function  
 **Category**: jmespath  
@@ -787,8 +790,8 @@ zip([1, 2, 3], [4, 5, 6]) //returns [[1, 4], [2, 5], [3, 6]]
 <a name="and"></a>
 
 ## and(firstOperand, [...additionalOperands]) ⇒ <code>boolean</code>
-Returns the logical AND result of all parameters. If the parameters are not boolean they will be cast to boolean
-as per the following rules
+Returns the logical AND result of all parameters.
+If the parameters are not boolean they will be cast to boolean as per the following rules
 * null -> false
 * number -> false if the number is 0, true otherwise
 * string -> false if the string is empty, true otherwise. String "false" resolves to true
@@ -861,7 +864,7 @@ day(datetime(2008,5,23)) //returns 23
 <a name="eomonth"></a>
 
 ## eomonth(startDate, monthAdd) ⇒ <code>integer</code>
-Summary: Returns the serial number of the end of a month, given `startDate` plus `monthAdd` months
+Returns the serial number of the end of a month, given `startDate` plus `monthAdd` months
 
 **Kind**: global function  
 **Returns**: <code>integer</code> - the number of days in the computed month  
@@ -948,7 +951,7 @@ Extract the hour (0 through 23) from a time/datetime representation
 
 | Param | Type | Description |
 | --- | --- | --- |
-| The | <code>number</code> | datetime/time for which the hour is to be returned. Dates should be entered by using the [datetime](#datetime) or [time](#time) function |
+| The | <code>number</code> | datetime/time for which the hour is to be returned. Dates should be specified using the [datetime](#datetime) or [time](#time) function |
 
 **Example**  
 ```js
@@ -989,7 +992,7 @@ in case of array selected number of elements from the start
 
 | Param | Type | Description |
 | --- | --- | --- |
-| subject | <code>string</code> \| <code>array</code> | The text/array containing the characters/elements you want to extract. |
+| subject | <code>string</code> \| <code>array</code> | The text/array of characters/elements to extract. |
 | [elements] | <code>number</code> | number of elements to pick. Defaults to 1 |
 
 **Example**  
@@ -1036,9 +1039,9 @@ Returns null if the `startPos` is greater than the length of the array
 
 | Param | Type | Description |
 | --- | --- | --- |
-| subject | <code>string</code> \| <code>array</code> | the text string or array containing the characters or elements you want to extract. |
-| startPos | <code>number</code> | the position of the first character or element you want to extract in text. The position starts with 0 |
-| length | <code>number</code> | specifies the number of characters or elements you want to return from text. If it is greater then the length of `subject` the argument is set to the length of the subject. |
+| subject | <code>string</code> \| <code>array</code> | the text string or array of characters or elements to extract. |
+| startPos | <code>number</code> | the position of the first character or element to extract. The position starts with 0 |
+| length | <code>number</code> | The number of characters or elements to return from text. If it is greater then the length of `subject` the argument is set to the length of the subject. |
 
 **Example**  
 ```js
@@ -1062,7 +1065,7 @@ Extract the minute (0 through 59) from a time/datetime representation
 
 | Param | Type | Description |
 | --- | --- | --- |
-| The | <code>number</code> | datetime/time for which the minute is to be returned. Dates should be entered by using the [datetime](#datetime) or [time](#time) function |
+| The | <code>number</code> | datetime/time for which the minute is to be returned. Dates should be specified using the [datetime](#datetime) or [time](#time) function |
 
 **Example**  
 ```js
@@ -1081,8 +1084,8 @@ The sign is the same as divisor
 
 | Param | Type | Description |
 | --- | --- | --- |
-| dividend | <code>number</code> | The number for which you want to find the remainder. |
-| divisor | <code>number</code> | The number by which you want to divide number. |
+| dividend | <code>number</code> | The number for which to find the remainder. |
+| divisor | <code>number</code> | The number by which to divide number. |
 
 **Example**  
 ```js
@@ -1156,8 +1159,8 @@ returns the time since epoch with days as exponent and time of day as fraction
 <a name="or"></a>
 
 ## or(first, [...operand]) ⇒ <code>boolean</code>
-Returns the logical OR result of two parameters. If the parameters are not boolean they will be cast to boolean
-as per the following rules
+Returns the logical OR result of two parameters.
+If the parameters are not boolean they will be cast to boolean as per the following rules
 * null -> false
 * number -> false if the number is 0, true otherwise
 * string -> false if the string is empty, true otherwise. String "false" resolves to true
@@ -1206,7 +1209,7 @@ uppercase letter and the rest of the letters in the word converted to lowercase.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| text | <code>string</code> | the text you want to partially capitalize. |
+| text | <code>string</code> | the text to partially capitalize. |
 
 **Example**  
 ```js
@@ -1277,7 +1280,7 @@ Returns null if the number of elements is less than 0
 
 | Param | Type | Description |
 | --- | --- | --- |
-| subject | <code>string</code> \| <code>array</code> | The text/array containing the characters/elements you want to extract. |
+| subject | <code>string</code> \| <code>array</code> | The text/array containing the characters/elements to extract. |
 | [elements] | <code>number</code> | number of elements to pick. Defaults to 1 |
 
 **Example**  
@@ -1297,9 +1300,9 @@ left([4, 5, 6], 2) // returns [5, 6]
 ## round(num, precision) ⇒ <code>number</code>
 Round a number to a specified `precision`.
 ### Remarks
-* If `precision` is greater than 0 (zero), then number is rounded to the specified number of decimal places.
-* If `precision` is 0, the number is rounded to the nearest integer.
-* If `precision` is less than 0, the number is rounded to the left of the decimal point.
+* If `precision` is greater than zero, round to the specified number of decimal places.
+* If `precision` is 0, round to the nearest integer.
+* If `precision` is less than 0, round to the left of the decimal point.
 
 **Kind**: global function  
 **Category**: openFormula  
@@ -1339,7 +1342,7 @@ Extract the second (0 through 59) from a time/datetime representation
 
 | Param | Type | Description |
 | --- | --- | --- |
-| The | <code>number</code> | datetime/time for which the second is to be returned. Dates should be entered by using the [datetime](#datetime) or [time](#time) function |
+| The | <code>number</code> | datetime/time for which the second is to be returned. Dates should be specified using the [datetime](#datetime) or [time](#time) function |
 
 **Example**  
 ```js
@@ -1408,7 +1411,8 @@ stdevp([1345, 1301, 1368]) //returns 27.797
 ## stdevp(numbers) ⇒ <code>number</code>
 Calculates standard deviation based on the entire population given as arguments.
 `stdevp` assumes that its arguments are the entire population.
-If your data represents a sample of the population, then compute the standard deviation using [stdev](#stdev).
+If your data represents a sample of the population,
+then compute the standard deviation using [stdev](#stdev).
 
 **Kind**: global function  
 **Category**: openFormula  
@@ -1438,10 +1442,10 @@ Note that `old` and `new` may have different lengths. If `which` < 1, return `te
 
 | Param | Type | Description |
 | --- | --- | --- |
-| text | <code>string</code> | The text or the reference to a cell containing text for which you want to substitute characters. |
-| old | <code>string</code> | The text you want to replace. |
-| new | <code>string</code> | The text you want to replace `old` with. |
-| [which] | <code>integer</code> | Specifies which occurrence of `old` text you want to replace with `new` text. Starts with 1 |
+| text | <code>string</code> | The text for which to substitute characters. |
+| old | <code>string</code> | The text to replace. |
+| new | <code>string</code> | The text to replace `old` with. |
+| [which] | <code>integer</code> | The one-based occurrence of `old` text to replace with `new` text. |
 
 **Example**  
 ```js

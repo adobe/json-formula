@@ -136,7 +136,12 @@ export function matchType(actuals, expectedList, argValue, context, toNumber, to
       for (let i = 0; i < returnArray.length; i += 1) {
         const indexType = getTypeNames(returnArray[i]);
         returnArray[i] = matchType(
-          indexType, [subtype], returnArray[i], context, toNumber, toString,
+          indexType,
+          [subtype],
+          returnArray[i],
+          context,
+          toNumber,
+          toString,
         );
       }
       return returnArray;

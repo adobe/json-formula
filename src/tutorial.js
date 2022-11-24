@@ -10,7 +10,7 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-/* global window, document, fetch */
+/* global window, document */
 import { jsonFormula } from './json-formula';
 import createForm from './Form';
 import stringToNumber from './jmespath/stringToNumber';

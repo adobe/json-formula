@@ -52,8 +52,8 @@ export function adjustTimeZone(dateObj, timeZone) {
 export default function openFormulaFunctions(valueOf, toString, toNumber, debug = []) {
   return {
     /**
-     * Returns the logical AND result of all parameters. If the parameters are not boolean they will be cast to boolean
-     * as per the following rules
+     * Returns the logical AND result of all parameters.
+     * If the parameters are not boolean they will be cast to boolean as per the following rules
      * * null -> false
      * * number -> false if the number is 0, true otherwise
      * * string -> false if the string is empty, true otherwise. String "false" resolves to true
@@ -186,7 +186,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {integer} [milliseconds] Integer value representing the millisecond segment of a time.
      * The default is 0 milliseconds past the second.
      * @param {string} [timeZoneName] according to IANA time zone names. e.g. "America/Toronto"
-     * @returns {number} the new date/time value represented by number of seconds since 1 January 1970.
+     * @returns {number} A date/time value represented by number of seconds since 1 January 1970.
      * @kind function
      * @function
      * @category JSONFormula
@@ -307,8 +307,9 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     },
 
     /**
-     * Summary: Returns the serial number of the end of a month, given `startDate` plus `monthAdd` months
-     * @param {number} startDate The base date to start from. Dates should be entered by using the [datetime]{@link datetime} function
+     * Returns the serial number of the end of a month, given `startDate` plus `monthAdd` months
+     * @param {number} startDate The base date to start from.
+     * Dates should be entered by using the [datetime]{@link datetime} function
      * @param {integer} monthAdd Number of months to add to start date
      * @return {integer} the number of days in the computed month
      * @function
@@ -423,7 +424,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     /**
      * Extract the hour (0 through 23) from a time/datetime representation
      * @param {number} The datetime/time for which the hour is to be returned.
-     * Dates should be entered by using the [datetime]{@link datetime} or [time]{@link time} function
+     * Dates should be specified using the [datetime]{@link datetime} or [time]{@link time} function
      * @return {number}
      * @function hour
      * @category openFormula
@@ -484,7 +485,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     /**
      * Return a selected number of text characters from the left or
      * in case of array selected number of elements from the start
-     * @param {string|array} subject The text/array containing the characters/elements you want to extract.
+     * @param {string|array} subject The text/array of characters/elements to extract.
      * @param {number} [elements] number of elements to pick. Defaults to 1
      * @return {string|array}
      * @function left
@@ -538,10 +539,10 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * or in case of array, extracts a subset of the array from start till the length
      * number of elements.
      * Returns null if the `startPos` is greater than the length of the array
-     * @param {string|array} subject the text string or array containing the characters or elements you want to extract.
-     * @param {number} startPos the position of the first character or element you want to extract in text.
+     * @param {string|array} subject the text string or array of characters or elements to extract.
+     * @param {number} startPos the position of the first character or element to extract.
      * The position starts with 0
-     * @param {number} length specifies the number of characters or elements you want to return from text. If it
+     * @param {number} length The number of characters or elements to return from text. If it
      * is greater then the length of `subject` the argument is set to the length of the subject.
      * @return {string|array}
      * @function mid
@@ -574,7 +575,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     /**
      * Extract the minute (0 through 59) from a time/datetime representation
      * @param {number} The datetime/time for which the minute is to be returned.
-     * Dates should be entered by using the [datetime]{@link datetime} or [time]{@link time} function
+     * Dates should be specified using the [datetime]{@link datetime} or [time]{@link time} function
      * @return {number}
      * @function minute
      * @category openFormula
@@ -602,8 +603,8 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     /**
      * Return the remainder when one number is divided by another number.
      * The sign is the same as divisor
-     * @param {number} dividend The number for which you want to find the remainder.
-     * @param {number} divisor The number by which you want to divide number.
+     * @param {number} dividend The number for which to find the remainder.
+     * @param {number} divisor The number by which to divide number.
      * @return {number} Computes the remainder of `dividend`/`divisor`.
      * @function mod
      * @category openFormula
@@ -698,8 +699,8 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     },
 
     /**
-     * Returns the logical OR result of two parameters. If the parameters are not boolean they will be cast to boolean
-     * as per the following rules
+     * Returns the logical OR result of two parameters.
+     * If the parameters are not boolean they will be cast to boolean as per the following rules
      * * null -> false
      * * number -> false if the number is 0, true otherwise
      * * string -> false if the string is empty, true otherwise. String "false" resolves to true
@@ -750,7 +751,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     /**
      * Return the input string with the first letter of each word converted to an
      * uppercase letter and the rest of the letters in the word converted to lowercase.
-     * @param {string} text the text you want to partially capitalize.
+     * @param {string} text the text to partially capitalize.
      * @returns {string}
      * @function proper
      * @category openFormula
@@ -842,7 +843,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * Return a selected number of text characters from the right of a `subject` or
      * in case of array selected number of elements from the end of `subject` array
      * Returns null if the number of elements is less than 0
-     * @param {string|array} subject The text/array containing the characters/elements you want to extract.
+     * @param {string|array} subject The text/array containing the characters/elements to extract.
      * @param {number} [elements] number of elements to pick. Defaults to 1
      * @return {string|array}
      * @function right
@@ -875,9 +876,9 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     /**
      * Round a number to a specified `precision`.
      * ### Remarks
-     * * If `precision` is greater than 0 (zero), then number is rounded to the specified number of decimal places.
-     * * If `precision` is 0, the number is rounded to the nearest integer.
-     * * If `precision` is less than 0, the number is rounded to the left of the decimal point.
+     * * If `precision` is greater than zero, round to the specified number of decimal places.
+     * * If `precision` is 0, round to the nearest integer.
+     * * If `precision` is less than 0, round to the left of the decimal point.
      * @param {number} num number to round off
      * @param {number} precision number is rounded to the specified precision.
      * @returns {number}
@@ -909,7 +910,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     /**
      * Extract the second (0 through 59) from a time/datetime representation
      * @param {number} The datetime/time for which the second is to be returned.
-     * Dates should be entered by using the [datetime]{@link datetime} or [time]{@link time} function
+     * Dates should be specified using the [datetime]{@link datetime} or [time]{@link time} function
      * @return {number}
      * @function second
      * @category openFormula
@@ -1017,7 +1018,8 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     /**
      * Calculates standard deviation based on the entire population given as arguments.
      * `stdevp` assumes that its arguments are the entire population.
-     * If your data represents a sample of the population, then compute the standard deviation using [stdev]{@link stdev}.
+     * If your data represents a sample of the population,
+     * then compute the standard deviation using [stdev]{@link stdev}.
      * @param {number[]} numbers The array of numbers comprising the population
      * @returns {number}
      * @category openFormula
@@ -1054,10 +1056,10 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * (starting the count from 1).
      * If there is no match, or if `old` has length 0, `text` is returned unchanged.
      * Note that `old` and `new` may have different lengths. If `which` < 1, return `text` unchanged
-     * @param {string} text The text or the reference to a cell containing text for which you want to substitute characters.
-     * @param {string} old The text you want to replace.
-     * @param {string} new The text you want to replace `old` with.
-     * @param {integer} [which] Specifies which occurrence of `old` text you want to replace with `new` text. Starts with 1
+     * @param {string} text The text for which to substitute characters.
+     * @param {string} old The text to replace.
+     * @param {string} new The text to replace `old` with.
+     * @param {integer} [which] The one-based occurrence of `old` text to replace with `new` text.
      * @returns {string} replaced string
      * @function
      * @category openFormula

@@ -11,38 +11,35 @@ governing permissions and limitations under the License.
 */
 import path from 'path';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import CopyPlugin from 'copy-webpack-plugin';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-const DIST = path.resolve('.', 'dist');
+const dist = path.resolve('.', 'dist');
 
-export default {
+const defn = {
   mode: 'production',
   entry: {
     tutorial: './src/tutorial.js',
   },
   devtool: 'source-map',
-  resolve: { fallback: { fs: false } },
+  optimization: {
+    minimize: false,
+  },
+  devServer: {
+    port: 8085,
+    static: {
+      directory: path.resolve(),
+    },
+  },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          options: {
-            presets: [
-              '@babel/preset-env',
-              {
-                plugins: [
-                  ['@babel/plugin-proposal-class-properties', { loose: true }],
-                  ['@babel/plugin-proposal-private-property-in-object', { loose: true }],
-                  ['@babel/plugin-proposal-private-methods', { loose: true }],
-                ],
-              },
-            ],
-          },
+        },
+        resolve: {
+          fullySpecified: false,
         },
       },
       {
@@ -62,19 +59,21 @@ export default {
     ],
   },
   output: {
-    path: DIST,
+    path: dist,
     filename: '[name].js',
     libraryTarget: 'var',
     library: 'JSONFormula',
   },
   plugins: [
-    new CopyPlugin({
-      patterns: [
-        { from: './doc', to: path.resolve(DIST, 'doc') },
-      ],
-    }),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
     }),
   ],
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
+  },
 };
+
+export default defn;

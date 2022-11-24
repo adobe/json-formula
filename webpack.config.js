@@ -10,64 +10,40 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 import path from 'path';
-import CopyPlugin from 'copy-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-
-// artifacts to be distributed. Playground and docs
-const DIST = path.resolve('.', 'dist');
 
 // Build directory. Ignored from github
 const BUILD = path.resolve('.', 'build');
 
-//Library to be distributed on npm
+// Library to be distributed on npm
 const LIB = path.resolve('.', 'lib');
-const CJS = path.resolve(LIB, 'cjs');
-const UMD = path.resolve(LIB, 'umd');
 
-const cjs = {
+export default {
   mode: 'production',
   entry: {
     'json-formula': './src/json-formula.js',
   },
   devtool: 'source-map',
-  resolve: { fallback: { fs: false } },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          options: {
-            presets: [
-              '@babel/preset-env',
-              {
-                plugins: [
-                  ['@babel/plugin-proposal-class-properties', { loose: true }],
-                  ['@babel/plugin-proposal-private-property-in-object', { loose: true }],
-                  ['@babel/plugin-proposal-private-methods', { loose: true }],
-                ],
-              },
-            ],
-          },
+        },
+        resolve: {
+          fullySpecified: false,
         },
       },
     ],
   },
-  target: 'node',
+  target: 'web',
   output: {
-    path: CJS,
+    path: LIB,
     filename: '[name].js',
-    library: {
-      type: 'commonjs2',
-    },
   },
   plugins: [
-    new CopyPlugin({
-      patterns: [
-        { from: './src/index.cjs', to: path.resolve(LIB, 'index.js') },
-      ],
-    }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       reportFilename: path.resolve(BUILD, 'bundle-analyzer.html'),
@@ -78,17 +54,3 @@ const cjs = {
     }),
   ],
 };
-
-const umd = {
-  ...cjs,
-  target: 'web',
-  output: {
-    path: UMD,
-    filename: '[name].js',
-    library: {
-      type: 'umd',
-    },
-  },
-};
-
-export default [cjs, umd];
