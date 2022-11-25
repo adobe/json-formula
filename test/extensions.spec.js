@@ -9,9 +9,9 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import { jsonFormula } from '../json-formula';
-import stringToNumber from '../jmespath/stringToNumber';
-import createForm from '../Form';
+import { jsonFormula } from '../src/json-formula';
+import stringToNumber from '../src/jmespath/stringToNumber';
+import createForm from '../tutorial/Form';
 
 test('if executes correct branch', () => {
   const expressionTrue = 'if(true(),true_fn(),false_fn())';

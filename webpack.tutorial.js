@@ -20,7 +20,7 @@ const DIST = path.resolve('.', 'dist');
 export default {
   mode: 'production',
   entry: {
-    tutorial: './src/tutorial.js',
+    tutorial: './tutorial/tutorial.js',
   },
   devtool: 'source-map',
   module: {
@@ -64,7 +64,7 @@ export default {
       ],
     }),
     new HtmlWebpackPlugin({
-      template: 'src/index.html',
+      template: 'tutorial/index.html',
     }),
   ],
 };

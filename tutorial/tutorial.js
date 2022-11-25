@@ -11,9 +11,9 @@ governing permissions and limitations under the License.
 */
 
 /* global window, document */
-import { jsonFormula } from './json-formula';
+import { jsonFormula } from '../src/json-formula';
 import createForm from './Form';
-import stringToNumber from './jmespath/stringToNumber';
+import stringToNumber from '../src/jmespath/stringToNumber';
 
 window.addEventListener('load', () => {
   const dataElement = document.getElementById('data');

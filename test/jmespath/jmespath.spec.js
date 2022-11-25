@@ -10,9 +10,9 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import { jsonFormula } from '../../json-formula';
-import createForm from '../../Form';
-import stringToNumber from '../../jmespath/stringToNumber';
+import { jsonFormula } from '../../src/json-formula';
+import createForm from '../../tutorial/Form';
+import stringToNumber from '../../src/jmespath/stringToNumber';
 
 const basic = require('./basic.json');
 
