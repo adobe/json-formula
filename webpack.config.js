@@ -42,6 +42,9 @@ export default {
   output: {
     path: LIB,
     filename: '[name].js',
+    library: {
+      type: 'commonjs-static',
+    },
   },
   plugins: [
     new BundleAnalyzerPlugin({
