@@ -7,9 +7,9 @@
 # the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
 # OF ANY KIND, either express or implied. See the License for the specific language
 # governing permissions and limitations under the License.
-rm -rf src/test/antlr
-mkdir src/test/antlr
+rm -rf test/antlr
+mkdir test/antlr
 export CLASSPATH=".:/usr/local/lib/antlr-4.9.2-complete.jar:$CLASSPATH"
 alias antlr4='java -jar /usr/local/lib/antlr-4.9.2-complete.jar'
 alias grun='java org.antlr.v4.gui.TestRig'
-antlr4 -Dlanguage=JavaScript -visitor antlr/JSONFormula.g4 -o src/test/antlr
+antlr4 -Dlanguage=JavaScript -visitor antlr/JSONFormula.g4 -o test/antlr

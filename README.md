@@ -1,8 +1,8 @@
 # JSONFormula: an Expression Grammar for Forms
 
 This project hosts an implementation of a form expression grammar.
-The grammar is a mashup of 
-[spreadsheet-like](https://www.oasis-open.org/committees/download.php/16826/openformula-spec-20060221.html) 
+The grammar is a mashup of
+[spreadsheet-like](https://www.oasis-open.org/committees/download.php/16826/openformula-spec-20060221.html)
 functions and operators and [JMESPath](https://jmespath.org/) a JSON query language.
 
 # Demo
@@ -31,7 +31,7 @@ If an expression fails to evaluate, follow these steps to debug:
 > cd antlr
 > antlr4 JSONFormula.g4
 > javac *.java
-> grun JSONFormula formula -tokens -tree ../src/test/debug.txt
+> grun JSONFormula formula -tokens -tree ../test/debug.txt
 ```
 
 To compare with the jmespath equivalent:
@@ -40,7 +40,7 @@ To compare with the jmespath equivalent:
 > cd antlr4
 > antlr4 jmespath.g4
 > javac *.java
-> grun jmespath jmesPathExpression -tokens -tree ../src/test/debug.txt
+> grun jmespath jmesPathExpression -tokens -tree ../test/debug.txt
 ```
 
 ## Running Tests
@@ -62,5 +62,5 @@ Available functions defined [here](./dist/functions.md)
 
 ## Releasing to npm
 
-To release the package to npm create a commit with the message 
+To release the package to npm create a commit with the message
 `Release <version_number>` where the `version_number` is the version number in the package.json file.

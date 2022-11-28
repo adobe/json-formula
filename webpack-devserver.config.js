@@ -18,7 +18,7 @@ const dist = path.resolve('.', 'dist');
 const defn = {
   mode: 'production',
   entry: {
-    tutorial: './src/tutorial.js',
+    tutorial: './tutorial/tutorial.js',
   },
   devtool: 'source-map',
   optimization: {
@@ -66,7 +66,7 @@ const defn = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/index.html',
+      template: 'tutorial/index.html',
     }),
   ],
   performance: {

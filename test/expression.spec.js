@@ -9,14 +9,13 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import { jsonFormula } from '../json-formula';
-import createForm from '../Form';
-import functions from '../jmespath/openFormulaFunctions';
-import stringToNumber from '../jmespath/stringToNumber';
+import { jsonFormula } from '../src/json-formula';
+import createForm from '../tutorial/Form';
+import functions from '../src/jmespath/openFormulaFunctions';
+import stringToNumber from '../src/jmespath/stringToNumber';
 
 const sampleData = require('./sampleData.json');
-// This test file is useful to test one case in isolation.
-const tests = require('./testOne.json');
+const tests = require('./tests.json');
 
 test.each(tests)('%s', (_desc, tst) => {
   if (tst.fieldsOnly) return;

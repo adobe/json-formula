@@ -1,19 +1,20 @@
 {
   "name": "@adobe/json-formula",
-  "version": "0.1.46",
+  "version": "0.1.47",
   "description": "JSONFormula Grammar and implementation",
-  "main": "lib/json-formula.js",
+  "main": "src/json-formula.js",
   "type": "module",
   "files": [
-    "lib"
+    "src"
   ],
   "engines": {
     "node": ">=16.0.0"
   },
   "scripts": {
+    "prejsdocs": "node -e \"var mkdir = require('make-dir');mkdir('build').then(() => process.exit(0));\"",
     "eslint": "eslint src",
     "test": "jest",
-    "build": "rm -rf ./dist/ && rm -rf ./lib && webpack && webpack --config webpack.tutorial.js && npm run docs",
+    "build": "rm -rf ./dist/ && rm -rf ./lib && webpack --config webpack.tutorial.js && npm run docs",
     "start": "webpack serve --config webpack-devserver.config.js",
     "docs": "jsdoc2md -f src/jmespath/*unctions.js -g none > dist/functions.md && npm run jsdocs",
     "jsdocs": "jsdoc2md -f src/json-formula.js -g none > build/Readme.md && jsdoc -c jsdoc.json -R build/Readme.md"
@@ -45,7 +46,6 @@
     "jsdoc": "^3.6.11",
     "jsdoc-to-markdown": "^7.1.1",
     "webpack": "^5.75.0",
-    "webpack-bundle-analyzer": "^4.7.0",
     "webpack-cli": "^5.0.0",
     "webpack-dev-server": "^4.7.3"
   }
