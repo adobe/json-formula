@@ -6,7 +6,15 @@ The grammar is a mashup of
 functions and operators and [JMESPath](https://jmespath.org/) a JSON query language.
 
 # Demo
-Visit the test page [here](https://opensource.adobe.com/json-formula/dist/index.html)
+Visit the [Playground](https://opensource.adobe.com/json-formula/dist/index.html)
+
+# Documentation
+[Function Reference](https://opensource.adobe.com/json-formula/dist/jsdocs/global.html)
+[JS API](https://opensource.adobe.com/json-formula/dist/jsdocs/index.html)
+
+NOTES:
+- Documentation is still in progress.  ToDo: Incorporate descriptions of expressions, operators.
+- URLs for the playground and documentation are subject to change.
 
 # Setup
 
@@ -55,10 +63,6 @@ Contributions are welcomed! Read the [Contributing Guide](./CONTRIBUTING.md) for
 
 ## Licensing
 This project is licensed under the Apache V2 License. See [LICENSE](./LICENSE) for more information.
-
-## Function Reference
-
-Available functions defined [here](./dist/functions.md)
 
 ## Releasing to npm
 
