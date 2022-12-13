@@ -19,6 +19,7 @@ const {
   TOK_AND,
   TOK_ADD,
   TOK_SUBTRACT,
+  TOK_UNARY_MINUS,
   TOK_MULTIPLY,
   TOK_POWER,
   TOK_DIVIDE,
@@ -73,10 +74,8 @@ const skipChars = {
   '\n': true,
 };
 
-function isNum(ch, includeSign) {
-  return (ch >= '0' && ch <= '9')
-             || (includeSign && ch === '-')
-             || (ch === '.');
+function isNum(ch) {
+  return (ch >= '0' && ch <= '9') || (ch === '.');
 }
 
 function isAlphaNum(ch) {
@@ -130,7 +129,10 @@ export default class Lexer {
           start: this._current,
         });
         this._current += 1;
-      } else if ((stream[this._current] === '-' && ![TOK_CURRENT, TOK_NUMBER, TOK_RPAREN, TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER, TOK_RBRACKET].includes(prev)) || isNum(stream[this._current], false)) {
+      } else if (stream[this._current] === '-' && ![TOK_CURRENT, TOK_NUMBER, TOK_RPAREN, TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER, TOK_RBRACKET].includes(prev)) {
+        token = this._consumeUnaryMinus(stream);
+        tokens.push(token);
+      } else if (isNum(stream[this._current])) {
         token = this._consumeNumber(stream);
         tokens.push(token);
       } else if (stream[this._current] === '[') {
@@ -304,7 +306,7 @@ export default class Lexer {
     const start = this._current;
     this._current += 1;
     const maxLength = stream.length;
-    while (isNum(stream[this._current], false) && this._current < maxLength) {
+    while (isNum(stream[this._current]) && this._current < maxLength) {
       this._current += 1;
     }
     const n = stream.slice(start, this._current);
@@ -315,6 +317,12 @@ export default class Lexer {
       value = parseInt(n, 10);
     }
     return { type: TOK_NUMBER, value, start };
+  }
+
+  _consumeUnaryMinus() {
+    const start = this._current;
+    this._current += 1;
+    return { type: TOK_UNARY_MINUS, value: '-', start };
   }
 
   _consumeLBracket(stream) {

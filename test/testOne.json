@@ -1,10 +1,10 @@
 [
   [
-    "deepScan(samples, 'desc')",
+    "unary minus expression",
     {
-      "data": "samples",
-      "expression": "deepScan(\"purchase-order\", 'desc')",
-      "expected": ["pens", "pencils"]
+      "data": "samples.\"purchase-order\"",
+      "expression": "-items[0].quantity",
+      "expected": -2
     }
   ]
 ]

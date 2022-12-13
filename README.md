@@ -30,7 +30,10 @@ Highly recommended to use [vscode](https://code.visualstudio.com/) and install t
 
 [re]generate grammar: `source generate.sh`
 
-re-save the railroad diagram to the doc folder from vscode
+re-save the railroad diagram to the doc folder from vscode:
+- Context click on the g4 file
+- Choose "Show Railroad Diagram for All Tools
+- From the railroad view choose "Save to HTML"
 
 If an expression fails to evaluate, follow these steps to debug:
 

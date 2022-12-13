@@ -76,7 +76,11 @@
       "False": false,
       "Number": 5,
       "EmptyList": [],
-      "Zero": 0
+      "Zero": 0,
+      "nested": {
+        "False": false,
+        "True": true
+      }
     },
     "cases": [
       {
@@ -161,6 +165,14 @@
       },
       {
         "expression": "!True",
+        "result": false
+      },
+      {
+        "expression": "!nested.False",
+        "result": true
+      },
+      {
+        "expression": "!nested.True",
         "result": false
       },
       {

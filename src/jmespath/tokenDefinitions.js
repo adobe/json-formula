@@ -18,6 +18,7 @@ export default {
   TOK_AND: 'And',
   TOK_ADD: 'Add',
   TOK_SUBTRACT: 'Subtract',
+  TOK_UNARY_MINUS: 'UnaryMinus',
   TOK_MULTIPLY: 'Multiply',
   TOK_POWER: 'Power',
   TOK_UNION: 'Union',
