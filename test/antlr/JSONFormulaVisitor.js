@@ -24,12 +24,6 @@ export default class JSONFormulaVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
-	// Visit a parse tree produced by JSONFormulaParser#currentFieldExpression.
-	visitCurrentFieldExpression(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
 	// Visit a parse tree produced by JSONFormulaParser#multDivExpression.
 	visitMultDivExpression(ctx) {
 	  return this.visitChildren(ctx);
@@ -60,12 +54,6 @@ export default class JSONFormulaVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
-	// Visit a parse tree produced by JSONFormulaParser#formExpression.
-	visitFormExpression(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
 	// Visit a parse tree produced by JSONFormulaParser#bracketExpression.
 	visitBracketExpression(ctx) {
 	  return this.visitChildren(ctx);
@@ -74,6 +62,12 @@ export default class JSONFormulaVisitor extends antlr4.tree.ParseTreeVisitor {
 
 	// Visit a parse tree produced by JSONFormulaParser#orExpression.
 	visitOrExpression(ctx) {
+	  return this.visitChildren(ctx);
+	}
+
+
+	// Visit a parse tree produced by JSONFormulaParser#unaryMinusExpression.
+	visitUnaryMinusExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
@@ -248,18 +242,6 @@ export default class JSONFormulaVisitor extends antlr4.tree.ParseTreeVisitor {
 
 	// Visit a parse tree produced by JSONFormulaParser#currentNode.
 	visitCurrentNode(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
-	// Visit a parse tree produced by JSONFormulaParser#form.
-	visitForm(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
-	// Visit a parse tree produced by JSONFormulaParser#currentField.
-	visitCurrentField(ctx) {
 	  return this.visitChildren(ctx);
 	}
 

@@ -315,6 +315,11 @@ export default class TreeInterpreter {
         return isFalse(first);
       },
 
+      UnaryMinusExpression: (node, value) => {
+        const first = this.visit(node.children[0], value);
+        return first * -1;
+      },
+
       Literal: node => node.value,
 
       Number: node => node.value,

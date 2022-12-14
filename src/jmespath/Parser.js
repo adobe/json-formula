@@ -23,6 +23,7 @@ const {
   TOK_AND,
   TOK_ADD,
   TOK_SUBTRACT,
+  TOK_UNARY_MINUS,
   TOK_MULTIPLY,
   TOK_POWER,
   TOK_DIVIDE,
@@ -76,7 +77,8 @@ const bindingPower = {
   [TOK_STAR]: 20,
   [TOK_FILTER]: 21,
   [TOK_DOT]: 40,
-  [TOK_NOT]: 45,
+  [TOK_NOT]: 30,
+  [TOK_UNARY_MINUS]: 30,
   [TOK_LBRACE]: 50,
   [TOK_LBRACKET]: 55,
   [TOK_LPAREN]: 60,
@@ -165,6 +167,9 @@ export default class Parser {
       case TOK_NOT:
         right = this.expression(bindingPower.Not);
         return { type: 'NotExpression', children: [right] };
+      case TOK_UNARY_MINUS:
+        right = this.expression(bindingPower.UnaryMinus);
+        return { type: 'UnaryMinusExpression', children: [right] };
       case TOK_STAR:
         left = { type: 'Identity' };
         if (this._lookahead(0) === TOK_RBRACKET) {
@@ -375,7 +380,7 @@ export default class Parser {
       const right = this._parseSliceExpression();
       return this._projectIfSlice({ type: 'Identity' }, right);
     }
-    if (firstToken === TOK_NUMBER) {
+    if (firstToken === TOK_NUMBER || firstToken === TOK_UNARY_MINUS) {
       this._match(TOK_RBRACKET);
       return {
         type: 'Index',

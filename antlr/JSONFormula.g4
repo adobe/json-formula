@@ -26,6 +26,7 @@ expression
   | expression '||' expression # orExpression
   | identifier # identifierExpression
   | '!' expression # notExpression
+  | '-' expression # unaryMinusExpression
   | '(' expression ')' # parenExpression
   | wildcard # wildcardExpression
   | multiSelectList # multiSelectListExpression
@@ -36,9 +37,6 @@ expression
   | RAW_STRING # rawStringExpression
   | (REAL_OR_EXPONENT_NUMBER | SIGNED_INT) # numberLiteral
   | currentNode # currentNodeExpression
-  | form # formExpression
-  | currentField # currentFieldExpression
-
   ;
 
 chainedExpression
@@ -96,8 +94,6 @@ functionArg
   ;
 
 currentNode : '@' ;
-form : '$form' ;
-currentField : '$field' ;
 
 expressionType : '&' expression ;
 

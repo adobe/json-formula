@@ -1,19 +1,64 @@
 /*
  * This file contains all default CSS rules for the light vscode them, used for various diagrams and graphs.
- * Use the "antlr4.customcss" setting in vscode to specify your own file, if you like to override some rules.
+ * Use the "antlr4.customCSS" setting in vscode to specify your own file, if you like to override some rules.
  *
  * Most of the appearance is defined here, while only some adjustments for the dark theme exist in dark.css.
  * This style sheet is also used for exported svg files.
  */
 
+ html {
+     height: 100%;
+ }
+
  body {
     padding-left: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 svg {
     background: rgba(0, 0, 0, 0.03);
+    flex: 1;
 }
 
+.header {
+    font-size: 12pt;
+    display: flex;
+    align-items: baseline;
+
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    cursor: default;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.graph-initial {
+    font-size: 30pt;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.rule-index {
+    font-size: 8pt;
+    padding-left: 6px;
+}
+
+#container {
+    margin-top: 45px;
+}
+
+.action-box {
+    font: 10pt monospace;
+    margin-left: 15px;
+    padding: 5px;
+    border: dotted 1px #606060;
+    cursor: default;
+}
 
 /* ATN graphs */
 
@@ -43,10 +88,21 @@ svg {
 }
 
 .linkLabel {
-    font: bold 9pt "Helvetica Neue", Arial, sans-serif;
+    font: 9pt monospace;
     fill: #606060;
     text-anchor: middle;
     pointer-events: none;
+}
+
+.linkLabel > .heading {
+    fill: cornflowerblue;
+    font-weight: 800;
+}
+
+.linkLabel > .predicate {
+    fill: gray;
+    font-weight: 400;
+    font-size: 7pt
 }
 
 .state {
@@ -182,7 +238,7 @@ svg.railroad-diagram g.diagram-text:hover path.diagram-text {
     stroke-opacity: .2;
     fill: none;
     pointer-events: none;
-    animation: fadeIn 0.25s ease-out 0.2s 1 normal backwards;
+    animation: fadeIn 1s ease-out 1s normal backwards;
 }
 
 .module-1 {
@@ -279,7 +335,7 @@ svg.railroad-diagram g.diagram-text:hover path.diagram-text {
 
 .link-dimmed {
     stroke-opacity: 0.075;
-    animation: fadeOut 0.25s ease-out 0.1s 1 normal backwards;
+    animation: fadeOut 0.3s ease-out 0s normal backwards;
 }
 
 
@@ -343,41 +399,6 @@ g .token-range {
 }
 
 /* Internal elements, only used in vscode */
-
-.header {
-    font-size: 12pt;
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 45px;
-    background-color: var(--background-color);
-    cursor: default;
-    user-select: none;
-    white-space: nowrap;
-}
-
-.graph-initial {
-    font-size: 30pt;
-    font-weight: 600;
-    vertical-align: middle;
-}
-
-.rule-index {
-    font-size: 8pt;
-}
-
-#container {
-    margin-top: 45px;
-}
-
-.action-box {
-    font: 10pt monospace;
-    margin-left: 15px;
-    padding: 5px;
-    border: dotted 1px #606060;
-    cursor: default;
-}
 
 .atn-graph-color {
     color: rgba(206, 11, 70, 1);
@@ -470,8 +491,8 @@ g .token-range {
 	width: 12px;
 	height: 12px;
 	position: absolute;
-	left: 0px;
-	top: 0px;
+	left: 0;
+	top: 0;
 	z-index: 4;
 	background-color: white;
 	border-radius: 2.5em;
@@ -479,6 +500,6 @@ g .token-range {
 }
 
 .switch input:checked~.switch-handle-top  {
-    top: 0px;
+    top: 0;
     left: 12px;
 }

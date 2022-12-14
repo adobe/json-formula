@@ -404,6 +404,30 @@
     }
   ],
   [
+    "unary minus expression",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "-items[0].quantity",
+      "expected": -2
+    }
+  ],
+  [
+    "unary minus expression",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "- -items[0].quantity",
+      "expected": 2
+    }
+  ],
+  [
+    "unary minus expression",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "4 + -items[0].quantity",
+      "expected": 2
+    }
+  ],
+  [
     "subtract expressions",
     {
       "data": "samples.\"purchase-order\"",
