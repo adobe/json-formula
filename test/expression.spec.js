@@ -23,7 +23,7 @@ test.each(tests)('%s', (_desc, tst) => {
   const data = jsonFormula(sampleData, {}, tst.data, functions, stringToNumber);
   let result;
   try {
-    result = jsonFormula(data, {}, tst.expression, functions, stringToNumber, [], language);
+    result = jsonFormula(data, { $: 42 }, tst.expression, functions, stringToNumber, [], language);
   } catch (e) {
     expect(tst.error).toBe('syntax');
     return;
@@ -44,7 +44,7 @@ test.each(tests)('%s', (_desc, tst) => {
     const root = createForm(data);
     jsonResult = jsonFormula(
       root,
-      { $form: root, $: {} },
+      { $form: root, $: 42 },
       tst.expression,
       functions,
       stringToNumber,
