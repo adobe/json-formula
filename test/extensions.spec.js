@@ -9,13 +9,11 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import { jsonFormula } from '../src/json-formula';
+import JsonFormula from '../src/json-formula';
 import stringToNumber from '../src/jmespath/stringToNumber';
 import createForm from '../tutorial/Form';
 
 test('if executes correct branch', () => {
-  const expressionTrue = 'if(true(),true_fn(),false_fn())';
-  const expressionFalse = 'if(false(),true_fn(),false_fn())';
   const customFunctions = {
     true_fn: {
       _func: () => true,
@@ -26,16 +24,21 @@ test('if executes correct branch', () => {
       _signature: [],
     },
   };
+
+  const jsonFormula = new JsonFormula(customFunctions);
+
+  const expressionTrue = 'if(true(),true_fn(),false_fn())';
+  const expressionFalse = 'if(false(),true_fn(),false_fn())';
   const spyTrue = jest.spyOn(customFunctions.true_fn, '_func');
   const spyFalse = jest.spyOn(customFunctions.false_fn, '_func');
 
-  const resultTrue = jsonFormula({}, {}, expressionTrue, customFunctions, stringToNumber);
+  const resultTrue = jsonFormula.search(expressionTrue, {});
   expect(resultTrue).toEqual(true);
   expect(spyTrue).toHaveBeenCalled();
   expect(spyFalse).not.toHaveBeenCalled();
 
   jest.clearAllMocks();
-  const resultFalse = jsonFormula({}, {}, expressionFalse, customFunctions, stringToNumber);
+  const resultFalse = jsonFormula.search(expressionFalse, {});
   expect(spyTrue).not.toHaveBeenCalled();
   expect(spyFalse).toHaveBeenCalled();
   expect(resultFalse).toEqual(false);
@@ -52,7 +55,9 @@ test('handle function that throws', () => {
   };
 
   const debug = [];
-  expect(() => jsonFormula({}, {}, 'throw()', customFunctions, stringToNumber, debug)).toThrow('big mistake');
+  const jsonFormula = new JsonFormula(customFunctions, stringToNumber, debug);
+
+  expect(() => jsonFormula.search('throw()', {})).toThrow('big mistake');
   expect(debug).toHaveLength(1);
   expect(debug[0]).toEqual('big mistake');
 });
@@ -70,12 +75,10 @@ test('can pass a class as a function argument', () => {
     },
   };
   const root = createForm({ address: { street: 'Oak' } });
-  const result = jsonFormula(
-    root,
-    {},
+  const jsonFormula = new JsonFormula(customFunctions);
+  const result = jsonFormula.search(
     getNameFunc,
-    customFunctions,
-    stringToNumber,
+    root,
   );
   expect(result).toEqual('street');
 });
@@ -97,7 +100,7 @@ test('Access properties of array-based fieldset', () => {
 
   const form1 = createForm(items);
   const expression = 'length($form.$fields)';
-  const result = jsonFormula(form1, { $form: form1 }, expression, {}, stringToNumber);
+  const result = new JsonFormula().search(expression, { $form: form1 }, form1);
 
   expect(result).toBe(3);
 });
@@ -112,13 +115,13 @@ describe('current datetime tests', () => {
 
   test('now returns the correct value', () => {
     const expression = 'now()';
-    const result = jsonFormula({}, {}, expression, {}, stringToNumber);
+    const result = new JsonFormula().search(expression, {});
     expect(result).toEqual(1.5);
   });
 
   test('today returns the correct value', () => {
     const expression = 'today()';
-    const result = jsonFormula({}, {}, expression, {}, stringToNumber);
+    const result = new JsonFormula().search(expression, {});
     expect(result).toEqual(1.0);
   });
 
@@ -136,7 +139,7 @@ describe('expressions with globals', () => {
     const globals = {
       $form: form.data,
     };
-    const result = jsonFormula({}, globals, expression, {}, stringToNumber);
+    const result = new JsonFormula().search(expression, {}, globals);
     expect(result.valueOf()).toEqual(globals.$form.address.street.valueOf());
   });
 
@@ -148,7 +151,7 @@ describe('expressions with globals', () => {
     const json = {
       $form: 'ignore',
     };
-    const result = jsonFormula(json, globals, expression, {}, stringToNumber);
+    const result = new JsonFormula().search(expression, json, globals);
     expect(result.valueOf()).toEqual(globals.$form.address.street.valueOf());
   });
 
@@ -162,7 +165,7 @@ describe('expressions with globals', () => {
         $form: 'value',
       },
     };
-    const result = jsonFormula(json, globals, expression, {}, stringToNumber);
+    const result = new JsonFormula().search(expression, json, globals);
     expect(result.valueOf()).toEqual(json.address.$form);
   });
 
@@ -174,9 +177,9 @@ describe('expressions with globals', () => {
     const json = {
       '#form': 'value',
     };
-    const result1 = jsonFormula(json, globals, '"#form"', {}, stringToNumber);
+    const result1 = new JsonFormula().search('"#form"', json, globals);
     expect(result1).toEqual(json['#form']);
-    const result2 = jsonFormula(json, globals, 'form', {}, stringToNumber);
+    const result2 = new JsonFormula().search('form', json, globals);
     expect(result2).toEqual(null);
   });
 
@@ -191,7 +194,7 @@ describe('expressions with globals', () => {
       },
     };
     const expression = 'customFunc()';
-    const result = jsonFormula({}, globals, expression, customFunctions, stringToNumber);
+    const result = new JsonFormula(customFunctions).search(expression, {}, globals);
     expect(result).toEqual(globals.element);
   });
 });
@@ -220,7 +223,7 @@ test('expressions in brackets', () => {
     $form: sample,
   };
   testcases.forEach(([expression, expected]) => {
-    const result = jsonFormula(sample, globals, expression, {}, stringToNumber);
+    const result = new JsonFormula().search(expression, sample, globals);
     expect(result).toEqual(expected);
   });
 
@@ -230,6 +233,6 @@ test('expressions in brackets', () => {
     'array[$form.zero, $form.one]',
   ];
   failures.forEach(expression => {
-    expect(() => jsonFormula(sample, globals, expression, {}, stringToNumber)).toThrow();
+    expect(() => new JsonFormula().search(expression, sample, globals)).toThrow();
   });
 });

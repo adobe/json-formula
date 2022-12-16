@@ -9,76 +9,74 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import jmespath from './jmespath/jmespath';
+import Formula from './jmespath/jmespath';
 
 /**
- * Returns an instance of JSON Formula Expression that can be executed later on with
+ * Returns an instance of JSON JsonFormula Expression that can be executed later on with
  * multiple instances of JSON Data. The instance of the class has a single search
  * function that can be used to evaluate the expression on a json payload. The advantage
- * of using this over {jsonFormula} function is that it can be performant if a single expression
+ * of using this over {jsonJsonFormula} function is that it can be performant if a single expression
  * has to be used for multiple json data instances.
  */
-export class Formula {
+export default class JsonFormula {
   /**
-   * Creates a Formula instance that can be executed later on with some data.
-   * @param expression {string} the expression to evaluate
-   * @param customFunctions {*} custom functions that the expressions uses.
+   * @param customFunctions {*} custom functions needed by a hosting application.
    * @param stringToNumber {function} A function that converts string values to numbers.
    * Can be used to convert currencies/dates to numbers
-   * @param allowedGlobalNames {string[]} A list of names of the global variables
-   * being used in the expression.
-   * @param debug {boolean} whether to return/log the debugging information
    * @param language
+   * @param debug {array} will be populated with any errors/warnings
    */
   constructor(
-    expression,
     customFunctions = {},
     stringToNumber = null,
-    allowedGlobalNames = [],
     debug = [],
-    language = 'en-US',
   ) {
-    this.expression = expression;
-    this.customFunctions = customFunctions;
+    this.customFunctions = { ...customFunctions };
     this.stringToNumber = stringToNumber;
-    this.node = jmespath.compile(expression, allowedGlobalNames, debug);
     this.debug = debug;
-    this.language = language;
+    this.formula = new Formula(debug, customFunctions, stringToNumber);
   }
 
   /**
-   * Evaluates the Formula on a particular json payload and return the result
+   * Evaluates the JsonFormula on a particular json payload and return the result
    * @param json {object} the json data on which the expression needs to be evaluated
    * @param globals {*} global objects that can be accessed via custom functions.
    * @returns {*} the result of the expression being evaluated
    */
-  search(json, globals) {
-    return jmespath.search(
-      this.node,
+  search(expression, json, globals = {}, language = 'en-US') {
+    const ast = this.compile(expression, Object.keys(globals));
+    return this.run(ast, json, language, globals);
+  }
+
+  /**
+   * Execute a previously compiled expression against a json object and return the result
+   * @param ast {object} The abstract syntax tree returned from compile()
+   * @param json {object} the json data on which the expression needs to be evaluated
+   * @param globals {*} set of objects available in global scope
+   * @returns {*} the result of the expression being evaluated
+   */
+  run(ast, json, language, globals) {
+    return this.formula.search(
+      ast,
       json,
       globals,
-      { ...this.customFunctions },
-      this.stringToNumber,
-      this.debug,
-      this.language,
+      language,
     );
+  }
+
+  /*
+   * Creates a compiled expression that can be executed later on with some data.
+   * @param expression {string} the expression to evaluate
+   * @param allowedGlobalNames {string[]} A list of names of the global variables
+   * being used in the expression.
+   * @param debug {array} will be populated with any errors/warnings
+   */
+  compile(expression, allowedGlobalNames = []) {
+    this.debug.length = 0;
+    return this.formula.compile(expression, allowedGlobalNames);
   }
 }
 
-/**
- * Executes an expression on a given json and returns the result
- *
- * @param json {object} the json data on which the expression needs to be evaluated
- * @param globals {*} global objects that can be accessed via custom functions.
- * @param expression {string} the expression to evaluate
- * @param customFunctions {*} custom functions that the expressions uses.
- * @param stringToNumber {function} A function that converts string values to numbers.
- * Can be used to convert currencies/dates to numbers
- * @param debug {boolean} whether to return/log the debugging information
- * @param language
- * @returns {*}
- */
-// eslint-disable-next-line import/prefer-default-export
 export function jsonFormula(
   json,
   globals,
@@ -88,20 +86,6 @@ export function jsonFormula(
   debug = [],
   language = 'en-US',
 ) {
-  const formula = new Formula(
-    expression,
-    customFunctions,
-    stringToNumber,
-    Object.keys(globals),
-    debug,
-    language,
-  );
-  return formula.search(
-    json,
-    globals,
-    { ...customFunctions },
-    stringToNumber,
-    debug,
-    language,
-  );
+  return new JsonFormula(customFunctions, stringToNumber, debug)
+    .search(expression, json, globals, language);
 }

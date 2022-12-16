@@ -2863,5 +2863,49 @@
       "expression": "deepScan([{a1: [address]}, {a2: [address]}], 'street')",
       "expected": ["123 Oak Street", "123 Oak Street"]
     }
+  ],
+  [
+    "registered function",
+    {
+      "data": "`{\"array\": [\"a\", \"b\", \"c\", \"d\", \"a\", \"b\"]}`",
+      "expression": "summarize(array)",
+      "expected": {
+        "a": 2,
+        "b": 2,
+        "c": 1,
+        "d": 1
+      }
+    }
+  ],
+  [
+    "registered function",
+    {
+      "data": "`{\"array\": [\"a\", \"b\", \"c\", \"d\", \"a\", \"b\"]}`",
+      "expression": "merge(register('summarize', &42), summarize(array))",
+      "expected": {
+        "a": 2,
+        "b": 2,
+        "c": 1,
+        "d": 1
+      }
+    }
+  ],
+  [
+    "registered product function",
+    {
+      "data": "`{}`",
+      "expression": "product([3, 4]) + product([4, 5])",
+      "expected": 32
+    }
+  ],
+  [
+    "register 2 functions",
+    {
+      "data": "`{}`",
+      "expression": "merge(register('p1', &42), register('p2', &43), {r: p1() + p2()})",
+      "expected": {
+        "r": 85
+      }
+    }
   ]
 ]

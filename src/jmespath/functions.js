@@ -23,13 +23,14 @@ https://github.com/jmespath/jmespath.js
 import dataTypes from './dataTypes';
 
 export default function functions(
-  interpreter,
+  runtime,
   isObject,
   isArray,
   toNumber,
   getTypeName,
   valueOf,
   toString,
+  debug,
 ) {
   const {
     TYPE_NUMBER,
@@ -46,7 +47,7 @@ export default function functions(
 
   function createKeyFunction(exprefNode, allowedTypes) {
     return x => {
-      const current = interpreter.visit(exprefNode, x);
+      const current = runtime.interpreter.visit(exprefNode, x);
       if (allowedTypes.indexOf(getTypeName(current)) < 0) {
         const msg = `TypeError: expected one of ${allowedTypes
         }, received ${getTypeName(current)}`;
@@ -275,7 +276,7 @@ export default function functions(
     map: {
       _func: resolvedArgs => {
         const exprefNode = resolvedArgs[0];
-        return resolvedArgs[1].map(arg => interpreter.visit(exprefNode, arg));
+        return resolvedArgs[1].map(arg => runtime.interpreter.visit(exprefNode, arg));
       },
       _signature: [{ types: [TYPE_EXPREF] }, { types: [TYPE_ARRAY] }],
     },
@@ -366,7 +367,7 @@ export default function functions(
       _func: resolvedArgs => {
         const merged = {};
         resolvedArgs.forEach(current => {
-          Object.entries(current).forEach(([key, value]) => {
+          Object.entries(current || {}).forEach(([key, value]) => {
             merged[key] = value;
           });
         });
@@ -491,7 +492,7 @@ export default function functions(
       _func: resolvedArgs => {
         const exprefNode = resolvedArgs[0];
         return resolvedArgs[1].reduce(
-          (accumulated, current, index, array) => interpreter.visit(exprefNode, {
+          (accumulated, current, index, array) => runtime.interpreter.visit(exprefNode, {
             accumulated, current, index, array,
           }),
           resolvedArgs.length === 3 ? resolvedArgs[2] : null,
@@ -504,22 +505,35 @@ export default function functions(
       ],
     },
 
+    /**
+     * Register a function to allow code re-use.  The registered function may take one parameter.
+     * @param {string} functionName Name of the function to register
+     * @param {expression} expr Expression to execute with this function call
+     * @return {{}} returns an empty object
+     * @function register
+     * @example
+     * register('product', &@[0] * @[1])
+     * product([2,21]) // returns 42
+     * @category jmespath
+     */
     register: {
       _func: resolvedArgs => {
         const functionName = resolvedArgs[0];
         const exprefNode = resolvedArgs[1];
 
-        if (!functionMap[functionName]) {
-          functionMap[functionName] = {
-            _func: args => interpreter.visit(exprefNode, ...args),
-            _signature: [ { types: [TYPE_ANY], variadic: true } ]
-          }
+        if (functionMap[functionName]) {
+          debug.push(`Cannot re-register '${functionName}'`);
+          return {};
         }
+        functionMap[functionName] = {
+          _func: args => runtime.interpreter.visit(exprefNode, ...args),
+          _signature: [{ types: [TYPE_ANY], optional: true }],
+        };
         return {};
       },
       _signature: [
         { types: [TYPE_STRING] },
-        { types: [TYPE_EXPREF] }
+        { types: [TYPE_EXPREF] },
       ],
     },
     /**
@@ -603,7 +617,7 @@ export default function functions(
         }
         const exprefNode = resolvedArgs[1];
         const requiredType = getTypeName(
-          interpreter.visit(exprefNode, sortedArray[0]),
+          runtime.interpreter.visit(exprefNode, sortedArray[0]),
         );
         if ([TYPE_NUMBER, TYPE_STRING].indexOf(requiredType) < 0) {
           throw new Error('TypeError');
@@ -620,8 +634,8 @@ export default function functions(
           decorated.push([i, sortedArray[i]]);
         }
         decorated.sort((a, b) => {
-          const exprA = interpreter.visit(exprefNode, a[1]);
-          const exprB = interpreter.visit(exprefNode, b[1]);
+          const exprA = runtime.interpreter.visit(exprefNode, a[1]);
+          const exprB = runtime.interpreter.visit(exprefNode, b[1]);
           if (getTypeName(exprA) !== requiredType) {
             throw new Error(
               `TypeError: expected ${requiredType}, received ${
