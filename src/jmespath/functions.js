@@ -56,7 +56,7 @@ export default function functions(
     };
   }
 
-  return {
+  const functionMap = {
     // name: [function, <signature>]
     // The <signature> can be:
     //
@@ -321,7 +321,7 @@ export default function functions(
      * @param {expression} expr the expr to use as the `comparison` key
      * @return {any}
      * @function maxBy
-     * @example
+     * @examplecreateKeyFunction
      * maxBy(['abcd', 'e', 'def'], &length(@)) //returns 'abcd'
      * @example
      * maxBy([{year: 2010}, {year: 2020}, {year: 1910}], &year) //returns {year: 2020}
@@ -504,6 +504,24 @@ export default function functions(
       ],
     },
 
+    register: {
+      _func: resolvedArgs => {
+        const functionName = resolvedArgs[0];
+        const exprefNode = resolvedArgs[1];
+
+        if (!functionMap[functionName]) {
+          functionMap[functionName] = {
+            _func: args => interpreter.visit(exprefNode, ...args),
+            _signature: [ { types: [TYPE_ANY], variadic: true } ]
+          }
+        }
+        return {};
+      },
+      _signature: [
+        { types: [TYPE_STRING] },
+        { types: [TYPE_EXPREF] }
+      ],
+    },
     /**
      * Reverses the order of the `argument`.
      * @param {string|array} argument
@@ -834,4 +852,5 @@ export default function functions(
       _signature: [{ types: [TYPE_ARRAY], variadic: true }],
     },
   };
+  return functionMap;
 }

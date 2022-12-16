@@ -54,8 +54,7 @@ function JsonFormula() {
 
   class Runtime {
     addFunctions(debug, customFunctions = {}) {
-      this.functionTable = {
-        ...functions(
+      this.functionTable = functions(
           this._interpreter,
           isObject,
           isArray,
@@ -63,10 +62,9 @@ function JsonFormula() {
           getTypeName,
           getValueOf,
           toString,
-        ),
-        ...openFormulaFunctions(getValueOf, toString, toNumber, debug),
-        ...customFunctions,
-      };
+        );
+      Object.entries(openFormulaFunctions(getValueOf, toString, toNumber, debug)).forEach(([fname, func]) => this.functionTable[fname] = func);
+      Object.entries(customFunctions).forEach(([fname, func]) => this.functionTable[fname] = func);
     }
 
     // eslint-disable-next-line class-methods-use-this
