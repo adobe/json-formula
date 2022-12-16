@@ -322,7 +322,7 @@ export default function functions(
      * @param {expression} expr the expr to use as the `comparison` key
      * @return {any}
      * @function maxBy
-     * @examplecreateKeyFunction
+     * @example
      * maxBy(['abcd', 'e', 'def'], &length(@)) //returns 'abcd'
      * @example
      * maxBy([{year: 2010}, {year: 2020}, {year: 1910}], &year) //returns {year: 2020}
@@ -507,13 +507,13 @@ export default function functions(
 
     /**
      * Register a function to allow code re-use.  The registered function may take one parameter.
+     * If more parameters are needed, combine them in an array or map.
      * @param {string} functionName Name of the function to register
      * @param {expression} expr Expression to execute with this function call
      * @return {{}} returns an empty object
      * @function register
      * @example
-     * register('product', &@[0] * @[1])
-     * product([2,21]) // returns 42
+     * register('product', &@[0] * @[1]) // can now call: product([2,21]) => returns 42
      * @category jmespath
      */
     register: {
