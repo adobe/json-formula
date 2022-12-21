@@ -2863,5 +2863,161 @@
       "expression": "deepScan([{a1: [address]}, {a2: [address]}], 'street')",
       "expected": ["123 Oak Street", "123 Oak Street"]
     }
+  ],
+  [
+    "search1",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "search('?Oak?', address.street)",
+      "expected": [3, " Oak "]
+    }
+  ],
+  [
+    "search2",
+    {
+      "data": "`{}`",
+      "expression": "search('.\\^$(+{]', 'pad.\\^$(+{]')",
+      "expected": [3, ".\\^$(+{]"]
+    }
+  ],
+  [
+    "search3",
+    {
+      "data": "`{}`",
+      "expression": "search('a?b', 'bcd')",
+      "expected": []
+    }
+  ],
+  [
+    "search4",
+    {
+      "data": "`{}`",
+      "expression": "search('*', 'bcd')",
+      "expected": [0, ""]
+    }
+  ],
+  [
+    "search5",
+    {
+      "data": "`{}`",
+      "expression": "search('*', '')",
+      "expected": []
+    }
+  ],
+  [
+    "search6",
+    {
+      "data": "`{}`",
+      "expression": "search('', 'bcd')",
+      "expected": [0, ""]
+    }
+  ],
+  [
+    "search7",
+    {
+      "data": "`{}`",
+      "expression": "search('', '')",
+      "expected": []
+    }
+  ],
+  [
+    "search8",
+    {
+      "data": "`{}`",
+      "expression": "search('a~~c', 'pada~c')",
+      "expected": [3, "a~c"]
+    }
+  ],
+  [
+    "search9",
+    {
+      "data": "`{}`",
+      "expression": "search('a~~~?c', 'pada~?c', 3)",
+      "expected": [3, "a~?c"]
+    }
+  ],
+  [
+    "search10",
+    {
+      "data": "`{}`",
+      "expression": "search('a~?~?c', 'pada??c', 2)",
+      "expected": [3, "a??c"]
+    }
+  ],
+  [
+    "search11",
+    {
+      "data": "`{}`",
+      "expression": "search('a~*~*c', 'pada**c')",
+      "expected": [3, "a**c"]
+    }
+  ],
+  [
+    "search12",
+    {
+      "data": "`{}`",
+      "expression": "search('a*c??c', 'padacabc')",
+      "expected": [1, "adacabc"]
+    }
+  ],
+  [
+    "search13",
+    {
+      "data": "`{}`",
+      "expression": "search('a*c*c', 'padacabc')",
+      "expected": [1, "adacabc"]
+    }
+  ],
+  [
+    "search14",
+    {
+      "data": "`{}`",
+      "expression": "search('a*c', 'padacabc', 2)",
+      "expected": [3, "ac"]
+    }
+  ],
+  [
+    "search15",
+    {
+      "data": "`{}`",
+      "expression": "search('a?c', 'padacabc')",
+      "expected": [5, "abc"]
+    }
+  ],
+  [
+    "search16",
+    {
+      "data": "`{}`",
+      "expression": "search(')]', 'pad[()]')",
+      "expected": [5, ")]"]
+    }
+  ],
+  [
+    "search17",
+    {
+      "data": "`{}`",
+      "expression": "search('.\\^$(+{]', 'pada.\\^$(+{]b')",
+      "expected": [4, ".\\^$(+{]"]
+    }
+  ],
+  [
+    "search18",
+    {
+      "data": "`{}`",
+      "expression": "search('', null)",
+      "expected": []
+    }
+  ],
+  [
+    "search19",
+    {
+      "data": "`{}`",
+      "expression": "search('', null)",
+      "expected": []
+    }
   ]
 ]
+
+
+
+
