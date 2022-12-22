@@ -553,6 +553,25 @@ reduce(&(accumulated - current), [3, 3, 3]) //returns -9
 ```js
 reduce(&if(accumulated == `null`, current, accumulated * current), [3, 3, 3]) //returns 27
 ```
+<a name="register"></a>
+
+## register(functionName, expr) ⇒ <code>Object</code>
+Register a function to allow code re-use.  The registered function may take one parameter.
+If more parameters are needed, combine them in an array or map.
+
+**Kind**: global function  
+**Returns**: <code>Object</code> - returns an empty object  
+**Category**: jmespath  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| functionName | <code>string</code> | Name of the function to register |
+| expr | <code>expression</code> | Expression to execute with this function call |
+
+**Example**  
+```js
+register('product', &@[0] * @[1]) // can now call: product([2,21]) => returns 42
+```
 <a name="reverse"></a>
 
 ## reverse(argument) ⇒ <code>array</code>
@@ -1335,6 +1354,31 @@ round(1.98,-1) //returns 0 (Rounds 1.98 to the nearest multiple of 10)
 **Example**  
 ```js
 round(-50.55,-2) // -100 (round -50.55 to the nearest multiple of 100)
+```
+<a name="search"></a>
+
+## search(findText, withinText, startPos) ⇒ <code>array</code>
+Perform a wildcard search.  The search is case-sensitive and supports two forms of wildcards:
+"*" finds a a sequence of characters and "?" finds a single character.
+To use "*" or "?" as text values, precede them with a tilde ("~") character.
+Note that the wildcard search is not greedy.
+e.g. search('a*b', 'abb') will return [0, 'ab'] Not [0, 'abb']
+
+**Kind**: global function  
+**Returns**: <code>array</code> - returns an array with two values:
+The start position of the found text and the text string that was found.
+If a match was not found, an empty array is returned.  
+**Category**: openFormula  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| findText | <code>string</code> | the search string -- which may include wild cards. |
+| withinText | <code>string</code> | The string to search. |
+| startPos | <code>integer</code> | The zero-based position of withinText to start searching. Defaults to zero. |
+
+**Example**  
+```js
+search('a?c', 'acabc') //returns [2, 'abc']
 ```
 <a name="second"></a>
 
