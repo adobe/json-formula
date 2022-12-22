@@ -404,6 +404,14 @@
     }
   ],
   [
+    "operator precedence",
+    {
+      "data": "`{}`",
+      "expression": "1 + 2 & 2 * 2",
+      "expected": "34"
+    }
+  ],
+  [
     "unary minus expression",
     {
       "data": "samples.\"purchase-order\"",
@@ -2862,6 +2870,14 @@
       "data": "samples.\"purchase-order\"",
       "expression": "deepScan([{a1: [address]}, {a2: [address]}], 'street')",
       "expected": ["123 Oak Street", "123 Oak Street"]
+    }
+  ],
+  [
+    "global access",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "items[$-42].quantity",
+      "expected": 2
     }
   ]
 ]
