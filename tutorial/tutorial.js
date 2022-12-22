@@ -11,7 +11,7 @@ governing permissions and limitations under the License.
 */
 
 /* global window, document */
-import { jsonFormula } from '../src/json-formula';
+import Formula from '../src/json-formula';
 import createForm from './Form';
 import stringToNumber from '../src/jmespath/stringToNumber';
 
@@ -20,6 +20,10 @@ window.addEventListener('load', () => {
   const expression = document.getElementById('expression');
   const result = document.getElementById('result');
   const debug = document.getElementById('debug');
+  const debugInfo = [];
+  // keep one instance active for the entire session so that any registered
+  // functions are retained
+  const formula = new Formula({}, stringToNumber, debugInfo);
 
   const d = window.localStorage.getItem('data');
   if (d) dataElement.value = d;
@@ -43,16 +47,8 @@ window.addEventListener('load', () => {
       return;
     }
 
-    const debugInfo = [];
     try {
-      const jsonResult = jsonFormula(
-        jsonData,
-        { $form: jsonData, $: {} },
-        input,
-        true,
-        stringToNumber,
-        debugInfo,
-      );
+      const jsonResult = formula.search(input, jsonData, {});
       debug.innerHTML = debugInfo.join('\n');
       let r = jsonResult;
       if (jsonResult !== null && jsonResult !== undefined) {

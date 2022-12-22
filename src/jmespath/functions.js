@@ -23,13 +23,14 @@ https://github.com/jmespath/jmespath.js
 import dataTypes from './dataTypes';
 
 export default function functions(
-  interpreter,
+  runtime,
   isObject,
   isArray,
   toNumber,
   getTypeName,
   valueOf,
   toString,
+  debug,
 ) {
   const {
     TYPE_NUMBER,
@@ -46,7 +47,7 @@ export default function functions(
 
   function createKeyFunction(exprefNode, allowedTypes) {
     return x => {
-      const current = interpreter.visit(exprefNode, x);
+      const current = runtime.interpreter.visit(exprefNode, x);
       if (allowedTypes.indexOf(getTypeName(current)) < 0) {
         const msg = `TypeError: expected one of ${allowedTypes
         }, received ${getTypeName(current)}`;
@@ -56,7 +57,7 @@ export default function functions(
     };
   }
 
-  return {
+  const functionMap = {
     // name: [function, <signature>]
     // The <signature> can be:
     //
@@ -275,19 +276,21 @@ export default function functions(
     map: {
       _func: resolvedArgs => {
         const exprefNode = resolvedArgs[0];
-        return resolvedArgs[1].map(arg => interpreter.visit(exprefNode, arg));
+        return resolvedArgs[1].map(arg => runtime.interpreter.visit(exprefNode, arg));
       },
       _signature: [{ types: [TYPE_EXPREF] }, { types: [TYPE_ARRAY] }],
     },
 
     /**
-     * Returns the highest found number in the provided array argument `collection`
-     * An empty array will produce a return value of null.
-     * @param {number[]|string[]} collection array in which the maximum number has to be looked
+     * Returns the highest value in the provided `collection` arguments.
+     * If all collections are empty `null` is returned.
+     * max() can work on numbers or strings.
+     * If a mix of numbers and strings are provided, the type of the first value will be used.
+     * @param {number[]|string[]} collection array in which the maximum element is to be calculated
      * @return {number}
      * @function max
      * @example
-     * max([1, 2, 3]) //returns 3
+     * max([1, 2, 3], [4, 5, 6], 7) //returns 7
      * @example
      * max([]) // returns null
      * @example
@@ -295,23 +298,28 @@ export default function functions(
      * @category jmespath
      */
     max: {
-      _func: resolvedArgs => {
-        if (resolvedArgs[0].length > 0) {
-          const typeName = getTypeName(resolvedArgs[0][0]);
-          if (typeName === TYPE_NUMBER) {
-            return resolvedArgs[0].reduce(
-              (prev, cur) => (toNumber(prev) >= toNumber(cur) ? prev : cur),
-              resolvedArgs[0][0],
-            );
-          }
-          return resolvedArgs[0].reduce(
-            (a, b) => (toString(b).localeCompare(toString(a)) < 0 ? a : b),
-            resolvedArgs[0][0],
-          );
-        }
-        return null;
+      _func: args => {
+        // find the first non-null value in the args
+        let result = args.reduce((prev, cur) => {
+          if (prev !== null) return prev;
+          if (Array.isArray(cur)) return cur.length > 0 ? cur[0] : prev;
+          return cur;
+        }, null);
+        if (result === null) return null;
+
+        // use the first value to determine the comparison type
+        const typeName = getTypeName(result);
+        const compare = (prev, cur) => {
+          if (typeName === TYPE_NUMBER) return (toNumber(prev) <= toNumber(cur) ? cur : prev);
+          return toString(prev).localeCompare(toString(cur)) === 1 ? prev : cur;
+        };
+        args.forEach(arg => {
+          if (Array.isArray(arg)) result = arg.reduce(compare, result);
+          else result = compare(result, arg);
+        });
+        return result;
       },
-      _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING] }],
+      _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING], variadic: true }],
     },
 
     /**
@@ -366,7 +374,7 @@ export default function functions(
       _func: resolvedArgs => {
         const merged = {};
         resolvedArgs.forEach(current => {
-          Object.entries(current).forEach(([key, value]) => {
+          Object.entries(current || {}).forEach(([key, value]) => {
             merged[key] = value;
           });
         });
@@ -376,13 +384,15 @@ export default function functions(
     },
 
     /**
-     * Returns the lowest found number in the provided `collection` argument. If the array is empty
-     * `null` is returned
+     * Returns the lowest value in the provided `collection` arguments.
+     * If all collections are empty `null` is returned.
+     * min() can work on numbers or strings.
+     * If a mix of numbers and strings are provided, the type of the first value will be used.
      * @param {number[]|string[]} collection array in which the minimum element is to be calculated
      * @return {number}
      * @function min
      * @example
-     * min([1, 2, 3]) //returns 1
+     * min([1, 2, 3], [4, 5, 6], 7) //returns 1
      * @example
      * min([]) // returns null
      * @example
@@ -390,27 +400,28 @@ export default function functions(
      * @category jmespath
      */
     min: {
-      _func: resolvedArgs => {
-        if (resolvedArgs[0].length > 0) {
-          const typeName = getTypeName(resolvedArgs[0][0]);
-          if (typeName === TYPE_NUMBER) {
-            return resolvedArgs[0].reduce(
-              (prev, cur) => (toNumber(prev) <= toNumber(cur) ? prev : cur),
-              resolvedArgs[0][0],
-            );
-          }
-          const elements = resolvedArgs[0];
-          let minElement = elements[0];
-          for (let i = 1; i < elements.length; i += 1) {
-            if (toString(elements[i]).localeCompare(toString(minElement)) < 0) {
-              minElement = elements[i];
-            }
-          }
-          return minElement;
-        }
-        return null;
+      _func: args => {
+        // find the first non-null value in the args
+        let result = args.reduce((prev, cur) => {
+          if (prev !== null) return prev;
+          if (Array.isArray(cur)) return cur.length > 0 ? cur[0] : prev;
+          return cur;
+        }, null);
+        if (result === null) return null;
+
+        // use the first value to determine the comparison type
+        const typeName = getTypeName(result);
+        const compare = (prev, cur) => {
+          if (typeName === TYPE_NUMBER) return (toNumber(prev) <= toNumber(cur) ? prev : cur);
+          return toString(prev).localeCompare(toString(cur)) === 1 ? cur : prev;
+        };
+        args.forEach(arg => {
+          if (Array.isArray(arg)) result = arg.reduce(compare, result);
+          else result = compare(result, arg);
+        });
+        return result;
       },
-      _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING] }],
+      _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING], variadic: true }],
     },
 
     /**
@@ -491,7 +502,7 @@ export default function functions(
       _func: resolvedArgs => {
         const exprefNode = resolvedArgs[0];
         return resolvedArgs[1].reduce(
-          (accumulated, current, index, array) => interpreter.visit(exprefNode, {
+          (accumulated, current, index, array) => runtime.interpreter.visit(exprefNode, {
             accumulated, current, index, array,
           }),
           resolvedArgs.length === 3 ? resolvedArgs[2] : null,
@@ -504,6 +515,37 @@ export default function functions(
       ],
     },
 
+    /**
+     * Register a function to allow code re-use.  The registered function may take one parameter.
+     * If more parameters are needed, combine them in an array or map.
+     * @param {string} functionName Name of the function to register
+     * @param {expression} expr Expression to execute with this function call
+     * @return {{}} returns an empty object
+     * @function register
+     * @example
+     * register('product', &@[0] * @[1]) // can now call: product([2,21]) => returns 42
+     * @category jmespath
+     */
+    register: {
+      _func: resolvedArgs => {
+        const functionName = resolvedArgs[0];
+        const exprefNode = resolvedArgs[1];
+
+        if (functionMap[functionName]) {
+          debug.push(`Cannot re-register '${functionName}'`);
+          return {};
+        }
+        functionMap[functionName] = {
+          _func: args => runtime.interpreter.visit(exprefNode, ...args),
+          _signature: [{ types: [TYPE_ANY], optional: true }],
+        };
+        return {};
+      },
+      _signature: [
+        { types: [TYPE_STRING] },
+        { types: [TYPE_EXPREF] },
+      ],
+    },
     /**
      * Reverses the order of the `argument`.
      * @param {string|array} argument
@@ -585,7 +627,7 @@ export default function functions(
         }
         const exprefNode = resolvedArgs[1];
         const requiredType = getTypeName(
-          interpreter.visit(exprefNode, sortedArray[0]),
+          runtime.interpreter.visit(exprefNode, sortedArray[0]),
         );
         if ([TYPE_NUMBER, TYPE_STRING].indexOf(requiredType) < 0) {
           throw new Error('TypeError');
@@ -602,8 +644,8 @@ export default function functions(
           decorated.push([i, sortedArray[i]]);
         }
         decorated.sort((a, b) => {
-          const exprA = interpreter.visit(exprefNode, a[1]);
-          const exprB = interpreter.visit(exprefNode, b[1]);
+          const exprA = runtime.interpreter.visit(exprefNode, a[1]);
+          const exprB = runtime.interpreter.visit(exprefNode, b[1]);
           if (getTypeName(exprA) !== requiredType) {
             throw new Error(
               `TypeError: expected ${requiredType}, received ${
@@ -834,4 +876,5 @@ export default function functions(
       _signature: [{ types: [TYPE_ARRAY], variadic: true }],
     },
   };
+  return functionMap;
 }

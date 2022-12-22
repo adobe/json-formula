@@ -166,5 +166,5 @@ export function matchType(actuals, expectedList, argValue, context, toNumber, to
       return argValue;
     }
   }
-  throw new Error('unhandled argument');
+  throw new Error(`TypeError: ${context} expected argument to be type ${TYPE_NAME_TABLE[expectedList[0]]} but received type ${TYPE_NAME_TABLE[actual]} instead.`);
 }

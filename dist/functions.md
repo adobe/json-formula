@@ -378,19 +378,21 @@ map(&length(@), ['doe', 'nick', 'chris']) // returns [3,4, 5]
 <a name="max"></a>
 
 ## max(collection) ⇒ <code>number</code>
-Returns the highest found number in the provided array argument `collection`
-An empty array will produce a return value of null.
+Returns the highest value in the provided `collection` arguments.
+If all collections are empty `null` is returned.
+max() can work on numbers or strings.
+If a mix of numbers and strings are provided, the type of the first value will be used.
 
 **Kind**: global function  
 **Category**: jmespath  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| collection | <code>Array.&lt;number&gt;</code> \| <code>Array.&lt;string&gt;</code> | array in which the maximum number has to be looked |
+| collection | <code>Array.&lt;number&gt;</code> \| <code>Array.&lt;string&gt;</code> | array in which the maximum element is to be calculated |
 
 **Example**  
 ```js
-max([1, 2, 3]) //returns 3
+max([1, 2, 3], [4, 5, 6], 7) //returns 7
 ```
 **Example**  
 ```js
@@ -449,8 +451,10 @@ merge({a: 1, b: 2}, {a : 3, d: 4}) // returns {a :3, b: 2, d: 4}
 <a name="min"></a>
 
 ## min(collection) ⇒ <code>number</code>
-Returns the lowest found number in the provided `collection` argument. If the array is empty
-`null` is returned
+Returns the lowest value in the provided `collection` arguments.
+If all collections are empty `null` is returned.
+min() can work on numbers or strings.
+If a mix of numbers and strings are provided, the type of the first value will be used.
 
 **Kind**: global function  
 **Category**: jmespath  
@@ -461,7 +465,7 @@ Returns the lowest found number in the provided `collection` argument. If the ar
 
 **Example**  
 ```js
-min([1, 2, 3]) //returns 1
+min([1, 2, 3], [4, 5, 6], 7) //returns 1
 ```
 **Example**  
 ```js

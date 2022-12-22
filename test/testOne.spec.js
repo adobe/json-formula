@@ -9,22 +9,23 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import { jsonFormula } from '../src/json-formula';
+import JsonFormula from '../src/json-formula';
 import createForm from '../tutorial/Form';
 import functions from '../src/jmespath/openFormulaFunctions';
-import stringToNumber from '../src/jmespath/stringToNumber';
 
 const sampleData = require('./sampleData.json');
 // This test file is useful to test one case in isolation.
 const tests = require('./testOne.json');
 
+const jsonFormula = new JsonFormula(functions);
+
 test.each(tests)('%s', (_desc, tst) => {
   if (tst.fieldsOnly) return;
   const language = tst.language || 'en-US';
-  const data = jsonFormula(sampleData, {}, tst.data, functions, stringToNumber);
+  const data = jsonFormula.search(tst.data, sampleData, {}, language);
   let result;
   try {
-    result = jsonFormula(data, {}, tst.expression, functions, stringToNumber, [], language);
+    result = jsonFormula.search(tst.expression, data, {}, language);
   } catch (e) {
     expect(tst.error).toBe('syntax');
     return;
@@ -39,19 +40,11 @@ test.each(tests)('%s', (_desc, tst) => {
 // run again -- with field definitions
 test.each(tests)('%s', (_desc, tst) => {
   const language = tst.language || 'en-US';
-  const data = jsonFormula(sampleData, {}, tst.data, functions, stringToNumber);
+  const data = jsonFormula.search(tst.data, sampleData, {}, language);
   let jsonResult;
   try {
     const root = createForm(data);
-    jsonResult = jsonFormula(
-      root,
-      { $form: root, $: {} },
-      tst.expression,
-      functions,
-      stringToNumber,
-      [],
-      language,
-    );
+    jsonResult = jsonFormula.search(tst.expression, data, { $form: root, $: {} }, language);
   } catch (e) {
     expect(tst.error).toBe('syntax');
     return;
