@@ -10,7 +10,7 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import { jsonFormula } from '../../src/json-formula';
+import JsonFormula from '../../src/json-formula';
 import createForm from '../../tutorial/Form';
 import stringToNumber from '../../src/jmespath/stringToNumber';
 
@@ -45,10 +45,12 @@ function toTestFmt(t) {
   return tests;
 }
 
+const jsonFormula = new JsonFormula(functions, stringToNumber);
+
 function executeTest(desc, tst) {
   let result;
   try {
-    result = jsonFormula(tst.given, {}, tst.expression, stringToNumber);
+    result = jsonFormula.search(tst.expression, tst.given);
   } catch (e) {
     expect(tst.error).not.toBeUndefined();
     return;
@@ -60,11 +62,10 @@ function executeTestWithFields(desc, tst) {
   const root = createForm(tst.given);
   let result;
   try {
-    const jsonResult = jsonFormula(
+    const jsonResult = jsonFormula.search(
+      tst.expression,
       root,
       { $form: root, $: {} },
-      tst.expression,
-      stringToNumber,
     );
     result = JSON.parse(JSON.stringify(jsonResult));
   } catch (e) {
