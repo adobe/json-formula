@@ -908,6 +908,52 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     },
 
     /**
+     * Perform a wildcard search.  The search is case-sensitive and supports two forms of wildcards:
+     * "*" finds a a sequence of characters and "?" finds a single character.
+     * To use "*" or "?" as text values, precede them with a tilde ("~") character.
+     * Note that the wildcard search is not greedy.
+     * e.g. search('a*b', 'abb') will return [0, 'ab'] Not [0, 'abb']
+     * @param {string} findText the search string -- which may include wild cards.
+     * @param {string} withinText The string to search.
+     * @param {integer} startPos The zero-based position of withinText to start searching.
+     * Defaults to zero.
+     * @returns {array} returns an array with two values:
+     * The start position of the found text and the text string that was found.
+     * If a match was not found, an empty array is returned.
+     * @function search
+     * @category openFormula
+     * @example
+     * search('a?c', 'acabc') //returns [2, 'abc']
+     */
+    search: {
+      _func: args => {
+        const findText = toString(args[0]);
+        const withinText = toString(args[1]);
+        const startPos = toNumber(args[2]);
+        if (findText === null || withinText === null || withinText.length === 0) return [];
+        // escape all characters that would otherwise create a regular expression
+        const reString = findText.replace(/([[.\\^$()+{])/g, '\\$1')
+          // add the single character wildcard
+          .replace(/(?<!~)\?/g, '.')
+          // add the multi-character wildcard
+          .replace(/(?<!~)\*/g, '.*?')
+          // get rid of the escape characters
+          .replace(/~\*/g, '\\*')
+          .replace(/~\?/g, '\\?')
+          .replace(/~~/g, '~');
+        const re = new RegExp(reString);
+        const result = withinText.substring(startPos).match(re);
+        if (result === null) return [];
+        return [result.index + startPos, result[0]];
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_STRING] },
+        { types: [dataTypes.TYPE_STRING] },
+        { types: [dataTypes.TYPE_NUMBER], optional: true },
+      ],
+
+    },
+    /**
      * Extract the second (0 through 59) from a time/datetime representation
      * @param {number} The datetime/time for which the second is to be returned.
      * Dates should be specified using the [datetime]{@link datetime} or [time]{@link time} function
