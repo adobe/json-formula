@@ -287,6 +287,22 @@
       "result": null
     },
     {
+      "expression": "max(strings, ['A', 'B', 'C'])",
+      "result": "C"
+    },
+    {
+      "expression": "max(['D', 'E', 'F'], ['A', 'B', 'C'])",
+      "result": "F"
+    },
+    {
+      "expression": "max(empty_list, 'a')",
+      "result": "a"
+    },
+    {
+      "expression": "max(empty_list, decimals, 0)",
+      "result": 1.2
+    },
+    {
       "expression": "merge(`{}`)",
       "result": {}
     },
@@ -335,6 +351,22 @@
     {
       "expression": "min(strings)",
       "result": "a"
+    },
+    {
+      "expression": "min(strings, ['A', 'B', 'C'])",
+      "result": "a"
+    },
+    {
+      "expression": "min(['D', 'E', 'F'], ['A', 'B', 'C'])",
+      "result": "A"
+    },
+    {
+      "expression": "min(empty_list, 'a')",
+      "result": "a"
+    },
+    {
+      "expression": "min(empty_list, decimals, 0)",
+      "result": -1.5
     },
     {
       "expression": "type('abc')",

@@ -282,13 +282,15 @@ export default function functions(
     },
 
     /**
-     * Returns the highest found number in the provided array argument `collection`
-     * An empty array will produce a return value of null.
-     * @param {number[]|string[]} collection array in which the maximum number has to be looked
+     * Returns the highest value in the provided `collection` arguments.
+     * If all collections are empty `null` is returned.
+     * max() can work on numbers or strings.
+     * If a mix of numbers and strings are provided, the type of the first value will be used.
+     * @param {number[]|string[]} collection array in which the maximum element is to be calculated
      * @return {number}
      * @function max
      * @example
-     * max([1, 2, 3]) //returns 3
+     * max([1, 2, 3], [4, 5, 6], 7) //returns 7
      * @example
      * max([]) // returns null
      * @example
@@ -296,23 +298,28 @@ export default function functions(
      * @category jmespath
      */
     max: {
-      _func: resolvedArgs => {
-        if (resolvedArgs[0].length > 0) {
-          const typeName = getTypeName(resolvedArgs[0][0]);
-          if (typeName === TYPE_NUMBER) {
-            return resolvedArgs[0].reduce(
-              (prev, cur) => (toNumber(prev) >= toNumber(cur) ? prev : cur),
-              resolvedArgs[0][0],
-            );
-          }
-          return resolvedArgs[0].reduce(
-            (a, b) => (toString(b).localeCompare(toString(a)) < 0 ? a : b),
-            resolvedArgs[0][0],
-          );
-        }
-        return null;
+      _func: args => {
+        // find the first non-null value in the args
+        let result = args.reduce((prev, cur) => {
+          if (prev !== null) return prev;
+          if (Array.isArray(cur)) return cur.length > 0 ? cur[0] : prev;
+          return cur;
+        }, null);
+        if (result === null) return null;
+
+        // use the first value to determine the comparison type
+        const typeName = getTypeName(result);
+        const compare = (prev, cur) => {
+          if (typeName === TYPE_NUMBER) return (toNumber(prev) <= toNumber(cur) ? cur : prev);
+          return toString(prev).localeCompare(toString(cur)) === 1 ? prev : cur;
+        };
+        args.forEach(arg => {
+          if (Array.isArray(arg)) result = arg.reduce(compare, result);
+          else result = compare(result, arg);
+        });
+        return result;
       },
-      _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING] }],
+      _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING], variadic: true }],
     },
 
     /**
@@ -377,13 +384,15 @@ export default function functions(
     },
 
     /**
-     * Returns the lowest found number in the provided `collection` argument. If the array is empty
-     * `null` is returned
+     * Returns the lowest value in the provided `collection` arguments.
+     * If all collections are empty `null` is returned.
+     * min() can work on numbers or strings.
+     * If a mix of numbers and strings are provided, the type of the first value will be used.
      * @param {number[]|string[]} collection array in which the minimum element is to be calculated
      * @return {number}
      * @function min
      * @example
-     * min([1, 2, 3]) //returns 1
+     * min([1, 2, 3], [4, 5, 6], 7) //returns 1
      * @example
      * min([]) // returns null
      * @example
@@ -391,27 +400,28 @@ export default function functions(
      * @category jmespath
      */
     min: {
-      _func: resolvedArgs => {
-        if (resolvedArgs[0].length > 0) {
-          const typeName = getTypeName(resolvedArgs[0][0]);
-          if (typeName === TYPE_NUMBER) {
-            return resolvedArgs[0].reduce(
-              (prev, cur) => (toNumber(prev) <= toNumber(cur) ? prev : cur),
-              resolvedArgs[0][0],
-            );
-          }
-          const elements = resolvedArgs[0];
-          let minElement = elements[0];
-          for (let i = 1; i < elements.length; i += 1) {
-            if (toString(elements[i]).localeCompare(toString(minElement)) < 0) {
-              minElement = elements[i];
-            }
-          }
-          return minElement;
-        }
-        return null;
+      _func: args => {
+        // find the first non-null value in the args
+        let result = args.reduce((prev, cur) => {
+          if (prev !== null) return prev;
+          if (Array.isArray(cur)) return cur.length > 0 ? cur[0] : prev;
+          return cur;
+        }, null);
+        if (result === null) return null;
+
+        // use the first value to determine the comparison type
+        const typeName = getTypeName(result);
+        const compare = (prev, cur) => {
+          if (typeName === TYPE_NUMBER) return (toNumber(prev) <= toNumber(cur) ? prev : cur);
+          return toString(prev).localeCompare(toString(cur)) === 1 ? cur : prev;
+        };
+        args.forEach(arg => {
+          if (Array.isArray(arg)) result = arg.reduce(compare, result);
+          else result = compare(result, arg);
+        });
+        return result;
       },
-      _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING] }],
+      _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING], variadic: true }],
     },
 
     /**

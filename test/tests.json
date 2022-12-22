@@ -404,6 +404,14 @@
     }
   ],
   [
+    "operator precedence",
+    {
+      "data": "`{}`",
+      "expression": "1 + 2 & 2 * 2",
+      "expected": "34"
+    }
+  ],
+  [
     "unary minus expression",
     {
       "data": "samples.\"purchase-order\"",
@@ -2906,6 +2914,14 @@
       "expected": {
         "r": 85
       }
+    }
+  ],
+  [
+    "global access",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "items[$-42].quantity",
+      "expected": 2
     }
   ]
 ]

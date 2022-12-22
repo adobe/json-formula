@@ -5638,8 +5638,10 @@ in the elements array, even if the result is <code>null</code>.</p>
     
     
     <div class="description">
-        <p>Returns the highest found number in the provided array argument <code>collection</code>
-An empty array will produce a return value of null.</p>
+        <p>Returns the highest value in the provided <code>collection</code> arguments.
+If all collections are empty <code>null</code> is returned.
+max() can work on numbers or strings.
+If a mix of numbers and strings are provided, the type of the first value will be used.</p>
     </div>
     
 
@@ -5696,7 +5698,7 @@ An empty array will produce a return value of null.</p>
 
   
 
-  <td class="description last"><p>array in which the maximum number has to be looked</p></td>
+  <td class="description last"><p>array in which the maximum element is to be calculated</p></td>
 </tr>
 
 
@@ -5796,7 +5798,7 @@ An empty array will produce a return value of null.</p>
     <h5>Examples</h5>
     
     
-        <pre class="prettyprint"><code>max([1, 2, 3]) //returns 3</code></pre>
+        <pre class="prettyprint"><code>max([1, 2, 3], [4, 5, 6], 7) //returns 7</code></pre>
     
 
     
@@ -5956,7 +5958,7 @@ The entire element is returned.</p>
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line317">line 317</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line324">line 324</a>
             </span>
         </p>
     
@@ -6154,7 +6156,7 @@ and each subsequent argument being overrides that are applied to the base object
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line350">line 350</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line357">line 357</a>
             </span>
         </p>
     
@@ -6481,8 +6483,10 @@ is greater then the length of <code>subject</code> the argument is set to the le
     
     
     <div class="description">
-        <p>Returns the lowest found number in the provided <code>collection</code> argument. If the array is empty
-<code>null</code> is returned</p>
+        <p>Returns the lowest value in the provided <code>collection</code> arguments.
+If all collections are empty <code>null</code> is returned.
+min() can work on numbers or strings.
+If a mix of numbers and strings are provided, the type of the first value will be used.</p>
     </div>
     
 
@@ -6587,7 +6591,7 @@ is greater then the length of <code>subject</code> the argument is set to the le
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line378">line 378</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line385">line 385</a>
             </span>
         </p>
     
@@ -6639,7 +6643,7 @@ is greater then the length of <code>subject</code> the argument is set to the le
     <h5>Examples</h5>
     
     
-        <pre class="prettyprint"><code>min([1, 2, 3]) //returns 1</code></pre>
+        <pre class="prettyprint"><code>min([1, 2, 3], [4, 5, 6], 7) //returns 1</code></pre>
     
 
     
@@ -6799,7 +6803,7 @@ as the comparison key.</p>
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line416">line 416</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line426">line 426</a>
             </span>
         </p>
     
@@ -7767,7 +7771,7 @@ arguments values resolve to null, then a value of null is returned.</p>
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line449">line 449</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line459">line 459</a>
             </span>
         </p>
     
@@ -8855,7 +8859,7 @@ The expression can access the following properties</p>
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line468">line 468</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line478">line 478</a>
             </span>
         </p>
     
@@ -9509,7 +9513,7 @@ length, with a new text.</p>
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line507">line 507</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line517">line 517</a>
             </span>
         </p>
     
@@ -10336,7 +10340,7 @@ Sorting strings is based on code points. Locale is not taken into account.</p>
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line534">line 534</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line544">line 544</a>
             </span>
         </p>
     
@@ -10546,7 +10550,7 @@ other than a number or a string, a type error will occur.</p>
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line563">line 563</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line573">line 573</a>
             </span>
         </p>
     
@@ -11139,7 +11143,7 @@ sortBy([{year: 2010}, {year: 2020}, {year: 1910}], &amp;year)</code></pre>
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line638">line 638</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line648">line 648</a>
             </span>
         </p>
     
@@ -11986,7 +11990,7 @@ An empty array will produce a return value of 0.</p>
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line653">line 653</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line663">line 663</a>
             </span>
         </p>
     
@@ -12401,7 +12405,7 @@ The default is 0 seconds past the minute.</p></td>
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line674">line 674</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line684">line 684</a>
             </span>
         </p>
     
@@ -12705,7 +12709,7 @@ The default is 0 seconds past the minute.</p></td>
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line698">line 698</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line708">line 708</a>
             </span>
         </p>
     
@@ -12899,7 +12903,7 @@ The default is 0 seconds past the minute.</p></td>
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line733">line 733</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line743">line 743</a>
             </span>
         </p>
     
@@ -13620,7 +13624,7 @@ trunc(8.912, 2) //returns 8.91</code></pre>
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line757">line 757</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line767">line 767</a>
             </span>
         </p>
     
@@ -14381,7 +14385,7 @@ inherently unordered.</p>
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line790">line 790</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line800">line 800</a>
             </span>
         </p>
     
@@ -14994,7 +14998,7 @@ The length of the returned array is equal to the length of the shortest array.</
         <p class="tag-source">
             <a href="functions.js.html" class="button">View Source</a>
             <span>
-                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line810">line 810</a>
+                <a href="functions.js.html">functions.js</a>, <a href="functions.js.html#line820">line 820</a>
             </span>
         </p>
     

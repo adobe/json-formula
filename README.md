@@ -10,6 +10,7 @@ Visit the [Playground](https://opensource.adobe.com/json-formula/dist/index.html
 
 # Documentation
 [Function Reference](https://opensource.adobe.com/json-formula/dist/jsdocs/global.html)
+
 [JS API](https://opensource.adobe.com/json-formula/dist/jsdocs/index.html)
 
 NOTES:

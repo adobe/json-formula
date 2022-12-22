@@ -58,7 +58,7 @@ test.each(tests)('%s', (_desc, tst) => {
   const data = jsonFormula.search(tst.data, sampleData, {}, language);
   let result;
   try {
-    result = jsonFormula.search(tst.expression, data, {}, language);
+    result = jsonFormula(data, { $: 42 }, tst.expression, functions, stringToNumber, [], language);
   } catch (e) {
     expect(tst.error).toBe('syntax');
     return;
