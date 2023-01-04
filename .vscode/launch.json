@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "type": "pwa-chrome",
+        "type": "chrome",
         "name": "http://localhost:8085",
         "request": "launch",
         "url": "http://localhost:8085"
@@ -46,7 +46,6 @@
         },
         "console": "integratedTerminal",
         "internalConsoleOptions": "neverOpen",
-        "disableOptimisticBPs": true,
         "windows": {
           "program": "${workspaceFolder}/node_modules/jest/bin/jest",
         }

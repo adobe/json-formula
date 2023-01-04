@@ -934,12 +934,10 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         // escape all characters that would otherwise create a regular expression
         const reString = findText.replace(/([[.\\^$()+{])/g, '\\$1')
           // add the single character wildcard
-          .replace(/(?<!~)\?/g, '.')
+          .replace(/~?\?/g, match => match === '~?' ? '\\?' : '.')
           // add the multi-character wildcard
-          .replace(/(?<!~)\*/g, '.*?')
+          .replace(/~?\*/g, match => match === '~*' ? '\\*' : '.*?')
           // get rid of the escape characters
-          .replace(/~\*/g, '\\*')
-          .replace(/~\?/g, '\\?')
           .replace(/~~/g, '~');
         const re = new RegExp(reString);
         const result = withinText.substring(startPos).match(re);

@@ -57,7 +57,8 @@ To compare with the jmespath equivalent:
 
 ## Running Tests
 
-To run the tests, [re]generation of JavaScript code is a must using the command `source generate.sh`
+To run the tests, [re]generation of JavaScript code is a must using the command `source generate.sh`.
+The tests require an 18.x version of node.
 
 ```
 npm run test
