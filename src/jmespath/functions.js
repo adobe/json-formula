@@ -299,25 +299,28 @@ export default function functions(
      */
     max: {
       _func: args => {
-        // find the first non-null value in the args
-        let result = args.reduce((prev, cur) => {
-          if (prev !== null) return prev;
-          if (Array.isArray(cur)) return cur.length > 0 ? cur[0] : prev;
-          return cur;
-        }, null);
-        if (result === null) return null;
+        // flatten the args into a single array
+        const array = args.reduce((prev, cur) => {
+          if (Array.isArray(cur)) prev.push(...cur);
+          else prev.push(cur);
+          return prev;
+        }, []);
 
+        const first = array.find(r => r !== null);
+        if (array.length === 0 || first === undefined) return null;
         // use the first value to determine the comparison type
-        const typeName = getTypeName(result);
-        const compare = (prev, cur) => {
-          if (typeName === TYPE_NUMBER) return (toNumber(prev) <= toNumber(cur) ? cur : prev);
-          return toString(prev).localeCompare(toString(cur)) === 1 ? prev : cur;
-        };
-        args.forEach(arg => {
-          if (Array.isArray(arg)) result = arg.reduce(compare, result);
-          else result = compare(result, arg);
-        });
-        return result;
+        const isNumber = getTypeName(first, true) === TYPE_NUMBER;
+        const compare = isNumber
+          ? (prev, cur) => {
+            const current = toNumber(cur);
+            return prev <= current ? current : prev;
+          }
+          : (prev, cur) => {
+            const current = toString(cur);
+            return prev.localeCompare(current) === 1 ? prev : current;
+          };
+
+        return array.reduce(compare, isNumber ? toNumber(first) : toString(first));
       },
       _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING], variadic: true }],
     },
@@ -401,25 +404,28 @@ export default function functions(
      */
     min: {
       _func: args => {
-        // find the first non-null value in the args
-        let result = args.reduce((prev, cur) => {
-          if (prev !== null) return prev;
-          if (Array.isArray(cur)) return cur.length > 0 ? cur[0] : prev;
-          return cur;
-        }, null);
-        if (result === null) return null;
+        // flatten the args into a single array
+        const array = args.reduce((prev, cur) => {
+          if (Array.isArray(cur)) prev.push(...cur);
+          else prev.push(cur);
+          return prev;
+        }, []);
 
+        const first = array.find(r => r !== null);
+        if (array.length === 0 || first === undefined) return null;
         // use the first value to determine the comparison type
-        const typeName = getTypeName(result);
-        const compare = (prev, cur) => {
-          if (typeName === TYPE_NUMBER) return (toNumber(prev) <= toNumber(cur) ? prev : cur);
-          return toString(prev).localeCompare(toString(cur)) === 1 ? cur : prev;
-        };
-        args.forEach(arg => {
-          if (Array.isArray(arg)) result = arg.reduce(compare, result);
-          else result = compare(result, arg);
-        });
-        return result;
+        const isNumber = getTypeName(first, true) === TYPE_NUMBER;
+        const compare = isNumber
+          ? (prev, cur) => {
+            const current = toNumber(cur);
+            return prev <= current ? prev : current;
+          }
+          : (prev, cur) => {
+            const current = toString(cur);
+            return prev.localeCompare(current) === 1 ? current : prev;
+          };
+
+        return array.reduce(compare, isNumber ? toNumber(first) : toString(first));
       },
       _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING], variadic: true }],
     },

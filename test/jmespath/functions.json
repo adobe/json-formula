@@ -275,7 +275,7 @@
     },
     {
       "expression": "max(array)",
-      "result": "100",
+      "result": 100,
       "was": "invalid-type"
     },
     {
@@ -301,6 +301,14 @@
     {
       "expression": "max(empty_list, decimals, 0)",
       "result": 1.2
+    },
+    {
+      "expression": "max(`null`, empty_list, decimals, 0, [null(), 2])",
+      "result": 2
+    },
+    {
+      "expression": "max([1, '2'])",
+      "result": 2
     },
     {
       "expression": "merge(`{}`)",
@@ -367,6 +375,14 @@
     {
       "expression": "min(empty_list, decimals, 0)",
       "result": -1.5
+    },
+    {
+      "expression": "min(`null`, empty_list, decimals, 0, [-2, null()])",
+      "result": -2
+    },
+    {
+      "expression": "min(`null`, 23, '21')",
+      "result": 21
     },
     {
       "expression": "type('abc')",
