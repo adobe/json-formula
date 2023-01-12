@@ -9,7 +9,7 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import dataTypes from './dataTypes';
+import dataTypes from './dataTypes.js';
 
 // get the offset in MS, given a date and timezone
 // timezone is an IANA name. e.g. 'America/New_York'

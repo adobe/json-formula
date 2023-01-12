@@ -1,14 +1,14 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-underscore-dangle */
-import TreeInterpreter from './TreeInterpreter';
-import Parser from './Parser';
-import dataTypes from './dataTypes';
-import { matchType, getTypeName, getTypeNames } from './matchType';
-import openFormulaFunctions from './openFormulaFunctions';
-import functions from './functions';
+import TreeInterpreter from './TreeInterpreter.js';
+import Parser from './Parser.js';
+import dataTypes from './dataTypes.js';
+import { matchType, getTypeName, getTypeNames } from './matchType.js';
+import openFormulaFunctions from './openFormulaFunctions.js';
+import functions from './functions.js';
 import {
   isArray, isObject, strictDeepEqual, getValueOf,
-} from './utils';
+} from './utils.js';
 
 // Type constants used to define functions.
 const {

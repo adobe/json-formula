@@ -1,5 +1,5 @@
-import Lexer from './Lexer';
-import tokenDefinitions from './tokenDefinitions';
+import Lexer from './Lexer.js';
+import tokenDefinitions from './tokenDefinitions.js';
 
 /* eslint-disable no-underscore-dangle */
 const {

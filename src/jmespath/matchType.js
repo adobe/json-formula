@@ -1,5 +1,5 @@
-import dataTypes from './dataTypes';
-import tokenDefinitions from './tokenDefinitions';
+import dataTypes from './dataTypes.js';
+import tokenDefinitions from './tokenDefinitions.js';
 
 const {
   TYPE_NUMBER,
