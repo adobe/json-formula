@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import tokenDefinitions from './tokenDefinitions';
+import tokenDefinitions from './tokenDefinitions.js';
 
 const {
   TOK_UNQUOTEDIDENTIFIER,

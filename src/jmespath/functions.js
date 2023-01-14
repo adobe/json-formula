@@ -20,7 +20,7 @@ https://github.com/jmespath/jmespath.js
 */
 
 /* eslint-disable no-underscore-dangle */
-import dataTypes from './dataTypes';
+import dataTypes from './dataTypes.js';
 
 export default function functions(
   runtime,

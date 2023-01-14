@@ -1,9 +1,9 @@
-import { matchType, getTypeNames } from './matchType';
-import dataTypes from './dataTypes';
-import tokenDefinitions from './tokenDefinitions';
+import { matchType, getTypeNames } from './matchType.js';
+import dataTypes from './dataTypes.js';
+import tokenDefinitions from './tokenDefinitions.js';
 import {
   isArray, isObject, strictDeepEqual, getValueOf,
-} from './utils';
+} from './utils.js';
 
 const {
   TOK_CURRENT,
