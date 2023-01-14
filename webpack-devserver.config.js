@@ -37,10 +37,7 @@ const defn = {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-        },
-        resolve: {
-          fullySpecified: false,
-        },
+        }
       },
       {
         test: /\.css$/,
