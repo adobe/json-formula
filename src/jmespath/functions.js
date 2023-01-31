@@ -45,18 +45,6 @@ export default function functions(
     TYPE_ARRAY_STRING,
   } = dataTypes;
 
-  function createKeyFunction(exprefNode, allowedTypes) {
-    return x => {
-      const current = runtime.interpreter.visit(exprefNode, x);
-      if (allowedTypes.indexOf(getTypeName(current)) < 0) {
-        const msg = `TypeError: expected one of ${allowedTypes
-        }, received ${getTypeName(current)}`;
-        throw new Error(msg);
-      }
-      return current;
-    };
-  }
-
   const functionMap = {
     // name: [function, <signature>]
     // The <signature> can be:
@@ -326,39 +314,6 @@ export default function functions(
     },
 
     /**
-     * Returns the maximum element in an array using the expression `expr` as the comparison key.
-     * The entire element is returned.
-     * @param {array} elements the array in which the maximum element is to be found
-     * @param {expression} expr the expr to use as the `comparison` key
-     * @return {any}
-     * @function maxBy
-     * @example
-     * maxBy(['abcd', 'e', 'def'], &length(@)) //returns 'abcd'
-     * @example
-     * maxBy([{year: 2010}, {year: 2020}, {year: 1910}], &year) //returns {year: 2020}
-     * @category jmespath
-     */
-    maxBy: {
-      _func: resolvedArgs => {
-        const exprefNode = resolvedArgs[1];
-        const resolvedArray = resolvedArgs[0];
-        const keyFunction = createKeyFunction(exprefNode, [TYPE_NUMBER, TYPE_STRING]);
-        let maxNumber = -Infinity;
-        let maxRecord;
-        let current;
-        resolvedArray.forEach(arg => {
-          current = keyFunction(arg);
-          if (current > maxNumber) {
-            maxNumber = current;
-            maxRecord = arg;
-          }
-        });
-        return maxRecord;
-      },
-      _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }],
-    },
-
-    /**
      * Accepts 0 or more objects as arguments, and returns a single object with
      * subsequent objects merged. Each subsequent object’s key/value pairs are
      * added to the preceding object. This function is used to combine multiple
@@ -431,39 +386,6 @@ export default function functions(
     },
 
     /**
-     * Returns the minimum element in `elements` array using the expression `expr`
-     * as the comparison key.
-     * @param {array} elements
-     * @param {expression} expr expression that returns either a string or a number
-     * @return {any}
-     * @function minBy
-     * @example
-     * minBy(['abcd', 'e', 'def'], &length(@)) //returns 'e'
-     * @example
-     * minBy([{year: 2010}, {year: 2020}, {year: 1910}], &year) //returns {year: 1910}
-     * @category jmespath
-     */
-    minBy: {
-      _func: resolvedArgs => {
-        const exprefNode = resolvedArgs[1];
-        const resolvedArray = resolvedArgs[0];
-        const keyFunction = createKeyFunction(exprefNode, [TYPE_NUMBER, TYPE_STRING]);
-        let minNumber = Infinity;
-        let minRecord;
-        let current;
-        resolvedArray.forEach(arg => {
-          current = keyFunction(arg);
-          if (current < minNumber) {
-            minNumber = current;
-            minRecord = arg;
-          }
-        });
-        return minRecord;
-      },
-      _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }],
-    },
-
-    /**
      * Returns the first argument that does not resolve to `null`.
      * This function accepts one or more arguments, and will evaluate
      * them in order until a non null argument is encounted. If all
@@ -499,7 +421,11 @@ export default function functions(
      * @example
      * reduce(&(accumulated + current), [1, 2, 3]) //returns 6
      * @example
-     * reduce(&(accumulated - current), [3, 3, 3]) //returns -9
+     * // find maximum entry by age
+     * reduce(
+     *   &max(@.accumulated.age, @.current.age),
+     *   [{age: 10, name: 'Joe'},{age: 20, name: 'John'}], @[0].age
+     * )
      * @example
      * reduce(&if(accumulated == `null`, current, accumulated * current), [3, 3, 3]) //returns 27
      * @category jmespath
