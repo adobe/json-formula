@@ -9,9 +9,9 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import JsonFormula from '../src/json-formula';
-import createForm from '../tutorial/Form';
-import functions from '../src/jmespath/openFormulaFunctions';
+import JsonFormula from '../src/json-formula.js';
+import createForm from '../tutorial/Form.js';
+import functions from '../src/jmespath/openFormulaFunctions.js';
 
 const sampleData = require('./sampleData.json');
 // This test file is useful to test one case in isolation.

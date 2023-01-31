@@ -1,6 +1,6 @@
 import antlr4 from 'antlr4';
-import JSONFormulaParser from '../antlr/JSONFormulaParser';
-import JSONFormulaLexer from '../antlr/JSONFormulaLexer';
+import JSONFormulaParser from '../antlr/JSONFormulaParser.js';
+import JSONFormulaLexer from '../antlr/JSONFormulaLexer.js';
 
 const basic = require('./basic.json');
 

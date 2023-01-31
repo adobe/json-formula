@@ -537,13 +537,16 @@ export default function functions(
         const functionName = resolvedArgs[0];
         const exprefNode = resolvedArgs[1];
 
-        if (functionMap[functionName]) {
-          debug.push(`Cannot re-register '${functionName}'`);
+        if (functionMap[functionName] && !functionMap[functionName].custom) {
+          // custom functions can be re-registered
+          // but not any other functions
+          debug.push(`Cannot override function: '${functionName}'`);
           return {};
         }
         functionMap[functionName] = {
           _func: args => runtime.interpreter.visit(exprefNode, ...args),
           _signature: [{ types: [TYPE_ANY], optional: true }],
+          _custom: true,
         };
         return {};
       },
