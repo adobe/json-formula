@@ -402,28 +402,6 @@ max([]) // returns null
 ```js
 max(['a', 'a1', 'b']) // returns 'b'
 ```
-<a name="maxBy"></a>
-
-## maxBy(elements, expr) ⇒ <code>any</code>
-Returns the maximum element in an array using the expression `expr` as the comparison key.
-The entire element is returned.
-
-**Kind**: global function  
-**Category**: jmespath  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| elements | <code>array</code> | the array in which the maximum element is to be found |
-| expr | <code>expression</code> | the expr to use as the `comparison` key |
-
-**Example**  
-```js
-maxBy(['abcd', 'e', 'def'], &length(@)) //returns 'abcd'
-```
-**Example**  
-```js
-maxBy([{year: 2010}, {year: 2020}, {year: 1910}], &year) //returns {year: 2020}
-```
 <a name="merge"></a>
 
 ## merge(...args) ⇒ <code>object</code>
@@ -475,28 +453,6 @@ min([]) // returns null
 ```js
 min(['a', 'a1', 'b']) // returns 'a'
 ```
-<a name="minBy"></a>
-
-## minBy(elements, expr) ⇒ <code>any</code>
-Returns the minimum element in `elements` array using the expression `expr`
-as the comparison key.
-
-**Kind**: global function  
-**Category**: jmespath  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| elements | <code>array</code> |  |
-| expr | <code>expression</code> | expression that returns either a string or a number |
-
-**Example**  
-```js
-minBy(['abcd', 'e', 'def'], &length(@)) //returns 'e'
-```
-**Example**  
-```js
-minBy([{year: 2010}, {year: 2020}, {year: 1910}], &year) //returns {year: 1910}
-```
 <a name="notNull"></a>
 
 ## notNull(...argument) ⇒ <code>any</code>
@@ -547,7 +503,11 @@ reduce(&(accumulated + current), [1, 2, 3]) //returns 6
 ```
 **Example**  
 ```js
-reduce(&(accumulated - current), [3, 3, 3]) //returns -9
+// find maximum entry by age
+reduce(
+  &max(@.accumulated.age, @.current.age),
+  [{age: 10, name: 'Joe'},{age: 20, name: 'John'}], @[0].age
+)
 ```
 **Example**  
 ```js
