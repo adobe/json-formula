@@ -76,6 +76,10 @@ class Runtime {
     });
 
     Object.entries(customFunctions).forEach(([fname, func]) => {
+      // Provide the runtime to custom functions so that
+      // they can implement lambda functions
+      // eslint-disable-next-line no-param-reassign
+      func._runtime = this;
       this.functionTable[fname] = func;
     });
   }

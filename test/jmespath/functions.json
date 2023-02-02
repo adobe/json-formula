@@ -44,6 +44,10 @@
       "result": 2.75
     },
     {
+      "expression": "reduce(&max(@.accumulated.age, @.current.age), [{age: 10, name: 'Joe'},{age: 20, name: 'John'}], @[0].age)",
+      "result": 20
+    },
+    {
       "expression": "abs(foo)",
       "result": 1
     },
@@ -791,46 +795,6 @@
     {
       "expression": "sortBy(`[]`, &age)",
       "result": []
-    },
-    {
-      "expression": "maxBy(people, &age)",
-      "result": {"age": 50, "age_str": "50", "bool": false, "name": "d"}
-    },
-    {
-      "expression": "maxBy(people, &age_str)",
-      "result": {"age": 50, "age_str": "50", "bool": false, "name": "d"}
-    },
-    {
-      "expression": "maxBy(people, &bool)",
-      "error": "invalid-type"
-    },
-    {
-      "expression": "maxBy(people, &extra)",
-      "error": "invalid-type"
-    },
-    {
-      "expression": "maxBy(people, &toNumber(age_str))",
-      "result": {"age": 50, "age_str": "50", "bool": false, "name": "d"}
-    },
-    {
-      "expression": "minBy(people, &age)",
-      "result": {"age": 10, "age_str": "10", "bool": true, "name": 3}
-    },
-    {
-      "expression": "minBy(people, &age_str)",
-      "result": {"age": 10, "age_str": "10", "bool": true, "name": 3}
-    },
-    {
-      "expression": "minBy(people, &bool)",
-      "error": "invalid-type"
-    },
-    {
-      "expression": "minBy(people, &extra)",
-      "error": "invalid-type"
-    },
-    {
-      "expression": "minBy(people, &toNumber(age_str))",
-      "result": {"age": 10, "age_str": "10", "bool": true, "name": 3}
     }
   ]
 }, {

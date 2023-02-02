@@ -9,9 +9,9 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import JsonFormula from '../src/json-formula';
-import stringToNumber from '../src/jmespath/stringToNumber';
-import createForm from '../tutorial/Form';
+import JsonFormula from '../src/json-formula.js';
+import stringToNumber from '../src/jmespath/stringToNumber.js';
+import createForm from '../tutorial/Form.js';
 
 test('if executes correct branch', () => {
   const customFunctions = {
@@ -81,6 +81,27 @@ test('can pass a class as a function argument', () => {
     root,
   );
   expect(result).toEqual('street');
+});
+
+test('custom function with a lambda parameter', () => {
+  const TYPE_STRING = 2;
+  const TYPE_EXPREF = 6;
+  const testCustomFunc = 'customEval(\'string\', &@ & @)';
+
+  const customFunctions = {
+    customEval: {
+      // eslint-disable-next-line no-underscore-dangle
+      _func: ([str, fn]) => customFunctions.customEval._runtime.interpreter.visit(fn, str),
+      _signature: [{ types: [TYPE_STRING] }, { types: [TYPE_EXPREF] }],
+    },
+  };
+  const root = createForm({ address: { street: 'Oak' } });
+  const jsonFormula = new JsonFormula(customFunctions);
+  const result = jsonFormula.search(
+    testCustomFunc,
+    root,
+  );
+  expect(result).toEqual('stringstring');
 });
 
 test('creating second form should not affect first form', () => {
