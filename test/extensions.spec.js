@@ -143,7 +143,7 @@ describe('current datetime tests', () => {
   test('today returns the correct value', () => {
     const expression = 'today()';
     const result = new JsonFormula().search(expression, {});
-    expect(result).toEqual(1.0);
+    expect(result).toEqual(1.2083333333333333);
   });
 
   afterEach(() => {

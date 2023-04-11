@@ -44,6 +44,17 @@ jsonFormula.search(
 );
 
 /*
+Register the 'localDate' function.  Given:
+"yyyy-mm-dd" return a date value.
+*/
+jsonFormula.search(
+  `register(
+    'localDate',
+    &split(@, '-') | datetime(@[0], @[1], @[2]))`,
+  {},
+);
+
+/*
 Register the 'product' function to multiply two parameters.
 product([4,5]) // 20
 */
