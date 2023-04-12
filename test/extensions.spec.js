@@ -130,8 +130,7 @@ describe('current datetime tests', () => {
   beforeEach(() => {
     jest.useFakeTimers('modern');
     // 2nd Jan 1970 12 PM
-    const datetime = 1.296e8;
-    jest.setSystemTime(datetime);
+    jest.setSystemTime(Date.UTC(1970, 0, 2, 12));
   });
 
   test('now returns the correct value', () => {
@@ -143,7 +142,7 @@ describe('current datetime tests', () => {
   test('today returns the correct value', () => {
     const expression = 'today()';
     const result = new JsonFormula().search(expression, {});
-    expect(result).toEqual(1.2083333333333333);
+    expect(result).toBeCloseTo(1.2083333333333333, 10);
   });
 
   afterEach(() => {
