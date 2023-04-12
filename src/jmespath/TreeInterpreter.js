@@ -237,13 +237,9 @@ export default class TreeInterpreter {
 
       Identity: (_node, value) => value,
 
-      MultiSelectList: (node, value) => {
-        if (value === null) return null;
-        return node.children.map(child => this.visit(child, value));
-      },
+      MultiSelectList: (node, value) => node.children.map(child => this.visit(child, value)),
 
       MultiSelectHash: (node, value) => {
-        if (value === null) return null;
         const collected = {};
         node.children.forEach(child => {
           collected[child.name] = this.visit(child.value, value);

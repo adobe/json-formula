@@ -1,0 +1,787 @@
+[
+  ["casefold('AbC')", { "expression": "casefold('AbC')", "expected": "abc" }],
+
+  [
+    "datetime(2010, 10, 10) | [year(@), month(@), day(@)]",
+    {
+      "expression": "datetime(2010, 10, 10) | [year(@), month(@), day(@)]",
+      "expected": [2010, 10, 10]
+    }
+  ],
+
+  [
+    "datetime(2010, 2, 28) | [year(@), month(@), day(@)]",
+    {
+      "expression": "datetime(2010, 2, 28) | [year(@), month(@), day(@)]",
+      "expected": [2010, 2, 28]
+    }
+  ],
+
+  [
+    "deepScan({a : {b1 : {c : 2}, b2 : {c : 3}}}, 'c')",
+    {
+      "expression": "deepScan({a : {b1 : {c : 2}, b2 : {c : 3}}}, 'c')",
+      "expected": [2, 3]
+    }
+  ],
+
+  [
+    "entries({a: 1, b: 2})",
+    {
+      "expression": "entries({a: 1, b: 2})",
+      "expected": [
+        ["a", 1],
+        ["b", 2]
+      ]
+    }
+  ],
+
+  [
+    "fromEntries([['a', 1], ['b', 2]])",
+    {
+      "expression": "fromEntries([['a', 1], ['b', 2]])",
+      "expected": { "a": 1, "b": 2 }
+    }
+  ],
+
+  [
+    "unique([1, 2, 3, 4, 1, 1, 2])",
+    {
+      "expression": "unique([1, 2, 3, 4, 1, 1, 2])",
+      "expected": [1, 2, 3, 4]
+    }
+  ],
+
+  [
+    "value({a: 1, b:2, c:3}, 'a')",
+    {
+      "expression": "value({a: 1, b:2, c:3}, 'a')",
+      "expected": 1
+    }
+  ],
+
+  [
+    "value([1, 2, 3, 4], 2)",
+    {
+      "expression": "value([1, 2, 3, 4], 2)",
+      "expected": 3
+    }
+  ],
+
+  ["abs(-1)", { "expression": "abs(-1)", "expected": 1 }],
+
+  ["avg(`[]`)", { "expression": "avg(`[]`)", "expected": null }],
+
+  ["avg([1, 2, 3])", { "expression": "avg([1, 2, 3])", "expected": 2 }],
+
+  ["ceil(10)", { "expression": "ceil(10)", "expected": 10 }],
+
+  [
+    "contains([1, 2, 3, 4], 2)",
+    {
+      "expression": "contains([1, 2, 3, 4], 2)",
+      "expected": true
+    }
+  ],
+
+  [
+    "contains([1, 2, 3, 4], -1)",
+    {
+      "expression": "contains([1, 2, 3, 4], -1)",
+      "expected": false
+    }
+  ],
+
+  [
+    "contains('Abcd', 'd')",
+    {
+      "expression": "contains('Abcd', 'd')",
+      "expected": true
+    }
+  ],
+
+  [
+    "contains('Abcd', 'x')",
+    {
+      "expression": "contains('Abcd', 'x')",
+      "expected": false
+    }
+  ],
+
+  [
+    "endsWith('Abcd', 'd')",
+    {
+      "expression": "endsWith('Abcd', 'd')",
+      "expected": true
+    }
+  ],
+
+  [
+    "endsWith('Abcd', 'A')",
+    {
+      "expression": "endsWith('Abcd', 'A')",
+      "expected": false
+    }
+  ],
+
+  ["floor(10.4)", { "expression": "floor(10.4)", "expected": 10 }],
+
+  ["floor(10)", { "expression": "floor(10)", "expected": 10 }],
+
+  [
+    "join(',', ['a', 'b', 'c'])",
+    {
+      "expression": "join(',', ['a', 'b', 'c'])",
+      "expected": "a,b,c"
+    }
+  ],
+
+  [
+    "keys({a : 3, b : 4})",
+    {
+      "expression": "keys({a : 3, b : 4})",
+      "expected": ["a", "b"]
+    }
+  ],
+
+  ["length(`[]`)", { "expression": "length(`[]`)", "expected": 0 }],
+
+  ["length('')", { "expression": "length('')", "expected": 0 }],
+
+  ["length('abcd')", { "expression": "length('abcd')", "expected": 4 }],
+
+  [
+    "length([1, 2, 3, 4])",
+    { "expression": "length([1, 2, 3, 4])", "expected": 4 }
+  ],
+
+  ["length({})", { "expression": "length({})", "expected": 0 }],
+
+  [
+    "length({a : 3, b : 4})",
+    {
+      "expression": "length({a : 3, b : 4})",
+      "expected": 2
+    }
+  ],
+
+  [
+    "map(&(@ + 1), [1, 2, 3, 4])",
+    {
+      "expression": "map(&(@ + 1), [1, 2, 3, 4])",
+      "expected": [2, 3, 4, 5]
+    }
+  ],
+
+  [
+    "map(&length(@), ['doe', 'nick', 'chris'])",
+    {
+      "expression": "map(&length(@), ['doe', 'nick', 'chris'])",
+      "expected": [3, 4, 5]
+    }
+  ],
+
+  [
+    "max([1, 2, 3], [4, 5, 6], 7)",
+    {
+      "expression": "max([1, 2, 3], [4, 5, 6], 7)",
+      "expected": 7
+    }
+  ],
+
+  ["max(`[]`)", { "expression": "max(`[]`)", "expected": null }],
+
+  [
+    "max(['a', 'a1', 'b'])",
+    {
+      "expression": "max(['a', 'a1', 'b'])",
+      "expected": "b"
+    }
+  ],
+
+  [
+    "merge({a: 1, b: 2}, {c : 3, d: 4})",
+    {
+      "expression": "merge({a: 1, b: 2}, {c : 3, d: 4})",
+      "expected": { "a": 1, "b": 2, "c": 3, "d": 4 }
+    }
+  ],
+
+  [
+    "merge({a: 1, b: 2}, {a : 3, d: 4})",
+    {
+      "expression": "merge({a: 1, b: 2}, {a : 3, d: 4})",
+      "expected": { "a": 3, "b": 2, "d": 4 }
+    }
+  ],
+
+  [
+    "min([1, 2, 3], [4, 5, 6], 7)",
+    {
+      "expression": "min([1, 2, 3], [4, 5, 6], 7)",
+      "expected": 1
+    }
+  ],
+
+  ["min(`[]`)", { "expression": "min(`[]`)", "expected": null }],
+
+  [
+    "min(['a', 'a1', 'b'])",
+    {
+      "expression": "min(['a', 'a1', 'b'])",
+      "expected": "a"
+    }
+  ],
+
+  [
+    "notNull(1, 2, 3, 4, `null`)",
+    {
+      "expression": "notNull(1, 2, 3, 4, `null`)",
+      "expected": 1
+    }
+  ],
+
+  [
+    "notNull(`null`, 2, 3, 4, `null`)",
+    {
+      "expression": "notNull(`null`, 2, 3, 4, `null`)",
+      "expected": 2
+    }
+  ],
+
+  [
+    "reduce(&(accumulated + current), [1, 2, 3])",
+    {
+      "expression": "reduce(&(accumulated + current), [1, 2, 3])",
+      "expected": 6
+    }
+  ],
+
+  [
+    "reduce(&if(accumulated == `null`, current, accumulated * current), [3, 3, 3])",
+    {
+      "expression": "reduce(&if(accumulated == `null`, current, accumulated * current), [3, 3, 3])",
+      "expected": 27
+    }
+  ],
+
+  [
+    "register('product', &@[0] * @[1])",
+    {
+      "data": "register('product', &@[0] * @[1])",
+      "expression": "register('product', &@[0] * @[1]) | product([2,21])",
+      "expected": 42
+    }
+  ],
+
+  [
+    "reverse(['a', 'b', 'c'])",
+    {
+      "expression": "reverse(['a', 'b', 'c'])",
+      "expected": ["c", "b", "a"]
+    }
+  ],
+
+  [
+    "sort([1, 2, 4, 3, 1])",
+    {
+      "expression": "sort([1, 2, 4, 3, 1])",
+      "expected": [1, 1, 2, 3, 4]
+    }
+  ],
+
+  [
+    "sortBy(['abcd', 'e', 'def'], &length(@))",
+    {
+      "expression": "sortBy(['abcd', 'e', 'def'], &length(@))",
+      "expected": ["e", "def", "abcd"]
+    }
+  ],
+
+  [
+    "sortBy([{year: 2010}, {year: 2020}, {year: 1910}], &year)",
+    {
+      "expression": "sortBy([{year: 2010}, {year: 2020}, {year: 1910}], &year)",
+      "expected": [{"year": 1910}, {"year": 2010}, {"year": 2020}]
+    }
+  ],
+
+  [
+    "startsWith('jack is at home', 'jack')",
+    {
+      "expression": "startsWith('jack is at home', 'jack')",
+      "expected": true
+    }
+  ],
+
+  ["sum([1, 2, 3])", { "expression": "sum([1, 2, 3])", "expected": 6 }],
+
+  ["toArray(1)", { "expression": "toArray(1)", "expected": [1] }],
+
+  [
+    "toArray(null())",
+    {
+      "expression": "toArray(null())",
+      "expected": [null]
+    }
+  ],
+
+  ["toNumber(1)", { "expression": "toNumber(1)", "expected": 1 }],
+
+  ["toNumber('10')", { "expression": "toNumber('10')", "expected": 10 }],
+
+  ["toNumber({a: 1})", { "expression": "toNumber({a: 1})", "expected": null }],
+
+  ["toNumber(true())", { "expression": "toNumber(true())", "expected": null }],
+
+  ["toString(1)", { "expression": "toString(1)", "expected": "1" }],
+
+  [
+    "toString(true())",
+    {
+      "expression": "toString(true())",
+      "expected": "true"
+    }
+  ],
+
+  ["type(1)", { "expression": "type(1)", "expected": "number" }],
+
+  ["type('')", { "expression": "type('')", "expected": "string" }],
+
+  [
+    "values({a : 3, b : 4})",
+    {
+      "expression": "values({a : 3, b : 4})",
+      "expected": [3, 4]
+    }
+  ],
+
+  [
+    "zip([1, 2, 3], [4, 5, 6])",
+    {
+      "expression": "zip([1, 2, 3], [4, 5, 6])",
+      "expected": [
+        [1, 4],
+        [2, 5],
+        [3, 6]
+      ]
+    }
+  ],
+
+  [
+    "and(10 > 8, length('foo') < 5)",
+    {
+      "expression": "and(10 > 8, length('foo') < 5)",
+      "expected": true
+    }
+  ],
+
+  [
+    "and(`null`, length('foo') < 5)",
+    {
+      "expression": "and(`null`, length('foo') < 5)",
+      "expected": false
+    }
+  ],
+
+  [
+    "datedif(datetime(2001, 1, 1), datetime(2003, 1, 1), 'y')",
+    {
+      "expression": "datedif(datetime(2001, 1, 1), datetime(2003, 1, 1), 'y')",
+      "expected": 2
+    }
+  ],
+
+  [
+    "datedif(datetime(2001, 6, 1), datetime(2003, 8, 15), 'D')",
+    {
+      "expression": "datedif(datetime(2001, 6, 1), datetime(2003, 8, 15), 'D')",
+      "expected": 805
+    }
+  ],
+
+  [
+    "datedif(datetime(2001, 6, 1), datetime(2003, 8, 15), 'YD')",
+    {
+      "expression": "datedif(datetime(2001, 6, 1), datetime(2003, 8, 15), 'YD')",
+      "expected": 75
+    }
+  ],
+
+  [
+    "day(datetime(2008,5,23))",
+    {
+      "expression": "day(datetime(2008,5,23))",
+      "expected": 23
+    }
+  ],
+
+  [
+    "eomonth(datetime(2011, 1, 1), 1)",
+    {
+      "expression": "eomonth(datetime(2011, 1, 1), 1) | [month(@), day(@)]",
+      "expected": [2, 28]
+    }
+  ],
+
+  [
+    "eomonth(datetime(2011, 1, 1), -3)",
+    {
+      "expression": "eomonth(datetime(2011, 1, 1), -3) | [month(@), day(@)]",
+      "expected": [10, 31]
+    }
+  ],
+
+  ["exp(10)", { "expression": "exp(10)", "expected": 22026.465794806718 }],
+
+  ["find('m', 'abm')", { "expression": "find('m', 'abm')", "expected": 2 }],
+
+  [
+    "find('M', 'abMcdM', 3)",
+    {
+      "expression": "find('M', 'abMcdM', 3)",
+      "expected": 5
+    }
+  ],
+
+  ["find('M', 'ab')", { "expression": "find('M', 'ab')", "expected": null }],
+
+  [
+    "find('M', 'abMcdM', 2)",
+    {
+      "expression": "find('M', 'abMcdM', 2)",
+      "expected": 2
+    }
+  ],
+
+  [
+    "hour(datetime(2008,5,23,12, 0, 0))",
+    {
+      "expression": "hour(datetime(2008,5,23,12, 0, 0))",
+      "expected": 12
+    }
+  ],
+  [
+    "hour(time(12, 0, 0))",
+    {
+      "expression": "hour(time(12, 0, 0))",
+      "expected": 12
+    }
+  ],
+
+  ["if(true(), 1, 2)", { "expression": "if(true(), 1, 2)", "expected": 1 }],
+
+  ["if(false(), 1, 2)", { "expression": "if(false(), 1, 2)", "expected": 2 }],
+
+  [
+    "left('Sale Price', 4)",
+    {
+      "expression": "left('Sale Price', 4)",
+      "expected": "Sale"
+    }
+  ],
+
+  ["left('Sweden')", { "expression": "left('Sweden')", "expected": "S" }],
+
+  [
+    "left([4, 5, 6], 2)",
+    {
+      "expression": "left([4, 5, 6], 2)",
+      "expected": [4, 5]
+    }
+  ],
+
+  [
+    "lower('E. E. Cummings')",
+    {
+      "expression": "lower('E. E. Cummings')",
+      "expected": "e. e. cummings"
+    }
+  ],
+
+  [
+    "mid('Fluid Flow',0,5)",
+    {
+      "expression": "mid('Fluid Flow',0,5)",
+      "expected": "Fluid"
+    }
+  ],
+
+  [
+    "mid('Fluid Flow',6,20)",
+    {
+      "expression": "mid('Fluid Flow',6,20)",
+      "expected": "Flow"
+    }
+  ],
+
+  [
+    "mid('Fluid Flow',20,5)",
+    {
+      "expression": "mid('Fluid Flow',20,5)",
+      "expected": ""
+    }
+  ],
+
+  [
+    "minute(datetime(2008,5,23,12, 10, 0))",
+    {
+      "expression": "minute(datetime(2008,5,23,12, 10, 0))",
+      "expected": 10
+    }
+  ],
+  [
+    "minute(time(12, 10, 0))",
+    {
+      "expression": "minute(time(12, 10, 0))",
+      "expected": 10
+    }
+  ],
+
+  ["mod(3, 2)", { "expression": "mod(3, 2)", "expected": 1 }],
+
+  ["mod(-3, 2)", { "expression": "mod(-3, 2)", "expected": -1 }],
+
+  [
+    "month(datetime(2008,5,23))",
+    {
+      "expression": "month(datetime(2008,5,23))",
+      "expected": 5
+    }
+  ],
+
+  [
+    "not(length('bar') > 0)",
+    {
+      "expression": "not(length('bar') > 0)",
+      "expected": false
+    }
+  ],
+
+  ["not(false())", { "expression": "not(false())", "expected": true }],
+
+  ["not('abcd')", { "expression": "not('abcd')", "expected": false }],
+
+  ["not('')", { "expression": "not('')", "expected": true }],
+
+  [
+    "power(10, 2)",
+    {
+      "expression": "power(10, 2)",
+      "expected": 100
+    }
+  ],
+
+  [
+    "proper('this is a TITLE')",
+    {
+      "expression": "proper('this is a TITLE')",
+      "expected": "This Is A Title"
+    }
+  ],
+
+  [
+    "proper('2-way street')",
+    {
+      "expression": "proper('2-way street')",
+      "expected": "2-Way Street"
+    }
+  ],
+
+  [
+    "proper('76BudGet')",
+    {
+      "expression": "proper('76BudGet')",
+      "expected": "76Budget"
+    }
+  ],
+
+  [
+    "replace('abcdefghijk', 5, 5, '*')",
+    {
+      "expression": "replace('abcdefghijk', 5, 5, '*')",
+      "expected": "abcde*k"
+    }
+  ],
+
+  [
+    "replace('2009',2,2,'10')",
+    {
+      "expression": "replace('2009',2,2,'10')",
+      "expected": "2010"
+    }
+  ],
+
+  [
+    "replace('123456',0,3,'@')",
+    {
+      "expression": "replace('123456',0,3,'@')",
+      "expected": "@456"
+    }
+  ],
+
+  ["rept('x', 5)", { "expression": "rept('x', 5)", "expected": "xxxxx" }],
+
+  [
+    "right('Sale Price', 4)",
+    {
+      "expression": "right('Sale Price', 4)",
+      "expected": "rice"
+    }
+  ],
+
+  ["right('Sweden')", { "expression": "right('Sweden')", "expected": "n" }],
+
+  [
+    "right([4, 5, 6], 2)",
+    {
+      "expression": "right([4, 5, 6], 2)",
+      "expected": [5, 6]
+    }
+  ],
+
+  ["round(2.15, 1)", { "expression": "round(2.15, 1)", "expected": 2.2 }],
+
+  [
+    "round(626.3,-3)",
+    {
+      "expression": "round(626.3,-3)",
+      "expected": 1000
+    }
+  ],
+
+  ["round(626.3, 0)", { "expression": "round(626.3, 0)", "expected": 626 }],
+
+  [
+    "round(1.98,-1)",
+    {
+      "expression": "round(1.98,-1)",
+      "expected": 0
+    }
+  ],
+
+  [
+    "search('a?c', 'acabc')",
+    {
+      "expression": "search('a?c', 'acabc')",
+      "expected": [2, "abc"]
+    }
+  ],
+
+  [
+    "second(datetime(2008,5,23,12, 10, 53))",
+    {
+      "expression": "second(datetime(2008,5,23,12, 10, 53))",
+      "expected": 53
+    }
+  ],
+  [
+    "second(time(12, 10, 53))",
+    {
+      "expression": "second(time(12, 10, 53))",
+      "expected": 53
+    }
+  ],
+
+  [
+    "split('abcdef', '')",
+    {
+      "expression": "split('abcdef', '')",
+      "expected": ["a", "b", "c", "d", "e", "f"]
+    }
+  ],
+
+  [
+    "split('abcdef', 'e')",
+    {
+      "expression": "split('abcdef', 'e')",
+      "expected": ["abcd", "f"]
+    }
+  ],
+
+  ["sqrt(4)", { "expression": "sqrt(4)", "expected": 2 }],
+
+  [
+    "stdev([1345, 1301, 1368])",
+    {
+      "expression": "stdev([1345, 1301, 1368])",
+      "expected": 34.044089061098404
+    }
+  ],
+  [
+    "stdevp([1345, 1301, 1368])",
+    {
+      "expression": "stdevp([1345, 1301, 1368])",
+      "expected": 27.79688231918724
+    }
+  ],
+
+  [
+    "stdevp([1345, 1301, 1368])",
+    {
+      "expression": "stdevp([1345, 1301, 1368])",
+      "expected": 27.79688231918724
+    }
+  ],
+  [
+    "stdev([1345, 1301, 1368])",
+    {
+      "expression": "stdev([1345, 1301, 1368])",
+      "expected": 34.044089061098404
+    }
+  ],
+
+  [
+    "substitute('Sales Data', 'Sales', 'Cost')",
+    {
+      "expression": "substitute('Sales Data', 'Sales', 'Cost')",
+      "expected": "Cost Data"
+    }
+  ],
+
+  [
+    "substitute('Quarter 1, 2008', '1', '2', 1)",
+    {
+      "expression": "substitute('Quarter 1, 2008', '1', '2', 1)",
+      "expected": "Quarter 2, 2008"
+    }
+  ],
+
+  [
+    "substitute('Quarter 1, 1008', '1', '2', 2)",
+    {
+      "expression": "substitute('Quarter 1, 1008', '1', '2', 2)",
+      "expected": "Quarter 1, 2008"
+    }
+  ],
+
+  [
+    "time(12, 0, 0) | [hour(@), minute(@), second(@)]",
+    {
+      "expression": "time(12, 0, 0) | [hour(@), minute(@), second(@)]",
+      "expected": [12, 0, 0]
+    }
+  ],
+
+  [
+    "trim('   ab    c   ')",
+    {
+      "expression": "trim('   ab    c   ')",
+      "expected": "ab c"
+    }
+  ],
+
+  ["trunc(8.9)", { "expression": "trunc(8.9)", "expected": 8 }],
+  ["trunc(-8.9)", { "expression": "trunc(-8.9)", "expected": -8 }],
+  ["trunc(8.912, 2)", { "expression": "trunc(8.912, 2)", "expected": 8.91 }],
+
+  ["upper('abcd')", { "expression": "upper('abcd')", "expected": "ABCD" }],
+
+  [
+    "year(datetime(2008,5,23))",
+    {
+      "expression": "year(datetime(2008,5,23))",
+      "expected": 2008
+    }
+  ]
+]
