@@ -19,7 +19,7 @@ function round(num, digits) {
 const MS_IN_DAY = 24 * 60 * 60 * 1000;
 
 function getDateObj(dateNum) {
-  return new Date(dateNum * MS_IN_DAY);
+  return new Date(Math.round(dateNum * MS_IN_DAY));
 }
 
 function getDateNum(dateObj) {
