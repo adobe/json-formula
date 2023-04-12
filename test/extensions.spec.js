@@ -143,7 +143,8 @@ describe('current datetime tests', () => {
     const expression = 'today()';
     const result = new JsonFormula().search(expression, {});
     // Account for the fact that today() returns different results in different time zones
-    const offset = (new Date()).getTimezoneOffset() / (60 * 24);
+    const tzOffset = (new Date()).getTimezoneOffset();
+    const offset = tzOffset === 0 ? 0 : tzOffset / (60 * 24);
     expect(result - offset).toBeCloseTo(1.0, 10);
   });
 
