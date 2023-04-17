@@ -709,7 +709,9 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         const capitalize = word => (/\w/.test(word)
           ? `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`
           : word);
-        const wordParts = toString(args[0]).match(/\W+|\w+/g);
+        const original = toString(args[0]);
+        const wordParts = original.match(/\W+|\w+/g);
+        if (wordParts === null) return original;
         const words = wordParts.map(word => {
           const digitParts = word.match(/\d+|[^\d]+/g);
           if (digitParts === null) return capitalize(word);
@@ -721,7 +723,18 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         { types: [dataTypes.TYPE_STRING] },
       ],
     },
-
+    /**
+     * Returns a pseudo random number that is greater than or equal to zero, and less than one.
+     * @returns {number}
+     * @function random
+     * @category openFormula
+     * @example
+     * random() // 0.022585461160693265
+     */
+    random: {
+      _func: () => Math.random(),
+      _signature: [],
+    },
     /**
      * Returns text where an old text is substituted at a given start position and
      * length, with a new text.

@@ -91,6 +91,10 @@ class Runtime {
     // If the last argument is declared as variadic, then we need
     // a minimum number of args to be required.  Otherwise it has to
     // be an exact amount.
+    if (signature.length === 0 && args.length > 0) {
+      throw new Error(`ArgumentError: ${argName}() does not accept parameters`);
+    }
+
     if (signature.length === 0) {
       return;
     }
