@@ -99,7 +99,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * datedif(datetime(2001, 1, 1), datetime(2003, 1, 1), 'y') // returns 2
      * @example
      * datedif(datetime(2001, 6, 1), datetime(2003, 8, 15), 'D') // returns 805
-     * // 805 days between June 1, 2001, and August 15, 2002
+     * // 805 days between June 1, 2001, and August 15, 2003
      * @example
      * datedif(datetime(2001, 6, 1), datetime(2003, 8, 15), 'YD') // returns 75
      * // 75 days between June 1 and August 15, ignoring the years of the dates (75)
