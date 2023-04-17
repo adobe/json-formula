@@ -1477,10 +1477,10 @@
     }
   ],
   [
-    "stdev(`[1,2,3]`)",
+    "stdev(`[1,\"2\",3]`)",
     {
       "data": "`null`",
-      "expression": "stdev(`[1,2,3]`)",
+      "expression": "stdev(`[1,\"2\",3]`)",
       "expected": 1
     }
   ],
@@ -1782,51 +1782,51 @@
     }
   ],
   [
-    "datetime(1970,1,1)",
+    "datetime(1970,1,1) | [year(@), month(@), day(@)]",
     {
       "data": "`null`",
-      "expression": "datetime(1970,1,1)",
-      "expected": 0
+      "expression": "datetime(1970,1,1) | [year(@), month(@), day(@)]",
+      "expected": [1970, 1, 1]
     }
   ],
   [
-    "datetime('1970',1,1)",
+    "datetime('1970',1,1) | [year(@), month(@), day(@)]",
     {
       "data": "`null`",
-      "expression": "datetime('1970',1,1)",
-      "expected": 0
+      "expression": "datetime('1970',1,1) | [year(@), month(@), day(@)]",
+      "expected": [1970, 1, 1]
     }
   ],
   [
-    "datetime(1969,12,31)",
+    "datetime(1969,12,31) | [year(@), month(@), day(@)]",
     {
       "data": "`null`",
-      "expression": "datetime(1969,12,31)",
-      "expected": -1
+      "expression": "datetime(1969,12,31) | [year(@), month(@), day(@)]",
+      "expected": [1969, 12, 31]
     }
   ],
   [
-    "datetime(2020,2,29)",
+    "datetime(2020,2,29) | [year(@), month(@), day(@)]",
     {
       "data": "`null`",
-      "expression": "datetime(2020,2,29)",
-      "expected": 18321
+      "expression": "datetime(2020,2,29) | [year(@), month(@), day(@)]",
+      "expected": [2020, 2, 29]
     }
   ],
   [
-    "datetime(2020,3,1)",
+    "datetime(2020,3,1) | [year(@), month(@), day(@)]",
     {
       "data": "`null`",
-      "expression": "datetime(2020,3,1)",
-      "expected": 18322
+      "expression": "datetime(2020,3,1) | [year(@), month(@), day(@)]",
+      "expected": [2020, 3, 1]
     }
   ],
   [
-    "datetime(datetime(epoch.year, epoch.month, epoch.date))",
+    "datetime(epoch.year, epoch.month, epoch.date) | [year(@), month(@), day(@)]",
     {
       "data": "samples.datetime",
-      "expression": "datetime(epoch.year, epoch.month, epoch.date)",
-      "expected": 0
+      "expression": "datetime(epoch.year, epoch.month, epoch.date) | [year(@), month(@), day(@)]",
+      "expected": [1970, 1, 1]
     }
   ],
   [
@@ -1835,14 +1835,6 @@
       "data": "`null`",
       "expression": "datetime(1970,1,1) | day(@)",
       "expected": 1
-    }
-  ],
-  [
-    "datetime(2022, 6, 20, 10, 9, 8, 0 'America/New_York') - datetime(2022, 6, 20, 10, 9, 8, 0 'America/Los_Angeles')",
-    {
-      "data": "`null`",
-      "expression": "datetime(2022, 6, 20, 10, 9, 8, 0 'America/New_York') - datetime(2022, 6, 20, 10, 9, 8, 0 'America/Los_Angeles')",
-      "expected": 0.125
     }
   ],
   [
@@ -1862,26 +1854,26 @@
     }
   ],
   [
-    "day(0)",
+    "day(datetime(1970, 1, 1))",
     {
       "data": "`null`",
-      "expression": "day(0)",
+      "expression": "day(datetime(1970, 1, 1))",
       "expected": 1
     }
   ],
   [
-    "day(1.5)",
+    "day(datetime(1970, 1, 1, 12))",
     {
       "data": "`null`",
-      "expression": "day(1.5)",
+      "expression": "day(datetime(1970, 1, 2, 12))",
       "expected": 2
     }
   ],
   [
-    "day(epoch.value)",
+    "day(localDate('1970-01-01'))",
     {
-      "data": "samples.datetime",
-      "expression": "day(epoch.value)",
+      "data": "null()",
+      "expression": "day(localDate('1970-01-01'))",
       "expected": 1
     }
   ],
@@ -1910,10 +1902,10 @@
     }
   ],
   [
-    "month(epoch.value)",
+    "month(localDate('1970-01-01'))",
     {
       "data": "samples.datetime",
-      "expression": "month(epoch.value)",
+      "expression": "month(localDate('1970-01-01'))",
       "expected": 1
     }
   ],
@@ -1942,105 +1934,113 @@
     }
   ],
   [
-    "year(epoch.value)",
+    "year(localDate('1970-01-01'))",
     {
       "data": "samples.datetime",
-      "expression": "year(epoch.value)",
+      "expression": "year(localDate('1970-01-01'))",
       "expected": 1970
     }
   ],
   [
-    "time(0, 0, 0)",
+    "time(0, 0, 0) | [hour(@), minute(@),  second(@)]",
     {
       "data": "`null`",
-      "expression": "time(0, 0, 0)",
-      "expected": 0
+      "expression": "time(0, 0, 0) | [hour(@), minute(@),  second(@)]",
+      "expected": [0, 0, 0]
     }
   ],
   [
-    "time(6, 0, 0)",
+    "time(6, 0, 0) | [hour(@), minute(@),  second(@)]",
     {
       "data": "`null`",
-      "expression": "time(6, 0, 0)",
-      "expected": 0.25
+      "expression": "time(6, 0, 0) | [hour(@), minute(@),  second(@)]",
+      "expected": [6, 0, 0]
     }
   ],
   [
-    "time('6', '0', '0')",
+    "time('6', '13', '14') | [hour(@), minute(@),  second(@)]",
     {
       "data": "`null`",
-      "expression": "time('6', '0', '0')",
-      "expected": 0.25
+      "expression": "time('6', '13', '14') | [hour(@), minute(@),  second(@)]",
+      "expected": [6, 13, 14]
     }
   ],
   [
-    "time(noon.hour, noon.minute, noon.second)",
+    "time(noon.hour, noon.minute, noon.second) | [hour(@), minute(@),  second(@)]",
     {
       "data": "samples.datetime",
-      "expression": "time(noon.hour, noon.minute, noon.second)",
-      "expected": 0.5
+      "expression": "time(noon.hour, noon.minute, noon.second) | [hour(@), minute(@),  second(@)]",
+      "expected": [12, 0, 0]
     }
   ],
   [
-    "hour(0.25)",
+    "hour(time(6))",
     {
       "data": "`null`",
-      "expression": "hour(0.25)",
+      "expression": "hour(time(6))",
       "expected": 6
     }
   ],
   [
-    "hour(-0.1)",
+    "hour(time(80, 0, 0))",
     {
       "data": "`null`",
-      "expression": "hour(-0.1)",
-      "expected": null
-    }
-  ],
-  [
-    "hour(3.33333333333)",
-    {
-      "data": "`null`",
-      "expression": "hour(3.3333333333333333)",
+      "expression": "hour(time(80, 0, 0))",
       "expected": 8
     }
   ],
   [
-    "hour(4/3)",
+    "hour(time(32, 0, 0))",
     {
       "data": "`null`",
-      "expression": "hour(4/3)",
+      "expression": "hour(time(32, 0, 0))",
       "expected": 8
     }
   ],
   [
-    "minute(1/24/15)",
+    "hour(datetime(2008,5,23,12, 0, 0))",
     {
       "data": "`null`",
-      "expression": "minute(1/24/15)",
-      "expected": 4
-    }
-  ],
-  [
-    "second(1/24/60/20)",
-    {
-      "data": "`null`",
-      "expression": "second(1/24/60/20)",
-      "expected": 3
-    }
-  ],
-  [
-    "hour(noon.value)", {
-      "data": "samples.datetime",
-      "expression": "hour(noon.value)",
+      "expression": "hour(datetime(2008,5,23,12, 0, 0))",
       "expected": 12
     }
   ],
   [
-    "minute(0.0375)",
+    "hour(datetime(2008,5,23,12, 0, 0))",
     {
       "data": "`null`",
-      "expression": "minute(0.0375)",
+      "expression": "hour(time(11, 0, 0))",
+      "expected": 11
+    }
+  ],
+  [
+    "minute(datetime(1970, 1, 1, 0, 4))",
+    {
+      "data": "`null`",
+      "expression": "minute(datetime(1970, 1, 1, 0, 4))",
+      "expected": 4
+    }
+  ],
+  [
+    "second(datetime(1970, 1, 1, 0, 0, 3))",
+    {
+      "data": "`null`",
+      "expression": "second(datetime(1970, 1, 1, 0, 0, 3))",
+      "expected": 3
+    }
+  ],
+  [
+    "hour(datetime(1970, 1, 1, 12))", {
+      "data": "samples.datetime",
+      "expression": "hour(datetime(1970, 1, 1, 12))",
+      "expected": 12
+    }
+  ],
+  [
+    "minute(datetime(1970, 1, 1, 0, 54))",
+    {
+      "data": "`null`",
+      "expression": "minute(datetime(1970, 1, 1, 0, 54))",
       "expected": 54
     }
   ],
@@ -2053,18 +2053,18 @@
     }
   ],
   [
-    "minute(3.0375)",
+    "minute(datetime(1970, 1, 4, 0, 54))",
     {
       "data": "`null`",
-      "expression": "minute(3.0375)",
+      "expression": "minute(datetime(1970, 1, 4, 0, 54))",
       "expected": 54
     }
   ],
   [
-    "minute(noon.value)",
+    "minute(datetime(1970, 1, 1, 12))",
     {
       "data": "samples.datetime",
-      "expression": "minute(noon.value)",
+      "expression": "minute(datetime(1970, 1, 1, 12))",
       "expected": 0
     }
   ],
@@ -2093,10 +2093,10 @@
     }
   ],
   [
-    "second(noon.value)",
+    "second(datetime(1970, 1, 1, 12))",
     {
       "data": "samples.datetime",
-      "expression": "second(noon.value)",
+      "expression": "second(datetime(1970, 1, 1, 12))",
       "expected": 0
     }
   ],
@@ -2109,82 +2109,82 @@
     }
   ],
   [
-    "weekday(epoch.value)",
+    "weekday(localDate('1970-01-01'))",
     {
       "data": "samples.datetime",
-      "expression": "weekday(epoch.value)",
+      "expression": "weekday(localDate('1970-01-01'))",
       "expected": 5
     }
   ],
   [
-    "weekday(epoch.value + 2)",
+    "weekday(localDate('1970-01-03'))",
     {
       "data": "samples.datetime",
-      "expression": "weekday(epoch.value + 2)",
+      "expression": "weekday(localDate('1970-01-03'))",
       "expected": 7
     }
   ],
   [
-    "weekday((epoch.value - 5))",
+    "weekday(localDate('1969-12-27'))",
     {
       "data": "samples.datetime",
-      "expression": "weekday(epoch.value - 5)",
+      "expression": "weekday(localDate('1969-12-27'))",
       "expected": 7
     }
   ],
   [
-    "weekday(epoch.value + 3)",
+    "weekday(localDate('1970-01-04'))",
     {
       "data": "samples.datetime",
-      "expression": "weekday(epoch.value + 3)",
+      "expression": "weekday(localDate('1970-01-04'))",
       "expected": 1
     }
   ],
   [
-    "weekday(epoch.value + 3, 1)",
+    "weekday(localDate('1970-01-04'), 1)",
     {
       "data": "samples.datetime",
-      "expression": "weekday(epoch.value + 3, 1)",
+      "expression": "weekday(localDate('1970-01-04'), 1)",
       "expected": 1
     }
   ],
   [
-    "weekday(epoch.value + 3, 2)",
+    "weekday(localDate('1970-01-04'), 2)",
     {
       "data": "samples.datetime",
-      "expression": "weekday(epoch.value + 3, 2)",
+      "expression": "weekday(localDate('1970-01-04'), 2)",
       "expected": 7
     }
   ],
   [
-    "weekday(epoch.value + 4, 2)",
+    "weekday(localDate('1970-01-05'), 2)",
     {
       "data": "samples.datetime",
-      "expression": "weekday(epoch.value + 4, 2)",
+      "expression": "weekday(localDate('1970-01-05'), 2)",
       "expected": 1
     }
   ],
   [
-    "weekday(epoch.value + 3, 3)",
+    "weekday(localDate('1970-01-04')), 3)",
     {
       "data": "samples.datetime",
-      "expression": "weekday(epoch.value + 3, 3)",
+      "expression": "weekday(localDate('1970-01-04'), 3)",
       "expected": 6
     }
   ],
   [
-    "weekday(epoch.value, 4)",
+    "weekday(localDate('1970-01-01'), 4)",
     {
       "data": "samples.datetime",
-      "expression": "weekday(epoch.value, 4)",
+      "expression": "weekday(localDate('1970-01-01'), 4)",
       "expected": null
     }
   ],
   [
-    "weekday(epoch.value, -1)",
+    "weekday(localDate('1970-01-01'), -1)",
     {
       "data": "samples.datetime",
-      "expression": "weekday(epoch.value, -1)",
+      "expression": "weekday(localDate('1970-01-01'), -1)",
       "expected": null
     }
   ],
@@ -2496,7 +2496,7 @@
   [
     "datedif 1d",
     {
-      "data": "{d1: samples.datedif.\"2022-06-20\", d2: samples.datedif.\"2022-06-21\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-20\"), d2: localDate(samples.datedif.\"2022-06-21\")}",
       "expression": "datedif(d1, d2, 'd')",
       "expected": 1
     }
@@ -2504,7 +2504,7 @@
   [
     "datedif null",
     {
-      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2022-06-20\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2022-06-20\")}",
       "expression": "datedif(d1, d2, 'd')",
       "expected": null
     }
@@ -2512,7 +2512,7 @@
   [
     "datedif 30d",
     {
-      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2022-07-21\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2022-07-21\")}",
       "expression": "datedif(d1, d2, 'd')",
       "expected": 30
     }
@@ -2520,7 +2520,7 @@
   [
     "datedif 364d",
     {
-      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2023-06-20\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2023-06-20\")}",
       "expression": "datedif(d1, d2, 'd')",
       "expected": 364
     }
@@ -2528,31 +2528,15 @@
   [
     "datedif 2963d",
     {
-      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2030-08-01\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2030-08-01\")}",
       "expression": "datedif(d1, d2, 'd')",
       "expected": 2963
     }
   ],
   [
-    "(datetime(2022, 6, 20, 10, 9, 8, 0, 'America/New_York') - datetime(2022, 6, 20, 10, 9, 8, 0, 'Etc/GMT')) * 24",
-    {
-      "data": "`null`",
-      "expression": "(datetime(2022, 6, 20, 10, 9, 8, 0, 'America/New_York') - datetime(2022, 6, 20, 10, 9, 8, 0, 'Etc/GMT')) * 24",
-      "expected": -4
-    }
-  ],
-  [
-    "(datetime(2022, 11, 10, 10, 9, 8, 0, 'America/New_York') - datetime(2022, 11, 10, 10, 9, 8, 0, 'Etc/GMT')) * 24",
-    {
-      "data": "`null`",
-      "expression": "(datetime(2022, 11, 10, 10, 9, 8, 0, 'America/New_York') - datetime(2022, 11, 10, 10, 9, 8, 0, 'Etc/GMT')) * 24",
-      "expected": -5
-    }
-  ],
-  [
     "datedif 0y",
     {
-      "data": "{d1: samples.datedif.\"2022-06-20\", d2: samples.datedif.\"2022-06-21\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-20\"), d2: localDate(samples.datedif.\"2022-06-21\")}",
       "expression": "datedif(d1, d2, 'y')",
       "expected": 0
     }
@@ -2560,7 +2544,7 @@
   [
     "datedif 0y",
     {
-      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2022-07-21\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2022-07-21\")}",
       "expression": "datedif(d1, d2, 'y')",
       "expected": 0
     }
@@ -2568,7 +2552,7 @@
   [
     "datedif 0y",
     {
-      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2023-06-20\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2023-06-20\")}",
       "expression": "datedif(d1, d2, 'y')",
       "expected": 0
     }
@@ -2576,7 +2560,7 @@
   [
     "datedif 7y",
     {
-      "data": "{d1: samples.datedif.\"2023-06-21\", d2: samples.datedif.\"2030-08-01\"}",
+      "data": "{d1: localDate(samples.datedif.\"2023-06-21\"), d2: localDate(samples.datedif.\"2030-08-01\")}",
       "expression": "datedif(d1, d2, 'y')",
       "expected": 7
     }
@@ -2584,7 +2568,7 @@
   [
     "datedif 12m",
     {
-      "data": "{d1: samples.datedif.\"2022-06-20\", d2: samples.datedif.\"2022-06-21\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-20\"), d2: localDate(samples.datedif.\"2022-06-21\")}",
       "expression": "datedif(d1, d2, 'm')",
       "expected": 0
     }
@@ -2592,7 +2576,7 @@
   [
     "datedif 1m",
     {
-      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2022-07-21\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2022-07-21\")}",
       "expression": "datedif(d1, d2, 'm')",
       "expected": 1
     }
@@ -2600,7 +2584,7 @@
   [
     "datedif 11m",
     {
-      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2023-06-20\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2023-06-20\")}",
       "expression": "datedif(d1, d2, 'm')",
       "expected": 11
     }
@@ -2608,7 +2592,7 @@
   [
     "datedif 85m",
     {
-      "data": "{d1: samples.datedif.\"2023-06-21\", d2: samples.datedif.\"2030-08-01\"}",
+      "data": "{d1: localDate(samples.datedif.\"2023-06-21\"), d2: localDate(samples.datedif.\"2030-08-01\")}",
       "expression": "datedif(d1, d2, 'm')",
       "expected": 85
     }
@@ -2616,7 +2600,7 @@
   [
     "datedif 0ym",
     {
-      "data": "{d1: samples.datedif.\"2022-06-20\", d2: samples.datedif.\"2022-06-21\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-20\"), d2: localDate(samples.datedif.\"2022-06-21\")}",
       "expression": "datedif(d1, d2, 'ym')",
       "expected": 0
     }
@@ -2624,7 +2608,7 @@
   [
     "datedif 1ym",
     {
-      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2022-07-21\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2022-07-21\")}",
       "expression": "datedif(d1, d2, 'ym')",
       "expected": 1
     }
@@ -2632,7 +2616,7 @@
   [
     "datedif 11ym",
     {
-      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2023-06-20\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2023-06-20\")}",
       "expression": "datedif(d1, d2, 'ym')",
       "expected": 11
     }
@@ -2640,7 +2624,7 @@
   [
     "datedif 1ym",
     {
-      "data": "{d1: samples.datedif.\"2023-06-21\", d2: samples.datedif.\"2030-08-01\"}",
+      "data": "{d1: localDate(samples.datedif.\"2023-06-21\"), d2: localDate(samples.datedif.\"2030-08-01\")}",
       "expression": "datedif(d1, d2, 'ym')",
       "expected": 1
     }
@@ -2648,7 +2632,7 @@
   [
     "datedif 1yd",
     {
-      "data": "{d1: samples.datedif.\"2022-06-20\", d2: samples.datedif.\"2022-06-21\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-20\"), d2: localDate(samples.datedif.\"2022-06-21\")}",
       "expression": "datedif(d1, d2, 'yd')",
       "expected": 1
     }
@@ -2656,7 +2640,7 @@
   [
     "datedif 30yd",
     {
-      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2022-07-21\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2022-07-21\")}",
       "expression": "datedif(d1, d2, 'yd')",
       "expected": 30
     }
@@ -2664,7 +2648,7 @@
   [
     "datedif 364yd",
     {
-      "data": "{d1: samples.datedif.\"2022-06-21\", d2: samples.datedif.\"2023-06-20\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2023-06-20\")}",
       "expression": "datedif(d1, d2, 'yd')",
       "expected": 364
     }
@@ -2672,7 +2656,7 @@
   [
     "datedif 41yd",
     {
-      "data": "{d1: samples.datedif.\"2023-06-21\", d2: samples.datedif.\"2030-08-01\"}",
+      "data": "{d1: localDate(samples.datedif.\"2023-06-21\"), d2: localDate(samples.datedif.\"2030-08-01\")}",
       "expression": "datedif(d1, d2, 'yd')",
       "expected": 41
     }
@@ -2680,7 +2664,7 @@
   [
     "eomonth 6-30",
     {
-      "data": "{d1: samples.datedif.\"2022-06-21\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-06-21\")}",
       "expression": "eomonth(d1, 0) | year(@) & '-' & month(@) & '-' & day(@)",
       "expected": "2022-6-30"
     }
@@ -2688,7 +2672,7 @@
   [
     "eomonth 5-31",
     {
-      "data": "{d1: samples.datedif.\"2022-07-21\"}",
+      "data": "{d1: localDate(samples.datedif.\"2022-07-21\")}",
       "expression": "eomonth(d1, -2) | year(@) & '-' & month(@) & '-' & day(@)",
       "expected": "2022-5-31"
     }
@@ -2696,7 +2680,7 @@
   [
     "eomonth 7-31",
     {
-      "data": "{d1: samples.datedif.\"2023-06-20\"}",
+      "data": "{d1: localDate(samples.datedif.\"2023-06-20\")}",
       "expression": "eomonth(d1, 13) | year(@) & '-' & month(@) & '-' & day(@)",
       "expected": "2024-7-31"
     }
@@ -2704,7 +2688,7 @@
   [
     "eomonth 2-29",
     {
-      "data": "{d1: samples.datedif.\"2030-08-01\"}",
+      "data": "{d1: localDate(samples.datedif.\"2030-08-01\")}",
       "expression": "eomonth(d1, 18) | year(@) & '-' & month(@) & '-' & day(@)",
       "expected": "2032-2-29"
     }

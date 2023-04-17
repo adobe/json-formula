@@ -18,7 +18,7 @@ casefold('AbC') // returns 'abc'
 ```
 <a name="datetime"></a>
 
-## datetime(year, month, day, [hours], [minutes], [seconds], [milliseconds], [timeZoneName]) ⇒ <code>number</code>
+## datetime(year, month, day, [hours], [minutes], [seconds], [milliseconds]) ⇒ <code>number</code>
 Return a date/time value.
 
 **Kind**: global function  
@@ -34,7 +34,6 @@ Return a date/time value.
 | [minutes] | <code>integer</code> | Integer value representing the minute segment of a time. The default is 0 minutes past the hour. |
 | [seconds] | <code>integer</code> | Integer value representing the second segment of a time. The default is 0 seconds past the minute. |
 | [milliseconds] | <code>integer</code> | Integer value representing the millisecond segment of a time. The default is 0 milliseconds past the second. |
-| [timeZoneName] | <code>string</code> | according to IANA time zone names. e.g. "America/Toronto" |
 
 **Example**  
 ```js
@@ -994,8 +993,7 @@ left([4, 5, 6], 2) // returns [4, 5]
 
 ## lower(input) ⇒ <code>string</code>
 Converts all the alphabetic characters in a string to lowercase. If the value
-is not a string it will be converted into string
-using the default toString method
+is not a string it will be converted into string.
 
 **Kind**: global function  
 **Returns**: <code>string</code> - the lower case value of the input string  

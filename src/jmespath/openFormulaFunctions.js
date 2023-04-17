@@ -11,17 +11,6 @@ governing permissions and limitations under the License.
 */
 import dataTypes from './dataTypes.js';
 
-// get the offset in MS, given a date and timezone
-// timezone is an IANA name. e.g. 'America/New_York'
-function offsetMS(dateObj, timeZone) {
-  const tzOffset = new Intl.DateTimeFormat('en-US', { timeZone, timeZoneName: 'longOffset' }).format(dateObj);
-  const offset = /GMT([+\-−])?(\d{1,2}):?(\d{0,2})?/.exec(tzOffset);
-  if (!offset) return 0;
-  const [sign, hours, minutes] = offset.slice(1);
-  const result = (((hours || 0) * 60) + 1 * (minutes || 0)) * 60 * 1000;
-  return sign === '-' ? result * -1 : result;
-}
-
 function round(num, digits) {
   const precision = 10 ** digits;
   return Math.round(num * precision) / precision;
@@ -29,24 +18,12 @@ function round(num, digits) {
 
 const MS_IN_DAY = 24 * 60 * 60 * 1000;
 
-// If we create a non-UTC date, then we need to adjust from the default JavaScript timezone
-// to the default timezone
-export function adjustTimeZone(dateObj, timeZone) {
-  if (dateObj === null) return null;
-  let baseDate = Date.UTC(
-    dateObj.getFullYear(),
-    dateObj.getMonth(),
-    dateObj.getDate(),
-    dateObj.getHours(),
-    dateObj.getMinutes(),
-    dateObj.getSeconds(),
-    dateObj.getMilliseconds(),
-  );
-  baseDate += offsetMS(dateObj, timeZone);
+function getDateObj(dateNum) {
+  return new Date(Math.round(dateNum * MS_IN_DAY));
+}
 
-  // get the offset for the default JS environment
-  // return days since the epoch
-  return new Date(baseDate);
+function getDateNum(dateObj) {
+  return dateObj / MS_IN_DAY;
 }
 
 export default function openFormulaFunctions(valueOf, toString, toNumber, debug = []) {
@@ -129,14 +106,12 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     datedif: {
       _func: args => {
-        const d1 = toNumber(args[0]);
-        const d2 = toNumber(args[1]);
         const unit = toString(args[2]).toLowerCase();
-        if (d2 === d1) return 0;
-        if (d2 < d1) return null;
-        if (unit === 'd') return Math.floor(d2 - d1);
-        const date1 = new Date(d1 * MS_IN_DAY);
-        const date2 = new Date(d2 * MS_IN_DAY);
+        const date1 = getDateObj(args[0]);
+        const date2 = getDateObj(args[1]);
+        if (date2 === date1) return 0;
+        if (date2 < date1) return null;
+        if (unit === 'd') return Math.floor(getDateNum(date2 - date1));
         const yearDiff = date2.getFullYear() - date1.getFullYear();
         let monthDiff = date2.getMonth() - date1.getMonth();
         const dayDiff = date2.getDate() - date1.getDate();
@@ -159,7 +134,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
           if (dayDiff < 0) monthDiff -= 1;
           if (monthDiff < 0) date2.setFullYear(date1.getFullYear() + 1);
           else date2.setFullYear(date1.getFullYear());
-          return Math.floor((date2.getTime() - date1.getTime()) / MS_IN_DAY);
+          return Math.floor(getDateNum(date2 - date1));
         }
         throw new TypeError(`Unrecognized unit parameter "${unit}" for datedif()`);
       },
@@ -185,7 +160,6 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * The default is 0 seconds past the minute.
      * @param {integer} [milliseconds] Integer value representing the millisecond segment of a time.
      * The default is 0 milliseconds past the second.
-     * @param {string} [timeZoneName] according to IANA time zone names. e.g. "America/Toronto"
      * @returns {number} A date/time value represented by number of seconds since 1 January 1970.
      * @kind function
      * @function
@@ -197,20 +171,17 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     datetime: {
       _func: args => {
-        const year = toNumber(args[0]);
-        const month = toNumber(args[1]);
-        const day = toNumber(args[2]);
-        const hours = args.length > 3 ? toNumber(args[3]) : 0;
-        const minutes = args.length > 4 ? toNumber(args[4]) : 0;
-        const seconds = args.length > 5 ? toNumber(args[5]) : 0;
-        const ms = args.length > 6 ? toNumber(args[6]) : 0;
-        const tz = args.length > 7 ? toString(args[7]) : null;
-        // javascript months starts from 0
-        let jsDate = new Date(year, month - 1, day, hours, minutes, seconds, ms);
-        if (tz) {
-          jsDate = adjustTimeZone(jsDate, tz);
-        }
-        return jsDate.getTime() / MS_IN_DAY;
+        const year = args[0];
+        const month = args[1] - 1; // javascript months start from 0
+        const day = args[2];
+        const hours = args.length > 3 ? args[3] : 0;
+        const minutes = args.length > 4 ? args[4] : 0;
+        const seconds = args.length > 5 ? args[5] : 0;
+        const ms = args.length > 6 ? args[6] : 0;
+
+        const baseDate = new Date(year, month, day, hours, minutes, seconds, ms);
+
+        return getDateNum(baseDate);
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -220,7 +191,6 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         { types: [dataTypes.TYPE_NUMBER], optional: true },
         { types: [dataTypes.TYPE_NUMBER], optional: true },
         { types: [dataTypes.TYPE_NUMBER], optional: true },
-        { types: [dataTypes.TYPE_STRING], optional: true },
       ],
     },
 
@@ -236,11 +206,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * day(datetime(2008,5,23)) //returns 23
      */
     day: {
-      _func: args => {
-        const date = toNumber(args[0]);
-        const jsDate = new Date(date * MS_IN_DAY);
-        return jsDate.getDate();
-      },
+      _func: args => getDateObj(args[0]).getDate(),
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
       ],
@@ -261,7 +227,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     deepScan: {
       _func: resolvedArgs => {
         const [source, n] = resolvedArgs;
-        const name = n.toString();
+        const name = toString(n);
         const items = [];
         if (source === null) return items;
         function scan(node) {
@@ -321,13 +287,12 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     eomonth: {
       _func: args => {
-        const date = toNumber(args[0]);
-        const months = toNumber(args[1]);
-        const jsDate = new Date(date * MS_IN_DAY);
+        const jsDate = getDateObj(args[0]);
+        const months = args[1];
         // We can give the constructor a month value > 11 and it will increment the years
         // Since day is 1-based, giving zero will yield the last day of the previous month
         const newDate = new Date(jsDate.getFullYear(), jsDate.getMonth() + months + 1, 0);
-        return newDate.getTime() / MS_IN_DAY;
+        return getDateNum(newDate);
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -345,10 +310,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * exp(10) //returns e^10
      */
     exp: {
-      _func: args => {
-        const value = toNumber(args[0]);
-        return Math.exp(value);
-      },
+      _func: args => Math.exp(args[0]),
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
       ],
@@ -386,9 +348,9 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     find: {
       _func: args => {
-        const query = toString(args[0]);
+        const query = args[0];
         const text = toString(args[1]);
-        const startPos = args.length > 2 ? toNumber(args[2]) : 0;
+        const startPos = args.length > 2 ? args[2] : 0;
         const result = text.indexOf(query, startPos);
         if (result === -1) {
           return null;
@@ -434,17 +396,11 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     hour: {
       _func: args => {
-        // grab just the fraction part
-        const time = toNumber(args[0]) % 1;
-        if (time < 0) {
+        if (args[0] < 0) {
           return null;
         }
-        // Normally we'd round to 15 digits, but since we're also multiplying by 24,
-        // a reasonable precision is around 14 digits.
 
-        const hour = round(time * 24, 14);
-
-        return Math.floor(hour % 24);
+        return getDateObj(args[0]).getHours();
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -499,7 +455,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     left: {
       _func: args => {
-        const numEntries = args.length > 1 ? toNumber(args[1]) : 1;
+        const numEntries = args.length > 1 ? args[1] : 1;
         if (numEntries < 0) return null;
         if (args[0] instanceof Array) {
           return args[0].slice(0, numEntries);
@@ -515,8 +471,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
 
     /**
      * Converts all the alphabetic characters in a string to lowercase. If the value
-     * is not a string it will be converted into string
-     * using the default toString method
+     * is not a string it will be converted into string.
      * @param {string} input input string
      * @returns {string} the lower case value of the input string
      * @function lower
@@ -556,8 +511,8 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     mid: {
       _func: args => {
-        const startPos = toNumber(args[1]);
-        const numEntries = toNumber(args[2]);
+        const startPos = args[1];
+        const numEntries = args[2];
         if (startPos < 0) return null;
         if (args[0] instanceof Array) {
           return args[0].slice(startPos, startPos + numEntries);
@@ -585,15 +540,10 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     minute: {
       _func: args => {
-        const time = toNumber(args[0]) % 1;
-        if (time < 0) {
+        if (args[0] < 0) {
           return null;
         }
-
-        // Normally we'd round to 15 digits, but since we're also multiplying by 1440,
-        // a reasonable precision is around 10 digits.
-        const minute = Math.round(time * 1440, 10);
-        return Math.floor(minute % 60);
+        return getDateObj(args[0]).getMinutes();
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -615,8 +565,8 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     mod: {
       _func: args => {
-        const p1 = toNumber(args[0]);
-        const p2 = toNumber(args[1]);
+        const p1 = args[0];
+        const p2 = args[1];
         return p1 % p2;
       },
       _signature: [
@@ -637,12 +587,8 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * month(datetime(2008,5,23)) //returns 5
      */
     month: {
-      _func: args => {
-        const date = toNumber(args[0]);
-        const jsDate = new Date(date * MS_IN_DAY);
-        // javascript months start from 0ß
-        return jsDate.getMonth() + 1;
-      },
+      // javascript months start from 0
+      _func: args => getDateObj(args[0]).getMonth() + 1,
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
       ],
@@ -682,7 +628,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @category openFormula
      */
     now: {
-      _func: () => Date.now() / MS_IN_DAY,
+      _func: () => getDateNum(Date.now()),
       _signature: [],
     },
 
@@ -737,11 +683,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * power(10, 2) //returns 100 (10 raised to power 2)
      */
     power: {
-      _func: args => {
-        const base = toNumber(args[0]);
-        const power = toNumber(args[1]);
-        return base ** power;
-      },
+      _func: args => args[0] ** args[1],
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
         { types: [dataTypes.TYPE_NUMBER] },
@@ -795,8 +737,8 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     replace: {
       _func: args => {
         const oldText = toString(args[0]);
-        const startNum = toNumber(args[1]);
-        const numChars = toNumber(args[2]);
+        const startNum = args[1];
+        const numChars = args[2];
         const newText = toString(args[3]);
         if (startNum < 0) {
           return null;
@@ -827,7 +769,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     rept: {
       _func: args => {
         const text = toString(args[0]);
-        const count = toNumber(args[1]);
+        const count = args[1];
         if (count < 0) {
           return null;
         }
@@ -857,7 +799,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     right: {
       _func: args => {
-        const numEntries = args.length > 1 ? toNumber(args[1]) : 1;
+        const numEntries = args.length > 1 ? args[1] : 1;
         if (numEntries < 0) return null;
         if (args[0] instanceof Array) {
           if (numEntries === 0) return [];
@@ -896,11 +838,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * round(-50.55,-2) // -100 (round -50.55 to the nearest multiple of 100)
      */
     round: {
-      _func: args => {
-        const number = toNumber(args[0]);
-        const digits = toNumber(args[1]);
-        return round(number, digits);
-      },
+      _func: args => round(args[0], args[1]),
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
         { types: [dataTypes.TYPE_NUMBER] },
@@ -929,7 +867,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
       _func: args => {
         const findText = toString(args[0]);
         const withinText = toString(args[1]);
-        const startPos = toNumber(args[2]);
+        const startPos = args.length > 2 ? args[2] : 0;
         if (findText === null || withinText === null || withinText.length === 0) return [];
         // escape all characters that would otherwise create a regular expression
         const reString = findText.replace(/([[.\\^$()+{])/g, '\\$1')
@@ -963,17 +901,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * second(time(12, 10, 53)) //returns 53
      */
     second: {
-      _func: args => {
-        const time = toNumber(args[0]) % 1;
-        if (time < 0) {
-          return null;
-        }
-
-        // Normally we'd round to 15 digits, but since we're also multiplying by 86400,
-        // a reasonable precision is around 10 digits.
-        const seconds = round(time * 86400, 10);
-        return Math.floor(seconds % 60);
-      },
+      _func: args => (args[0] < 0 ? null : getDateObj(args[0]).getSeconds()),
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
       ],
@@ -1014,11 +942,8 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     sqrt: {
       _func: args => {
-        const result = Math.sqrt(toNumber(args[0]));
-        if (Number.isNaN(result)) {
-          return null;
-        }
-        return result;
+        const result = Math.sqrt(args[0]);
+        return Number.isNaN(result) ? null : result;
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -1040,7 +965,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     stdev: {
       _func: args => {
-        const values = args[0] || [];
+        const values = args[0];
         if (values.length <= 1) {
           return null;
         }
@@ -1074,7 +999,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     stdevp: {
       _func: args => {
-        const values = args[0] || [];
+        const values = args[0];
         if (values.length === 0) {
           return null;
         }
@@ -1082,11 +1007,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
         const mean = coercedValues.reduce((a, b) => a + b, 0) / values.length;
         const meanSumSquare = coercedValues.reduce((a, b) => a + b * b, 0) / values.length;
         const result = Math.sqrt(meanSumSquare - mean * mean);
-        if (Number.isNaN(result)) {
-          // this would never happen
-          return null;
-        }
-        return result;
+        return Number.isNaN(result) ? null : result;
       },
       _signature: [
         { types: [dataTypes.TYPE_ARRAY_NUMBER] },
@@ -1117,11 +1038,11 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     substitute: {
       _func: args => {
         const src = toString(args[0]);
-        const old = toString(args[1]);
-        const replacement = toString(args[2]);
+        const old = args[1];
+        const replacement = args[2];
         // no third parameter? replace all instances
         if (args.length <= 3) return src.replaceAll(old, replacement);
-        const whch = toNumber(args[3]);
+        const whch = args[3];
         if (whch < 1) return src;
         // find the instance to replace
         let pos = -1;
@@ -1158,19 +1079,19 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     time: {
       _func: args => {
-        const hours = toNumber(args[0]);
-        const minutes = toNumber(args[1]);
-        const seconds = toNumber(args[2]);
-        const time = (hours * 3600 + minutes * 60 + seconds) / 86400;
-        if (time < 0) {
-          return null;
-        }
-        return time - Math.floor(time);
+        const hours = args[0];
+        const minutes = args.length > 1 ? args[1] : 0;
+        const seconds = args.length > 2 ? args[2] : 0;
+        if (hours < 0 || minutes < 0 || seconds < 0) return null;
+        // Since time values are interchangeable with date and datetime values, it's consistent
+        // to create them at the epoch
+        const epochTime = new Date(1970, 0, 1, hours, minutes, seconds);
+        return getDateNum(epochTime);
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [dataTypes.TYPE_NUMBER], optional: true },
       ],
     },
 
@@ -1181,7 +1102,15 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @category openFormula
      */
     today: {
-      _func: () => Math.floor(Date.now() / MS_IN_DAY),
+      _func: () => {
+        const now = new Date(Date.now());
+        // We used to take the floor() to truncate h/m/s from Date.now(), but that would return
+        // today at UTC time.  We want today in local time.
+        // i.e. UTC time could be a day ahead or behind
+        // But note that means that the result is not an integer.
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        return getDateNum(today);
+      },
       _signature: [],
     },
 
@@ -1234,8 +1163,8 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     trunc: {
       _func: args => {
-        const number = toNumber(args[0]);
-        const digits = args.length > 1 ? toNumber(args[1]) : 0;
+        const number = args[0];
+        const digits = args.length > 1 ? args[1] : 0;
         const method = number >= 0 ? Math.floor : Math.ceil;
         return method(number * 10 ** digits) / 10 ** digits;
       },
@@ -1278,10 +1207,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * upper('abcd') //returns 'ABCD'
      */
     upper: {
-      _func: args => {
-        const value = toString(args[0]);
-        return value.toUpperCase();
-      },
+      _func: args => toString(args[0]).toUpperCase(),
       _signature: [
         { types: [dataTypes.TYPE_STRING] },
       ],
@@ -1341,9 +1267,9 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     weekday: {
       _func: args => {
-        const date = toNumber(args[0]);
-        const type = args.length > 1 ? toNumber(args[1]) : 1;
-        const jsDate = new Date(date * MS_IN_DAY);
+        const date = args[0];
+        const type = args.length > 1 ? args[1] : 1;
+        const jsDate = getDateObj(date);
         const day = jsDate.getDay();
         // day is in range [0-7) with 0 mapping to sunday
         switch (type) {
@@ -1377,11 +1303,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * year(datetime(2008,5,23)) //returns 2008
      */
     year: {
-      _func: args => {
-        const date = toNumber(args[0]);
-        const jsDate = new Date(date * MS_IN_DAY);
-        return jsDate.getFullYear();
-      },
+      _func: args => getDateObj(args[0]).getFullYear(),
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
       ],
@@ -1389,11 +1311,8 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
 
     charCode: {
       _func: args => {
-        const code = toNumber(args[0]);
-        if (!Number.isInteger(code)) {
-          return null;
-        }
-        return String.fromCharCode(code);
+        const code = args[0];
+        return !Number.isInteger(code) ? null : String.fromCharCode(code);
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -1403,10 +1322,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
     codePoint: {
       _func: args => {
         const text = toString(args[0]);
-        if (text.length === 0) {
-          return null;
-        }
-        return text.codePointAt(0);
+        return text.length === 0 ? null : text.codePointAt(0);
       },
       _signature: [
         { types: [dataTypes.TYPE_STRING] },

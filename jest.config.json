@@ -3,6 +3,5 @@
   "testPathIgnorePatterns": [
     "<rootDir>/node_modules/"
   ],
-  "transformIgnorePatterns": ["/node_modules/(?!antlr4)"],
-  "globalSetup": "./tz.cjs"
+  "transformIgnorePatterns": ["/node_modules/(?!antlr4)"]
 }
