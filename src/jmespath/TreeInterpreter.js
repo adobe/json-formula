@@ -94,8 +94,12 @@ export default class TreeInterpreter {
           if (field === undefined) {
             try {
               this.debug.push(`Failed to find: '${node.name}'`);
-              const available = Object.keys(value).map(a => `'${a}'`).toString();
-              if (available.length) this.debug.push(`Available fields: ${available}`);
+              if (Array.isArray(value) && value.length > 5) {
+                this.debug.push(`Available fields: ${0}..${value.length - 1}`);
+              } else {
+                const available = Object.keys(value).map(a => `'${a}'`).toString();
+                if (available.length) this.debug.push(`Available fields: ${available}`);
+              }
             // eslint-disable-next-line no-empty
             } catch (e) {}
             return null;
@@ -237,13 +241,18 @@ export default class TreeInterpreter {
 
       Identity: (_node, value) => value,
 
-      MultiSelectList: (node, value) => {
-        if (value === null) return null;
-        return node.children.map(child => this.visit(child, value));
-      },
+      MultiSelectList: (node, value) => node.children.map(child => this.visit(child, value)),
 
       MultiSelectHash: (node, value) => {
-        if (value === null) return null;
+        // at one time we used to have this:
+        // if (value === null) return null;
+        // BUT then an expression such as:
+        // values({a: 'aa'})
+        // would return null if the document were `null`
+        // Removing the check means that:
+        // `null`.{a: 'aa'}
+        // returns: {a: 'aa'}
+        // which is a bit odd, but seems correct.
         const collected = {};
         node.children.forEach(child => {
           collected[child.name] = this.visit(child.value, value);

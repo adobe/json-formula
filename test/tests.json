@@ -3059,9 +3059,29 @@
       "expression": "items[$-42].quantity",
       "expected": 2
     }
+  ],
+  [
+    "random-floor",
+    {
+      "data": "{}",
+      "expression": "floor(random())",
+      "expected": 0
+    }
+  ],
+  [
+    "random-ceil",
+    {
+      "data": "{}",
+      "expression": "ceil(random())",
+      "expected": 1
+    }
+  ],
+  [
+    "random(2)",
+    {
+      "data": "{}",
+      "expression": "random(2)",
+      "error": "syntax"
+    }
   ]
 ]
-
-
-
-

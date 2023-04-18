@@ -278,12 +278,12 @@
       },
       {
         "expression": "foo.[0]",
-        "result": null,
+        "result": [0],
         "was": "syntax"
       },
       {
         "expression": "foo.[*]",
-        "result": null
+        "result": [null]
       },
       {
         "comment": "Multi-select of a list with trailing comma",
@@ -329,17 +329,17 @@
       {
         "comment": "Valid multi-select of a hash using an identifier index",
         "expression": "foo.[abc]",
-        "result": null
+        "result": [null]
       },
       {
         "comment": "Valid multi-select of a hash",
         "expression": "foo.[abc, def]",
-        "result": null
+        "result": [null, null]
       },
       {
         "comment": "Multi-select of a hash using a numeric index",
         "expression": "foo.[abc, 1]",
-        "result": null,
+        "result": [null, 1],
         "was": "syntax"
       },
       {
@@ -355,7 +355,7 @@
       {
         "comment": "Multi-select of a hash using number indices",
         "expression": "foo.[0, 1]",
-        "error": null,
+        "result": [0, 1],
         "was": "syntax"
       }
     ]
@@ -421,12 +421,12 @@
       {
         "comment": "Valid multi-select hash extraction",
         "expression": "a.{foo: bar}",
-        "result": null
+        "result": {"foo": null}
       },
       {
         "comment": "Valid multi-select hash extraction",
         "expression": "a.{foo: bar, baz: bam}",
-        "result": null
+        "result": {"baz": null, "foo": null}
       },
       {
         "comment": "Trailing comma",
@@ -486,7 +486,7 @@
       },
       {
         "expression": "foo.[a || b]",
-        "result": null
+        "result": [null]
       },
       {
         "expression": "foo.[a ||]",

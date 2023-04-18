@@ -69,7 +69,7 @@
          },
          {
             "expression": "foo.badkey.{nokey: nokey, alsonokey: alsonokey}",
-            "result": null
+            "result": {"alsonokey": null, "nokey": null}
          },
          {
             "expression": "foo.nested.*.{a: a,b: b}",
@@ -391,7 +391,7 @@
         {
           "comment": "Select on null",
           "expression": "missing.{foo: bar}",
-          "result": null
+          "result": { "foo": null }
         }
     ]
 },
@@ -447,7 +447,7 @@
          "expression": "foo.{}",
          "result": {},
          "was": "syntax"
-       } 
+       }
    ]
 }
 ]

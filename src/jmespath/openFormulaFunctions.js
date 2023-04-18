@@ -98,10 +98,10 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @example
      * datedif(datetime(2001, 1, 1), datetime(2003, 1, 1), 'y') // returns 2
      * @example
-     * datedif(datetime(2001, 6, 1), datetime(2003, 8, 15), 'D') // returns 440
-     * // 440 days between June 1, 2001, and August 15, 2002 (440)
+     * datedif(datetime(2001, 6, 1), datetime(2003, 8, 15), 'D') // returns 805
+     * // 805 days between June 1, 2001, and August 15, 2003
      * @example
-     * datedif(datetime(2001, 6, 1), datetime(2003, 8, 15), 'YD') // returns 440
+     * datedif(datetime(2001, 6, 1), datetime(2003, 8, 15), 'YD') // returns 75
      * // 75 days between June 1 and August 15, ignoring the years of the dates (75)
      */
     datedif: {
@@ -281,9 +281,9 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @function
      * @category openFormula
      * @example
-     * eomonth(datetime(2011, 1, 1), 1) //returns datetime(2011, 2, 28)
+     * eomonth(datetime(2011, 1, 1), 1) | [month(@), day(@)] //returns [2, 28]
      * @example
-     * eomonth(datetime(2011, 1, 1), -3) //returns datetime(2010, 10, 31)
+     * eomonth(datetime(2011, 1, 1), -3) | [month(@), day(@)] //returns [10, 31]
      */
     eomonth: {
       _func: args => {
@@ -307,7 +307,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @function exp
      * @category openFormula
      * @example
-     * exp(10) //returns e^10
+     * exp(10) //returns 22026.465794806718
      */
     exp: {
       _func: args => Math.exp(args[0]),
@@ -332,7 +332,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * finds and returns the index of query in text from a start position
      * @param {string} query string to search
      * @param {string} text text in which the query has to be searched
-     * @param {number} [start] starting position: defaults to 0
+     * @param {number} [start] zero-starting position: defaults to 0
      * @returns {number|null} the index of the query to be searched in the text. If not found
      * returns null
      * @function
@@ -340,7 +340,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @example
      * find('m', 'abm') //returns 2
      * @example
-     * find('M', 'abMcdM', 3) //returns 2
+     * find('M', 'abMcdM', 3) //returns 5
      * @example
      * find('M', 'ab') //returns `null`
      * @example
@@ -495,7 +495,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * number of elements.
      * Returns null if the `startPos` is greater than the length of the array
      * @param {string|array} subject the text string or array of characters or elements to extract.
-     * @param {number} startPos the position of the first character or element to extract.
+     * @param {number} startPos the zero-position of the first character or element to extract.
      * The position starts with 0
      * @param {number} length The number of characters or elements to return from text. If it
      * is greater then the length of `subject` the argument is set to the length of the subject.
@@ -503,11 +503,11 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @function mid
      * @category openFormula
      * @example
-     * mid("Fluid Flow",1,5) //returns 'Fluid'
+     * mid('Fluid Flow',0,5) //returns 'Fluid'
      * @example
-     * mid("Fluid Flow",7,20) //returns 'Flow'
+     * mid('Fluid Flow',6,20) //returns 'Flow'
      * @example
-     * mid("Fluid Flow",20,5) //returns `null`
+     * mid('Fluid Flow,20,5) //returns ''
      */
     mid: {
       _func: args => {
@@ -535,8 +535,8 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @function minute
      * @category openFormula
      * @example
-     * month(datetime(2008,5,23,12, 10, 0)) //returns 10
-     * month(time(12, 10, 0)) //returns 10
+     * minute(datetime(2008,5,23,12, 10, 0)) // returns 10
+     * minute(time(12, 10, 0)) //returns 10
      */
     minute: {
       _func: args => {
@@ -561,7 +561,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @example
      * mod(3, 2) //returns 1
      * @example
-     * mod(-3, 2) //returns 1
+     * mod(-3, 2) //returns -1
      */
     mod: {
       _func: args => {
@@ -706,33 +706,52 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      */
     proper: {
       _func: args => {
-        const text = toString(args[0]);
-        const words = text.split(' ');
-        const properWords = words.map(word => word.charAt(0).toUpperCase()
-            + word.slice(1).toLowerCase());
-        return properWords.join(' ');
+        const capitalize = word => (/\w/.test(word)
+          ? `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`
+          : word);
+        const original = toString(args[0]);
+        const wordParts = original.match(/\W+|\w+/g);
+        if (wordParts === null) return original;
+        const words = wordParts.map(word => {
+          const digitParts = word.match(/\d+|[^\d]+/g);
+          if (digitParts === null) return capitalize(word);
+          return digitParts.map(part => capitalize(part)).join('');
+        });
+        return words.join('');
       },
       _signature: [
         { types: [dataTypes.TYPE_STRING] },
       ],
     },
-
+    /**
+     * Returns a pseudo random number that is greater than or equal to zero, and less than one.
+     * @returns {number}
+     * @function random
+     * @category openFormula
+     * @example
+     * random() // 0.022585461160693265
+     */
+    random: {
+      _func: () => Math.random(),
+      _signature: [],
+    },
     /**
      * Returns text where an old text is substituted at a given start position and
      * length, with a new text.
      * @param {string} text original text
-     * @param {number} start index in the original text from where to begin the replacement.
+     * @param {number} start zero-based index in the original text
+     * from where to begin the replacement.
      * @param {number} length number of characters to be replaced
      * @param {string} replacement string to replace at the start index
      * @returns {string}
      * @function replace
      * @category openFormula
      * @example
-     * replace('abcdefghijk', 6, 5, '*') //returns abcde*k
+     * replace('abcdefghijk', 5, 5, '*') //returns abcde*k
      * @example
-     * replace('2009',3,2,'10') //returns  2010
+     * replace('2009',2,2,'10') //returns  2010
      * @example
-     * replace('123456',1,3,'@') //returns @456
+     * replace('123456',0,3,'@') //returns @456
      */
     replace: {
       _func: args => {
@@ -793,9 +812,9 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @example
      * right('Sale Price', 4) //returns 'rice'
      * @example
-     * left('Sweden') // returns 'n'
+     * right('Sweden') // returns 'n'
      * @example
-     * left([4, 5, 6], 2) // returns [5, 6]
+     * right([4, 5, 6], 2) // returns [5, 6]
      */
     right: {
       _func: args => {
@@ -1075,7 +1094,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @function time
      * @category openFormula
      * @example
-     * time(12, 0, 0) //returns 0.5 (half day)
+     * time(12, 0, 0) | [hour(@), minute(@), second(@)] //returns [12, 0, 0]
      */
     time: {
       _func: args => {
@@ -1221,7 +1240,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @function
      * @category JSONFormula
      * @example
-     * value({a: 1, b:2, c:3}, a) //returns 1
+     * value({a: 1, b:2, c:3}, 'a') //returns 1
      * @example
      * value([1, 2, 3, 4], 2) //returns 3
      */

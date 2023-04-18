@@ -79,7 +79,7 @@ export default function functions(
      * @return {number} average value
      * @function avg
      * @example
-     * avg([]) //returns null
+     * avg(`[]`) //returns null
      * @example
      * avg([1, 2, 3]) //returns 2
      * @category jmespath
@@ -88,6 +88,7 @@ export default function functions(
       _func: resolvedArgs => {
         let sum = 0;
         const inputArray = resolvedArgs[0];
+        if (inputArray.length === 0) return null;
         inputArray.forEach(a => {
           sum += a;
         });
@@ -223,7 +224,7 @@ export default function functions(
      * @return {number}
      * @function length
      * @example
-     * length([]) //returns 0
+     * length(`[]`) //returns 0
      * @example
      * length('') //returns 0
      * @example
@@ -280,7 +281,7 @@ export default function functions(
      * @example
      * max([1, 2, 3], [4, 5, 6], 7) //returns 7
      * @example
-     * max([]) // returns null
+     * max(`[]`) // returns null
      * @example
      * max(['a', 'a1', 'b']) // returns 'b'
      * @category jmespath
@@ -352,7 +353,7 @@ export default function functions(
      * @example
      * min([1, 2, 3], [4, 5, 6], 7) //returns 1
      * @example
-     * min([]) // returns null
+     * min(`[]`) // returns null
      * @example
      * min(['a', 'a1', 'b']) // returns 'a'
      * @category jmespath
