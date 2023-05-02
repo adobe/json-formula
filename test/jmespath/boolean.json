@@ -251,6 +251,14 @@
         "result": true
       },
       {
+        "expression": "one <> one",
+        "result": false
+      },
+      {
+        "expression": "one <> two",
+        "result": true
+      },
+      {
         "expression": "one < two && three > one",
         "result": true
       },

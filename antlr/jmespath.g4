@@ -59,6 +59,7 @@ COMPARATOR
   | '>='
   | '>'
   | '!='
+  | '<>'
   ;
 
 functionExpression
