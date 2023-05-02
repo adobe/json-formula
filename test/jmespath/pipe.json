@@ -40,7 +40,7 @@
       "result": [["a", "b", "c"], ["a", "b", "c"]]
     },
     {
-      "expression": "{\"a\": foo.bar, \"b\": foo.other} | *.baz",
+      "expression": "{'a': foo.bar, 'b': foo.other} | *.baz",
       "result": ["subkey", "subkey"]
     }
   ]
@@ -90,11 +90,11 @@
       "result": {"baz": "one"}
     },
     {
-      "expression": "{\"a\": foo.bar, \"b\": foo.other} | a",
+      "expression": "{'a': foo.bar, 'b': foo.other} | a",
       "result": {"baz": "one"}
     },
     {
-      "expression": "{\"a\": foo.bar, \"b\": foo.other} | b",
+      "expression": "{'a': foo.bar, 'b': foo.other} | b",
       "result": {"baz": "two"}
     },
     {

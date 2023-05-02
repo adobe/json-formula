@@ -140,59 +140,65 @@
       "given": {},
       "cases": [
         {
-          "expression": "'foo'",
+          "expression": "\"foo\"",
           "result": "foo"
         },
         {
-          "expression": "'  foo  '",
+          "expression": "\"  foo  \"",
           "result": "  foo  "
         },
         {
-          "expression": "'0'",
+          "expression": "\"0\"",
           "result": "0"
         },
         {
-          "expression": "'newline\n'",
+          "expression": "\"newline\n\"",
           "result": "newline\n"
         },
         {
-          "expression": "'\n'",
+          "expression": "\"\n\"",
           "result": "\n"
         },
         {
-          "expression": "'✓'",
-	  "result": "✓"
+          "expression": "\"✓\"",
+	        "result": "✓"
         },
         {
-          "expression": "'𝄞'",
-	  "result": "𝄞"
+          "expression": "\"𝄞\"",
+	        "result": "𝄞"
         },
         {
-          "expression": "'  [foo]  '",
+          "expression": "\"  [foo]  \"",
           "result": "  [foo]  "
         },
         {
-          "expression": "'[foo]'",
+          "expression": "\"[foo]\"",
           "result": "[foo]"
         },
         {
           "comment": "Do not interpret escaped unicode.",
-          "expression": "'\\u03a6'",
+          "expression": "\"\\u03a6\"",
           "result": "\\u03a6"
         },
         {
-          "comment": "Can escape the single quote",
-          "expression": "'foo\\'bar'",
+          "comment": "no need to escape the single quote",
+          "expression": "\"foo'bar\"",
           "result": "foo'bar"
+        },
+
+        {
+          "comment": "can escape the double quote",
+          "expression": "\"foo\\\"bar\"",
+          "result": "foo\"bar"
         },
         {
           "comment": "Backslash not followed by single quote is treated as any other character",
-          "expression": "'\\z'",
+          "expression": "\"\\z\"",
           "result": "\\z"
         },
         {
           "comment": "Backslash not followed by single quote is treated as any other character",
-          "expression": "'\\\\'",
+          "expression": "\"\\\\\"",
           "result": "\\\\"
         }
       ]

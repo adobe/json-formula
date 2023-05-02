@@ -80,9 +80,9 @@ function isNum(ch) {
 
 function isAlphaNum(ch) {
   return (ch >= 'a' && ch <= 'z')
-           || (ch >= 'A' && ch <= 'Z')
-           || (ch >= '0' && ch <= '9')
-           || ch === '_';
+    || (ch >= 'A' && ch <= 'Z')
+    || (ch >= '0' && ch <= '9')
+    || ch === '_';
 }
 
 function isIdentifier(stream, pos) {
@@ -93,8 +93,8 @@ function isIdentifier(stream, pos) {
   }
   // return whether character 'isAlpha'
   return (ch >= 'a' && ch <= 'z')
-          || (ch >= 'A' && ch <= 'Z')
-          || ch === '_';
+    || (ch >= 'A' && ch <= 'Z')
+    || ch === '_';
 }
 
 export default class Lexer {
@@ -140,7 +140,7 @@ export default class Lexer {
         // in _consumeLBracket
         token = this._consumeLBracket(stream);
         tokens.push(token);
-      } else if (stream[this._current] === '"') {
+      } else if (stream[this._current] === "'") {
         start = this._current;
         identifier = this._consumeQuotedIdentifier(stream);
         tokens.push({
@@ -148,7 +148,7 @@ export default class Lexer {
           value: identifier,
           start,
         });
-      } else if (stream[this._current] === "'") {
+      } else if (stream[this._current] === '"') {
         start = this._current;
         identifier = this._consumeRawStringLiteral(stream);
         tokens.push({
@@ -254,12 +254,12 @@ export default class Lexer {
     this._current += 1;
     const maxLength = stream.length;
     let foundNonAlpha = !isIdentifier(stream, start + 1);
-    while (stream[this._current] !== '"' && this._current < maxLength) {
+    while (stream[this._current] !== "'" && this._current < maxLength) {
       // You can escape a double quote and you can escape an escape.
       let current = this._current;
       if (!isAlphaNum(stream[current])) foundNonAlpha = true;
       if (stream[current] === '\\' && (stream[current + 1] === '\\'
-                                             || stream[current + 1] === '"')) {
+        || stream[current + 1] === "'")) {
         current += 2;
       } else {
         current += 1;
@@ -275,22 +275,22 @@ export default class Lexer {
     try {
       if (!foundNonAlpha || val.includes(' ')) {
         this.debug.push(`Suspicious quotes: ${val}`);
-        this.debug.push(`Did you intend a literal? '${val.replace(/"/g, '')}'?`);
+        this.debug.push(`Did you intend a literal? "${val.replace(/'/g, '')}"?`);
       }
-    // eslint-disable-next-line no-empty
-    } catch (e) {}
-    return JSON.parse(val);
+      // eslint-disable-next-line no-empty
+    } catch (e) { }
+    return JSON.parse(`"${val.substring(1, val.length - 1)}"`);
   }
 
   _consumeRawStringLiteral(stream) {
     const start = this._current;
     this._current += 1;
     const maxLength = stream.length;
-    while (stream[this._current] !== "'" && this._current < maxLength) {
+    while (stream[this._current] !== '"' && this._current < maxLength) {
       // You can escape a single quote and you can escape an escape.
       let current = this._current;
       if (stream[current] === '\\' && (stream[current + 1] === '\\'
-                                             || stream[current + 1] === "'")) {
+        || stream[current + 1] === '"')) {
         current += 2;
       } else {
         current += 1;
@@ -299,7 +299,7 @@ export default class Lexer {
     }
     this._current += 1;
     const literal = stream.slice(start + 1, this._current - 1);
-    return literal.replaceAll("\\'", "'");
+    return literal.replaceAll('\\"', '"');
   }
 
   _consumeNumber(stream) {
@@ -424,8 +424,8 @@ export default class Lexer {
         if (stream[current] === '"') inQuotes = !inQuotes;
         if (inQuotes && stream[current + 1] === '`') current += 2;
         else if (stream[current] === '\\' && (stream[current + 1] === '\\'
-                                              || stream[current + 1] === '`')) {
-        // You can escape a literal char or you can escape the escape.
+          || stream[current + 1] === '`')) {
+          // You can escape a literal char or you can escape the escape.
           current += 2;
         } else {
           current += 1;

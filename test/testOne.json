@@ -2,7 +2,7 @@
   [
     "unary minus expression",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "-items[0].quantity",
       "expected": -2
     }

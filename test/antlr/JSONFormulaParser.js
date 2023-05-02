@@ -6,7 +6,7 @@ import JSONFormulaVisitor from './JSONFormulaVisitor.js';
 
 
 const serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786",
-    "\u5964\u0003!\u00fb\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004",
+    "\u5964\u0003\"\u00fb\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004",
     "\t\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007\t\u0007",
     "\u0004\b\t\b\u0004\t\t\t\u0004\n\t\n\u0004\u000b\t\u000b\u0004\f\t\f",
     "\u0004\r\t\r\u0004\u000e\t\u000e\u0004\u000f\t\u000f\u0004\u0010\t\u0010",
@@ -46,8 +46,8 @@ const serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786",
     "\u0014\u0003\u0015\u0003\u0015\u0003\u0015\u0003\u0015\u0003\u0015\u0005",
     "\u0015\u00f9\n\u0015\u0003\u0015\u0002\u0003\u0004\u0016\u0002\u0004",
     "\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e ",
-    "\"$&(\u0002\u0006\u0003\u0002\u001f \u0003\u0002\u0005\b\u0003\u0002",
-    "\t\n\u0003\u0002\u001c\u001e\u0002\u0117\u0002*\u0003\u0002\u0002\u0002",
+    "\"$&(\u0002\u0006\u0003\u0002 !\u0003\u0002\u0005\b\u0003\u0002\t\n",
+    "\u0003\u0002\u001c\u001e\u0002\u0117\u0002*\u0003\u0002\u0002\u0002",
     "\u0004@\u0003\u0002\u0002\u0002\u0006f\u0003\u0002\u0002\u0002\bh\u0003",
     "\u0002\u0002\u0002\nj\u0003\u0002\u0002\u0002\f\u0082\u0003\u0002\u0002",
     "\u0002\u000e\u0084\u0003\u0002\u0002\u0002\u0010\u0098\u0003\u0002\u0002",
@@ -103,7 +103,7 @@ const serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786",
     "\u0083\r\u0003\u0002\u0002\u0002\u0084\u0085\u0005 \u0011\u0002\u0085",
     "\u0086\u0007\u0016\u0002\u0002\u0086\u0087\u0005\u0004\u0003\u0002\u0087",
     "\u000f\u0003\u0002\u0002\u0002\u0088\u0089\u0007\u0011\u0002\u0002\u0089",
-    "\u008a\u0007 \u0002\u0002\u008a\u0099\u0007\u0013\u0002\u0002\u008b",
+    "\u008a\u0007!\u0002\u0002\u008a\u0099\u0007\u0013\u0002\u0002\u008b",
     "\u008c\u0007\u0011\u0002\u0002\u008c\u008d\u0007\u0005\u0002\u0002\u008d",
     "\u0099\u0007\u0013\u0002\u0002\u008e\u008f\u0007\u0011\u0002\u0002\u008f",
     "\u0090\u0005\u0014\u000b\u0002\u0090\u0091\u0007\u0013\u0002\u0002\u0091",
@@ -154,7 +154,7 @@ const serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786",
     "\u00df\u0003\u0002\u0002\u0002\u00dc\u00dd\u0007\u0014\u0002\u0002\u00dd",
     "\u00df\u0007\u0015\u0002\u0002\u00de\u00d1\u0003\u0002\u0002\u0002\u00de",
     "\u00dc\u0003\u0002\u0002\u0002\u00df#\u0003\u0002\u0002\u0002\u00e0",
-    "\u00e1\u0007\u001e\u0002\u0002\u00e1\u00e2\u0007\u0016\u0002\u0002\u00e2",
+    "\u00e1\u0007\u001f\u0002\u0002\u00e1\u00e2\u0007\u0016\u0002\u0002\u00e2",
     "\u00e3\u0005(\u0015\u0002\u00e3%\u0003\u0002\u0002\u0002\u00e4\u00e5",
     "\u0007\u0011\u0002\u0002\u00e5\u00ea\u0005(\u0015\u0002\u00e6\u00e7",
     "\u0007\u0012\u0002\u0002\u00e7\u00e9\u0005(\u0015\u0002\u00e8\u00e6",
@@ -164,7 +164,7 @@ const serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786",
     "\u0007\u0013\u0002\u0002\u00ee\u00f2\u0003\u0002\u0002\u0002\u00ef\u00f0",
     "\u0007\u0011\u0002\u0002\u00f0\u00f2\u0007\u0013\u0002\u0002\u00f1\u00e4",
     "\u0003\u0002\u0002\u0002\u00f1\u00ef\u0003\u0002\u0002\u0002\u00f2\'",
-    "\u0003\u0002\u0002\u0002\u00f3\u00f9\u0007\u001e\u0002\u0002\u00f4\u00f9",
+    "\u0003\u0002\u0002\u0002\u00f3\u00f9\u0007\u001f\u0002\u0002\u00f4\u00f9",
     "\t\u0002\u0002\u0002\u00f5\u00f9\u0005\"\u0012\u0002\u00f6\u00f9\u0005",
     "&\u0014\u0002\u00f7\u00f9\u0007\u001c\u0002\u0002\u00f8\u00f3\u0003",
     "\u0002\u0002\u0002\u00f8\u00f4\u0003\u0002\u0002\u0002\u00f8\u00f5\u0003",
@@ -191,7 +191,7 @@ export default class JSONFormulaParser extends antlr4.Parser {
                              null, null, null, null, null, null, null, null, 
                              null, null, null, null, null, null, null, null, 
                              "COMPARATOR", "RAW_STRING", "JSON_CONSTANT", 
-                             "NAME", "STRING", "REAL_OR_EXPONENT_NUMBER", 
+                             "NAME", "QUOTED_NAME", "STRING", "REAL_OR_EXPONENT_NUMBER", 
                              "SIGNED_INT", "WS" ];
     static ruleNames = [ "formula", "expression", "chainedExpression", "wildcard", 
                          "multiSelectList", "multiSelectHash", "keyvalExpr", 
@@ -911,7 +911,7 @@ export default class JSONFormulaParser extends antlr4.Parser {
 	        this.state = 160;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
-	        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << JSONFormulaParser.T__2) | (1 << JSONFormulaParser.T__7) | (1 << JSONFormulaParser.T__10) | (1 << JSONFormulaParser.T__11) | (1 << JSONFormulaParser.T__14) | (1 << JSONFormulaParser.T__17) | (1 << JSONFormulaParser.T__20) | (1 << JSONFormulaParser.T__21) | (1 << JSONFormulaParser.T__22) | (1 << JSONFormulaParser.RAW_STRING) | (1 << JSONFormulaParser.JSON_CONSTANT) | (1 << JSONFormulaParser.NAME) | (1 << JSONFormulaParser.STRING) | (1 << JSONFormulaParser.REAL_OR_EXPONENT_NUMBER) | (1 << JSONFormulaParser.SIGNED_INT))) !== 0)) {
+	        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << JSONFormulaParser.T__2) | (1 << JSONFormulaParser.T__7) | (1 << JSONFormulaParser.T__10) | (1 << JSONFormulaParser.T__11) | (1 << JSONFormulaParser.T__14) | (1 << JSONFormulaParser.T__17) | (1 << JSONFormulaParser.T__20) | (1 << JSONFormulaParser.T__21) | (1 << JSONFormulaParser.T__22) | (1 << JSONFormulaParser.RAW_STRING) | (1 << JSONFormulaParser.JSON_CONSTANT) | (1 << JSONFormulaParser.NAME) | (1 << JSONFormulaParser.QUOTED_NAME) | (1 << JSONFormulaParser.REAL_OR_EXPONENT_NUMBER) | (1 << JSONFormulaParser.SIGNED_INT))) !== 0)) {
 	            this.state = 159;
 	            localctx.start = this.expression(0);
 	        }
@@ -921,7 +921,7 @@ export default class JSONFormulaParser extends antlr4.Parser {
 	        this.state = 164;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
-	        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << JSONFormulaParser.T__2) | (1 << JSONFormulaParser.T__7) | (1 << JSONFormulaParser.T__10) | (1 << JSONFormulaParser.T__11) | (1 << JSONFormulaParser.T__14) | (1 << JSONFormulaParser.T__17) | (1 << JSONFormulaParser.T__20) | (1 << JSONFormulaParser.T__21) | (1 << JSONFormulaParser.T__22) | (1 << JSONFormulaParser.RAW_STRING) | (1 << JSONFormulaParser.JSON_CONSTANT) | (1 << JSONFormulaParser.NAME) | (1 << JSONFormulaParser.STRING) | (1 << JSONFormulaParser.REAL_OR_EXPONENT_NUMBER) | (1 << JSONFormulaParser.SIGNED_INT))) !== 0)) {
+	        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << JSONFormulaParser.T__2) | (1 << JSONFormulaParser.T__7) | (1 << JSONFormulaParser.T__10) | (1 << JSONFormulaParser.T__11) | (1 << JSONFormulaParser.T__14) | (1 << JSONFormulaParser.T__17) | (1 << JSONFormulaParser.T__20) | (1 << JSONFormulaParser.T__21) | (1 << JSONFormulaParser.T__22) | (1 << JSONFormulaParser.RAW_STRING) | (1 << JSONFormulaParser.JSON_CONSTANT) | (1 << JSONFormulaParser.NAME) | (1 << JSONFormulaParser.QUOTED_NAME) | (1 << JSONFormulaParser.REAL_OR_EXPONENT_NUMBER) | (1 << JSONFormulaParser.SIGNED_INT))) !== 0)) {
 	            this.state = 163;
 	            localctx.stop = this.expression(0);
 	        }
@@ -935,7 +935,7 @@ export default class JSONFormulaParser extends antlr4.Parser {
 	            this.state = 168;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
-	            if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << JSONFormulaParser.T__2) | (1 << JSONFormulaParser.T__7) | (1 << JSONFormulaParser.T__10) | (1 << JSONFormulaParser.T__11) | (1 << JSONFormulaParser.T__14) | (1 << JSONFormulaParser.T__17) | (1 << JSONFormulaParser.T__20) | (1 << JSONFormulaParser.T__21) | (1 << JSONFormulaParser.T__22) | (1 << JSONFormulaParser.RAW_STRING) | (1 << JSONFormulaParser.JSON_CONSTANT) | (1 << JSONFormulaParser.NAME) | (1 << JSONFormulaParser.STRING) | (1 << JSONFormulaParser.REAL_OR_EXPONENT_NUMBER) | (1 << JSONFormulaParser.SIGNED_INT))) !== 0)) {
+	            if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << JSONFormulaParser.T__2) | (1 << JSONFormulaParser.T__7) | (1 << JSONFormulaParser.T__10) | (1 << JSONFormulaParser.T__11) | (1 << JSONFormulaParser.T__14) | (1 << JSONFormulaParser.T__17) | (1 << JSONFormulaParser.T__20) | (1 << JSONFormulaParser.T__21) | (1 << JSONFormulaParser.T__22) | (1 << JSONFormulaParser.RAW_STRING) | (1 << JSONFormulaParser.JSON_CONSTANT) | (1 << JSONFormulaParser.NAME) | (1 << JSONFormulaParser.QUOTED_NAME) | (1 << JSONFormulaParser.REAL_OR_EXPONENT_NUMBER) | (1 << JSONFormulaParser.SIGNED_INT))) !== 0)) {
 	                this.state = 167;
 	                localctx.step = this.expression(0);
 	            }
@@ -1047,7 +1047,7 @@ export default class JSONFormulaParser extends antlr4.Parser {
 	        case JSONFormulaParser.RAW_STRING:
 	        case JSONFormulaParser.JSON_CONSTANT:
 	        case JSONFormulaParser.NAME:
-	        case JSONFormulaParser.STRING:
+	        case JSONFormulaParser.QUOTED_NAME:
 	        case JSONFormulaParser.REAL_OR_EXPONENT_NUMBER:
 	        case JSONFormulaParser.SIGNED_INT:
 	            this.enterOuterAlt(localctx, 1);
@@ -1161,7 +1161,7 @@ export default class JSONFormulaParser extends antlr4.Parser {
 	        this.enterOuterAlt(localctx, 1);
 	        this.state = 205;
 	        _la = this._input.LA(1);
-	        if(!((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << JSONFormulaParser.JSON_CONSTANT) | (1 << JSONFormulaParser.NAME) | (1 << JSONFormulaParser.STRING))) !== 0))) {
+	        if(!((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << JSONFormulaParser.JSON_CONSTANT) | (1 << JSONFormulaParser.NAME) | (1 << JSONFormulaParser.QUOTED_NAME))) !== 0))) {
 	        this._errHandler.recoverInline(this);
 	        }
 	        else {
@@ -1417,10 +1417,11 @@ JSONFormulaParser.COMPARATOR = 24;
 JSONFormulaParser.RAW_STRING = 25;
 JSONFormulaParser.JSON_CONSTANT = 26;
 JSONFormulaParser.NAME = 27;
-JSONFormulaParser.STRING = 28;
-JSONFormulaParser.REAL_OR_EXPONENT_NUMBER = 29;
-JSONFormulaParser.SIGNED_INT = 30;
-JSONFormulaParser.WS = 31;
+JSONFormulaParser.QUOTED_NAME = 28;
+JSONFormulaParser.STRING = 29;
+JSONFormulaParser.REAL_OR_EXPONENT_NUMBER = 30;
+JSONFormulaParser.SIGNED_INT = 31;
+JSONFormulaParser.WS = 32;
 
 JSONFormulaParser.RULE_formula = 0;
 JSONFormulaParser.RULE_expression = 1;
@@ -3259,8 +3260,8 @@ class IdentifierContext extends antlr4.ParserRuleContext {
 	    return this.getToken(JSONFormulaParser.NAME, 0);
 	};
 
-	STRING() {
-	    return this.getToken(JSONFormulaParser.STRING, 0);
+	QUOTED_NAME() {
+	    return this.getToken(JSONFormulaParser.QUOTED_NAME, 0);
 	};
 
 	JSON_CONSTANT() {

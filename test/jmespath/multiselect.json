@@ -32,11 +32,11 @@
             "result": {"bar": "bar"}
          },
          {
-            "expression": "foo.{\"bar\": bar}",
+            "expression": "foo.{'bar': bar}",
             "result": {"bar": "bar"}
          },
          {
-            "expression": "foo.{\"foo.bar\": bar}",
+            "expression": "foo.{'foo.bar': bar}",
             "result": {"foo.bar": "bar"}
          },
          {
@@ -44,11 +44,11 @@
             "result": {"bar": "bar", "baz": "baz"}
          },
          {
-            "expression": "foo.{\"bar\": bar, \"baz\": baz}",
+            "expression": "foo.{'bar': bar, 'baz': baz}",
             "result": {"bar": "bar", "baz": "baz"}
          },
          {
-            "expression": "{\"baz\": baz, \"qux\\\"\": \"qux\\\"\"}",
+            "expression": "{'baz': baz, 'qux\\\"': 'qux\\\"'}",
             "result": {"baz": 2, "qux\"": 3}
          },
          {
@@ -185,7 +185,7 @@
             "result": {"bar": {"common": "second", "two": 2}, "includeme": true}
          },
          {
-            "expression": "foo.{\"bar.baz.two\": bar.baz[1].two, includeme: includeme}",
+            "expression": "foo.{'bar.baz.two': bar.baz[1].two, includeme: includeme}",
             "result": {"bar.baz.two": 2, "includeme": true}
          },
          {
@@ -411,7 +411,7 @@
    "cases": [
        {
          "comment": "Empty object inside if",
-         "expression": "if(foo == 'bar', {}, 'foo != bar')",
+         "expression": "if(foo == \"bar\", {}, \"foo != bar\")",
          "result": {},
          "was": "syntax"
        }

@@ -214,8 +214,15 @@
       },
       {
         "expression": "*.[\"0\"]",
-        "result": [[null]]
+        "result": [["0"]],
+        "was" : [[null]]
       },
+      {
+        "expression": "*.['0']",
+        "result": [[null]],
+        "was" : "[['0']]"
+      },
+
       {
         "expression": "[*].bar",
         "result": null
@@ -450,7 +457,7 @@
       },
       {
         "comment": "Nested multi select",
-        "expression": "{\"\\\\\":{\" \":*}}",
+        "expression": "{'\\\\':{' ':*}}",
         "result": {"\\": {" ": ["object"]}}
       },
       {
@@ -585,8 +592,8 @@
       },
       {
         "comment": "escaped literals",
-        "expression": "'abc\\'abc\\'abc'",
-        "result": "abc'abc'abc"
+        "expression": "\"abc\\\"abc\\\"abc\"",
+        "result": "abc\"abc\"abc"
       }
     ]
   },
@@ -658,15 +665,15 @@
         "result": null
       },
       {
-        "expression": "\"foo\"",
+        "expression": "'foo'",
         "result": null
       },
       {
-        "expression": "\"\\\\\"",
+        "expression": "'\\\\'",
         "result": null
       },
       {
-        "expression": "\"\\u\"",
+        "expression": "'\\u'",
         "error": "syntax"
       }
     ]

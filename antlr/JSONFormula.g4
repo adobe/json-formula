@@ -1,3 +1,4 @@
+// $antlr-format false
 /*
 Copyright 2021 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -97,7 +98,7 @@ currentNode : '@' ;
 
 expressionType : '&' expression ;
 
-RAW_STRING : '\'' (RAW_ESC | ~['\\])* '\'' ;
+RAW_STRING : '"' (RAW_ESC | ~["\\])* '"' ;
 
 fragment RAW_ESC : '\\' . ;
 
@@ -105,7 +106,7 @@ literal : '`' jsonValue '`' ;
 
 identifier
   : NAME
-  | STRING
+  | QUOTED_NAME
   | JSON_CONSTANT
   ;
 
@@ -116,6 +117,8 @@ JSON_CONSTANT
   ;
 
 NAME : [@a-zA-Z_] [a-zA-Z0-9_]* ;
+
+QUOTED_NAME : '\'' (ESC | ~ ['\\])* '\'';
 
 jsonObject
   : '{' jsonObjectPair (',' jsonObjectPair)* '}'
