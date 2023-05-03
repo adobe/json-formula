@@ -1,4 +1,4 @@
-# JSONFormula: an Expression Grammar for Forms
+# JSONFormula: A Query Language for JSON with Spreadsheet Functions
 
 This project hosts an implementation of a form expression grammar.
 The grammar is a mashup of
@@ -44,15 +44,6 @@ If an expression fails to evaluate, follow these steps to debug:
 > antlr4 JSONFormula.g4
 > javac *.java
 > grun JSONFormula formula -tokens -tree ../test/debug.txt
-```
-
-To compare with the jmespath equivalent:
-
-```
-> cd antlr4
-> antlr4 jmespath.g4
-> javac *.java
-> grun jmespath jmesPathExpression -tokens -tree ../test/debug.txt
 ```
 
 ## Running Tests
