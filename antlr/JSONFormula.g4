@@ -80,6 +80,7 @@ COMPARATOR
   | '>='
   | '>'
   | '!='
+  | '<>'
   ;
 
 functionExpression
