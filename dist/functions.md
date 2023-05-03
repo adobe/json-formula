@@ -137,7 +137,7 @@ Perform an indexed lookup on a map or array
 
 **Example**  
 ```js
-value({a: 1, b:2, c:3}, a) //returns 1
+value({a: 1, b:2, c:3}, 'a') //returns 1
 ```
 **Example**  
 ```js
@@ -176,7 +176,7 @@ An empty array will produce a return value of `null`.
 
 **Example**  
 ```js
-avg([]) //returns null
+avg(`[]`) //returns null
 ```
 **Example**  
 ```js
@@ -328,7 +328,7 @@ Returns the length of the given argument `subject` using the following types rul
 
 **Example**  
 ```js
-length([]) //returns 0
+length(`[]`) //returns 0
 ```
 **Example**  
 ```js
@@ -395,7 +395,7 @@ max([1, 2, 3], [4, 5, 6], 7) //returns 7
 ```
 **Example**  
 ```js
-max([]) // returns null
+max(`[]`) // returns null
 ```
 **Example**  
 ```js
@@ -446,7 +446,7 @@ min([1, 2, 3], [4, 5, 6], 7) //returns 1
 ```
 **Example**  
 ```js
-min([]) // returns null
+min(`[]`) // returns null
 ```
 **Example**  
 ```js
@@ -818,12 +818,12 @@ datedif(datetime(2001, 1, 1), datetime(2003, 1, 1), 'y') // returns 2
 ```
 **Example**  
 ```js
-datedif(datetime(2001, 6, 1), datetime(2003, 8, 15), 'D') // returns 440
-// 440 days between June 1, 2001, and August 15, 2002 (440)
+datedif(datetime(2001, 6, 1), datetime(2003, 8, 15), 'D') // returns 805
+// 805 days between June 1, 2001, and August 15, 2003
 ```
 **Example**  
 ```js
-datedif(datetime(2001, 6, 1), datetime(2003, 8, 15), 'YD') // returns 440
+datedif(datetime(2001, 6, 1), datetime(2003, 8, 15), 'YD') // returns 75
 // 75 days between June 1 and August 15, ignoring the years of the dates (75)
 ```
 <a name="day"></a>
@@ -859,11 +859,11 @@ Returns the serial number of the end of a month, given `startDate` plus `monthAd
 
 **Example**  
 ```js
-eomonth(datetime(2011, 1, 1), 1) //returns datetime(2011, 2, 28)
+eomonth(datetime(2011, 1, 1), 1) | [month(@), day(@)] //returns [2, 28]
 ```
 **Example**  
 ```js
-eomonth(datetime(2011, 1, 1), -3) //returns datetime(2010, 10, 31)
+eomonth(datetime(2011, 1, 1), -3) | [month(@), day(@)] //returns [10, 31]
 ```
 <a name="exp"></a>
 
@@ -880,7 +880,7 @@ Returns e (the base of natural logarithms) raised to a power x. (i.e. e<sup>x</s
 
 **Example**  
 ```js
-exp(10) //returns e^10
+exp(10) //returns 22026.465794806718
 ```
 <a name="false"></a>
 
@@ -905,7 +905,7 @@ returns null
 | --- | --- | --- |
 | query | <code>string</code> | string to search |
 | text | <code>string</code> | text in which the query has to be searched |
-| [start] | <code>number</code> | starting position: defaults to 0 |
+| [start] | <code>number</code> | zero-starting position: defaults to 0 |
 
 **Example**  
 ```js
@@ -913,7 +913,7 @@ find('m', 'abm') //returns 2
 ```
 **Example**  
 ```js
-find('M', 'abMcdM', 3) //returns 2
+find('M', 'abMcdM', 3) //returns 5
 ```
 **Example**  
 ```js
@@ -1021,20 +1021,20 @@ Returns null if the `startPos` is greater than the length of the array
 | Param | Type | Description |
 | --- | --- | --- |
 | subject | <code>string</code> \| <code>array</code> | the text string or array of characters or elements to extract. |
-| startPos | <code>number</code> | the position of the first character or element to extract. The position starts with 0 |
+| startPos | <code>number</code> | the zero-position of the first character or element to extract. The position starts with 0 |
 | length | <code>number</code> | The number of characters or elements to return from text. If it is greater then the length of `subject` the argument is set to the length of the subject. |
 
 **Example**  
 ```js
-mid("Fluid Flow",1,5) //returns 'Fluid'
+mid('Fluid Flow',0,5) //returns 'Fluid'
 ```
 **Example**  
 ```js
-mid("Fluid Flow",7,20) //returns 'Flow'
+mid('Fluid Flow',6,20) //returns 'Flow'
 ```
 **Example**  
 ```js
-mid("Fluid Flow",20,5) //returns `null`
+mid('Fluid Flow,20,5) //returns ''
 ```
 <a name="minute"></a>
 
@@ -1050,8 +1050,8 @@ Extract the minute (0 through 59) from a time/datetime representation
 
 **Example**  
 ```js
-month(datetime(2008,5,23,12, 10, 0)) //returns 10
-month(time(12, 10, 0)) //returns 10
+minute(datetime(2008,5,23,12, 10, 0)) // returns 10
+minute(time(12, 10, 0)) //returns 10
 ```
 <a name="mod"></a>
 
@@ -1074,7 +1074,7 @@ mod(3, 2) //returns 1
 ```
 **Example**  
 ```js
-mod(-3, 2) //returns 1
+mod(-3, 2) //returns -1
 ```
 <a name="month"></a>
 
@@ -1204,6 +1204,17 @@ proper('2-way street') //returns '2-Way Street'
 ```js
 proper('76BudGet') //returns '76Budget'
 ```
+<a name="random"></a>
+
+## random() ⇒ <code>number</code>
+Returns a pseudo random number that is greater than or equal to zero, and less than one.
+
+**Kind**: global function  
+**Category**: openFormula  
+**Example**  
+```js
+random() // 0.022585461160693265
+```
 <a name="replace"></a>
 
 ## replace(text, start, length, replacement) ⇒ <code>string</code>
@@ -1216,21 +1227,21 @@ length, with a new text.
 | Param | Type | Description |
 | --- | --- | --- |
 | text | <code>string</code> | original text |
-| start | <code>number</code> | index in the original text from where to begin the replacement. |
+| start | <code>number</code> | zero-based index in the original text from where to begin the replacement. |
 | length | <code>number</code> | number of characters to be replaced |
 | replacement | <code>string</code> | string to replace at the start index |
 
 **Example**  
 ```js
-replace('abcdefghijk', 6, 5, '*') //returns abcde*k
+replace('abcdefghijk', 5, 5, '*') //returns abcde*k
 ```
 **Example**  
 ```js
-replace('2009',3,2,'10') //returns  2010
+replace('2009',2,2,'10') //returns  2010
 ```
 **Example**  
 ```js
-replace('123456',1,3,'@') //returns @456
+replace('123456',0,3,'@') //returns @456
 ```
 <a name="rept"></a>
 
@@ -1270,11 +1281,11 @@ right('Sale Price', 4) //returns 'rice'
 ```
 **Example**  
 ```js
-left('Sweden') // returns 'n'
+right('Sweden') // returns 'n'
 ```
 **Example**  
 ```js
-left([4, 5, 6], 2) // returns [5, 6]
+right([4, 5, 6], 2) // returns [5, 6]
 ```
 <a name="round"></a>
 
@@ -1482,7 +1493,7 @@ Construct and returns time from hours, minutes, and seconds.
 
 **Example**  
 ```js
-time(12, 0, 0) //returns 0.5 (half day)
+time(12, 0, 0) | [hour(@), minute(@), second(@)] //returns [12, 0, 0]
 ```
 <a name="today"></a>
 
