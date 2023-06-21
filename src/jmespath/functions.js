@@ -333,13 +333,14 @@ export default function functions(
       _func: resolvedArgs => {
         const merged = {};
         resolvedArgs.forEach(current => {
+          if (current === null) return;
           Object.entries(current || {}).forEach(([key, value]) => {
             merged[key] = value;
           });
         });
         return merged;
       },
-      _signature: [{ types: [TYPE_OBJECT], variadic: true }],
+      _signature: [{ types: [TYPE_OBJECT, TYPE_NULL], variadic: true }],
     },
 
     /**

@@ -126,6 +126,30 @@ test('Access properties of array-based fieldset', () => {
   expect(result).toBe(3);
 });
 
+test('debug output', () => {
+  const data = { array1: [11, 22, 33, 44, 55, 66], prop: { p1: 'property1' } };
+
+  const form1 = createForm(data);
+  let debugTracking;
+  form1.prop.p1[Symbol.for('track')] = (obj, key) => {
+    debugTracking = `Access ${key} from ${JSON.stringify(obj)}`;
+  };
+  const expression = 'merge($form.array1[10], $form.array1.$value, $form.foo, $form.prop.$readOnly, $form.prop.p1)';
+  const debug = [];
+  new JsonFormula({}, null, debug).search(expression, { $form: form1 }, form1);
+
+  expect(debug).toEqual([
+    'Index 10 out of range',
+    'Failed to find: \'$value\'',
+    'Available fields: 0..5,\'$name\',\'$fields\'',
+    'Failed to find: \'foo\'',
+    'Available fields: \'array1\',\'prop\'',
+    'Failed to find: \'$readOnly\'',
+    'Available fields: \'$name\',\'$fields\',\'p1\'',
+  ]);
+  expect(debugTracking).toBe('Access p1 from {"p1":"property1"}');
+});
+
 describe('current datetime tests', () => {
   beforeEach(() => {
     jest.useFakeTimers('modern');

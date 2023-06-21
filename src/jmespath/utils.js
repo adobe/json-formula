@@ -1,8 +1,5 @@
 export function isArray(obj) {
-  if (obj !== null) {
-    return Object.prototype.toString.call(obj) === '[object Array]';
-  }
-  return false;
+  return Array.isArray(obj);
 }
 
 export function isObject(obj) {
@@ -75,4 +72,33 @@ export function strictDeepEqual(lhs, rhs) {
     return true;
   }
   return false;
+}
+
+export function getProperty(obj, key) {
+  const desc = Object.getOwnPropertyDescriptor(obj, key);
+  // if it's a regular enumerable property or if it's configured with a getter,
+  // then return it.
+  // if it's a built-in property such as length or toString etc. we'll want to ignore it.
+  if (desc?.enumerable || !!desc?.get) {
+    // for applications that want to track which properties are accessed, allow for a special
+    // hook to callback and register this key/value accessor.
+    obj[key]?.[Symbol.for('track')]?.(obj, key);
+    return obj[key];
+  }
+  return undefined;
+}
+
+export function debugAvailable(debug, obj, key) {
+  try {
+    debug.push(`Failed to find: '${key}'`);
+    let available = [];
+    if (isArray(obj)) {
+      available.push(`${0}..${obj.length - 1}`);
+    }
+    available = [...available, ...Object.entries(Object.getOwnPropertyDescriptors(obj, key))
+      .filter(([k, desc]) => (desc?.enumerable || !!desc?.get) && !/^[0-9]+$/.test(k) && (!k.startsWith('$') || key.startsWith('$')))
+      .map(([k]) => `'${k}'`)];
+    if (available.length) debug.push(`Available fields: ${available}`);
+  // eslint-disable-next-line no-empty
+  } catch (e) {}
 }

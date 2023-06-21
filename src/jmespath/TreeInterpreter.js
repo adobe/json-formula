@@ -2,7 +2,7 @@ import { matchType, getTypeNames } from './matchType.js';
 import dataTypes from './dataTypes.js';
 import tokenDefinitions from './tokenDefinitions.js';
 import {
-  isArray, isObject, strictDeepEqual, getValueOf,
+  isArray, isObject, strictDeepEqual, getValueOf, getProperty, debugAvailable,
 } from './utils.js';
 
 const {
@@ -87,21 +87,9 @@ export default class TreeInterpreter {
         // we used to check isObject(value) here -- but it is possible for an array-based
         // object to have properties.  So we'll allow the child check on objects and arrays.
         if (value !== null && (isObject(value) || isArray(value))) {
-          let field = value[node.name];
-          // fields can be objects with overridden methods. e.g. valueOf
-          // so don't resolve to a function...
-          if (typeof field === 'function') field = undefined;
+          const field = getProperty(value, node.name);
           if (field === undefined) {
-            try {
-              this.debug.push(`Failed to find: '${node.name}'`);
-              if (Array.isArray(value) && value.length > 5) {
-                this.debug.push(`Available fields: ${0}..${value.length - 1}`);
-              } else {
-                const available = Object.keys(value).map(a => `'${a}'`).toString();
-                if (available.length) this.debug.push(`Available fields: ${available}`);
-              }
-            // eslint-disable-next-line no-empty
-            } catch (e) {}
+            debugAvailable(this.debug, value, node.name);
             return null;
           }
           return field;

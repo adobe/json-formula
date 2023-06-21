@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 /*
 Copyright 2021 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -14,6 +13,7 @@ governing permissions and limitations under the License.
 /* eslint-disable no-param-reassign */
 /* eslint-disable max-classes-per-file */
 /* eslint-disable class-methods-use-this */
+/* eslint-disable no-underscore-dangle */
 /*
     Field class allows objects to evaluate correctly according to context.
     - if used in an expression, will return a value or string.
@@ -30,35 +30,27 @@ function createField(name, value, readonly = false, required = true) {
     toString() { return value.toString(); }
 
     toJSON() { return value; }
-
-    // Use getters and scope variables so that the children are not enumerable
-    get '$value'() { return value; }
-
-    get '$name'() { return name; }
-
-    get '$readonly'() { return readonly; }
-
-    get '$required'() { return required; }
   }
-  return new Field();
+  const f = new Field();
+  Object.defineProperty(f, '$name', { get: () => name });
+  Object.defineProperty(f, '$value', { get: () => value });
+  Object.defineProperty(f, '$readonly', { get: () => readonly });
+  Object.defineProperty(f, '$required', { get: () => required });
+
+  return f;
 }
 
 function createFieldset(fsname, isObj, fields) {
   class FieldsetObj {
-    get '$name'() { return fsname; }
-
-    get '$fields'() { return fields; }
-
     _add(k, v) { this[k] = v; }
   }
   class FieldsetArray extends Array {
-    get '$name'() { return fsname; }
-
-    get '$fields'() { return fields; }
-
     _add(k, v) { this[k] = v; }
   }
   const fieldset = isObj ? new FieldsetObj() : new FieldsetArray();
+  Object.defineProperty(fieldset, '$name', { get: () => fsname });
+  Object.defineProperty(fieldset, '$fields', { get: () => fields });
+
   return fieldset;
 }
 
