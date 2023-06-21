@@ -1,6 +1,6 @@
 {
   "name": "@adobe/json-formula",
-  "version": "0.1.52",
+  "version": "0.1.53",
   "description": "JSONFormula Grammar and implementation",
   "main": "src/json-formula.js",
   "type": "module",

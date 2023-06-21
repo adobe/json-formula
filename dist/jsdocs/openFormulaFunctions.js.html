@@ -97,6 +97,7 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 import dataTypes from './dataTypes.js';
+import { getProperty, debugAvailable } from './utils.js';
 
 function round(num, digits) {
   const precision = 10 ** digits;
@@ -1335,12 +1336,10 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
       _func: args => {
         const obj = args[0] || {};
         const index = args[1];
-        const result = obj[index];
-        if (result === undefined) {
-          debug.push(`Failed to find: '${index}'`);
-          const available = Object.keys(obj).map(a => `'${a}'`).toString();
-          if (available.length) debug.push(`Available fields: ${available}`);
+        const result = getProperty(obj, index);
 
+        if (result === undefined) {
+          debugAvailable(debug, obj, index);
           return null;
         }
         return result;
