@@ -81,6 +81,7 @@ COMPARATOR
   | '>='
   | '>'
   | '!='
+  | '<>'
   ;
 
 functionExpression

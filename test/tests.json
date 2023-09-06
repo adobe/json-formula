@@ -476,6 +476,14 @@
     }
   ],
   [
+    "value(items, 'length')",
+    {
+      "data": "samples.\"purchase-order\"",
+      "expression": "value(items, 'length')",
+      "expected": null
+    }
+  ],
+  [
     "value(1)",
     {
       "data": "samples",

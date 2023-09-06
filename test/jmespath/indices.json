@@ -3,6 +3,10 @@
         {"foo": {"bar": ["zero", "one", "two"]}},
      "cases": [
          {
+            "expression": "foo.bar.length",
+            "result": null
+         },
+         {
             "expression": "foo.bar[0]",
             "result": "zero"
          },

@@ -376,6 +376,10 @@ export default class Lexer {
         this._current += 1;
         return { type: TOK_LTE, value: '<=', start };
       }
+      if (stream[this._current] === '>') {
+        this._current += 1;
+        return { type: TOK_NE, value: '<>', start };
+      }
       return { type: TOK_LT, value: '<', start };
     }
     if (startingChar === '>') {

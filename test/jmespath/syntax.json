@@ -567,7 +567,8 @@
       {
         "comment": "Unknown comparator",
         "expression": "foo[?bar<>baz]",
-        "error": "syntax"
+        "result" : null,
+        "was": "syntax"
       },
       {
         "comment": "Unknown comparator",
