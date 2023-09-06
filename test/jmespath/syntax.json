@@ -500,8 +500,13 @@
         "error": "syntax"
       },
       {
-        "expression": "\"foo",
+        "expression": "\\'foo",
         "error": "syntax"
+      },
+      {
+        "expression": "\"foo",
+        "result" : [null],
+        "was": "syntax"
       }
     ]
   },

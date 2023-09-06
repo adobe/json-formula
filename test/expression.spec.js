@@ -63,7 +63,9 @@ jsonFormula.search(
   {},
 );
 
-const filtered = tests //.filter(([_desc]) => _desc === 'value(1)')
+// in case running only specific tests update the filter clause
+const filterClause = ([_desc, tst]) => true
+const filtered = tests.filter(filterClause)
 
 test.each(filtered)('%s', (_desc, tst) => {
   if (tst.fieldsOnly) return;

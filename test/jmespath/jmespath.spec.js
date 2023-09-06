@@ -35,9 +35,9 @@ const wildcard = require('./wildcard.json');
 function toTestFmt(t) {
   const tests = [];
   t.forEach(tst => {
-    const { given } = tst;
+    const { given, comment } = tst;
     tst.cases.forEach(c => {
-      tests.push([c.comment || c.expression, {
+      tests.push([c.comment || `${comment} -> ${c.expression}` , {
         given, expression: c.expression, result: c.result, error: c.error,
       }]);
     });
@@ -77,19 +77,19 @@ function executeTestWithFields(desc, tst) {
   expect(result).toEqual(tst.result === undefined ? tst.error : tst.result);
 }
 
-// test.each(toTestFmt(basic))('%s', executeTest);
+test.each(toTestFmt(basic))('%s', executeTest);
 
-// test.each(toTestFmt(boolean))('%s', executeTest);
-// test.each(toTestFmt(current))('%s', executeTest);
-// test.each(toTestFmt(escape))('%s', executeTest);
-// test.each(toTestFmt(filters))('%s', executeTest);
-// test.each(toTestFmt(functions))('%s', executeTest);
-// test.each(toTestFmt(identifiers))('%s', executeTest);
-// test.each(toTestFmt(indices))('%s', executeTest);
-// test.each(toTestFmt(literal))('%s', executeTest);
-// test.each(toTestFmt(multiselect))('%s', executeTest);
-// test.each(toTestFmt(pipe))('%s', executeTest);
-// test.each(toTestFmt(slice))('%s', executeTest);
+test.each(toTestFmt(boolean))('%s', executeTest);
+test.each(toTestFmt(current))('%s', executeTest);
+test.each(toTestFmt(escape))('%s', executeTest);
+test.each(toTestFmt(filters))('%s', executeTest);
+test.each(toTestFmt(functions))('%s', executeTest);
+test.each(toTestFmt(identifiers))('%s', executeTest);
+test.each(toTestFmt(indices))('%s', executeTest);
+test.each(toTestFmt(literal))('%s', executeTest);
+test.each(toTestFmt(multiselect))('%s', executeTest);
+test.each(toTestFmt(pipe))('%s', executeTest);
+test.each(toTestFmt(slice))('%s', executeTest);
 test.each(toTestFmt(syntax))('%s', executeTest);
 test.each(toTestFmt(unicode))('%s', executeTest);
 test.each(toTestFmt(wildcard))('%s', executeTest);
