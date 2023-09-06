@@ -92,7 +92,7 @@ export function debugAvailable(debug, obj, key) {
   try {
     debug.push(`Failed to find: '${key}'`);
     let available = [];
-    if (isArray(obj)) {
+    if (isArray(obj) && obj.length > 0) {
       available.push(`${0}..${obj.length - 1}`);
     }
     available = [...available, ...Object.entries(Object.getOwnPropertyDescriptors(obj, key))
