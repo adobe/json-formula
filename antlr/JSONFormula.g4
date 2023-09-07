@@ -35,7 +35,7 @@ expression
   | literal # literalExpression
   | functionExpression # functionCallExpression
   | expression '|' expression # pipeExpression
-  | RAW_STRING # rawStringExpression
+  | (STRING | RAW_STRING) # rawStringExpression
   | (REAL_OR_EXPONENT_NUMBER | SIGNED_INT) # numberLiteral
   | currentNode # currentNodeExpression
   ;
@@ -99,10 +99,6 @@ currentNode : '@' ;
 
 expressionType : '&' expression ;
 
-RAW_STRING : '"' (RAW_ESC | ~["\\])* '"' ;
-
-fragment RAW_ESC : '\\' . ;
-
 literal : '`' jsonValue '`' ;
 
 identifier
@@ -150,6 +146,11 @@ STRING
 fragment ESC
   : '\\' (["\\/bfnrt`] | UNICODE)
   ;
+
+RAW_STRING : '"' (RAW_ESC | ~["\\])* '"' ;
+
+fragment RAW_ESC : '\\' . ;
+
 
 fragment UNICODE
   : 'u' HEX HEX HEX HEX

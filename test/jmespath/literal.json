@@ -192,14 +192,19 @@
           "result": "foo\"bar"
         },
         {
-          "comment": "Backslash not followed by single quote is treated as any other character",
+          "comment": "Backslash not followed by double quote is treated as any other character",
           "expression": "\"\\z\"",
-          "result": "\\z"
+          "result" : "\\z"
         },
         {
-          "comment": "Backslash not followed by single quote is treated as any other character",
+          "comment": "Backslash not followed by double quote is treated as any other character",
           "expression": "\"\\\\\"",
           "result": "\\\\"
+        },
+        {
+          "comment": "Backslash followed by only specific characters is valid",
+          "expression": "\"\\b\\f\\r\\t\\n\\/\\uAAAA\"",
+          "result": "\\b\\f\\r\\t\\n\\/\\uAAAA"
         }
       ]
     }
