@@ -504,9 +504,9 @@
         "error": "syntax"
       },
       {
+        "comment" : "unterminated string literal",
         "expression": "\"foo",
-        "result" : [null],
-        "was": "syntax"
+        "error": "syntax"
       }
     ]
   },

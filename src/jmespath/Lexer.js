@@ -287,7 +287,7 @@ export default class Lexer {
     this._current += 1;
     const maxLength = stream.length;
     while (stream[this._current] !== '"' && this._current < maxLength) {
-      // You can escape a single quote and you can escape an escape.
+      // You can escape a double quote and you can escape an escape.
       let current = this._current;
       if (stream[current] === '\\' && (stream[current + 1] === '\\'
         || stream[current + 1] === '"')) {
@@ -299,6 +299,9 @@ export default class Lexer {
     }
     this._current += 1;
     const literal = stream.slice(start + 1, this._current - 1);
+    if (this._current > maxLength) {
+      throw new Error(`Unterminated string literal at ${start}, "${literal}`);
+    }
     return literal.replaceAll('\\"', '"');
   }
 

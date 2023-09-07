@@ -1,4 +1,5 @@
 [{
+   "comment" : "dot operator in object",
     "given":
         {"foo": {"bar": {"baz": "correct"}}},
      "cases": [
@@ -41,6 +42,7 @@
      ]
 },
 {
+   "comment" : "dot operator in object (2)",
     "given":
         {"foo": {"bar": ["one", "two", "three"]}},
     "cases": [
@@ -55,6 +57,7 @@
     ]
 },
 {
+   "comment" : "dot operator in array",
     "given": ["one", "two", "three"],
     "cases": [
         {
@@ -76,6 +79,7 @@
     ]
 },
 {
+   "comment" : "property access with numeric names",
     "given":
         {"foo": {"1": ["one", "two", "three"], "-1": "bar"}},
     "cases": [
