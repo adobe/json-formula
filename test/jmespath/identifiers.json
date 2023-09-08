@@ -16,7 +16,7 @@
         },
         "cases": [
             {
-                "expression": "\"!\\r\"",
+                "expression": "'!\\r'",
                 "result": true
             }
         ]
@@ -49,7 +49,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\tF\\uCebb\"",
+                "expression": "'\\tF\\uCebb'",
                 "result": true
             }
         ]
@@ -60,7 +60,7 @@
         },
         "cases": [
             {
-                "expression": "\" \\t\"",
+                "expression": "' \\t'",
                 "result": true
             }
         ]
@@ -71,7 +71,7 @@
         },
         "cases": [
             {
-                "expression": "\" \"",
+                "expression": "' '",
                 "result": true
             }
         ]
@@ -93,7 +93,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\t\"",
+                "expression": "'\\t'",
                 "result": true
             }
         ]
@@ -115,7 +115,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\t4\\ud9da\\udd15\"",
+                "expression": "'\\t4\\ud9da\\udd15'",
                 "result": true
             }
         ]
@@ -137,7 +137,7 @@
         },
         "cases": [
             {
-                "expression": "\"H\"",
+                "expression": "'H'",
                 "result": true
             }
         ]
@@ -148,7 +148,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\f\"",
+                "expression": "'\\f'",
                 "result": true
             }
         ]
@@ -159,7 +159,7 @@
         },
         "cases": [
             {
-                "expression": "\"E4\"",
+                "expression": "'E4'",
                 "result": true
             }
         ]
@@ -170,7 +170,7 @@
         },
         "cases": [
             {
-                "expression": "\"!\"",
+                "expression": "'!'",
                 "result": true
             }
         ]
@@ -192,7 +192,7 @@
         },
         "cases": [
             {
-                "expression": "\" [\"",
+                "expression": "' ['",
                 "result": true
             }
         ]
@@ -203,7 +203,7 @@
         },
         "cases": [
             {
-                "expression": "\"R!\"",
+                "expression": "'R!'",
                 "result": true
             }
         ]
@@ -225,7 +225,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\uaBA1\\r\"",
+                "expression": "'\\uaBA1\\r'",
                 "result": true
             }
         ]
@@ -247,7 +247,7 @@
         },
         "cases": [
             {
-                "expression": "\"<<U\\t\"",
+                "expression": "'<<U\\t'",
                 "result": true
             }
         ]
@@ -258,7 +258,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\ubBcE\\ufAfB\"",
+                "expression": "'\\ubBcE\\ufAfB'",
                 "result": true
             }
         ]
@@ -280,7 +280,7 @@
         },
         "cases": [
             {
-                "expression": "\"9\"",
+                "expression": "'9'",
                 "result": true
             }
         ]
@@ -291,7 +291,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\\\\\b\\ud8cb\\udc83\"",
+                "expression": "'\\\\\\b\\ud8cb\\udc83'",
                 "result": true
             }
         ]
@@ -302,7 +302,7 @@
         },
         "cases": [
             {
-                "expression": "\"r\"",
+                "expression": "'r'",
                 "result": true
             }
         ]
@@ -335,7 +335,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\\\\"",
+                "expression": "'\\\\'",
                 "result": true
             }
         ]
@@ -357,7 +357,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\r\\f:\"",
+                "expression": "'\\r\\f:'",
                 "result": true
             }
         ]
@@ -379,7 +379,7 @@
         },
         "cases": [
             {
-                "expression": "\"-\"",
+                "expression": "'-'",
                 "result": true
             }
         ]
@@ -412,7 +412,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\b\\t\"",
+                "expression": "'\\b\\t'",
                 "result": true
             }
         ]
@@ -456,7 +456,7 @@
         },
         "cases": [
             {
-                "expression": "\":\"",
+                "expression": "':'",
                 "result": true
             }
         ]
@@ -467,7 +467,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\rB\"",
+                "expression": "'\\rB'",
                 "result": true
             }
         ]
@@ -489,7 +489,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\n\"",
+                "expression": "'\\n'",
                 "result": true
             }
         ]
@@ -500,7 +500,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\f\udb54\udf33\"",
+                "expression": "'\\f\udb54\udf33'",
                 "result": true
             }
         ]
@@ -511,7 +511,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\\\\\u4FDc\"",
+                "expression": "'\\\\\\u4FDc'",
                 "result": true
             }
         ]
@@ -522,7 +522,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\r\"",
+                "expression": "'\\r'",
                 "result": true
             }
         ]
@@ -544,7 +544,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\r\\fB \"",
+                "expression": "'\\r\\fB '",
                 "result": true
             }
         ]
@@ -555,7 +555,7 @@
         },
         "cases": [
             {
-                "expression": "\"+\\\"\\\"\"",
+                "expression": "'+\\\"\\\"'",
                 "result": true
             }
         ]
@@ -577,7 +577,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\\"!\\/\"",
+                "expression": "'\\\"!\\/'",
                 "result": true
             }
         ]
@@ -588,7 +588,7 @@
         },
         "cases": [
             {
-                "expression": "\"7\\\"\"",
+                "expression": "'7\\\"'",
                 "result": true
             }
         ]
@@ -599,7 +599,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\\\\udb3a\udca4S\"",
+                "expression": "'\\\\\udb3a\udca4S'",
                 "result": true
             }
         ]
@@ -610,7 +610,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\\"\"",
+                "expression": "'\\\"'",
                 "result": true
             }
         ]
@@ -632,7 +632,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\b\\b\"",
+                "expression": "'\\b\\b'",
                 "result": true
             }
         ]
@@ -643,7 +643,7 @@
         },
         "cases": [
             {
-                "expression": "\">\"",
+                "expression": "'>'",
                 "result": true
             }
         ]
@@ -665,7 +665,7 @@
         },
         "cases": [
             {
-                "expression": "\"; !\"",
+                "expression": "'; !'",
                 "result": true
             }
         ]
@@ -687,7 +687,7 @@
         },
         "cases": [
             {
-                "expression": "\"!I\\n\\/\"",
+                "expression": "'!I\\n\\/'",
                 "result": true
             }
         ]
@@ -698,7 +698,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\uEEbF\"",
+                "expression": "'\\uEEbF'",
                 "result": true
             }
         ]
@@ -709,7 +709,7 @@
         },
         "cases": [
             {
-                "expression": "\"U)\\t\"",
+                "expression": "'U)\\t'",
                 "result": true
             }
         ]
@@ -731,7 +731,7 @@
         },
         "cases": [
             {
-                "expression": "\"/\"",
+                "expression": "'/'",
                 "result": true
             }
         ]
@@ -753,7 +753,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\b\"",
+                "expression": "'\\b'",
                 "result": true
             }
         ]
@@ -764,7 +764,7 @@
         },
         "cases": [
             {
-                "expression": "\"<\"",
+                "expression": "'<'",
                 "result": true
             }
         ]
@@ -775,7 +775,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\t\"",
+                "expression": "'\\t'",
                 "result": true
             }
         ]
@@ -786,7 +786,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\t&\\\\\\r\"",
+                "expression": "'\\t&\\\\\\r'",
                 "result": true
             }
         ]
@@ -797,7 +797,7 @@
         },
         "cases": [
             {
-                "expression": "\"#\"",
+                "expression": "'#'",
                 "result": true
             }
         ]
@@ -819,7 +819,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\nS \\n\"",
+                "expression": "'\\nS \\n'",
                 "result": true
             }
         ]
@@ -841,7 +841,7 @@
         },
         "cases": [
             {
-                "expression": "\",\\t;\"",
+                "expression": "',\\t;'",
                 "result": true
             }
         ]
@@ -863,7 +863,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\/+\\t\\n\\b!Z\"",
+                "expression": "'\\/+\\t\\n\\b!Z'",
                 "result": true
             }
         ]
@@ -874,7 +874,7 @@
         },
         "cases": [
             {
-                "expression": "\"\udadd\udfc7\\\\ueFAc\"",
+                "expression": "'\udadd\udfc7\\\\ueFAc'",
                 "result": true
             }
         ]
@@ -885,7 +885,7 @@
         },
         "cases": [
             {
-                "expression": "\":\\f\"",
+                "expression": "':\\f'",
                 "result": true
             }
         ]
@@ -896,7 +896,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\/\"",
+                "expression": "'\\/'",
                 "result": true
             }
         ]
@@ -918,7 +918,7 @@
         },
         "cases": [
             {
-                "expression": "\"\udbcf\udc02\"",
+                "expression": "'\udbcf\udc02'",
                 "result": true
             }
         ]
@@ -951,7 +951,7 @@
         },
         "cases": [
             {
-                "expression": "\"\udb94\udd41\"",
+                "expression": "'\udb94\udd41'",
                 "result": true
             }
         ]
@@ -1006,7 +1006,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\b+\"",
+                "expression": "'\\b+'",
                 "result": true
             }
         ]
@@ -1017,7 +1017,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\\"\"",
+                "expression": "'\\\"'",
                 "result": true
             }
         ]
@@ -1050,7 +1050,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\tK\\t\"",
+                "expression": "'\\tK\\t'",
                 "result": true
             }
         ]
@@ -1061,7 +1061,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\n\\\\\\f\"",
+                "expression": "'\\n\\\\\\f'",
                 "result": true
             }
         ]
@@ -1105,7 +1105,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\tX$\\uABBb\"",
+                "expression": "'\\tX$\\uABBb'",
                 "result": true
             }
         ]
@@ -1127,7 +1127,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\b%\\\"\uda38\udd0f\"",
+                "expression": "'\\b%\\\"\uda38\udd0f'",
                 "result": true
             }
         ]
@@ -1149,7 +1149,7 @@
         },
         "cases": [
             {
-                "expression": "\"!,\"",
+                "expression": "'!,'",
                 "result": true
             }
         ]
@@ -1160,7 +1160,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\\"!\"",
+                "expression": "'\\\"!'",
                 "result": true
             }
         ]
@@ -1182,7 +1182,7 @@
         },
         "cases": [
             {
-                "expression": "\"&\"",
+                "expression": "'&'",
                 "result": true
             }
         ]
@@ -1193,7 +1193,7 @@
         },
         "cases": [
             {
-                "expression": "\"9\\r\\\\R\"",
+                "expression": "'9\\r\\\\R'",
                 "result": true
             }
         ]
@@ -1215,7 +1215,7 @@
         },
         "cases": [
             {
-                "expression": "\"!\\b\\n\udb06\ude52\\\"\\\"\"",
+                "expression": "'!\\b\\n\udb06\ude52\\\"\\\"'",
                 "result": true
             }
         ]
@@ -1226,7 +1226,7 @@
         },
         "cases": [
             {
-                "expression": "\"6\"",
+                "expression": "'6'",
                 "result": true
             }
         ]
@@ -1248,7 +1248,7 @@
         },
         "cases": [
             {
-                "expression": "\"0\"",
+                "expression": "'0'",
                 "result": true
             }
         ]
@@ -1259,7 +1259,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\\\8\\\\\"",
+                "expression": "'\\\\8\\\\'",
                 "result": true
             }
         ]
@@ -1292,7 +1292,7 @@
         },
         "cases": [
             {
-                "expression": "\"5\"",
+                "expression": "'5'",
                 "result": true
             }
         ]
@@ -1303,7 +1303,7 @@
         },
         "cases": [
             {
-                "expression": "\"?\"",
+                "expression": "'?'",
                 "result": true
             }
         ]
@@ -1325,7 +1325,7 @@
         },
         "cases": [
             {
-                "expression": "\"VH2&H\\\\\\/\"",
+                "expression": "'VH2&H\\\\\\/'",
                 "result": true
             }
         ]
@@ -1358,7 +1358,7 @@
         },
         "cases": [
             {
-                "expression": "\"<\\t\"",
+                "expression": "'<\\t'",
                 "result": true
             }
         ]
@@ -1369,7 +1369,7 @@
         },
         "cases": [
             {
-                "expression": "\"\\uD834\\uDD1E\"",
+                "expression": "'\\uD834\\uDD1E'",
                 "result": true
             }
         ]

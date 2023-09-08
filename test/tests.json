@@ -3,7 +3,7 @@
     "value fields",
     {
       "fieldsOnly": true,
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "values(address)[0].$name",
       "expected": "street"
     }
@@ -12,7 +12,7 @@
     "map fields",
     {
       "fieldsOnly": true,
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "map(&price, items)[*].$name",
       "expected": ["price", "price"]
     }
@@ -20,7 +20,7 @@
   [
     "contains Field",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "contains([2,4,6], items[0].quantity)",
       "expected": true
     }
@@ -28,7 +28,7 @@
   [
     "reverse",
     {
-      "data": "samples.\"purchase-order\".address",
+      "data": "samples.'purchase-order'.address",
       "expression": "reverse(street)",
       "expected": "teertS kaO 321"
     }
@@ -36,7 +36,7 @@
   [
     "get an address",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "address",
       "expected": {
         "street": "123 Oak Street",
@@ -57,7 +57,7 @@
   [
     "and(1)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "and(length(address.street) > 2, `true`, true())",
       "expected": true
     }
@@ -65,7 +65,7 @@
   [
     "and(2)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "and(length(address.street) > 2, notFound)",
       "expected": false
     }
@@ -73,7 +73,7 @@
   [
     "or(1)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "or(`false`, length(address.street) > 2, `true`, true())",
       "expected": true
     }
@@ -81,7 +81,7 @@
   [
     "or(2)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "or(length(address.street) > 20, notFound)",
       "expected": false
     }
@@ -89,23 +89,23 @@
   [
     "if() first condition",
     {
-      "data": "samples.\"purchase-order\"",
-      "expression": "if(items[0].price > 1, 'first', 'second')",
+      "data": "samples.'purchase-order'",
+      "expression": "if(items[0].price > 1, \"first\", \"second\")",
       "expected": "first"
     }
   ],
   [
     "if() second condition",
     {
-      "data": "samples.\"purchase-order\"",
-      "expression": "if(sum(items[*].price) == 0, 'first', 'second')",
+      "data": "samples.'purchase-order'",
+      "expression": "if(sum(items[*].price) == 0, \"first\", \"second\")",
       "expected": "second"
     }
   ],
   [
     "sum(jmespath)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "sum(items[*].subtotal)",
       "expected": 10.48
     }
@@ -122,7 +122,7 @@
     "sum(array)",
     {
       "data": "`{}`",
-      "expression": "sum([2,'4',6,`true`])",
+      "expression": "sum([2,\"4\",6,`true`])",
       "expected": 13
     }
   ],
@@ -138,7 +138,7 @@
     "math",
     {
       "data": "`{}`",
-      "expression": "2 * '$2' + `null`",
+      "expression": "2 * \"$2\" + `null`",
       "expected": 4
     }
   ],
@@ -231,18 +231,18 @@
     }
   ],
   [
-    "4 + '8'",
+    "4 + \"8\"",
     {
       "data": "`{}`",
-      "expression": "4 + '8'",
+      "expression": "4 + \"8\"",
       "expected": 12
     }
   ],
   [
-    "'4' + '8'",
+    "\"4\" + \"8\"",
     {
       "data": "`{}`",
-      "expression": "'4' + '8'",
+      "expression": "\"4\" + \"8\"",
       "expected": 12
     }
   ],
@@ -255,7 +255,7 @@
     }
   ],
   [
-    "[1,'2',3] * [2,4,6,8]",
+    "[1,2,3] * [2,4,6,8]",
     {
       "data": "`{}`",
       "expression": "[1,2,3] * [2,4,6,8]",
@@ -280,7 +280,7 @@
     }
   ],
   [
-    "[1,'2',3] + [2,4,6,8]",
+    "[1,2,3] + [2,4,6,8]",
     {
       "data": "`{}`",
       "expression": "[1,2,3] + [2,4,6,8]",
@@ -313,7 +313,7 @@
     }
   ],
   [
-    "[1,'2',3] - [2,4,6,8]",
+    "[1,2,3] - [2,4,6,8]",
     {
       "data": "`{}`",
       "expression": "[1,2,3] - [2,4,6,8]",
@@ -346,10 +346,10 @@
     }
   ],
   [
-    "[1,'2',3] / [1,1,3,8]",
+    "[1,\"2\",3] / [1,1,3,8]",
     {
       "data": "`{}`",
-      "expression": "[1,'2',3] / [1,1,3,8]",
+      "expression": "[1,\"2\",3] / [1,1,3,8]",
       "expected": [1,2,1,0]
     }
   ],
@@ -379,27 +379,27 @@
     }
   ],
   [
-    "[1,'2',3] ^ [1,1,3,8]",
+    "[1,\"2\",3] ^ [1,1,3,8]",
     {
       "data": "`{}`",
-      "expression": "[1,'2',3] ^ [1,1,3,8]",
+      "expression": "[1,\"2\",3] ^ [1,1,3,8]",
       "expected": [1,2,27,0]
     }
   ],
 
   [
-    "[1,'a','b'] & ['b',1,2]",
+    "[1,\"a\",\"b\"] & [\"b\",1,2]",
     {
       "data": "`{}`",
-      "expression": "[1,'a','b'] & ['b',1,2]",
+      "expression": "[1,\"a\",\"b\"] & [\"b\",1,2]",
       "expected": ["1b", "a1", "b2"]
     }
   ],
   [
-    "12 & 34 & 'b' & true()",
+    "12 & 34 & \"b\" & true()",
     {
       "data": "`{}`",
-      "expression": "12 & 34 & 'b' & true()",
+      "expression": "12 & 34 & \"b\" & true()",
       "expected": "1234btrue"
     }
   ],
@@ -414,7 +414,7 @@
   [
     "unary minus expression",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "-items[0].quantity",
       "expected": -2
     }
@@ -422,7 +422,7 @@
   [
     "unary minus expression",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "- -items[0].quantity",
       "expected": 2
     }
@@ -430,7 +430,7 @@
   [
     "unary minus expression",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "4 + -items[0].quantity",
       "expected": 2
     }
@@ -438,7 +438,7 @@
   [
     "subtract expressions",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "items[0].quantity - 2",
       "expected": 0
     }
@@ -471,15 +471,15 @@
     "substitute(4)",
     {
       "data": "`{}`",
-      "expression": "substitute('deed', 'd', 'f', 0)",
+      "expression": "substitute(\"deed\", \"d\", \"f\", 0)",
       "expected": "deed"
     }
   ],
   [
-    "value(items, 'length')",
+    "value(items, \"length\")",
     {
-      "data": "samples.\"purchase-order\"",
-      "expression": "value(items, 'length')",
+      "data": "samples.'purchase-order'",
+      "expression": "value(items, \"length\")",
       "expected": null
     }
   ],
@@ -487,15 +487,15 @@
     "value(1)",
     {
       "data": "samples",
-      "expression": "value(value(\"purchase-order\", 'address'), 'street')",
+      "expression": "value(value('purchase-order', \"address\"), \"street\")",
       "expected": "123 Oak Street"
     }
   ],
   [
     "value(2)",
     {
-      "data": "samples.\"purchase-order\"",
-      "expression": "value(value(items, 0), 'desc')",
+      "data": "samples.'purchase-order'",
+      "expression": "value(value(items, 0), \"desc\")",
       "expected": "pens"
     }
   ],
@@ -503,7 +503,7 @@
     "value(3)",
     {
       "data": "samples",
-      "expression": "value(value(value(@, 'purchase-order'), 'address'),'city')",
+      "expression": "value(value(value(@, \"purchase-order\"), \"address\"),\"city\")",
       "expected": "San Jose"
     }
   ],
@@ -511,7 +511,7 @@
     "value(4)",
     {
       "data": "samples",
-      "expression": "value(@, 'purchase-orders')",
+      "expression": "value(@, \"purchase-orders\")",
       "expected": null
     }
   ],
@@ -519,14 +519,14 @@
     "value(5)",
     {
       "data": "`null`",
-      "expression": "value(@, 'purchase-orders')",
+      "expression": "value(@, \"purchase-orders\")",
       "expected": null
     }
   ],
   [
     "value(6)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "value(items, 4)",
       "expected": null
     }
@@ -534,7 +534,7 @@
   [
     "lower(missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "lower(address.missing)",
       "expected": ""
     }
@@ -542,32 +542,32 @@
   [
     "lower(street)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "lower(address.street)",
       "expected": "123 oak street"
     }
   ],
   [
-    "lower('')",
+    "lower(\"\")",
     {
       "data": "`null`",
-      "expression": "lower('')",
+      "expression": "lower(\"\")",
       "expected": ""
     }
   ],
   [
-    "lower('abc')",
+    "lower(\"abc\")",
     {
       "data": "`null`",
-      "expression": "lower('abc')",
+      "expression": "lower(\"abc\")",
       "expected": "abc"
     }
   ],
   [
-    "lower('aBc')",
+    "lower(\"aBc\")",
     {
       "data": "`null`",
-      "expression": "lower('aBc')",
+      "expression": "lower(\"aBc\")",
       "expected": "abc"
     }
   ],
@@ -582,7 +582,7 @@
   [
     "upper(missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "upper(address.missing)",
       "expected": ""
     }
@@ -590,32 +590,32 @@
   [
     "upper(street)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "upper(address.street)",
       "expected": "123 OAK STREET"
     }
   ],
   [
-    "upper('')",
+    "upper(\"\")",
     {
       "data": "`null`",
-      "expression": "upper('')",
+      "expression": "upper(\"\")",
       "expected": ""
     }
   ],
   [
-    "upper('ABC')",
+    "upper(\"ABC\")",
     {
       "data": "`null`",
-      "expression": "upper('ABC')",
+      "expression": "upper(\"ABC\")",
       "expected": "ABC"
     }
   ],
   [
-    "upper('aBc')",
+    "upper(\"aBc\")",
     {
       "data": "`null`",
-      "expression": "upper('aBc')",
+      "expression": "upper(\"aBc\")",
       "expected": "ABC"
     }
   ],
@@ -630,7 +630,7 @@
   [
     "exp(items[0].quantity)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "exp(items[0].quantity)",
       "expected": 7.38905609893065
     }
@@ -638,7 +638,7 @@
   [
     "exp(missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "exp(missing)",
       "expected": 1
     }
@@ -652,10 +652,10 @@
     }
   ],
   [
-    "exp('0')",
+    "exp(\"0\")",
     {
       "data": "`null`",
-      "expression": "exp('0')",
+      "expression": "exp(\"0\")",
       "expected": 1
     }
   ],
@@ -670,7 +670,7 @@
   [
     "power(10,items[0].quantity)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "power(10,items[0].quantity)",
       "expected": 100
     }
@@ -678,7 +678,7 @@
   [
     "power(missing, 1)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "power(missing, 1)",
       "expected": 0
     }
@@ -724,89 +724,89 @@
     }
   ],
   [
-    "find('a','abcdabce')",
+    "find(\"a\",\"abcdabce\")",
     {
       "data": "`null`",
-      "expression": "find('a','abcdabce')",
+      "expression": "find(\"a\", \"abcdabce\")",
       "expected": 0
     }
   ],
   [
-    "find('b','abcdabce')",
+    "find(\"b\", \"abcdabce\")",
     {
       "data": "`null`",
-      "expression": "find('b','abcdabce')",
+      "expression": "find(\"b\", \"abcdabce\")",
       "expected": 1
     }
   ],
   [
-    "find('abc','abcdabce')",
+    "find(\"abc\", \"abcdabce\")",
     {
       "data": "`null`",
-      "expression": "find('abc','abcdabce')",
+      "expression": "find(\"abc\", \"abcdabce\")",
       "expected": 0
     }
   ],
   [
-    "find('abce','abcdabce')",
+    "find(\"abce\", \"abcdabce\")",
     {
       "data": "`null`",
-      "expression": "find('abce','abcdabce')",
+      "expression": "find(\"abce\", \"abcdabce\")",
       "expected": 4
     }
   ],
   [
-    "find('ab','abcdabce',0)",
+    "find(\"ab\", \"abcdabce\",0)",
     {
       "data": "`null`",
-      "expression": "find('ab','abcdabce',0)",
+      "expression": "find(\"ab\", \"abcdabce\",0)",
       "expected": 0
     }
   ],
   [
-    "find('ab','abcdabce',100)",
+    "find(\"ab\", \"abcdabce\",100)",
     {
       "data": "`null`",
-      "expression": "find('ab','abcdabce',100)",
+      "expression": "find(\"ab\", \"abcdabce\",100)",
       "expected": null
     }
   ],
   [
-    "find('z','abcdabce',0)",
+    "find(\"z\", \"abcdabce\",0)",
     {
       "data": "`null`",
-      "expression": "find('z','abcdabce',0)",
+      "expression": "find(\"z\", \"abcdabce\",0)",
       "expected": null
     }
   ],
   [
-    "find('abc','abcdabce',1)",
+    "find(\"abc\", \"abcdabce\",1)",
     {
       "data": "`null`",
-      "expression": "find('abc','abcdabce',1)",
+      "expression": "find(\"abc\", \"abcdabce\",1)",
       "expected": 4
     }
   ],
   [
-    "find('Oak',address.street)",
+    "find(\"Oak\",address.street)",
     {
-      "data": "samples.\"purchase-order\"",
-      "expression": "find('Oak',address.street)",
+      "data": "samples.'purchase-order'",
+      "expression": "find(\"Oak\",address.street)",
       "expected": 4
     }
   ],
   [
-    "find('Oak', missing)",
+    "find(\"Oak\", missing)",
     {
-      "data": "samples.\"purchase-order\"",
-      "expression": "find('Oak', missing)",
+      "data": "samples.'purchase-order'",
+      "expression": "find(\"Oak\", missing)",
       "expected": null
     }
   ],
   [
     "find(missing, address.street)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "find(missing, address.street)",
       "expected": 0
     }
@@ -814,63 +814,63 @@
   [
     "find(missing, missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "find(missing, missing)",
       "expected": 0
     }
   ],
   [
-    "left('abc')",
+    "left(\"abc\")",
     {
       "data": "`null`",
-      "expression": "left('abc')",
+      "expression": "left(\"abc\")",
       "expected": "a"
     }
   ],
   [
-    "left('abc', 1)",
+    "left(\"abc\", 1)",
     {
       "data": "`null`",
-      "expression": "left('abc', 1)",
+      "expression": "left(\"abc\", 1)",
       "expected": "a"
     }
   ],
   [
-    "left('abc', 2)",
+    "left(\"abc\", 2)",
     {
       "data": "`null`",
-      "expression": "left('abc', 2)",
+      "expression": "left(\"abc\", 2)",
       "expected": "ab"
     }
   ],
   [
-    "left('abc', 100)",
+    "left(\"abc\", 100)",
     {
       "data": "`null`",
-      "expression": "left('abc', 100)",
+      "expression": "left(\"abc\", 100)",
       "expected": "abc"
     }
   ],
   [
-    "left('abc', 0)",
+    "left(\"abc\", 0)",
     {
       "data": "`null`",
-      "expression": "left('abc', 0)",
+      "expression": "left(\"abc\", 0)",
       "expected": ""
     }
   ],
   [
-    "left('abc', -1)",
+    "left(\"abc\", -1)",
     {
       "data": "`null`",
-      "expression": "left('abc', -1)",
+      "expression": "left(\"abc\", -1)",
       "expected": null
     }
   ],
   [
     "left(address.street)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "left(address.street)",
       "expected": "1"
     }
@@ -878,63 +878,63 @@
   [
     "left(missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "left(missing)",
       "expected": ""
     }
   ],
   [
-    "right('abc')",
+    "right(\"abc\")",
     {
       "data": "`null`",
-      "expression": "right('abc')",
+      "expression": "right(\"abc\")",
       "expected": "c"
     }
   ],
   [
-    "right('abc', 1)",
+    "right(\"abc\", 1)",
     {
       "data": "`null`",
-      "expression": "right('abc', 1)",
+      "expression": "right(\"abc\", 1)",
       "expected": "c"
     }
   ],
   [
-    "right('abc', 2)",
+    "right(\"abc\", 2)",
     {
       "data": "`null`",
-      "expression": "right('abc', 2)",
+      "expression": "right(\"abc\", 2)",
       "expected": "bc"
     }
   ],
   [
-    "right('abc', 100)",
+    "right(\"abc\", 100)",
     {
       "data": "`null`",
-      "expression": "right('abc', 100)",
+      "expression": "right(\"abc\", 100)",
       "expected": "abc"
     }
   ],
   [
-    "right('abc', 0)",
+    "right(\"abc\", 0)",
     {
       "data": "`null`",
-      "expression": "right('abc', 0)",
+      "expression": "right(\"abc\", 0)",
       "expected": ""
     }
   ],
   [
-    "right('abc', -1)",
+    "right(\"abc\", -1)",
     {
       "data": "`null`",
-      "expression": "right('abc', -1)",
+      "expression": "right(\"abc\", -1)",
       "expected": null
     }
   ],
   [
     "right(address.street)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "right(address.street)",
       "expected": "t"
     }
@@ -942,55 +942,55 @@
   [
     "right(missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "right(missing)",
       "expected": ""
     }
   ],
   [
-    "mid('abc', 0, 0)",
+    "mid(\"abc\", 0, 0)",
     {
       "data": "`null`",
-      "expression": "mid('abc', 0, 0)",
+      "expression": "mid(\"abc\", 0, 0)",
       "expected": ""
     }
   ],
   [
-    "mid('abc', 1, 1)",
+    "mid(\"abc\", 1, 1)",
     {
       "data": "`null`",
-      "expression": "mid('abc', 1, 1)",
+      "expression": "mid(\"abc\", 1, 1)",
       "expected": "b"
     }
   ],
   [
-    "mid('abc', 1, 100)",
+    "mid(\"abc\", 1, 100)",
     {
       "data": "`null`",
-      "expression": "mid('abc', 1, 100)",
+      "expression": "mid(\"abc\", 1, 100)",
       "expected": "bc"
     }
   ],
   [
-    "mid('abc', -1, 100)",
+    "mid(\"abc\", -1, 100)",
     {
       "data": "`null`",
-      "expression": "mid('abc', -1, 100)",
+      "expression": "mid(\"abc\", -1, 100)",
       "expected": null
     }
   ],
   [
-    "mid('abc')",
+    "mid(\"abc\")",
     {
       "data": "`null`",
-      "expression": "mid('abc')",
+      "expression": "mid(\"abc\")",
       "error": "syntax"
     }
   ],
   [
     "mid(address.street, 0, 1)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "mid(address.street, 0, 1)",
       "expected": "1"
     }
@@ -998,199 +998,199 @@
   [
     "mid(missing, 0, 1)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "mid(missing, 0, 1)",
       "expected": ""
     }
   ],
   [
-    "left(split('abc', ''))",
+    "left(split(\"abc\", \"\"))",
     {
       "data": "`null`",
-      "expression": "left(split('abc', ''))",
+      "expression": "left(split(\"abc\", \"\"))",
       "expected": ["a"]
     }
   ],
   [
-    "left(split('abc', ''), 1)",
+    "left(split(\"abc\", \"\"), 1)",
     {
       "data": "`null`",
-      "expression": "left(split('abc', ''), 1)",
+      "expression": "left(split(\"abc\", \"\"), 1)",
       "expected": ["a"]
     }
   ],
   [
-    "left(split('abc', ''), 2)",
+    "left(split(\"abc\", \"\"), 2)",
     {
       "data": "`null`",
-      "expression": "left(split('abc', ''), 2)",
+      "expression": "left(split(\"abc\", \"\"), 2)",
       "expected": ["a", "b"]
     }
   ],
   [
-    "left(split('abc', ''), 100)",
+    "left(split(\"abc\", \"\"), 100)",
     {
       "data": "`null`",
-      "expression": "left(split('abc', ''), 100)",
+      "expression": "left(split(\"abc\", \"\"), 100)",
       "expected": ["a","b","c"]
     }
   ],
   [
-    "left(split('abc', ''), 0)",
+    "left(split(\"abc\", \"\"), 0)",
     {
       "data": "`null`",
-      "expression": "left(split('abc', ''), 0)",
+      "expression": "left(split(\"abc\", \"\"), 0)",
       "expected": []
     }
   ],
   [
-    "left(split('abc', ''), -1)",
+    "left(split(\"abc\", \"\"), -1)",
     {
       "data": "`null`",
-      "expression": "left(split('abc', ''), -1)",
+      "expression": "left(split(\"abc\", \"\"), -1)",
       "expected": null
     }
   ],
   [
     "left(split(address.street, ''))",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "left(split(address.street, ''))",
       "expected": ["1"]
     }
   ],
   [
-    "right(split('abc', ''))",
+    "right(split(\"abc\", \"\"))",
     {
       "data": "`null`",
-      "expression": "right(split('abc', ''))",
+      "expression": "right(split(\"abc\", \"\"))",
       "expected": ["c"]
     }
   ],
   [
-    "right(split('abc', ''), 1)",
+    "right(split(\"abc\", \"\"), 1)",
     {
       "data": "`null`",
-      "expression": "right(split('abc', ''), 1)",
+      "expression": "right(split(\"abc\", \"\"), 1)",
       "expected": ["c"]
     }
   ],
   [
-    "right(split('abc', ''), 2)",
+    "right(split(\"abc\", \"\"), 2)",
     {
       "data": "`null`",
-      "expression": "right(split('abc', ''), 2)",
+      "expression": "right(split(\"abc\", \"\"), 2)",
       "expected": ["b", "c"]
     }
   ],
   [
-    "right(split('abc', ''), 100)",
+    "right(split(\"abc\", \"\"), 100)",
     {
       "data": "`null`",
-      "expression": "right(split('abc', ''), 100)",
+      "expression": "right(split(\"abc\", \"\"), 100)",
       "expected": ["a","b","c"]
     }
   ],
   [
-    "right(split('abc', ''), 0)",
+    "right(split(\"abc\", \"\"), 0)",
     {
       "data": "`null`",
-      "expression": "right(split('abc', ''), 0)",
+      "expression": "right(split(\"abc\", \"\"), 0)",
       "expected": []
     }
   ],
   [
-    "right(split('abc', ''), -1)",
+    "right(split(\"abc\", \"\"), -1)",
     {
       "data": "`null`",
-      "expression": "right(split('abc', ''), -1)",
+      "expression": "right(split(\"abc\", \"\"), -1)",
       "expected": null
     }
   ],
   [
     "right(address.street)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "right(split(address.street, ''))",
       "expected": ["t"]
     }
   ],
   [
-    "mid(split('abc', ''), 0, 0)",
+    "mid(split(\"abc\", \"\"), 0, 0)",
     {
       "data": "`null`",
-      "expression": "mid(split('abc', ''), 0, 0)",
+      "expression": "mid(split(\"abc\", \"\"), 0, 0)",
       "expected": []
     }
   ],
   [
-    "mid(split('abc', ''), 1, 1)",
+    "mid(split(\"abc\", \"\"), 1, 1)",
     {
       "data": "`null`",
-      "expression": "mid(split('abc', ''), 1, 1)",
+      "expression": "mid(split(\"abc\", \"\"), 1, 1)",
       "expected": ["b"]
     }
   ],
   [
-    "mid(split('abc', ''), 1, 100)",
+    "mid(split(\"abc\", \"\"), 1, 100)",
     {
       "data": "`null`",
-      "expression": "mid(split('abc', ''), 1, 100)",
+      "expression": "mid(split(\"abc\", \"\"), 1, 100)",
       "expected": ["b", "c"]
     }
   ],
   [
-    "mid(split('abc', ''), -1, 100)",
+    "mid(split(\"abc\", \"\"), -1, 100)",
     {
       "data": "`null`",
-      "expression": "mid(split('abc', ''), -1, 100)",
+      "expression": "mid(split(\"abc\", \"\"), -1, 100)",
       "expected": null
     }
   ],
   [
-    "mid(split('abc', ''))",
+    "mid(split(\"abc\", \"\"))",
     {
       "data": "`null`",
-      "expression": "mid(split('abc', ''))",
+      "expression": "mid(split(\"abc\", \"\"))",
       "error": "syntax"
     }
   ],
   [
-    "mid(split(address.street, ''), 0, 1)",
+    "mid(split(address.street, \"\"), 0, 1)",
     {
-      "data": "samples.\"purchase-order\"",
-      "expression": "mid(split(address.street, ''), 0, 1)",
+      "data": "samples.'purchase-order'",
+      "expression": "mid(split(address.street, \"\"), 0, 1)",
       "expected": ["1"]
     }
   ],
   [
-    "proper('')",
+    "proper(\"\")",
     {
       "data": "`null`",
-      "expression": "proper('')",
+      "expression": "proper(\"\")",
       "expected": ""
     }
   ],
   [
-    "proper('two words')",
+    "proper(\"two words\")",
     {
       "data": "`null`",
-      "expression": "proper('two words')",
+      "expression": "proper(\"two words\")",
       "expected": "Two Words"
     }
   ],
   [
-    "proper('TWO WORDS')",
+    "proper(\"TWO WORDS\")",
     {
       "data": "`null`",
-      "expression": "proper('TWO WORDS')",
+      "expression": "proper(\"TWO WORDS\")",
       "expected": "Two Words"
     }
   ],
   [
     "proper(address.country)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "proper(address.country)",
       "expected": "Usa"
     }
@@ -1198,7 +1198,7 @@
   [
     "proper(missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "proper(missing)",
       "expected": ""
     }
@@ -1212,41 +1212,41 @@
     }
   ],
   [
-    "rept('a', 2)",
+    "rept(\"a\", 2)",
     {
       "data": "`null`",
-      "expression": "rept('a', 2)",
+      "expression": "rept(\"a\", 2)",
       "expected": "aa"
     }
   ],
   [
-    "rept('abc', 2)",
+    "rept(\"abc\", 2)",
     {
       "data": "`null`",
-      "expression": "rept('abc', 2)",
+      "expression": "rept(\"abc\", 2)",
       "expected": "abcabc"
     }
   ],
   [
-    "rept('a', 0)",
+    "rept(\"a\", 0)",
     {
       "data": "`null`",
-      "expression": "rept('a', 0)",
+      "expression": "rept(\"a\", 0)",
       "expected": ""
     }
   ],
   [
-    "rept('a', -1)",
+    "rept(\"a\", -1)",
     {
       "data": "`null`",
-      "expression": "rept('a', -1)",
+      "expression": "rept(\"a\", -1)",
       "expected": null
     }
   ],
   [
     "rept(address.country, items[0].quantity)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "rept(address.country, items[0].quantity)",
       "expected": "USAUSA"
     }
@@ -1254,7 +1254,7 @@
   [
     "rept(address.country,missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "rept(address.country,missing)",
       "expected": ""
     }
@@ -1262,55 +1262,55 @@
   [
     "rept(missing,3)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "rept(missing,3)",
       "expected": ""
     }
   ],
   [
-    "replace('abcdefg', 2, 2, 'yz')",
+    "replace(\"abcdefg\", 2, 2, \"yz\")",
     {
       "data": "`null`",
-      "expression": "replace('abcdefg', 2, 2, 'yz')",
+      "expression": "replace(\"abcdefg\", 2, 2, \"yz\")",
       "expected": "abyzefg"
     }
   ],
   [
-    "replace('abcdefg', 2, 0, 'yz')",
+    "replace(\"abcdefg\", 2, 0, \"yz\")",
     {
       "data": "`null`",
-      "expression": "replace('abcdefg', 2, 0, 'yz')",
+      "expression": "replace(\"abcdefg\", 2, 0, \"yz\")",
       "expected": "abyzcdefg"
     }
   ],
   [
-    "replace('abcdefg', 2, 100, 'yz')",
+    "replace(\"abcdefg\", 2, 100, \"yz\")",
     {
       "data": "`null`",
-      "expression": "replace('abcdefg', 2, 100, 'yz')",
+      "expression": "replace(\"abcdefg\", 2, 100, \"yz\")",
       "expected": "abyz"
     }
   ],
   [
-    "replace('abcdefg', -1, 100, 'yz')",
+    "replace(\"abcdefg\", -1, 100, \"yz\")",
     {
       "data": "`null`",
-      "expression": "replace('abcdefg', -1, 100, 'yz')",
+      "expression": "replace(\"abcdefg\", -1, 100, \"yz\")",
       "expected": null
     }
   ],
   [
-    "replace(address.street,0, 3, '321')",
+    "replace(address.street,0, 3, \"321\")",
     {
-      "data": "samples.\"purchase-order\"",
-      "expression": "replace(address.street,0, 3, '321')",
+      "data": "samples.'purchase-order'",
+      "expression": "replace(address.street,0, 3, \"321\")",
       "expected": "321 Oak Street"
     }
   ],
   [
     "replace(address.street,0, 3, missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "replace(address.street,0, 3, missing)",
       "expected": " Oak Street"
     }
@@ -1318,7 +1318,7 @@
   [
     "replace(missing,0, 1, address.country)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "replace(missing,0, 1, address.country)",
       "expected": "USA"
     }
@@ -1423,7 +1423,7 @@
   [
     "round(items[0].price, 1)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "round(items[0].price, 1)",
       "expected": 3.2
     }
@@ -1431,7 +1431,7 @@
   [
     "round(items[0].price, missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "round(items[0].price, missing)",
       "expected": 3
     }
@@ -1439,7 +1439,7 @@
   [
     "round(missing, 1)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "round(missing, 1)",
       "expected": 0
     }
@@ -1471,7 +1471,7 @@
   [
     "sqrt(items[1].quantity)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "sqrt(items[1].quantity)",
       "expected": 1.7320508075688772
     }
@@ -1479,7 +1479,7 @@
   [
     "sqrt(missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "sqrt(missing)",
       "expected": 0
     }
@@ -1511,7 +1511,7 @@
   [
     "stdev(items[*].quantity)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "stdev(items[*].quantity)",
       "expected": 0.70710678118654760
     }
@@ -1519,7 +1519,7 @@
   [
     "stdev(missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "stdev(missing)",
       "expected": null
     }
@@ -1551,7 +1551,7 @@
   [
     "stdevp(items[*].quantity)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "stdevp(items[*].quantity)",
       "expected": 0.5
     }
@@ -1559,32 +1559,32 @@
   [
     "stdevp(missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "stdevp(missing)",
       "expected": 0,
       "was": null
     }
   ],
   [
-    "trim('  abc  def ghi   ')",
+    "trim(\"  abc  def ghi   \")",
     {
       "data": "`null`",
-      "expression": "trim('  abc  def ghi   ')",
+      "expression": "trim(\"  abc  def ghi   \")",
       "expected": "abc def ghi"
     }
   ],
   [
-    "trim(' \tabc  def ghi   ')",
+    "trim(\" \tabc  def ghi   \")",
     {
       "data": "`null`",
-      "expression": "trim(' \tabc  def ghi   ')",
+      "expression": "trim(\" \tabc  def ghi   \")",
       "expected": "\tabc def ghi"
     }
   ],
   [
     "trim(address.street)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "trim(address.street)",
       "expected": "123 Oak Street"
     }
@@ -1592,7 +1592,7 @@
   [
     "trim(missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "trim(missing)",
       "expected": ""
     }
@@ -1688,7 +1688,7 @@
   [
     "trunc(items[0].price, 1)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "trunc(items[0].price, 1)",
       "expected": 3.2
     }
@@ -1696,7 +1696,7 @@
   [
     "trunc(items[0].price, missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "trunc(items[0].price, missing)",
       "expected": 3
     }
@@ -1704,7 +1704,7 @@
   [
     "trunc(missing, 1)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "trunc(missing, 1)",
       "expected": 0
     }
@@ -1736,47 +1736,47 @@
   [
     "charCode(missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "charCode(missing)",
       "expected": null
     }
   ],
   [
-    "codePoint('\t')",
+    "codePoint(\"\t\")",
     {
       "data": "`null`",
-      "expression": "codePoint('\t')",
+      "expression": "codePoint(\"\t\")",
       "expected": 9
     }
   ],
   [
-    "codePoint('㋿')",
+    "codePoint(\"㋿\")",
     {
       "data": "`null`",
-      "expression": "codePoint('㋿')",
+      "expression": "codePoint(\"㋿\")",
       "expected": 13055
     }
   ],
   [
-    "codePoint('㋿abc')",
+    "codePoint(\"㋿abc\")",
     {
       "data": "`null`",
-      "expression": "codePoint('㋿abc')",
+      "expression": "codePoint(\"㋿abc\")",
       "expected": 13055
     }
   ],
   [
-    "codePoint('')",
+    "codePoint(\"\")",
     {
       "data": "`null`",
-      "expression": "codePoint('')",
+      "expression": "codePoint(\"\")",
       "expected": null
     }
   ],
   [
     "codePoint(missing)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "codePoint(missing)",
       "expected": null
     }
@@ -1784,7 +1784,7 @@
   [
     "codePoint(address.street)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "codePoint(address.street)",
       "expected": 49
     }
@@ -1798,10 +1798,10 @@
     }
   ],
   [
-    "datetime('1970',1,1) | [year(@), month(@), day(@)]",
+    "datetime(\"1970\",1,1) | [year(@), month(@), day(@)]",
     {
       "data": "`null`",
-      "expression": "datetime('1970',1,1) | [year(@), month(@), day(@)]",
+      "expression": "datetime(\"1970\",1,1) | [year(@), month(@), day(@)]",
       "expected": [1970, 1, 1]
     }
   ],
@@ -1878,10 +1878,10 @@
     }
   ],
   [
-    "day(localDate('1970-01-01'))",
+    "day(localDate(\"1970-01-01\"))",
     {
       "data": "null()",
-      "expression": "day(localDate('1970-01-01'))",
+      "expression": "day(localDate(\"1970-01-01\"))",
       "expected": 1
     }
   ],
@@ -1910,10 +1910,10 @@
     }
   ],
   [
-    "month(localDate('1970-01-01'))",
+    "month(localDate(\"1970-01-01\"))",
     {
       "data": "samples.datetime",
-      "expression": "month(localDate('1970-01-01'))",
+      "expression": "month(localDate(\"1970-01-01\"))",
       "expected": 1
     }
   ],
@@ -1942,10 +1942,10 @@
     }
   ],
   [
-    "year(localDate('1970-01-01'))",
+    "year(localDate(\"1970-01-01\"))",
     {
       "data": "samples.datetime",
-      "expression": "year(localDate('1970-01-01'))",
+      "expression": "year(localDate(\"1970-01-01\"))",
       "expected": 1970
     }
   ],
@@ -1966,10 +1966,10 @@
     }
   ],
   [
-    "time('6', '13', '14') | [hour(@), minute(@),  second(@)]",
+    "time(\"6\", \"13\", \"14\") | [hour(@), minute(@),  second(@)]",
     {
       "data": "`null`",
-      "expression": "time('6', '13', '14') | [hour(@), minute(@),  second(@)]",
+      "expression": "time(\"6\", \"13\", \"14\") | [hour(@), minute(@),  second(@)]",
       "expected": [6, 13, 14]
     }
   ],
@@ -2117,82 +2117,82 @@
     }
   ],
   [
-    "weekday(localDate('1970-01-01'))",
+    "weekday(localDate(\"1970-01-01\"))",
     {
       "data": "samples.datetime",
-      "expression": "weekday(localDate('1970-01-01'))",
+      "expression": "weekday(localDate(\"1970-01-01\"))",
       "expected": 5
     }
   ],
   [
-    "weekday(localDate('1970-01-03'))",
+    "weekday(localDate(\"1970-01-03\"))",
     {
       "data": "samples.datetime",
-      "expression": "weekday(localDate('1970-01-03'))",
+      "expression": "weekday(localDate(\"1970-01-03\"))",
       "expected": 7
     }
   ],
   [
-    "weekday(localDate('1969-12-27'))",
+    "weekday(localDate(\"1969-12-27\"))",
     {
       "data": "samples.datetime",
-      "expression": "weekday(localDate('1969-12-27'))",
+      "expression": "weekday(localDate(\"1969-12-27\"))",
       "expected": 7
     }
   ],
   [
-    "weekday(localDate('1970-01-04'))",
+    "weekday(localDate(\"1970-01-04\"))",
     {
       "data": "samples.datetime",
-      "expression": "weekday(localDate('1970-01-04'))",
+      "expression": "weekday(localDate(\"1970-01-04\"))",
       "expected": 1
     }
   ],
   [
-    "weekday(localDate('1970-01-04'), 1)",
+    "weekday(localDate(\"1970-01-04\"), 1)",
     {
       "data": "samples.datetime",
-      "expression": "weekday(localDate('1970-01-04'), 1)",
+      "expression": "weekday(localDate(\"1970-01-04\"), 1)",
       "expected": 1
     }
   ],
   [
-    "weekday(localDate('1970-01-04'), 2)",
+    "weekday(localDate(\"1970-01-04\"), 2)",
     {
       "data": "samples.datetime",
-      "expression": "weekday(localDate('1970-01-04'), 2)",
+      "expression": "weekday(localDate(\"1970-01-04\"), 2)",
       "expected": 7
     }
   ],
   [
-    "weekday(localDate('1970-01-05'), 2)",
+    "weekday(localDate(\"1970-01-05\"), 2)",
     {
       "data": "samples.datetime",
-      "expression": "weekday(localDate('1970-01-05'), 2)",
+      "expression": "weekday(localDate(\"1970-01-05\"), 2)",
       "expected": 1
     }
   ],
   [
-    "weekday(localDate('1970-01-04')), 3)",
+    "weekday(localDate(\"1970-01-04\")), 3)",
     {
       "data": "samples.datetime",
-      "expression": "weekday(localDate('1970-01-04'), 3)",
+      "expression": "weekday(localDate(\"1970-01-04\"), 3)",
       "expected": 6
     }
   ],
   [
-    "weekday(localDate('1970-01-01'), 4)",
+    "weekday(localDate(\"1970-01-01\"), 4)",
     {
       "data": "samples.datetime",
-      "expression": "weekday(localDate('1970-01-01'), 4)",
+      "expression": "weekday(localDate(\"1970-01-01\"), 4)",
       "expected": null
     }
   ],
   [
-    "weekday(localDate('1970-01-01'), -1)",
+    "weekday(localDate(\"1970-01-01\"), -1)",
     {
       "data": "samples.datetime",
-      "expression": "weekday(localDate('1970-01-01'), -1)",
+      "expression": "weekday(localDate(\"1970-01-01\"), -1)",
       "expected": null
     }
   ],
@@ -2243,7 +2243,7 @@
   [
     "ignore functions",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "address.valueOf",
       "expected": null
     }
@@ -2251,7 +2251,7 @@
   [
     "index using expressions",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "items[length(@)-1].desc",
       "expected": "pencils"
     }
@@ -2259,15 +2259,15 @@
   [
     "index objects using strings",
     {
-      "data": "samples.\"purchase-order\"",
-      "expression": "address['street']",
+      "data": "samples.'purchase-order'",
+      "expression": "address[\"street\"]",
       "expected": "123 Oak Street"
     }
   ],
   [
     "index objects using literals",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "address[`street`]",
       "expected": "123 Oak Street"
     }
@@ -2275,7 +2275,7 @@
   [
     "index objects using expressions",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "address[lower(`STREET`)]",
       "expected": "123 Oak Street"
     }
@@ -2292,7 +2292,7 @@
     "entries array",
     {
       "data": "`{}`",
-      "expression": "entries(['a', 1])",
+      "expression": "entries([\"a\", 1])",
       "expected": [["0","a"],["1",1]]
     }
   ],
@@ -2307,7 +2307,7 @@
   [
     "entries string",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "entries(address.country)",
       "expected": [["0", "U"], ["1", "S"], ["2", "A"]]
     }
@@ -2316,14 +2316,14 @@
     "fromEntries list",
     {
       "data": "`{}`",
-      "expression": "fromEntries([['a', 1], ['b', 2, 4], ['a', 3]])",
+      "expression": "fromEntries([[\"a\", 1], [\"b\", 2, 4], [\"a\", 3]])",
       "expected": {"a": 3, "b": 2}
     }
   ],
   [
     "entries",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "entries(address)",
       "expected": [["street", "123 Oak Street"],["city", "San Jose"],["state", "California"],["country", "USA"]]
     }
@@ -2331,7 +2331,7 @@
   [
     "fromEntries",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "fromEntries(entries(address))",
       "expected": {
         "street": "123 Oak Street",
@@ -2342,9 +2342,9 @@
     }
   ],
   [
-    "fromEntries list",
+    "fromEntries list 2",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "fromEntries(address.street)",
       "error": "syntax"
     }
@@ -2352,7 +2352,7 @@
   [
     "fromEntries wrong array",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "fromEntries(items)",
       "error": "syntax"
     }
@@ -2360,15 +2360,15 @@
   [
     "split street",
     {
-      "data": "samples.\"purchase-order\"",
-      "expression": "split(address.street, ' ')",
+      "data": "samples.'purchase-order'",
+      "expression": "split(address.street, \" \")",
       "expected": ["123", "Oak", "Street"]
     }
   ],
   [
     "split country",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "split(address.country, '')",
       "expected": ["U", "S", "A"]
     }
@@ -2376,7 +2376,7 @@
   [
     "split country(2)",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "split(address.country, `null`)",
       "expected": ["U", "S", "A"]
     }
@@ -2384,16 +2384,16 @@
   [
     "split null",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "split(no, where)",
       "expected": []
     }
   ],
   [
-    "split null",
+    "split null 2",
     {
-      "data": "samples.\"purchase-order\"",
-      "expression": "split(address.street, ',')",
+      "data": "samples.'purchase-order'",
+      "expression": "split(address.street, \",\")",
       "expected": ["123 Oak Street"]
     }
   ],
@@ -2440,7 +2440,7 @@
   [
     "array add",
     {
-      "data": "samples.\"purchase-order\".items[*].quantity",
+      "data": "samples.'purchase-order'.items[*].quantity",
       "expression": "@ + 2",
       "expected": [4, 5]
     }
@@ -2448,7 +2448,7 @@
   [
     "mod1",
     {
-      "data": "samples.\"purchase-order\".items[0].quantity",
+      "data": "samples.'purchase-order'.items[0].quantity",
       "expression": "mod(@, 2)",
       "expected": 0
     }
@@ -2464,7 +2464,7 @@
   [
     "union1",
     {
-      "data": "samples.\"purchase-order\".items[*]",
+      "data": "samples.'purchase-order'.items[*]",
       "expression": "[].price ~ [].quantity ~ [].desc",
       "expected": [3.23, 1.34, 2, 3, "pens", "pencils"]
     }
@@ -2472,8 +2472,8 @@
   [
     "union2",
     {
-      "data": "samples.\"purchase-order\".items[*]",
-      "expression": "1 ~ [].quantity ~ '4'",
+      "data": "samples.'purchase-order'.items[*]",
+      "expression": "1 ~ [].quantity ~ \"4\"",
       "expected": [1, 2, 3, "4"]
     }
   ],
@@ -2488,7 +2488,7 @@
   [
     "union bad",
     {
-      "data": "samples.\"purchase-order\".items[*]",
+      "data": "samples.'purchase-order'.items[*]",
       "expression": "[].quantity ~ {a: 4}",
       "error": "syntax"
     }
@@ -2504,200 +2504,200 @@
   [
     "datedif 1d",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-20\"), d2: localDate(samples.datedif.\"2022-06-21\")}",
-      "expression": "datedif(d1, d2, 'd')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-20'), d2: localDate(samples.datedif.'2022-06-21')}",
+      "expression": "datedif(d1, d2, \"d\")",
       "expected": 1
     }
   ],
   [
     "datedif null",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2022-06-20\")}",
-      "expression": "datedif(d1, d2, 'd')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-21'), d2: localDate(samples.datedif.'2022-06-20')}",
+      "expression": "datedif(d1, d2, \"d\")",
       "expected": null
     }
   ],
   [
     "datedif 30d",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2022-07-21\")}",
-      "expression": "datedif(d1, d2, 'd')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-21'), d2: localDate(samples.datedif.'2022-07-21')}",
+      "expression": "datedif(d1, d2, \"d\")",
       "expected": 30
     }
   ],
   [
     "datedif 364d",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2023-06-20\")}",
-      "expression": "datedif(d1, d2, 'd')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-21'), d2: localDate(samples.datedif.'2023-06-20')}",
+      "expression": "datedif(d1, d2, \"d\")",
       "expected": 364
     }
   ],
   [
     "datedif 2963d",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2030-08-01\")}",
-      "expression": "datedif(d1, d2, 'd')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-21'), d2: localDate(samples.datedif.'2030-08-01')}",
+      "expression": "datedif(d1, d2, \"d\")",
       "expected": 2963
     }
   ],
   [
     "datedif 0y",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-20\"), d2: localDate(samples.datedif.\"2022-06-21\")}",
-      "expression": "datedif(d1, d2, 'y')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-20'), d2: localDate(samples.datedif.'2022-06-21')}",
+      "expression": "datedif(d1, d2, \"y\")",
       "expected": 0
     }
   ],
   [
     "datedif 0y",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2022-07-21\")}",
-      "expression": "datedif(d1, d2, 'y')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-21'), d2: localDate(samples.datedif.'2022-07-21')}",
+      "expression": "datedif(d1, d2, \"y\")",
       "expected": 0
     }
   ],
   [
     "datedif 0y",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2023-06-20\")}",
-      "expression": "datedif(d1, d2, 'y')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-21'), d2: localDate(samples.datedif.'2023-06-20')}",
+      "expression": "datedif(d1, d2, \"y\")",
       "expected": 0
     }
   ],
   [
     "datedif 7y",
     {
-      "data": "{d1: localDate(samples.datedif.\"2023-06-21\"), d2: localDate(samples.datedif.\"2030-08-01\")}",
-      "expression": "datedif(d1, d2, 'y')",
+      "data": "{d1: localDate(samples.datedif.'2023-06-21'), d2: localDate(samples.datedif.'2030-08-01')}",
+      "expression": "datedif(d1, d2, \"y\")",
       "expected": 7
     }
   ],
   [
     "datedif 12m",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-20\"), d2: localDate(samples.datedif.\"2022-06-21\")}",
-      "expression": "datedif(d1, d2, 'm')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-20'), d2: localDate(samples.datedif.'2022-06-21')}",
+      "expression": "datedif(d1, d2, \"m\")",
       "expected": 0
     }
   ],
   [
     "datedif 1m",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2022-07-21\")}",
-      "expression": "datedif(d1, d2, 'm')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-21'), d2: localDate(samples.datedif.'2022-07-21')}",
+      "expression": "datedif(d1, d2, \"m\")",
       "expected": 1
     }
   ],
   [
     "datedif 11m",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2023-06-20\")}",
-      "expression": "datedif(d1, d2, 'm')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-21'), d2: localDate(samples.datedif.'2023-06-20')}",
+      "expression": "datedif(d1, d2, \"m\")",
       "expected": 11
     }
   ],
   [
     "datedif 85m",
     {
-      "data": "{d1: localDate(samples.datedif.\"2023-06-21\"), d2: localDate(samples.datedif.\"2030-08-01\")}",
-      "expression": "datedif(d1, d2, 'm')",
+      "data": "{d1: localDate(samples.datedif.'2023-06-21'), d2: localDate(samples.datedif.'2030-08-01')}",
+      "expression": "datedif(d1, d2, \"m\")",
       "expected": 85
     }
   ],
   [
     "datedif 0ym",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-20\"), d2: localDate(samples.datedif.\"2022-06-21\")}",
-      "expression": "datedif(d1, d2, 'ym')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-20'), d2: localDate(samples.datedif.'2022-06-21')}",
+      "expression": "datedif(d1, d2, \"ym\")",
       "expected": 0
     }
   ],
   [
     "datedif 1ym",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2022-07-21\")}",
-      "expression": "datedif(d1, d2, 'ym')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-21'), d2: localDate(samples.datedif.'2022-07-21')}",
+      "expression": "datedif(d1, d2, \"ym\")",
       "expected": 1
     }
   ],
   [
     "datedif 11ym",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2023-06-20\")}",
-      "expression": "datedif(d1, d2, 'ym')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-21'), d2: localDate(samples.datedif.'2023-06-20')}",
+      "expression": "datedif(d1, d2, \"ym\")",
       "expected": 11
     }
   ],
   [
     "datedif 1ym",
     {
-      "data": "{d1: localDate(samples.datedif.\"2023-06-21\"), d2: localDate(samples.datedif.\"2030-08-01\")}",
-      "expression": "datedif(d1, d2, 'ym')",
+      "data": "{d1: localDate(samples.datedif.'2023-06-21'), d2: localDate(samples.datedif.'2030-08-01')}",
+      "expression": "datedif(d1, d2, \"ym\")",
       "expected": 1
     }
   ],
   [
     "datedif 1yd",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-20\"), d2: localDate(samples.datedif.\"2022-06-21\")}",
-      "expression": "datedif(d1, d2, 'yd')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-20'), d2: localDate(samples.datedif.'2022-06-21')}",
+      "expression": "datedif(d1, d2, \"yd\")",
       "expected": 1
     }
   ],
   [
     "datedif 30yd",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2022-07-21\")}",
-      "expression": "datedif(d1, d2, 'yd')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-21'), d2: localDate(samples.datedif.'2022-07-21')}",
+      "expression": "datedif(d1, d2, \"yd\")",
       "expected": 30
     }
   ],
   [
     "datedif 364yd",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-21\"), d2: localDate(samples.datedif.\"2023-06-20\")}",
-      "expression": "datedif(d1, d2, 'yd')",
+      "data": "{d1: localDate(samples.datedif.'2022-06-21'), d2: localDate(samples.datedif.'2023-06-20')}",
+      "expression": "datedif(d1, d2, \"yd\")",
       "expected": 364
     }
   ],
   [
     "datedif 41yd",
     {
-      "data": "{d1: localDate(samples.datedif.\"2023-06-21\"), d2: localDate(samples.datedif.\"2030-08-01\")}",
-      "expression": "datedif(d1, d2, 'yd')",
+      "data": "{d1: localDate(samples.datedif.'2023-06-21'), d2: localDate(samples.datedif.'2030-08-01')}",
+      "expression": "datedif(d1, d2, \"yd\")",
       "expected": 41
     }
   ],
   [
     "eomonth 6-30",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-06-21\")}",
-      "expression": "eomonth(d1, 0) | year(@) & '-' & month(@) & '-' & day(@)",
+      "data": "{d1: localDate(samples.datedif.'2022-06-21')}",
+      "expression": "eomonth(d1, 0) | year(@) & \"-\" & month(@) & \"-\" & day(@)",
       "expected": "2022-6-30"
     }
   ],
   [
     "eomonth 5-31",
     {
-      "data": "{d1: localDate(samples.datedif.\"2022-07-21\")}",
-      "expression": "eomonth(d1, -2) | year(@) & '-' & month(@) & '-' & day(@)",
+      "data": "{d1: localDate(samples.datedif.'2022-07-21')}",
+      "expression": "eomonth(d1, -2) | year(@) & \"-\" & month(@) & \"-\" & day(@)",
       "expected": "2022-5-31"
     }
   ],
   [
     "eomonth 7-31",
     {
-      "data": "{d1: localDate(samples.datedif.\"2023-06-20\")}",
-      "expression": "eomonth(d1, 13) | year(@) & '-' & month(@) & '-' & day(@)",
+      "data": "{d1: localDate(samples.datedif.'2023-06-20')}",
+      "expression": "eomonth(d1, 13) | year(@) & \"-\" & month(@) & \"-\" & day(@)",
       "expected": "2024-7-31"
     }
   ],
   [
     "eomonth 2-29",
     {
-      "data": "{d1: localDate(samples.datedif.\"2030-08-01\")}",
-      "expression": "eomonth(d1, 18) | year(@) & '-' & month(@) & '-' & day(@)",
+      "data": "{d1: localDate(samples.datedif.'2030-08-01')}",
+      "expression": "eomonth(d1, 18) | year(@) & \"-\" & month(@) & \"-\" & day(@)",
       "expected": "2032-2-29"
     }
   ],
@@ -2752,7 +2752,7 @@
   [
     "unique letters",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "unique(values(address.state))",
       "expected": ["C","a","l","i","f","o","r","n"]
     }
@@ -2760,7 +2760,7 @@
   [
     "unique fields",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "unique([address.country,address.country])",
       "expected": ["USA"]
     }
@@ -2769,7 +2769,7 @@
     "unique fields",
     {
       "fieldsOnly": true,
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "unique([address.country, address.country])|[0].$name",
       "expected": "country"
     }
@@ -2777,7 +2777,7 @@
   [
     "unique keys",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "unique([keys(items[0]),keys(items[1])][])",
       "expected": [
         "desc",
@@ -2799,7 +2799,7 @@
     "encodeUrlComponent",
     {
       "data": "{}",
-      "expression": "encodeUrlComponent(';,/?:@&=+$')",
+      "expression": "encodeUrlComponent(\";,/?:@&=+$\")",
       "expected": "%3B%2C%2F%3F%3A%40%26%3D%2B%24"
     }
   ],
@@ -2807,7 +2807,7 @@
     "decodeUrl",
     {
       "data": "{}",
-      "expression": "decodeUrl('https://example.com/?foo=%5Ba%25%5D')",
+      "expression": "decodeUrl(\"https://example.com/?foo=%5Ba%25%5D\")",
       "expected": "https://example.com/?foo=[a%]"
     }
   ],
@@ -2815,15 +2815,15 @@
     "decodeUrlComponent",
     {
       "data": "{}",
-      "expression": "decodeUrlComponent('%3B%2C%2F%3F%3A%40%26%3D%2B%24')",
+      "expression": "decodeUrlComponent(\"%3B%2C%2F%3F%3A%40%26%3D%2B%24\")",
       "expected": ";,/?:@&=+$"
     }
   ],
   [
-    "deepScan(samples, 'desc')",
+    "deepScan(samples, \"desc\")",
     {
       "data": "samples",
-      "expression": "deepScan(\"purchase-order\", 'desc')",
+      "expression": "deepScan('purchase-order', \"desc\")",
       "expected": ["pens", "pencils"]
     }
   ],
@@ -2831,7 +2831,7 @@
     "deepScan(samples, 1)",
     {
       "data": "samples",
-      "expression": "deepScan(\"purchase-order\", 1)",
+      "expression": "deepScan('purchase-order', 1)",
       "expected": [{
         "desc": "pencils",
         "quantity": 3,
@@ -2841,34 +2841,34 @@
     }
   ],
   [
-    "deepScan(null(), 'desc')",
+    "deepScan(null(), \"desc\")",
     {
       "data": "samples",
-      "expression": "deepScan(null(), 'desc')",
+      "expression": "deepScan(null(), \"desc\")",
       "expected": []
     }
   ],
   [
-    "deepScan(address, 'foo')",
+    "deepScan(address, \"foo\")",
     {
-      "data": "samples.\"purchase-order\"",
-      "expression": "deepScan(address, 'foo')",
+      "data": "samples.'purchase-order'",
+      "expression": "deepScan(address, \"foo\")",
       "expected": []
     }
   ],
   [
-    "deepScan([{a1: [address]}, {a2: [address]}], 'street'), 'street')",
+    "deepScan([{a1: [address]}, {a2: [address]}], \"street\"), \"street\")",
     {
-      "data": "samples.\"purchase-order\"",
-      "expression": "deepScan([{a1: [address]}, {a2: [address]}], 'street')",
+      "data": "samples.'purchase-order'",
+      "expression": "deepScan([{a1: [address]}, {a2: [address]}], \"street\")",
       "expected": ["123 Oak Street", "123 Oak Street"]
     }
   ],
   [
     "search1",
     {
-      "data": "samples.\"purchase-order\"",
-      "expression": "search('?Oak?', address.street)",
+      "data": "samples.'purchase-order'",
+      "expression": "search(\"?Oak?\", address.street)",
       "expected": [3, " Oak "]
     }
   ],
@@ -2876,7 +2876,7 @@
     "search2",
     {
       "data": "`{}`",
-      "expression": "search('.\\^$(+{]', 'pad.\\^$(+{]')",
+      "expression": "search(\".\\^$(+{]\", \"pad.\\^$(+{]\")",
       "expected": [3, ".\\^$(+{]"]
     }
   ],
@@ -2884,7 +2884,7 @@
     "search3",
     {
       "data": "`{}`",
-      "expression": "search('a?b', 'bcd')",
+      "expression": "search(\"a?b\", \"bcd\")",
       "expected": []
     }
   ],
@@ -2892,7 +2892,7 @@
     "search4",
     {
       "data": "`{}`",
-      "expression": "search('*', 'bcd')",
+      "expression": "search(\"*\", \"bcd\")",
       "expected": [0, ""]
     }
   ],
@@ -2900,7 +2900,7 @@
     "search5",
     {
       "data": "`{}`",
-      "expression": "search('*', '')",
+      "expression": "search(\"*\", \"\")",
       "expected": []
     }
   ],
@@ -2908,7 +2908,7 @@
     "search6",
     {
       "data": "`{}`",
-      "expression": "search('', 'bcd')",
+      "expression": "search(\"\", \"bcd\")",
       "expected": [0, ""]
     }
   ],
@@ -2916,7 +2916,7 @@
     "search7",
     {
       "data": "`{}`",
-      "expression": "search('', '')",
+      "expression": "search(\"\", \"\")",
       "expected": []
     }
   ],
@@ -2924,7 +2924,7 @@
     "search8",
     {
       "data": "`{}`",
-      "expression": "search('a~~c', 'pada~c')",
+      "expression": "search(\"a~~c\", \"pada~c\")",
       "expected": [3, "a~c"]
     }
   ],
@@ -2932,7 +2932,7 @@
     "search9",
     {
       "data": "`{}`",
-      "expression": "search('a~~~?c', 'pada~?c', 3)",
+      "expression": "search(\"a~~~?c\", \"pada~?c\", 3)",
       "expected": [3, "a~?c"]
     }
   ],
@@ -2940,7 +2940,7 @@
     "search10",
     {
       "data": "`{}`",
-      "expression": "search('a~?~?c', 'pada??c', 2)",
+      "expression": "search(\"a~?~?c\", \"pada??c\", 2)",
       "expected": [3, "a??c"]
     }
   ],
@@ -2948,7 +2948,7 @@
     "search11",
     {
       "data": "`{}`",
-      "expression": "search('a~*~*c', 'pada**c')",
+      "expression": "search(\"a~*~*c\", \"pada**c\")",
       "expected": [3, "a**c"]
     }
   ],
@@ -2956,7 +2956,7 @@
     "search12",
     {
       "data": "`{}`",
-      "expression": "search('a*c??c', 'padacabc')",
+      "expression": "search(\"a*c??c\", \"padacabc\")",
       "expected": [1, "adacabc"]
     }
   ],
@@ -2964,7 +2964,7 @@
     "search13",
     {
       "data": "`{}`",
-      "expression": "search('a*c*c', 'padacabc')",
+      "expression": "search(\"a*c*c\", \"padacabc\")",
       "expected": [1, "adacabc"]
     }
   ],
@@ -2972,7 +2972,7 @@
     "search14",
     {
       "data": "`{}`",
-      "expression": "search('a*c', 'padacabc', 2)",
+      "expression": "search(\"a*c\", \"padacabc\", 2)",
       "expected": [3, "ac"]
     }
   ],
@@ -2980,7 +2980,7 @@
     "search15",
     {
       "data": "`{}`",
-      "expression": "search('a?c', 'padacabc')",
+      "expression": "search(\"a?c\", \"padacabc\")",
       "expected": [5, "abc"]
     }
   ],
@@ -2988,7 +2988,7 @@
     "search16",
     {
       "data": "`{}`",
-      "expression": "search(')]', 'pad[()]')",
+      "expression": "search(\")]\", \"pad[()]\")",
       "expected": [5, ")]"]
     }
   ],
@@ -2996,7 +2996,7 @@
     "search17",
     {
       "data": "`{}`",
-      "expression": "search('.\\^$(+{]', 'pada.\\^$(+{]b')",
+      "expression": "search(\".\\^$(+{]\", \"pada.\\^$(+{]b\")",
       "expected": [4, ".\\^$(+{]"]
     }
   ],
@@ -3004,7 +3004,7 @@
     "search18",
     {
       "data": "`{}`",
-      "expression": "search('', null)",
+      "expression": "search(\"\", null)",
       "expected": []
     }
   ],
@@ -3012,7 +3012,7 @@
     "search19",
     {
       "data": "`{}`",
-      "expression": "search('', null)",
+      "expression": "search(\"\", null)",
       "expected": []
     }
   ],
@@ -3033,7 +3033,7 @@
     "registered function",
     {
       "data": "`{\"array\": [\"a\", \"b\", \"c\", \"d\", \"a\", \"b\"]}`",
-      "expression": "merge(register('summarize', &42), summarize(array))",
+      "expression": "merge(register(\"summarize\", &42), summarize(array))",
       "expected": {
         "a": 2,
         "b": 2,
@@ -3054,7 +3054,7 @@
     "register 2 functions",
     {
       "data": "`{}`",
-      "expression": "merge(register('p1', &42), register('p2', &43), {r: p1() + p2()})",
+      "expression": "merge(register(\"p1\", &42), register(\"p2\", &43), {r: p1() + p2()})",
       "expected": {
         "r": 85
       }
@@ -3063,7 +3063,7 @@
   [
     "global access",
     {
-      "data": "samples.\"purchase-order\"",
+      "data": "samples.'purchase-order'",
       "expression": "items[$-42].quantity",
       "expected": 2
     }

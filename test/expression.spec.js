@@ -33,7 +33,7 @@ returns:
 }
 */
 jsonFormula.search(
-  `register('summarize',
+  `register("summarize",
     &reduce(
       &merge(accumulated, fromEntries([[current, 1 + value(accumulated, current)]])),
       @,
@@ -49,8 +49,8 @@ Register the 'localDate' function.  Given:
 */
 jsonFormula.search(
   `register(
-    'localDate',
-    &split(@, '-') | datetime(@[0], @[1], @[2]))`,
+    "localDate",
+    &split(@, "-") | datetime(@[0], @[1], @[2]))`,
   {},
 );
 
@@ -59,11 +59,15 @@ Register the 'product' function to multiply two parameters.
 product([4,5]) // 20
 */
 jsonFormula.search(
-  'register(\'product\', &@[0] * [1])',
+  'register("product", &@[0] * [1])',
   {},
 );
 
-test.each(tests)('%s', (_desc, tst) => {
+// in case running only specific tests update the filter clause
+const filterClause = ([_desc, tst]) => true
+const filtered = tests.filter(filterClause)
+
+test.each(filtered)('%s', (_desc, tst) => {
   if (tst.fieldsOnly) return;
   const language = tst.language || 'en-US';
   const data = jsonFormula.search(tst.data, sampleData, {}, language);
@@ -82,7 +86,7 @@ test.each(tests)('%s', (_desc, tst) => {
 });
 
 // run again -- with field definitions
-test.each(tests)('%s', (_desc, tst) => {
+test.each(filtered)('%s', (_desc, tst) => {
   const language = tst.language || 'en-US';
   const data = jsonFormula.search(tst.data, sampleData, {}, language);
   let jsonResult;

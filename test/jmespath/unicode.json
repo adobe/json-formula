@@ -3,7 +3,7 @@
         "given": {"foo": [{"✓": "✓"}, {"✓": "✗"}]},
         "cases": [
             {
-                "expression": "foo[].\"✓\"",
+                "expression": "foo[].'✓'",
                 "result": ["✓", "✗"]
             }
         ]
@@ -12,7 +12,7 @@
         "given": {"☯": true},
         "cases": [
             {
-                "expression": "\"☯\"",
+                "expression": "'☯'",
                 "result": true
             }
         ]
@@ -21,7 +21,7 @@
         "given": {"♪♫•*¨*•.¸¸❤¸¸.•*¨*•♫♪": true},
         "cases": [
             {
-                "expression": "\"♪♫•*¨*•.¸¸❤¸¸.•*¨*•♫♪\"",
+                "expression": "'♪♫•*¨*•.¸¸❤¸¸.•*¨*•♫♪'",
                 "result": true
             }
         ]
@@ -30,7 +30,7 @@
         "given": {"☃": true},
         "cases": [
             {
-                "expression": "\"☃\"",
+                "expression": "'☃'",
                 "result": true
             }
         ]

@@ -11,35 +11,35 @@
      },
      "cases": [
          {
-            "expression": "\"foo.bar\"",
+            "expression": "'foo.bar'",
             "result": "dot"
          },
          {
-            "expression": "\"foo bar\"",
+            "expression": "'foo bar'",
             "result": "space"
          },
          {
-            "expression": "\"foo\\nbar\"",
+            "expression": "'foo\\nbar'",
             "result": "newline"
          },
          {
-            "expression": "\"foo\\\"bar\"",
+            "expression": "'foo\\\"bar'",
             "result": "doublequote"
          },
          {
-            "expression": "\"c:\\\\\\\\windows\\\\path\"",
+            "expression": "'c:\\\\\\\\windows\\\\path'",
             "result": "windows"
          },
          {
-            "expression": "\"/unix/path\"",
+            "expression": "'/unix/path'",
             "result": "unix"
          },
          {
-            "expression": "\"\\\"\\\"\\\"\"",
+            "expression": "'\\\"\\\"\\\"'",
             "result": "threequotes"
          },
          {
-            "expression": "\"bar\".\"baz\"",
+            "expression": "'bar'.'baz'",
             "result": "qux"
          }
      ]

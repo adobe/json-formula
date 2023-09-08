@@ -20,7 +20,7 @@
       "result": 11
     },
     {
-      "expression": "reduce(&@.accumulated & @.current, strings, ':')",
+      "expression": "reduce(&@.accumulated & @.current, strings, \":\")",
       "result": ":abc"
     },
     {
@@ -32,11 +32,11 @@
       "result": {"odd": 3, "even": 1}
     },
     {
-      "expression": "reduce(&value(`{\"0\":0,\"1\":1,\"2\":2,\"3\":3,\"4\":4,\"5\":5,\"6\":6,\"7\":7,\"8\":8,\"9\":9,\"A\":10,\"B\":11,\"C\":12,\"D\":13,\"E\":14,\"F\":15}`, @.current) + 16*@.accumulated, split('A2',''), 0)",
+      "expression": "reduce(&value(`{\"0\":0,\"1\":1,\"2\":2,\"3\":3,\"4\":4,\"5\":5,\"6\":6,\"7\":7,\"8\":8,\"9\":9,\"A\":10,\"B\":11,\"C\":12,\"D\":13,\"E\":14,\"F\":15}`, @.current) + 16*@.accumulated, split(\"A2\",\"\"), 0)",
       "result": 162
     },
     {
-      "expression": "reduce(&if(@.current == 'apple', @.index, @.accumulated), ['orange', 'apple', 'banana'], -1)",
+      "expression": "reduce(&if(@.current == \"apple\", @.index, @.accumulated), [\"orange\", \"apple\", \"banana\"], -1)",
       "result": 1
     },
     {
@@ -138,25 +138,25 @@
       "result": -1
     },
     {
-      "expression": "ceil('string')",
+      "expression": "ceil(\"string\")",
       "result": 0,
       "was": "invalid-type"
     },
     {
-      "expression": "contains('abc', 'a')",
+      "expression": "contains(\"abc\", \"a\")",
       "result": true
     },
     {
-      "expression": "contains('abc', 'd')",
+      "expression": "contains(\"abc\", \"d\")",
       "result": false
     },
     {
-      "expression": "contains(`false`, 'd')",
+      "expression": "contains(`false`, \"d\")",
       "result": false,
       "was": "invalid-type"
     },
     {
-      "expression": "contains(strings, 'a')",
+      "expression": "contains(strings, \"a\")",
       "result": true
     },
     {
@@ -168,23 +168,23 @@
       "result": false
     },
     {
-      "expression": "endsWith(str, 'r')",
+      "expression": "endsWith(str, \"r\")",
       "result": true
     },
     {
-      "expression": "endsWith(str, 'tr')",
+      "expression": "endsWith(str, \"tr\")",
       "result": true
     },
     {
-      "expression": "endsWith(str, 'Str')",
+      "expression": "endsWith(str, \"Str\")",
       "result": true
     },
     {
-      "expression": "endsWith(str, 'SStr')",
+      "expression": "endsWith(str, \"SStr\")",
       "result": false
     },
     {
-      "expression": "endsWith(str, 'foo')",
+      "expression": "endsWith(str, \"foo\")",
       "result": false
     },
     {
@@ -197,7 +197,7 @@
       "result": 1
     },
     {
-      "expression": "floor('string')",
+      "expression": "floor(\"string\")",
       "result": 0,
       "was": "invalid-type"
     },
@@ -215,15 +215,15 @@
       "was": "invalid-type"
     },
     {
-      "expression": "length('abc')",
+      "expression": "length(\"abc\")",
       "result": 3
     },
     {
-      "expression": "length('✓foo')",
+      "expression": "length(\"✓foo\")",
       "result": 4
     },
     {
-      "expression": "length('')",
+      "expression": "length(\"\")",
       "result": 0
     },
     {
@@ -291,15 +291,15 @@
       "result": null
     },
     {
-      "expression": "max(strings, ['A', 'B', 'C'])",
+      "expression": "max(strings, [\"A\", \"B\", \"C\"])",
       "result": "C"
     },
     {
-      "expression": "max(['D', 'E', 'F'], ['A', 'B', 'C'])",
+      "expression": "max([\"D\", \"E\", \"F\"], [\"A\", \"B\", \"C\"])",
       "result": "F"
     },
     {
-      "expression": "max(empty_list, 'a')",
+      "expression": "max(empty_list, \"a\")",
       "result": "a"
     },
     {
@@ -311,7 +311,7 @@
       "result": 2
     },
     {
-      "expression": "max([1, '2'])",
+      "expression": "max([1, \"2\"])",
       "result": 2
     },
     {
@@ -365,15 +365,15 @@
       "result": "a"
     },
     {
-      "expression": "min(strings, ['A', 'B', 'C'])",
+      "expression": "min(strings, [\"A\", \"B\", \"C\"])",
       "result": "a"
     },
     {
-      "expression": "min(['D', 'E', 'F'], ['A', 'B', 'C'])",
+      "expression": "min([\"D\", \"E\", \"F\"], [\"A\", \"B\", \"C\"])",
       "result": "A"
     },
     {
-      "expression": "min(empty_list, 'a')",
+      "expression": "min(empty_list, \"a\")",
       "result": "a"
     },
     {
@@ -385,11 +385,11 @@
       "result": -2
     },
     {
-      "expression": "min(`null`, 23, '21')",
+      "expression": "min(`null`, 23, \"21\")",
       "result": 21
     },
     {
-      "expression": "type('abc')",
+      "expression": "type(\"abc\")",
       "result": "string"
     },
     {
@@ -465,29 +465,29 @@
       "result": []
     },
     {
-      "expression": "join(', ', strings)",
+      "expression": "join(\", \", strings)",
       "result": "a, b, c"
     },
     {
-      "expression": "join(', ', strings)",
+      "expression": "join(\", \", strings)",
       "result": "a, b, c"
     },
     {
-      "expression": "join(',', `[\"a\", \"b\"]`)",
+      "expression": "join(\",\", `[\"a\", \"b\"]`)",
       "result": "a,b"
     },
     {
-      "expression": "join(',', `[\"a\", 0]`)",
+      "expression": "join(\",\", `[\"a\", 0]`)",
       "result": "a,0",
       "was": "invalid-type"
     },
     {
-      "expression": "join(', ', str)",
+      "expression": "join(\", \", str)",
       "result": "Str",
       "was": "invalid-type"
     },
     {
-      "expression": "join('|', strings)",
+      "expression": "join(\"|\", strings)",
       "result": "a|b|c"
     },
     {
@@ -496,16 +496,16 @@
       "was": "invalid-type"
     },
     {
-      "expression": "join('|', decimals)",
+      "expression": "join(\"|\", decimals)",
       "result": "1.01|1.2|-1.5",
       "was": "invalid-type"
     },
     {
-      "expression": "join('|', decimals[].toString(@))",
+      "expression": "join(\"|\", decimals[].toString(@))",
       "result": "1.01|1.2|-1.5"
     },
     {
-      "expression": "join('|', empty_list)",
+      "expression": "join(\"|\", empty_list)",
       "result": ""
     },
     {
@@ -521,31 +521,31 @@
       "result": []
     },
     {
-      "expression": "reverse('')",
+      "expression": "reverse(\"\")",
       "result": ""
     },
     {
-      "expression": "reverse('hello world')",
+      "expression": "reverse(\"hello world\")",
       "result": "dlrow olleh"
     },
     {
-      "expression": "startsWith(str, 'S')",
+      "expression": "startsWith(str, \"S\")",
       "result": true
     },
     {
-      "expression": "startsWith(str, 'St')",
+      "expression": "startsWith(str, \"St\")",
       "result": true
     },
     {
-      "expression": "startsWith(str, 'Str')",
+      "expression": "startsWith(str, \"Str\")",
       "result": true
     },
     {
-      "expression": "startsWith(str, 'String')",
+      "expression": "startsWith(str, \"String\")",
       "result": false
     },
     {
-      "expression": "startsWith('ALABAMA', 'A')",
+      "expression": "startsWith(\"ALABAMA\", \"A\")",
       "result": true
     },
     {
@@ -575,7 +575,7 @@
       "result": 0
     },
     {
-      "expression": "toArray('foo')",
+      "expression": "toArray(\"foo\")",
       "result": ["foo"]
     },
     {
@@ -595,7 +595,7 @@
       "result": [false]
     },
     {
-      "expression": "toString('foo')",
+      "expression": "toString(\"foo\")",
       "result": "foo"
     },
     {
@@ -607,19 +607,19 @@
       "result": "[0,1]"
     },
     {
-      "expression": "toNumber('1.0')",
+      "expression": "toNumber(\"1.0\")",
       "result": 1.0
     },
     {
-      "expression": "toNumber('1.1')",
+      "expression": "toNumber(\"1.1\")",
       "result": 1.1
     },
     {
-      "expression": "toNumber('4')",
+      "expression": "toNumber(\"4\")",
       "result": 4
     },
     {
-      "expression": "toNumber('notanumber')",
+      "expression": "toNumber(\"notanumber\")",
       "result": 0,
       "was": null
     },
