@@ -9,6 +9,8 @@ functions and operators and [JMESPath](https://jmespath.org/) a JSON query langu
 Visit the [Playground](https://opensource.adobe.com/json-formula/dist/index.html)
 
 # Documentation
+[Specification](https://opensource.adobe.com/json-formula/dist/spec.html)
+
 [Function Reference](https://opensource.adobe.com/json-formula/dist/jsdocs/global.html)
 
 [JS API](https://opensource.adobe.com/json-formula/dist/jsdocs/index.html)
@@ -19,7 +21,11 @@ NOTES:
 
 # Setup
 
-Follow the 'Quick Start' instructions at: https://www.antlr.org/ to install the antlr generator
+~~Follow the 'Quick Start' instructions at: https://www.antlr.org/ to install the antlr generator~~
+
+We must install an older version of antlr4 (until the npm-based runtime gets fixed)
+Download: https://www.antlr.org/download/antlr-4.9.2-complete.jar
+and copy it to: `/usr/local/lib/`
 
 > npm install
 > npm start

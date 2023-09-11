@@ -2,5 +2,26 @@
   "antlr4.generation": {
     "language": "JavaScript"
   },
-  "git.ignoreLimitWarning": true
+  "git.ignoreLimitWarning": true,
+  "cSpell.words": [
+    "ABNF",
+    "argname",
+    "arity",
+    "cssclass",
+    "dcba",
+    "EXPREF",
+    "firstbar",
+    "foobarbaz",
+    "HEXDIG",
+    "javac",
+    "jmespath",
+    "keyval",
+    "mylist",
+    "mytype",
+    "notanumber",
+    "openformula",
+    "paren",
+    "prejsdocs",
+    "Saryerwinnie"
+  ]
 }

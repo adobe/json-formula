@@ -1,12 +1,12 @@
 {
   "name": "@adobe/json-formula",
-  "version": "0.1.47",
+  "version": "0.1.53",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "@adobe/json-formula",
-      "version": "0.1.47",
+      "version": "0.1.53",
       "license": "Apache-2.0",
       "devDependencies": {
         "@babel/core": "^7.20.2",
@@ -14,6 +14,7 @@
         "@babel/node": "^7.20.2",
         "@babel/preset-env": "^7.20.2",
         "antlr4": "4.11.0",
+        "asciidoctor": "^3.0.2",
         "babel-loader": "^9.1.0",
         "better-docs": "^2.7.2",
         "copy-webpack-plugin": "^11.0.0",
@@ -47,6 +48,128 @@
       },
       "engines": {
         "node": ">=6.0.0"
+      }
+    },
+    "node_modules/@asciidoctor/cli": {
+      "version": "4.0.0",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/@asciidoctor/cli/-/cli-4.0.0.tgz",
+      "integrity": "sha512-x2T9gW42921Zd90juEagtbViPZHNP2MWf0+6rJEkOzW7E9m3TGJtz+Guye9J0gwrpZsTMGCpfYMQy1We3X7osg==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "yargs": "17.3.1"
+      },
+      "bin": {
+        "asciidoctor": "bin/asciidoctor",
+        "asciidoctorjs": "bin/asciidoctor"
+      },
+      "engines": {
+        "node": ">=16",
+        "npm": ">=8.0.0"
+      },
+      "peerDependencies": {
+        "@asciidoctor/core": ">=2 <4"
+      }
+    },
+    "node_modules/@asciidoctor/cli/node_modules/yargs": {
+      "version": "17.3.1",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/yargs/-/yargs-17.3.1.tgz",
+      "integrity": "sha512-WUANQeVgjLbNsEmGk20f+nlHgOqzRFpiGWVaBrYGYIGANIIu3lWjoyi0fNlFmJkvfhCZ6BXINe7/W2O2bV4iaA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "cliui": "^7.0.2",
+        "escalade": "^3.1.1",
+        "get-caller-file": "^2.0.5",
+        "require-directory": "^2.1.1",
+        "string-width": "^4.2.3",
+        "y18n": "^5.0.5",
+        "yargs-parser": "^21.0.0"
+      },
+      "engines": {
+        "node": ">=12"
+      }
+    },
+    "node_modules/@asciidoctor/cli/node_modules/yargs-parser": {
+      "version": "21.1.1",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/yargs-parser/-/yargs-parser-21.1.1.tgz",
+      "integrity": "sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==",
+      "dev": true,
+      "license": "ISC",
+      "engines": {
+        "node": ">=12"
+      }
+    },
+    "node_modules/@asciidoctor/core": {
+      "version": "3.0.2",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/@asciidoctor/core/-/core-3.0.2.tgz",
+      "integrity": "sha512-GbQWpqLlM/kN+90QrlLYISdU/vbGkUSeHsBQR9BzYNmVHDd6CEb/xfQZIFUo//EtT7e+QS3Sv3yYDzgjr96TbA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@asciidoctor/opal-runtime": "3.0.1",
+        "unxhr": "1.2.0"
+      },
+      "engines": {
+        "node": ">=16",
+        "npm": ">=8"
+      }
+    },
+    "node_modules/@asciidoctor/opal-runtime": {
+      "version": "3.0.1",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/@asciidoctor/opal-runtime/-/opal-runtime-3.0.1.tgz",
+      "integrity": "sha512-iW7ACahOG0zZft4A/4CqDcc7JX+fWRNjV5tFAVkNCzwZD+EnFolPaUOPYt8jzadc0+Bgd80cQTtRMQnaaV1kkg==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "glob": "8.1.0",
+        "unxhr": "1.2.0"
+      },
+      "engines": {
+        "node": ">=16"
+      }
+    },
+    "node_modules/@asciidoctor/opal-runtime/node_modules/brace-expansion": {
+      "version": "2.0.1",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/brace-expansion/-/brace-expansion-2.0.1.tgz",
+      "integrity": "sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "balanced-match": "^1.0.0"
+      }
+    },
+    "node_modules/@asciidoctor/opal-runtime/node_modules/glob": {
+      "version": "8.1.0",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/glob/-/glob-8.1.0.tgz",
+      "integrity": "sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==",
+      "dev": true,
+      "license": "ISC",
+      "dependencies": {
+        "fs.realpath": "^1.0.0",
+        "inflight": "^1.0.4",
+        "inherits": "2",
+        "minimatch": "^5.0.1",
+        "once": "^1.3.0"
+      },
+      "engines": {
+        "node": ">=12"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/isaacs"
+      }
+    },
+    "node_modules/@asciidoctor/opal-runtime/node_modules/minimatch": {
+      "version": "5.1.6",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/minimatch/-/minimatch-5.1.6.tgz",
+      "integrity": "sha512-lKwV/1brpG6mBUFHtb7NUmtABCb2WZZmm2wNiOA5hAb8VdCS4B3dtMWyvcoViccwAW/COERjXLt0zP1zXUN26g==",
+      "dev": true,
+      "license": "ISC",
+      "dependencies": {
+        "brace-expansion": "^2.0.1"
+      },
+      "engines": {
+        "node": ">=10"
       }
     },
     "node_modules/@babel/code-frame": {
@@ -3516,6 +3639,13 @@
       "integrity": "sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==",
       "dev": true
     },
+    "node_modules/a-sync-waterfall": {
+      "version": "1.0.1",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/a-sync-waterfall/-/a-sync-waterfall-1.0.1.tgz",
+      "integrity": "sha512-RYTOHHdWipFUliRFMCS4X2Yn2X8M87V/OpSqWzKKOGhzqyUxzyVmhHDH9sAvG+ZuQf/TAOFsLCpMw09I1ufUnA==",
+      "dev": true,
+      "license": "MIT"
+    },
     "node_modules/abab": {
       "version": "2.0.6",
       "resolved": "https://registry.npmjs.org/abab/-/abab-2.0.6.tgz",
@@ -3877,6 +4007,29 @@
       "integrity": "sha512-BSHWgDSAiKs50o2Re8ppvp3seVHXSRM44cdSsT9FfNEUUZLOGWVCsiWaRPWM1Znn+mqZ1OfVZ3z3DWEzSp7hRA==",
       "dev": true
     },
+    "node_modules/asciidoctor": {
+      "version": "3.0.2",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/asciidoctor/-/asciidoctor-3.0.2.tgz",
+      "integrity": "sha512-Au4L8tlwzvxP9y6cisTC/OZJbOUL7ii1jPW3li/XZWk8ZQrGdzbTFB9rN782V4dXxJoYKbcuHF8cBRQDg5+w9Q==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@asciidoctor/cli": "4.0.0",
+        "@asciidoctor/core": "3.0.2",
+        "ejs": "^3.1.2",
+        "handlebars": "^4.7.6",
+        "nunjucks": "^3.2.1",
+        "pug": "^2.0.4"
+      },
+      "bin": {
+        "asciidoctor": "bin/asciidoctor",
+        "asciidoctorjs": "bin/asciidoctor"
+      },
+      "engines": {
+        "node": ">=16",
+        "npm": ">=8"
+      }
+    },
     "node_modules/ast-types": {
       "version": "0.14.2",
       "resolved": "https://registry.npmjs.org/ast-types/-/ast-types-0.14.2.tgz",
@@ -3888,6 +4041,13 @@
       "engines": {
         "node": ">=4"
       }
+    },
+    "node_modules/async": {
+      "version": "3.2.4",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/async/-/async-3.2.4.tgz",
+      "integrity": "sha512-iAB+JbDEGXhyIUavoDl9WP/Jj106Kz9DEn1DPgYw5ruDn0e3Wgi3sKFm55sASdGBNOQB8F59d9qQ7deqrHA8wQ==",
+      "dev": true,
+      "license": "MIT"
     },
     "node_modules/asynckit": {
       "version": "0.4.0",
@@ -5529,6 +5689,22 @@
       "integrity": "sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==",
       "dev": true
     },
+    "node_modules/ejs": {
+      "version": "3.1.9",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/ejs/-/ejs-3.1.9.tgz",
+      "integrity": "sha512-rC+QVNMJWv+MtPgkt0y+0rVEIdbtxVADApW9JXrUVlzHetgcyczP/E7DJmWJ4fJCZF2cPcBk0laWO9ZHMG3DmQ==",
+      "dev": true,
+      "license": "Apache-2.0",
+      "dependencies": {
+        "jake": "^10.8.5"
+      },
+      "bin": {
+        "ejs": "bin/cli.js"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      }
+    },
     "node_modules/electron-to-chromium": {
       "version": "1.4.284",
       "resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.284.tgz",
@@ -6528,6 +6704,39 @@
       "resolved": "https://registry.npmjs.org/array-back/-/array-back-5.0.0.tgz",
       "integrity": "sha512-kgVWwJReZWmVuWOQKEOohXKJX+nD02JAZ54D1RRWlv8L0NebauKAaFxACKzB74RTclt1+WNz5KHaLRDAPZbDEw==",
       "dev": true,
+      "engines": {
+        "node": ">=10"
+      }
+    },
+    "node_modules/filelist": {
+      "version": "1.0.4",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/filelist/-/filelist-1.0.4.tgz",
+      "integrity": "sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==",
+      "dev": true,
+      "license": "Apache-2.0",
+      "dependencies": {
+        "minimatch": "^5.0.1"
+      }
+    },
+    "node_modules/filelist/node_modules/brace-expansion": {
+      "version": "2.0.1",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/brace-expansion/-/brace-expansion-2.0.1.tgz",
+      "integrity": "sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "balanced-match": "^1.0.0"
+      }
+    },
+    "node_modules/filelist/node_modules/minimatch": {
+      "version": "5.1.6",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/minimatch/-/minimatch-5.1.6.tgz",
+      "integrity": "sha512-lKwV/1brpG6mBUFHtb7NUmtABCb2WZZmm2wNiOA5hAb8VdCS4B3dtMWyvcoViccwAW/COERjXLt0zP1zXUN26g==",
+      "dev": true,
+      "license": "ISC",
+      "dependencies": {
+        "brace-expansion": "^2.0.1"
+      },
       "engines": {
         "node": ">=10"
       }
@@ -7947,6 +8156,101 @@
       "dependencies": {
         "html-escaper": "^2.0.0",
         "istanbul-lib-report": "^3.0.0"
+      },
+      "engines": {
+        "node": ">=8"
+      }
+    },
+    "node_modules/jake": {
+      "version": "10.8.7",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/jake/-/jake-10.8.7.tgz",
+      "integrity": "sha512-ZDi3aP+fG/LchyBzUM804VjddnwfSfsdeYkwt8NcbKRvo4rFkjhs456iLFn3k2ZUWvNe4i48WACDbza8fhq2+w==",
+      "dev": true,
+      "license": "Apache-2.0",
+      "dependencies": {
+        "async": "^3.2.3",
+        "chalk": "^4.0.2",
+        "filelist": "^1.0.4",
+        "minimatch": "^3.1.2"
+      },
+      "bin": {
+        "jake": "bin/cli.js"
+      },
+      "engines": {
+        "node": ">=10"
+      }
+    },
+    "node_modules/jake/node_modules/ansi-styles": {
+      "version": "4.3.0",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/ansi-styles/-/ansi-styles-4.3.0.tgz",
+      "integrity": "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "color-convert": "^2.0.1"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "funding": {
+        "url": "https://github.com/chalk/ansi-styles?sponsor=1"
+      }
+    },
+    "node_modules/jake/node_modules/chalk": {
+      "version": "4.1.2",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/chalk/-/chalk-4.1.2.tgz",
+      "integrity": "sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "ansi-styles": "^4.1.0",
+        "supports-color": "^7.1.0"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "funding": {
+        "url": "https://github.com/chalk/chalk?sponsor=1"
+      }
+    },
+    "node_modules/jake/node_modules/color-convert": {
+      "version": "2.0.1",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/color-convert/-/color-convert-2.0.1.tgz",
+      "integrity": "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "color-name": "~1.1.4"
+      },
+      "engines": {
+        "node": ">=7.0.0"
+      }
+    },
+    "node_modules/jake/node_modules/color-name": {
+      "version": "1.1.4",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/color-name/-/color-name-1.1.4.tgz",
+      "integrity": "sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/jake/node_modules/has-flag": {
+      "version": "4.0.0",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/has-flag/-/has-flag-4.0.0.tgz",
+      "integrity": "sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=8"
+      }
+    },
+    "node_modules/jake/node_modules/supports-color": {
+      "version": "7.2.0",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/supports-color/-/supports-color-7.2.0.tgz",
+      "integrity": "sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "has-flag": "^4.0.0"
       },
       "engines": {
         "node": ">=8"
@@ -12398,6 +12702,42 @@
         "url": "https://github.com/fb55/nth-check?sponsor=1"
       }
     },
+    "node_modules/nunjucks": {
+      "version": "3.2.4",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/nunjucks/-/nunjucks-3.2.4.tgz",
+      "integrity": "sha512-26XRV6BhkgK0VOxfbU5cQI+ICFUtMLixv1noZn1tGU38kQH5A5nmmbk/O45xdyBhD1esk47nKrY0mvQpZIhRjQ==",
+      "dev": true,
+      "license": "BSD-2-Clause",
+      "dependencies": {
+        "a-sync-waterfall": "^1.0.0",
+        "asap": "^2.0.3",
+        "commander": "^5.1.0"
+      },
+      "bin": {
+        "nunjucks-precompile": "bin/precompile"
+      },
+      "engines": {
+        "node": ">= 6.9.0"
+      },
+      "peerDependencies": {
+        "chokidar": "^3.3.0"
+      },
+      "peerDependenciesMeta": {
+        "chokidar": {
+          "optional": true
+        }
+      }
+    },
+    "node_modules/nunjucks/node_modules/commander": {
+      "version": "5.1.0",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/commander/-/commander-5.1.0.tgz",
+      "integrity": "sha512-P0CysNDQ7rtVw4QIQtm+MRxV66vKFSvlsQvGYXZWR3qFU0jlMKHZZZgw8e+8DSah4UDKMqnknRDQz+xuQXQ/Zg==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">= 6"
+      }
+    },
     "node_modules/nwsapi": {
       "version": "2.2.2",
       "resolved": "https://registry.npmjs.org/nwsapi/-/nwsapi-2.2.2.tgz",
@@ -15112,6 +15452,16 @@
       "dev": true,
       "engines": {
         "node": ">= 0.8"
+      }
+    },
+    "node_modules/unxhr": {
+      "version": "1.2.0",
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/unxhr/-/unxhr-1.2.0.tgz",
+      "integrity": "sha512-6cGpm8NFXPD9QbSNx0cD2giy7teZ6xOkCUH3U89WKVkL9N9rBrWjlCwhR94Re18ZlAop4MOc3WU1M3Hv/bgpIw==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=8.11"
       }
     },
     "node_modules/update-browserslist-db": {
