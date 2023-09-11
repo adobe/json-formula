@@ -6,7 +6,7 @@ import JSONFormulaVisitor from './JSONFormulaVisitor.js';
 
 
 const serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786",
-    "\u5964\u0003!\u00fb\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004",
+    "\u5964\u0003\"\u00fb\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004",
     "\t\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007\t\u0007",
     "\u0004\b\t\b\u0004\t\t\t\u0004\n\t\n\u0004\u000b\t\u000b\u0004\f\t\f",
     "\u0004\r\t\r\u0004\u000e\t\u000e\u0004\u000f\t\u000f\u0004\u0010\t\u0010",
@@ -46,132 +46,132 @@ const serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786",
     "\u0014\u0003\u0015\u0003\u0015\u0003\u0015\u0003\u0015\u0003\u0015\u0005",
     "\u0015\u00f9\n\u0015\u0003\u0015\u0002\u0003\u0004\u0016\u0002\u0004",
     "\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e ",
-    "\"$&(\u0002\u0006\u0003\u0002\u001f \u0003\u0002\u0005\b\u0003\u0002",
-    "\t\n\u0003\u0002\u001c\u001e\u0002\u0117\u0002*\u0003\u0002\u0002\u0002",
-    "\u0004@\u0003\u0002\u0002\u0002\u0006f\u0003\u0002\u0002\u0002\bh\u0003",
-    "\u0002\u0002\u0002\nj\u0003\u0002\u0002\u0002\f\u0082\u0003\u0002\u0002",
-    "\u0002\u000e\u0084\u0003\u0002\u0002\u0002\u0010\u0098\u0003\u0002\u0002",
-    "\u0002\u0012\u009f\u0003\u0002\u0002\u0002\u0014\u00a2\u0003\u0002\u0002",
-    "\u0002\u0016\u00c0\u0003\u0002\u0002\u0002\u0018\u00c4\u0003\u0002\u0002",
-    "\u0002\u001a\u00c6\u0003\u0002\u0002\u0002\u001c\u00c8\u0003\u0002\u0002",
-    "\u0002\u001e\u00cb\u0003\u0002\u0002\u0002 \u00cf\u0003\u0002\u0002",
-    "\u0002\"\u00de\u0003\u0002\u0002\u0002$\u00e0\u0003\u0002\u0002\u0002",
-    "&\u00f1\u0003\u0002\u0002\u0002(\u00f8\u0003\u0002\u0002\u0002*+\u0005",
-    "\u0004\u0003\u0002+,\u0007\u0002\u0002\u0003,\u0003\u0003\u0002\u0002",
-    "\u0002-.\b\u0003\u0001\u0002.A\u0005\u0010\t\u0002/A\u0005 \u0011\u0002",
-    "01\u0007\r\u0002\u00021A\u0005\u0004\u0003\u000e23\u0007\n\u0002\u0002",
-    "3A\u0005\u0004\u0003\r45\u0007\u000e\u0002\u000256\u0005\u0004\u0003",
-    "\u000267\u0007\u000f\u0002\u00027A\u0003\u0002\u0002\u00028A\u0005\b",
-    "\u0005\u00029A\u0005\n\u0006\u0002:A\u0005\f\u0007\u0002;A\u0005\u001e",
-    "\u0010\u0002<A\u0005\u0016\f\u0002=A\u0007\u001b\u0002\u0002>A\t\u0002",
-    "\u0002\u0002?A\u0005\u001a\u000e\u0002@-\u0003\u0002\u0002\u0002@/\u0003",
-    "\u0002\u0002\u0002@0\u0003\u0002\u0002\u0002@2\u0003\u0002\u0002\u0002",
-    "@4\u0003\u0002\u0002\u0002@8\u0003\u0002\u0002\u0002@9\u0003\u0002\u0002",
-    "\u0002@:\u0003\u0002\u0002\u0002@;\u0003\u0002\u0002\u0002@<\u0003\u0002",
-    "\u0002\u0002@=\u0003\u0002\u0002\u0002@>\u0003\u0002\u0002\u0002@?\u0003",
-    "\u0002\u0002\u0002A^\u0003\u0002\u0002\u0002BC\f\u0015\u0002\u0002C",
-    "D\u0007\u0004\u0002\u0002D]\u0005\u0004\u0003\u0016EF\f\u0014\u0002",
-    "\u0002FG\t\u0003\u0002\u0002G]\u0005\u0004\u0003\u0015HI\f\u0013\u0002",
-    "\u0002IJ\t\u0004\u0002\u0002J]\u0005\u0004\u0003\u0014KL\f\u0012\u0002",
-    "\u0002LM\u0007\u001a\u0002\u0002M]\u0005\u0004\u0003\u0013NO\f\u0011",
-    "\u0002\u0002OP\u0007\u000b\u0002\u0002P]\u0005\u0004\u0003\u0012QR\f",
-    "\u0010\u0002\u0002RS\u0007\f\u0002\u0002S]\u0005\u0004\u0003\u0011T",
-    "U\f\u0006\u0002\u0002UV\u0007\u0010\u0002\u0002V]\u0005\u0004\u0003",
-    "\u0007WX\f\u0018\u0002\u0002XY\u0007\u0003\u0002\u0002Y]\u0005\u0006",
-    "\u0004\u0002Z[\f\u0017\u0002\u0002[]\u0005\u0012\n\u0002\\B\u0003\u0002",
-    "\u0002\u0002\\E\u0003\u0002\u0002\u0002\\H\u0003\u0002\u0002\u0002\\",
-    "K\u0003\u0002\u0002\u0002\\N\u0003\u0002\u0002\u0002\\Q\u0003\u0002",
-    "\u0002\u0002\\T\u0003\u0002\u0002\u0002\\W\u0003\u0002\u0002\u0002\\",
-    "Z\u0003\u0002\u0002\u0002]`\u0003\u0002\u0002\u0002^\\\u0003\u0002\u0002",
-    "\u0002^_\u0003\u0002\u0002\u0002_\u0005\u0003\u0002\u0002\u0002`^\u0003",
-    "\u0002\u0002\u0002ag\u0005 \u0011\u0002bg\u0005\n\u0006\u0002cg\u0005",
-    "\f\u0007\u0002dg\u0005\u0016\f\u0002eg\u0005\b\u0005\u0002fa\u0003\u0002",
-    "\u0002\u0002fb\u0003\u0002\u0002\u0002fc\u0003\u0002\u0002\u0002fd\u0003",
-    "\u0002\u0002\u0002fe\u0003\u0002\u0002\u0002g\u0007\u0003\u0002\u0002",
-    "\u0002hi\u0007\u0005\u0002\u0002i\t\u0003\u0002\u0002\u0002jk\u0007",
-    "\u0011\u0002\u0002kp\u0005\u0004\u0003\u0002lm\u0007\u0012\u0002\u0002",
-    "mo\u0005\u0004\u0003\u0002nl\u0003\u0002\u0002\u0002or\u0003\u0002\u0002",
-    "\u0002pn\u0003\u0002\u0002\u0002pq\u0003\u0002\u0002\u0002qs\u0003\u0002",
-    "\u0002\u0002rp\u0003\u0002\u0002\u0002st\u0007\u0013\u0002\u0002t\u000b",
-    "\u0003\u0002\u0002\u0002uv\u0007\u0014\u0002\u0002v\u0083\u0007\u0015",
-    "\u0002\u0002wx\u0007\u0014\u0002\u0002x}\u0005\u000e\b\u0002yz\u0007",
-    "\u0012\u0002\u0002z|\u0005\u000e\b\u0002{y\u0003\u0002\u0002\u0002|",
-    "\u007f\u0003\u0002\u0002\u0002}{\u0003\u0002\u0002\u0002}~\u0003\u0002",
-    "\u0002\u0002~\u0080\u0003\u0002\u0002\u0002\u007f}\u0003\u0002\u0002",
-    "\u0002\u0080\u0081\u0007\u0015\u0002\u0002\u0081\u0083\u0003\u0002\u0002",
-    "\u0002\u0082u\u0003\u0002\u0002\u0002\u0082w\u0003\u0002\u0002\u0002",
-    "\u0083\r\u0003\u0002\u0002\u0002\u0084\u0085\u0005 \u0011\u0002\u0085",
-    "\u0086\u0007\u0016\u0002\u0002\u0086\u0087\u0005\u0004\u0003\u0002\u0087",
-    "\u000f\u0003\u0002\u0002\u0002\u0088\u0089\u0007\u0011\u0002\u0002\u0089",
-    "\u008a\u0007 \u0002\u0002\u008a\u0099\u0007\u0013\u0002\u0002\u008b",
-    "\u008c\u0007\u0011\u0002\u0002\u008c\u008d\u0007\u0005\u0002\u0002\u008d",
-    "\u0099\u0007\u0013\u0002\u0002\u008e\u008f\u0007\u0011\u0002\u0002\u008f",
-    "\u0090\u0005\u0014\u000b\u0002\u0090\u0091\u0007\u0013\u0002\u0002\u0091",
-    "\u0099\u0003\u0002\u0002\u0002\u0092\u0093\u0007\u0011\u0002\u0002\u0093",
-    "\u0099\u0007\u0013\u0002\u0002\u0094\u0095\u0007\u0017\u0002\u0002\u0095",
-    "\u0096\u0005\u0004\u0003\u0002\u0096\u0097\u0007\u0013\u0002\u0002\u0097",
-    "\u0099\u0003\u0002\u0002\u0002\u0098\u0088\u0003\u0002\u0002\u0002\u0098",
-    "\u008b\u0003\u0002\u0002\u0002\u0098\u008e\u0003\u0002\u0002\u0002\u0098",
-    "\u0092\u0003\u0002\u0002\u0002\u0098\u0094\u0003\u0002\u0002\u0002\u0099",
-    "\u0011\u0003\u0002\u0002\u0002\u009a\u00a0\u0005\u0010\t\u0002\u009b",
-    "\u009c\u0007\u0011\u0002\u0002\u009c\u009d\u0005\u0004\u0003\u0002\u009d",
-    "\u009e\u0007\u0013\u0002\u0002\u009e\u00a0\u0003\u0002\u0002\u0002\u009f",
-    "\u009a\u0003\u0002\u0002\u0002\u009f\u009b\u0003\u0002\u0002\u0002\u00a0",
-    "\u0013\u0003\u0002\u0002\u0002\u00a1\u00a3\u0005\u0004\u0003\u0002\u00a2",
-    "\u00a1\u0003\u0002\u0002\u0002\u00a2\u00a3\u0003\u0002\u0002\u0002\u00a3",
-    "\u00a4\u0003\u0002\u0002\u0002\u00a4\u00a6\u0007\u0016\u0002\u0002\u00a5",
-    "\u00a7\u0005\u0004\u0003\u0002\u00a6\u00a5\u0003\u0002\u0002\u0002\u00a6",
-    "\u00a7\u0003\u0002\u0002\u0002\u00a7\u00ac\u0003\u0002\u0002\u0002\u00a8",
-    "\u00aa\u0007\u0016\u0002\u0002\u00a9\u00ab\u0005\u0004\u0003\u0002\u00aa",
-    "\u00a9\u0003\u0002\u0002\u0002\u00aa\u00ab\u0003\u0002\u0002\u0002\u00ab",
-    "\u00ad\u0003\u0002\u0002\u0002\u00ac\u00a8\u0003\u0002\u0002\u0002\u00ac",
-    "\u00ad\u0003\u0002\u0002\u0002\u00ad\u0015\u0003\u0002\u0002\u0002\u00ae",
-    "\u00af\u0007\u001d\u0002\u0002\u00af\u00b0\u0007\u000e\u0002\u0002\u00b0",
-    "\u00b5\u0005\u0018\r\u0002\u00b1\u00b2\u0007\u0012\u0002\u0002\u00b2",
-    "\u00b4\u0005\u0018\r\u0002\u00b3\u00b1\u0003\u0002\u0002\u0002\u00b4",
-    "\u00b7\u0003\u0002\u0002\u0002\u00b5\u00b3\u0003\u0002\u0002\u0002\u00b5",
-    "\u00b6\u0003\u0002\u0002\u0002\u00b6\u00b8\u0003\u0002\u0002\u0002\u00b7",
-    "\u00b5\u0003\u0002\u0002\u0002\u00b8\u00b9\u0007\u000f\u0002\u0002\u00b9",
-    "\u00c1\u0003\u0002\u0002\u0002\u00ba\u00bb\u0007\u001d\u0002\u0002\u00bb",
-    "\u00bc\u0007\u000e\u0002\u0002\u00bc\u00c1\u0007\u000f\u0002\u0002\u00bd",
-    "\u00be\u0007\u001c\u0002\u0002\u00be\u00bf\u0007\u000e\u0002\u0002\u00bf",
-    "\u00c1\u0007\u000f\u0002\u0002\u00c0\u00ae\u0003\u0002\u0002\u0002\u00c0",
-    "\u00ba\u0003\u0002\u0002\u0002\u00c0\u00bd\u0003\u0002\u0002\u0002\u00c1",
-    "\u0017\u0003\u0002\u0002\u0002\u00c2\u00c5\u0005\u0004\u0003\u0002\u00c3",
-    "\u00c5\u0005\u001c\u000f\u0002\u00c4\u00c2\u0003\u0002\u0002\u0002\u00c4",
-    "\u00c3\u0003\u0002\u0002\u0002\u00c5\u0019\u0003\u0002\u0002\u0002\u00c6",
-    "\u00c7\u0007\u0018\u0002\u0002\u00c7\u001b\u0003\u0002\u0002\u0002\u00c8",
-    "\u00c9\u0007\u0007\u0002\u0002\u00c9\u00ca\u0005\u0004\u0003\u0002\u00ca",
-    "\u001d\u0003\u0002\u0002\u0002\u00cb\u00cc\u0007\u0019\u0002\u0002\u00cc",
-    "\u00cd\u0005(\u0015\u0002\u00cd\u00ce\u0007\u0019\u0002\u0002\u00ce",
-    "\u001f\u0003\u0002\u0002\u0002\u00cf\u00d0\t\u0005\u0002\u0002\u00d0",
-    "!\u0003\u0002\u0002\u0002\u00d1\u00d2\u0007\u0014\u0002\u0002\u00d2",
-    "\u00d7\u0005$\u0013\u0002\u00d3\u00d4\u0007\u0012\u0002\u0002\u00d4",
-    "\u00d6\u0005$\u0013\u0002\u00d5\u00d3\u0003\u0002\u0002\u0002\u00d6",
-    "\u00d9\u0003\u0002\u0002\u0002\u00d7\u00d5\u0003\u0002\u0002\u0002\u00d7",
-    "\u00d8\u0003\u0002\u0002\u0002\u00d8\u00da\u0003\u0002\u0002\u0002\u00d9",
-    "\u00d7\u0003\u0002\u0002\u0002\u00da\u00db\u0007\u0015\u0002\u0002\u00db",
-    "\u00df\u0003\u0002\u0002\u0002\u00dc\u00dd\u0007\u0014\u0002\u0002\u00dd",
-    "\u00df\u0007\u0015\u0002\u0002\u00de\u00d1\u0003\u0002\u0002\u0002\u00de",
-    "\u00dc\u0003\u0002\u0002\u0002\u00df#\u0003\u0002\u0002\u0002\u00e0",
-    "\u00e1\u0007\u001e\u0002\u0002\u00e1\u00e2\u0007\u0016\u0002\u0002\u00e2",
-    "\u00e3\u0005(\u0015\u0002\u00e3%\u0003\u0002\u0002\u0002\u00e4\u00e5",
-    "\u0007\u0011\u0002\u0002\u00e5\u00ea\u0005(\u0015\u0002\u00e6\u00e7",
-    "\u0007\u0012\u0002\u0002\u00e7\u00e9\u0005(\u0015\u0002\u00e8\u00e6",
-    "\u0003\u0002\u0002\u0002\u00e9\u00ec\u0003\u0002\u0002\u0002\u00ea\u00e8",
-    "\u0003\u0002\u0002\u0002\u00ea\u00eb\u0003\u0002\u0002\u0002\u00eb\u00ed",
-    "\u0003\u0002\u0002\u0002\u00ec\u00ea\u0003\u0002\u0002\u0002\u00ed\u00ee",
-    "\u0007\u0013\u0002\u0002\u00ee\u00f2\u0003\u0002\u0002\u0002\u00ef\u00f0",
-    "\u0007\u0011\u0002\u0002\u00f0\u00f2\u0007\u0013\u0002\u0002\u00f1\u00e4",
-    "\u0003\u0002\u0002\u0002\u00f1\u00ef\u0003\u0002\u0002\u0002\u00f2\'",
-    "\u0003\u0002\u0002\u0002\u00f3\u00f9\u0007\u001e\u0002\u0002\u00f4\u00f9",
-    "\t\u0002\u0002\u0002\u00f5\u00f9\u0005\"\u0012\u0002\u00f6\u00f9\u0005",
-    "&\u0014\u0002\u00f7\u00f9\u0007\u001c\u0002\u0002\u00f8\u00f3\u0003",
-    "\u0002\u0002\u0002\u00f8\u00f4\u0003\u0002\u0002\u0002\u00f8\u00f5\u0003",
-    "\u0002\u0002\u0002\u00f8\u00f6\u0003\u0002\u0002\u0002\u00f8\u00f7\u0003",
-    "\u0002\u0002\u0002\u00f9)\u0003\u0002\u0002\u0002\u0017@\\^fp}\u0082",
-    "\u0098\u009f\u00a2\u00a6\u00aa\u00ac\u00b5\u00c0\u00c4\u00d7\u00de\u00ea",
-    "\u00f1\u00f8"].join("");
+    "\"$&(\u0002\u0007\u0003\u0002\u001e\u001f\u0003\u0002 !\u0003\u0002",
+    "\u0005\b\u0003\u0002\t\n\u0003\u0002\u001b\u001d\u0002\u0117\u0002*",
+    "\u0003\u0002\u0002\u0002\u0004@\u0003\u0002\u0002\u0002\u0006f\u0003",
+    "\u0002\u0002\u0002\bh\u0003\u0002\u0002\u0002\nj\u0003\u0002\u0002\u0002",
+    "\f\u0082\u0003\u0002\u0002\u0002\u000e\u0084\u0003\u0002\u0002\u0002",
+    "\u0010\u0098\u0003\u0002\u0002\u0002\u0012\u009f\u0003\u0002\u0002\u0002",
+    "\u0014\u00a2\u0003\u0002\u0002\u0002\u0016\u00c0\u0003\u0002\u0002\u0002",
+    "\u0018\u00c4\u0003\u0002\u0002\u0002\u001a\u00c6\u0003\u0002\u0002\u0002",
+    "\u001c\u00c8\u0003\u0002\u0002\u0002\u001e\u00cb\u0003\u0002\u0002\u0002",
+    " \u00cf\u0003\u0002\u0002\u0002\"\u00de\u0003\u0002\u0002\u0002$\u00e0",
+    "\u0003\u0002\u0002\u0002&\u00f1\u0003\u0002\u0002\u0002(\u00f8\u0003",
+    "\u0002\u0002\u0002*+\u0005\u0004\u0003\u0002+,\u0007\u0002\u0002\u0003",
+    ",\u0003\u0003\u0002\u0002\u0002-.\b\u0003\u0001\u0002.A\u0005\u0010",
+    "\t\u0002/A\u0005 \u0011\u000201\u0007\r\u0002\u00021A\u0005\u0004\u0003",
+    "\u000e23\u0007\n\u0002\u00023A\u0005\u0004\u0003\r45\u0007\u000e\u0002",
+    "\u000256\u0005\u0004\u0003\u000267\u0007\u000f\u0002\u00027A\u0003\u0002",
+    "\u0002\u00028A\u0005\b\u0005\u00029A\u0005\n\u0006\u0002:A\u0005\f\u0007",
+    "\u0002;A\u0005\u001e\u0010\u0002<A\u0005\u0016\f\u0002=A\t\u0002\u0002",
+    "\u0002>A\t\u0003\u0002\u0002?A\u0005\u001a\u000e\u0002@-\u0003\u0002",
+    "\u0002\u0002@/\u0003\u0002\u0002\u0002@0\u0003\u0002\u0002\u0002@2\u0003",
+    "\u0002\u0002\u0002@4\u0003\u0002\u0002\u0002@8\u0003\u0002\u0002\u0002",
+    "@9\u0003\u0002\u0002\u0002@:\u0003\u0002\u0002\u0002@;\u0003\u0002\u0002",
+    "\u0002@<\u0003\u0002\u0002\u0002@=\u0003\u0002\u0002\u0002@>\u0003\u0002",
+    "\u0002\u0002@?\u0003\u0002\u0002\u0002A^\u0003\u0002\u0002\u0002BC\f",
+    "\u0015\u0002\u0002CD\u0007\u0004\u0002\u0002D]\u0005\u0004\u0003\u0016",
+    "EF\f\u0014\u0002\u0002FG\t\u0004\u0002\u0002G]\u0005\u0004\u0003\u0015",
+    "HI\f\u0013\u0002\u0002IJ\t\u0005\u0002\u0002J]\u0005\u0004\u0003\u0014",
+    "KL\f\u0012\u0002\u0002LM\u0007\u001a\u0002\u0002M]\u0005\u0004\u0003",
+    "\u0013NO\f\u0011\u0002\u0002OP\u0007\u000b\u0002\u0002P]\u0005\u0004",
+    "\u0003\u0012QR\f\u0010\u0002\u0002RS\u0007\f\u0002\u0002S]\u0005\u0004",
+    "\u0003\u0011TU\f\u0006\u0002\u0002UV\u0007\u0010\u0002\u0002V]\u0005",
+    "\u0004\u0003\u0007WX\f\u0018\u0002\u0002XY\u0007\u0003\u0002\u0002Y",
+    "]\u0005\u0006\u0004\u0002Z[\f\u0017\u0002\u0002[]\u0005\u0012\n\u0002",
+    "\\B\u0003\u0002\u0002\u0002\\E\u0003\u0002\u0002\u0002\\H\u0003\u0002",
+    "\u0002\u0002\\K\u0003\u0002\u0002\u0002\\N\u0003\u0002\u0002\u0002\\",
+    "Q\u0003\u0002\u0002\u0002\\T\u0003\u0002\u0002\u0002\\W\u0003\u0002",
+    "\u0002\u0002\\Z\u0003\u0002\u0002\u0002]`\u0003\u0002\u0002\u0002^\\",
+    "\u0003\u0002\u0002\u0002^_\u0003\u0002\u0002\u0002_\u0005\u0003\u0002",
+    "\u0002\u0002`^\u0003\u0002\u0002\u0002ag\u0005 \u0011\u0002bg\u0005",
+    "\n\u0006\u0002cg\u0005\f\u0007\u0002dg\u0005\u0016\f\u0002eg\u0005\b",
+    "\u0005\u0002fa\u0003\u0002\u0002\u0002fb\u0003\u0002\u0002\u0002fc\u0003",
+    "\u0002\u0002\u0002fd\u0003\u0002\u0002\u0002fe\u0003\u0002\u0002\u0002",
+    "g\u0007\u0003\u0002\u0002\u0002hi\u0007\u0005\u0002\u0002i\t\u0003\u0002",
+    "\u0002\u0002jk\u0007\u0011\u0002\u0002kp\u0005\u0004\u0003\u0002lm\u0007",
+    "\u0012\u0002\u0002mo\u0005\u0004\u0003\u0002nl\u0003\u0002\u0002\u0002",
+    "or\u0003\u0002\u0002\u0002pn\u0003\u0002\u0002\u0002pq\u0003\u0002\u0002",
+    "\u0002qs\u0003\u0002\u0002\u0002rp\u0003\u0002\u0002\u0002st\u0007\u0013",
+    "\u0002\u0002t\u000b\u0003\u0002\u0002\u0002uv\u0007\u0014\u0002\u0002",
+    "v\u0083\u0007\u0015\u0002\u0002wx\u0007\u0014\u0002\u0002x}\u0005\u000e",
+    "\b\u0002yz\u0007\u0012\u0002\u0002z|\u0005\u000e\b\u0002{y\u0003\u0002",
+    "\u0002\u0002|\u007f\u0003\u0002\u0002\u0002}{\u0003\u0002\u0002\u0002",
+    "}~\u0003\u0002\u0002\u0002~\u0080\u0003\u0002\u0002\u0002\u007f}\u0003",
+    "\u0002\u0002\u0002\u0080\u0081\u0007\u0015\u0002\u0002\u0081\u0083\u0003",
+    "\u0002\u0002\u0002\u0082u\u0003\u0002\u0002\u0002\u0082w\u0003\u0002",
+    "\u0002\u0002\u0083\r\u0003\u0002\u0002\u0002\u0084\u0085\u0005 \u0011",
+    "\u0002\u0085\u0086\u0007\u0016\u0002\u0002\u0086\u0087\u0005\u0004\u0003",
+    "\u0002\u0087\u000f\u0003\u0002\u0002\u0002\u0088\u0089\u0007\u0011\u0002",
+    "\u0002\u0089\u008a\u0007!\u0002\u0002\u008a\u0099\u0007\u0013\u0002",
+    "\u0002\u008b\u008c\u0007\u0011\u0002\u0002\u008c\u008d\u0007\u0005\u0002",
+    "\u0002\u008d\u0099\u0007\u0013\u0002\u0002\u008e\u008f\u0007\u0011\u0002",
+    "\u0002\u008f\u0090\u0005\u0014\u000b\u0002\u0090\u0091\u0007\u0013\u0002",
+    "\u0002\u0091\u0099\u0003\u0002\u0002\u0002\u0092\u0093\u0007\u0011\u0002",
+    "\u0002\u0093\u0099\u0007\u0013\u0002\u0002\u0094\u0095\u0007\u0017\u0002",
+    "\u0002\u0095\u0096\u0005\u0004\u0003\u0002\u0096\u0097\u0007\u0013\u0002",
+    "\u0002\u0097\u0099\u0003\u0002\u0002\u0002\u0098\u0088\u0003\u0002\u0002",
+    "\u0002\u0098\u008b\u0003\u0002\u0002\u0002\u0098\u008e\u0003\u0002\u0002",
+    "\u0002\u0098\u0092\u0003\u0002\u0002\u0002\u0098\u0094\u0003\u0002\u0002",
+    "\u0002\u0099\u0011\u0003\u0002\u0002\u0002\u009a\u00a0\u0005\u0010\t",
+    "\u0002\u009b\u009c\u0007\u0011\u0002\u0002\u009c\u009d\u0005\u0004\u0003",
+    "\u0002\u009d\u009e\u0007\u0013\u0002\u0002\u009e\u00a0\u0003\u0002\u0002",
+    "\u0002\u009f\u009a\u0003\u0002\u0002\u0002\u009f\u009b\u0003\u0002\u0002",
+    "\u0002\u00a0\u0013\u0003\u0002\u0002\u0002\u00a1\u00a3\u0005\u0004\u0003",
+    "\u0002\u00a2\u00a1\u0003\u0002\u0002\u0002\u00a2\u00a3\u0003\u0002\u0002",
+    "\u0002\u00a3\u00a4\u0003\u0002\u0002\u0002\u00a4\u00a6\u0007\u0016\u0002",
+    "\u0002\u00a5\u00a7\u0005\u0004\u0003\u0002\u00a6\u00a5\u0003\u0002\u0002",
+    "\u0002\u00a6\u00a7\u0003\u0002\u0002\u0002\u00a7\u00ac\u0003\u0002\u0002",
+    "\u0002\u00a8\u00aa\u0007\u0016\u0002\u0002\u00a9\u00ab\u0005\u0004\u0003",
+    "\u0002\u00aa\u00a9\u0003\u0002\u0002\u0002\u00aa\u00ab\u0003\u0002\u0002",
+    "\u0002\u00ab\u00ad\u0003\u0002\u0002\u0002\u00ac\u00a8\u0003\u0002\u0002",
+    "\u0002\u00ac\u00ad\u0003\u0002\u0002\u0002\u00ad\u0015\u0003\u0002\u0002",
+    "\u0002\u00ae\u00af\u0007\u001c\u0002\u0002\u00af\u00b0\u0007\u000e\u0002",
+    "\u0002\u00b0\u00b5\u0005\u0018\r\u0002\u00b1\u00b2\u0007\u0012\u0002",
+    "\u0002\u00b2\u00b4\u0005\u0018\r\u0002\u00b3\u00b1\u0003\u0002\u0002",
+    "\u0002\u00b4\u00b7\u0003\u0002\u0002\u0002\u00b5\u00b3\u0003\u0002\u0002",
+    "\u0002\u00b5\u00b6\u0003\u0002\u0002\u0002\u00b6\u00b8\u0003\u0002\u0002",
+    "\u0002\u00b7\u00b5\u0003\u0002\u0002\u0002\u00b8\u00b9\u0007\u000f\u0002",
+    "\u0002\u00b9\u00c1\u0003\u0002\u0002\u0002\u00ba\u00bb\u0007\u001c\u0002",
+    "\u0002\u00bb\u00bc\u0007\u000e\u0002\u0002\u00bc\u00c1\u0007\u000f\u0002",
+    "\u0002\u00bd\u00be\u0007\u001b\u0002\u0002\u00be\u00bf\u0007\u000e\u0002",
+    "\u0002\u00bf\u00c1\u0007\u000f\u0002\u0002\u00c0\u00ae\u0003\u0002\u0002",
+    "\u0002\u00c0\u00ba\u0003\u0002\u0002\u0002\u00c0\u00bd\u0003\u0002\u0002",
+    "\u0002\u00c1\u0017\u0003\u0002\u0002\u0002\u00c2\u00c5\u0005\u0004\u0003",
+    "\u0002\u00c3\u00c5\u0005\u001c\u000f\u0002\u00c4\u00c2\u0003\u0002\u0002",
+    "\u0002\u00c4\u00c3\u0003\u0002\u0002\u0002\u00c5\u0019\u0003\u0002\u0002",
+    "\u0002\u00c6\u00c7\u0007\u0018\u0002\u0002\u00c7\u001b\u0003\u0002\u0002",
+    "\u0002\u00c8\u00c9\u0007\u0007\u0002\u0002\u00c9\u00ca\u0005\u0004\u0003",
+    "\u0002\u00ca\u001d\u0003\u0002\u0002\u0002\u00cb\u00cc\u0007\u0019\u0002",
+    "\u0002\u00cc\u00cd\u0005(\u0015\u0002\u00cd\u00ce\u0007\u0019\u0002",
+    "\u0002\u00ce\u001f\u0003\u0002\u0002\u0002\u00cf\u00d0\t\u0006\u0002",
+    "\u0002\u00d0!\u0003\u0002\u0002\u0002\u00d1\u00d2\u0007\u0014\u0002",
+    "\u0002\u00d2\u00d7\u0005$\u0013\u0002\u00d3\u00d4\u0007\u0012\u0002",
+    "\u0002\u00d4\u00d6\u0005$\u0013\u0002\u00d5\u00d3\u0003\u0002\u0002",
+    "\u0002\u00d6\u00d9\u0003\u0002\u0002\u0002\u00d7\u00d5\u0003\u0002\u0002",
+    "\u0002\u00d7\u00d8\u0003\u0002\u0002\u0002\u00d8\u00da\u0003\u0002\u0002",
+    "\u0002\u00d9\u00d7\u0003\u0002\u0002\u0002\u00da\u00db\u0007\u0015\u0002",
+    "\u0002\u00db\u00df\u0003\u0002\u0002\u0002\u00dc\u00dd\u0007\u0014\u0002",
+    "\u0002\u00dd\u00df\u0007\u0015\u0002\u0002\u00de\u00d1\u0003\u0002\u0002",
+    "\u0002\u00de\u00dc\u0003\u0002\u0002\u0002\u00df#\u0003\u0002\u0002",
+    "\u0002\u00e0\u00e1\u0007\u001e\u0002\u0002\u00e1\u00e2\u0007\u0016\u0002",
+    "\u0002\u00e2\u00e3\u0005(\u0015\u0002\u00e3%\u0003\u0002\u0002\u0002",
+    "\u00e4\u00e5\u0007\u0011\u0002\u0002\u00e5\u00ea\u0005(\u0015\u0002",
+    "\u00e6\u00e7\u0007\u0012\u0002\u0002\u00e7\u00e9\u0005(\u0015\u0002",
+    "\u00e8\u00e6\u0003\u0002\u0002\u0002\u00e9\u00ec\u0003\u0002\u0002\u0002",
+    "\u00ea\u00e8\u0003\u0002\u0002\u0002\u00ea\u00eb\u0003\u0002\u0002\u0002",
+    "\u00eb\u00ed\u0003\u0002\u0002\u0002\u00ec\u00ea\u0003\u0002\u0002\u0002",
+    "\u00ed\u00ee\u0007\u0013\u0002\u0002\u00ee\u00f2\u0003\u0002\u0002\u0002",
+    "\u00ef\u00f0\u0007\u0011\u0002\u0002\u00f0\u00f2\u0007\u0013\u0002\u0002",
+    "\u00f1\u00e4\u0003\u0002\u0002\u0002\u00f1\u00ef\u0003\u0002\u0002\u0002",
+    "\u00f2\'\u0003\u0002\u0002\u0002\u00f3\u00f9\u0007\u001e\u0002\u0002",
+    "\u00f4\u00f9\t\u0003\u0002\u0002\u00f5\u00f9\u0005\"\u0012\u0002\u00f6",
+    "\u00f9\u0005&\u0014\u0002\u00f7\u00f9\u0007\u001b\u0002\u0002\u00f8",
+    "\u00f3\u0003\u0002\u0002\u0002\u00f8\u00f4\u0003\u0002\u0002\u0002\u00f8",
+    "\u00f5\u0003\u0002\u0002\u0002\u00f8\u00f6\u0003\u0002\u0002\u0002\u00f8",
+    "\u00f7\u0003\u0002\u0002\u0002\u00f9)\u0003\u0002\u0002\u0002\u0017",
+    "@\\^fp}\u0082\u0098\u009f\u00a2\u00a6\u00aa\u00ac\u00b5\u00c0\u00c4",
+    "\u00d7\u00de\u00ea\u00f1\u00f8"].join("");
 
 
 const atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
@@ -190,8 +190,8 @@ export default class JSONFormulaParser extends antlr4.Parser {
     static symbolicNames = [ null, null, null, null, null, null, null, null, 
                              null, null, null, null, null, null, null, null, 
                              null, null, null, null, null, null, null, null, 
-                             "COMPARATOR", "RAW_STRING", "JSON_CONSTANT", 
-                             "NAME", "STRING", "REAL_OR_EXPONENT_NUMBER", 
+                             "COMPARATOR", "JSON_CONSTANT", "NAME", "QUOTED_NAME", 
+                             "STRING", "RAW_STRING", "REAL_OR_EXPONENT_NUMBER", 
                              "SIGNED_INT", "WS" ];
     static ruleNames = [ "formula", "expression", "chainedExpression", "wildcard", 
                          "multiSelectList", "multiSelectHash", "keyvalExpr", 
@@ -384,7 +384,14 @@ export default class JSONFormulaParser extends antlr4.Parser {
 	            this._ctx = localctx;
 	            _prevctx = localctx;
 	            this.state = 59;
-	            this.match(JSONFormulaParser.RAW_STRING);
+	            _la = this._input.LA(1);
+	            if(!(_la===JSONFormulaParser.STRING || _la===JSONFormulaParser.RAW_STRING)) {
+	            this._errHandler.recoverInline(this);
+	            }
+	            else {
+	            	this._errHandler.reportMatch(this);
+	                this.consume();
+	            }
 	            break;
 
 	        case 12:
@@ -911,7 +918,7 @@ export default class JSONFormulaParser extends antlr4.Parser {
 	        this.state = 160;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
-	        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << JSONFormulaParser.T__2) | (1 << JSONFormulaParser.T__7) | (1 << JSONFormulaParser.T__10) | (1 << JSONFormulaParser.T__11) | (1 << JSONFormulaParser.T__14) | (1 << JSONFormulaParser.T__17) | (1 << JSONFormulaParser.T__20) | (1 << JSONFormulaParser.T__21) | (1 << JSONFormulaParser.T__22) | (1 << JSONFormulaParser.RAW_STRING) | (1 << JSONFormulaParser.JSON_CONSTANT) | (1 << JSONFormulaParser.NAME) | (1 << JSONFormulaParser.STRING) | (1 << JSONFormulaParser.REAL_OR_EXPONENT_NUMBER) | (1 << JSONFormulaParser.SIGNED_INT))) !== 0)) {
+	        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << JSONFormulaParser.T__2) | (1 << JSONFormulaParser.T__7) | (1 << JSONFormulaParser.T__10) | (1 << JSONFormulaParser.T__11) | (1 << JSONFormulaParser.T__14) | (1 << JSONFormulaParser.T__17) | (1 << JSONFormulaParser.T__20) | (1 << JSONFormulaParser.T__21) | (1 << JSONFormulaParser.T__22) | (1 << JSONFormulaParser.JSON_CONSTANT) | (1 << JSONFormulaParser.NAME) | (1 << JSONFormulaParser.QUOTED_NAME) | (1 << JSONFormulaParser.STRING) | (1 << JSONFormulaParser.RAW_STRING) | (1 << JSONFormulaParser.REAL_OR_EXPONENT_NUMBER) | (1 << JSONFormulaParser.SIGNED_INT))) !== 0)) {
 	            this.state = 159;
 	            localctx.start = this.expression(0);
 	        }
@@ -921,7 +928,7 @@ export default class JSONFormulaParser extends antlr4.Parser {
 	        this.state = 164;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
-	        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << JSONFormulaParser.T__2) | (1 << JSONFormulaParser.T__7) | (1 << JSONFormulaParser.T__10) | (1 << JSONFormulaParser.T__11) | (1 << JSONFormulaParser.T__14) | (1 << JSONFormulaParser.T__17) | (1 << JSONFormulaParser.T__20) | (1 << JSONFormulaParser.T__21) | (1 << JSONFormulaParser.T__22) | (1 << JSONFormulaParser.RAW_STRING) | (1 << JSONFormulaParser.JSON_CONSTANT) | (1 << JSONFormulaParser.NAME) | (1 << JSONFormulaParser.STRING) | (1 << JSONFormulaParser.REAL_OR_EXPONENT_NUMBER) | (1 << JSONFormulaParser.SIGNED_INT))) !== 0)) {
+	        if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << JSONFormulaParser.T__2) | (1 << JSONFormulaParser.T__7) | (1 << JSONFormulaParser.T__10) | (1 << JSONFormulaParser.T__11) | (1 << JSONFormulaParser.T__14) | (1 << JSONFormulaParser.T__17) | (1 << JSONFormulaParser.T__20) | (1 << JSONFormulaParser.T__21) | (1 << JSONFormulaParser.T__22) | (1 << JSONFormulaParser.JSON_CONSTANT) | (1 << JSONFormulaParser.NAME) | (1 << JSONFormulaParser.QUOTED_NAME) | (1 << JSONFormulaParser.STRING) | (1 << JSONFormulaParser.RAW_STRING) | (1 << JSONFormulaParser.REAL_OR_EXPONENT_NUMBER) | (1 << JSONFormulaParser.SIGNED_INT))) !== 0)) {
 	            this.state = 163;
 	            localctx.stop = this.expression(0);
 	        }
@@ -935,7 +942,7 @@ export default class JSONFormulaParser extends antlr4.Parser {
 	            this.state = 168;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
-	            if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << JSONFormulaParser.T__2) | (1 << JSONFormulaParser.T__7) | (1 << JSONFormulaParser.T__10) | (1 << JSONFormulaParser.T__11) | (1 << JSONFormulaParser.T__14) | (1 << JSONFormulaParser.T__17) | (1 << JSONFormulaParser.T__20) | (1 << JSONFormulaParser.T__21) | (1 << JSONFormulaParser.T__22) | (1 << JSONFormulaParser.RAW_STRING) | (1 << JSONFormulaParser.JSON_CONSTANT) | (1 << JSONFormulaParser.NAME) | (1 << JSONFormulaParser.STRING) | (1 << JSONFormulaParser.REAL_OR_EXPONENT_NUMBER) | (1 << JSONFormulaParser.SIGNED_INT))) !== 0)) {
+	            if((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << JSONFormulaParser.T__2) | (1 << JSONFormulaParser.T__7) | (1 << JSONFormulaParser.T__10) | (1 << JSONFormulaParser.T__11) | (1 << JSONFormulaParser.T__14) | (1 << JSONFormulaParser.T__17) | (1 << JSONFormulaParser.T__20) | (1 << JSONFormulaParser.T__21) | (1 << JSONFormulaParser.T__22) | (1 << JSONFormulaParser.JSON_CONSTANT) | (1 << JSONFormulaParser.NAME) | (1 << JSONFormulaParser.QUOTED_NAME) | (1 << JSONFormulaParser.STRING) | (1 << JSONFormulaParser.RAW_STRING) | (1 << JSONFormulaParser.REAL_OR_EXPONENT_NUMBER) | (1 << JSONFormulaParser.SIGNED_INT))) !== 0)) {
 	                this.state = 167;
 	                localctx.step = this.expression(0);
 	            }
@@ -1044,10 +1051,11 @@ export default class JSONFormulaParser extends antlr4.Parser {
 	        case JSONFormulaParser.T__20:
 	        case JSONFormulaParser.T__21:
 	        case JSONFormulaParser.T__22:
-	        case JSONFormulaParser.RAW_STRING:
 	        case JSONFormulaParser.JSON_CONSTANT:
 	        case JSONFormulaParser.NAME:
+	        case JSONFormulaParser.QUOTED_NAME:
 	        case JSONFormulaParser.STRING:
+	        case JSONFormulaParser.RAW_STRING:
 	        case JSONFormulaParser.REAL_OR_EXPONENT_NUMBER:
 	        case JSONFormulaParser.SIGNED_INT:
 	            this.enterOuterAlt(localctx, 1);
@@ -1161,7 +1169,7 @@ export default class JSONFormulaParser extends antlr4.Parser {
 	        this.enterOuterAlt(localctx, 1);
 	        this.state = 205;
 	        _la = this._input.LA(1);
-	        if(!((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << JSONFormulaParser.JSON_CONSTANT) | (1 << JSONFormulaParser.NAME) | (1 << JSONFormulaParser.STRING))) !== 0))) {
+	        if(!((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << JSONFormulaParser.JSON_CONSTANT) | (1 << JSONFormulaParser.NAME) | (1 << JSONFormulaParser.QUOTED_NAME))) !== 0))) {
 	        this._errHandler.recoverInline(this);
 	        }
 	        else {
@@ -1414,13 +1422,14 @@ JSONFormulaParser.T__20 = 21;
 JSONFormulaParser.T__21 = 22;
 JSONFormulaParser.T__22 = 23;
 JSONFormulaParser.COMPARATOR = 24;
-JSONFormulaParser.RAW_STRING = 25;
-JSONFormulaParser.JSON_CONSTANT = 26;
-JSONFormulaParser.NAME = 27;
+JSONFormulaParser.JSON_CONSTANT = 25;
+JSONFormulaParser.NAME = 26;
+JSONFormulaParser.QUOTED_NAME = 27;
 JSONFormulaParser.STRING = 28;
-JSONFormulaParser.REAL_OR_EXPONENT_NUMBER = 29;
-JSONFormulaParser.SIGNED_INT = 30;
-JSONFormulaParser.WS = 31;
+JSONFormulaParser.RAW_STRING = 29;
+JSONFormulaParser.REAL_OR_EXPONENT_NUMBER = 30;
+JSONFormulaParser.SIGNED_INT = 31;
+JSONFormulaParser.WS = 32;
 
 JSONFormulaParser.RULE_formula = 0;
 JSONFormulaParser.RULE_expression = 1;
@@ -1677,6 +1686,10 @@ class RawStringExpressionContext extends ExpressionContext {
         super(parser);
         super.copyFrom(ctx);
     }
+
+	STRING() {
+	    return this.getToken(JSONFormulaParser.STRING, 0);
+	};
 
 	RAW_STRING() {
 	    return this.getToken(JSONFormulaParser.RAW_STRING, 0);
@@ -3259,8 +3272,8 @@ class IdentifierContext extends antlr4.ParserRuleContext {
 	    return this.getToken(JSONFormulaParser.NAME, 0);
 	};
 
-	STRING() {
-	    return this.getToken(JSONFormulaParser.STRING, 0);
+	QUOTED_NAME() {
+	    return this.getToken(JSONFormulaParser.QUOTED_NAME, 0);
 	};
 
 	JSON_CONSTANT() {

@@ -1,3 +1,4 @@
+// $antlr-format false
 /*
 Copyright 2021 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -34,7 +35,7 @@ expression
   | literal # literalExpression
   | functionExpression # functionCallExpression
   | expression '|' expression # pipeExpression
-  | RAW_STRING # rawStringExpression
+  | (STRING | RAW_STRING) # rawStringExpression
   | (REAL_OR_EXPONENT_NUMBER | SIGNED_INT) # numberLiteral
   | currentNode # currentNodeExpression
   ;
@@ -98,15 +99,11 @@ currentNode : '@' ;
 
 expressionType : '&' expression ;
 
-RAW_STRING : '\'' (RAW_ESC | ~['\\])* '\'' ;
-
-fragment RAW_ESC : '\\' . ;
-
 literal : '`' jsonValue '`' ;
 
 identifier
   : NAME
-  | STRING
+  | QUOTED_NAME
   | JSON_CONSTANT
   ;
 
@@ -117,6 +114,8 @@ JSON_CONSTANT
   ;
 
 NAME : [@a-zA-Z_] [a-zA-Z0-9_]* ;
+
+QUOTED_NAME : '\'' (ESC | ~ ['\\])* '\'';
 
 jsonObject
   : '{' jsonObjectPair (',' jsonObjectPair)* '}'
@@ -147,6 +146,11 @@ STRING
 fragment ESC
   : '\\' (["\\/bfnrt`] | UNICODE)
   ;
+
+RAW_STRING : '"' (RAW_ESC | ~["\\])* '"' ;
+
+fragment RAW_ESC : '\\' . ;
+
 
 fragment UNICODE
   : 'u' HEX HEX HEX HEX

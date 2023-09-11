@@ -86,7 +86,7 @@ test('can pass a class as a function argument', () => {
 test('custom function with a lambda parameter', () => {
   const TYPE_STRING = 2;
   const TYPE_EXPREF = 6;
-  const testCustomFunc = 'customEval(\'string\', &@ & @)';
+  const testCustomFunc = 'customEval("string", &@ & @)';
 
   const customFunctions = {
     customEval: {
@@ -224,7 +224,7 @@ describe('expressions with globals', () => {
     const json = {
       '#form': 'value',
     };
-    const result1 = new JsonFormula().search('"#form"', json, globals);
+    const result1 = new JsonFormula().search("'#form'", json, globals);
     expect(result1).toEqual(json['#form']);
     const result2 = new JsonFormula().search('form', json, globals);
     expect(result2).toEqual(null);
