@@ -12,7 +12,7 @@ governing permissions and limitations under the License.
 
 export default function stringToNumber(n, debug) {
   const ret = +(n.replace(/\$/, ''));
-  if (Number.isNaN(ret)) {
+    if (Number.isNaN(ret)) {
     if (debug) debug.push(`Failed to convert ${n} to number`);
     return 0;
   }

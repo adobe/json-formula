@@ -680,7 +680,7 @@ export default function functions(
      * * number - Returns the passed in value.
      * * array - null
      * * object - null
-     * * boolean - null
+     * * boolean - 1 if true, 0 if false
      * * null - null
      * @param {any} arg
      * @return {number}
@@ -692,7 +692,7 @@ export default function functions(
      * @example
      * toNumber({a: 1}) //returns null
      * @example
-     * toNumber(true()) //returns null
+     * toNumber(true()) //returns 1
      * @category jmespath
      */
     toNumber: {
@@ -703,6 +703,13 @@ export default function functions(
         }
         if (typeName === TYPE_STRING) {
           return toNumber(resolvedArgs[0]);
+        }
+        if (typeName === TYPE_BOOLEAN) {
+          if (resolvedArgs[0] === true) {
+            return 1;
+          } else {
+              return 0;
+          }
         }
         return null;
       },
