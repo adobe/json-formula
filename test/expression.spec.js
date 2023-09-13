@@ -64,8 +64,9 @@ jsonFormula.search(
 );
 
 // in case running only specific tests update the filter clause
-const filterClause = ([_desc, tst]) => true
-const filtered = tests.filter(filterClause)
+// eslint-disable-next-line no-unused-vars
+const filterClause = ([_desc, _tst]) => true;
+const filtered = tests.filter(filterClause);
 
 test.each(filtered)('%s', (_desc, tst) => {
   if (tst.fieldsOnly) return;

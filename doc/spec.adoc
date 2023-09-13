@@ -16,8 +16,9 @@ For simplicity, the json-formula expression and the JSON document are not quoted
 
 The result of applying a json-formula expression against a JSON document will **always** result in valid JSON, provided there are no errors during the evaluation process.  Structured data in, structured data out.
 
-This also means that, with the exception of json-formula expression types,
-json-formula only supports the same types supported by JSON:
+== Data Types
+
+json-formula supports the same types supported by JSON:
 
 * number (integers and double-precision floating-point format in JSON)
 * string
@@ -26,11 +27,90 @@ json-formula only supports the same types supported by JSON:
 * object (an unordered collection of key value pairs)
 * null
 
-Expression types are discussed in the <<Function Expressions>> section.
+There is an additional type that is not a JSON type that's used in
+json-formula functions:
+
+* expression (denoted by `&expression`)
 
 Implementations can map the corresponding JSON types to their language
 equivalent.  For example, a JSON `null` could map to `None` in python,
 and `nil` in ruby and go.
+
+== Date and Time Values
+In order to support date and time functions, json-formula needs to represent date and time values.  Date/time values are represented as a number where:
+
+* The current time zone is determined by the host operating system.
+* The integer portion of the number represents the number of days since the epoch: January 1, 1970, https://en.wikipedia.org/wiki/Coordinated_Universal_Time[UTC].
+* The fractional portion of the number represents the fractional portion of the day
+
+=== Type Coercion
+
+If the supplied data is not correct for the execution context, json-formula will attempt to coerce the data to the correct type. Coercion will occur in these contexts:
+
+* operands of the concatenation operator (`&`) shall be coerced to a string, except when an operand is an array. Arrays shall be coerced to an array of strings.
+* operands of numeric operators (`+`, `-`, `*`, `/`, `^`) shall be coerced to numbers except when the operand is an array. Arrays shall be coerced to an array of numbers.
+* operands of the union operator (`~`) shall be coerced to an array
+* The left-hand operand of ordering comparison operators (`>`, `>=`, `<`, `<=`) must be a string or number.  Any other type shall be coerced to a number.
+* If the operands of an ordering comparison are different, they shall both be coerced to a number
+* parameters to functions shall be coerced to the expected type as defined by the function signature
+* slice and flatten operations shall coerce operands to a number
+
+The equality and inequality operators (`=`, `==`, `!=`, `<>`) do **not** perform type coercion.  If operands are different types, the values are not equal.
+
+Coercion is not always possible, and if so, an error shall be emitted -- most often an `invalid-type` error.
+
+==== Examples
+
+[source%unbreakable]
+----
+    search("abc" & 123, {}) -> "abc123"
+    search("123" * 2, {}) -> 246
+    search([1,2,3] ~ 4, {}) -> [1,2,3,4]
+    search(123 < "124", {}) -> true
+    search("23" > 111, {}) -> false
+    search(abs("-2"), {}) -> 2
+    search([1,2,3,4]["1"], {}) -> 2
+    search(1 == "1", {}) -> false
+----
+
+=== Type Coercion Rules
+
+[%header,cols="1,1,1"]
+|===
+| Provided Type | Expected Type | Result
+| number | string | number converted to a string. Similar to JavaScript `toString()`
+| boolean | string | "true" or "false"
+| array | string | Not supported
+| object | string | Not supported
+| null | string | "" (empty string)
+| string | number | Parse string to a number.  If the string is not a well-formed number, will return 0.  Allow for locale-specific currency symbols to be ignored.
+| boolean | number | true => 1 false => 0
+| array | number | Not supported
+| object | number | Not supported
+| null | number | 0
+| number | array | create a single-element array with the number
+| string | array | create a single-element array with the string.
+| boolean | array | create a single-element array with the boolean.
+| object | array | Not supported
+| null | array | Empty array
+| number | object | empty object: {}
+| string | object | create a single-element array with the string.
+| boolean | object | create a single-element array with the boolean.
+| array | object | An object where the keys are the array index positions and the values are the array values.
+| null | object | Empty object
+|===
+
+==== Examples
+
+[source%unbreakable]
+----
+    search("\"$123.00\" + 1", {}) -> 124.00"
+    search("truth is " & `true`, {}) -> "truth is true"
+    search(2 + `true`, {}) -> 3
+    search(avg("20"), {}) -> 20
+    search(merge({a: 3}, 4), {}) -> {a:3}
+    search(merge({a: 3}, ["x", "y"]), {}) -> {"0": "x", "1": "y", "a": 3}
+----
 
 == Grammar
 
@@ -56,7 +136,7 @@ from weakest to tightest binding:
 
 == Identifiers
 
-TODO: Fix Identifiers in the grammar
+TODO: Fix Identifiers in the grammar -- should not include JSON constants
 
 An `identifier` is the most basic expression and can be used to extract a
 single element from a JSON document.  The return value for an `identifier` is the value associated with the identifier.  If the `identifier` does not exist in the JSON document, than a `null` value is returned.
@@ -242,7 +322,48 @@ Slice expressions adhere to the following rules:
   search([-2:], [0, 1, 2, 3]) -> [2, 3]
 ----
 
-== Flatten Operator
+== Operators
+
+=== Comparison Operators
+
+The following operations are supported:
+
+* '=' / `==`, test for equality.
+* `!=`, "<>", test for inequality.
+* `<`, less than.
+* `<=`, less than or equal to.
+* `>`, greater than.
+* `>=`, greater than or equal to.
+
+* If both operands are numbers, a numeric comparison is performed.
+* If both operands are strings, they are compared as strings, based on the values of the Unicode code points they contain.
+* If operands are mixed types, follow the <<Type Coercion,type coercion>> rules.
+
+The comparison semantics for each operator are defined in the discussion on <<Type Coercion,type coercion>>.
+
+==== Equality Operators
+
+Two representations of the equality and inequality operators are supported: `=` and `==` are equivalent in functionality.  Both variations are supported provide familiarity to users with experience with similar grammars. Similarly, `!=` and `<>` function identically.
+
+For `string/number/true/false/null` types, equality is an exact match. A
+`string` is equal to another `string` if they they have the exact same sequence
+of code points.  The literal values `true/false/null` are equal only to their
+own literal values.  Two JSON objects are equal if they have the same set of
+keys and values (given two JSON objects `x` and `y`, for each key value
+pair `(i, j)` in `x`, there exists an equivalent pair `(i, j)` in `y`).
+Two JSON arrays are equal if they have equal elements in the same order (given
+two arrays `x` and `y`, for each `i` from `0` until `length(x)`,
+`x[i] == y[i]`).
+
+==== Ordering Operators
+
+If the operands are not the same type, the ordering operators `>, >=, <, <=` will return false.
+
+* If both operands are numbers, a numeric comparison is performed.
+* If both operands are strings, they are compared as strings, based on the values of the Unicode code points they contain.
+* If operands are mixed types, follow the <<Type Coercion,type coercion>> rules.
+
+=== Flatten Operator
 
 When the character sequence `[]` is provided as a bracket specifier, then
 a flattening operation occurs on the current result.  The flattening operator
@@ -261,16 +382,73 @@ are projected onto the flattened list with the same semantics as a
 wildcard expression.  Thus the difference between `[*]` and `[]` is that
 `[]` will first flatten sub-lists in the current result.
 
-=== Examples
+==== Examples
 
 [source%unbreakable]
 ----
   search([0], ["first", "second", "third"]) -> "first"
   search([-1], ["first", "second", "third"]) -> "third"
   search([100], ["first", "second", "third"]) -> null
-  search(foo[0], {"foo": ["first", "second", "third"]) -> "first"
-  search(foo[100], {"foo": ["first", "second", "third"]) -> null
+  search(foo[0], {"foo": ["first", "second", "third"]}) -> "first"
+  search(foo[100], {"foo": ["first", "second", "third"]}) -> null
   search(foo[0][0], {"foo": [[0, 1], [1, 2]]}) -> 0
+----
+
+=== Numeric operators
+
+The following operators operate on numbers:
+
+* addition: `+`
+* subtraction: `-`
+* multiplication `*`
+* division: `/`
+* exponent: `^`
+
+[source%unbreakable]
+----
+  search(left + right, {"left": 8, "right": 12 }) -> 20
+  search(right - left - 10, {"left": 8, "right": 12 }) -> -6
+  search(4 + 2 * 4, {}) -> 12
+  search(10 / 2 * 3, {}) -> 15
+  search(2^3, {}) -> 8
+----
+
+=== Concatenation Operator
+
+The concatenation operator takes two string operands and combines them to form a single string.
+
+[source%unbreakable]
+----
+  search(left & "\"" & value & "\"" & right, {"left": "[", "right": "]", "value": "abc" }) -> "[\"abc\"]"
+  search(map(&"$" & @, values), {"values": [123.45, 44.32, 99.00] }) -> ["$123.45", "$44.32", "$99"]
+----
+
+=== Union Operator
+
+The union operator (`~`) combines the contents of two arrays into a single array.
+
+[source%unbreakable]
+----
+  search(a ~ b, {"a": [0,1,2], "b": [3,4,5]}) -> [0,1,2,3,4,5]
+  search(a ~ b, {"a": [[0,1,2]], "b": [[3,4,5]]}) -> [[0,1,2],[3,4,5]]
+  search(a[] ~ b[], {"a": [[0,1,2]], "b": [[3,4,5]]}) -> [0,1,2,3,4,5]
+  search(a ~ 10, {"a": [0,1,2]}) -> [0,1,2,10]
+  search(a ~ `null`, {}) -> [0,1,2]
+----
+
+=== Array Operators
+
+The numeric and concatenation operators (`*`, `+`, `-`, `*`, `/`, `^`, `&`) have special behavior when applied to arrays.
+
+* When these operators are provided arrays for both operands, the operator is applied to each element of the left operand array with the corresponding element from the right operand array
+* If both operands are arrays and they do not have the same size, the shorter array is padded with null values
+* If one operand is an array and one is a scalar value, the operator is applied with the scalar against each element in the array.
+
+[source%unbreakable]
+----
+  search([1,2,3] + [2,3,4], {}) => [3,5,7]
+  search([1,2,3,4] * [1,2,3], {}) => [1,4,9,0]
+  search([1,2,3,4] & "%", {}) => ["1%", "2%", "3%", "4%"]
 ----
 
 == Or Expressions
@@ -454,7 +632,7 @@ Additional examples:
                 -> {"foo": "a", "bar": "b"}
   search({foo: foo, firstbar: bar[0]}, {"foo": "a", "bar": ["b"]})
                 -> {"foo": "a", "firstbar": "b"}
-  search({foo: foo, "bar.baz": bar.baz}, {"foo": "a", "bar": {"baz": "b"}})
+  search({foo: foo, 'bar.baz': bar.baz}, {"foo": "a", "bar": {"baz": "b"}})
                 -> {"foo": "a", "bar.baz": "b"}
   search({foo: foo, baz: baz}, {"foo": "a", "bar": "b"})
                 -> {"foo": "a", "baz": null}
@@ -510,7 +688,7 @@ to return the hash values in any specific order.
 ----
   search([*].foo, [{"foo": 1}, {"foo": 2}, {"foo": 3}]) -> [1, 2, 3]
   search([*].foo, [{"foo": 1}, {"foo": 2}, {"bar": 3}]) -> [1, 2]
-  search('*.foo', {"a": {"foo": 1}, "b": {"foo": 2}, "c": {"bar": 1}}) -> [1, 2]
+  search(*.foo, {"a": {"foo": 1}, "b": {"foo": 2}, "c": {"bar": 1}}) -> [1, 2]
 ----
 
 == JSON Literal Expressions
@@ -583,7 +761,7 @@ additional processing that JSON strings supports including:
   search("[baz]", {}) -> "[baz]"
   search("[baz]", {}) -> "[baz]"
   search("\u03a6", {}) -> "\u03a6"
-  search("\\", {}) -> "\\"
+  search("\"\\\"", {}) -> "\\"
 ----
 
 == Number literals
@@ -618,7 +796,7 @@ A bracket with a single signed digit e.g.: `[0]` can be interpreted as a flatten
 ----
   search(44, {}) -> 44
   search([12, 13], {}) -> [12, 13]
-  search({a: 12, b: 13}, {}) -> {a: 12, b: 13}
+  search({a: 12, b: 13}, {}) -> {"a": 12, "b": 13}
   search(foo | [1], {"foo": [3,4,5]}) -> 4
   search(foo | @[-1], {"foo": [3,4,5]}) -> 5
   search(foo | [1, 2], {"foo": [3,4,5]}) -> [1, 2]
@@ -642,45 +820,8 @@ entirety) is added to the result list.  Otherwise it is excluded from the
 result list.  A filter expression is defined only for a JSON array.  Attempting
 to evaluate a filter expression against any other type will return `null`.
 
-=== Comparison Operators
 
-The following operations are supported:
-
-* '=-' / `==`, tests for equality.
-* `!=`, "<>", tests for inequality.
-* `<`, less than.
-* `<=`, less than or equal to.
-* `>`, greater than.
-* `>=`, greater than or equal to.
-
-The behavior of each operation is dependent on the type of each evaluated
-expression.
-
-The comparison semantics for each operator are defined below based on
-the corresponding JSON type:
-
-==== Equality Operators
-
-For `string/number/true/false/null` types, equality is an exact match. A
-`string` is equal to another `string` if they they have the exact same sequence
-of code points.  The literal values `true/false/null` are equal only to their
-own literal values.  Two JSON objects are equal if they have the same set of
-keys and values (given two JSON objects `x` and `y`, for each key value
-pair `(i, j)` in `x`, there exists an equivalent pair `(i, j)` in `y`).
-Two JSON arrays are equal if they have equal elements in the same order (given
-two arrays `x` and `y`, for each `i` from `0` until `length(x)`,
-`x[i] == y[i]`).
-
-==== Ordering Operators
-
-If the operands are not the same time, the ordering operators `>, >=, <, <=` will return false.
-
-* If both operands are numbers, a numeric comparison is performed.
-* If both operands are strings, they are compared as strings, based on the values of the Unicode code points they contain.
-* If operands are mixed types, the right hand operand is coerced to the same type as the left hand operand before the comparison is performed
-* If the left hand operand is boolean or null, both operands are coerced to a number
-
-For example, given:
+=== Examples:
 
 [source%unbreakable]
 ----
@@ -731,23 +872,6 @@ which is `false`, so the second element is excluded from the result list.
 
 Functions allow users to easily transform and filter data in json-formula
 expressions.
-
-=== Data Types
-
-In order to support functions, a type system is needed.  The JSON types are
-used:
-
-* number (integers and double-precision floating-point format in JSON)
-* string
-* boolean (`true` or `false`)
-* array (an ordered, sequence of values)
-* object (an unordered collection of key value pairs)
-* null
-
-There is also an additional type that is not a JSON type that's used in
-json-formula functions:
-
-* expression (denoted by `&expression`)
 
 === current-node
 
@@ -809,7 +933,7 @@ be used to convert (and filter) all elements to numbers
 
 [source%unbreakable]
 ----
-    search([].toNumber(@), `["1", "2", "3", "notanumber", null, true]`) -> [1, 2, 3, 1]
+    search([].toNumber(@), ["1", "2", "3", "notanumber", null, true]) -> [1, 2, 3, 0]
 ----
 
 This provides a simple mechanism to explicitly convert types when needed.
@@ -924,8 +1048,6 @@ Below is the same steps for evaluating `abs(bar)`:
 
 5. The value of `2` is the resolved value of the function expression `abs(bar)`
 
-All string related functions are defined on the basis of Unicode code points; they do not take normalization into account.
-
 == Pipe Expressions
 
 [source%unbreakable]
@@ -993,5 +1115,10 @@ can use a `pipe-expression`
    search(foo[*].bar | [0], {
        "foo": [{"bar": ["first1", "second1"]},
                {"bar": ["first2", "second2"]}]}) -> ["first1", "second1"]
-   search(foo | [0], {"foo": [0, 1, 2]}) -> [0]
+   search(foo | [0], {"foo": [0, 1, 2]}) -> 0
 ----
+
+== Integrations
+
+The json-formula API allows integrations to customize various json-formula behaviors.
+

@@ -255,7 +255,7 @@ export default class Lexer {
     const maxLength = stream.length;
     let foundNonAlpha = !isIdentifier(stream, start + 1);
     while (stream[this._current] !== "'" && this._current < maxLength) {
-      // You can escape a double quote and you can escape an escape.
+      // You can escape a single quote and you can escape an escape.
       let current = this._current;
       if (!isAlphaNum(stream[current])) foundNonAlpha = true;
       if (stream[current] === '\\' && (stream[current + 1] === '\\'
@@ -268,18 +268,21 @@ export default class Lexer {
     }
     this._current += 1;
     const val = stream.slice(start, this._current);
-    // Check for unnecessary double quotes.
-    // json-formula uses double quotes to escape characters that don't belong in names names.
+    // Check for unnecessary single quotes.
+    // json-formula uses single quotes to escape characters that don't belong in names names.
     // e.g. "purchase-order".address
-    // If we find a double-quoted entity with spaces or all legal characters, issue a warning
+    // If we find a single-quoted entity with spaces or all legal characters, issue a warning
     try {
-      if (!foundNonAlpha || val.includes(' ')) {
+      if (!foundNonAlpha) {
         this.debug.push(`Suspicious quotes: ${val}`);
         this.debug.push(`Did you intend a literal? "${val.replace(/'/g, '')}"?`);
       }
       // eslint-disable-next-line no-empty
     } catch (e) { }
-    return JSON.parse(`"${val.substring(1, val.length - 1)}"`);
+    // we want to do all the escape-processing that JSON does ...
+    // except that JSON expects to escape double quotes, and our identifiers
+    // escape single quotes.
+    return JSON.parse(`"${val.substring(1, val.length - 1).replace(/\\'/g, "'")}"`);
   }
 
   _consumeRawStringLiteral(stream) {
