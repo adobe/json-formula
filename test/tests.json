@@ -2401,7 +2401,8 @@
     {
       "data": "{}",
       "expression": "null/0",
-      "expected": null
+      "was": null,
+      "error": "syntax"
     }
   ],
   [
@@ -2409,7 +2410,8 @@
     {
       "data": "{}",
       "expression": "4/0",
-      "expected": null
+      "was": null,
+      "error": "syntax"
     }
   ],
   [

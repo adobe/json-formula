@@ -272,7 +272,7 @@ export default class Parser {
         right = this.expression(bindingPower.Power);
         return { type: 'PowerExpression', children: [left, right] };
       case TOK_UNION:
-        right = this.expression(bindingPower.Power);
+        right = this.expression(bindingPower.Union);
         return { type: 'UnionExpression', children: [left, right] };
       case TOK_LPAREN:
         name = left.name;

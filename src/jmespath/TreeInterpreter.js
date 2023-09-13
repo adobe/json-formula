@@ -421,6 +421,9 @@ export default class TreeInterpreter {
     if (operator === '-') return this.toNumber(first) - this.toNumber(second);
     if (operator === '/') {
       const result = first / second;
+      if (second === 0) {
+        throw new Error(`Division by zero ${first}/${second}`);
+      }
       return Number.isFinite(result) ? result : null;
     }
     if (operator === '^') {
