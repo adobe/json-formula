@@ -301,12 +301,6 @@ export default class TreeInterpreter {
         return this.applyOperator(first, second, '/');
       },
 
-      PowerExpression: (node, value) => {
-        const first = this.visit(node.children[0], value);
-        const second = this.visit(node.children[1], value);
-        return this.applyOperator(first, second, '^');
-      },
-
       NotExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
         return isFalse(first);
@@ -422,9 +416,6 @@ export default class TreeInterpreter {
     if (operator === '/') {
       const result = first / second;
       return Number.isFinite(result) ? result : null;
-    }
-    if (operator === '^') {
-      return first ** second;
     }
     throw new Error(`Unknown operator: ${operator}`);
   }

@@ -78,12 +78,6 @@ export default class JSONFormulaVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
-	// Visit a parse tree produced by JSONFormulaParser#powerExpression.
-	visitPowerExpression(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
 	// Visit a parse tree produced by JSONFormulaParser#chainExpression.
 	visitChainExpression(ctx) {
 	  return this.visitChildren(ctx);

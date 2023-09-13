@@ -19,7 +19,6 @@ expression
   : expression '.' chainedExpression # chainExpression
   | expression chainedBracketSpecifier # bracketedExpression
   | bracketSpecifier # bracketExpression
-  | expression ('^') expression	# powerExpression
   | expression ('*' | '/' | '&' | '~') expression	# multDivExpression
   | expression ('+' | '-') expression	# addSubtractExpression
   | expression COMPARATOR expression # comparisonExpression
