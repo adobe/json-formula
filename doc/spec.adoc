@@ -1039,7 +1039,7 @@ be used to convert (and filter) all elements to numbers
 
 [source%unbreakable]
 ----
-    search([].toNumber(@), ["1", "2", "3", "notanumber", null, true]) -> [1, 2, 3, 0]
+    search([].toNumber(@), ["1", "2", "3", "notanumber", null, true]) -> [1,2,3,0,1]
 ----
 
 This provides a simple mechanism to explicitly convert types when needed.
