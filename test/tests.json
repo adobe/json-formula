@@ -1416,8 +1416,7 @@
     {
       "data": "`null`",
       "expression": "round(1.24349E2, 2)",
-      "error": "syntax",
-      "was": 124.35
+      "expected": 124.35
     }
   ],
   [

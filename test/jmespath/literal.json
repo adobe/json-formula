@@ -115,6 +115,44 @@
         ]
     },
     {
+      "comment" : "Numbers",
+      "given": {"type" : "object"},
+      "cases": [
+        {
+          "expression" : "200",
+          "result" : 200
+        },
+        {
+          "expression" : "-200",
+          "result" : -200
+        },
+        {
+          "expression" : "2e4",
+          "result" : 20000
+        },
+        {
+          "expression" : "2e+4",
+          "result" : 20000
+        },
+        {
+          "expression" : "2e-4",
+          "result" : 0.0002
+        },
+        {
+          "expression" : "2E4",
+          "result" : 20000
+        },
+        {
+          "expression" : "2E+4",
+          "result" : 20000
+        },
+        {
+          "expression" : "2E-4",
+          "result" : 0.0002
+        }
+      ]
+    },
+    {
       "comment": "Literals",
       "given": {"type": "object"},
       "cases": [

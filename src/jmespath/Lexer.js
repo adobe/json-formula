@@ -315,9 +315,21 @@ export default class Lexer {
     while (isNum(stream[this._current]) && this._current < maxLength) {
       this._current += 1;
     }
+    // check again for exponent character
+    if (stream[this._current] === 'e' || stream[this._current] === 'E') {
+      this._current += 1;
+      // check for + or - after exponent
+      if (stream[this._current] === '-' || stream[this._current] === '+') {
+        this._current += 1;
+      }
+      // consume digits after exponent
+      while (isNum(stream[this._current]) && this._current < maxLength) {
+        this._current += 1;
+      }
+    }
     const n = stream.slice(start, this._current);
     let value;
-    if (n.includes('.')) {
+    if (n.includes('.') || n.toLowerCase().includes('e')) {
       value = parseFloat(n);
     } else {
       value = parseInt(n, 10);

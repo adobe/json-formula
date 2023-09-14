@@ -625,7 +625,19 @@
     },
     {
       "expression": "toNumber(`false`)",
-      "result": null
+      "result": 0
+    },
+    {
+      "expression": "toNumber(`true`)",
+      "result": 1
+    },
+    {
+      "expression": "toNumber(false())",
+      "result": 0
+    },
+    {
+      "expression": "toNumber(true())",
+      "result": 1
     },
     {
       "expression": "toNumber(`null`)",
