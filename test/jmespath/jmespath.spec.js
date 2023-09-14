@@ -17,13 +17,14 @@ import stringToNumber from '../../src/jmespath/stringToNumber.js';
 const functions = require('./functions.json');
 
 function toTestFmt(nm) {
+  // eslint-disable-next-line import/no-dynamic-require, global-require
   const t = require(`./${nm}.json`);
   const tests = [];
   t.forEach(tst => {
     const { given, comment = '' } = tst;
     tst.cases.forEach(c => {
-      const s = [c.comment || comment, c.expression].filter(x => typeof x === 'string' && x).join(' -> ')
-      tests.push([s , {
+      const s = [c.comment || comment, c.expression].filter(x => typeof x === 'string' && x).join(' -> ');
+      tests.push([s, {
         given, expression: c.expression, result: c.result, error: c.error,
       }]);
     });
@@ -69,22 +70,21 @@ const suites = [
   'literal', 'multiselect',
   'pipe', 'slice',
   'syntax', 'unicode',
-  'wildcard'
+  'wildcard',
 ];
 
 suites.forEach(suite => {
   describe(suite, () => {
-    const tests = toTestFmt(suite)
+    const tests = toTestFmt(suite);
     if (tests.length) {
-      test.each(tests)('%s', executeTest)
+      test.each(tests)('%s', executeTest);
     }
-  })
+  });
 
   describe(`${suite} with fields`, () => {
-    const tests = toTestFmt(suite)
+    const tests = toTestFmt(suite);
     if (tests.length) {
-      test.each(tests)('%s', executeTestWithFields)
+      test.each(tests)('%s', executeTestWithFields);
     }
-  })
-
-})
+  });
+});

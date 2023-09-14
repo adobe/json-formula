@@ -21,7 +21,16 @@ test.each(specSamples)('%s', (expr, data, expected) => {
   const language = 'en-US';
   let result;
   try {
-    result = jsonFormula.search(expr, data, {}, language);
+    result = jsonFormula.search(
+      expr,
+      data,
+      {
+        $days: [
+          'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday',
+        ],
+      },
+      language,
+    );
   } catch (e) {
     expect(expected).toBe('syntax');
     return;

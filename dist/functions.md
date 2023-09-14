@@ -552,7 +552,7 @@ reverse(['a', 'b', 'c']) //returns ['c', 'b', 'a']
 ## sort(list) ⇒ <code>Array.&lt;number&gt;</code> \| <code>Array.&lt;string&gt;</code>
 This function accepts an array `list` argument and returns the sorted elements of
 the `list` as an array. The array must be a list of strings or numbers.
-Sorting strings is based on code points. Locale is not taken into account.
+string sorting is based on code points. Locale is not taken into account.
 
 **Kind**: global function  
 **Category**: jmespath  

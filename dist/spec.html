@@ -441,7 +441,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This document describes the specification for json-formula. In the specification, examples are shown through the use of a <code>search</code> function.  The syntax for this function is:</p>
+<p>This document is the specification for json-formula. In the specification, examples are shown through the use of a <code>search</code> function.  The syntax for this function is:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -457,11 +457,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph">
-<p>The result of applying a json-formula expression against a JSON document will <strong>always</strong> result in valid JSON, provided there are no errors during the evaluation process.  Structured data in, structured data out.</p>
+<p>The result of applying a json-formula expression against a JSON document will result in valid JSON, provided there are no errors during the evaluation process.  Structured data in, structured data out.</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_data_types">Data Types</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>This also means that, with the exception of json-formula expression types,
-json-formula only supports the same types supported by JSON:</p>
+<p>json-formula supports the same types supported by JSON:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -486,12 +490,292 @@ json-formula only supports the same types supported by JSON:</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>Expression types are discussed in the <a href="#_function_expressions">Function Expressions</a> section.</p>
+<p>There is an additional type that is not a JSON type that&#8217;s used in
+json-formula functions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>expression (denoted by <code>&amp;expression</code>)</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>Implementations can map the corresponding JSON types to their language
 equivalent.  For example, a JSON <code>null</code> could map to <code>None</code> in python,
 and <code>nil</code> in ruby and go.</p>
+</div>
+<div class="sect2">
+<h3 id="_type_coercion">Type Coercion</h3>
+<div class="paragraph">
+<p>If the supplied data is not correct for the execution context, json-formula will attempt to coerce the data to the correct type. Coercion will occur in these contexts:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>operands of the concatenation operator (<code>&amp;</code>) shall be coerced to a string, except when an operand is an array. Arrays shall be coerced to an array of strings.</p>
+</li>
+<li>
+<p>operands of numeric operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>) shall be coerced to numbers except when the operand is an array. Arrays shall be coerced to an array of numbers.</p>
+</li>
+<li>
+<p>operands of the union operator (<code>~</code>) shall be coerced to an array</p>
+</li>
+<li>
+<p>The left-hand operand of ordering comparison operators (<code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code>) must be a string or number.  Any other type shall be coerced to a number.</p>
+</li>
+<li>
+<p>If the operands of an ordering comparison are different, they shall both be coerced to a number</p>
+</li>
+<li>
+<p>parameters to functions shall be coerced to the expected type as defined by the function signature</p>
+</li>
+<li>
+<p>slice and flatten operations shall coerce operands to a number</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The equality and inequality operators (<code>=</code>, <code>==</code>, <code>!=</code>, <code>&lt;&gt;</code>) do <strong>not</strong> perform type coercion.  If operands are different types, the values are considered not equal.</p>
+</div>
+<div class="paragraph">
+<p>Coercion is not always possible, and if so, an error shall be emitted&#8201;&#8212;&#8201;most often an <code>invalid-type</code> error.</p>
+</div>
+<div class="sect3">
+<h4 id="_examples">Examples</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>    search("abc" &amp; 123, {}) -&gt; "abc123"
+    search("123" * 2, {}) -&gt; 246
+    search([1,2,3] ~ 4, {}) -&gt; [1,2,3,4]
+    search(123 &lt; "124", {}) -&gt; true
+    search("23" &gt; 111, {}) -&gt; false
+    search(abs("-2"), {}) -&gt; 2
+    search([1,2,3,4]["1"], {}) -&gt; 2
+    search(1 == "1", {}) -&gt; false</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_type_coercion_rules">Type Coercion Rules</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Provided Type</th>
+<th class="tableblock halign-left valign-top">Expected Type</th>
+<th class="tableblock halign-left valign-top">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number converted to a string. Similar to JavaScript <code>toString()</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">"true" or "false"</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not supported</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not supported</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">"" (empty string)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Parse string to a number.  If the string is not a well-formed number, will return 0.  Allow for locale-specific currency symbols to be ignored.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true &#8658; 1 false &#8658; 0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not supported</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not supported</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">create a single-element array with the number</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">create a single-element array with the string.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">create a single-element array with the boolean.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not supported</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Empty array</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No supported</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not supported</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not supported</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An object where the keys are the array index positions and the values are the array values.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Empty object</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect3">
+<h4 id="_examples_2">Examples</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>    search("\"$123.00\" + 1", {}) -&gt; 124.00"
+    search("truth is " &amp; `true`, {}) -&gt; "truth is true"
+    search(2 + `true`, {}) -&gt; 3
+    search(avg("20"), {}) -&gt; 20
+    search(merge({a: 3}, 4), {}) -&gt; {a:3}
+    search(merge({a: 3}, ["x", "y"]), {}) -&gt; {"0": "x", "1": "y", "a": 3}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_date_and_time_values">Date and Time Values</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to support date and time functions, json-formula needs to represent date and time values.  Date/time values are represented as a number where:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The integer portion of the number represents the number of days since the epoch: January 1, 1970, <a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">UTC</a>.</p>
+</li>
+<li>
+<p>The fractional portion of the number represents the fractional portion of the day</p>
+</li>
+<li>
+<p>As implied, the date/time value is offset from the current time zone to UTC.</p>
+</li>
+<li>
+<p>The current time zone is determined by the host operating system.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The preferred ways to create a date/time value are by using one of these functions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>datetime()</code></p>
+</li>
+<li>
+<p><code>now()</code></p>
+</li>
+<li>
+<p><code>today()</code></p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_examples_3">Examples</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>    search(datetime(1970,1,2,0,0,0) - datetime(1970,1,1,0,0,0), {}) -&gt; 1
+    search(datetime(2010,1,21,12,0,0) | {month: month(@), day: day(@), hour: hour(@)}, {}) -&gt;
+      {"month": 1, "day": 21, "hour": 12}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_floating_point_precision">Floating Point Precision</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>json-formula implementations are expected to use <a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">Double-precision floating-point format</a> to represent numbers.  As with any system that uses this level of precision, results of expressions may be off by a tiny fraction. e.g.
+<code>10 * 1.44 &#8594; 14.399999999999999</code></p>
+</div>
+<div class="paragraph">
+<p>Authors should mitigate this behavior:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>When comparing fractional results, do not compare for exact equality.  Instead, compare within a range. e.g.: instead of: <code>a == b</code>, use: <code>abs(a-b) &lt; 0.000001</code></p>
+</li>
+<li>
+<p>leverage the built-in functions that manipulate fractional values:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>ceil()</p>
+</li>
+<li>
+<p>floor()</p>
+</li>
+<li>
+<p>round()</p>
+</li>
+<li>
+<p>trunc()</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -503,7 +787,8 @@ and <code>nil</code> in ruby and go.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>/*
+<pre class="highlight"><code>// $antlr-format false
+/*
 Copyright 2021 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License. You may obtain a copy
@@ -539,7 +824,7 @@ expression
   | literal # literalExpression
   | functionExpression # functionCallExpression
   | expression '|' expression # pipeExpression
-  | RAW_STRING # rawStringExpression
+  | (STRING | RAW_STRING) # rawStringExpression
   | (REAL_OR_EXPONENT_NUMBER | SIGNED_INT) # numberLiteral
   | currentNode # currentNodeExpression
   ;
@@ -603,15 +888,11 @@ currentNode : '@' ;
 
 expressionType : '&amp;' expression ;
 
-RAW_STRING : '\'' (RAW_ESC | ~['\\])* '\'' ;
-
-fragment RAW_ESC : '\\' . ;
-
 literal : '`' jsonValue '`' ;
 
 identifier
   : NAME
-  | STRING
+  | QUOTED_NAME
   | JSON_CONSTANT
   ;
 
@@ -622,6 +903,8 @@ JSON_CONSTANT
   ;
 
 NAME : [@a-zA-Z_] [a-zA-Z0-9_]* ;
+
+QUOTED_NAME : '\'' (ESC | ~ ['\\])* '\'';
 
 jsonObject
   : '{' jsonObjectPair (',' jsonObjectPair)* '}'
@@ -652,6 +935,11 @@ STRING
 fragment ESC
   : '\\' (["\\/bfnrt`] | UNICODE)
   ;
+
+RAW_STRING : '"' (RAW_ESC | ~["\\])* '"' ;
+
+fragment RAW_ESC : '\\' . ;
+
 
 fragment UNICODE
   : 'u' HEX HEX HEX HEX
@@ -704,10 +992,10 @@ from weakest to tightest binding:</p>
 <p>add: <code>+</code>, subtract: <code>-</code></p>
 </li>
 <li>
-<p>multiply: <code>*</code>, divide: <code>/</code>, power: <code>^</code>, union: <code>~</code></p>
+<p>multiply: <code>*</code>, divide: <code>/</code>, union: <code>~</code></p>
 </li>
 <li>
-<p>Equals: <code>=</code> (or <code>==</code>), Greater than: <code>&gt;</code>, Less than: <code>&lt;</code>, Greater than or equal: <code>&gt;=</code>, Less than or equal: <code>&#8656;</code>, Not equals: <code>!=</code> (or <code>&lt;&gt;</code>)</p>
+<p>Equals: <code>=</code> (or <code>==</code>), Greater than: <code>&gt;</code>, Less than: <code>&lt;</code>, Greater than or equal: <code>&gt;=</code>, Less than or equal: <code>&lt;=</code>, Not equals: <code>!=</code> (or <code>&lt;&gt;</code>)</p>
 </li>
 <li>
 <p>Flatten: <code>[]</code></p>
@@ -722,8 +1010,24 @@ from weakest to tightest binding:</p>
 <div class="sect1">
 <h2 id="_identifiers">Identifiers</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>TODO: Fix Identifiers in the grammar</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>identifier
+  : NAME
+  | QUOTED_NAME
+  | JSON_CONSTANT
+  ;
+
+JSON_CONSTANT
+  : 'true'
+  | 'false'
+  | 'null'
+  ;
+
+NAME : [@a-zA-Z_] [a-zA-Z0-9_]* ;
+
+QUOTED_NAME : '\'' (ESC | ~ ['\\])* '\'';</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>An <code>identifier</code> is the most basic expression and can be used to extract a
@@ -731,7 +1035,7 @@ single element from a JSON document.  The return value for an <code>identifier</
 </div>
 <div class="paragraph">
 <p>From the grammar rule listed above identifiers can be one or more characters,
-and must start with <code>A-Za-z_</code>.</p>
+and must start with <code>A-Za-z_$</code>.</p>
 </div>
 <div class="paragraph">
 <p>An identifier can also be quoted.  This is necessary when an identifier has
@@ -742,11 +1046,11 @@ single quote.  Any valid string can be used between single quoted, include JSON
 supported escape sequences, and six character unicode escape sequences.</p>
 </div>
 <div class="paragraph">
-<p>Note that any identifier that does not start with <code>A-Za-z_</code> <strong>must</strong>
+<p>Note that any identifier that does not start with <code>A-Za-z_$</code> <strong>must</strong>
 be quoted.</p>
 </div>
 <div class="sect2">
-<h3 id="_examples">Examples</h3>
+<h3 id="_examples_4">Examples</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>   search(foo, {"foo": "value"}) -&gt; "value"
@@ -799,11 +1103,17 @@ encountered during the evaluation process.</p>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>    sub-expression    = expression "." ( identifier /
-                                         multi-select-list /
-                                         multi-select-hash /
-                                         function-expression /
-                                         "*" )</code></pre>
+<pre class="highlight"><code>subExpression: expression '.' chainedExpression
+
+chainedExpression
+  : identifier
+  | multiSelectList
+  | multiSelectHash
+  | functionExpression
+  | wildcard
+  ;
+
+wildcard : '*' ;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -835,7 +1145,7 @@ evaluation.</p>
 sub-expressions: <code>grandparent.parent.child</code>.</p>
 </div>
 <div class="sect2">
-<h3 id="_examples_2">Examples</h3>
+<h3 id="_examples_5">Examples</h3>
 <div class="paragraph">
 <p>Given a JSON document: <code>{"foo": {"bar": "baz"}}</code>, and a json-formula expression:
 <code>foo.bar</code>, the evaluation process would be</p>
@@ -864,17 +1174,35 @@ sub-expressions: <code>grandparent.parent.child</code>.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_index_expressions">Index Expressions</h2>
+<h2 id="_bracket_expressions">Bracket Expressions</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>  index-expression  = expression bracket-specifier / bracket-specifier
-  bracket-specifier = "[" (number / "*") "]" / "[]"</code></pre>
+<pre class="highlight"><code>expression: expression chainedBracketSpecifier
+
+chainedBracketSpecifier
+  : bracketSpecifier
+  | '[' expression ']'
+  ;
+
+bracketSpecifier
+  : '[' SIGNED_INT ']'
+  | '[' '*' ']'
+  | '[' slice ']'
+  | '[' ']'
+  | '[?' expression ']'
+  ;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>An index expression is used to access elements in a list.  Indexing is 0 based,
-the index of 0 refers to the first element of the list.  A negative number is a
+<p>From the <code>chainedBracketSpecifier</code> construction, an index expression is the case where the brackets enclose an integer or wildcard (<code>*</code>) or expression that returns a value to access elements in a list or object.</p>
+</div>
+<div class="paragraph">
+<p>When brackets are used with an object, the bracket contents are expected to be an expression that resolves to the name of a property. In the simple case, <code>foo["bar"]</code> is equivalent to <code>foo.bar</code>.</p>
+</div>
+<div class="paragraph">
+<p>Most commonly, brackets are used with lists.  With lists, bracketed expressions are expected to return an integer, and then follow the semantics of <code>SIGNED_INT</code>.
+When brackets enclose a signed integer (<code>SIGNED_INT</code>), indexing is 0 based. The index of 0 refers to the first element of the list.  A negative number is a
 valid index.  A negative number indicates that indexing is relative to the end
 of the list, specifically</p>
 </div>
@@ -890,22 +1218,22 @@ expression refers to an index that is greater than the length of the array, a
 value of <code>null</code> is returned.</p>
 </div>
 <div class="paragraph">
-<p>For the grammar rule <code>expression bracket-specifier</code> the <code>expression</code> is
+<p>For the grammar rule <code>expression bracketSpecifier</code> the <code>expression</code> is
 first evaluated, and then return value from the <code>expression</code> is given as
-input to the <code>bracket-specifier</code>.</p>
+input to the <code>bracketSpecifier</code>.</p>
 </div>
 <div class="paragraph">
-<p>Using a "*" character within a <code>bracket-specifier</code> is discussed below in the
+<p>Using a "*" character within a <code>bracketSpecifier</code> is discussed below in the
 <a href="#_wildcard_expressions">Wildcard Expressions</a> section.</p>
 </div>
+<div class="paragraph">
+<p>Using an expression prefixed with a "?" character within a <code>bracketSpecifier</code> is discussed below in the <a href="#_filter_expressions">Filter Expressions</a> section.</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_slices">Slices</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_slices">Slices</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>  slice-expression  = [number] ":" [number] [ ":" [number] ]</code></pre>
+<pre class="highlight"><code>  slice : start=expression? ':' stop=expression? (':' step=expression?)? ;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -979,11 +1307,13 @@ MUST be an empty array.</p>
 </li>
 </ul>
 </div>
+</div>
 <div class="sect2">
-<h3 id="_examples_3">Examples</h3>
+<h3 id="_examples_6">Examples</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>  search([0:4:1], [0, 1, 2, 3]) -&gt; [0, 1, 2, 3]
+<pre class="highlight"><code>  search(foo["bar"], {"foo": {"bar": 21}}) -&gt; 21
+  search([0:4:1], [0, 1, 2, 3]) -&gt; [0, 1, 2, 3]
   search([0:4], [0, 1, 2, 3]) -&gt; [0, 1, 2, 3]
   search([0:3], [0, 1, 2, 3]) -&gt; [0, 1, 2]
   search([:2], [0, 1, 2, 3]) -&gt; [0, 1]
@@ -993,11 +1323,8 @@ MUST be an empty array.</p>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_flatten_operator">Flatten Operator</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_flatten_operator">Flatten Operator</h3>
 <div class="paragraph">
 <p>When the character sequence <code>[]</code> is provided as a bracket specifier, then
 a flattening operation occurs on the current result.  The flattening operator
@@ -1030,16 +1357,184 @@ are projected onto the flattened list with the same semantics as a
 wildcard expression.  Thus the difference between <code>[*]</code> and <code>[]</code> is that
 <code>[]</code> will first flatten sub-lists in the current result.</p>
 </div>
+</div>
 <div class="sect2">
-<h3 id="_examples_4">Examples</h3>
+<h3 id="_examples_7">Examples</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>  search([0], ["first", "second", "third"]) -&gt; "first"
   search([-1], ["first", "second", "third"]) -&gt; "third"
   search([100], ["first", "second", "third"]) -&gt; null
-  search(foo[0], {"foo": ["first", "second", "third"]) -&gt; "first"
-  search(foo[100], {"foo": ["first", "second", "third"]) -&gt; null
-  search(foo[0][0], {"foo": [[0, 1], [1, 2]]}) -&gt; 0</code></pre>
+  search(foo[0], {"foo": ["first", "second", "third"]}) -&gt; "first"
+  search(foo[100], {"foo": ["first", "second", "third"]}) -&gt; null
+  search(foo[0][0], {"foo": [[0, 1], [1, 2]]}) -&gt; 0
+  search(foo[], {"foo": [[0, 1], [1, 2]]}) -&gt; [0,1,1,2]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_operators">Operators</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_comparison_operators">Comparison Operators</h3>
+<div class="paragraph">
+<p>The following comparison operators are supported:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>'=' / <code>==</code>, test for equality.</p>
+</li>
+<li>
+<p><code>!=</code>, "&lt;&gt;", test for inequality.</p>
+</li>
+<li>
+<p><code>&lt;</code>, less than.</p>
+</li>
+<li>
+<p><code>&lt;=</code>, less than or equal to.</p>
+</li>
+<li>
+<p><code>&gt;</code>, greater than.</p>
+</li>
+<li>
+<p><code>&gt;=</code>, greater than or equal to.</p>
+</li>
+<li>
+<p>If both operands are numbers, a numeric comparison is performed.</p>
+</li>
+<li>
+<p>If both operands are strings, they are compared as strings, based on the values of the Unicode code points they contain.</p>
+</li>
+<li>
+<p>If operands are mixed types, follow the <a href="#_type_coercion">type coercion</a> rules.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The comparison semantics for each operator are defined in the discussion on <a href="#_type_coercion">type coercion</a>.</p>
+</div>
+<div class="sect3">
+<h4 id="_equality_operators">Equality Operators</h4>
+<div class="paragraph">
+<p>Two representations of the equality and inequality operators are supported: <code>=</code> and <code>==</code> are equivalent in functionality.  Both variations are supported provide familiarity to users with experience with similar grammars. Similarly, <code>!=</code> and <code>&lt;&gt;</code> function identically.</p>
+</div>
+<div class="paragraph">
+<p>For <code>string/number/true/false/null</code> types, equality is an exact match. A
+<code>string</code> is equal to another <code>string</code> if they they have the exact same sequence
+of code points.  The literal values <code>true/false/null</code> are equal only to their
+own literal values.  Two JSON objects are equal if they have the same set of
+keys and values (given two JSON objects <code>x</code> and <code>y</code>, for each key value
+pair <code>(i, j)</code> in <code>x</code>, there exists an equivalent pair <code>(i, j)</code> in <code>y</code>).
+Two JSON arrays are equal if they have equal elements in the same order (given
+two arrays <code>x</code> and <code>y</code>, for each <code>i</code> from <code>0</code> until <code>length(x)</code>,
+<code>x[i] == y[i]</code>).</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ordering_operators">Ordering Operators</h4>
+<div class="paragraph">
+<p>If the operands are not the same type, the ordering operators <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code> will return false.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If both operands are numbers, a numeric comparison is performed.</p>
+</li>
+<li>
+<p>If both operands are strings, they are compared as strings, based on the values of the Unicode code points they contain.</p>
+</li>
+<li>
+<p>If operands are mixed types, follow the <a href="#_type_coercion">type coercion</a> rules.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_numeric_operators">Numeric operators</h3>
+<div class="paragraph">
+<p>The following operators operate on numbers:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>addition: <code>+</code></p>
+</li>
+<li>
+<p>subtraction: <code>-</code></p>
+</li>
+<li>
+<p>multiplication <code>*</code></p>
+</li>
+<li>
+<p>division: <code>/</code></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>  search(left + right, {"left": 8, "right": 12 }) -&gt; 20
+  search(right - left - 10, {"left": 8, "right": 12 }) -&gt; -6
+  search(4 + 2 * 4, {}) -&gt; 12
+  search(10 / 2 * 3, {}) -&gt; 15</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_concatenation_operator">Concatenation Operator</h3>
+<div class="paragraph">
+<p>The concatenation operator takes two string operands and combines them to form a single string.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>  search(left &amp; "\"" &amp; value &amp; "\"" &amp; right, {"left": "[", "right": "]", "value": "abc" }) -&gt;
+      "[\"abc\"]"
+  search(map(&amp;"$" &amp; @, values), {"values": [123.45, 44.32, 99.00] }) -&gt;
+      ["$123.45", "$44.32", "$99"]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_union_operator">Union Operator</h3>
+<div class="paragraph">
+<p>The union operator (<code>~</code>) combines the contents of two arrays into a single array.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>  search(a ~ b, {"a": [0,1,2], "b": [3,4,5]}) -&gt; [0,1,2,3,4,5]
+  search(a ~ b, {"a": [[0,1,2]], "b": [[3,4,5]]}) -&gt; [[0,1,2],[3,4,5]]
+  search(a[] ~ b[], {"a": [[0,1,2]], "b": [[3,4,5]]}) -&gt; [0,1,2,3,4,5]
+  search(a ~ 10, {"a": [0,1,2]}) -&gt; [0,1,2,10]
+  search(a ~ `null`, {}) -&gt; [0,1,2]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_array_operators">Array Operators</h3>
+<div class="paragraph">
+<p>The numeric and concatenation operators (<code><strong></code>, <code>+</code>, <code>-</code>, <code></strong></code>, <code>/</code>, <code>&amp;</code>) have special behavior when applied to arrays.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>When these operators are provided arrays for both operands, the operator is applied to each element of the left operand array with the corresponding element from the right operand array</p>
+</li>
+<li>
+<p>If both operands are arrays and they do not have the same size, the shorter array is padded with null values</p>
+</li>
+<li>
+<p>If one operand is an array and one is a scalar value, the operator is applied with the scalar against each element in the array.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>  search([1,2,3] + [2,3,4], {}) =&gt; [3,5,7]
+  search([1,2,3,4] * [1,2,3], {}) =&gt; [1,4,9,0]
+  search([1,2,3,4] &amp; "%", {}) =&gt; ["1%", "2%", "3%", "4%"]</code></pre>
 </div>
 </div>
 </div>
@@ -1050,7 +1545,7 @@ wildcard expression.  Thus the difference between <code>[*]</code> and <code>[]<
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>  or-expression     = expression "||" expression</code></pre>
+<pre class="highlight"><code>  orExpression = expression '||' expression</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1082,7 +1577,7 @@ The following conditions cannot be coerced to true:</p>
 </ul>
 </div>
 <div class="sect2">
-<h3 id="_examples_5">Examples</h3>
+<h3 id="_examples_8">Examples</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>  search(foo || bar, {"foo": "foo-value"}) -&gt; "foo-value"
@@ -1102,7 +1597,7 @@ The following conditions cannot be coerced to true:</p>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>  and-expression  = expression "&amp;&amp;" expression</code></pre>
+<pre class="highlight"><code>  andExpression  = expression '&amp;&amp;' expression</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1153,7 +1648,7 @@ expected truth table:</p>
 `logical conjunction [AND](<a href="https://en.wikipedia.org/wiki/Truth_table#Logical_conjunction_.28AND.29" class="bare">https://en.wikipedia.org/wiki/Truth_table#Logical_conjunction_.28AND.29</a>).</p>
 </div>
 <div class="sect2">
-<h3 id="_examples_6">Examples</h3>
+<h3 id="_examples_9">Examples</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>  search(True &amp;&amp; False, {"True": true, "False": false}) -&gt; false
@@ -1170,15 +1665,15 @@ expected truth table:</p>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>  paren-expression  = "(" expression ")"</code></pre>
+<pre class="highlight"><code>  parenExpression  = '(' expression ')'</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>A <code>paren-expression</code> allows a user to override the precedence order of
+<p>A <code>parenExpression</code> allows a user to override the precedence order of
 an expression, e.g. <code>(a || b) &amp;&amp; c</code>.</p>
 </div>
 <div class="sect2">
-<h3 id="_examples_7">Examples</h3>
+<h3 id="_examples_10">Examples</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>  search(foo[?(a == 1 || b == 2) &amp;&amp; c == 5],
@@ -1193,17 +1688,17 @@ an expression, e.g. <code>(a || b) &amp;&amp; c</code>.</p>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>    not-expression    = "!" expression</code></pre>
+<pre class="highlight"><code>    notExpression    = '!' expression</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>A <code>not-expression</code> negates the result of an expression.  If the expression
-results in a truth-like value, a <code>not-expression</code> will change this value to
+<p>A <code>notExpression</code> negates the result of an expression.  If the expression
+results in a truth-like value, a <code>notExpression</code> will change this value to
 <code>false</code>.  If the expression results in a false-like value, a
-<code>not-expression</code> will change this value to <code>true</code>.</p>
+<code>notExpression</code> will change this value to <code>true</code>.</p>
 </div>
 <div class="sect2">
-<h3 id="_examples_8">Examples</h3>
+<h3 id="_examples_11">Examples</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>  search(!True, {"True": true}) -&gt; false
@@ -1220,13 +1715,13 @@ results in a truth-like value, a <code>not-expression</code> will change this va
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>    multi-select-list = "[" expression ( "," expression )* "]"</code></pre>
+<pre class="highlight"><code>    multiSelectList : '[' expression (',' expression)* ']' ;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>A multiselect expression is used to extract a subset of elements from a JSON hash.  There are two version of multiselect, one in which the multiselect expression is enclosed in <code>{&#8230;&#8203;}</code> and one which is enclosed in <code>[&#8230;&#8203;]</code>.
+<p>A multiselect expression is used to extract a subset of elements from a JSON object or array.  There are two version of multiselect, one in which the multiselect expression is enclosed in <code>{&#8230;&#8203;}</code> and one which is enclosed in <code>[&#8230;&#8203;]</code>.
 This section describes the <code>[&#8230;&#8203;]</code> version.  Within the start and closing
-characters is one or more non expressions separated by a comma.  Each
+characters is one or more expressions separated by a comma.  Each
 expression will be evaluated against the JSON document.  Each returned element
 will be the result of evaluating the expression. A <code>multi-select-list</code> with
 <code>N</code> expressions will result in a list of length <code>N</code>.  Given a multiselect
@@ -1234,7 +1729,7 @@ expression <code>[expr-1,expr-2,&#8230;&#8203;,expr-n]</code>, the evaluated exp
 <code>[evaluate(expr-1), evaluate(expr-2), &#8230;&#8203;, evaluate(expr-n)]</code>.</p>
 </div>
 <div class="sect2">
-<h3 id="_examples_9">Examples</h3>
+<h3 id="_examples_12">Examples</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>  search([foo,bar], {"foo": "a", "bar": "b", "baz": "c"}) -&gt; ["a", "b"]
@@ -1276,7 +1771,7 @@ single key value pair in the created hash.
 Unlike the multi-select-list, a multi-select-hash may be empty.</p>
 </div>
 <div class="sect2">
-<h3 id="_examples_10">Examples</h3>
+<h3 id="_examples_13">Examples</h3>
 <div class="paragraph">
 <p>Given a <code>multi-select-hash</code> expression <code>{foo: one.two, bar: bar}</code> and the
 data <code>{"bar": "bar", {"one": {"two": "one-two"}}}</code>, the expression is
@@ -1309,7 +1804,7 @@ expression <code>bar</code> against the provided JSON document.</p>
                 -&gt; {"foo": "a", "bar": "b"}
   search({foo: foo, firstbar: bar[0]}, {"foo": "a", "bar": ["b"]})
                 -&gt; {"foo": "a", "firstbar": "b"}
-  search({foo: foo, "bar.baz": bar.baz}, {"foo": "a", "bar": {"baz": "b"}})
+  search({foo: foo, 'bar.baz': bar.baz}, {"foo": "a", "bar": {"baz": "b"}})
                 -&gt; {"foo": "a", "bar.baz": "b"}
   search({foo: foo, baz: baz}, {"foo": "a", "bar": "b"})
                 -&gt; {"foo": "a", "baz": null}</code></pre>
@@ -1321,17 +1816,43 @@ expression <code>bar</code> against the provided JSON document.</p>
 <div class="sect1">
 <h2 id="_wildcard_expressions">Wildcard Expressions</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>There are two forms of wildcard expression, <code>[*]</code> from the <code>bracketSpecifier</code> construction:</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>    expression        =/ "*"
-    bracket-specifier = "[" "*" "]"</code></pre>
+<pre class="highlight"><code>bracketSpecifier
+  : '[' SIGNED_INT ']' # bracketIndex
+  | '[' '*' ']' # bracketStar
+  | '[' slice ']' # bracketSlice
+  | '[' ']' # bracketFlatten
+  | '[?' expression ']' # select
+  ;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>A wildcard expression is a expression of either <code><strong></code> or <code>[</strong>]</code>.  A wildcard
+<p>And <code>.*</code> from the chainedExpression construction:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>expression : expression '.' chainedExpression
+
+chainedExpression
+  : identifier
+  | multiSelectList
+  | multiSelectHash
+  | functionExpression
+  | wildcard
+  ;
+
+wildcard : '*' ;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A wildcard expression is a expression of either <code>.<strong></code> or <code>[</strong>]</code>.  A wildcard
 expression can return multiple elements, and the remaining expressions are
 evaluated against each returned element from a wildcard expression.  The
-<code>[<strong>]</code> syntax applies to a list type and the <code></strong></code> syntax applies to a hash
+<code>[<strong>]</code> syntax applies to a list type and the <code>.</strong></code> syntax applies to a hash
 type.</p>
 </div>
 <div class="paragraph">
@@ -1358,12 +1879,12 @@ against each individual element in the list (this is also referred to as a
 <code>null</code> value, it is omitted from the final result list.</p>
 </div>
 <div class="paragraph">
-<p>A list wildcard expression is only valid for the JSON array type.  If a list
+<p>A list wildcard expression is valid only for the JSON array type.  If a list
 wildcard expression is applied to any other JSON type, a value of <code>null</code> is
 returned.</p>
 </div>
 <div class="paragraph">
-<p>Similarly, a hash wildcard expression is only valid for the JSON object type.
+<p>Similarly, a hash wildcard expression is valid only for the JSON object type.
 If a hash wildcard expression is applied to any other JSON type, a value of
 <code>null</code> is returned.  Note that JSON hashes are explicitly defined as
 unordered.  Therefore a hash wildcard expression can return the values
@@ -1371,12 +1892,12 @@ associated with the hash in any order.  Implementations are not required
 to return the hash values in any specific order.</p>
 </div>
 <div class="sect2">
-<h3 id="_examples_11">Examples</h3>
+<h3 id="_examples_14">Examples</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>  search([*].foo, [{"foo": 1}, {"foo": 2}, {"foo": 3}]) -&gt; [1, 2, 3]
   search([*].foo, [{"foo": 1}, {"foo": 2}, {"bar": 3}]) -&gt; [1, 2]
-  search('*.foo', {"a": {"foo": 1}, "b": {"foo": 2}, "c": {"bar": 1}}) -&gt; [1, 2]</code></pre>
+  search(*.foo, {"a": {"foo": 1}, "b": {"foo": 2}, "c": {"bar": 1}}) -&gt; [1, 2]</code></pre>
 </div>
 </div>
 </div>
@@ -1387,7 +1908,7 @@ to return the hash values in any specific order.</p>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>    literal = "`" json-value "`"</code></pre>
+<pre class="highlight"><code>    jsonLiteral = '`' jsonValue '`'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1401,7 +1922,7 @@ implementations need to handle this case before passing the resulting string to
 a JSON parser.</p>
 </div>
 <div class="sect2">
-<h3 id="_examples_12">Examples</h3>
+<h3 id="_examples_15">Examples</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>  search(`"foo"`, {}) -&gt; "foo"
@@ -1420,16 +1941,14 @@ a JSON parser.</p>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>  raw-string        = '"' *raw-string-char '"'
-  raw-string-char   = (%x20-26 / %x28-5B / %x5D-10FFFF) / preserved-escape /
-                        raw-string-escape
-  preserved-escape  = escape (%x20-26 / %28-5B / %x5D-10FFFF)
-  raw-string-escape = escape ('"' / escape)</code></pre>
+<pre class="highlight"><code>RAW_STRING : '"' (RAW_ESC | ~["\\])* '"' ;
+
+fragment RAW_ESC : '\\' . ;</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>A raw string is an expression that allows for a literal string value to be
-specified.  The result of evaluating the raw string literal expression is the
+specified.  The result of evaluating the raw string literal expression is a
 literal string value.  It is a simpler form of a JSON literal expression that is
 special cased for strings.  For example, the following expressions both
 evaluate to the same value: "foo"</p>
@@ -1442,7 +1961,7 @@ evaluate to the same value: "foo"</p>
 </div>
 <div class="paragraph">
 <p>As you can see in the examples above, it is meant as a more succinct
-form of the common scenario of specifying a literal string value.</p>
+form of the common scenario of specifying a json literal string value.</p>
 </div>
 <div class="paragraph">
 <p>In addition, it does not perform any of the
@@ -1469,7 +1988,7 @@ in RFC 4627 section 2.5.</p>
   search("[baz]", {}) -&gt; "[baz]"
   search("[baz]", {}) -&gt; "[baz]"
   search("\u03a6", {}) -&gt; "\u03a6"
-  search("\\", {}) -&gt; "\\"</code></pre>
+  search("\"\\\"", {}) -&gt; "\\"</code></pre>
 </div>
 </div>
 </div>
@@ -1479,7 +1998,7 @@ in RFC 4627 section 2.5.</p>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>number-literal = (REAL_OR_EXPONENT_NUMBER | SIGNED_INT)
+<pre class="highlight"><code>numberLiteral = (REAL_OR_EXPONENT_NUMBER | SIGNED_INT)
 REAL_OR_EXPONENT_NUMBER
   : '-'? INT '.' [0-9] + EXP?
   | '-'? INT EXP
@@ -1500,15 +2019,15 @@ fragment EXP
 <div class="paragraph">
 <p>As with raw strings, json-formula allows literal numbers in expressions.
 Allowing numbers in expressions does lead to some ambiguity.
-A bracket with a single signed digit e.g.: <code>[0]</code> can be interpreted as a flatten operation or a multi-select list with the number zero. To handle this ambiguity, the grammar sets a precedence so that <code>[-?[0-9]]</code> is consistently treated as a flatten operation.  To explicitly express an array with one element, use a JSON literal: <code> `[0]` </code></p>
+A bracket with a single signed digit e.g.: <code>[0]</code> can be interpreted as a flatten operation or a multi-select list with the number zero. To handle this ambiguity, the grammar sets a precedence so that <code>[-?[0-9]]</code> is consistently treated as a an index operation.  To explicitly express an array with one element, use a JSON literal: <code> `[0]` </code></p>
 </div>
 <div class="sect2">
-<h3 id="_examples_13">Examples</h3>
+<h3 id="_examples_16">Examples</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>  search(44, {}) -&gt; 44
   search([12, 13], {}) -&gt; [12, 13]
-  search({a: 12, b: 13}, {}) -&gt; {a: 12, b: 13}
+  search({a: 12, b: 13}, {}) -&gt; {"a": 12, "b": 13}
   search(foo | [1], {"foo": [3,4,5]}) -&gt; 4
   search(foo | @[-1], {"foo": [3,4,5]}) -&gt; 5
   search(foo | [1, 2], {"foo": [3,4,5]}) -&gt; [1, 2]
@@ -1523,13 +2042,18 @@ A bracket with a single signed digit e.g.: <code>[0]</code> can be interpreted a
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>  list-filter-expr      = "[?" expression "]"
-  comparator-expression = expression comparator expression
-  comparator            = "&lt;" / "&lt;=" / "==" / "=" / "&gt;=" / "&gt;" / "!=" / "&lt;&gt;"</code></pre>
+<pre class="highlight"><code>bracketSpecifier
+  : '[' SIGNED_INT ']'
+  | '[' '*' ']'
+  | '[' slice ']'
+  | '[' ']'
+  | '[?' expression ']'
+  ;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>A filter expression provides a way to select JSON elements based on a
+<p>A filter expression is defined by a <code>bracketSpecifier</code> where the bracket contents are prefixed with a question mark character (<code>?</code>).
+A filter expression provides a way to select JSON elements based on a
 comparison to another expression.  A filter expression is evaluated as follows:
 for each element in an array evaluate the <code>expression</code> against the
 element.  If the expression evaluates to a truth-like value, the item (in its
@@ -1538,78 +2062,7 @@ result list.  A filter expression is defined only for a JSON array.  Attempting
 to evaluate a filter expression against any other type will return <code>null</code>.</p>
 </div>
 <div class="sect2">
-<h3 id="_comparison_operators">Comparison Operators</h3>
-<div class="paragraph">
-<p>The following operations are supported:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>'=-' / <code>==</code>, tests for equality.</p>
-</li>
-<li>
-<p><code>!=</code>, "&lt;&gt;", tests for inequality.</p>
-</li>
-<li>
-<p><code>&lt;</code>, less than.</p>
-</li>
-<li>
-<p><code>&#8656;</code>, less than or equal to.</p>
-</li>
-<li>
-<p><code>&gt;</code>, greater than.</p>
-</li>
-<li>
-<p><code>&gt;=</code>, greater than or equal to.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The behavior of each operation is dependent on the type of each evaluated
-expression.</p>
-</div>
-<div class="paragraph">
-<p>The comparison semantics for each operator are defined below based on
-the corresponding JSON type:</p>
-</div>
-<div class="sect3">
-<h4 id="_equality_operators">Equality Operators</h4>
-<div class="paragraph">
-<p>For <code>string/number/true/false/null</code> types, equality is an exact match. A
-<code>string</code> is equal to another <code>string</code> if they they have the exact same sequence
-of code points.  The literal values <code>true/false/null</code> are equal only to their
-own literal values.  Two JSON objects are equal if they have the same set of
-keys and values (given two JSON objects <code>x</code> and <code>y</code>, for each key value
-pair <code>(i, j)</code> in <code>x</code>, there exists an equivalent pair <code>(i, j)</code> in <code>y</code>).
-Two JSON arrays are equal if they have equal elements in the same order (given
-two arrays <code>x</code> and <code>y</code>, for each <code>i</code> from <code>0</code> until <code>length(x)</code>,
-<code>x[i] == y[i]</code>).</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_ordering_operators">Ordering Operators</h4>
-<div class="paragraph">
-<p>If the operands are not the same time, the ordering operators <code>&gt;, &gt;=, &lt;, &#8656;</code> will return false.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>If both operands are numbers, a numeric comparison is performed.</p>
-</li>
-<li>
-<p>If both operands are strings, they are compared as strings, based on the values of the Unicode code points they contain.</p>
-</li>
-<li>
-<p>If operands are mixed types, the right hand operand is coerced to the same type as the left hand operand before the comparison is performed</p>
-</li>
-<li>
-<p>If the left hand operand is boolean or null, both operands are coerced to a number</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>For example, given:</p>
-</div>
+<h3 id="_examples_17">Examples:</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>search(foo[?a &lt; b], {"foo": [
@@ -1649,9 +2102,8 @@ which is <code>false</code>, so the second element is excluded from the result l
 </ul>
 </div>
 </div>
-</div>
 <div class="sect2">
-<h3 id="_examples_14">Examples</h3>
+<h3 id="_examples_18">Examples</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>  search(foo[?bar==10], {"foo": [{"bar": 1}, {"bar": 10}]}) -&gt; [{"bar": 10}]
@@ -1682,63 +2134,34 @@ which is <code>false</code>, so the second element is excluded from the result l
 expressions.</p>
 </div>
 <div class="sect2">
-<h3 id="_data_types">Data Types</h3>
-<div class="paragraph">
-<p>In order to support functions, a type system is needed.  The JSON types are
-used:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>number (integers and double-precision floating-point format in JSON)</p>
-</li>
-<li>
-<p>string</p>
-</li>
-<li>
-<p>boolean (<code>true</code> or <code>false</code>)</p>
-</li>
-<li>
-<p>array (an ordered, sequence of values)</p>
-</li>
-<li>
-<p>object (an unordered collection of key value pairs)</p>
-</li>
-<li>
-<p>null</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>There is also an additional type that is not a JSON type that&#8217;s used in
-json-formula functions:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>expression (denoted by <code>&amp;expression</code>)</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
 <h3 id="_current_node">current-node</h3>
 <div class="paragraph">
 <p>The <code>current-node</code> token can be used to represent the current node being
 evaluated. The <code>current-node</code> token is useful for functions that require the
-current node being evaluated as an argument. For example, the following
-expression creates an array containing the total number of elements in the
-<code>foo</code> object followed by the value of <code>foo['bar']</code>.</p>
+current node being evaluated as an argument. For example, given:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>    foo|[length(@), bar]</code></pre>
+<pre class="highlight"><code>{
+  "family": [
+    {"name": "Joe", "age": 22},
+    {"name": "Jane", "age": 23, "occupation": "lawyer"}
+  ]
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>json-formula assumes that all function arguments operate on the current node unless
-the argument is a literal.  Because of this, an
-expression such as <code>@.bar</code> would be equivalent to just <code>bar</code>.</p>
+<p>The following
+expression creates an array of arrays where each nested array contains the total number of elements in the object and the 'name' property of the object:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>    family[].[length(@), name]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>json-formula assumes that all function arguments operate on the current node unless the argument is a literal.  Because of this, an
+expression such as <code>@.name`</code> would be equivalent to just <code>name</code>.</p>
 </div>
 <div class="sect3">
 <h4 id="_current_node_state">current-node state</h4>
@@ -1794,7 +2217,7 @@ be used to convert (and filter) all elements to numbers</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>    search([].toNumber(@), `["1", "2", "3", "notanumber", null, true]`) -&gt; [1, 2, 3, 1]</code></pre>
+<pre class="highlight"><code>    search([].toNumber(@), ["1", "2", "3", "notanumber", null, true]) -&gt; [1, 2, 3, 0]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1806,7 +2229,7 @@ be used to convert (and filter) all elements to numbers</p>
 <h2 id="_built_in_functions">Built-in Functions</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>json-formula has various built-in functions that operate on different
+<p>json-formula has a robust set of built-in functions that operate on different
 data types. Each function below has a signature
 that defines the expected types of the input and the type of the returned
 output.</p>
@@ -1959,9 +2382,6 @@ argument must be an expression that itself will resolve to <code>type</code>.</p
 </li>
 </ol>
 </div>
-<div class="paragraph">
-<p>All string related functions are defined on the basis of Unicode code points; they do not take normalization into account.</p>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -1969,7 +2389,7 @@ argument must be an expression that itself will resolve to <code>type</code>.</p
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>    pipe-expression  = expression "|" expression</code></pre>
+<pre class="highlight"><code>    pipeExpression  = expression '|' expression</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2037,15 +2457,75 @@ can use a <code>pipe-expression</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_examples_15">Examples</h3>
+<h3 id="_examples_19">Examples</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>   search(foo | bar, {"foo": {"bar": "baz"}}) -&gt; "baz"
    search(foo[*].bar | [0], {
        "foo": [{"bar": ["first1", "second1"]},
                {"bar": ["first2", "second2"]}]}) -&gt; ["first1", "second1"]
-   search(foo | [0], {"foo": [0, 1, 2]}) -&gt; [0]</code></pre>
+   search(foo | [0], {"foo": [0, 1, 2]}) -&gt; 0</code></pre>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_integrations">Integrations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The json-formula API allows integrations to customize various json-formula behaviors.</p>
+</div>
+<div class="sect2">
+<h3 id="_globals">Globals</h3>
+<div class="paragraph">
+<p>By default, json-formula has one global symbol: <code>@</code>. A host may inject additional global identifiers.  These identifiers must be prefixed with the dollar (<code>$</code>) symbol.</p>
+</div>
+<div class="sect3">
+<h4 id="_examples_20">Examples</h4>
+<div class="paragraph">
+<p>Given: a global symbol:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>  {
+    "$days": [
+       "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+    ]
+  }</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>    search(value($days, weekday(datetime(date.year, date.month, date.day), 3)),
+    {
+      "date": {
+        "year": 2023,
+        "month": 9,
+        "day": 13
+      }
+    }) -&gt; "Wednesday"</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_specify_locale">Specify locale</h3>
+<div class="paragraph">
+<p>The default locale for json-formula is <code>en-US</code>.  A host may specify an alternate locale.  Overall, the locale setting has little effect on processing.  One specific area that is affected is the behavior of the <code>casefold()</code> function.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_custom_tonumber">Custom toNumber</h3>
+<div class="paragraph">
+<p>In various contexts, json-formula converts values to numbers.  The default string-to-number functionality will make a modest attempt to convert currencies or date values to number&#8201;&#8212;&#8201;however this functionality is rudimentary and is not necessarily consistent in different locales.
+A host may provide its own <code>toNumber()</code> function that json-formula will use in place of the default functionality.  For example, a custom <code>toNumber()</code> could make use of locale-specific date formats to attempt to convert a string to a date value.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_additional_functions">Additional Functions</h3>
+<div class="paragraph">
+<p>A host may provide its own set of functions to augment the base set provided by json-formula</p>
 </div>
 </div>
 </div>
@@ -2053,7 +2533,7 @@ can use a <code>pipe-expression</code></p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-11 16:09:22 -0400
+Last updated 2023-09-14 09:01:24 -0400
 </div>
 </div>
 </body>

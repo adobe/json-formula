@@ -7,6 +7,7 @@
     "ABNF",
     "argname",
     "arity",
+    "casefold",
     "cssclass",
     "dcba",
     "EXPREF",
@@ -22,6 +23,7 @@
     "openformula",
     "paren",
     "prejsdocs",
-    "Saryerwinnie"
+    "Saryerwinnie",
+    "trunc"
   ]
 }

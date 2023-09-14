@@ -1,6 +1,6 @@
 = json-formula Specification
 
-This document describes the specification for json-formula. In the specification, examples are shown through the use of a `search` function.  The syntax for this function is:
+This document is the specification for json-formula. In the specification, examples are shown through the use of a `search` function.  The syntax for this function is:
 
 [source%unbreakable]
 ----
@@ -14,7 +14,7 @@ For simplicity, the json-formula expression and the JSON document are not quoted
     search(foo, {"foo": "bar"}) -> "bar"
 ----
 
-The result of applying a json-formula expression against a JSON document will **always** result in valid JSON, provided there are no errors during the evaluation process.  Structured data in, structured data out.
+The result of applying a json-formula expression against a JSON document will result in valid JSON, provided there are no errors during the evaluation process.  Structured data in, structured data out.
 
 == Data Types
 
@@ -36,26 +36,19 @@ Implementations can map the corresponding JSON types to their language
 equivalent.  For example, a JSON `null` could map to `None` in python,
 and `nil` in ruby and go.
 
-== Date and Time Values
-In order to support date and time functions, json-formula needs to represent date and time values.  Date/time values are represented as a number where:
-
-* The current time zone is determined by the host operating system.
-* The integer portion of the number represents the number of days since the epoch: January 1, 1970, https://en.wikipedia.org/wiki/Coordinated_Universal_Time[UTC].
-* The fractional portion of the number represents the fractional portion of the day
-
 === Type Coercion
 
 If the supplied data is not correct for the execution context, json-formula will attempt to coerce the data to the correct type. Coercion will occur in these contexts:
 
 * operands of the concatenation operator (`&`) shall be coerced to a string, except when an operand is an array. Arrays shall be coerced to an array of strings.
-* operands of numeric operators (`+`, `-`, `*`, `/`, `^`) shall be coerced to numbers except when the operand is an array. Arrays shall be coerced to an array of numbers.
+* operands of numeric operators (`+`, `-`, `*`, `/`) shall be coerced to numbers except when the operand is an array. Arrays shall be coerced to an array of numbers.
 * operands of the union operator (`~`) shall be coerced to an array
-* The left-hand operand of ordering comparison operators (`>`, `>=`, `<`, `<=`) must be a string or number.  Any other type shall be coerced to a number.
+* The left-hand operand of ordering comparison operators (`>`, `>=`, `<`, `\<=`) must be a string or number.  Any other type shall be coerced to a number.
 * If the operands of an ordering comparison are different, they shall both be coerced to a number
 * parameters to functions shall be coerced to the expected type as defined by the function signature
 * slice and flatten operations shall coerce operands to a number
 
-The equality and inequality operators (`=`, `==`, `!=`, `<>`) do **not** perform type coercion.  If operands are different types, the values are not equal.
+The equality and inequality operators (`=`, `==`, `!=`, `<>`) do **not** perform type coercion.  If operands are different types, the values are considered not equal.
 
 Coercion is not always possible, and if so, an error shall be emitted -- most often an `invalid-type` error.
 
@@ -93,9 +86,9 @@ Coercion is not always possible, and if so, an error shall be emitted -- most of
 | boolean | array | create a single-element array with the boolean.
 | object | array | Not supported
 | null | array | Empty array
-| number | object | empty object: {}
-| string | object | create a single-element array with the string.
-| boolean | object | create a single-element array with the boolean.
+| number | object | No supported
+| string | object | Not supported
+| boolean | object | Not supported
 | array | object | An object where the keys are the array index positions and the values are the array values.
 | null | object | Empty object
 |===
@@ -111,6 +104,42 @@ Coercion is not always possible, and if so, an error shall be emitted -- most of
     search(merge({a: 3}, 4), {}) -> {a:3}
     search(merge({a: 3}, ["x", "y"]), {}) -> {"0": "x", "1": "y", "a": 3}
 ----
+
+== Date and Time Values
+In order to support date and time functions, json-formula needs to represent date and time values.  Date/time values are represented as a number where:
+
+* The integer portion of the number represents the number of days since the epoch: January 1, 1970, https://en.wikipedia.org/wiki/Coordinated_Universal_Time[UTC].
+* The fractional portion of the number represents the fractional portion of the day
+* As implied, the date/time value is offset from the current time zone to UTC.
+* The current time zone is determined by the host operating system.
+
+The preferred ways to create a date/time value are by using one of these functions:
+
+* `datetime()`
+* `now()`
+* `today()`
+
+=== Examples
+
+[source%unbreakable]
+----
+    search(datetime(1970,1,2,0,0,0) - datetime(1970,1,1,0,0,0), {}) -> 1
+    search(datetime(2010,1,21,12,0,0) | {month: month(@), day: day(@), hour: hour(@)}, {}) ->
+      {"month": 1, "day": 21, "hour": 12}
+----
+
+== Floating Point Precision
+json-formula implementations are expected to use https://en.wikipedia.org/wiki/Double-precision_floating-point_format[Double-precision floating-point format] to represent numbers.  As with any system that uses this level of precision, results of expressions may be off by a tiny fraction. e.g.
+`10 * 1.44 -> 14.399999999999999`
+
+Authors should mitigate this behavior:
+
+* When comparing fractional results, do not compare for exact equality.  Instead, compare within a range. e.g.: instead of: `a == b`, use: `abs(a-b) < 0.000001`
+* leverage the built-in functions that manipulate fractional values:
+** ceil()
+** floor()
+** round()
+** trunc()
 
 == Grammar
 
@@ -129,20 +158,37 @@ from weakest to tightest binding:
 * and: `&&`
 * concatenate: `&`
 * add: `+`, subtract: `-`
-* multiply: `*`, divide: `/`, power: `^`, union: `~`
-* Equals: `=` (or `==`), Greater than: `>`, Less than: `<`, Greater than or equal: `>=`, Less than or equal: `<=`, Not equals: `!=` (or `<>`)
+* multiply: `*`, divide: `/`, union: `~`
+* Equals: `=` (or `==`), Greater than: `>`, Less than: `<`, Greater than or equal: `>=`, Less than or equal: `\<=`, Not equals: `!=` (or `<>`)
 * Flatten: `[]`
 * Unary not `!`, unary minus: `-`
 
 == Identifiers
 
-TODO: Fix Identifiers in the grammar -- should not include JSON constants
+[source%unbreakable]
+----
+identifier
+  : NAME
+  | QUOTED_NAME
+  | JSON_CONSTANT
+  ;
+
+JSON_CONSTANT
+  : 'true'
+  | 'false'
+  | 'null'
+  ;
+
+NAME : [@a-zA-Z_] [a-zA-Z0-9_]* ;
+
+QUOTED_NAME : '\'' (ESC | ~ ['\\])* '\'';
+----
 
 An `identifier` is the most basic expression and can be used to extract a
 single element from a JSON document.  The return value for an `identifier` is the value associated with the identifier.  If the `identifier` does not exist in the JSON document, than a `null` value is returned.
 
 From the grammar rule listed above identifiers can be one or more characters,
-and must start with `A-Za-z_`.
+and must start with `A-Za-z_$`.
 
 An identifier can also be quoted.  This is necessary when an identifier has
 characters not specified in the `unquoted-string` grammar rule.
@@ -151,7 +197,7 @@ any number of `unescaped-char` or `escaped-char` characters, followed by a
 single quote.  Any valid string can be used between single quoted, include JSON
 supported escape sequences, and six character unicode escape sequences.
 
-Note that any identifier that does not start with `A-Za-z_` **must**
+Note that any identifier that does not start with `A-Za-z_$` **must**
 be quoted.
 
 === Examples
@@ -189,11 +235,17 @@ The following errors are defined:
 
 [source%unbreakable]
 ----
-    sub-expression    = expression "." ( identifier /
-                                         multi-select-list /
-                                         multi-select-hash /
-                                         function-expression /
-                                         "*" )
+subExpression: expression '.' chainedExpression
+
+chainedExpression
+  : identifier
+  | multiSelectList
+  | multiSelectHash
+  | functionExpression
+  | wildcard
+  ;
+
+wildcard : '*' ;
 ----
 
 A subexpression is a combination of two expressions separated by the '.' char.
@@ -235,16 +287,33 @@ Additional examples
    search(foo.bar.baz, {"foo": {"bar": {"baz": "value"}}}) -> "value"
 ----
 
-== Index Expressions
+== Bracket Expressions
 
 [source%unbreakable]
 ----
-  index-expression  = expression bracket-specifier / bracket-specifier
-  bracket-specifier = "[" (number / "*") "]" / "[]"
+expression: expression chainedBracketSpecifier
+
+chainedBracketSpecifier
+  : bracketSpecifier
+  | '[' expression ']'
+  ;
+
+bracketSpecifier
+  : '[' SIGNED_INT ']'
+  | '[' '*' ']'
+  | '[' slice ']'
+  | '[' ']'
+  | '[?' expression ']'
+  ;
+
 ----
 
-An index expression is used to access elements in a list.  Indexing is 0 based,
-the index of 0 refers to the first element of the list.  A negative number is a
+From the `chainedBracketSpecifier` construction, an index expression is the case where the brackets enclose an integer or wildcard (`*`) or expression that returns a value to access elements in a list or object.
+
+When brackets are used with an object, the bracket contents are expected to be an expression that resolves to the name of a property. In the simple case, `foo["bar"]` is equivalent to `foo.bar`.
+
+Most commonly, brackets are used with lists.  With lists, bracketed expressions are expected to return an integer, and then follow the semantics of `SIGNED_INT`.
+When brackets enclose a signed integer (`SIGNED_INT`), indexing is 0 based. The index of 0 refers to the first element of the list.  A negative number is a
 valid index.  A negative number indicates that indexing is relative to the end
 of the list, specifically
 
@@ -258,18 +327,20 @@ index of `N - 1`, which is the last element of the list.  If an index
 expression refers to an index that is greater than the length of the array, a
 value of `null` is returned.
 
-For the grammar rule `expression bracket-specifier` the `expression` is
+For the grammar rule `expression bracketSpecifier` the `expression` is
 first evaluated, and then return value from the `expression` is given as
-input to the `bracket-specifier`.
+input to the `bracketSpecifier`.
 
-Using a "*" character within a `bracket-specifier` is discussed below in the
+Using a "*" character within a `bracketSpecifier` is discussed below in the
 <<Wildcard Expressions>> section.
 
-== Slices
+Using an expression prefixed with a "?" character within a `bracketSpecifier` is discussed below in the <<Filter Expressions>> section.
+
+=== Slices
 
 [source%unbreakable]
 ----
-  slice-expression  = [number] ":" [number] [ ":" [number] ]
+  slice : start=expression? ':' stop=expression? (':' step=expression?)? ;
 ----
 
 A slice expression allows you to select a contiguous subset of an array.  A
@@ -313,6 +384,7 @@ Slice expressions adhere to the following rules:
 
 [source%unbreakable]
 ----
+  search(foo["bar"], {"foo": {"bar": 21}}) -> 21
   search([0:4:1], [0, 1, 2, 3]) -> [0, 1, 2, 3]
   search([0:4], [0, 1, 2, 3]) -> [0, 1, 2, 3]
   search([0:3], [0, 1, 2, 3]) -> [0, 1, 2]
@@ -322,16 +394,48 @@ Slice expressions adhere to the following rules:
   search([-2:], [0, 1, 2, 3]) -> [2, 3]
 ----
 
+=== Flatten Operator
+
+When the character sequence `[]` is provided as a bracket specifier, then
+a flattening operation occurs on the current result.  The flattening operator
+will merge sub-lists in the current result into a single list.  The flattening
+operator has the following semantics:
+
+* Create an empty result list.
+* Iterate over the elements of the current result.
+* If the current element is not a list, add to the end of the result list.
+* If the current element is a list, add each element of the current element
+  to the end of the result list.
+* The result list is now the new current result.
+
+Once the flattening operation has been performed, subsequent operations
+are projected onto the flattened list with the same semantics as a
+wildcard expression.  Thus the difference between `[*]` and `[]` is that
+`[]` will first flatten sub-lists in the current result.
+
+=== Examples
+
+[source%unbreakable]
+----
+  search([0], ["first", "second", "third"]) -> "first"
+  search([-1], ["first", "second", "third"]) -> "third"
+  search([100], ["first", "second", "third"]) -> null
+  search(foo[0], {"foo": ["first", "second", "third"]}) -> "first"
+  search(foo[100], {"foo": ["first", "second", "third"]}) -> null
+  search(foo[0][0], {"foo": [[0, 1], [1, 2]]}) -> 0
+  search(foo[], {"foo": [[0, 1], [1, 2]]}) -> [0,1,1,2]
+----
+
 == Operators
 
 === Comparison Operators
 
-The following operations are supported:
+The following comparison operators are supported:
 
 * '=' / `==`, test for equality.
 * `!=`, "<>", test for inequality.
 * `<`, less than.
-* `<=`, less than or equal to.
+* `\<=`, less than or equal to.
 * `>`, greater than.
 * `>=`, greater than or equal to.
 
@@ -357,42 +461,11 @@ two arrays `x` and `y`, for each `i` from `0` until `length(x)`,
 
 ==== Ordering Operators
 
-If the operands are not the same type, the ordering operators `>, >=, <, <=` will return false.
+If the operands are not the same type, the ordering operators `>`, `>=`, `<`, `\<=` will return false.
 
 * If both operands are numbers, a numeric comparison is performed.
 * If both operands are strings, they are compared as strings, based on the values of the Unicode code points they contain.
 * If operands are mixed types, follow the <<Type Coercion,type coercion>> rules.
-
-=== Flatten Operator
-
-When the character sequence `[]` is provided as a bracket specifier, then
-a flattening operation occurs on the current result.  The flattening operator
-will merge sub-lists in the current result into a single list.  The flattening
-operator has the following semantics:
-
-* Create an empty result list.
-* Iterate over the elements of the current result.
-* If the current element is not a list, add to the end of the result list.
-* If the current element is a list, add each element of the current element
-  to the end of the result list.
-* The result list is now the new current result.
-
-Once the flattening operation has been performed, subsequent operations
-are projected onto the flattened list with the same semantics as a
-wildcard expression.  Thus the difference between `[*]` and `[]` is that
-`[]` will first flatten sub-lists in the current result.
-
-==== Examples
-
-[source%unbreakable]
-----
-  search([0], ["first", "second", "third"]) -> "first"
-  search([-1], ["first", "second", "third"]) -> "third"
-  search([100], ["first", "second", "third"]) -> null
-  search(foo[0], {"foo": ["first", "second", "third"]}) -> "first"
-  search(foo[100], {"foo": ["first", "second", "third"]}) -> null
-  search(foo[0][0], {"foo": [[0, 1], [1, 2]]}) -> 0
-----
 
 === Numeric operators
 
@@ -402,7 +475,6 @@ The following operators operate on numbers:
 * subtraction: `-`
 * multiplication `*`
 * division: `/`
-* exponent: `^`
 
 [source%unbreakable]
 ----
@@ -410,7 +482,6 @@ The following operators operate on numbers:
   search(right - left - 10, {"left": 8, "right": 12 }) -> -6
   search(4 + 2 * 4, {}) -> 12
   search(10 / 2 * 3, {}) -> 15
-  search(2^3, {}) -> 8
 ----
 
 === Concatenation Operator
@@ -419,8 +490,10 @@ The concatenation operator takes two string operands and combines them to form a
 
 [source%unbreakable]
 ----
-  search(left & "\"" & value & "\"" & right, {"left": "[", "right": "]", "value": "abc" }) -> "[\"abc\"]"
-  search(map(&"$" & @, values), {"values": [123.45, 44.32, 99.00] }) -> ["$123.45", "$44.32", "$99"]
+  search(left & "\"" & value & "\"" & right, {"left": "[", "right": "]", "value": "abc" }) ->
+      "[\"abc\"]"
+  search(map(&"$" & @, values), {"values": [123.45, 44.32, 99.00] }) ->
+      ["$123.45", "$44.32", "$99"]
 ----
 
 === Union Operator
@@ -438,7 +511,7 @@ The union operator (`~`) combines the contents of two arrays into a single array
 
 === Array Operators
 
-The numeric and concatenation operators (`*`, `+`, `-`, `*`, `/`, `^`, `&`) have special behavior when applied to arrays.
+The numeric and concatenation operators (`*`, `+`, `-`, `*`, `/`, `&`) have special behavior when applied to arrays.
 
 * When these operators are provided arrays for both operands, the operator is applied to each element of the left operand array with the corresponding element from the right operand array
 * If both operands are arrays and they do not have the same size, the shorter array is padded with null values
@@ -455,7 +528,7 @@ The numeric and concatenation operators (`*`, `+`, `-`, `*`, `/`, `^`, `&`) have
 
 [source%unbreakable]
 ----
-  or-expression     = expression "||" expression
+  orExpression = expression '||' expression
 ----
 
 An or expression will evaluate to either the left expression or the right
@@ -487,7 +560,7 @@ The following conditions cannot be coerced to true:
 
 [source%unbreakable]
 ----
-  and-expression  = expression "&&" expression
+  andExpression  = expression '&&' expression
 ----
 
 An and expression will evaluate to either the left expression or the right
@@ -518,15 +591,14 @@ This is the standard truth table for a
          {"foo": [{"a": 1, "b": 2}, {"a": 1, "b": 3}]}) -> [{"a": 1, "b": 2}]
 ----
 
-
 == Paren Expressions
 
 [source%unbreakable]
 ----
-  paren-expression  = "(" expression ")"
+  parenExpression  = '(' expression ')'
 ----
 
-A `paren-expression` allows a user to override the precedence order of
+A `parenExpression` allows a user to override the precedence order of
 an expression, e.g. `(a || b) && c`.
 
 === Examples
@@ -541,13 +613,13 @@ an expression, e.g. `(a || b) && c`.
 
 [source%unbreakable]
 ----
-    not-expression    = "!" expression
+    notExpression    = '!' expression
 ----
 
-A `not-expression` negates the result of an expression.  If the expression
-results in a truth-like value, a `not-expression` will change this value to
+A `notExpression` negates the result of an expression.  If the expression
+results in a truth-like value, a `notExpression` will change this value to
 `false`.  If the expression results in a false-like value, a
-`not-expression` will change this value to `true`.
+`notExpression` will change this value to `true`.
 
 === Examples
 
@@ -563,12 +635,12 @@ results in a truth-like value, a `not-expression` will change this value to
 
 [source%unbreakable]
 ----
-    multi-select-list = "[" expression ( "," expression )* "]"
+    multiSelectList : '[' expression (',' expression)* ']' ;
 ----
 
-A multiselect expression is used to extract a subset of elements from a JSON hash.  There are two version of multiselect, one in which the multiselect expression is enclosed in `{...}` and one which is enclosed in `[...]`.
+A multiselect expression is used to extract a subset of elements from a JSON object or array.  There are two version of multiselect, one in which the multiselect expression is enclosed in `{...}` and one which is enclosed in `[...]`.
 This section describes the `[...]` version.  Within the start and closing
-characters is one or more non expressions separated by a comma.  Each
+characters is one or more expressions separated by a comma.  Each
 expression will be evaluated against the JSON document.  Each returned element
 will be the result of evaluating the expression. A `multi-select-list` with
 `N` expressions will result in a list of length `N`.  Given a multiselect
@@ -640,16 +712,39 @@ Additional examples:
 
 == Wildcard Expressions
 
+There are two forms of wildcard expression, `[*]` from the `bracketSpecifier` construction:
+
 [source%unbreakable]
 ----
-    expression        =/ "*"
-    bracket-specifier = "[" "*" "]"
+bracketSpecifier
+  : '[' SIGNED_INT ']' # bracketIndex
+  | '[' '*' ']' # bracketStar
+  | '[' slice ']' # bracketSlice
+  | '[' ']' # bracketFlatten
+  | '[?' expression ']' # select
+  ;
 ----
 
-A wildcard expression is a expression of either `*` or `[*]`.  A wildcard
+And `.*` from the chainedExpression construction:
+[source%unbreakable]
+----
+expression : expression '.' chainedExpression
+
+chainedExpression
+  : identifier
+  | multiSelectList
+  | multiSelectHash
+  | functionExpression
+  | wildcard
+  ;
+
+wildcard : '*' ;
+----
+
+A wildcard expression is a expression of either `.*` or `[*]`.  A wildcard
 expression can return multiple elements, and the remaining expressions are
 evaluated against each returned element from a wildcard expression.  The
-`[*]` syntax applies to a list type and the `*` syntax applies to a hash
+`[*]` syntax applies to a list type and the `.*` syntax applies to a hash
 type.
 
 The `[*]` syntax (referred to as a list wildcard expression) will return all
@@ -671,11 +766,11 @@ against each individual element in the list (this is also referred to as a
 Note that if any subsequent expression after a wildcard expression returns a
 `null` value, it is omitted from the final result list.
 
-A list wildcard expression is only valid for the JSON array type.  If a list
+A list wildcard expression is valid only for the JSON array type.  If a list
 wildcard expression is applied to any other JSON type, a value of `null` is
 returned.
 
-Similarly, a hash wildcard expression is only valid for the JSON object type.
+Similarly, a hash wildcard expression is valid only for the JSON object type.
 If a hash wildcard expression is applied to any other JSON type, a value of
 `null` is returned.  Note that JSON hashes are explicitly defined as
 unordered.  Therefore a hash wildcard expression can return the values
@@ -695,7 +790,7 @@ to return the hash values in any specific order.
 
 [source%unbreakable]
 ----
-    literal = "`" json-value "`"
+    jsonLiteral = '`' jsonValue '`'
 ----
 
 A JSON literal expression is an expression that allows arbitrary JSON objects to be
@@ -724,15 +819,13 @@ a JSON parser.
 
 [source%unbreakable]
 ----
-  raw-string        = '"' *raw-string-char '"'
-  raw-string-char   = (%x20-26 / %x28-5B / %x5D-10FFFF) / preserved-escape /
-                        raw-string-escape
-  preserved-escape  = escape (%x20-26 / %28-5B / %x5D-10FFFF)
-  raw-string-escape = escape ('"' / escape)
+RAW_STRING : '"' (RAW_ESC | ~["\\])* '"' ;
+
+fragment RAW_ESC : '\\' . ;
 ----
 
 A raw string is an expression that allows for a literal string value to be
-specified.  The result of evaluating the raw string literal expression is the
+specified.  The result of evaluating the raw string literal expression is a
 literal string value.  It is a simpler form of a JSON literal expression that is
 special cased for strings.  For example, the following expressions both
 evaluate to the same value: "foo"
@@ -744,7 +837,7 @@ evaluate to the same value: "foo"
 ----
 
 As you can see in the examples above, it is meant as a more succinct
-form of the common scenario of specifying a literal string value.
+form of the common scenario of specifying a json literal string value.
 
 In addition, it does not perform any of the
 additional processing that JSON strings supports including:
@@ -768,7 +861,7 @@ additional processing that JSON strings supports including:
 
 [source%unbreakable]
 ----
-number-literal = (REAL_OR_EXPONENT_NUMBER | SIGNED_INT)
+numberLiteral = (REAL_OR_EXPONENT_NUMBER | SIGNED_INT)
 REAL_OR_EXPONENT_NUMBER
   : '-'? INT '.' [0-9] + EXP?
   | '-'? INT EXP
@@ -788,7 +881,7 @@ fragment EXP
 
 As with raw strings, json-formula allows literal numbers in expressions.
 Allowing numbers in expressions does lead to some ambiguity.
-A bracket with a single signed digit e.g.: `[0]` can be interpreted as a flatten operation or a multi-select list with the number zero. To handle this ambiguity, the grammar sets a precedence so that `[-?[0-9]]` is consistently treated as a flatten operation.  To explicitly express an array with one element, use a JSON literal: `` \`[0]` ``
+A bracket with a single signed digit e.g.: `[0]` can be interpreted as a flatten operation or a multi-select list with the number zero. To handle this ambiguity, the grammar sets a precedence so that `[-?[0-9]]` is consistently treated as a an index operation.  To explicitly express an array with one element, use a JSON literal: `` \`[0]` ``
 
 === Examples
 
@@ -807,11 +900,16 @@ A bracket with a single signed digit e.g.: `[0]` can be interpreted as a flatten
 
 [source%unbreakable]
 ----
-  list-filter-expr      = "[?" expression "]"
-  comparator-expression = expression comparator expression
-  comparator            = "<" / "<=" / "==" / "=" / ">=" / ">" / "!=" / "<>"
+bracketSpecifier
+  : '[' SIGNED_INT ']'
+  | '[' '*' ']'
+  | '[' slice ']'
+  | '[' ']'
+  | '[?' expression ']'
+  ;
 ----
 
+A filter expression is defined by a `bracketSpecifier` where the bracket contents are prefixed with a question mark character (`?`).
 A filter expression provides a way to select JSON elements based on a
 comparison to another expression.  A filter expression is evaluated as follows:
 for each element in an array evaluate the `expression` against the
@@ -819,7 +917,6 @@ element.  If the expression evaluates to a truth-like value, the item (in its
 entirety) is added to the result list.  Otherwise it is excluded from the
 result list.  A filter expression is defined only for a JSON array.  Attempting
 to evaluate a filter expression against any other type will return `null`.
-
 
 === Examples:
 
@@ -877,18 +974,27 @@ expressions.
 
 The `current-node` token can be used to represent the current node being
 evaluated. The `current-node` token is useful for functions that require the
-current node being evaluated as an argument. For example, the following
-expression creates an array containing the total number of elements in the
-`foo` object followed by the value of `foo['bar']`.
+current node being evaluated as an argument. For example, given:
+
+```
+{
+  "family": [
+    {"name": "Joe", "age": 22},
+    {"name": "Jane", "age": 23, "occupation": "lawyer"}
+  ]
+}
+```
+
+The following
+expression creates an array of arrays where each nested array contains the total number of elements in the object and the 'name' property of the object:
 
 [source%unbreakable]
 ----
-    foo|[length(@), bar]
+    family[].[length(@), name]
 ----
 
-json-formula assumes that all function arguments operate on the current node unless
-the argument is a literal.  Because of this, an
-expression such as `@.bar` would be equivalent to just `bar`.
+json-formula assumes that all function arguments operate on the current node unless the argument is a literal.  Because of this, an
+expression such as `@.name`` would be equivalent to just `name`.
 
 ==== current-node state
 
@@ -940,7 +1046,7 @@ This provides a simple mechanism to explicitly convert types when needed.
 
 == Built-in Functions
 
-json-formula has various built-in functions that operate on different
+json-formula has a robust set of built-in functions that operate on different
 data types. Each function below has a signature
 that defines the expected types of the input and the type of the returned
 output.
@@ -1052,7 +1158,7 @@ Below is the same steps for evaluating `abs(bar)`:
 
 [source%unbreakable]
 ----
-    pipe-expression  = expression "|" expression
+    pipeExpression  = expression '|' expression
 ----
 
 A pipe expression combines two expressions, separated by the `|` character.
@@ -1121,4 +1227,44 @@ can use a `pipe-expression`
 == Integrations
 
 The json-formula API allows integrations to customize various json-formula behaviors.
+
+=== Globals
+By default, json-formula has one global symbol: `@`. A host may inject additional global identifiers.  These identifiers must be prefixed with the dollar (`$`) symbol.
+
+==== Examples
+
+Given: a global symbol:
+[source%unbreakable]
+----
+  {
+    "$days": [
+       "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+    ]
+  }
+----
+
+[source%unbreakable]
+----
+    search(value($days, weekday(datetime(date.year, date.month, date.day), 3)),
+    {
+      "date": {
+        "year": 2023,
+        "month": 9,
+        "day": 13
+      }
+    }) -> "Wednesday"
+----
+
+=== Specify locale
+
+The default locale for json-formula is `en-US`.  A host may specify an alternate locale.  Overall, the locale setting has little effect on processing.  One specific area that is affected is the behavior of the `casefold()` function.
+
+=== Custom toNumber
+
+In various contexts, json-formula converts values to numbers.  The default string-to-number functionality will make a modest attempt to convert currencies or date values to number -- however this functionality is rudimentary and is not necessarily consistent in different locales.
+A host may provide its own `toNumber()` function that json-formula will use in place of the default functionality.  For example, a custom `toNumber()` could make use of locale-specific date formats to attempt to convert a string to a date value.
+
+=== Additional Functions
+
+A host may provide its own set of functions to augment the base set provided by json-formula
 

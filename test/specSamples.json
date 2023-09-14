@@ -18,6 +18,8 @@
     ["[1,2,3] + [2,3,4]", {}, [3,5,7]],
     ["[1,2,3,4] * [1,2,3]", {}, [1,4,9,0]],
     ["[1,2,3,4] & \"%\"", {}, ["1%", "2%", "3%", "4%"]],
+    ["datetime(1970,1,2,0,0,0) - datetime(1970,1,1,0,0,0)", {}, 1],
+    ["datetime(2010,1,21,12,0,0) | {month: month(@), day: day(@), hour: hour(@)}", {}, {"month": 1, "day": 21, "hour": 12}],
     ["2 + `true`", {}, 3],
     ["avg(\"20\")", {}, 20],
     ["merge({a: 3}, 4)", {}, {"a":3}],
@@ -26,7 +28,6 @@
     ["right - left - 10", {"left": 8, "right": 12 }, -6],
     ["4 + 2 * 4", {}, 12],
     ["10 / 2 * 3", {}, 15],
-    ["2^3", {}, 8],
     ["left & \"\\\"\" & value & \"\\\"\" & right", {"left": "[", "right": "]", "value": "abc" }, "[\"abc\"]"],
     ["map(&\"$\" & @, values)", {"values": [123.45, 44.32, 99.00] }, ["$123.45", "$44.32", "$99"]],
     ["foo", {"foo": "bar"}, "bar"],
@@ -42,6 +43,7 @@
     ["foo.'bar'", {"foo": {"bar": "value"}}, "value"],
     ["foo.bar", {"foo": {"baz": "value"}}, null],
     ["foo.bar.baz", {"foo": {"bar": {"baz": "value"}}}, "value"],
+    ["foo[\"bar\"]", {"foo": {"bar": 21}}, 21],
     ["[0:4:1]", [0, 1, 2, 3], [0, 1, 2, 3]],
     ["[0:4]", [0, 1, 2, 3], [0, 1, 2, 3]],
     ["[0:3]", [0, 1, 2, 3], [0, 1, 2]],
@@ -55,6 +57,7 @@
     ["foo[0]", {"foo": ["first", "second", "third"]}, "first"],
     ["foo[100]", {"foo": ["first", "second", "third"]}, null],
     ["foo[0][0]", {"foo": [[0, 1], [1, 2]]}, 0],
+    ["foo[]", {"foo": [[0, 1], [1, 2]]}, [0,1,1,2]],
     ["foo || bar", {"foo": "foo-value"}, "foo-value"],
     ["foo || bar", {"bar": "bar-value"}, "bar-value"],
     ["foo || bar", {"foo": "foo-value", "bar": "bar-value"}, "foo-value"],
@@ -110,5 +113,6 @@
     ["foo[*].bar | [0]", {"foo": [{"bar": ["first1", "second1"]}, {"bar": ["first2", "second2"]}]}, ["first1", "second1"]],
     ["foo | bar", {"foo": {"bar": "baz"}}, "baz"],
     ["foo[*].bar | [0]", {"foo": [{"bar": ["first1", "second1"]}, {"bar": ["first2", "second2"]}]}, ["first1", "second1"]],
-    ["foo | [0]", {"foo": [0, 1, 2]}, 0]
+    ["foo | [0]", {"foo": [0, 1, 2]}, 0],
+    ["value($days, weekday(datetime(date.year, date.month, date.day), 3))", {"date": {"year": 2023,"month": 9,"day": 13}}, "Wednesday"]
 ]
