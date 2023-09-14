@@ -655,7 +655,7 @@ converts the passed arg to a number. The conversion happens as per the following
 * number - Returns the passed in value.
 * array - null
 * object - null
-* boolean - null
+* boolean - 1 if true, 0 if false
 * null - null
 
 **Kind**: global function  
@@ -679,7 +679,7 @@ toNumber({a: 1}) //returns null
 ```
 **Example**  
 ```js
-toNumber(true()) //returns null
+toNumber(true()) //returns 1
 ```
 <a name="toString"></a>
 

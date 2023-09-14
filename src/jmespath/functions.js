@@ -390,7 +390,7 @@ export default function functions(
     /**
      * Returns the first argument that does not resolve to `null`.
      * This function accepts one or more arguments, and will evaluate
-     * them in order until a non null argument is encounted. If all
+     * them in order until a non null argument is encountered. If all
      * arguments values resolve to null, then a value of null is returned.
      * @param {...any} argument
      * @return {any}
@@ -707,9 +707,8 @@ export default function functions(
         if (typeName === TYPE_BOOLEAN) {
           if (resolvedArgs[0] === true) {
             return 1;
-          } else {
-              return 0;
           }
+          return 0;
         }
         return null;
       },
