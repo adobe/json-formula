@@ -578,8 +578,8 @@
       {
         "comment": "Unknown comparator",
         "expression": "foo[?bar^baz]",
-        "result": null,
-        "was": "syntax"
+        "error": "syntax",
+        "was": "null"
       },
       {
         "expression": "foo[bar==baz]",

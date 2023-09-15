@@ -16,6 +16,14 @@
   },
   "cases": [
     {
+      "expression" : "power(2, 4)",
+      "result" : 16
+    },
+    {
+      "expression" : "power([1, 2, 4], 4)",
+      "result" : [1, 16, 256]
+    },
+    {
       "expression": "reduce(&@.accumulated + @.current, numbers)",
       "result": 11
     },

@@ -21,7 +21,6 @@ const {
   TOK_SUBTRACT,
   TOK_UNARY_MINUS,
   TOK_MULTIPLY,
-  TOK_POWER,
   TOK_DIVIDE,
   TOK_UNION,
   TOK_EQ,
@@ -218,10 +217,6 @@ export default class Lexer {
         start = this._current;
         this._current += 1;
         tokens.push({ type: TOK_DIVIDE, value: '/', start });
-      } else if (stream[this._current] === '^') {
-        start = this._current;
-        this._current += 1;
-        tokens.push({ type: TOK_POWER, value: '^', start });
       } else if (stream[this._current] === '|') {
         start = this._current;
         this._current += 1;
