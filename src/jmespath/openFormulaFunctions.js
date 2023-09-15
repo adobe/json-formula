@@ -10,6 +10,7 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 import dataTypes from './dataTypes.js';
+import { getTypeName } from './matchType.js';
 import { getProperty, debugAvailable } from './utils.js';
 
 function round(num, digits) {
@@ -684,9 +685,19 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * power(10, 2) //returns 100 (10 raised to power 2)
      */
     power: {
-      _func: args => args[0] ** args[1],
+      _func: args => {
+        const type = getTypeName(args[0]);
+        if (type === dataTypes.TYPE_ARRAY
+          || type === dataTypes.TYPE_ARRAY_STRING || type === dataTypes.TYPE_ARRAY_NUMBER) {
+          return args[0].map(a => toNumber(a) ** args[1]);
+        }
+        return args[0] ** args[1];
+      },
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
+        {
+          types: [dataTypes.TYPE_NUMBER, dataTypes.TYPE_ARRAY_NUMBER,
+            dataTypes.TYPE_ARRAY_STRING],
+        },
         { types: [dataTypes.TYPE_NUMBER] },
       ],
     },

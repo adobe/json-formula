@@ -25,7 +25,6 @@ const {
   TOK_SUBTRACT,
   TOK_UNARY_MINUS,
   TOK_MULTIPLY,
-  TOK_POWER,
   TOK_DIVIDE,
   TOK_UNION,
   TOK_EQ,
@@ -65,7 +64,6 @@ const bindingPower = {
   [TOK_SUBTRACT]: 6,
   [TOK_MULTIPLY]: 7,
   [TOK_DIVIDE]: 7,
-  [TOK_POWER]: 7,
   [TOK_UNION]: 7,
   [TOK_EQ]: 5,
   [TOK_GT]: 5,
@@ -268,9 +266,6 @@ export default class Parser {
       case TOK_DIVIDE:
         right = this.expression(bindingPower.Divide);
         return { type: 'DivideExpression', children: [left, right] };
-      case TOK_POWER:
-        right = this.expression(bindingPower.Power);
-        return { type: 'PowerExpression', children: [left, right] };
       case TOK_UNION:
         right = this.expression(bindingPower.Power);
         return { type: 'UnionExpression', children: [left, right] };

@@ -113,15 +113,6 @@ export default class JSONFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by JSONFormulaParser#powerExpression.
-	enterPowerExpression(ctx) {
-	}
-
-	// Exit a parse tree produced by JSONFormulaParser#powerExpression.
-	exitPowerExpression(ctx) {
-	}
-
-
 	// Enter a parse tree produced by JSONFormulaParser#chainExpression.
 	enterChainExpression(ctx) {
 	}

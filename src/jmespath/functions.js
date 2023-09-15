@@ -348,7 +348,7 @@ export default function functions(
      * If all collections are empty `null` is returned.
      * min() can work on numbers or strings.
      * If a mix of numbers and strings are provided, the type of the first value will be used.
-     * @param {number[]|string[]} collection array in which the minimum element is to be calculated
+     * @param {...number[]|string[]|number|string} collection elements
      * @return {number}
      * @function min
      * @example
@@ -707,9 +707,8 @@ export default function functions(
         if (typeName === TYPE_BOOLEAN) {
           if (resolvedArgs[0] === true) {
             return 1;
-          } else {
-              return 0;
           }
+          return 0;
         }
         return null;
       },
