@@ -91,6 +91,11 @@ Coercion is not always possible, and if so, an error shall be emitted -- most of
 | boolean | object | Not supported
 | array | object | An object where the keys are the array index positions and the values are the array values.
 | null | object | Empty object
+| number | boolean | zero is false.  All other numbers are true
+| string | boolean | Empty string is false, populated strings are true
+| array | boolean | Empty array is false, populated arrays are true
+| object | boolean | Empty object is false, populated objects are true
+| null | boolean | false
 |===
 
 ==== Examples
@@ -294,11 +299,11 @@ Additional examples
 expression: expression chainedBracketSpecifier
 
 chainedBracketSpecifier
-  : bracketSpecifier
+  : indexExpression
   | '[' expression ']'
   ;
 
-bracketSpecifier
+indexExpression
   : '[' SIGNED_INT ']'
   | '[' '*' ']'
   | '[' slice ']'
@@ -327,14 +332,14 @@ index of `N - 1`, which is the last element of the list.  If an index
 expression refers to an index that is greater than the length of the array, a
 value of `null` is returned.
 
-For the grammar rule `expression bracketSpecifier` the `expression` is
+For the grammar rule `expression indexExpression` the `expression` is
 first evaluated, and then return value from the `expression` is given as
-input to the `bracketSpecifier`.
+input to the `indexExpression`.
 
-Using a "*" character within a `bracketSpecifier` is discussed below in the
+Using a "*" character within a `indexExpression` is discussed below in the
 <<Wildcard Expressions>> section.
 
-Using an expression prefixed with a "?" character within a `bracketSpecifier` is discussed below in the <<Filter Expressions>> section.
+Using an expression prefixed with a "?" character within a `indexExpression` is discussed below in the <<Filter Expressions>> section.
 
 === Slices
 
@@ -460,8 +465,6 @@ two arrays `x` and `y`, for each `i` from `0` until `length(x)`,
 `x[i] == y[i]`).
 
 ==== Ordering Operators
-
-If the operands are not the same type, the ordering operators `>`, `>=`, `<`, `\<=` will return false.
 
 * If both operands are numbers, a numeric comparison is performed.
 * If both operands are strings, they are compared as strings, based on the values of the Unicode code points they contain.
@@ -712,11 +715,11 @@ Additional examples:
 
 == Wildcard Expressions
 
-There are two forms of wildcard expression, `[*]` from the `bracketSpecifier` construction:
+There are two forms of wildcard expression, `[*]` from the `indexExpression` construction:
 
 [source%unbreakable]
 ----
-bracketSpecifier
+indexExpression
   : '[' SIGNED_INT ']' # bracketIndex
   | '[' '*' ']' # bracketStar
   | '[' slice ']' # bracketSlice
@@ -900,7 +903,7 @@ A bracket with a single signed digit e.g.: `[0]` can be interpreted as a flatten
 
 [source%unbreakable]
 ----
-bracketSpecifier
+indexExpression
   : '[' SIGNED_INT ']'
   | '[' '*' ']'
   | '[' slice ']'
@@ -909,7 +912,7 @@ bracketSpecifier
   ;
 ----
 
-A filter expression is defined by a `bracketSpecifier` where the bracket contents are prefixed with a question mark character (`?`).
+A filter expression is defined by a `indexExpression` where the bracket contents are prefixed with a question mark character (`?`).
 A filter expression provides a way to select JSON elements based on a
 comparison to another expression.  A filter expression is evaluated as follows:
 for each element in an array evaluate the `expression` against the

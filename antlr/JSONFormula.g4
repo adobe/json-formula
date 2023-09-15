@@ -18,7 +18,7 @@ formula : expression EOF ;
 expression
   : expression '.' chainedExpression # chainExpression
   | expression chainedBracketSpecifier # bracketedExpression
-  | bracketSpecifier # bracketExpression
+  | indexExpression # bracketExpression
   | expression ('^') expression	# powerExpression
   | expression ('*' | '/' | '&' | '~') expression	# multDivExpression
   | expression ('+' | '-') expression	# addSubtractExpression
@@ -59,7 +59,7 @@ multiSelectHash
 
 keyvalExpr : identifier ':' expression ;
 
-bracketSpecifier
+indexExpression
   : '[' SIGNED_INT ']' # bracketIndex
   | '[' '*' ']' # bracketStar
   | '[' slice ']' # bracketSlice
@@ -68,7 +68,7 @@ bracketSpecifier
   ;
 
 chainedBracketSpecifier
-  : bracketSpecifier # chainedBracket
+  : indexExpression # chainedBracket
   | '[' expression ']' # chainedBracketIndex
   ;
 
