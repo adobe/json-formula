@@ -67,7 +67,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @function casefold
      * @example
      * casefold('AbC') // returns 'abc'
-     * @category JSONFormula
+     * @category json-formula
      */
     casefold: {
       _func: (args, _data, interpreter) => {
@@ -165,7 +165,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @returns {number} A date/time value represented by number of seconds since 1 January 1970.
      * @kind function
      * @function
-     * @category JSONFormula
+     * @category json-formula
      * @example
      * datetime(2010, 10, 10) // returns representation of October 10, 2010
      * @example
@@ -222,7 +222,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {string} name The name (or index position) of the elements to find
      * @returns {any}
      * @function
-     * @category JSONFormula
+     * @category json-formula
      * @example
      * deepScan({a : {b1 : {c : 2}, b2 : {c : 3}}}, 'c') //returns [2, 3]
      */
@@ -252,7 +252,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {object} obj Object whose `[key, value]` pairs need to be extracted
      * @returns {any[]} an array of [key, value] pairs
      * @function entries
-     * @category JSONFormula
+     * @category json-formula
      * @example
      * entries({a: 1, b: 2}) //returns [['a', 1], ['b', 2]]
      */
@@ -370,7 +370,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * returns an object by transforming a list of key-value `pairs` into an object.
      * @param {any[]} pairs list of key-value pairs to create the object from
      * @returns {object}
-     * @category JSONFormula
+     * @category json-formula
      * @function fromEntries
      * @example
      * fromEntries([['a', 1], ['b', 2]]) //returns {a: 1, b: 2}
@@ -639,7 +639,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * Note that expressions may also use the JSON literal null: `` `null` ``
      * @returns {boolean} True
      * @function
-     * @category JSONFormula
+     * @category json-formula
      */
     null: {
       _func: () => null,
@@ -1210,7 +1210,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {array} input input array
      * @return {array} array with duplicate elements removed
      * @function unique
-     * @category JSONFormula
+     * @category json-formula
      * @example
      * unique([1, 2, 3, 4, 1, 1, 2]) //returns [1, 2, 3, 4]
      */
@@ -1250,7 +1250,7 @@ export default function openFormulaFunctions(valueOf, toString, toNumber, debug 
      * @param {string | integer} index: a named child for a map or an integer offset for an array
      * @returns {any} the result of the lookup -- or `null` if not found.
      * @function
-     * @category JSONFormula
+     * @category json-formula
      * @example
      * value({a: 1, b:2, c:3}, 'a') //returns 1
      * @example

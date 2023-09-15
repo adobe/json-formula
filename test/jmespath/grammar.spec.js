@@ -1,6 +1,6 @@
 import antlr4 from 'antlr4';
-import JSONFormulaParser from '../antlr/JSONFormulaParser.js';
-import JSONFormulaLexer from '../antlr/JSONFormulaLexer.js';
+import jsonFormulaParser from '../antlr/jsonFormulaParser.js';
+import jsonFormulaLexer from '../antlr/jsonFormulaLexer.js';
 
 const basic = require('./basic.json');
 
@@ -21,8 +21,8 @@ const wildcard = require('./wildcard.json');
 
 class FormulaErrorListener extends antlr4.error.ErrorListener {
   // eslint-disable-next-line class-methods-use-this
-  syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, exeption) {
-    throw new Error(exeption);
+  syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, exception) {
+    throw new Error(exception);
   }
 }
 
@@ -44,11 +44,13 @@ function executeTest(desc, tst) {
   let result;
   try {
     const chars = new antlr4.InputStream(tst.expression);
-    const lexer = new JSONFormulaLexer(chars);
+    // eslint-disable-next-line new-cap
+    const lexer = new jsonFormulaLexer(chars);
     lexer.removeErrorListeners();
     lexer.addErrorListener(new FormulaErrorListener());
     const tokens = new antlr4.CommonTokenStream(lexer);
-    const parser = new JSONFormulaParser(tokens);
+    // eslint-disable-next-line new-cap
+    const parser = new jsonFormulaParser(tokens);
     parser.buildParseTrees = true;
     parser.removeErrorListeners();
     parser.addErrorListener(new FormulaErrorListener());

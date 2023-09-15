@@ -1,4 +1,4 @@
 #!/bin/bash
-antlr4 JSONFormula.g4
+antlr4 jsonFormula.g4
 javac *.java
-grun JSONFormula formula -tokens -tree ./debugExpression.txt
+grun jsonFormula formula -tokens -tree ./debugExpression.txt

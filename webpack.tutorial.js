@@ -52,7 +52,7 @@ export default {
     path: DIST,
     filename: '[name].js',
     libraryTarget: 'var',
-    library: 'JSONFormula',
+    library: 'jsonFormula',
   },
   plugins: [
     new CopyPlugin({

@@ -825,15 +825,14 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-grammar JSONFormula;
+grammar jsonFormula;
 
 formula : expression EOF ;
 
 expression
   : expression '.' chainedExpression # chainExpression
   | expression chainedBracketSpecifier # bracketedExpression
-  | indexExpression # bracketExpression
-  | expression ('^') expression	# powerExpression
+  | indexExpression # indexedExpression
   | expression ('*' | '/' | '&amp;' | '~') expression	# multDivExpression
   | expression ('+' | '-') expression	# addSubtractExpression
   | expression COMPARATOR expression # comparisonExpression
@@ -2550,7 +2549,7 @@ A host may provide its own <code>toNumber()</code> function that json-formula wi
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-15 07:14:17 -0400
+Last updated 2023-09-15 16:38:09 -0400
 </div>
 </div>
 </body>

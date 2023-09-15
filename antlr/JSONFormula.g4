@@ -11,15 +11,14 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-grammar JSONFormula;
+grammar jsonFormula;
 
 formula : expression EOF ;
 
 expression
   : expression '.' chainedExpression # chainExpression
   | expression chainedBracketSpecifier # bracketedExpression
-  | indexExpression # bracketExpression
-  | expression ('^') expression	# powerExpression
+  | indexExpression # indexedExpression
   | expression ('*' | '/' | '&' | '~') expression	# multDivExpression
   | expression ('+' | '-') expression	# addSubtractExpression
   | expression COMPARATOR expression # comparisonExpression

@@ -1,4 +1,4 @@
-# JSONFormula: A Query Language for JSON with Spreadsheet Functions
+# json-formula: A Query Language for JSON with Spreadsheet Functions
 
 This project hosts an implementation of a form expression grammar.
 The grammar is a mashup of

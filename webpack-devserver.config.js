@@ -59,7 +59,7 @@ const defn = {
     path: dist,
     filename: '[name].js',
     libraryTarget: 'var',
-    library: 'JSONFormula',
+    library: 'jsonFormula',
   },
   plugins: [
     new HtmlWebpackPlugin({

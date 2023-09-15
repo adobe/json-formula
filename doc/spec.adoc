@@ -152,7 +152,7 @@ The grammar is specified using Antlr, as described https://www.antlr.org/[here].
 
 [source%unbreakable]
 ----
-include::../antlr/JSONFormula.g4[]
+include::../antlr/jsonFormula.g4[]
 ----
 
 In addition to the grammar, there is the following token precedence that goes
