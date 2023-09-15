@@ -31,7 +31,7 @@
     "@babel/eslint-parser": "^7.19.1",
     "@babel/node": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
-    "antlr4": "4.11.0",
+    "antlr4": "4.13.1",
     "asciidoctor": "^3.0.2",
     "babel-loader": "^9.1.0",
     "better-docs": "^2.7.2",
