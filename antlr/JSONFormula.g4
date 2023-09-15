@@ -87,7 +87,6 @@ COMPARATOR
 functionExpression
   : NAME '(' functionArg (',' functionArg)* ')'
   | NAME '(' ')'
-  | JSON_CONSTANT '(' ')'
   ;
 
 functionArg
@@ -104,13 +103,6 @@ literal : '`' jsonValue '`' ;
 identifier
   : NAME
   | QUOTED_NAME
-  | JSON_CONSTANT
-  ;
-
-JSON_CONSTANT
-  : 'true'
-  | 'false'
-  | 'null'
   ;
 
 NAME : [@a-zA-Z_] [a-zA-Z0-9_]* ;
@@ -136,7 +128,10 @@ jsonValue
   | (REAL_OR_EXPONENT_NUMBER | SIGNED_INT) # jsonNumberValue
   | jsonObject # jsonObjectValue
   | jsonArray # jsonArrayValue
-  | JSON_CONSTANT # jsonConstantValue
+  // NAME in this context must be one of true/false/null
+  // Enforcing that enumeration in the grammar conflicts with other use of NAME,
+  // so rely on the runtime JSON parser to validate
+  | NAME # jsonConstantValue
   ;
 
 STRING
