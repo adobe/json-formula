@@ -457,7 +457,7 @@ min(['a', 'a1', 'b']) // returns 'a'
 ## notNull(...argument) ⇒ <code>any</code>
 Returns the first argument that does not resolve to `null`.
 This function accepts one or more arguments, and will evaluate
-them in order until a non null argument is encounted. If all
+them in order until a non null argument is encountered. If all
 arguments values resolve to null, then a value of null is returned.
 
 **Kind**: global function  

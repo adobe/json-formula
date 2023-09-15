@@ -673,6 +673,31 @@ and <code>nil</code> in ruby and go.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Empty object</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">zero is false.  All other numbers are true</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Empty string is false, populated strings are true</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Empty array is false, populated arrays are true</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Empty object is false, populated objects are true</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
 </tbody>
 </table>
 <div class="sect3">
@@ -807,7 +832,7 @@ formula : expression EOF ;
 expression
   : expression '.' chainedExpression # chainExpression
   | expression chainedBracketSpecifier # bracketedExpression
-  | bracketSpecifier # bracketExpression
+  | indexExpression # bracketExpression
   | expression ('^') expression	# powerExpression
   | expression ('*' | '/' | '&amp;' | '~') expression	# multDivExpression
   | expression ('+' | '-') expression	# addSubtractExpression
@@ -848,7 +873,7 @@ multiSelectHash
 
 keyvalExpr : identifier ':' expression ;
 
-bracketSpecifier
+indexExpression
   : '[' SIGNED_INT ']' # bracketIndex
   | '[' '*' ']' # bracketStar
   | '[' slice ']' # bracketSlice
@@ -857,7 +882,7 @@ bracketSpecifier
   ;
 
 chainedBracketSpecifier
-  : bracketSpecifier # chainedBracket
+  : indexExpression # chainedBracket
   | '[' expression ']' # chainedBracketIndex
   ;
 
@@ -876,7 +901,6 @@ COMPARATOR
 functionExpression
   : NAME '(' functionArg (',' functionArg)* ')'
   | NAME '(' ')'
-  | JSON_CONSTANT '(' ')'
   ;
 
 functionArg
@@ -893,13 +917,6 @@ literal : '`' jsonValue '`' ;
 identifier
   : NAME
   | QUOTED_NAME
-  | JSON_CONSTANT
-  ;
-
-JSON_CONSTANT
-  : 'true'
-  | 'false'
-  | 'null'
   ;
 
 NAME : [@a-zA-Z_] [a-zA-Z0-9_]* ;
@@ -925,7 +942,10 @@ jsonValue
   | (REAL_OR_EXPONENT_NUMBER | SIGNED_INT) # jsonNumberValue
   | jsonObject # jsonObjectValue
   | jsonArray # jsonArrayValue
-  | JSON_CONSTANT # jsonConstantValue
+  // NAME in this context must be one of true/false/null
+  // Enforcing that enumeration in the grammar conflicts with other use of NAME,
+  // so rely on the runtime JSON parser to validate
+  | NAME # jsonConstantValue
   ;
 
 STRING
@@ -1181,11 +1201,11 @@ sub-expressions: <code>grandparent.parent.child</code>.</p>
 <pre class="highlight"><code>expression: expression chainedBracketSpecifier
 
 chainedBracketSpecifier
-  : bracketSpecifier
+  : indexExpression
   | '[' expression ']'
   ;
 
-bracketSpecifier
+indexExpression
   : '[' SIGNED_INT ']'
   | '[' '*' ']'
   | '[' slice ']'
@@ -1218,16 +1238,16 @@ expression refers to an index that is greater than the length of the array, a
 value of <code>null</code> is returned.</p>
 </div>
 <div class="paragraph">
-<p>For the grammar rule <code>expression bracketSpecifier</code> the <code>expression</code> is
+<p>For the grammar rule <code>expression indexExpression</code> the <code>expression</code> is
 first evaluated, and then return value from the <code>expression</code> is given as
-input to the <code>bracketSpecifier</code>.</p>
+input to the <code>indexExpression</code>.</p>
 </div>
 <div class="paragraph">
-<p>Using a "*" character within a <code>bracketSpecifier</code> is discussed below in the
+<p>Using a "*" character within a <code>indexExpression</code> is discussed below in the
 <a href="#_wildcard_expressions">Wildcard Expressions</a> section.</p>
 </div>
 <div class="paragraph">
-<p>Using an expression prefixed with a "?" character within a <code>bracketSpecifier</code> is discussed below in the <a href="#_filter_expressions">Filter Expressions</a> section.</p>
+<p>Using an expression prefixed with a "?" character within a <code>indexExpression</code> is discussed below in the <a href="#_filter_expressions">Filter Expressions</a> section.</p>
 </div>
 <div class="sect2">
 <h3 id="_slices">Slices</h3>
@@ -1435,9 +1455,6 @@ two arrays <code>x</code> and <code>y</code>, for each <code>i</code> from <code
 </div>
 <div class="sect3">
 <h4 id="_ordering_operators">Ordering Operators</h4>
-<div class="paragraph">
-<p>If the operands are not the same type, the ordering operators <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code> will return false.</p>
-</div>
 <div class="ulist">
 <ul>
 <li>
@@ -1817,11 +1834,11 @@ expression <code>bar</code> against the provided JSON document.</p>
 <h2 id="_wildcard_expressions">Wildcard Expressions</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>There are two forms of wildcard expression, <code>[*]</code> from the <code>bracketSpecifier</code> construction:</p>
+<p>There are two forms of wildcard expression, <code>[*]</code> from the <code>indexExpression</code> construction:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>bracketSpecifier
+<pre class="highlight"><code>indexExpression
   : '[' SIGNED_INT ']' # bracketIndex
   | '[' '*' ']' # bracketStar
   | '[' slice ']' # bracketSlice
@@ -2042,7 +2059,7 @@ A bracket with a single signed digit e.g.: <code>[0]</code> can be interpreted a
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>bracketSpecifier
+<pre class="highlight"><code>indexExpression
   : '[' SIGNED_INT ']'
   | '[' '*' ']'
   | '[' slice ']'
@@ -2052,7 +2069,7 @@ A bracket with a single signed digit e.g.: <code>[0]</code> can be interpreted a
 </div>
 </div>
 <div class="paragraph">
-<p>A filter expression is defined by a <code>bracketSpecifier</code> where the bracket contents are prefixed with a question mark character (<code>?</code>).
+<p>A filter expression is defined by a <code>indexExpression</code> where the bracket contents are prefixed with a question mark character (<code>?</code>).
 A filter expression provides a way to select JSON elements based on a
 comparison to another expression.  A filter expression is evaluated as follows:
 for each element in an array evaluate the <code>expression</code> against the
@@ -2217,7 +2234,7 @@ be used to convert (and filter) all elements to numbers</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>    search([].toNumber(@), ["1", "2", "3", "notanumber", null, true]) -&gt; [1, 2, 3, 0]</code></pre>
+<pre class="highlight"><code>    search([].toNumber(@), ["1", "2", "3", "notanumber", null, true]) -&gt; [1,2,3,0,1]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2533,7 +2550,7 @@ A host may provide its own <code>toNumber()</code> function that json-formula wi
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-14 09:25:41 -0400
+Last updated 2023-09-15 07:14:17 -0400
 </div>
 </div>
 </body>
