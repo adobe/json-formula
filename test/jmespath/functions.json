@@ -343,6 +343,14 @@
       "result": {"a": 2, "b": 2, "c": 3, "d": 4}
     },
     {
+      "expression": "merge(`{\"a\": 1}`, `{\"a\": 2}`, \"82\")",
+      "error": "invalid-argument"
+    },
+    {
+      "expression": "merge([1, 2, 3], [4, 5, 6])",
+      "error": "invalid-argument"
+    },
+    {
       "expression": "min(numbers)",
       "result": -1
     },

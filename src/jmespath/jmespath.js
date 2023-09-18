@@ -100,7 +100,8 @@ class Runtime {
     }
     let pluralized;
     const argsNeeded = signature.filter(arg => !arg.optional).length;
-    if (signature[signature.length - 1].variadic) {
+    const lastArg = signature[signature.length - 1];
+    if (lastArg.variadic) {
       if (args.length < signature.length) {
         pluralized = signature.length === 1 ? ' argument' : ' arguments';
         throw new Error(`ArgumentError: ${argName}() `
@@ -117,9 +118,12 @@ class Runtime {
     if (!bResolved) return;
     let currentSpec;
     let actualType;
-    const limit = Math.min(signature.length, args.length);
+    const limit = signature[signature.length - 1].variadic ? args.length
+      : Math.min(signature.length, args.length);
+
     for (let i = 0; i < limit; i += 1) {
-      currentSpec = signature[i].types;
+      currentSpec = i > signature.length - 1 ? signature[signature.length - 1].types
+        : signature[i].types;
       // Try to avoid checks that will introspect the object and generate dependencies
       if (!matchClass(args[i], currentSpec) && !currentSpec.includes(TYPE_ANY)) {
         actualType = getTypeNames(args[i]);
