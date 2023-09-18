@@ -115,11 +115,8 @@ function isAlphaNum(ch) {
 function isIdentifier(stream, pos) {
   const ch = stream[pos];
   // $ is special -- it's allowed to be part of an identifier if it's the first character
-  if (ch === '$') {
-    return stream.length > pos && isAlphaNum(stream[pos + 1]);
-  }
   // return whether character 'isAlpha'
-  return (ch >= 'a' && ch <= 'z')
+  return (ch === '$' || ch >= 'a' && ch <= 'z')
     || (ch >= 'A' && ch <= 'Z')
     || ch === '_';
 }
@@ -266,7 +263,10 @@ export default class Lexer {
   _consumeUnquotedIdentifier(stream) {
     const start = this._current;
     this._current += 1;
-    while (this._current < stream.length && isAlphaNum(stream[this._current])) {
+    while (
+      this._current < stream.length
+      && (stream[this._current] === '$' || isAlphaNum(stream[this._current]))
+    ) {
       this._current += 1;
     }
     return stream.slice(start, this._current);
@@ -387,7 +387,7 @@ export default class Lexer {
     if (ch !== globalStartToken) return false;
     // $ is special -- it's allowed to be part of an identifier if it's the first character
     let i = pos + 1;
-    while (i < stream.length && isAlphaNum(stream[i])) i += 1;
+    while (i < stream.length && (stream[i] === '$' || isAlphaNum(stream[i]))) i += 1;
     const global = stream.slice(pos, i);
     return this._allowedGlobalNames.includes(global);
   }
@@ -395,7 +395,8 @@ export default class Lexer {
   _consumeGlobal(stream) {
     const start = this._current;
     this._current += 1;
-    while (this._current < stream.length && isAlphaNum(stream[this._current])) this._current += 1;
+    while (this._current < stream.length
+      && (stream[this._current] === '$' || isAlphaNum(stream[this._current]))) this._current += 1;
     const global = stream.slice(start, this._current);
 
     return { type: TOK_GLOBAL, name: global, start };

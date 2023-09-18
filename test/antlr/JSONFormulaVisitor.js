@@ -174,12 +174,6 @@ export default class JsonFormulaVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
-	// Visit a parse tree produced by JsonFormulaParser#bracketIndex.
-	visitBracketIndex(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
 	// Visit a parse tree produced by JsonFormulaParser#bracketStar.
 	visitBracketStar(ctx) {
 	  return this.visitChildren(ctx);
@@ -198,20 +192,14 @@ export default class JsonFormulaVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
+	// Visit a parse tree produced by JsonFormulaParser#predicate.
+	visitPredicate(ctx) {
+	  return this.visitChildren(ctx);
+	}
+
+
 	// Visit a parse tree produced by JsonFormulaParser#select.
 	visitSelect(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
-	// Visit a parse tree produced by JsonFormulaParser#chainedBracket.
-	visitChainedBracket(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
-	// Visit a parse tree produced by JsonFormulaParser#chainedBracketIndex.
-	visitChainedBracketIndex(ctx) {
 	  return this.visitChildren(ctx);
 	}
 

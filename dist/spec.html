@@ -812,7 +812,21 @@ and <code>nil</code> in ruby and go.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>// $antlr-format false
+<pre class="highlight"><code>/*
+Copyright 2014 James Saryerwinnie
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 /*
 Copyright 2021 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -825,13 +839,13 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-grammar jsonFormula;
+grammar JsonFormula;
 
 formula : expression EOF ;
 
 expression
   : expression '.' chainedExpression # chainExpression
-  | expression chainedBracketSpecifier # bracketedExpression
+  | expression indexExpression # bracketedExpression
   | indexExpression # indexedExpression
   | expression ('*' | '/' | '&amp;' | '~') expression	# multDivExpression
   | expression ('+' | '-') expression	# addSubtractExpression
@@ -845,11 +859,11 @@ expression
   | wildcard # wildcardExpression
   | multiSelectList # multiSelectListExpression
   | multiSelectHash # multiSelectHashExpression
-  | literal # literalExpression
+  | JSON_FRAGMENT # literalExpression
   | functionExpression # functionCallExpression
   | expression '|' expression # pipeExpression
-  | (STRING | RAW_STRING) # rawStringExpression
-  | (REAL_OR_EXPONENT_NUMBER | SIGNED_INT) # numberLiteral
+  | STRING # rawStringExpression
+  | '-'? (REAL_OR_EXPONENT_NUMBER | INT) # numberLiteral
   | currentNode # currentNodeExpression
   ;
 
@@ -873,16 +887,11 @@ multiSelectHash
 keyvalExpr : identifier ':' expression ;
 
 indexExpression
-  : '[' SIGNED_INT ']' # bracketIndex
-  | '[' '*' ']' # bracketStar
+  : '[' '*' ']' # bracketStar
   | '[' slice ']' # bracketSlice
   | '[' ']' # bracketFlatten
-  | '[?' expression ']' # select
-  ;
-
-chainedBracketSpecifier
-  : indexExpression # chainedBracket
-  | '[' expression ']' # chainedBracketIndex
+  | '[?' expression ']' # filter
+  | '[' expression ']' # select
   ;
 
 slice : start=expression? ':' stop=expression? (':' step=expression?)? ;
@@ -911,54 +920,22 @@ currentNode : '@' ;
 
 expressionType : '&amp;' expression ;
 
-literal : '`' jsonValue '`' ;
-
 identifier
   : NAME
   | QUOTED_NAME
   ;
 
-NAME : [@a-zA-Z_] [a-zA-Z0-9_]* ;
+NAME : [@a-zA-Z_$] [a-zA-Z0-9_$]* ;
 
 QUOTED_NAME : '\'' (ESC | ~ ['\\])* '\'';
 
-jsonObject
-  : '{' jsonObjectPair (',' jsonObjectPair)* '}'
-  | '{' '}'
+JSON_FRAGMENT
+  : '`' (STRING | ~ [\\`]+)* '`'
   ;
 
-jsonObjectPair
-  : STRING ':' jsonValue
-  ;
+STRING : '"' (ESC | ~["\\])* '"' ;
 
-jsonArray
-  : '[' jsonValue (',' jsonValue)* ']'
-  | '[' ']'
-  ;
-
-jsonValue
-  : STRING # jsonStringValue
-  | (REAL_OR_EXPONENT_NUMBER | SIGNED_INT) # jsonNumberValue
-  | jsonObject # jsonObjectValue
-  | jsonArray # jsonArrayValue
-  // NAME in this context must be one of true/false/null
-  // Enforcing that enumeration in the grammar conflicts with other use of NAME,
-  // so rely on the runtime JSON parser to validate
-  | NAME # jsonConstantValue
-  ;
-
-STRING
-  : '"' (ESC | ~ ["\\])* '"'
-  ;
-
-fragment ESC
-  : '\\' (["\\/bfnrt`] | UNICODE)
-  ;
-
-RAW_STRING : '"' (RAW_ESC | ~["\\])* '"' ;
-
-fragment RAW_ESC : '\\' . ;
-
+fragment ESC : '\\' (~[u] | UNICODE);
 
 fragment UNICODE
   : 'u' HEX HEX HEX HEX
@@ -969,13 +946,11 @@ fragment HEX
   ;
 
 REAL_OR_EXPONENT_NUMBER
-  : '-'? INT '.' [0-9] + EXP?
-  | '-'? INT EXP
+  : INT '.' [0-9] + EXP?
+  | INT EXP
   ;
 
-SIGNED_INT : '-'? INT ;
-
-fragment INT
+INT
   : '0'
   | [1-9] [0-9]*
   ;
@@ -1197,31 +1172,26 @@ sub-expressions: <code>grandparent.parent.child</code>.</p>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>expression: expression chainedBracketSpecifier
-
-chainedBracketSpecifier
-  : indexExpression
-  | '[' expression ']'
-  ;
+<pre class="highlight"><code>expression: expression indexExpression
 
 indexExpression
-  : '[' SIGNED_INT ']'
-  | '[' '*' ']'
-  | '[' slice ']'
-  | '[' ']'
-  | '[?' expression ']'
+  : '[' '*' ']' # bracketStar
+  | '[' slice ']' # bracketSlice
+  | '[' ']' # bracketFlatten
+  | '[?' expression ']' # predicate
+  | '[' expression ']' # select
   ;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>From the <code>chainedBracketSpecifier</code> construction, an index expression is the case where the brackets enclose an integer or wildcard (<code>*</code>) or expression that returns a value to access elements in a list or object.</p>
+<p>From the <code>indexExpression</code> construction, an index expression is where the brackets contents provide access to the elements in a list or object.</p>
 </div>
 <div class="paragraph">
 <p>When brackets are used with an object, the bracket contents are expected to be an expression that resolves to the name of a property. In the simple case, <code>foo["bar"]</code> is equivalent to <code>foo.bar</code>.</p>
 </div>
 <div class="paragraph">
-<p>Most commonly, brackets are used with lists.  With lists, bracketed expressions are expected to return an integer, and then follow the semantics of <code>SIGNED_INT</code>.
-When brackets enclose a signed integer (<code>SIGNED_INT</code>), indexing is 0 based. The index of 0 refers to the first element of the list.  A negative number is a
+<p>Most commonly, brackets are used with lists.  With lists, bracketed expressions are expected to return an integer value to return an index in the list.
+Indexing is 0 based. The index of 0 refers to the first element of the list.  A negative number is a
 valid index.  A negative number indicates that indexing is relative to the end
 of the list, specifically</p>
 </div>
@@ -1235,11 +1205,6 @@ of the list, specifically</p>
 index of <code>N - 1</code>, which is the last element of the list.  If an index
 expression refers to an index that is greater than the length of the array, a
 value of <code>null</code> is returned.</p>
-</div>
-<div class="paragraph">
-<p>For the grammar rule <code>expression indexExpression</code> the <code>expression</code> is
-first evaluated, and then return value from the <code>expression</code> is given as
-input to the <code>indexExpression</code>.</p>
 </div>
 <div class="paragraph">
 <p>Using a "*" character within a <code>indexExpression</code> is discussed below in the
@@ -1833,16 +1798,16 @@ expression <code>bar</code> against the provided JSON document.</p>
 <h2 id="_wildcard_expressions">Wildcard Expressions</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>There are two forms of wildcard expression, <code>[*]</code> from the <code>indexExpression</code> construction:</p>
+<p>There are two forms of wildcard expression: <code>[*]</code> from the <code>indexExpression</code> construction:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>indexExpression
-  : '[' SIGNED_INT ']' # bracketIndex
-  | '[' '*' ']' # bracketStar
+  : '[' '*' ']' # bracketStar
   | '[' slice ']' # bracketSlice
   | '[' ']' # bracketFlatten
-  | '[?' expression ']' # select
+  | '[?' expression ']' # predicate
+  | '[' expression ']' # select
   ;</code></pre>
 </div>
 </div>
@@ -2059,11 +2024,11 @@ A bracket with a single signed digit e.g.: <code>[0]</code> can be interpreted a
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>indexExpression
-  : '[' SIGNED_INT ']'
-  | '[' '*' ']'
-  | '[' slice ']'
-  | '[' ']'
-  | '[?' expression ']'
+  : '[' '*' ']' # bracketStar
+  | '[' slice ']' # bracketSlice
+  | '[' ']' # bracketFlatten
+  | '[?' expression ']' # filter
+  | '[' expression ']' # select
   ;</code></pre>
 </div>
 </div>
@@ -2549,7 +2514,7 @@ A host may provide its own <code>toNumber()</code> function that json-formula wi
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-15 16:38:09 -0400
+Last updated 2023-09-18 11:58:12 -0400
 </div>
 </div>
 </body>

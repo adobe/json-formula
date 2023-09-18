@@ -296,29 +296,24 @@ Additional examples
 
 [source%unbreakable]
 ----
-expression: expression chainedBracketSpecifier
-
-chainedBracketSpecifier
-  : indexExpression
-  | '[' expression ']'
-  ;
+expression: expression indexExpression
 
 indexExpression
-  : '[' SIGNED_INT ']'
-  | '[' '*' ']'
-  | '[' slice ']'
-  | '[' ']'
-  | '[?' expression ']'
+  : '[' '*' ']' # bracketStar
+  | '[' slice ']' # bracketSlice
+  | '[' ']' # bracketFlatten
+  | '[?' expression ']' # predicate
+  | '[' expression ']' # select
   ;
 
 ----
 
-From the `chainedBracketSpecifier` construction, an index expression is the case where the brackets enclose an integer or wildcard (`*`) or expression that returns a value to access elements in a list or object.
+From the `indexExpression` construction, an index expression is where the brackets contents provide access to the elements in a list or object.
 
 When brackets are used with an object, the bracket contents are expected to be an expression that resolves to the name of a property. In the simple case, `foo["bar"]` is equivalent to `foo.bar`.
 
-Most commonly, brackets are used with lists.  With lists, bracketed expressions are expected to return an integer, and then follow the semantics of `SIGNED_INT`.
-When brackets enclose a signed integer (`SIGNED_INT`), indexing is 0 based. The index of 0 refers to the first element of the list.  A negative number is a
+Most commonly, brackets are used with lists.  With lists, bracketed expressions are expected to return an integer value to return an index in the list.
+Indexing is 0 based. The index of 0 refers to the first element of the list.  A negative number is a
 valid index.  A negative number indicates that indexing is relative to the end
 of the list, specifically
 
@@ -331,10 +326,6 @@ Given an array of length `N`, an index of `-1` would be equal to a positive
 index of `N - 1`, which is the last element of the list.  If an index
 expression refers to an index that is greater than the length of the array, a
 value of `null` is returned.
-
-For the grammar rule `expression indexExpression` the `expression` is
-first evaluated, and then return value from the `expression` is given as
-input to the `indexExpression`.
 
 Using a "*" character within a `indexExpression` is discussed below in the
 <<Wildcard Expressions>> section.
@@ -715,16 +706,16 @@ Additional examples:
 
 == Wildcard Expressions
 
-There are two forms of wildcard expression, `[*]` from the `indexExpression` construction:
+There are two forms of wildcard expression: `[*]` from the `indexExpression` construction:
 
 [source%unbreakable]
 ----
 indexExpression
-  : '[' SIGNED_INT ']' # bracketIndex
-  | '[' '*' ']' # bracketStar
+  : '[' '*' ']' # bracketStar
   | '[' slice ']' # bracketSlice
   | '[' ']' # bracketFlatten
-  | '[?' expression ']' # select
+  | '[?' expression ']' # predicate
+  | '[' expression ']' # select
   ;
 ----
 
@@ -904,11 +895,11 @@ A bracket with a single signed digit e.g.: `[0]` can be interpreted as a flatten
 [source%unbreakable]
 ----
 indexExpression
-  : '[' SIGNED_INT ']'
-  | '[' '*' ']'
-  | '[' slice ']'
-  | '[' ']'
-  | '[?' expression ']'
+  : '[' '*' ']' # bracketStar
+  | '[' slice ']' # bracketSlice
+  | '[' ']' # bracketFlatten
+  | '[?' expression ']' # filter
+  | '[' expression ']' # select
   ;
 ----
 

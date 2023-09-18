@@ -12,6 +12,7 @@ governing permissions and limitations under the License.
 import JsonFormula from '../src/json-formula.js';
 import functions from '../src/jmespath/openFormulaFunctions.js';
 import stringToNumber from '../src/jmespath/stringToNumber.js';
+import testGrammar from './testGrammar.js';
 
 const specSamples = require('./specSamples.json');
 
@@ -21,6 +22,9 @@ test.each(specSamples)('%s', (expr, data, expected) => {
   const language = 'en-US';
   let result;
   try {
+    const grammarResult = testGrammar(expr);
+    expect(grammarResult).not.toBe('error');
+
     result = jsonFormula.search(
       expr,
       data,

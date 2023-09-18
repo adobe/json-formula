@@ -257,15 +257,6 @@ export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by JsonFormulaParser#bracketIndex.
-	enterBracketIndex(ctx) {
-	}
-
-	// Exit a parse tree produced by JsonFormulaParser#bracketIndex.
-	exitBracketIndex(ctx) {
-	}
-
-
 	// Enter a parse tree produced by JsonFormulaParser#bracketStar.
 	enterBracketStar(ctx) {
 	}
@@ -293,30 +284,21 @@ export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
+	// Enter a parse tree produced by JsonFormulaParser#predicate.
+	enterPredicate(ctx) {
+	}
+
+	// Exit a parse tree produced by JsonFormulaParser#predicate.
+	exitPredicate(ctx) {
+	}
+
+
 	// Enter a parse tree produced by JsonFormulaParser#select.
 	enterSelect(ctx) {
 	}
 
 	// Exit a parse tree produced by JsonFormulaParser#select.
 	exitSelect(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JsonFormulaParser#chainedBracket.
-	enterChainedBracket(ctx) {
-	}
-
-	// Exit a parse tree produced by JsonFormulaParser#chainedBracket.
-	exitChainedBracket(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JsonFormulaParser#chainedBracketIndex.
-	enterChainedBracketIndex(ctx) {
-	}
-
-	// Exit a parse tree produced by JsonFormulaParser#chainedBracketIndex.
-	exitChainedBracketIndex(ctx) {
 	}
 
 

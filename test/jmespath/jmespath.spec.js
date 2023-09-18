@@ -29,6 +29,7 @@ governing permissions and limitations under the License.
 import JsonFormula from '../../src/json-formula.js';
 import createForm from '../../tutorial/Form.js';
 import stringToNumber from '../../src/jmespath/stringToNumber.js';
+import testGrammar from '../testGrammar.js';
 
 const functions = require('./functions.json');
 
@@ -51,6 +52,10 @@ function toTestFmt(nm) {
 const jsonFormula = new JsonFormula(functions, stringToNumber);
 
 function executeTest(desc, tst) {
+  const grammarResult = testGrammar(tst.expression);
+  if (grammarResult === 'error') expect(tst.error).toBe('syntax');
+  else expect(tst.error).not.toBe('syntax');
+
   let result;
   try {
     result = jsonFormula.search(tst.expression, tst.given);

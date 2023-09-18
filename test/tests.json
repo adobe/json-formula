@@ -722,7 +722,7 @@
     {
       "data": "`null`",
       "expression": "power(2)",
-      "error": "syntax"
+      "error": "invalid-arity"
     }
   ],
   [
@@ -986,7 +986,7 @@
     {
       "data": "`null`",
       "expression": "mid(\"abc\")",
-      "error": "syntax"
+      "error": "invalid-arity"
     }
   ],
   [
@@ -1154,7 +1154,7 @@
     {
       "data": "`null`",
       "expression": "mid(split(\"abc\", \"\"))",
-      "error": "syntax"
+      "error": "invalid-arity"
     }
   ],
   [
@@ -1847,10 +1847,10 @@
     }
   ],
   [
-    "datetime(1970,1,1,13,12,11,123) | {h: hour(@), m: minute(@), s: second(@), ms: mod(@ * 24 * 60 * 60 * 100, 1000)}",
+    "datetime(1970,1,1,13,12,11,0) | {h: hour(@), m: minute(@), s: second(@), ms: mod(@ * 24 * 60 * 60 * 100, 1000)}",
     {
       "data": "`null`",
-      "expression": "datetime(1970,1,1,13,12,11,0) | {h: hour(@), m: minute(@), s: second(@) ms: mod(@ * 24 * 60 * 60 * 100, 1000)}",
+      "expression": "datetime(1970,1,1,13,12,11,0) | {h: hour(@), m: minute(@), s: second(@), ms: mod(@ * 24 * 60 * 60 * 100, 1000)}",
       "expected": {"h": 13, "m": 12, "s": 11, "ms": 100}
     }
   ],
@@ -1859,7 +1859,7 @@
     {
       "data": "`null`",
       "expression": "datetime(1970,1)",
-      "error": "syntax"
+      "error": "invalid-arity"
     }
   ],
   [
@@ -2302,7 +2302,7 @@
     {
       "data": "`null`",
       "expression": "entries(`null`)",
-      "error": "syntax"
+      "error": "type-error"
     }
   ],
   [
@@ -2347,7 +2347,7 @@
     {
       "data": "samples.'purchase-order'",
       "expression": "fromEntries(address.street)",
-      "error": "syntax"
+      "error": "type-error"
     }
   ],
   [
@@ -2355,7 +2355,7 @@
     {
       "data": "samples.'purchase-order'",
       "expression": "fromEntries(items)",
-      "error": "syntax"
+      "error": "type-error"
     }
   ],
   [
@@ -2491,7 +2491,7 @@
     {
       "data": "samples.'purchase-order'.items[*]",
       "expression": "[].quantity ~ {a: 4}",
-      "error": "syntax"
+      "error": "type-error"
     }
   ],
   [
@@ -3090,7 +3090,47 @@
     {
       "data": "{}",
       "expression": "random(2)",
-      "error": "syntax"
+      "error": "invalid-arity"
+    }
+  ],
+  [
+    "$",
+    {
+      "data": "{}",
+      "expression": "$",
+      "expected": 42
+    }
+  ],
+  [
+    "$$",
+    {
+      "data": "{}",
+      "expression": "$$",
+      "expected": 43
+    }
+  ],
+  [
+    "2--1",
+    {
+      "data": "{}",
+      "expression": "2--1",
+      "expected": 3
+    }
+  ],
+  [
+    "2---1",
+    {
+      "data": "{}",
+      "expression": "2---1",
+      "expected": 1
+    }
+  ],
+  [
+    "2----1",
+    {
+      "data": "{}",
+      "expression": "2----1",
+      "expected": 3
     }
   ]
 ]
