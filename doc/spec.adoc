@@ -1,6 +1,32 @@
 = json-formula Specification
+John Brinkman <jbrinkma@adobe.com>
+1.0, {docdate}: 
+:toc: macro
+:outlinelevels: 3 
+:appendix-caption: Appendix
 
-This document is the specification for json-formula. In the specification, examples are shown through the use of a `search` function.  The syntax for this function is:
+ifdef::backend-pdf[]
+[.authors]
+{author} + 
+{revnumber} {revremark} : {revdate}
+endif::[]
+
+// table of contents goes here
+toc::[] 
+
+// page break
+<<<
+
+// [abstract]
+== Abstract
+
+This document is the specification for json-formula. 
+
+// start numbering the sections from here...
+:sectnums:
+
+== Notation
+In the specification, examples are shown through the use of a `search` function.  The syntax for this function is:
 
 [source%unbreakable]
 ----
@@ -152,7 +178,13 @@ The grammar is specified using Antlr, as described https://www.antlr.org/[here].
 
 [source%unbreakable]
 ----
+ifdef::USING_DOCKER[]
+include::./antlr/JSONFormula.g4[]
+endif::[]
+
+ifndef::USING_DOCKER[]
 include::../antlr/JSONFormula.g4[]
+endif::[]
 ----
 
 In addition to the grammar, there is the following token precedence that goes
