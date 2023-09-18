@@ -116,7 +116,8 @@ function isIdentifier(stream, pos) {
   const ch = stream[pos];
   // $ is special -- it's allowed to be part of an identifier if it's the first character
   // return whether character 'isAlpha'
-  return (ch === '$' || ch >= 'a' && ch <= 'z')
+  return ch === '$'
+    || (ch >= 'a' && ch <= 'z')
     || (ch >= 'A' && ch <= 'Z')
     || ch === '_';
 }
