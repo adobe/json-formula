@@ -1,457 +1,376 @@
-// Generated from antlr/jsonFormula.g4 by ANTLR 4.13.1
+// Generated from antlr/JsonFormula.g4 by ANTLR 4.13.1
 // jshint ignore: start
 import antlr4 from 'antlr4';
 
-// This class defines a complete listener for a parse tree produced by jsonFormulaParser.
-export default class jsonFormulaListener extends antlr4.tree.ParseTreeListener {
+// This class defines a complete listener for a parse tree produced by JsonFormulaParser.
+export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 
-	// Enter a parse tree produced by jsonFormulaParser#formula.
+	// Enter a parse tree produced by JsonFormulaParser#formula.
 	enterFormula(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#formula.
+	// Exit a parse tree produced by JsonFormulaParser#formula.
 	exitFormula(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#pipeExpression.
+	// Enter a parse tree produced by JsonFormulaParser#pipeExpression.
 	enterPipeExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#pipeExpression.
+	// Exit a parse tree produced by JsonFormulaParser#pipeExpression.
 	exitPipeExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#identifierExpression.
+	// Enter a parse tree produced by JsonFormulaParser#identifierExpression.
 	enterIdentifierExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#identifierExpression.
+	// Exit a parse tree produced by JsonFormulaParser#identifierExpression.
 	exitIdentifierExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#multDivExpression.
+	// Enter a parse tree produced by JsonFormulaParser#multDivExpression.
 	enterMultDivExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#multDivExpression.
+	// Exit a parse tree produced by JsonFormulaParser#multDivExpression.
 	exitMultDivExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#notExpression.
+	// Enter a parse tree produced by JsonFormulaParser#notExpression.
 	enterNotExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#notExpression.
+	// Exit a parse tree produced by JsonFormulaParser#notExpression.
 	exitNotExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#rawStringExpression.
+	// Enter a parse tree produced by JsonFormulaParser#rawStringExpression.
 	enterRawStringExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#rawStringExpression.
+	// Exit a parse tree produced by JsonFormulaParser#rawStringExpression.
 	exitRawStringExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#comparisonExpression.
+	// Enter a parse tree produced by JsonFormulaParser#comparisonExpression.
 	enterComparisonExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#comparisonExpression.
+	// Exit a parse tree produced by JsonFormulaParser#comparisonExpression.
 	exitComparisonExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#parenExpression.
+	// Enter a parse tree produced by JsonFormulaParser#parenExpression.
 	enterParenExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#parenExpression.
+	// Exit a parse tree produced by JsonFormulaParser#parenExpression.
 	exitParenExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#orExpression.
+	// Enter a parse tree produced by JsonFormulaParser#orExpression.
 	enterOrExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#orExpression.
+	// Exit a parse tree produced by JsonFormulaParser#orExpression.
 	exitOrExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#unaryMinusExpression.
+	// Enter a parse tree produced by JsonFormulaParser#unaryMinusExpression.
 	enterUnaryMinusExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#unaryMinusExpression.
+	// Exit a parse tree produced by JsonFormulaParser#unaryMinusExpression.
 	exitUnaryMinusExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#currentNodeExpression.
+	// Enter a parse tree produced by JsonFormulaParser#currentNodeExpression.
 	enterCurrentNodeExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#currentNodeExpression.
+	// Exit a parse tree produced by JsonFormulaParser#currentNodeExpression.
 	exitCurrentNodeExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#chainExpression.
+	// Enter a parse tree produced by JsonFormulaParser#chainExpression.
 	enterChainExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#chainExpression.
+	// Exit a parse tree produced by JsonFormulaParser#chainExpression.
 	exitChainExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#andExpression.
+	// Enter a parse tree produced by JsonFormulaParser#andExpression.
 	enterAndExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#andExpression.
+	// Exit a parse tree produced by JsonFormulaParser#andExpression.
 	exitAndExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#multiSelectHashExpression.
+	// Enter a parse tree produced by JsonFormulaParser#multiSelectHashExpression.
 	enterMultiSelectHashExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#multiSelectHashExpression.
+	// Exit a parse tree produced by JsonFormulaParser#multiSelectHashExpression.
 	exitMultiSelectHashExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#wildcardExpression.
+	// Enter a parse tree produced by JsonFormulaParser#wildcardExpression.
 	enterWildcardExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#wildcardExpression.
+	// Exit a parse tree produced by JsonFormulaParser#wildcardExpression.
 	exitWildcardExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#functionCallExpression.
+	// Enter a parse tree produced by JsonFormulaParser#functionCallExpression.
 	enterFunctionCallExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#functionCallExpression.
+	// Exit a parse tree produced by JsonFormulaParser#functionCallExpression.
 	exitFunctionCallExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#indexedExpression.
+	// Enter a parse tree produced by JsonFormulaParser#indexedExpression.
 	enterIndexedExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#indexedExpression.
+	// Exit a parse tree produced by JsonFormulaParser#indexedExpression.
 	exitIndexedExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#addSubtractExpression.
+	// Enter a parse tree produced by JsonFormulaParser#addSubtractExpression.
 	enterAddSubtractExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#addSubtractExpression.
+	// Exit a parse tree produced by JsonFormulaParser#addSubtractExpression.
 	exitAddSubtractExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#multiSelectListExpression.
+	// Enter a parse tree produced by JsonFormulaParser#multiSelectListExpression.
 	enterMultiSelectListExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#multiSelectListExpression.
+	// Exit a parse tree produced by JsonFormulaParser#multiSelectListExpression.
 	exitMultiSelectListExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#bracketedExpression.
+	// Enter a parse tree produced by JsonFormulaParser#bracketedExpression.
 	enterBracketedExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#bracketedExpression.
+	// Exit a parse tree produced by JsonFormulaParser#bracketedExpression.
 	exitBracketedExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#literalExpression.
+	// Enter a parse tree produced by JsonFormulaParser#literalExpression.
 	enterLiteralExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#literalExpression.
+	// Exit a parse tree produced by JsonFormulaParser#literalExpression.
 	exitLiteralExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#numberLiteral.
+	// Enter a parse tree produced by JsonFormulaParser#numberLiteral.
 	enterNumberLiteral(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#numberLiteral.
+	// Exit a parse tree produced by JsonFormulaParser#numberLiteral.
 	exitNumberLiteral(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#chainedExpression.
+	// Enter a parse tree produced by JsonFormulaParser#chainedExpression.
 	enterChainedExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#chainedExpression.
+	// Exit a parse tree produced by JsonFormulaParser#chainedExpression.
 	exitChainedExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#wildcard.
+	// Enter a parse tree produced by JsonFormulaParser#wildcard.
 	enterWildcard(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#wildcard.
+	// Exit a parse tree produced by JsonFormulaParser#wildcard.
 	exitWildcard(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#multiSelectList.
+	// Enter a parse tree produced by JsonFormulaParser#multiSelectList.
 	enterMultiSelectList(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#multiSelectList.
+	// Exit a parse tree produced by JsonFormulaParser#multiSelectList.
 	exitMultiSelectList(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#emptyHash.
+	// Enter a parse tree produced by JsonFormulaParser#emptyHash.
 	enterEmptyHash(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#emptyHash.
+	// Exit a parse tree produced by JsonFormulaParser#emptyHash.
 	exitEmptyHash(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#nonEmptyHash.
+	// Enter a parse tree produced by JsonFormulaParser#nonEmptyHash.
 	enterNonEmptyHash(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#nonEmptyHash.
+	// Exit a parse tree produced by JsonFormulaParser#nonEmptyHash.
 	exitNonEmptyHash(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#keyvalExpr.
+	// Enter a parse tree produced by JsonFormulaParser#keyvalExpr.
 	enterKeyvalExpr(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#keyvalExpr.
+	// Exit a parse tree produced by JsonFormulaParser#keyvalExpr.
 	exitKeyvalExpr(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#bracketIndex.
+	// Enter a parse tree produced by JsonFormulaParser#bracketIndex.
 	enterBracketIndex(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#bracketIndex.
+	// Exit a parse tree produced by JsonFormulaParser#bracketIndex.
 	exitBracketIndex(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#bracketStar.
+	// Enter a parse tree produced by JsonFormulaParser#bracketStar.
 	enterBracketStar(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#bracketStar.
+	// Exit a parse tree produced by JsonFormulaParser#bracketStar.
 	exitBracketStar(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#bracketSlice.
+	// Enter a parse tree produced by JsonFormulaParser#bracketSlice.
 	enterBracketSlice(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#bracketSlice.
+	// Exit a parse tree produced by JsonFormulaParser#bracketSlice.
 	exitBracketSlice(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#bracketFlatten.
+	// Enter a parse tree produced by JsonFormulaParser#bracketFlatten.
 	enterBracketFlatten(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#bracketFlatten.
+	// Exit a parse tree produced by JsonFormulaParser#bracketFlatten.
 	exitBracketFlatten(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#select.
+	// Enter a parse tree produced by JsonFormulaParser#select.
 	enterSelect(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#select.
+	// Exit a parse tree produced by JsonFormulaParser#select.
 	exitSelect(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#chainedBracket.
+	// Enter a parse tree produced by JsonFormulaParser#chainedBracket.
 	enterChainedBracket(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#chainedBracket.
+	// Exit a parse tree produced by JsonFormulaParser#chainedBracket.
 	exitChainedBracket(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#chainedBracketIndex.
+	// Enter a parse tree produced by JsonFormulaParser#chainedBracketIndex.
 	enterChainedBracketIndex(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#chainedBracketIndex.
+	// Exit a parse tree produced by JsonFormulaParser#chainedBracketIndex.
 	exitChainedBracketIndex(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#slice.
+	// Enter a parse tree produced by JsonFormulaParser#slice.
 	enterSlice(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#slice.
+	// Exit a parse tree produced by JsonFormulaParser#slice.
 	exitSlice(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#functionExpression.
+	// Enter a parse tree produced by JsonFormulaParser#functionExpression.
 	enterFunctionExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#functionExpression.
+	// Exit a parse tree produced by JsonFormulaParser#functionExpression.
 	exitFunctionExpression(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#functionArg.
+	// Enter a parse tree produced by JsonFormulaParser#functionArg.
 	enterFunctionArg(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#functionArg.
+	// Exit a parse tree produced by JsonFormulaParser#functionArg.
 	exitFunctionArg(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#currentNode.
+	// Enter a parse tree produced by JsonFormulaParser#currentNode.
 	enterCurrentNode(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#currentNode.
+	// Exit a parse tree produced by JsonFormulaParser#currentNode.
 	exitCurrentNode(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#expressionType.
+	// Enter a parse tree produced by JsonFormulaParser#expressionType.
 	enterExpressionType(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#expressionType.
+	// Exit a parse tree produced by JsonFormulaParser#expressionType.
 	exitExpressionType(ctx) {
 	}
 
 
-	// Enter a parse tree produced by jsonFormulaParser#literal.
-	enterLiteral(ctx) {
-	}
-
-	// Exit a parse tree produced by jsonFormulaParser#literal.
-	exitLiteral(ctx) {
-	}
-
-
-	// Enter a parse tree produced by jsonFormulaParser#identifier.
+	// Enter a parse tree produced by JsonFormulaParser#identifier.
 	enterIdentifier(ctx) {
 	}
 
-	// Exit a parse tree produced by jsonFormulaParser#identifier.
+	// Exit a parse tree produced by JsonFormulaParser#identifier.
 	exitIdentifier(ctx) {
-	}
-
-
-	// Enter a parse tree produced by jsonFormulaParser#jsonObject.
-	enterJsonObject(ctx) {
-	}
-
-	// Exit a parse tree produced by jsonFormulaParser#jsonObject.
-	exitJsonObject(ctx) {
-	}
-
-
-	// Enter a parse tree produced by jsonFormulaParser#jsonObjectPair.
-	enterJsonObjectPair(ctx) {
-	}
-
-	// Exit a parse tree produced by jsonFormulaParser#jsonObjectPair.
-	exitJsonObjectPair(ctx) {
-	}
-
-
-	// Enter a parse tree produced by jsonFormulaParser#jsonArray.
-	enterJsonArray(ctx) {
-	}
-
-	// Exit a parse tree produced by jsonFormulaParser#jsonArray.
-	exitJsonArray(ctx) {
-	}
-
-
-	// Enter a parse tree produced by jsonFormulaParser#jsonStringValue.
-	enterJsonStringValue(ctx) {
-	}
-
-	// Exit a parse tree produced by jsonFormulaParser#jsonStringValue.
-	exitJsonStringValue(ctx) {
-	}
-
-
-	// Enter a parse tree produced by jsonFormulaParser#jsonNumberValue.
-	enterJsonNumberValue(ctx) {
-	}
-
-	// Exit a parse tree produced by jsonFormulaParser#jsonNumberValue.
-	exitJsonNumberValue(ctx) {
-	}
-
-
-	// Enter a parse tree produced by jsonFormulaParser#jsonObjectValue.
-	enterJsonObjectValue(ctx) {
-	}
-
-	// Exit a parse tree produced by jsonFormulaParser#jsonObjectValue.
-	exitJsonObjectValue(ctx) {
-	}
-
-
-	// Enter a parse tree produced by jsonFormulaParser#jsonArrayValue.
-	enterJsonArrayValue(ctx) {
-	}
-
-	// Exit a parse tree produced by jsonFormulaParser#jsonArrayValue.
-	exitJsonArrayValue(ctx) {
-	}
-
-
-	// Enter a parse tree produced by jsonFormulaParser#jsonConstantValue.
-	enterJsonConstantValue(ctx) {
-	}
-
-	// Exit a parse tree produced by jsonFormulaParser#jsonConstantValue.
-	exitJsonConstantValue(ctx) {
 	}
 
 

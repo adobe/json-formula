@@ -30,10 +30,10 @@ expression
   | wildcard # wildcardExpression
   | multiSelectList # multiSelectListExpression
   | multiSelectHash # multiSelectHashExpression
-  | literal # literalExpression
+  | JSON_FRAGMENT # literalExpression
   | functionExpression # functionCallExpression
   | expression '|' expression # pipeExpression
-  | (STRING | RAW_STRING) # rawStringExpression
+  | STRING # rawStringExpression
   | (REAL_OR_EXPONENT_NUMBER | SIGNED_INT) # numberLiteral
   | currentNode # currentNodeExpression
   ;
@@ -96,8 +96,6 @@ currentNode : '@' ;
 
 expressionType : '&' expression ;
 
-literal : '`' jsonValue '`' ;
-
 identifier
   : NAME
   | QUOTED_NAME
@@ -107,43 +105,13 @@ NAME : [@a-zA-Z_] [a-zA-Z0-9_]* ;
 
 QUOTED_NAME : '\'' (ESC | ~ ['\\])* '\'';
 
-jsonObject
-  : '{' jsonObjectPair (',' jsonObjectPair)* '}'
-  | '{' '}'
+JSON_FRAGMENT
+  : '`' (STRING | ~ [\\`]+)* '`'
   ;
 
-jsonObjectPair
-  : STRING ':' jsonValue
-  ;
+STRING : '"' (ESC | ~["\\])* '"' ;
 
-jsonArray
-  : '[' jsonValue (',' jsonValue)* ']'
-  | '[' ']'
-  ;
-
-jsonValue
-  : STRING # jsonStringValue
-  | (REAL_OR_EXPONENT_NUMBER | SIGNED_INT) # jsonNumberValue
-  | jsonObject # jsonObjectValue
-  | jsonArray # jsonArrayValue
-  // NAME in this context must be one of true/false/null
-  // Enforcing that enumeration in the grammar conflicts with other use of NAME,
-  // so rely on the runtime JSON parser to validate
-  | NAME # jsonConstantValue
-  ;
-
-STRING
-  : '"' (ESC | ~ ["\\])* '"'
-  ;
-
-fragment ESC
-  : '\\' (["\\/bfnrt`] | UNICODE)
-  ;
-
-RAW_STRING : '"' (RAW_ESC | ~["\\])* '"' ;
-
-fragment RAW_ESC : '\\' . ;
-
+fragment ESC : '\\' (~[u] | UNICODE);
 
 fragment UNICODE
   : 'u' HEX HEX HEX HEX

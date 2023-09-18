@@ -1,87 +1,68 @@
-// Generated from antlr/jsonFormula.g4 by ANTLR 4.13.1
+// Generated from antlr/JsonFormula.g4 by ANTLR 4.13.1
 // jshint ignore: start
 import antlr4 from 'antlr4';
-import jsonFormulaListener from './jsonFormulaListener.js';
-import jsonFormulaVisitor from './jsonFormulaVisitor.js';
+import JsonFormulaListener from './JsonFormulaListener.js';
+import JsonFormulaVisitor from './JsonFormulaVisitor.js';
 
-const serializedATN = [4,1,30,243,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,
+const serializedATN = [4,1,29,188,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,
 4,2,5,7,5,2,6,7,6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,
-2,13,7,13,2,14,7,14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,1,
-0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-1,1,1,1,1,1,1,3,1,63,8,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,1,88,8,1,10,1,12,1,91,9,1,
-1,2,1,2,1,2,1,2,1,2,3,2,98,8,2,1,3,1,3,1,4,1,4,1,4,1,4,5,4,106,8,4,10,4,
-12,4,109,9,4,1,4,1,4,1,5,1,5,1,5,1,5,1,5,1,5,5,5,119,8,5,10,5,12,5,122,9,
-5,1,5,1,5,3,5,126,8,5,1,6,1,6,1,6,1,6,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,
-7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,3,7,148,8,7,1,8,1,8,1,8,1,8,1,8,3,8,155,8,
-8,1,9,3,9,158,8,9,1,9,1,9,3,9,162,8,9,1,9,1,9,3,9,166,8,9,3,9,168,8,9,1,
-10,1,10,1,10,1,10,1,10,5,10,175,8,10,10,10,12,10,178,9,10,1,10,1,10,1,10,
-1,10,1,10,3,10,185,8,10,1,11,1,11,3,11,189,8,11,1,12,1,12,1,13,1,13,1,13,
-1,14,1,14,1,14,1,14,1,15,1,15,1,16,1,16,1,16,1,16,5,16,206,8,16,10,16,12,
-16,209,9,16,1,16,1,16,1,16,1,16,3,16,215,8,16,1,17,1,17,1,17,1,17,1,18,1,
-18,1,18,1,18,5,18,225,8,18,10,18,12,18,228,9,18,1,18,1,18,1,18,1,18,3,18,
-234,8,18,1,19,1,19,1,19,1,19,1,19,3,19,241,8,19,1,19,0,1,2,20,0,2,4,6,8,
-10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,0,5,1,0,26,27,1,0,28,29,1,0,
-2,5,1,0,6,7,1,0,24,25,269,0,40,1,0,0,0,2,62,1,0,0,0,4,97,1,0,0,0,6,99,1,
-0,0,0,8,101,1,0,0,0,10,125,1,0,0,0,12,127,1,0,0,0,14,147,1,0,0,0,16,154,
-1,0,0,0,18,157,1,0,0,0,20,184,1,0,0,0,22,188,1,0,0,0,24,190,1,0,0,0,26,192,
-1,0,0,0,28,195,1,0,0,0,30,199,1,0,0,0,32,214,1,0,0,0,34,216,1,0,0,0,36,233,
-1,0,0,0,38,240,1,0,0,0,40,41,3,2,1,0,41,42,5,0,0,1,42,1,1,0,0,0,43,44,6,
-1,-1,0,44,63,3,14,7,0,45,63,3,30,15,0,46,47,5,10,0,0,47,63,3,2,1,12,48,49,
-5,7,0,0,49,63,3,2,1,11,50,51,5,11,0,0,51,52,3,2,1,0,52,53,5,12,0,0,53,63,
-1,0,0,0,54,63,3,6,3,0,55,63,3,8,4,0,56,63,3,10,5,0,57,63,3,28,14,0,58,63,
-3,20,10,0,59,63,7,0,0,0,60,63,7,1,0,0,61,63,3,24,12,0,62,43,1,0,0,0,62,45,
-1,0,0,0,62,46,1,0,0,0,62,48,1,0,0,0,62,50,1,0,0,0,62,54,1,0,0,0,62,55,1,
-0,0,0,62,56,1,0,0,0,62,57,1,0,0,0,62,58,1,0,0,0,62,59,1,0,0,0,62,60,1,0,
-0,0,62,61,1,0,0,0,63,89,1,0,0,0,64,65,10,18,0,0,65,66,7,2,0,0,66,88,3,2,
-1,19,67,68,10,17,0,0,68,69,7,3,0,0,69,88,3,2,1,18,70,71,10,16,0,0,71,72,
-5,23,0,0,72,88,3,2,1,17,73,74,10,15,0,0,74,75,5,8,0,0,75,88,3,2,1,16,76,
-77,10,14,0,0,77,78,5,9,0,0,78,88,3,2,1,15,79,80,10,4,0,0,80,81,5,13,0,0,
-81,88,3,2,1,5,82,83,10,21,0,0,83,84,5,1,0,0,84,88,3,4,2,0,85,86,10,20,0,
-0,86,88,3,16,8,0,87,64,1,0,0,0,87,67,1,0,0,0,87,70,1,0,0,0,87,73,1,0,0,0,
-87,76,1,0,0,0,87,79,1,0,0,0,87,82,1,0,0,0,87,85,1,0,0,0,88,91,1,0,0,0,89,
-87,1,0,0,0,89,90,1,0,0,0,90,3,1,0,0,0,91,89,1,0,0,0,92,98,3,30,15,0,93,98,
-3,8,4,0,94,98,3,10,5,0,95,98,3,20,10,0,96,98,3,6,3,0,97,92,1,0,0,0,97,93,
-1,0,0,0,97,94,1,0,0,0,97,95,1,0,0,0,97,96,1,0,0,0,98,5,1,0,0,0,99,100,5,
-2,0,0,100,7,1,0,0,0,101,102,5,14,0,0,102,107,3,2,1,0,103,104,5,15,0,0,104,
-106,3,2,1,0,105,103,1,0,0,0,106,109,1,0,0,0,107,105,1,0,0,0,107,108,1,0,
-0,0,108,110,1,0,0,0,109,107,1,0,0,0,110,111,5,16,0,0,111,9,1,0,0,0,112,113,
-5,17,0,0,113,126,5,18,0,0,114,115,5,17,0,0,115,120,3,12,6,0,116,117,5,15,
-0,0,117,119,3,12,6,0,118,116,1,0,0,0,119,122,1,0,0,0,120,118,1,0,0,0,120,
-121,1,0,0,0,121,123,1,0,0,0,122,120,1,0,0,0,123,124,5,18,0,0,124,126,1,0,
-0,0,125,112,1,0,0,0,125,114,1,0,0,0,126,11,1,0,0,0,127,128,3,30,15,0,128,
-129,5,19,0,0,129,130,3,2,1,0,130,13,1,0,0,0,131,132,5,14,0,0,132,133,5,29,
-0,0,133,148,5,16,0,0,134,135,5,14,0,0,135,136,5,2,0,0,136,148,5,16,0,0,137,
-138,5,14,0,0,138,139,3,18,9,0,139,140,5,16,0,0,140,148,1,0,0,0,141,142,5,
-14,0,0,142,148,5,16,0,0,143,144,5,20,0,0,144,145,3,2,1,0,145,146,5,16,0,
-0,146,148,1,0,0,0,147,131,1,0,0,0,147,134,1,0,0,0,147,137,1,0,0,0,147,141,
-1,0,0,0,147,143,1,0,0,0,148,15,1,0,0,0,149,155,3,14,7,0,150,151,5,14,0,0,
-151,152,3,2,1,0,152,153,5,16,0,0,153,155,1,0,0,0,154,149,1,0,0,0,154,150,
-1,0,0,0,155,17,1,0,0,0,156,158,3,2,1,0,157,156,1,0,0,0,157,158,1,0,0,0,158,
-159,1,0,0,0,159,161,5,19,0,0,160,162,3,2,1,0,161,160,1,0,0,0,161,162,1,0,
-0,0,162,167,1,0,0,0,163,165,5,19,0,0,164,166,3,2,1,0,165,164,1,0,0,0,165,
-166,1,0,0,0,166,168,1,0,0,0,167,163,1,0,0,0,167,168,1,0,0,0,168,19,1,0,0,
-0,169,170,5,24,0,0,170,171,5,11,0,0,171,176,3,22,11,0,172,173,5,15,0,0,173,
-175,3,22,11,0,174,172,1,0,0,0,175,178,1,0,0,0,176,174,1,0,0,0,176,177,1,
-0,0,0,177,179,1,0,0,0,178,176,1,0,0,0,179,180,5,12,0,0,180,185,1,0,0,0,181,
-182,5,24,0,0,182,183,5,11,0,0,183,185,5,12,0,0,184,169,1,0,0,0,184,181,1,
-0,0,0,185,21,1,0,0,0,186,189,3,2,1,0,187,189,3,26,13,0,188,186,1,0,0,0,188,
-187,1,0,0,0,189,23,1,0,0,0,190,191,5,21,0,0,191,25,1,0,0,0,192,193,5,4,0,
-0,193,194,3,2,1,0,194,27,1,0,0,0,195,196,5,22,0,0,196,197,3,38,19,0,197,
-198,5,22,0,0,198,29,1,0,0,0,199,200,7,4,0,0,200,31,1,0,0,0,201,202,5,17,
-0,0,202,207,3,34,17,0,203,204,5,15,0,0,204,206,3,34,17,0,205,203,1,0,0,0,
-206,209,1,0,0,0,207,205,1,0,0,0,207,208,1,0,0,0,208,210,1,0,0,0,209,207,
-1,0,0,0,210,211,5,18,0,0,211,215,1,0,0,0,212,213,5,17,0,0,213,215,5,18,0,
-0,214,201,1,0,0,0,214,212,1,0,0,0,215,33,1,0,0,0,216,217,5,26,0,0,217,218,
-5,19,0,0,218,219,3,38,19,0,219,35,1,0,0,0,220,221,5,14,0,0,221,226,3,38,
-19,0,222,223,5,15,0,0,223,225,3,38,19,0,224,222,1,0,0,0,225,228,1,0,0,0,
-226,224,1,0,0,0,226,227,1,0,0,0,227,229,1,0,0,0,228,226,1,0,0,0,229,230,
-5,16,0,0,230,234,1,0,0,0,231,232,5,14,0,0,232,234,5,16,0,0,233,220,1,0,0,
-0,233,231,1,0,0,0,234,37,1,0,0,0,235,241,5,26,0,0,236,241,7,1,0,0,237,241,
-3,32,16,0,238,241,3,36,18,0,239,241,5,24,0,0,240,235,1,0,0,0,240,236,1,0,
-0,0,240,237,1,0,0,0,240,238,1,0,0,0,240,239,1,0,0,0,241,39,1,0,0,0,21,62,
-87,89,97,107,120,125,147,154,157,161,165,167,176,184,188,207,214,226,233,
-240];
+2,13,7,13,2,14,7,14,1,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,53,8,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,1,78,
+8,1,10,1,12,1,81,9,1,1,2,1,2,1,2,1,2,1,2,3,2,88,8,2,1,3,1,3,1,4,1,4,1,4,
+1,4,5,4,96,8,4,10,4,12,4,99,9,4,1,4,1,4,1,5,1,5,1,5,1,5,1,5,1,5,5,5,109,
+8,5,10,5,12,5,112,9,5,1,5,1,5,3,5,116,8,5,1,6,1,6,1,6,1,6,1,7,1,7,1,7,1,
+7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,3,7,138,8,7,1,8,1,8,1,
+8,1,8,1,8,3,8,145,8,8,1,9,3,9,148,8,9,1,9,1,9,3,9,152,8,9,1,9,1,9,3,9,156,
+8,9,3,9,158,8,9,1,10,1,10,1,10,1,10,1,10,5,10,165,8,10,10,10,12,10,168,9,
+10,1,10,1,10,1,10,1,10,1,10,3,10,175,8,10,1,11,1,11,3,11,179,8,11,1,12,1,
+12,1,13,1,13,1,13,1,14,1,14,1,14,0,1,2,15,0,2,4,6,8,10,12,14,16,18,20,22,
+24,26,28,0,4,1,0,27,28,1,0,2,5,1,0,6,7,1,0,23,24,211,0,30,1,0,0,0,2,52,1,
+0,0,0,4,87,1,0,0,0,6,89,1,0,0,0,8,91,1,0,0,0,10,115,1,0,0,0,12,117,1,0,0,
+0,14,137,1,0,0,0,16,144,1,0,0,0,18,147,1,0,0,0,20,174,1,0,0,0,22,178,1,0,
+0,0,24,180,1,0,0,0,26,182,1,0,0,0,28,185,1,0,0,0,30,31,3,2,1,0,31,32,5,0,
+0,1,32,1,1,0,0,0,33,34,6,1,-1,0,34,53,3,14,7,0,35,53,3,28,14,0,36,37,5,10,
+0,0,37,53,3,2,1,12,38,39,5,7,0,0,39,53,3,2,1,11,40,41,5,11,0,0,41,42,3,2,
+1,0,42,43,5,12,0,0,43,53,1,0,0,0,44,53,3,6,3,0,45,53,3,8,4,0,46,53,3,10,
+5,0,47,53,5,25,0,0,48,53,3,20,10,0,49,53,5,26,0,0,50,53,7,0,0,0,51,53,3,
+24,12,0,52,33,1,0,0,0,52,35,1,0,0,0,52,36,1,0,0,0,52,38,1,0,0,0,52,40,1,
+0,0,0,52,44,1,0,0,0,52,45,1,0,0,0,52,46,1,0,0,0,52,47,1,0,0,0,52,48,1,0,
+0,0,52,49,1,0,0,0,52,50,1,0,0,0,52,51,1,0,0,0,53,79,1,0,0,0,54,55,10,18,
+0,0,55,56,7,1,0,0,56,78,3,2,1,19,57,58,10,17,0,0,58,59,7,2,0,0,59,78,3,2,
+1,18,60,61,10,16,0,0,61,62,5,22,0,0,62,78,3,2,1,17,63,64,10,15,0,0,64,65,
+5,8,0,0,65,78,3,2,1,16,66,67,10,14,0,0,67,68,5,9,0,0,68,78,3,2,1,15,69,70,
+10,4,0,0,70,71,5,13,0,0,71,78,3,2,1,5,72,73,10,21,0,0,73,74,5,1,0,0,74,78,
+3,4,2,0,75,76,10,20,0,0,76,78,3,16,8,0,77,54,1,0,0,0,77,57,1,0,0,0,77,60,
+1,0,0,0,77,63,1,0,0,0,77,66,1,0,0,0,77,69,1,0,0,0,77,72,1,0,0,0,77,75,1,
+0,0,0,78,81,1,0,0,0,79,77,1,0,0,0,79,80,1,0,0,0,80,3,1,0,0,0,81,79,1,0,0,
+0,82,88,3,28,14,0,83,88,3,8,4,0,84,88,3,10,5,0,85,88,3,20,10,0,86,88,3,6,
+3,0,87,82,1,0,0,0,87,83,1,0,0,0,87,84,1,0,0,0,87,85,1,0,0,0,87,86,1,0,0,
+0,88,5,1,0,0,0,89,90,5,2,0,0,90,7,1,0,0,0,91,92,5,14,0,0,92,97,3,2,1,0,93,
+94,5,15,0,0,94,96,3,2,1,0,95,93,1,0,0,0,96,99,1,0,0,0,97,95,1,0,0,0,97,98,
+1,0,0,0,98,100,1,0,0,0,99,97,1,0,0,0,100,101,5,16,0,0,101,9,1,0,0,0,102,
+103,5,17,0,0,103,116,5,18,0,0,104,105,5,17,0,0,105,110,3,12,6,0,106,107,
+5,15,0,0,107,109,3,12,6,0,108,106,1,0,0,0,109,112,1,0,0,0,110,108,1,0,0,
+0,110,111,1,0,0,0,111,113,1,0,0,0,112,110,1,0,0,0,113,114,5,18,0,0,114,116,
+1,0,0,0,115,102,1,0,0,0,115,104,1,0,0,0,116,11,1,0,0,0,117,118,3,28,14,0,
+118,119,5,19,0,0,119,120,3,2,1,0,120,13,1,0,0,0,121,122,5,14,0,0,122,123,
+5,28,0,0,123,138,5,16,0,0,124,125,5,14,0,0,125,126,5,2,0,0,126,138,5,16,
+0,0,127,128,5,14,0,0,128,129,3,18,9,0,129,130,5,16,0,0,130,138,1,0,0,0,131,
+132,5,14,0,0,132,138,5,16,0,0,133,134,5,20,0,0,134,135,3,2,1,0,135,136,5,
+16,0,0,136,138,1,0,0,0,137,121,1,0,0,0,137,124,1,0,0,0,137,127,1,0,0,0,137,
+131,1,0,0,0,137,133,1,0,0,0,138,15,1,0,0,0,139,145,3,14,7,0,140,141,5,14,
+0,0,141,142,3,2,1,0,142,143,5,16,0,0,143,145,1,0,0,0,144,139,1,0,0,0,144,
+140,1,0,0,0,145,17,1,0,0,0,146,148,3,2,1,0,147,146,1,0,0,0,147,148,1,0,0,
+0,148,149,1,0,0,0,149,151,5,19,0,0,150,152,3,2,1,0,151,150,1,0,0,0,151,152,
+1,0,0,0,152,157,1,0,0,0,153,155,5,19,0,0,154,156,3,2,1,0,155,154,1,0,0,0,
+155,156,1,0,0,0,156,158,1,0,0,0,157,153,1,0,0,0,157,158,1,0,0,0,158,19,1,
+0,0,0,159,160,5,23,0,0,160,161,5,11,0,0,161,166,3,22,11,0,162,163,5,15,0,
+0,163,165,3,22,11,0,164,162,1,0,0,0,165,168,1,0,0,0,166,164,1,0,0,0,166,
+167,1,0,0,0,167,169,1,0,0,0,168,166,1,0,0,0,169,170,5,12,0,0,170,175,1,0,
+0,0,171,172,5,23,0,0,172,173,5,11,0,0,173,175,5,12,0,0,174,159,1,0,0,0,174,
+171,1,0,0,0,175,21,1,0,0,0,176,179,3,2,1,0,177,179,3,26,13,0,178,176,1,0,
+0,0,178,177,1,0,0,0,179,23,1,0,0,0,180,181,5,21,0,0,181,25,1,0,0,0,182,183,
+5,4,0,0,183,184,3,2,1,0,184,27,1,0,0,0,185,186,7,3,0,0,186,29,1,0,0,0,16,
+52,77,79,87,97,110,115,137,144,147,151,155,157,166,174,178];
 
 
 const atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
@@ -90,31 +71,30 @@ const decisionsToDFA = atn.decisionToState.map( (ds, index) => new antlr4.dfa.DF
 
 const sharedContextCache = new antlr4.atn.PredictionContextCache();
 
-export default class jsonFormulaParser extends antlr4.Parser {
+export default class JsonFormulaParser extends antlr4.Parser {
 
-    static grammarFileName = "jsonFormula.g4";
+    static grammarFileName = "JsonFormula.g4";
     static literalNames = [ null, "'.'", "'*'", "'/'", "'&'", "'~'", "'+'", 
                             "'-'", "'&&'", "'||'", "'!'", "'('", "')'", 
                             "'|'", "'['", "','", "']'", "'{'", "'}'", "':'", 
-                            "'[?'", "'@'", "'`'" ];
+                            "'[?'", "'@'" ];
     static symbolicNames = [ null, null, null, null, null, null, null, null, 
                              null, null, null, null, null, null, null, null, 
-                             null, null, null, null, null, null, null, "COMPARATOR", 
-                             "NAME", "QUOTED_NAME", "STRING", "RAW_STRING", 
+                             null, null, null, null, null, null, "COMPARATOR", 
+                             "NAME", "QUOTED_NAME", "JSON_FRAGMENT", "STRING", 
                              "REAL_OR_EXPONENT_NUMBER", "SIGNED_INT", "WS" ];
     static ruleNames = [ "formula", "expression", "chainedExpression", "wildcard", 
                          "multiSelectList", "multiSelectHash", "keyvalExpr", 
                          "indexExpression", "chainedBracketSpecifier", "slice", 
                          "functionExpression", "functionArg", "currentNode", 
-                         "expressionType", "literal", "identifier", "jsonObject", 
-                         "jsonObjectPair", "jsonArray", "jsonValue" ];
+                         "expressionType", "identifier" ];
 
     constructor(input) {
         super(input);
         this._interp = new antlr4.atn.ParserATNSimulator(this, atn, decisionsToDFA, sharedContextCache);
-        this.ruleNames = jsonFormulaParser.ruleNames;
-        this.literalNames = jsonFormulaParser.literalNames;
-        this.symbolicNames = jsonFormulaParser.symbolicNames;
+        this.ruleNames = JsonFormulaParser.ruleNames;
+        this.literalNames = JsonFormulaParser.literalNames;
+        this.symbolicNames = JsonFormulaParser.symbolicNames;
     }
 
     sempred(localctx, ruleIndex, predIndex) {
@@ -154,13 +134,13 @@ export default class jsonFormulaParser extends antlr4.Parser {
 
 	formula() {
 	    let localctx = new FormulaContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 0, jsonFormulaParser.RULE_formula);
+	    this.enterRule(localctx, 0, JsonFormulaParser.RULE_formula);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 40;
+	        this.state = 30;
 	        this.expression(0);
-	        this.state = 41;
-	        this.match(jsonFormulaParser.EOF);
+	        this.state = 31;
+	        this.match(JsonFormulaParser.EOF);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
 		        localctx.exception = re;
@@ -185,11 +165,11 @@ export default class jsonFormulaParser extends antlr4.Parser {
 	    let localctx = new ExpressionContext(this, this._ctx, _parentState);
 	    let _prevctx = localctx;
 	    const _startState = 2;
-	    this.enterRecursionRule(localctx, 2, jsonFormulaParser.RULE_expression, _p);
+	    this.enterRecursionRule(localctx, 2, JsonFormulaParser.RULE_expression, _p);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 62;
+	        this.state = 52;
 	        this._errHandler.sync(this);
 	        var la_ = this._interp.adaptivePredict(this._input,0,this._ctx);
 	        switch(la_) {
@@ -198,7 +178,7 @@ export default class jsonFormulaParser extends antlr4.Parser {
 	            this._ctx = localctx;
 	            _prevctx = localctx;
 
-	            this.state = 44;
+	            this.state = 34;
 	            this.indexExpression();
 	            break;
 
@@ -206,7 +186,7 @@ export default class jsonFormulaParser extends antlr4.Parser {
 	            localctx = new IdentifierExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 45;
+	            this.state = 35;
 	            this.identifier();
 	            break;
 
@@ -214,9 +194,9 @@ export default class jsonFormulaParser extends antlr4.Parser {
 	            localctx = new NotExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 46;
-	            this.match(jsonFormulaParser.T__9);
-	            this.state = 47;
+	            this.state = 36;
+	            this.match(JsonFormulaParser.T__9);
+	            this.state = 37;
 	            this.expression(12);
 	            break;
 
@@ -224,9 +204,9 @@ export default class jsonFormulaParser extends antlr4.Parser {
 	            localctx = new UnaryMinusExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 48;
-	            this.match(jsonFormulaParser.T__6);
-	            this.state = 49;
+	            this.state = 38;
+	            this.match(JsonFormulaParser.T__6);
+	            this.state = 39;
 	            this.expression(11);
 	            break;
 
@@ -234,19 +214,19 @@ export default class jsonFormulaParser extends antlr4.Parser {
 	            localctx = new ParenExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 50;
-	            this.match(jsonFormulaParser.T__10);
-	            this.state = 51;
+	            this.state = 40;
+	            this.match(JsonFormulaParser.T__10);
+	            this.state = 41;
 	            this.expression(0);
-	            this.state = 52;
-	            this.match(jsonFormulaParser.T__11);
+	            this.state = 42;
+	            this.match(JsonFormulaParser.T__11);
 	            break;
 
 	        case 6:
 	            localctx = new WildcardExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 54;
+	            this.state = 44;
 	            this.wildcard();
 	            break;
 
@@ -254,7 +234,7 @@ export default class jsonFormulaParser extends antlr4.Parser {
 	            localctx = new MultiSelectListExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 55;
+	            this.state = 45;
 	            this.multiSelectList();
 	            break;
 
@@ -262,7 +242,7 @@ export default class jsonFormulaParser extends antlr4.Parser {
 	            localctx = new MultiSelectHashExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 56;
+	            this.state = 46;
 	            this.multiSelectHash();
 	            break;
 
@@ -270,15 +250,15 @@ export default class jsonFormulaParser extends antlr4.Parser {
 	            localctx = new LiteralExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 57;
-	            this.literal();
+	            this.state = 47;
+	            this.match(JsonFormulaParser.JSON_FRAGMENT);
 	            break;
 
 	        case 10:
 	            localctx = new FunctionCallExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 58;
+	            this.state = 48;
 	            this.functionExpression();
 	            break;
 
@@ -286,24 +266,17 @@ export default class jsonFormulaParser extends antlr4.Parser {
 	            localctx = new RawStringExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 59;
-	            _la = this._input.LA(1);
-	            if(!(_la===26 || _la===27)) {
-	            this._errHandler.recoverInline(this);
-	            }
-	            else {
-	            	this._errHandler.reportMatch(this);
-	                this.consume();
-	            }
+	            this.state = 49;
+	            this.match(JsonFormulaParser.STRING);
 	            break;
 
 	        case 12:
 	            localctx = new NumberLiteralContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 60;
+	            this.state = 50;
 	            _la = this._input.LA(1);
-	            if(!(_la===28 || _la===29)) {
+	            if(!(_la===27 || _la===28)) {
 	            this._errHandler.recoverInline(this);
 	            }
 	            else {
@@ -316,13 +289,13 @@ export default class jsonFormulaParser extends antlr4.Parser {
 	            localctx = new CurrentNodeExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 61;
+	            this.state = 51;
 	            this.currentNode();
 	            break;
 
 	        }
 	        this._ctx.stop = this._input.LT(-1);
-	        this.state = 89;
+	        this.state = 79;
 	        this._errHandler.sync(this);
 	        var _alt = this._interp.adaptivePredict(this._input,2,this._ctx)
 	        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
@@ -331,18 +304,18 @@ export default class jsonFormulaParser extends antlr4.Parser {
 	                    this.triggerExitRuleEvent();
 	                }
 	                _prevctx = localctx;
-	                this.state = 87;
+	                this.state = 77;
 	                this._errHandler.sync(this);
 	                var la_ = this._interp.adaptivePredict(this._input,1,this._ctx);
 	                switch(la_) {
 	                case 1:
 	                    localctx = new MultDivExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
-	                    this.pushNewRecursionContext(localctx, _startState, jsonFormulaParser.RULE_expression);
-	                    this.state = 64;
+	                    this.pushNewRecursionContext(localctx, _startState, JsonFormulaParser.RULE_expression);
+	                    this.state = 54;
 	                    if (!( this.precpred(this._ctx, 18))) {
 	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 18)");
 	                    }
-	                    this.state = 65;
+	                    this.state = 55;
 	                    _la = this._input.LA(1);
 	                    if(!((((_la) & ~0x1f) === 0 && ((1 << _la) & 60) !== 0))) {
 	                    this._errHandler.recoverInline(this);
@@ -351,18 +324,18 @@ export default class jsonFormulaParser extends antlr4.Parser {
 	                    	this._errHandler.reportMatch(this);
 	                        this.consume();
 	                    }
-	                    this.state = 66;
+	                    this.state = 56;
 	                    this.expression(19);
 	                    break;
 
 	                case 2:
 	                    localctx = new AddSubtractExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
-	                    this.pushNewRecursionContext(localctx, _startState, jsonFormulaParser.RULE_expression);
-	                    this.state = 67;
+	                    this.pushNewRecursionContext(localctx, _startState, JsonFormulaParser.RULE_expression);
+	                    this.state = 57;
 	                    if (!( this.precpred(this._ctx, 17))) {
 	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 17)");
 	                    }
-	                    this.state = 68;
+	                    this.state = 58;
 	                    _la = this._input.LA(1);
 	                    if(!(_la===6 || _la===7)) {
 	                    this._errHandler.recoverInline(this);
@@ -371,89 +344,89 @@ export default class jsonFormulaParser extends antlr4.Parser {
 	                    	this._errHandler.reportMatch(this);
 	                        this.consume();
 	                    }
-	                    this.state = 69;
+	                    this.state = 59;
 	                    this.expression(18);
 	                    break;
 
 	                case 3:
 	                    localctx = new ComparisonExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
-	                    this.pushNewRecursionContext(localctx, _startState, jsonFormulaParser.RULE_expression);
-	                    this.state = 70;
+	                    this.pushNewRecursionContext(localctx, _startState, JsonFormulaParser.RULE_expression);
+	                    this.state = 60;
 	                    if (!( this.precpred(this._ctx, 16))) {
 	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 16)");
 	                    }
-	                    this.state = 71;
-	                    this.match(jsonFormulaParser.COMPARATOR);
-	                    this.state = 72;
+	                    this.state = 61;
+	                    this.match(JsonFormulaParser.COMPARATOR);
+	                    this.state = 62;
 	                    this.expression(17);
 	                    break;
 
 	                case 4:
 	                    localctx = new AndExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
-	                    this.pushNewRecursionContext(localctx, _startState, jsonFormulaParser.RULE_expression);
-	                    this.state = 73;
+	                    this.pushNewRecursionContext(localctx, _startState, JsonFormulaParser.RULE_expression);
+	                    this.state = 63;
 	                    if (!( this.precpred(this._ctx, 15))) {
 	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 15)");
 	                    }
-	                    this.state = 74;
-	                    this.match(jsonFormulaParser.T__7);
-	                    this.state = 75;
+	                    this.state = 64;
+	                    this.match(JsonFormulaParser.T__7);
+	                    this.state = 65;
 	                    this.expression(16);
 	                    break;
 
 	                case 5:
 	                    localctx = new OrExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
-	                    this.pushNewRecursionContext(localctx, _startState, jsonFormulaParser.RULE_expression);
-	                    this.state = 76;
+	                    this.pushNewRecursionContext(localctx, _startState, JsonFormulaParser.RULE_expression);
+	                    this.state = 66;
 	                    if (!( this.precpred(this._ctx, 14))) {
 	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 14)");
 	                    }
-	                    this.state = 77;
-	                    this.match(jsonFormulaParser.T__8);
-	                    this.state = 78;
+	                    this.state = 67;
+	                    this.match(JsonFormulaParser.T__8);
+	                    this.state = 68;
 	                    this.expression(15);
 	                    break;
 
 	                case 6:
 	                    localctx = new PipeExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
-	                    this.pushNewRecursionContext(localctx, _startState, jsonFormulaParser.RULE_expression);
-	                    this.state = 79;
+	                    this.pushNewRecursionContext(localctx, _startState, JsonFormulaParser.RULE_expression);
+	                    this.state = 69;
 	                    if (!( this.precpred(this._ctx, 4))) {
 	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 4)");
 	                    }
-	                    this.state = 80;
-	                    this.match(jsonFormulaParser.T__12);
-	                    this.state = 81;
+	                    this.state = 70;
+	                    this.match(JsonFormulaParser.T__12);
+	                    this.state = 71;
 	                    this.expression(5);
 	                    break;
 
 	                case 7:
 	                    localctx = new ChainExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
-	                    this.pushNewRecursionContext(localctx, _startState, jsonFormulaParser.RULE_expression);
-	                    this.state = 82;
+	                    this.pushNewRecursionContext(localctx, _startState, JsonFormulaParser.RULE_expression);
+	                    this.state = 72;
 	                    if (!( this.precpred(this._ctx, 21))) {
 	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 21)");
 	                    }
-	                    this.state = 83;
-	                    this.match(jsonFormulaParser.T__0);
-	                    this.state = 84;
+	                    this.state = 73;
+	                    this.match(JsonFormulaParser.T__0);
+	                    this.state = 74;
 	                    this.chainedExpression();
 	                    break;
 
 	                case 8:
 	                    localctx = new BracketedExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
-	                    this.pushNewRecursionContext(localctx, _startState, jsonFormulaParser.RULE_expression);
-	                    this.state = 85;
+	                    this.pushNewRecursionContext(localctx, _startState, JsonFormulaParser.RULE_expression);
+	                    this.state = 75;
 	                    if (!( this.precpred(this._ctx, 20))) {
 	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 20)");
 	                    }
-	                    this.state = 86;
+	                    this.state = 76;
 	                    this.chainedBracketSpecifier();
 	                    break;
 
 	                } 
 	            }
-	            this.state = 91;
+	            this.state = 81;
 	            this._errHandler.sync(this);
 	            _alt = this._interp.adaptivePredict(this._input,2,this._ctx);
 	        }
@@ -476,39 +449,39 @@ export default class jsonFormulaParser extends antlr4.Parser {
 
 	chainedExpression() {
 	    let localctx = new ChainedExpressionContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 4, jsonFormulaParser.RULE_chainedExpression);
+	    this.enterRule(localctx, 4, JsonFormulaParser.RULE_chainedExpression);
 	    try {
-	        this.state = 97;
+	        this.state = 87;
 	        this._errHandler.sync(this);
 	        var la_ = this._interp.adaptivePredict(this._input,3,this._ctx);
 	        switch(la_) {
 	        case 1:
 	            this.enterOuterAlt(localctx, 1);
-	            this.state = 92;
+	            this.state = 82;
 	            this.identifier();
 	            break;
 
 	        case 2:
 	            this.enterOuterAlt(localctx, 2);
-	            this.state = 93;
+	            this.state = 83;
 	            this.multiSelectList();
 	            break;
 
 	        case 3:
 	            this.enterOuterAlt(localctx, 3);
-	            this.state = 94;
+	            this.state = 84;
 	            this.multiSelectHash();
 	            break;
 
 	        case 4:
 	            this.enterOuterAlt(localctx, 4);
-	            this.state = 95;
+	            this.state = 85;
 	            this.functionExpression();
 	            break;
 
 	        case 5:
 	            this.enterOuterAlt(localctx, 5);
-	            this.state = 96;
+	            this.state = 86;
 	            this.wildcard();
 	            break;
 
@@ -531,11 +504,11 @@ export default class jsonFormulaParser extends antlr4.Parser {
 
 	wildcard() {
 	    let localctx = new WildcardContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 6, jsonFormulaParser.RULE_wildcard);
+	    this.enterRule(localctx, 6, JsonFormulaParser.RULE_wildcard);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 99;
-	        this.match(jsonFormulaParser.T__1);
+	        this.state = 89;
+	        this.match(JsonFormulaParser.T__1);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
 		        localctx.exception = re;
@@ -554,28 +527,28 @@ export default class jsonFormulaParser extends antlr4.Parser {
 
 	multiSelectList() {
 	    let localctx = new MultiSelectListContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 8, jsonFormulaParser.RULE_multiSelectList);
+	    this.enterRule(localctx, 8, JsonFormulaParser.RULE_multiSelectList);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 101;
-	        this.match(jsonFormulaParser.T__13);
-	        this.state = 102;
+	        this.state = 91;
+	        this.match(JsonFormulaParser.T__13);
+	        this.state = 92;
 	        this.expression(0);
-	        this.state = 107;
+	        this.state = 97;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
 	        while(_la===15) {
-	            this.state = 103;
-	            this.match(jsonFormulaParser.T__14);
-	            this.state = 104;
+	            this.state = 93;
+	            this.match(JsonFormulaParser.T__14);
+	            this.state = 94;
 	            this.expression(0);
-	            this.state = 109;
+	            this.state = 99;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
 	        }
-	        this.state = 110;
-	        this.match(jsonFormulaParser.T__15);
+	        this.state = 100;
+	        this.match(JsonFormulaParser.T__15);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
 		        localctx.exception = re;
@@ -594,43 +567,43 @@ export default class jsonFormulaParser extends antlr4.Parser {
 
 	multiSelectHash() {
 	    let localctx = new MultiSelectHashContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 10, jsonFormulaParser.RULE_multiSelectHash);
+	    this.enterRule(localctx, 10, JsonFormulaParser.RULE_multiSelectHash);
 	    var _la = 0;
 	    try {
-	        this.state = 125;
+	        this.state = 115;
 	        this._errHandler.sync(this);
 	        var la_ = this._interp.adaptivePredict(this._input,6,this._ctx);
 	        switch(la_) {
 	        case 1:
 	            localctx = new EmptyHashContext(this, localctx);
 	            this.enterOuterAlt(localctx, 1);
-	            this.state = 112;
-	            this.match(jsonFormulaParser.T__16);
-	            this.state = 113;
-	            this.match(jsonFormulaParser.T__17);
+	            this.state = 102;
+	            this.match(JsonFormulaParser.T__16);
+	            this.state = 103;
+	            this.match(JsonFormulaParser.T__17);
 	            break;
 
 	        case 2:
 	            localctx = new NonEmptyHashContext(this, localctx);
 	            this.enterOuterAlt(localctx, 2);
-	            this.state = 114;
-	            this.match(jsonFormulaParser.T__16);
-	            this.state = 115;
+	            this.state = 104;
+	            this.match(JsonFormulaParser.T__16);
+	            this.state = 105;
 	            this.keyvalExpr();
-	            this.state = 120;
+	            this.state = 110;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
 	            while(_la===15) {
-	                this.state = 116;
-	                this.match(jsonFormulaParser.T__14);
-	                this.state = 117;
+	                this.state = 106;
+	                this.match(JsonFormulaParser.T__14);
+	                this.state = 107;
 	                this.keyvalExpr();
-	                this.state = 122;
+	                this.state = 112;
 	                this._errHandler.sync(this);
 	                _la = this._input.LA(1);
 	            }
-	            this.state = 123;
-	            this.match(jsonFormulaParser.T__17);
+	            this.state = 113;
+	            this.match(JsonFormulaParser.T__17);
 	            break;
 
 	        }
@@ -652,14 +625,14 @@ export default class jsonFormulaParser extends antlr4.Parser {
 
 	keyvalExpr() {
 	    let localctx = new KeyvalExprContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 12, jsonFormulaParser.RULE_keyvalExpr);
+	    this.enterRule(localctx, 12, JsonFormulaParser.RULE_keyvalExpr);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 127;
+	        this.state = 117;
 	        this.identifier();
-	        this.state = 128;
-	        this.match(jsonFormulaParser.T__18);
-	        this.state = 129;
+	        this.state = 118;
+	        this.match(JsonFormulaParser.T__18);
+	        this.state = 119;
 	        this.expression(0);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -679,63 +652,63 @@ export default class jsonFormulaParser extends antlr4.Parser {
 
 	indexExpression() {
 	    let localctx = new IndexExpressionContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 14, jsonFormulaParser.RULE_indexExpression);
+	    this.enterRule(localctx, 14, JsonFormulaParser.RULE_indexExpression);
 	    try {
-	        this.state = 147;
+	        this.state = 137;
 	        this._errHandler.sync(this);
 	        var la_ = this._interp.adaptivePredict(this._input,7,this._ctx);
 	        switch(la_) {
 	        case 1:
 	            localctx = new BracketIndexContext(this, localctx);
 	            this.enterOuterAlt(localctx, 1);
-	            this.state = 131;
-	            this.match(jsonFormulaParser.T__13);
-	            this.state = 132;
-	            this.match(jsonFormulaParser.SIGNED_INT);
-	            this.state = 133;
-	            this.match(jsonFormulaParser.T__15);
+	            this.state = 121;
+	            this.match(JsonFormulaParser.T__13);
+	            this.state = 122;
+	            this.match(JsonFormulaParser.SIGNED_INT);
+	            this.state = 123;
+	            this.match(JsonFormulaParser.T__15);
 	            break;
 
 	        case 2:
 	            localctx = new BracketStarContext(this, localctx);
 	            this.enterOuterAlt(localctx, 2);
-	            this.state = 134;
-	            this.match(jsonFormulaParser.T__13);
-	            this.state = 135;
-	            this.match(jsonFormulaParser.T__1);
-	            this.state = 136;
-	            this.match(jsonFormulaParser.T__15);
+	            this.state = 124;
+	            this.match(JsonFormulaParser.T__13);
+	            this.state = 125;
+	            this.match(JsonFormulaParser.T__1);
+	            this.state = 126;
+	            this.match(JsonFormulaParser.T__15);
 	            break;
 
 	        case 3:
 	            localctx = new BracketSliceContext(this, localctx);
 	            this.enterOuterAlt(localctx, 3);
-	            this.state = 137;
-	            this.match(jsonFormulaParser.T__13);
-	            this.state = 138;
+	            this.state = 127;
+	            this.match(JsonFormulaParser.T__13);
+	            this.state = 128;
 	            this.slice();
-	            this.state = 139;
-	            this.match(jsonFormulaParser.T__15);
+	            this.state = 129;
+	            this.match(JsonFormulaParser.T__15);
 	            break;
 
 	        case 4:
 	            localctx = new BracketFlattenContext(this, localctx);
 	            this.enterOuterAlt(localctx, 4);
-	            this.state = 141;
-	            this.match(jsonFormulaParser.T__13);
-	            this.state = 142;
-	            this.match(jsonFormulaParser.T__15);
+	            this.state = 131;
+	            this.match(JsonFormulaParser.T__13);
+	            this.state = 132;
+	            this.match(JsonFormulaParser.T__15);
 	            break;
 
 	        case 5:
 	            localctx = new SelectContext(this, localctx);
 	            this.enterOuterAlt(localctx, 5);
-	            this.state = 143;
-	            this.match(jsonFormulaParser.T__19);
-	            this.state = 144;
+	            this.state = 133;
+	            this.match(JsonFormulaParser.T__19);
+	            this.state = 134;
 	            this.expression(0);
-	            this.state = 145;
-	            this.match(jsonFormulaParser.T__15);
+	            this.state = 135;
+	            this.match(JsonFormulaParser.T__15);
 	            break;
 
 	        }
@@ -757,28 +730,28 @@ export default class jsonFormulaParser extends antlr4.Parser {
 
 	chainedBracketSpecifier() {
 	    let localctx = new ChainedBracketSpecifierContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 16, jsonFormulaParser.RULE_chainedBracketSpecifier);
+	    this.enterRule(localctx, 16, JsonFormulaParser.RULE_chainedBracketSpecifier);
 	    try {
-	        this.state = 154;
+	        this.state = 144;
 	        this._errHandler.sync(this);
 	        var la_ = this._interp.adaptivePredict(this._input,8,this._ctx);
 	        switch(la_) {
 	        case 1:
 	            localctx = new ChainedBracketContext(this, localctx);
 	            this.enterOuterAlt(localctx, 1);
-	            this.state = 149;
+	            this.state = 139;
 	            this.indexExpression();
 	            break;
 
 	        case 2:
 	            localctx = new ChainedBracketIndexContext(this, localctx);
 	            this.enterOuterAlt(localctx, 2);
-	            this.state = 150;
-	            this.match(jsonFormulaParser.T__13);
-	            this.state = 151;
+	            this.state = 140;
+	            this.match(JsonFormulaParser.T__13);
+	            this.state = 141;
 	            this.expression(0);
-	            this.state = 152;
-	            this.match(jsonFormulaParser.T__15);
+	            this.state = 142;
+	            this.match(JsonFormulaParser.T__15);
 	            break;
 
 	        }
@@ -800,39 +773,39 @@ export default class jsonFormulaParser extends antlr4.Parser {
 
 	slice() {
 	    let localctx = new SliceContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 18, jsonFormulaParser.RULE_slice);
+	    this.enterRule(localctx, 18, JsonFormulaParser.RULE_slice);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 157;
+	        this.state = 147;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
-	        if((((_la) & ~0x1f) === 0 && ((1 << _la) & 1064455300) !== 0)) {
-	            this.state = 156;
+	        if((((_la) & ~0x1f) === 0 && ((1 << _la) & 531778692) !== 0)) {
+	            this.state = 146;
 	            localctx.start = this.expression(0);
 	        }
 
-	        this.state = 159;
-	        this.match(jsonFormulaParser.T__18);
-	        this.state = 161;
+	        this.state = 149;
+	        this.match(JsonFormulaParser.T__18);
+	        this.state = 151;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
-	        if((((_la) & ~0x1f) === 0 && ((1 << _la) & 1064455300) !== 0)) {
-	            this.state = 160;
+	        if((((_la) & ~0x1f) === 0 && ((1 << _la) & 531778692) !== 0)) {
+	            this.state = 150;
 	            localctx.stop = this.expression(0);
 	        }
 
-	        this.state = 167;
+	        this.state = 157;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
 	        if(_la===19) {
-	            this.state = 163;
-	            this.match(jsonFormulaParser.T__18);
-	            this.state = 165;
+	            this.state = 153;
+	            this.match(JsonFormulaParser.T__18);
+	            this.state = 155;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
-	            if((((_la) & ~0x1f) === 0 && ((1 << _la) & 1064455300) !== 0)) {
-	                this.state = 164;
+	            if((((_la) & ~0x1f) === 0 && ((1 << _la) & 531778692) !== 0)) {
+	                this.state = 154;
 	                localctx.step = this.expression(0);
 	            }
 
@@ -856,45 +829,45 @@ export default class jsonFormulaParser extends antlr4.Parser {
 
 	functionExpression() {
 	    let localctx = new FunctionExpressionContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 20, jsonFormulaParser.RULE_functionExpression);
+	    this.enterRule(localctx, 20, JsonFormulaParser.RULE_functionExpression);
 	    var _la = 0;
 	    try {
-	        this.state = 184;
+	        this.state = 174;
 	        this._errHandler.sync(this);
 	        var la_ = this._interp.adaptivePredict(this._input,14,this._ctx);
 	        switch(la_) {
 	        case 1:
 	            this.enterOuterAlt(localctx, 1);
-	            this.state = 169;
-	            this.match(jsonFormulaParser.NAME);
-	            this.state = 170;
-	            this.match(jsonFormulaParser.T__10);
-	            this.state = 171;
+	            this.state = 159;
+	            this.match(JsonFormulaParser.NAME);
+	            this.state = 160;
+	            this.match(JsonFormulaParser.T__10);
+	            this.state = 161;
 	            this.functionArg();
-	            this.state = 176;
+	            this.state = 166;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
 	            while(_la===15) {
-	                this.state = 172;
-	                this.match(jsonFormulaParser.T__14);
-	                this.state = 173;
+	                this.state = 162;
+	                this.match(JsonFormulaParser.T__14);
+	                this.state = 163;
 	                this.functionArg();
-	                this.state = 178;
+	                this.state = 168;
 	                this._errHandler.sync(this);
 	                _la = this._input.LA(1);
 	            }
-	            this.state = 179;
-	            this.match(jsonFormulaParser.T__11);
+	            this.state = 169;
+	            this.match(JsonFormulaParser.T__11);
 	            break;
 
 	        case 2:
 	            this.enterOuterAlt(localctx, 2);
-	            this.state = 181;
-	            this.match(jsonFormulaParser.NAME);
-	            this.state = 182;
-	            this.match(jsonFormulaParser.T__10);
-	            this.state = 183;
-	            this.match(jsonFormulaParser.T__11);
+	            this.state = 171;
+	            this.match(JsonFormulaParser.NAME);
+	            this.state = 172;
+	            this.match(JsonFormulaParser.T__10);
+	            this.state = 173;
+	            this.match(JsonFormulaParser.T__11);
 	            break;
 
 	        }
@@ -916,9 +889,9 @@ export default class jsonFormulaParser extends antlr4.Parser {
 
 	functionArg() {
 	    let localctx = new FunctionArgContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 22, jsonFormulaParser.RULE_functionArg);
+	    this.enterRule(localctx, 22, JsonFormulaParser.RULE_functionArg);
 	    try {
-	        this.state = 188;
+	        this.state = 178;
 	        this._errHandler.sync(this);
 	        switch(this._input.LA(1)) {
 	        case 2:
@@ -929,20 +902,19 @@ export default class jsonFormulaParser extends antlr4.Parser {
 	        case 17:
 	        case 20:
 	        case 21:
-	        case 22:
+	        case 23:
 	        case 24:
 	        case 25:
 	        case 26:
 	        case 27:
 	        case 28:
-	        case 29:
 	            this.enterOuterAlt(localctx, 1);
-	            this.state = 186;
+	            this.state = 176;
 	            this.expression(0);
 	            break;
 	        case 4:
 	            this.enterOuterAlt(localctx, 2);
-	            this.state = 187;
+	            this.state = 177;
 	            this.expressionType();
 	            break;
 	        default:
@@ -966,11 +938,11 @@ export default class jsonFormulaParser extends antlr4.Parser {
 
 	currentNode() {
 	    let localctx = new CurrentNodeContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 24, jsonFormulaParser.RULE_currentNode);
+	    this.enterRule(localctx, 24, JsonFormulaParser.RULE_currentNode);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 190;
-	        this.match(jsonFormulaParser.T__20);
+	        this.state = 180;
+	        this.match(JsonFormulaParser.T__20);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
 		        localctx.exception = re;
@@ -989,40 +961,13 @@ export default class jsonFormulaParser extends antlr4.Parser {
 
 	expressionType() {
 	    let localctx = new ExpressionTypeContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 26, jsonFormulaParser.RULE_expressionType);
+	    this.enterRule(localctx, 26, JsonFormulaParser.RULE_expressionType);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 192;
-	        this.match(jsonFormulaParser.T__3);
-	        this.state = 193;
+	        this.state = 182;
+	        this.match(JsonFormulaParser.T__3);
+	        this.state = 183;
 	        this.expression(0);
-	    } catch (re) {
-	    	if(re instanceof antlr4.error.RecognitionException) {
-		        localctx.exception = re;
-		        this._errHandler.reportError(this, re);
-		        this._errHandler.recover(this, re);
-		    } else {
-		    	throw re;
-		    }
-	    } finally {
-	        this.exitRule();
-	    }
-	    return localctx;
-	}
-
-
-
-	literal() {
-	    let localctx = new LiteralContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 28, jsonFormulaParser.RULE_literal);
-	    try {
-	        this.enterOuterAlt(localctx, 1);
-	        this.state = 195;
-	        this.match(jsonFormulaParser.T__21);
-	        this.state = 196;
-	        this.jsonValue();
-	        this.state = 197;
-	        this.match(jsonFormulaParser.T__21);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
 		        localctx.exception = re;
@@ -1041,13 +986,13 @@ export default class jsonFormulaParser extends antlr4.Parser {
 
 	identifier() {
 	    let localctx = new IdentifierContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 30, jsonFormulaParser.RULE_identifier);
+	    this.enterRule(localctx, 28, JsonFormulaParser.RULE_identifier);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 199;
+	        this.state = 185;
 	        _la = this._input.LA(1);
-	        if(!(_la===24 || _la===25)) {
+	        if(!(_la===23 || _la===24)) {
 	        this._errHandler.recoverInline(this);
 	        }
 	        else {
@@ -1069,264 +1014,54 @@ export default class jsonFormulaParser extends antlr4.Parser {
 	}
 
 
-
-	jsonObject() {
-	    let localctx = new JsonObjectContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 32, jsonFormulaParser.RULE_jsonObject);
-	    var _la = 0;
-	    try {
-	        this.state = 214;
-	        this._errHandler.sync(this);
-	        var la_ = this._interp.adaptivePredict(this._input,17,this._ctx);
-	        switch(la_) {
-	        case 1:
-	            this.enterOuterAlt(localctx, 1);
-	            this.state = 201;
-	            this.match(jsonFormulaParser.T__16);
-	            this.state = 202;
-	            this.jsonObjectPair();
-	            this.state = 207;
-	            this._errHandler.sync(this);
-	            _la = this._input.LA(1);
-	            while(_la===15) {
-	                this.state = 203;
-	                this.match(jsonFormulaParser.T__14);
-	                this.state = 204;
-	                this.jsonObjectPair();
-	                this.state = 209;
-	                this._errHandler.sync(this);
-	                _la = this._input.LA(1);
-	            }
-	            this.state = 210;
-	            this.match(jsonFormulaParser.T__17);
-	            break;
-
-	        case 2:
-	            this.enterOuterAlt(localctx, 2);
-	            this.state = 212;
-	            this.match(jsonFormulaParser.T__16);
-	            this.state = 213;
-	            this.match(jsonFormulaParser.T__17);
-	            break;
-
-	        }
-	    } catch (re) {
-	    	if(re instanceof antlr4.error.RecognitionException) {
-		        localctx.exception = re;
-		        this._errHandler.reportError(this, re);
-		        this._errHandler.recover(this, re);
-		    } else {
-		    	throw re;
-		    }
-	    } finally {
-	        this.exitRule();
-	    }
-	    return localctx;
-	}
-
-
-
-	jsonObjectPair() {
-	    let localctx = new JsonObjectPairContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 34, jsonFormulaParser.RULE_jsonObjectPair);
-	    try {
-	        this.enterOuterAlt(localctx, 1);
-	        this.state = 216;
-	        this.match(jsonFormulaParser.STRING);
-	        this.state = 217;
-	        this.match(jsonFormulaParser.T__18);
-	        this.state = 218;
-	        this.jsonValue();
-	    } catch (re) {
-	    	if(re instanceof antlr4.error.RecognitionException) {
-		        localctx.exception = re;
-		        this._errHandler.reportError(this, re);
-		        this._errHandler.recover(this, re);
-		    } else {
-		    	throw re;
-		    }
-	    } finally {
-	        this.exitRule();
-	    }
-	    return localctx;
-	}
-
-
-
-	jsonArray() {
-	    let localctx = new JsonArrayContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 36, jsonFormulaParser.RULE_jsonArray);
-	    var _la = 0;
-	    try {
-	        this.state = 233;
-	        this._errHandler.sync(this);
-	        var la_ = this._interp.adaptivePredict(this._input,19,this._ctx);
-	        switch(la_) {
-	        case 1:
-	            this.enterOuterAlt(localctx, 1);
-	            this.state = 220;
-	            this.match(jsonFormulaParser.T__13);
-	            this.state = 221;
-	            this.jsonValue();
-	            this.state = 226;
-	            this._errHandler.sync(this);
-	            _la = this._input.LA(1);
-	            while(_la===15) {
-	                this.state = 222;
-	                this.match(jsonFormulaParser.T__14);
-	                this.state = 223;
-	                this.jsonValue();
-	                this.state = 228;
-	                this._errHandler.sync(this);
-	                _la = this._input.LA(1);
-	            }
-	            this.state = 229;
-	            this.match(jsonFormulaParser.T__15);
-	            break;
-
-	        case 2:
-	            this.enterOuterAlt(localctx, 2);
-	            this.state = 231;
-	            this.match(jsonFormulaParser.T__13);
-	            this.state = 232;
-	            this.match(jsonFormulaParser.T__15);
-	            break;
-
-	        }
-	    } catch (re) {
-	    	if(re instanceof antlr4.error.RecognitionException) {
-		        localctx.exception = re;
-		        this._errHandler.reportError(this, re);
-		        this._errHandler.recover(this, re);
-		    } else {
-		    	throw re;
-		    }
-	    } finally {
-	        this.exitRule();
-	    }
-	    return localctx;
-	}
-
-
-
-	jsonValue() {
-	    let localctx = new JsonValueContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 38, jsonFormulaParser.RULE_jsonValue);
-	    var _la = 0;
-	    try {
-	        this.state = 240;
-	        this._errHandler.sync(this);
-	        switch(this._input.LA(1)) {
-	        case 26:
-	            localctx = new JsonStringValueContext(this, localctx);
-	            this.enterOuterAlt(localctx, 1);
-	            this.state = 235;
-	            this.match(jsonFormulaParser.STRING);
-	            break;
-	        case 28:
-	        case 29:
-	            localctx = new JsonNumberValueContext(this, localctx);
-	            this.enterOuterAlt(localctx, 2);
-	            this.state = 236;
-	            _la = this._input.LA(1);
-	            if(!(_la===28 || _la===29)) {
-	            this._errHandler.recoverInline(this);
-	            }
-	            else {
-	            	this._errHandler.reportMatch(this);
-	                this.consume();
-	            }
-	            break;
-	        case 17:
-	            localctx = new JsonObjectValueContext(this, localctx);
-	            this.enterOuterAlt(localctx, 3);
-	            this.state = 237;
-	            this.jsonObject();
-	            break;
-	        case 14:
-	            localctx = new JsonArrayValueContext(this, localctx);
-	            this.enterOuterAlt(localctx, 4);
-	            this.state = 238;
-	            this.jsonArray();
-	            break;
-	        case 24:
-	            localctx = new JsonConstantValueContext(this, localctx);
-	            this.enterOuterAlt(localctx, 5);
-	            this.state = 239;
-	            this.match(jsonFormulaParser.NAME);
-	            break;
-	        default:
-	            throw new antlr4.error.NoViableAltException(this);
-	        }
-	    } catch (re) {
-	    	if(re instanceof antlr4.error.RecognitionException) {
-		        localctx.exception = re;
-		        this._errHandler.reportError(this, re);
-		        this._errHandler.recover(this, re);
-		    } else {
-		    	throw re;
-		    }
-	    } finally {
-	        this.exitRule();
-	    }
-	    return localctx;
-	}
-
-
 }
 
-jsonFormulaParser.EOF = antlr4.Token.EOF;
-jsonFormulaParser.T__0 = 1;
-jsonFormulaParser.T__1 = 2;
-jsonFormulaParser.T__2 = 3;
-jsonFormulaParser.T__3 = 4;
-jsonFormulaParser.T__4 = 5;
-jsonFormulaParser.T__5 = 6;
-jsonFormulaParser.T__6 = 7;
-jsonFormulaParser.T__7 = 8;
-jsonFormulaParser.T__8 = 9;
-jsonFormulaParser.T__9 = 10;
-jsonFormulaParser.T__10 = 11;
-jsonFormulaParser.T__11 = 12;
-jsonFormulaParser.T__12 = 13;
-jsonFormulaParser.T__13 = 14;
-jsonFormulaParser.T__14 = 15;
-jsonFormulaParser.T__15 = 16;
-jsonFormulaParser.T__16 = 17;
-jsonFormulaParser.T__17 = 18;
-jsonFormulaParser.T__18 = 19;
-jsonFormulaParser.T__19 = 20;
-jsonFormulaParser.T__20 = 21;
-jsonFormulaParser.T__21 = 22;
-jsonFormulaParser.COMPARATOR = 23;
-jsonFormulaParser.NAME = 24;
-jsonFormulaParser.QUOTED_NAME = 25;
-jsonFormulaParser.STRING = 26;
-jsonFormulaParser.RAW_STRING = 27;
-jsonFormulaParser.REAL_OR_EXPONENT_NUMBER = 28;
-jsonFormulaParser.SIGNED_INT = 29;
-jsonFormulaParser.WS = 30;
+JsonFormulaParser.EOF = antlr4.Token.EOF;
+JsonFormulaParser.T__0 = 1;
+JsonFormulaParser.T__1 = 2;
+JsonFormulaParser.T__2 = 3;
+JsonFormulaParser.T__3 = 4;
+JsonFormulaParser.T__4 = 5;
+JsonFormulaParser.T__5 = 6;
+JsonFormulaParser.T__6 = 7;
+JsonFormulaParser.T__7 = 8;
+JsonFormulaParser.T__8 = 9;
+JsonFormulaParser.T__9 = 10;
+JsonFormulaParser.T__10 = 11;
+JsonFormulaParser.T__11 = 12;
+JsonFormulaParser.T__12 = 13;
+JsonFormulaParser.T__13 = 14;
+JsonFormulaParser.T__14 = 15;
+JsonFormulaParser.T__15 = 16;
+JsonFormulaParser.T__16 = 17;
+JsonFormulaParser.T__17 = 18;
+JsonFormulaParser.T__18 = 19;
+JsonFormulaParser.T__19 = 20;
+JsonFormulaParser.T__20 = 21;
+JsonFormulaParser.COMPARATOR = 22;
+JsonFormulaParser.NAME = 23;
+JsonFormulaParser.QUOTED_NAME = 24;
+JsonFormulaParser.JSON_FRAGMENT = 25;
+JsonFormulaParser.STRING = 26;
+JsonFormulaParser.REAL_OR_EXPONENT_NUMBER = 27;
+JsonFormulaParser.SIGNED_INT = 28;
+JsonFormulaParser.WS = 29;
 
-jsonFormulaParser.RULE_formula = 0;
-jsonFormulaParser.RULE_expression = 1;
-jsonFormulaParser.RULE_chainedExpression = 2;
-jsonFormulaParser.RULE_wildcard = 3;
-jsonFormulaParser.RULE_multiSelectList = 4;
-jsonFormulaParser.RULE_multiSelectHash = 5;
-jsonFormulaParser.RULE_keyvalExpr = 6;
-jsonFormulaParser.RULE_indexExpression = 7;
-jsonFormulaParser.RULE_chainedBracketSpecifier = 8;
-jsonFormulaParser.RULE_slice = 9;
-jsonFormulaParser.RULE_functionExpression = 10;
-jsonFormulaParser.RULE_functionArg = 11;
-jsonFormulaParser.RULE_currentNode = 12;
-jsonFormulaParser.RULE_expressionType = 13;
-jsonFormulaParser.RULE_literal = 14;
-jsonFormulaParser.RULE_identifier = 15;
-jsonFormulaParser.RULE_jsonObject = 16;
-jsonFormulaParser.RULE_jsonObjectPair = 17;
-jsonFormulaParser.RULE_jsonArray = 18;
-jsonFormulaParser.RULE_jsonValue = 19;
+JsonFormulaParser.RULE_formula = 0;
+JsonFormulaParser.RULE_expression = 1;
+JsonFormulaParser.RULE_chainedExpression = 2;
+JsonFormulaParser.RULE_wildcard = 3;
+JsonFormulaParser.RULE_multiSelectList = 4;
+JsonFormulaParser.RULE_multiSelectHash = 5;
+JsonFormulaParser.RULE_keyvalExpr = 6;
+JsonFormulaParser.RULE_indexExpression = 7;
+JsonFormulaParser.RULE_chainedBracketSpecifier = 8;
+JsonFormulaParser.RULE_slice = 9;
+JsonFormulaParser.RULE_functionExpression = 10;
+JsonFormulaParser.RULE_functionArg = 11;
+JsonFormulaParser.RULE_currentNode = 12;
+JsonFormulaParser.RULE_expressionType = 13;
+JsonFormulaParser.RULE_identifier = 14;
 
 class FormulaContext extends antlr4.ParserRuleContext {
 
@@ -1339,7 +1074,7 @@ class FormulaContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_formula;
+        this.ruleIndex = JsonFormulaParser.RULE_formula;
     }
 
 	expression() {
@@ -1347,23 +1082,23 @@ class FormulaContext extends antlr4.ParserRuleContext {
 	};
 
 	EOF() {
-	    return this.getToken(jsonFormulaParser.EOF, 0);
+	    return this.getToken(JsonFormulaParser.EOF, 0);
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterFormula(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitFormula(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitFormula(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -1386,7 +1121,7 @@ class ExpressionContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_expression;
+        this.ruleIndex = JsonFormulaParser.RULE_expression;
     }
 
 
@@ -1417,19 +1152,19 @@ class PipeExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterPipeExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitPipeExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitPipeExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -1439,7 +1174,7 @@ class PipeExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.PipeExpressionContext = PipeExpressionContext;
+JsonFormulaParser.PipeExpressionContext = PipeExpressionContext;
 
 class IdentifierExpressionContext extends ExpressionContext {
 
@@ -1453,19 +1188,19 @@ class IdentifierExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterIdentifierExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitIdentifierExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitIdentifierExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -1475,7 +1210,7 @@ class IdentifierExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.IdentifierExpressionContext = IdentifierExpressionContext;
+JsonFormulaParser.IdentifierExpressionContext = IdentifierExpressionContext;
 
 class MultDivExpressionContext extends ExpressionContext {
 
@@ -1496,19 +1231,19 @@ class MultDivExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterMultDivExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitMultDivExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitMultDivExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -1518,7 +1253,7 @@ class MultDivExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.MultDivExpressionContext = MultDivExpressionContext;
+JsonFormulaParser.MultDivExpressionContext = MultDivExpressionContext;
 
 class NotExpressionContext extends ExpressionContext {
 
@@ -1532,19 +1267,19 @@ class NotExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterNotExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitNotExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitNotExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -1554,7 +1289,7 @@ class NotExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.NotExpressionContext = NotExpressionContext;
+JsonFormulaParser.NotExpressionContext = NotExpressionContext;
 
 class RawStringExpressionContext extends ExpressionContext {
 
@@ -1564,27 +1299,23 @@ class RawStringExpressionContext extends ExpressionContext {
     }
 
 	STRING() {
-	    return this.getToken(jsonFormulaParser.STRING, 0);
-	};
-
-	RAW_STRING() {
-	    return this.getToken(jsonFormulaParser.RAW_STRING, 0);
+	    return this.getToken(JsonFormulaParser.STRING, 0);
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterRawStringExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitRawStringExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitRawStringExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -1594,7 +1325,7 @@ class RawStringExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.RawStringExpressionContext = RawStringExpressionContext;
+JsonFormulaParser.RawStringExpressionContext = RawStringExpressionContext;
 
 class ComparisonExpressionContext extends ExpressionContext {
 
@@ -1615,23 +1346,23 @@ class ComparisonExpressionContext extends ExpressionContext {
 	};
 
 	COMPARATOR() {
-	    return this.getToken(jsonFormulaParser.COMPARATOR, 0);
+	    return this.getToken(JsonFormulaParser.COMPARATOR, 0);
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterComparisonExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitComparisonExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitComparisonExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -1641,7 +1372,7 @@ class ComparisonExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.ComparisonExpressionContext = ComparisonExpressionContext;
+JsonFormulaParser.ComparisonExpressionContext = ComparisonExpressionContext;
 
 class ParenExpressionContext extends ExpressionContext {
 
@@ -1655,19 +1386,19 @@ class ParenExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterParenExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitParenExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitParenExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -1677,7 +1408,7 @@ class ParenExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.ParenExpressionContext = ParenExpressionContext;
+JsonFormulaParser.ParenExpressionContext = ParenExpressionContext;
 
 class OrExpressionContext extends ExpressionContext {
 
@@ -1698,19 +1429,19 @@ class OrExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterOrExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitOrExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitOrExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -1720,7 +1451,7 @@ class OrExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.OrExpressionContext = OrExpressionContext;
+JsonFormulaParser.OrExpressionContext = OrExpressionContext;
 
 class UnaryMinusExpressionContext extends ExpressionContext {
 
@@ -1734,19 +1465,19 @@ class UnaryMinusExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterUnaryMinusExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitUnaryMinusExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitUnaryMinusExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -1756,7 +1487,7 @@ class UnaryMinusExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.UnaryMinusExpressionContext = UnaryMinusExpressionContext;
+JsonFormulaParser.UnaryMinusExpressionContext = UnaryMinusExpressionContext;
 
 class CurrentNodeExpressionContext extends ExpressionContext {
 
@@ -1770,19 +1501,19 @@ class CurrentNodeExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterCurrentNodeExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitCurrentNodeExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitCurrentNodeExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -1792,7 +1523,7 @@ class CurrentNodeExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.CurrentNodeExpressionContext = CurrentNodeExpressionContext;
+JsonFormulaParser.CurrentNodeExpressionContext = CurrentNodeExpressionContext;
 
 class ChainExpressionContext extends ExpressionContext {
 
@@ -1810,19 +1541,19 @@ class ChainExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterChainExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitChainExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitChainExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -1832,7 +1563,7 @@ class ChainExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.ChainExpressionContext = ChainExpressionContext;
+JsonFormulaParser.ChainExpressionContext = ChainExpressionContext;
 
 class AndExpressionContext extends ExpressionContext {
 
@@ -1853,19 +1584,19 @@ class AndExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterAndExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitAndExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitAndExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -1875,7 +1606,7 @@ class AndExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.AndExpressionContext = AndExpressionContext;
+JsonFormulaParser.AndExpressionContext = AndExpressionContext;
 
 class MultiSelectHashExpressionContext extends ExpressionContext {
 
@@ -1889,19 +1620,19 @@ class MultiSelectHashExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterMultiSelectHashExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitMultiSelectHashExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitMultiSelectHashExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -1911,7 +1642,7 @@ class MultiSelectHashExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.MultiSelectHashExpressionContext = MultiSelectHashExpressionContext;
+JsonFormulaParser.MultiSelectHashExpressionContext = MultiSelectHashExpressionContext;
 
 class WildcardExpressionContext extends ExpressionContext {
 
@@ -1925,19 +1656,19 @@ class WildcardExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterWildcardExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitWildcardExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitWildcardExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -1947,7 +1678,7 @@ class WildcardExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.WildcardExpressionContext = WildcardExpressionContext;
+JsonFormulaParser.WildcardExpressionContext = WildcardExpressionContext;
 
 class FunctionCallExpressionContext extends ExpressionContext {
 
@@ -1961,19 +1692,19 @@ class FunctionCallExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterFunctionCallExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitFunctionCallExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitFunctionCallExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -1983,7 +1714,7 @@ class FunctionCallExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.FunctionCallExpressionContext = FunctionCallExpressionContext;
+JsonFormulaParser.FunctionCallExpressionContext = FunctionCallExpressionContext;
 
 class IndexedExpressionContext extends ExpressionContext {
 
@@ -1997,19 +1728,19 @@ class IndexedExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterIndexedExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitIndexedExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitIndexedExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2019,7 +1750,7 @@ class IndexedExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.IndexedExpressionContext = IndexedExpressionContext;
+JsonFormulaParser.IndexedExpressionContext = IndexedExpressionContext;
 
 class AddSubtractExpressionContext extends ExpressionContext {
 
@@ -2040,19 +1771,19 @@ class AddSubtractExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterAddSubtractExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitAddSubtractExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitAddSubtractExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2062,7 +1793,7 @@ class AddSubtractExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.AddSubtractExpressionContext = AddSubtractExpressionContext;
+JsonFormulaParser.AddSubtractExpressionContext = AddSubtractExpressionContext;
 
 class MultiSelectListExpressionContext extends ExpressionContext {
 
@@ -2076,19 +1807,19 @@ class MultiSelectListExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterMultiSelectListExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitMultiSelectListExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitMultiSelectListExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2098,7 +1829,7 @@ class MultiSelectListExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.MultiSelectListExpressionContext = MultiSelectListExpressionContext;
+JsonFormulaParser.MultiSelectListExpressionContext = MultiSelectListExpressionContext;
 
 class BracketedExpressionContext extends ExpressionContext {
 
@@ -2116,19 +1847,19 @@ class BracketedExpressionContext extends ExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterBracketedExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitBracketedExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitBracketedExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2138,7 +1869,7 @@ class BracketedExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.BracketedExpressionContext = BracketedExpressionContext;
+JsonFormulaParser.BracketedExpressionContext = BracketedExpressionContext;
 
 class LiteralExpressionContext extends ExpressionContext {
 
@@ -2147,24 +1878,24 @@ class LiteralExpressionContext extends ExpressionContext {
         super.copyFrom(ctx);
     }
 
-	literal() {
-	    return this.getTypedRuleContext(LiteralContext,0);
+	JSON_FRAGMENT() {
+	    return this.getToken(JsonFormulaParser.JSON_FRAGMENT, 0);
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterLiteralExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitLiteralExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitLiteralExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2174,7 +1905,7 @@ class LiteralExpressionContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.LiteralExpressionContext = LiteralExpressionContext;
+JsonFormulaParser.LiteralExpressionContext = LiteralExpressionContext;
 
 class NumberLiteralContext extends ExpressionContext {
 
@@ -2184,27 +1915,27 @@ class NumberLiteralContext extends ExpressionContext {
     }
 
 	REAL_OR_EXPONENT_NUMBER() {
-	    return this.getToken(jsonFormulaParser.REAL_OR_EXPONENT_NUMBER, 0);
+	    return this.getToken(JsonFormulaParser.REAL_OR_EXPONENT_NUMBER, 0);
 	};
 
 	SIGNED_INT() {
-	    return this.getToken(jsonFormulaParser.SIGNED_INT, 0);
+	    return this.getToken(JsonFormulaParser.SIGNED_INT, 0);
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterNumberLiteral(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitNumberLiteral(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitNumberLiteral(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2214,7 +1945,7 @@ class NumberLiteralContext extends ExpressionContext {
 
 }
 
-jsonFormulaParser.NumberLiteralContext = NumberLiteralContext;
+JsonFormulaParser.NumberLiteralContext = NumberLiteralContext;
 
 class ChainedExpressionContext extends antlr4.ParserRuleContext {
 
@@ -2227,7 +1958,7 @@ class ChainedExpressionContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_chainedExpression;
+        this.ruleIndex = JsonFormulaParser.RULE_chainedExpression;
     }
 
 	identifier() {
@@ -2251,19 +1982,19 @@ class ChainedExpressionContext extends antlr4.ParserRuleContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterChainedExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitChainedExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitChainedExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2286,24 +2017,24 @@ class WildcardContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_wildcard;
+        this.ruleIndex = JsonFormulaParser.RULE_wildcard;
     }
 
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterWildcard(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitWildcard(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitWildcard(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2326,7 +2057,7 @@ class MultiSelectListContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_multiSelectList;
+        this.ruleIndex = JsonFormulaParser.RULE_multiSelectList;
     }
 
 	expression = function(i) {
@@ -2341,19 +2072,19 @@ class MultiSelectListContext extends antlr4.ParserRuleContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterMultiSelectList(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitMultiSelectList(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitMultiSelectList(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2376,7 +2107,7 @@ class MultiSelectHashContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_multiSelectHash;
+        this.ruleIndex = JsonFormulaParser.RULE_multiSelectHash;
     }
 
 
@@ -2407,19 +2138,19 @@ class NonEmptyHashContext extends MultiSelectHashContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterNonEmptyHash(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitNonEmptyHash(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitNonEmptyHash(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2429,7 +2160,7 @@ class NonEmptyHashContext extends MultiSelectHashContext {
 
 }
 
-jsonFormulaParser.NonEmptyHashContext = NonEmptyHashContext;
+JsonFormulaParser.NonEmptyHashContext = NonEmptyHashContext;
 
 class EmptyHashContext extends MultiSelectHashContext {
 
@@ -2440,19 +2171,19 @@ class EmptyHashContext extends MultiSelectHashContext {
 
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterEmptyHash(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitEmptyHash(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitEmptyHash(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2462,7 +2193,7 @@ class EmptyHashContext extends MultiSelectHashContext {
 
 }
 
-jsonFormulaParser.EmptyHashContext = EmptyHashContext;
+JsonFormulaParser.EmptyHashContext = EmptyHashContext;
 
 class KeyvalExprContext extends antlr4.ParserRuleContext {
 
@@ -2475,7 +2206,7 @@ class KeyvalExprContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_keyvalExpr;
+        this.ruleIndex = JsonFormulaParser.RULE_keyvalExpr;
     }
 
 	identifier() {
@@ -2487,19 +2218,19 @@ class KeyvalExprContext extends antlr4.ParserRuleContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterKeyvalExpr(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitKeyvalExpr(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitKeyvalExpr(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2522,7 +2253,7 @@ class IndexExpressionContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_indexExpression;
+        this.ruleIndex = JsonFormulaParser.RULE_indexExpression;
     }
 
 
@@ -2546,19 +2277,19 @@ class SelectContext extends IndexExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterSelect(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitSelect(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitSelect(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2568,7 +2299,7 @@ class SelectContext extends IndexExpressionContext {
 
 }
 
-jsonFormulaParser.SelectContext = SelectContext;
+JsonFormulaParser.SelectContext = SelectContext;
 
 class BracketFlattenContext extends IndexExpressionContext {
 
@@ -2579,19 +2310,19 @@ class BracketFlattenContext extends IndexExpressionContext {
 
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterBracketFlatten(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitBracketFlatten(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitBracketFlatten(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2601,7 +2332,7 @@ class BracketFlattenContext extends IndexExpressionContext {
 
 }
 
-jsonFormulaParser.BracketFlattenContext = BracketFlattenContext;
+JsonFormulaParser.BracketFlattenContext = BracketFlattenContext;
 
 class BracketSliceContext extends IndexExpressionContext {
 
@@ -2615,19 +2346,19 @@ class BracketSliceContext extends IndexExpressionContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterBracketSlice(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitBracketSlice(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitBracketSlice(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2637,7 +2368,7 @@ class BracketSliceContext extends IndexExpressionContext {
 
 }
 
-jsonFormulaParser.BracketSliceContext = BracketSliceContext;
+JsonFormulaParser.BracketSliceContext = BracketSliceContext;
 
 class BracketIndexContext extends IndexExpressionContext {
 
@@ -2647,23 +2378,23 @@ class BracketIndexContext extends IndexExpressionContext {
     }
 
 	SIGNED_INT() {
-	    return this.getToken(jsonFormulaParser.SIGNED_INT, 0);
+	    return this.getToken(JsonFormulaParser.SIGNED_INT, 0);
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterBracketIndex(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitBracketIndex(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitBracketIndex(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2673,7 +2404,7 @@ class BracketIndexContext extends IndexExpressionContext {
 
 }
 
-jsonFormulaParser.BracketIndexContext = BracketIndexContext;
+JsonFormulaParser.BracketIndexContext = BracketIndexContext;
 
 class BracketStarContext extends IndexExpressionContext {
 
@@ -2684,19 +2415,19 @@ class BracketStarContext extends IndexExpressionContext {
 
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterBracketStar(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitBracketStar(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitBracketStar(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2706,7 +2437,7 @@ class BracketStarContext extends IndexExpressionContext {
 
 }
 
-jsonFormulaParser.BracketStarContext = BracketStarContext;
+JsonFormulaParser.BracketStarContext = BracketStarContext;
 
 class ChainedBracketSpecifierContext extends antlr4.ParserRuleContext {
 
@@ -2719,7 +2450,7 @@ class ChainedBracketSpecifierContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_chainedBracketSpecifier;
+        this.ruleIndex = JsonFormulaParser.RULE_chainedBracketSpecifier;
     }
 
 
@@ -2743,19 +2474,19 @@ class ChainedBracketContext extends ChainedBracketSpecifierContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterChainedBracket(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitChainedBracket(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitChainedBracket(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2765,7 +2496,7 @@ class ChainedBracketContext extends ChainedBracketSpecifierContext {
 
 }
 
-jsonFormulaParser.ChainedBracketContext = ChainedBracketContext;
+JsonFormulaParser.ChainedBracketContext = ChainedBracketContext;
 
 class ChainedBracketIndexContext extends ChainedBracketSpecifierContext {
 
@@ -2779,19 +2510,19 @@ class ChainedBracketIndexContext extends ChainedBracketSpecifierContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterChainedBracketIndex(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitChainedBracketIndex(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitChainedBracketIndex(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2801,7 +2532,7 @@ class ChainedBracketIndexContext extends ChainedBracketSpecifierContext {
 
 }
 
-jsonFormulaParser.ChainedBracketIndexContext = ChainedBracketIndexContext;
+JsonFormulaParser.ChainedBracketIndexContext = ChainedBracketIndexContext;
 
 class SliceContext extends antlr4.ParserRuleContext {
 
@@ -2814,7 +2545,7 @@ class SliceContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_slice;
+        this.ruleIndex = JsonFormulaParser.RULE_slice;
         this.start = null;
         this.stop = null;
         this.step = null;
@@ -2832,19 +2563,19 @@ class SliceContext extends antlr4.ParserRuleContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterSlice(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitSlice(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitSlice(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2867,11 +2598,11 @@ class FunctionExpressionContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_functionExpression;
+        this.ruleIndex = JsonFormulaParser.RULE_functionExpression;
     }
 
 	NAME() {
-	    return this.getToken(jsonFormulaParser.NAME, 0);
+	    return this.getToken(JsonFormulaParser.NAME, 0);
 	};
 
 	functionArg = function(i) {
@@ -2886,19 +2617,19 @@ class FunctionExpressionContext extends antlr4.ParserRuleContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterFunctionExpression(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitFunctionExpression(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitFunctionExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2921,7 +2652,7 @@ class FunctionArgContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_functionArg;
+        this.ruleIndex = JsonFormulaParser.RULE_functionArg;
     }
 
 	expression() {
@@ -2933,19 +2664,19 @@ class FunctionArgContext extends antlr4.ParserRuleContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterFunctionArg(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitFunctionArg(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitFunctionArg(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -2968,24 +2699,24 @@ class CurrentNodeContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_currentNode;
+        this.ruleIndex = JsonFormulaParser.RULE_currentNode;
     }
 
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterCurrentNode(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitCurrentNode(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitCurrentNode(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -3008,7 +2739,7 @@ class ExpressionTypeContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_expressionType;
+        this.ruleIndex = JsonFormulaParser.RULE_expressionType;
     }
 
 	expression() {
@@ -3016,63 +2747,20 @@ class ExpressionTypeContext extends antlr4.ParserRuleContext {
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterExpressionType(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitExpressionType(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitExpressionType(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-
-
-class LiteralContext extends antlr4.ParserRuleContext {
-
-    constructor(parser, parent, invokingState) {
-        if(parent===undefined) {
-            parent = null;
-        }
-        if(invokingState===undefined || invokingState===null) {
-            invokingState = -1;
-        }
-        super(parent, invokingState);
-        this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_literal;
-    }
-
-	jsonValue() {
-	    return this.getTypedRuleContext(JsonValueContext,0);
-	};
-
-	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.enterLiteral(this);
-		}
-	}
-
-	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.exitLiteral(this);
-		}
-	}
-
-	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
-	        return visitor.visitLiteral(this);
 	    } else {
 	        return visitor.visitChildren(this);
 	    }
@@ -3094,31 +2782,31 @@ class IdentifierContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_identifier;
+        this.ruleIndex = JsonFormulaParser.RULE_identifier;
     }
 
 	NAME() {
-	    return this.getToken(jsonFormulaParser.NAME, 0);
+	    return this.getToken(JsonFormulaParser.NAME, 0);
 	};
 
 	QUOTED_NAME() {
-	    return this.getToken(jsonFormulaParser.QUOTED_NAME, 0);
+	    return this.getToken(JsonFormulaParser.QUOTED_NAME, 0);
 	};
 
 	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.enterIdentifier(this);
 		}
 	}
 
 	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
+	    if(listener instanceof JsonFormulaListener ) {
 	        listener.exitIdentifier(this);
 		}
 	}
 
 	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
 	        return visitor.visitIdentifier(this);
 	    } else {
 	        return visitor.visitChildren(this);
@@ -3130,378 +2818,19 @@ class IdentifierContext extends antlr4.ParserRuleContext {
 
 
 
-class JsonObjectContext extends antlr4.ParserRuleContext {
 
-    constructor(parser, parent, invokingState) {
-        if(parent===undefined) {
-            parent = null;
-        }
-        if(invokingState===undefined || invokingState===null) {
-            invokingState = -1;
-        }
-        super(parent, invokingState);
-        this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_jsonObject;
-    }
-
-	jsonObjectPair = function(i) {
-	    if(i===undefined) {
-	        i = null;
-	    }
-	    if(i===null) {
-	        return this.getTypedRuleContexts(JsonObjectPairContext);
-	    } else {
-	        return this.getTypedRuleContext(JsonObjectPairContext,i);
-	    }
-	};
-
-	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.enterJsonObject(this);
-		}
-	}
-
-	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.exitJsonObject(this);
-		}
-	}
-
-	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
-	        return visitor.visitJsonObject(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-
-
-class JsonObjectPairContext extends antlr4.ParserRuleContext {
-
-    constructor(parser, parent, invokingState) {
-        if(parent===undefined) {
-            parent = null;
-        }
-        if(invokingState===undefined || invokingState===null) {
-            invokingState = -1;
-        }
-        super(parent, invokingState);
-        this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_jsonObjectPair;
-    }
-
-	STRING() {
-	    return this.getToken(jsonFormulaParser.STRING, 0);
-	};
-
-	jsonValue() {
-	    return this.getTypedRuleContext(JsonValueContext,0);
-	};
-
-	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.enterJsonObjectPair(this);
-		}
-	}
-
-	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.exitJsonObjectPair(this);
-		}
-	}
-
-	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
-	        return visitor.visitJsonObjectPair(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-
-
-class JsonArrayContext extends antlr4.ParserRuleContext {
-
-    constructor(parser, parent, invokingState) {
-        if(parent===undefined) {
-            parent = null;
-        }
-        if(invokingState===undefined || invokingState===null) {
-            invokingState = -1;
-        }
-        super(parent, invokingState);
-        this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_jsonArray;
-    }
-
-	jsonValue = function(i) {
-	    if(i===undefined) {
-	        i = null;
-	    }
-	    if(i===null) {
-	        return this.getTypedRuleContexts(JsonValueContext);
-	    } else {
-	        return this.getTypedRuleContext(JsonValueContext,i);
-	    }
-	};
-
-	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.enterJsonArray(this);
-		}
-	}
-
-	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.exitJsonArray(this);
-		}
-	}
-
-	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
-	        return visitor.visitJsonArray(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-
-
-class JsonValueContext extends antlr4.ParserRuleContext {
-
-    constructor(parser, parent, invokingState) {
-        if(parent===undefined) {
-            parent = null;
-        }
-        if(invokingState===undefined || invokingState===null) {
-            invokingState = -1;
-        }
-        super(parent, invokingState);
-        this.parser = parser;
-        this.ruleIndex = jsonFormulaParser.RULE_jsonValue;
-    }
-
-
-	 
-		copyFrom(ctx) {
-			super.copyFrom(ctx);
-		}
-
-}
-
-
-class JsonArrayValueContext extends JsonValueContext {
-
-    constructor(parser, ctx) {
-        super(parser);
-        super.copyFrom(ctx);
-    }
-
-	jsonArray() {
-	    return this.getTypedRuleContext(JsonArrayContext,0);
-	};
-
-	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.enterJsonArrayValue(this);
-		}
-	}
-
-	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.exitJsonArrayValue(this);
-		}
-	}
-
-	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
-	        return visitor.visitJsonArrayValue(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-jsonFormulaParser.JsonArrayValueContext = JsonArrayValueContext;
-
-class JsonStringValueContext extends JsonValueContext {
-
-    constructor(parser, ctx) {
-        super(parser);
-        super.copyFrom(ctx);
-    }
-
-	STRING() {
-	    return this.getToken(jsonFormulaParser.STRING, 0);
-	};
-
-	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.enterJsonStringValue(this);
-		}
-	}
-
-	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.exitJsonStringValue(this);
-		}
-	}
-
-	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
-	        return visitor.visitJsonStringValue(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-jsonFormulaParser.JsonStringValueContext = JsonStringValueContext;
-
-class JsonObjectValueContext extends JsonValueContext {
-
-    constructor(parser, ctx) {
-        super(parser);
-        super.copyFrom(ctx);
-    }
-
-	jsonObject() {
-	    return this.getTypedRuleContext(JsonObjectContext,0);
-	};
-
-	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.enterJsonObjectValue(this);
-		}
-	}
-
-	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.exitJsonObjectValue(this);
-		}
-	}
-
-	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
-	        return visitor.visitJsonObjectValue(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-jsonFormulaParser.JsonObjectValueContext = JsonObjectValueContext;
-
-class JsonConstantValueContext extends JsonValueContext {
-
-    constructor(parser, ctx) {
-        super(parser);
-        super.copyFrom(ctx);
-    }
-
-	NAME() {
-	    return this.getToken(jsonFormulaParser.NAME, 0);
-	};
-
-	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.enterJsonConstantValue(this);
-		}
-	}
-
-	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.exitJsonConstantValue(this);
-		}
-	}
-
-	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
-	        return visitor.visitJsonConstantValue(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-jsonFormulaParser.JsonConstantValueContext = JsonConstantValueContext;
-
-class JsonNumberValueContext extends JsonValueContext {
-
-    constructor(parser, ctx) {
-        super(parser);
-        super.copyFrom(ctx);
-    }
-
-	REAL_OR_EXPONENT_NUMBER() {
-	    return this.getToken(jsonFormulaParser.REAL_OR_EXPONENT_NUMBER, 0);
-	};
-
-	SIGNED_INT() {
-	    return this.getToken(jsonFormulaParser.SIGNED_INT, 0);
-	};
-
-	enterRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.enterJsonNumberValue(this);
-		}
-	}
-
-	exitRule(listener) {
-	    if(listener instanceof jsonFormulaListener ) {
-	        listener.exitJsonNumberValue(this);
-		}
-	}
-
-	accept(visitor) {
-	    if ( visitor instanceof jsonFormulaVisitor ) {
-	        return visitor.visitJsonNumberValue(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-jsonFormulaParser.JsonNumberValueContext = JsonNumberValueContext;
-
-
-jsonFormulaParser.FormulaContext = FormulaContext; 
-jsonFormulaParser.ExpressionContext = ExpressionContext; 
-jsonFormulaParser.ChainedExpressionContext = ChainedExpressionContext; 
-jsonFormulaParser.WildcardContext = WildcardContext; 
-jsonFormulaParser.MultiSelectListContext = MultiSelectListContext; 
-jsonFormulaParser.MultiSelectHashContext = MultiSelectHashContext; 
-jsonFormulaParser.KeyvalExprContext = KeyvalExprContext; 
-jsonFormulaParser.IndexExpressionContext = IndexExpressionContext; 
-jsonFormulaParser.ChainedBracketSpecifierContext = ChainedBracketSpecifierContext; 
-jsonFormulaParser.SliceContext = SliceContext; 
-jsonFormulaParser.FunctionExpressionContext = FunctionExpressionContext; 
-jsonFormulaParser.FunctionArgContext = FunctionArgContext; 
-jsonFormulaParser.CurrentNodeContext = CurrentNodeContext; 
-jsonFormulaParser.ExpressionTypeContext = ExpressionTypeContext; 
-jsonFormulaParser.LiteralContext = LiteralContext; 
-jsonFormulaParser.IdentifierContext = IdentifierContext; 
-jsonFormulaParser.JsonObjectContext = JsonObjectContext; 
-jsonFormulaParser.JsonObjectPairContext = JsonObjectPairContext; 
-jsonFormulaParser.JsonArrayContext = JsonArrayContext; 
-jsonFormulaParser.JsonValueContext = JsonValueContext; 
+JsonFormulaParser.FormulaContext = FormulaContext; 
+JsonFormulaParser.ExpressionContext = ExpressionContext; 
+JsonFormulaParser.ChainedExpressionContext = ChainedExpressionContext; 
+JsonFormulaParser.WildcardContext = WildcardContext; 
+JsonFormulaParser.MultiSelectListContext = MultiSelectListContext; 
+JsonFormulaParser.MultiSelectHashContext = MultiSelectHashContext; 
+JsonFormulaParser.KeyvalExprContext = KeyvalExprContext; 
+JsonFormulaParser.IndexExpressionContext = IndexExpressionContext; 
+JsonFormulaParser.ChainedBracketSpecifierContext = ChainedBracketSpecifierContext; 
+JsonFormulaParser.SliceContext = SliceContext; 
+JsonFormulaParser.FunctionExpressionContext = FunctionExpressionContext; 
+JsonFormulaParser.FunctionArgContext = FunctionArgContext; 
+JsonFormulaParser.CurrentNodeContext = CurrentNodeContext; 
+JsonFormulaParser.ExpressionTypeContext = ExpressionTypeContext; 
+JsonFormulaParser.IdentifierContext = IdentifierContext; 

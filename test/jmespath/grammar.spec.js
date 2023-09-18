@@ -11,8 +11,8 @@ governing permissions and limitations under the License.
 */
 
 import antlr4 from 'antlr4';
-import jsonFormulaParser from '../antlr/jsonFormulaParser.js';
-import jsonFormulaLexer from '../antlr/jsonFormulaLexer.js';
+import JsonFormulaParser from '../antlr/JsonFormulaParser.js';
+import JsonFormulaLexer from '../antlr/JsonFormulaLexer.js';
 
 const basic = require('./basic.json');
 
@@ -56,13 +56,11 @@ function executeTest(desc, tst) {
   let result;
   try {
     const chars = new antlr4.InputStream(tst.expression);
-    // eslint-disable-next-line new-cap
-    const lexer = new jsonFormulaLexer(chars);
+    const lexer = new JsonFormulaLexer(chars);
     lexer.removeErrorListeners();
     lexer.addErrorListener(new FormulaErrorListener());
     const tokens = new antlr4.CommonTokenStream(lexer);
-    // eslint-disable-next-line new-cap
-    const parser = new jsonFormulaParser(tokens);
+    const parser = new JsonFormulaParser(tokens);
     parser.buildParseTrees = true;
     parser.removeErrorListeners();
     parser.addErrorListener(new FormulaErrorListener());

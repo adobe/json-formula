@@ -1,307 +1,253 @@
-// Generated from antlr/jsonFormula.g4 by ANTLR 4.13.1
+// Generated from antlr/JsonFormula.g4 by ANTLR 4.13.1
 // jshint ignore: start
 import antlr4 from 'antlr4';
 
-// This class defines a complete generic visitor for a parse tree produced by jsonFormulaParser.
+// This class defines a complete generic visitor for a parse tree produced by JsonFormulaParser.
 
-export default class jsonFormulaVisitor extends antlr4.tree.ParseTreeVisitor {
+export default class JsonFormulaVisitor extends antlr4.tree.ParseTreeVisitor {
 
-	// Visit a parse tree produced by jsonFormulaParser#formula.
+	// Visit a parse tree produced by JsonFormulaParser#formula.
 	visitFormula(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#pipeExpression.
+	// Visit a parse tree produced by JsonFormulaParser#pipeExpression.
 	visitPipeExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#identifierExpression.
+	// Visit a parse tree produced by JsonFormulaParser#identifierExpression.
 	visitIdentifierExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#multDivExpression.
+	// Visit a parse tree produced by JsonFormulaParser#multDivExpression.
 	visitMultDivExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#notExpression.
+	// Visit a parse tree produced by JsonFormulaParser#notExpression.
 	visitNotExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#rawStringExpression.
+	// Visit a parse tree produced by JsonFormulaParser#rawStringExpression.
 	visitRawStringExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#comparisonExpression.
+	// Visit a parse tree produced by JsonFormulaParser#comparisonExpression.
 	visitComparisonExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#parenExpression.
+	// Visit a parse tree produced by JsonFormulaParser#parenExpression.
 	visitParenExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#orExpression.
+	// Visit a parse tree produced by JsonFormulaParser#orExpression.
 	visitOrExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#unaryMinusExpression.
+	// Visit a parse tree produced by JsonFormulaParser#unaryMinusExpression.
 	visitUnaryMinusExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#currentNodeExpression.
+	// Visit a parse tree produced by JsonFormulaParser#currentNodeExpression.
 	visitCurrentNodeExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#chainExpression.
+	// Visit a parse tree produced by JsonFormulaParser#chainExpression.
 	visitChainExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#andExpression.
+	// Visit a parse tree produced by JsonFormulaParser#andExpression.
 	visitAndExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#multiSelectHashExpression.
+	// Visit a parse tree produced by JsonFormulaParser#multiSelectHashExpression.
 	visitMultiSelectHashExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#wildcardExpression.
+	// Visit a parse tree produced by JsonFormulaParser#wildcardExpression.
 	visitWildcardExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#functionCallExpression.
+	// Visit a parse tree produced by JsonFormulaParser#functionCallExpression.
 	visitFunctionCallExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#indexedExpression.
+	// Visit a parse tree produced by JsonFormulaParser#indexedExpression.
 	visitIndexedExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#addSubtractExpression.
+	// Visit a parse tree produced by JsonFormulaParser#addSubtractExpression.
 	visitAddSubtractExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#multiSelectListExpression.
+	// Visit a parse tree produced by JsonFormulaParser#multiSelectListExpression.
 	visitMultiSelectListExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#bracketedExpression.
+	// Visit a parse tree produced by JsonFormulaParser#bracketedExpression.
 	visitBracketedExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#literalExpression.
+	// Visit a parse tree produced by JsonFormulaParser#literalExpression.
 	visitLiteralExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#numberLiteral.
+	// Visit a parse tree produced by JsonFormulaParser#numberLiteral.
 	visitNumberLiteral(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#chainedExpression.
+	// Visit a parse tree produced by JsonFormulaParser#chainedExpression.
 	visitChainedExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#wildcard.
+	// Visit a parse tree produced by JsonFormulaParser#wildcard.
 	visitWildcard(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#multiSelectList.
+	// Visit a parse tree produced by JsonFormulaParser#multiSelectList.
 	visitMultiSelectList(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#emptyHash.
+	// Visit a parse tree produced by JsonFormulaParser#emptyHash.
 	visitEmptyHash(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#nonEmptyHash.
+	// Visit a parse tree produced by JsonFormulaParser#nonEmptyHash.
 	visitNonEmptyHash(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#keyvalExpr.
+	// Visit a parse tree produced by JsonFormulaParser#keyvalExpr.
 	visitKeyvalExpr(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#bracketIndex.
+	// Visit a parse tree produced by JsonFormulaParser#bracketIndex.
 	visitBracketIndex(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#bracketStar.
+	// Visit a parse tree produced by JsonFormulaParser#bracketStar.
 	visitBracketStar(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#bracketSlice.
+	// Visit a parse tree produced by JsonFormulaParser#bracketSlice.
 	visitBracketSlice(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#bracketFlatten.
+	// Visit a parse tree produced by JsonFormulaParser#bracketFlatten.
 	visitBracketFlatten(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#select.
+	// Visit a parse tree produced by JsonFormulaParser#select.
 	visitSelect(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#chainedBracket.
+	// Visit a parse tree produced by JsonFormulaParser#chainedBracket.
 	visitChainedBracket(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#chainedBracketIndex.
+	// Visit a parse tree produced by JsonFormulaParser#chainedBracketIndex.
 	visitChainedBracketIndex(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#slice.
+	// Visit a parse tree produced by JsonFormulaParser#slice.
 	visitSlice(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#functionExpression.
+	// Visit a parse tree produced by JsonFormulaParser#functionExpression.
 	visitFunctionExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#functionArg.
+	// Visit a parse tree produced by JsonFormulaParser#functionArg.
 	visitFunctionArg(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#currentNode.
+	// Visit a parse tree produced by JsonFormulaParser#currentNode.
 	visitCurrentNode(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#expressionType.
+	// Visit a parse tree produced by JsonFormulaParser#expressionType.
 	visitExpressionType(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
 
-	// Visit a parse tree produced by jsonFormulaParser#literal.
-	visitLiteral(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
-	// Visit a parse tree produced by jsonFormulaParser#identifier.
+	// Visit a parse tree produced by JsonFormulaParser#identifier.
 	visitIdentifier(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
-	// Visit a parse tree produced by jsonFormulaParser#jsonObject.
-	visitJsonObject(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
-	// Visit a parse tree produced by jsonFormulaParser#jsonObjectPair.
-	visitJsonObjectPair(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
-	// Visit a parse tree produced by jsonFormulaParser#jsonArray.
-	visitJsonArray(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
-	// Visit a parse tree produced by jsonFormulaParser#jsonStringValue.
-	visitJsonStringValue(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
-	// Visit a parse tree produced by jsonFormulaParser#jsonNumberValue.
-	visitJsonNumberValue(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
-	// Visit a parse tree produced by jsonFormulaParser#jsonObjectValue.
-	visitJsonObjectValue(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
-	// Visit a parse tree produced by jsonFormulaParser#jsonArrayValue.
-	visitJsonArrayValue(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
-	// Visit a parse tree produced by jsonFormulaParser#jsonConstantValue.
-	visitJsonConstantValue(ctx) {
 	  return this.visitChildren(ctx);
 	}
 

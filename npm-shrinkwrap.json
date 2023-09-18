@@ -13,8 +13,17 @@
         "@babel/eslint-parser": "^7.19.1",
         "@babel/node": "^7.20.2",
         "@babel/preset-env": "^7.20.2",
+<<<<<<< Updated upstream
         "antlr4": "4.13.1",
         "asciidoctor": "^3.0.2",
+=======
+<<<<<<< Updated upstream
+        "antlr4": "4.11.0",
+=======
+        "antlr4": "4.13.1",
+        "asciidoctor": "^3.0.2",
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
         "babel-loader": "^9.1.0",
         "better-docs": "^2.7.2",
         "copy-webpack-plugin": "^11.0.0",
@@ -3965,9 +3974,14 @@
     },
     "node_modules/antlr4": {
       "version": "4.13.1",
+<<<<<<< Updated upstream
       "resolved": "https://registry.npmjs.org/antlr4/-/antlr4-4.13.1.tgz",
+=======
+      "resolved": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-dcloud/antlr4/-/antlr4-4.13.1.tgz",
+>>>>>>> Stashed changes
       "integrity": "sha512-kiXTspaRYvnIArgE97z5YVVf/cDVQABr3abFRR6mE7yesLMkgu4ujuyV/sgxafQ8wgve0DJQUJ38Z8tkgA2izA==",
       "dev": true,
+      "license": "BSD-3-Clause",
       "engines": {
         "node": ">=16"
       }
