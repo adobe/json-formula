@@ -73,7 +73,7 @@ window.addEventListener('load', () => {
   });
   run();
 
-  fetch('../antlr/JSONFormula.g4').then(r => {
+  fetch('../antlr/jsonFormula.g4').then(r => {
     r.text().then(g4 => {
       document.getElementById('grammar-out').innerHTML = g4;
     });

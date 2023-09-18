@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 NOTE:
-This file is substantially modified from the original source taken from:
+This contents of this folder are substantially modified from the original source taken from:
 https://github.com/jmespath/jmespath.js
 
-Broadly speaking, the changes are:
+The changes include (but are not limited to):
 - Modernized to ES6
 - Refactored into multiple JS files
 - Much less strict evaluation.  Allow arguments to be coerced to correct type.
@@ -25,5 +25,17 @@ Broadly speaking, the changes are:
 - Added Math and String Operators
 - camelCase functions
 - Add many Level 1 Openformula functions
+- Add Adobe copyright headers to the refactored files
+*/
 
+/*
+Copyright 2022 Adobe. All rights reserved.
+This file is licensed to you under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License. You may obtain a copy
+of the License at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under
+the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+OF ANY KIND, either express or implied. See the License for the specific language
+governing permissions and limitations under the License.
 */

@@ -1,3 +1,31 @@
+/*
+Copyright 2014 James Saryerwinnie
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+/*
+Copyright 2022 Adobe. All rights reserved.
+This file is licensed to you under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License. You may obtain a copy
+of the License at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under
+the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+OF ANY KIND, either express or implied. See the License for the specific language
+governing permissions and limitations under the License.
+*/
+
 /* eslint-disable no-underscore-dangle */
 import tokenDefinitions from './tokenDefinitions.js';
 
@@ -87,11 +115,9 @@ function isAlphaNum(ch) {
 function isIdentifier(stream, pos) {
   const ch = stream[pos];
   // $ is special -- it's allowed to be part of an identifier if it's the first character
-  if (ch === '$') {
-    return stream.length > pos && isAlphaNum(stream[pos + 1]);
-  }
   // return whether character 'isAlpha'
-  return (ch >= 'a' && ch <= 'z')
+  return ch === '$'
+    || (ch >= 'a' && ch <= 'z')
     || (ch >= 'A' && ch <= 'Z')
     || ch === '_';
 }
@@ -238,7 +264,10 @@ export default class Lexer {
   _consumeUnquotedIdentifier(stream) {
     const start = this._current;
     this._current += 1;
-    while (this._current < stream.length && isAlphaNum(stream[this._current])) {
+    while (
+      this._current < stream.length
+      && (stream[this._current] === '$' || isAlphaNum(stream[this._current]))
+    ) {
       this._current += 1;
     }
     return stream.slice(start, this._current);
@@ -250,7 +279,7 @@ export default class Lexer {
     const maxLength = stream.length;
     let foundNonAlpha = !isIdentifier(stream, start + 1);
     while (stream[this._current] !== "'" && this._current < maxLength) {
-      // You can escape a double quote and you can escape an escape.
+      // You can escape a single quote and you can escape an escape.
       let current = this._current;
       if (!isAlphaNum(stream[current])) foundNonAlpha = true;
       if (stream[current] === '\\' && (stream[current + 1] === '\\'
@@ -263,18 +292,21 @@ export default class Lexer {
     }
     this._current += 1;
     const val = stream.slice(start, this._current);
-    // Check for unnecessary double quotes.
-    // json-formula uses double quotes to escape characters that don't belong in names names.
+    // Check for unnecessary single quotes.
+    // json-formula uses single quotes to escape characters that don't belong in names names.
     // e.g. "purchase-order".address
-    // If we find a double-quoted entity with spaces or all legal characters, issue a warning
+    // If we find a single-quoted entity with spaces or all legal characters, issue a warning
     try {
-      if (!foundNonAlpha || val.includes(' ')) {
+      if (!foundNonAlpha) {
         this.debug.push(`Suspicious quotes: ${val}`);
         this.debug.push(`Did you intend a literal? "${val.replace(/'/g, '')}"?`);
       }
       // eslint-disable-next-line no-empty
     } catch (e) { }
-    return JSON.parse(`"${val.substring(1, val.length - 1)}"`);
+    // we want to do all the escape-processing that JSON does ...
+    // except that JSON expects to escape double quotes, and our identifiers
+    // escape single quotes.
+    return JSON.parse(`"${val.substring(1, val.length - 1).replace(/\\'/g, "'")}"`);
   }
 
   _consumeRawStringLiteral(stream) {
@@ -356,7 +388,7 @@ export default class Lexer {
     if (ch !== globalStartToken) return false;
     // $ is special -- it's allowed to be part of an identifier if it's the first character
     let i = pos + 1;
-    while (i < stream.length && isAlphaNum(stream[i])) i += 1;
+    while (i < stream.length && (stream[i] === '$' || isAlphaNum(stream[i]))) i += 1;
     const global = stream.slice(pos, i);
     return this._allowedGlobalNames.includes(global);
   }
@@ -364,7 +396,8 @@ export default class Lexer {
   _consumeGlobal(stream) {
     const start = this._current;
     this._current += 1;
-    while (this._current < stream.length && isAlphaNum(stream[this._current])) this._current += 1;
+    while (this._current < stream.length
+      && (stream[this._current] === '$' || isAlphaNum(stream[this._current]))) this._current += 1;
     const global = stream.slice(start, this._current);
 
     return { type: TOK_GLOBAL, name: global, start };

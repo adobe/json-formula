@@ -12,11 +12,18 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+*/
 
-NOTICE:
-This file is substantially modified from the original source taken from:
-https://github.com/jmespath/jmespath.js
+/*
+Copyright 2022 Adobe. All rights reserved.
+This file is licensed to you under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License. You may obtain a copy
+of the License at http://www.apache.org/licenses/LICENSE-2.0
 
+Unless required by applicable law or agreed to in writing, software distributed under
+the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+OF ANY KIND, either express or implied. See the License for the specific language
+governing permissions and limitations under the License.
 */
 
 /* eslint-disable no-underscore-dangle */
@@ -390,7 +397,7 @@ export default function functions(
     /**
      * Returns the first argument that does not resolve to `null`.
      * This function accepts one or more arguments, and will evaluate
-     * them in order until a non null argument is encounted. If all
+     * them in order until a non null argument is encountered. If all
      * arguments values resolve to null, then a value of null is returned.
      * @param {...any} argument
      * @return {any}
@@ -513,7 +520,7 @@ export default function functions(
     /**
      * This function accepts an array `list` argument and returns the sorted elements of
      * the `list` as an array. The array must be a list of strings or numbers.
-     * Sorting strings is based on code points. Locale is not taken into account.
+     * string sorting is based on code points. Locale is not taken into account.
      * @param {number[]|string[]} list
      * @return {number[]|string[]}
      * @function sort

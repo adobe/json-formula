@@ -1,148 +1,3 @@
-<a name="casefold"></a>
-
-## casefold(input) ⇒ <code>string</code>
-Returns a lower-case string of the `input` string using locale-specific mappings.
-e.g. Strings with German lowercase letter 'ß' can be compared to 'ss'
-
-**Kind**: global function  
-**Returns**: <code>string</code> - A new string converted to lower case  
-**Category**: JSONFormula  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| input | <code>string</code> | string to casefold |
-
-**Example**  
-```js
-casefold('AbC') // returns 'abc'
-```
-<a name="datetime"></a>
-
-## datetime(year, month, day, [hours], [minutes], [seconds], [milliseconds]) ⇒ <code>number</code>
-Return a date/time value.
-
-**Kind**: global function  
-**Returns**: <code>number</code> - A date/time value represented by number of seconds since 1 January 1970.  
-**Category**: JSONFormula  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| year | <code>integer</code> | Integer value representing the year. Values from 0 to 99 map to the years 1900 to 1999. All other values are the actual year |
-| month | <code>integer</code> | Integer value representing the month, beginning with 1 for January to 12 for December. |
-| day | <code>integer</code> | Integer value representing the day of the month. |
-| [hours] | <code>integer</code> | Integer value between 0 and 23 representing the hour of the day. Defaults to 0. |
-| [minutes] | <code>integer</code> | Integer value representing the minute segment of a time. The default is 0 minutes past the hour. |
-| [seconds] | <code>integer</code> | Integer value representing the second segment of a time. The default is 0 seconds past the minute. |
-| [milliseconds] | <code>integer</code> | Integer value representing the millisecond segment of a time. The default is 0 milliseconds past the second. |
-
-**Example**  
-```js
-datetime(2010, 10, 10) // returns representation of October 10, 2010
-```
-**Example**  
-```js
-datetime(2010, 2, 28) // returns representation of February 28, 2010
-```
-<a name="deepScan"></a>
-
-## deepScan(object, name) ⇒ <code>any</code>
-Searches a nested hierarchy of objects to return an array of elements that match a `name`.
-The name can be either a key into a map or an array index.
-This is similar to the JSONPath deep scan operator (..)
-
-**Kind**: global function  
-**Category**: JSONFormula  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| object | <code>object</code> | The starting object or array where we start the search |
-| name | <code>string</code> | The name (or index position) of the elements to find |
-
-**Example**  
-```js
-deepScan({a : {b1 : {c : 2}, b2 : {c : 3}}}, 'c') //returns [2, 3]
-```
-<a name="entries"></a>
-
-## entries(obj) ⇒ <code>Array.&lt;any&gt;</code>
-returns an array of a given object's property `[key, value]` pairs.
-
-**Kind**: global function  
-**Returns**: <code>Array.&lt;any&gt;</code> - an array of [key, value] pairs  
-**Category**: JSONFormula  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | <code>object</code> | Object whose `[key, value]` pairs need to be extracted |
-
-**Example**  
-```js
-entries({a: 1, b: 2}) //returns [['a', 1], ['b', 2]]
-```
-<a name="fromEntries"></a>
-
-## fromEntries(pairs) ⇒ <code>object</code>
-returns an object by transforming a list of key-value `pairs` into an object.
-
-**Kind**: global function  
-**Category**: JSONFormula  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| pairs | <code>Array.&lt;any&gt;</code> | list of key-value pairs to create the object from |
-
-**Example**  
-```js
-fromEntries([['a', 1], ['b', 2]]) //returns {a: 1, b: 2}
-```
-<a name="null"></a>
-
-## null() ⇒ <code>boolean</code>
-Return constant null value.
-Note that expressions may also use the JSON literal null: `` `null` ``
-
-**Kind**: global function  
-**Returns**: <code>boolean</code> - True  
-**Category**: JSONFormula  
-<a name="unique"></a>
-
-## unique(input) ⇒ <code>array</code>
-takes an array and returns unique elements within it
-
-**Kind**: global function  
-**Returns**: <code>array</code> - array with duplicate elements removed  
-**Category**: JSONFormula  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| input | <code>array</code> | input array |
-
-**Example**  
-```js
-unique([1, 2, 3, 4, 1, 1, 2]) //returns [1, 2, 3, 4]
-```
-<a name="value"></a>
-
-## value(object, index:) ⇒ <code>any</code>
-Perform an indexed lookup on a map or array
-
-**Kind**: global function  
-**Returns**: <code>any</code> - the result of the lookup -- or `null` if not found.  
-**Category**: JSONFormula  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| object | [<code>map</code>](#map) \| <code>array</code> | on which to perform the lookup |
-| index: | <code>string</code> \| <code>integer</code> | a named child for a map or an integer offset for an array |
-
-**Example**  
-```js
-value({a: 1, b:2, c:3}, 'a') //returns 1
-```
-**Example**  
-```js
-value([1, 2, 3, 4], 2) //returns 3
-```
 <a name="abs"></a>
 
 ## abs(value) ⇒ <code>number</code>
@@ -438,7 +293,7 @@ If a mix of numbers and strings are provided, the type of the first value will b
 
 | Param | Type | Description |
 | --- | --- | --- |
-| collection | <code>Array.&lt;number&gt;</code> \| <code>Array.&lt;string&gt;</code> | array in which the minimum element is to be calculated |
+| collection | <code>...Array.&lt;number&gt;</code> \| <code>Array.&lt;string&gt;</code> \| <code>number</code> \| <code>string</code> | elements |
 
 **Example**  
 ```js
@@ -457,7 +312,7 @@ min(['a', 'a1', 'b']) // returns 'a'
 ## notNull(...argument) ⇒ <code>any</code>
 Returns the first argument that does not resolve to `null`.
 This function accepts one or more arguments, and will evaluate
-them in order until a non null argument is encounted. If all
+them in order until a non null argument is encountered. If all
 arguments values resolve to null, then a value of null is returned.
 
 **Kind**: global function  
@@ -552,7 +407,7 @@ reverse(['a', 'b', 'c']) //returns ['c', 'b', 'a']
 ## sort(list) ⇒ <code>Array.&lt;number&gt;</code> \| <code>Array.&lt;string&gt;</code>
 This function accepts an array `list` argument and returns the sorted elements of
 the `list` as an array. The array must be a list of strings or numbers.
-Sorting strings is based on code points. Locale is not taken into account.
+string sorting is based on code points. Locale is not taken into account.
 
 **Kind**: global function  
 **Category**: jmespath  
@@ -655,7 +510,7 @@ converts the passed arg to a number. The conversion happens as per the following
 * number - Returns the passed in value.
 * array - null
 * object - null
-* boolean - null
+* boolean - 1 if true, 0 if false
 * null - null
 
 **Kind**: global function  
@@ -679,7 +534,7 @@ toNumber({a: 1}) //returns null
 ```
 **Example**  
 ```js
-toNumber(true()) //returns null
+toNumber(true()) //returns 1
 ```
 <a name="toString"></a>
 
@@ -768,6 +623,151 @@ The length of the returned array is equal to the length of the shortest array.
 **Example**  
 ```js
 zip([1, 2, 3], [4, 5, 6]) //returns [[1, 4], [2, 5], [3, 6]]
+```
+<a name="casefold"></a>
+
+## casefold(input) ⇒ <code>string</code>
+Returns a lower-case string of the `input` string using locale-specific mappings.
+e.g. Strings with German lowercase letter 'ß' can be compared to 'ss'
+
+**Kind**: global function  
+**Returns**: <code>string</code> - A new string converted to lower case  
+**Category**: json-formula  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| input | <code>string</code> | string to casefold |
+
+**Example**  
+```js
+casefold('AbC') // returns 'abc'
+```
+<a name="datetime"></a>
+
+## datetime(year, month, day, [hours], [minutes], [seconds], [milliseconds]) ⇒ <code>number</code>
+Return a date/time value.
+
+**Kind**: global function  
+**Returns**: <code>number</code> - A date/time value represented by number of seconds since 1 January 1970.  
+**Category**: json-formula  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| year | <code>integer</code> | Integer value representing the year. Values from 0 to 99 map to the years 1900 to 1999. All other values are the actual year |
+| month | <code>integer</code> | Integer value representing the month, beginning with 1 for January to 12 for December. |
+| day | <code>integer</code> | Integer value representing the day of the month. |
+| [hours] | <code>integer</code> | Integer value between 0 and 23 representing the hour of the day. Defaults to 0. |
+| [minutes] | <code>integer</code> | Integer value representing the minute segment of a time. The default is 0 minutes past the hour. |
+| [seconds] | <code>integer</code> | Integer value representing the second segment of a time. The default is 0 seconds past the minute. |
+| [milliseconds] | <code>integer</code> | Integer value representing the millisecond segment of a time. The default is 0 milliseconds past the second. |
+
+**Example**  
+```js
+datetime(2010, 10, 10) // returns representation of October 10, 2010
+```
+**Example**  
+```js
+datetime(2010, 2, 28) // returns representation of February 28, 2010
+```
+<a name="deepScan"></a>
+
+## deepScan(object, name) ⇒ <code>any</code>
+Searches a nested hierarchy of objects to return an array of elements that match a `name`.
+The name can be either a key into a map or an array index.
+This is similar to the JSONPath deep scan operator (..)
+
+**Kind**: global function  
+**Category**: json-formula  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| object | <code>object</code> | The starting object or array where we start the search |
+| name | <code>string</code> | The name (or index position) of the elements to find |
+
+**Example**  
+```js
+deepScan({a : {b1 : {c : 2}, b2 : {c : 3}}}, 'c') //returns [2, 3]
+```
+<a name="entries"></a>
+
+## entries(obj) ⇒ <code>Array.&lt;any&gt;</code>
+returns an array of a given object's property `[key, value]` pairs.
+
+**Kind**: global function  
+**Returns**: <code>Array.&lt;any&gt;</code> - an array of [key, value] pairs  
+**Category**: json-formula  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| obj | <code>object</code> | Object whose `[key, value]` pairs need to be extracted |
+
+**Example**  
+```js
+entries({a: 1, b: 2}) //returns [['a', 1], ['b', 2]]
+```
+<a name="fromEntries"></a>
+
+## fromEntries(pairs) ⇒ <code>object</code>
+returns an object by transforming a list of key-value `pairs` into an object.
+
+**Kind**: global function  
+**Category**: json-formula  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| pairs | <code>Array.&lt;any&gt;</code> | list of key-value pairs to create the object from |
+
+**Example**  
+```js
+fromEntries([['a', 1], ['b', 2]]) //returns {a: 1, b: 2}
+```
+<a name="null"></a>
+
+## null() ⇒ <code>boolean</code>
+Return constant null value.
+Note that expressions may also use the JSON literal null: `` `null` ``
+
+**Kind**: global function  
+**Returns**: <code>boolean</code> - True  
+**Category**: json-formula  
+<a name="unique"></a>
+
+## unique(input) ⇒ <code>array</code>
+takes an array and returns unique elements within it
+
+**Kind**: global function  
+**Returns**: <code>array</code> - array with duplicate elements removed  
+**Category**: json-formula  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| input | <code>array</code> | input array |
+
+**Example**  
+```js
+unique([1, 2, 3, 4, 1, 1, 2]) //returns [1, 2, 3, 4]
+```
+<a name="value"></a>
+
+## value(object, index:) ⇒ <code>any</code>
+Perform an indexed lookup on a map or array
+
+**Kind**: global function  
+**Returns**: <code>any</code> - the result of the lookup -- or `null` if not found.  
+**Category**: json-formula  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| object | [<code>map</code>](#map) \| <code>array</code> | on which to perform the lookup |
+| index: | <code>string</code> \| <code>integer</code> | a named child for a map or an integer offset for an array |
+
+**Example**  
+```js
+value({a: 1, b:2, c:3}, 'a') //returns 1
+```
+**Example**  
+```js
+value([1, 2, 3, 4], 2) //returns 3
 ```
 <a name="and"></a>
 

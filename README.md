@@ -1,4 +1,4 @@
-# JSONFormula: A Query Language for JSON with Spreadsheet Functions
+# json-formula: A Query Language for JSON with Spreadsheet Functions
 
 This project hosts an implementation of a form expression grammar.
 The grammar is a mashup of
@@ -9,17 +9,23 @@ functions and operators and [JMESPath](https://jmespath.org/) a JSON query langu
 Visit the [Playground](https://opensource.adobe.com/json-formula/dist/index.html)
 
 # Documentation
+[Specification](https://opensource.adobe.com/json-formula/dist/spec.html)
+
 [Function Reference](https://opensource.adobe.com/json-formula/dist/jsdocs/global.html)
 
 [JS API](https://opensource.adobe.com/json-formula/dist/jsdocs/index.html)
 
 NOTES:
-- Documentation is still in progress.  ToDo: Incorporate descriptions of expressions, operators.
 - URLs for the playground and documentation are subject to change.
 
 # Setup
 
-Follow the 'Quick Start' instructions at: https://www.antlr.org/ to install the antlr generator
+Download antlr4:
+
+> $ cd /usr/local/lib
+> $ sudo curl -O https://www.antlr.org/download/antlr-4.13.1-complete.jar
+
+Install npm packages:
 
 > npm install
 > npm start
@@ -31,26 +37,24 @@ Highly recommended to use [vscode](https://code.visualstudio.com/) and install t
 
 [re]generate grammar: `source generate.sh`
 
-**_Please ensure that you are using only antlr version 4.9.2_**
+**_Please ensure that you are using only antlr version 4.13.1_**
 
 re-save the railroad diagram to the doc folder from vscode:
 - Context click on the g4 file
 - Choose "Show Railroad Diagram for All Tools
 - From the railroad view choose "Save to HTML"
 
-If an expression fails to evaluate, follow these steps to debug:
+If an expression fails to evaluate, follow these steps to debug the parser:
 
 ```
 # populate src/test/debug.txt with the expression to test
 > cd antlr
-> antlr4 JSONFormula.g4
-> javac *.java
-> grun JSONFormula formula -tokens -tree ../test/debug.txt
+> sh debugExpression.sh
 ```
 
 ## Running Tests
 
-To run the tests, [re]generation of JavaScript code is a must using the command `source generate.sh`.
+To run the tests, [re]generation of JavaScript code is necessary using the command `source generate.sh`.
 The tests require an 18.x version of node.
 
 ```

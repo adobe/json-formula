@@ -1,0 +1,9 @@
+This project is a derivative work of JMESPath, originally found at:
+https://github.com/jmespath/jmespath.site
+and
+https://github.com/jmespath/jmespath.js
+
+Original NOTICE.txt from jmespath.site:
+
+JMESPath Website, Documentation, and Specification
+Copyright 2015 James Saryerwinnie. All Rights Reserved.

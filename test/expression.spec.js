@@ -13,6 +13,7 @@ import JsonFormula from '../src/json-formula.js';
 import createForm from '../tutorial/Form.js';
 import functions from '../src/jmespath/openFormulaFunctions.js';
 import stringToNumber from '../src/jmespath/stringToNumber.js';
+import testGrammar from './testGrammar.js';
 
 const sampleData = require('./sampleData.json');
 const tests = require('./tests.json');
@@ -65,7 +66,7 @@ jsonFormula.search(
 
 // in case running only specific tests update the filter clause
 // eslint-disable-next-line no-unused-vars
-const filterClause = ([_desc, tst]) => true;
+const filterClause = ([_desc, _tst]) => true;
 const filtered = tests.filter(filterClause);
 
 test.each(filtered)('%s', (_desc, tst) => {
@@ -74,9 +75,9 @@ test.each(filtered)('%s', (_desc, tst) => {
   const data = jsonFormula.search(tst.data, sampleData, {}, language);
   let result;
   try {
-    result = jsonFormula.search(tst.expression, data, { $: 42 }, language);
+    result = jsonFormula.search(tst.expression, data, { $: 42, $$: 43 }, language);
   } catch (e) {
-    expect(tst.error).toBe('syntax');
+    expect(tst.error).toBeDefined();
     return;
   }
   if (typeof result === 'number') {
@@ -88,6 +89,10 @@ test.each(filtered)('%s', (_desc, tst) => {
 
 // run again -- with field definitions
 test.each(filtered)('%s', (_desc, tst) => {
+  const grammarResult = testGrammar(tst.expression);
+  if (grammarResult === 'error') expect(tst.error).toBe('syntax');
+  else expect(tst.error).not.toBe('syntax');
+
   const language = tst.language || 'en-US';
   const data = jsonFormula.search(tst.data, sampleData, {}, language);
   let jsonResult;
@@ -96,11 +101,11 @@ test.each(filtered)('%s', (_desc, tst) => {
     jsonResult = jsonFormula.search(
       tst.expression,
       root,
-      { $form: root, $: { valueOf: () => 42 } },
+      { $form: root, $: 42, $$: 43 },
       language,
     );
   } catch (e) {
-    expect(tst.error).toBe('syntax');
+    expect(tst.error).toBeDefined();
     return;
   }
   // stringify/parse so that the comparison doesn't get confused by field objects

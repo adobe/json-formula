@@ -1,4 +1,18 @@
-// $antlr-format false
+/*
+Copyright 2014 James Saryerwinnie
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 /*
 Copyright 2021 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -11,14 +25,14 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-grammar JSONFormula;
+grammar JsonFormula;
 
 formula : expression EOF ;
 
 expression
   : expression '.' chainedExpression # chainExpression
-  | expression chainedBracketSpecifier # bracketedExpression
-  | bracketSpecifier # bracketExpression
+  | expression indexExpression # bracketedExpression
+  | indexExpression # indexedExpression
   | expression ('*' | '/' | '&' | '~') expression	# multDivExpression
   | expression ('+' | '-') expression	# addSubtractExpression
   | expression COMPARATOR expression # comparisonExpression
@@ -31,11 +45,11 @@ expression
   | wildcard # wildcardExpression
   | multiSelectList # multiSelectListExpression
   | multiSelectHash # multiSelectHashExpression
-  | literal # literalExpression
+  | JSON_FRAGMENT # literalExpression
   | functionExpression # functionCallExpression
   | expression '|' expression # pipeExpression
-  | (STRING | RAW_STRING) # rawStringExpression
-  | (REAL_OR_EXPONENT_NUMBER | SIGNED_INT) # numberLiteral
+  | STRING # rawStringExpression
+  | '-'? (REAL_OR_EXPONENT_NUMBER | INT) # numberLiteral
   | currentNode # currentNodeExpression
   ;
 
@@ -58,17 +72,12 @@ multiSelectHash
 
 keyvalExpr : identifier ':' expression ;
 
-bracketSpecifier
-  : '[' SIGNED_INT ']' # bracketIndex
-  | '[' '*' ']' # bracketStar
+indexExpression
+  : '[' '*' ']' # bracketStar
   | '[' slice ']' # bracketSlice
   | '[' ']' # bracketFlatten
-  | '[?' expression ']' # select
-  ;
-
-chainedBracketSpecifier
-  : bracketSpecifier # chainedBracket
-  | '[' expression ']' # chainedBracketIndex
+  | '[?' expression ']' # filter
+  | '[' expression ']' # select
   ;
 
 slice : start=expression? ':' stop=expression? (':' step=expression?)? ;
@@ -86,7 +95,6 @@ COMPARATOR
 functionExpression
   : NAME '(' functionArg (',' functionArg)* ')'
   | NAME '(' ')'
-  | JSON_CONSTANT '(' ')'
   ;
 
 functionArg
@@ -98,58 +106,22 @@ currentNode : '@' ;
 
 expressionType : '&' expression ;
 
-literal : '`' jsonValue '`' ;
-
 identifier
   : NAME
   | QUOTED_NAME
-  | JSON_CONSTANT
   ;
 
-JSON_CONSTANT
-  : 'true'
-  | 'false'
-  | 'null'
-  ;
-
-NAME : [@a-zA-Z_] [a-zA-Z0-9_]* ;
+NAME : [@a-zA-Z_$] [a-zA-Z0-9_$]* ;
 
 QUOTED_NAME : '\'' (ESC | ~ ['\\])* '\'';
 
-jsonObject
-  : '{' jsonObjectPair (',' jsonObjectPair)* '}'
-  | '{' '}'
+JSON_FRAGMENT
+  : '`' (STRING | ~ [\\`]+)* '`'
   ;
 
-jsonObjectPair
-  : STRING ':' jsonValue
-  ;
+STRING : '"' (ESC | ~["\\])* '"' ;
 
-jsonArray
-  : '[' jsonValue (',' jsonValue)* ']'
-  | '[' ']'
-  ;
-
-jsonValue
-  : STRING # jsonStringValue
-  | (REAL_OR_EXPONENT_NUMBER | SIGNED_INT) # jsonNumberValue
-  | jsonObject # jsonObjectValue
-  | jsonArray # jsonArrayValue
-  | JSON_CONSTANT # jsonConstantValue
-  ;
-
-STRING
-  : '"' (ESC | ~ ["\\])* '"'
-  ;
-
-fragment ESC
-  : '\\' (["\\/bfnrt`] | UNICODE)
-  ;
-
-RAW_STRING : '"' (RAW_ESC | ~["\\])* '"' ;
-
-fragment RAW_ESC : '\\' . ;
-
+fragment ESC : '\\' (~[u] | UNICODE);
 
 fragment UNICODE
   : 'u' HEX HEX HEX HEX
@@ -160,13 +132,11 @@ fragment HEX
   ;
 
 REAL_OR_EXPONENT_NUMBER
-  : '-'? INT '.' [0-9] + EXP?
-  | '-'? INT EXP
+  : INT '.' [0-9] + EXP?
+  | INT EXP
   ;
 
-SIGNED_INT : '-'? INT ;
-
-fragment INT
+INT
   : '0'
   | [1-9] [0-9]*
   ;

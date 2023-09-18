@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2021 Adobe. All rights reserved.
 # This file is licensed to you under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License. You may obtain a copy
@@ -9,7 +10,7 @@
 # governing permissions and limitations under the License.
 rm -rf test/antlr
 mkdir test/antlr
-export CLASSPATH=".:/usr/local/lib/antlr-4.9.2-complete.jar:$CLASSPATH"
-alias antlr4='java -jar /usr/local/lib/antlr-4.9.2-complete.jar'
+export CLASSPATH=".:/usr/local/lib/antlr-4.13.1-complete.jar:$CLASSPATH"
+alias antlr4='java -jar /usr/local/lib/antlr-4.13.1-complete.jar'
 alias grun='java org.antlr.v4.gui.TestRig'
-antlr4 -Dlanguage=JavaScript -visitor antlr/JSONFormula.g4 -o test/antlr
+antlr4 -Dlanguage=JavaScript -visitor antlr/JsonFormula.g4 -o test

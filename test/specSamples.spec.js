@@ -14,26 +14,34 @@ import functions from '../src/jmespath/openFormulaFunctions.js';
 import stringToNumber from '../src/jmespath/stringToNumber.js';
 import testGrammar from './testGrammar.js';
 
-const docSamples = require('./docSamples.json');
+const specSamples = require('./specSamples.json');
 
 const jsonFormula = new JsonFormula(functions, stringToNumber);
 
-test.each(docSamples)('%s', (_desc, tst) => {
-  const language = tst.language || 'en-US';
-  const grammarResult = testGrammar(tst.expression);
-  if (grammarResult === 'error') expect(tst.error).toBe('syntax');
-  else expect(tst.error).not.toBe('syntax');
-
+test.each(specSamples)('%s', (expr, data, expected) => {
+  const language = 'en-US';
   let result;
   try {
-    result = jsonFormula.search(tst.expression, null, {}, language);
+    const grammarResult = testGrammar(expr);
+    expect(grammarResult).not.toBe('error');
+
+    result = jsonFormula.search(
+      expr,
+      data,
+      {
+        $days: [
+          'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday',
+        ],
+      },
+      language,
+    );
   } catch (e) {
-    expect(tst.error).toBe('syntax');
+    expect(expected).toBe('syntax');
     return;
   }
   if (typeof result === 'number') {
-    expect(result).toBeCloseTo(tst.expected, 5);
+    expect(result).toBeCloseTo(expected, 5);
   } else {
-    expect(result).toEqual(tst.expected);
+    expect(result).toEqual(expected);
   }
 });
