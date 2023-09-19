@@ -697,7 +697,7 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	            break;
 
 	        case 4:
-	            localctx = new PredicateContext(this, localctx);
+	            localctx = new FilterContext(this, localctx);
 	            this.enterOuterAlt(localctx, 4);
 	            this.state = 131;
 	            this.match(JsonFormulaParser.T__19);
@@ -2228,7 +2228,7 @@ class IndexExpressionContext extends antlr4.ParserRuleContext {
 }
 
 
-class PredicateContext extends IndexExpressionContext {
+class FilterContext extends IndexExpressionContext {
 
     constructor(parser, ctx) {
         super(parser);
@@ -2241,19 +2241,19 @@ class PredicateContext extends IndexExpressionContext {
 
 	enterRule(listener) {
 	    if(listener instanceof JsonFormulaListener ) {
-	        listener.enterPredicate(this);
+	        listener.enterFilter(this);
 		}
 	}
 
 	exitRule(listener) {
 	    if(listener instanceof JsonFormulaListener ) {
-	        listener.exitPredicate(this);
+	        listener.exitFilter(this);
 		}
 	}
 
 	accept(visitor) {
 	    if ( visitor instanceof JsonFormulaVisitor ) {
-	        return visitor.visitPredicate(this);
+	        return visitor.visitFilter(this);
 	    } else {
 	        return visitor.visitChildren(this);
 	    }
@@ -2262,7 +2262,7 @@ class PredicateContext extends IndexExpressionContext {
 
 }
 
-JsonFormulaParser.PredicateContext = PredicateContext;
+JsonFormulaParser.FilterContext = FilterContext;
 
 class SelectContext extends IndexExpressionContext {
 

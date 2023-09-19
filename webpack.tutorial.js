@@ -30,7 +30,7 @@ export default {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-        }
+        },
       },
       {
         test: /\.css$/,
@@ -57,7 +57,7 @@ export default {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: './doc', to: path.resolve(DIST, 'doc') },
+        { from: './doc/output', to: path.resolve(DIST, 'doc') },
       ],
     }),
     new HtmlWebpackPlugin({
