@@ -255,7 +255,6 @@ The following errors are defined:
 * `invalid-arity` is raised when an invalid number of function arguments is
   encountered during the evaluation process.
 
-
 == SubExpressions
 
 [source%unbreakable]

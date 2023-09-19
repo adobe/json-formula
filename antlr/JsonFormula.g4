@@ -49,7 +49,7 @@ expression
   | functionExpression # functionCallExpression
   | expression '|' expression # pipeExpression
   | STRING # rawStringExpression
-  | '-'? (REAL_OR_EXPONENT_NUMBER | INT) # numberLiteral
+  | (REAL_OR_EXPONENT_NUMBER | INT) # numberLiteral
   | currentNode # currentNodeExpression
   ;
 
