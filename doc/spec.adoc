@@ -204,16 +204,9 @@ from weakest to tightest binding:
 identifier
   : NAME
   | QUOTED_NAME
-  | JSON_CONSTANT
   ;
 
-JSON_CONSTANT
-  : 'true'
-  | 'false'
-  | 'null'
-  ;
-
-NAME : [@a-zA-Z_] [a-zA-Z0-9_]* ;
+NAME : [@a-zA-Z_$] [a-zA-Z0-9_$]* ;
 
 QUOTED_NAME : '\'' (ESC | ~ ['\\])* '\'';
 ----
@@ -225,9 +218,9 @@ From the grammar rule listed above identifiers can be one or more characters,
 and must start with `A-Za-z_$`.
 
 An identifier can also be quoted.  This is necessary when an identifier has
-characters not specified in the `unquoted-string` grammar rule.
+characters not specified in the `NAME` grammar rule.
 In this situation, an identifier is specified with a single quote, followed by
-any number of `unescaped-char` or `escaped-char` characters, followed by a
+any number of characters, followed by a
 single quote.  Any valid string can be used between single quoted, include JSON
 supported escape sequences, and six character unicode escape sequences.
 
