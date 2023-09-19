@@ -1,6 +1,32 @@
 = json-formula Specification
+John Brinkman <jbrinkma@adobe.com>
+1.0, {docdate}:
+:toc: macro
+:outlinelevels: 3
+:appendix-caption: Appendix
 
-This document is the specification for json-formula. In the specification, examples are shown through the use of a `search` function.  The syntax for this function is:
+ifdef::backend-pdf[]
+[.authors]
+{author} +
+{revnumber} {revremark} : {revdate}
+endif::[]
+
+// table of contents goes here
+toc::[]
+
+// page break
+<<<
+
+// [abstract]
+== Abstract
+
+This document is the specification for json-formula.
+
+// start numbering the sections from here...
+:sectnums:
+
+== Notation
+In the specification, examples are shown through the use of a `search` function.  The syntax for this function is:
 
 [source%unbreakable]
 ----
@@ -106,8 +132,6 @@ Coercion is not always possible, and if so, an error shall be emitted -- most of
     search("truth is " & `true`, {}) -> "truth is true"
     search(2 + `true`, {}) -> 3
     search(avg("20"), {}) -> 20
-    search(merge({a: 3}, 4), {}) -> {a:3}
-    search(merge({a: 3}, ["x", "y"]), {}) -> {"0": "x", "1": "y", "a": 3}
 ----
 
 == Date and Time Values
@@ -152,7 +176,10 @@ The grammar is specified using Antlr, as described https://www.antlr.org/[here].
 
 [source%unbreakable]
 ----
-include::../antlr/jsonFormula.g4[]
+
+ifdef::USING_DOCKER[]
+include::./grammar.g4[]
+endif::[]
 ----
 
 In addition to the grammar, there is the following token precedence that goes
@@ -175,16 +202,9 @@ from weakest to tightest binding:
 identifier
   : NAME
   | QUOTED_NAME
-  | JSON_CONSTANT
   ;
 
-JSON_CONSTANT
-  : 'true'
-  | 'false'
-  | 'null'
-  ;
-
-NAME : [@a-zA-Z_] [a-zA-Z0-9_]* ;
+NAME : [@a-zA-Z_$] [a-zA-Z0-9_$]* ;
 
 QUOTED_NAME : '\'' (ESC | ~ ['\\])* '\'';
 ----
@@ -196,9 +216,9 @@ From the grammar rule listed above identifiers can be one or more characters,
 and must start with `A-Za-z_$`.
 
 An identifier can also be quoted.  This is necessary when an identifier has
-characters not specified in the `unquoted-string` grammar rule.
+characters not specified in the `NAME` grammar rule.
 In this situation, an identifier is specified with a single quote, followed by
-any number of `unescaped-char` or `escaped-char` characters, followed by a
+any number of characters, followed by a
 single quote.  Any valid string can be used between single quoted, include JSON
 supported escape sequences, and six character unicode escape sequences.
 

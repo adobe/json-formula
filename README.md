@@ -39,7 +39,7 @@ Highly recommended to use [vscode](https://code.visualstudio.com/) and install t
 
 **_Please ensure that you are using only antlr version 4.13.1_**
 
-re-save the railroad diagram to the doc folder from vscode:
+re-save the railroad diagram to the doc/output folder from vscode:
 - Context click on the g4 file
 - Choose "Show Railroad Diagram for All Tools
 - From the railroad view choose "Save to HTML"
@@ -51,6 +51,12 @@ If an expression fails to evaluate, follow these steps to debug the parser:
 > cd antlr
 > sh debugExpression.sh
 ```
+
+## Updating Spec
+If the specification (or grammar) has changed, generate new PDF and HTML files using:
+> sh doc/makeDocs.sh
+
+(note the requirement to have docker installed)
 
 ## Running Tests
 

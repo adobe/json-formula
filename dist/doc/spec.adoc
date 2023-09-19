@@ -106,8 +106,6 @@ Coercion is not always possible, and if so, an error shall be emitted -- most of
     search("truth is " & `true`, {}) -> "truth is true"
     search(2 + `true`, {}) -> 3
     search(avg("20"), {}) -> 20
-    search(merge({a: 3}, 4), {}) -> {a:3}
-    search(merge({a: 3}, ["x", "y"]), {}) -> {"0": "x", "1": "y", "a": 3}
 ----
 
 == Date and Time Values

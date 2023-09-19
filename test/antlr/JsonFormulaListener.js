@@ -284,12 +284,12 @@ export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by JsonFormulaParser#predicate.
-	enterPredicate(ctx) {
+	// Enter a parse tree produced by JsonFormulaParser#filter.
+	enterFilter(ctx) {
 	}
 
-	// Exit a parse tree produced by JsonFormulaParser#predicate.
-	exitPredicate(ctx) {
+	// Exit a parse tree produced by JsonFormulaParser#filter.
+	exitFilter(ctx) {
 	}
 
 
