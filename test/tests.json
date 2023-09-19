@@ -414,6 +414,30 @@
     }
   ],
   [
+    "literal number",
+    {
+      "data": "{}",
+      "expression": ".123",
+      "expected": 0.123
+    }
+  ],
+  [
+    "literal expressions",
+    {
+      "data": "{}",
+      "expression": "-.1 + -.1 + .1",
+      "expected": -0.1
+    }
+  ],
+  [
+    "Bad JSON literal",
+    {
+      "data": "{}",
+      "expression": "`.1`",
+      "error": "type-error"
+    }
+  ],
+  [
     "unary minus expression",
     {
       "data": "samples.'purchase-order'",
@@ -2269,7 +2293,7 @@
     "index objects using literals",
     {
       "data": "samples.'purchase-order'",
-      "expression": "address[`street`]",
+      "expression": "address[`\"street\"`]",
       "expected": "123 Oak Street"
     }
   ],
@@ -2277,7 +2301,7 @@
     "index objects using expressions",
     {
       "data": "samples.'purchase-order'",
-      "expression": "address[lower(`STREET`)]",
+      "expression": "address[lower(`\"STREET\"`)]",
       "expected": "123 Oak Street"
     }
   ],

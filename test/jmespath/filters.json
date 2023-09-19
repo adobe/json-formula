@@ -295,7 +295,7 @@
     "cases": [
       {
         "expression": "foo[?bar==`1`].bar[0]",
-        "result": []
+        "result": [null, null]
       }
     ]
   },
@@ -312,7 +312,7 @@
     "cases": [
       {
         "expression": "foo[?a==`1`].b.c",
-        "result": ["x", "y", "z"]
+        "result": ["x", "y", "z", null]
       }
     ]
   },

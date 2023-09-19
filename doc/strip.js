@@ -14,6 +14,8 @@ import fs from 'fs';
 
 // Remove comments from the antlr file for inclusion in the spec
 const grammar = fs.readFileSync('../antlr/JsonFormula.g4').toString();
-const strippedGrammar = grammar.replace(/[\s\S.]*grammar/m, 'grammar');
+const strippedGrammar = grammar
+  .replace(/[\s\S.]*grammar/m, 'grammar')
+  .replace(/#.*/g, '');
 
 fs.writeFileSync('grammar.g4', strippedGrammar);

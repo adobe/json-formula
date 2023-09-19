@@ -153,15 +153,15 @@
       },
       {
         "expression": "*.*",
-        "result": []
+        "result": [null]
       },
       {
         "expression": "*.foo",
-        "result": []
+        "result": [null]
       },
       {
         "expression": "*[0]",
-        "result": []
+        "result": [null]
       },
       {
         "expression": ".*",

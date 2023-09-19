@@ -32,6 +32,15 @@ export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
+	// Enter a parse tree produced by JsonFormulaParser#multiSelectObjectExpression.
+	enterMultiSelectObjectExpression(ctx) {
+	}
+
+	// Exit a parse tree produced by JsonFormulaParser#multiSelectObjectExpression.
+	exitMultiSelectObjectExpression(ctx) {
+	}
+
+
 	// Enter a parse tree produced by JsonFormulaParser#multDivExpression.
 	enterMultDivExpression(ctx) {
 	}
@@ -122,12 +131,12 @@ export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by JsonFormulaParser#multiSelectHashExpression.
-	enterMultiSelectHashExpression(ctx) {
+	// Enter a parse tree produced by JsonFormulaParser#multiSelectArrayExpression.
+	enterMultiSelectArrayExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by JsonFormulaParser#multiSelectHashExpression.
-	exitMultiSelectHashExpression(ctx) {
+	// Exit a parse tree produced by JsonFormulaParser#multiSelectArrayExpression.
+	exitMultiSelectArrayExpression(ctx) {
 	}
 
 
@@ -164,15 +173,6 @@ export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 
 	// Exit a parse tree produced by JsonFormulaParser#addSubtractExpression.
 	exitAddSubtractExpression(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JsonFormulaParser#multiSelectListExpression.
-	enterMultiSelectListExpression(ctx) {
-	}
-
-	// Exit a parse tree produced by JsonFormulaParser#multiSelectListExpression.
-	exitMultiSelectListExpression(ctx) {
 	}
 
 
@@ -221,30 +221,30 @@ export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by JsonFormulaParser#multiSelectList.
-	enterMultiSelectList(ctx) {
+	// Enter a parse tree produced by JsonFormulaParser#multiSelectArray.
+	enterMultiSelectArray(ctx) {
 	}
 
-	// Exit a parse tree produced by JsonFormulaParser#multiSelectList.
-	exitMultiSelectList(ctx) {
-	}
-
-
-	// Enter a parse tree produced by JsonFormulaParser#emptyHash.
-	enterEmptyHash(ctx) {
-	}
-
-	// Exit a parse tree produced by JsonFormulaParser#emptyHash.
-	exitEmptyHash(ctx) {
+	// Exit a parse tree produced by JsonFormulaParser#multiSelectArray.
+	exitMultiSelectArray(ctx) {
 	}
 
 
-	// Enter a parse tree produced by JsonFormulaParser#nonEmptyHash.
-	enterNonEmptyHash(ctx) {
+	// Enter a parse tree produced by JsonFormulaParser#emptyObject.
+	enterEmptyObject(ctx) {
 	}
 
-	// Exit a parse tree produced by JsonFormulaParser#nonEmptyHash.
-	exitNonEmptyHash(ctx) {
+	// Exit a parse tree produced by JsonFormulaParser#emptyObject.
+	exitEmptyObject(ctx) {
+	}
+
+
+	// Enter a parse tree produced by JsonFormulaParser#nonEmptyObject.
+	enterNonEmptyObject(ctx) {
+	}
+
+	// Exit a parse tree produced by JsonFormulaParser#nonEmptyObject.
+	exitNonEmptyObject(ctx) {
 	}
 
 

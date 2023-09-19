@@ -37,7 +37,7 @@
     },
     {
       "expression": "foo.*.notbaz | [*]",
-      "result": [["a", "b", "c"], ["a", "b", "c"]]
+      "result": [null, null, null, ["a", "b", "c"], ["a", "b", "c"]]
     },
     {
       "expression": "{'a': foo.bar, 'b': foo.other} | *.baz",

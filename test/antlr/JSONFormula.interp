@@ -67,8 +67,8 @@ formula
 expression
 chainedExpression
 wildcard
-multiSelectList
-multiSelectHash
+multiSelectArray
+multiSelectObject
 keyvalExpr
 indexExpression
 slice

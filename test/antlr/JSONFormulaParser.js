@@ -83,7 +83,7 @@ export default class JsonFormulaParser extends antlr4.Parser {
                              "NAME", "QUOTED_NAME", "JSON_FRAGMENT", "STRING", 
                              "REAL_OR_EXPONENT_NUMBER", "INT", "WS" ];
     static ruleNames = [ "formula", "expression", "chainedExpression", "wildcard", 
-                         "multiSelectList", "multiSelectHash", "keyvalExpr", 
+                         "multiSelectArray", "multiSelectObject", "keyvalExpr", 
                          "indexExpression", "slice", "functionExpression", 
                          "functionArg", "currentNode", "expressionType", 
                          "identifier" ];
@@ -230,19 +230,19 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	            break;
 
 	        case 7:
-	            localctx = new MultiSelectListExpressionContext(this, localctx);
+	            localctx = new MultiSelectArrayExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
 	            this.state = 43;
-	            this.multiSelectList();
+	            this.multiSelectArray();
 	            break;
 
 	        case 8:
-	            localctx = new MultiSelectHashExpressionContext(this, localctx);
+	            localctx = new MultiSelectObjectExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
 	            this.state = 44;
-	            this.multiSelectHash();
+	            this.multiSelectObject();
 	            break;
 
 	        case 9:
@@ -471,13 +471,13 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	        case 2:
 	            this.enterOuterAlt(localctx, 2);
 	            this.state = 84;
-	            this.multiSelectList();
+	            this.multiSelectArray();
 	            break;
 
 	        case 3:
 	            this.enterOuterAlt(localctx, 3);
 	            this.state = 85;
-	            this.multiSelectHash();
+	            this.multiSelectObject();
 	            break;
 
 	        case 4:
@@ -532,9 +532,9 @@ export default class JsonFormulaParser extends antlr4.Parser {
 
 
 
-	multiSelectList() {
-	    let localctx = new MultiSelectListContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 8, JsonFormulaParser.RULE_multiSelectList);
+	multiSelectArray() {
+	    let localctx = new MultiSelectArrayContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 8, JsonFormulaParser.RULE_multiSelectArray);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
@@ -572,9 +572,9 @@ export default class JsonFormulaParser extends antlr4.Parser {
 
 
 
-	multiSelectHash() {
-	    let localctx = new MultiSelectHashContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 10, JsonFormulaParser.RULE_multiSelectHash);
+	multiSelectObject() {
+	    let localctx = new MultiSelectObjectContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 10, JsonFormulaParser.RULE_multiSelectObject);
 	    var _la = 0;
 	    try {
 	        this.state = 116;
@@ -582,7 +582,7 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	        var la_ = this._interp.adaptivePredict(this._input,7,this._ctx);
 	        switch(la_) {
 	        case 1:
-	            localctx = new EmptyHashContext(this, localctx);
+	            localctx = new EmptyObjectContext(this, localctx);
 	            this.enterOuterAlt(localctx, 1);
 	            this.state = 103;
 	            this.match(JsonFormulaParser.T__16);
@@ -591,7 +591,7 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	            break;
 
 	        case 2:
-	            localctx = new NonEmptyHashContext(this, localctx);
+	            localctx = new NonEmptyObjectContext(this, localctx);
 	            this.enterOuterAlt(localctx, 2);
 	            this.state = 105;
 	            this.match(JsonFormulaParser.T__16);
@@ -1015,8 +1015,8 @@ JsonFormulaParser.RULE_formula = 0;
 JsonFormulaParser.RULE_expression = 1;
 JsonFormulaParser.RULE_chainedExpression = 2;
 JsonFormulaParser.RULE_wildcard = 3;
-JsonFormulaParser.RULE_multiSelectList = 4;
-JsonFormulaParser.RULE_multiSelectHash = 5;
+JsonFormulaParser.RULE_multiSelectArray = 4;
+JsonFormulaParser.RULE_multiSelectObject = 5;
 JsonFormulaParser.RULE_keyvalExpr = 6;
 JsonFormulaParser.RULE_indexExpression = 7;
 JsonFormulaParser.RULE_slice = 8;
@@ -1174,6 +1174,42 @@ class IdentifierExpressionContext extends ExpressionContext {
 }
 
 JsonFormulaParser.IdentifierExpressionContext = IdentifierExpressionContext;
+
+class MultiSelectObjectExpressionContext extends ExpressionContext {
+
+    constructor(parser, ctx) {
+        super(parser);
+        super.copyFrom(ctx);
+    }
+
+	multiSelectObject() {
+	    return this.getTypedRuleContext(MultiSelectObjectContext,0);
+	};
+
+	enterRule(listener) {
+	    if(listener instanceof JsonFormulaListener ) {
+	        listener.enterMultiSelectObjectExpression(this);
+		}
+	}
+
+	exitRule(listener) {
+	    if(listener instanceof JsonFormulaListener ) {
+	        listener.exitMultiSelectObjectExpression(this);
+		}
+	}
+
+	accept(visitor) {
+	    if ( visitor instanceof JsonFormulaVisitor ) {
+	        return visitor.visitMultiSelectObjectExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+JsonFormulaParser.MultiSelectObjectExpressionContext = MultiSelectObjectExpressionContext;
 
 class MultDivExpressionContext extends ExpressionContext {
 
@@ -1571,32 +1607,32 @@ class AndExpressionContext extends ExpressionContext {
 
 JsonFormulaParser.AndExpressionContext = AndExpressionContext;
 
-class MultiSelectHashExpressionContext extends ExpressionContext {
+class MultiSelectArrayExpressionContext extends ExpressionContext {
 
     constructor(parser, ctx) {
         super(parser);
         super.copyFrom(ctx);
     }
 
-	multiSelectHash() {
-	    return this.getTypedRuleContext(MultiSelectHashContext,0);
+	multiSelectArray() {
+	    return this.getTypedRuleContext(MultiSelectArrayContext,0);
 	};
 
 	enterRule(listener) {
 	    if(listener instanceof JsonFormulaListener ) {
-	        listener.enterMultiSelectHashExpression(this);
+	        listener.enterMultiSelectArrayExpression(this);
 		}
 	}
 
 	exitRule(listener) {
 	    if(listener instanceof JsonFormulaListener ) {
-	        listener.exitMultiSelectHashExpression(this);
+	        listener.exitMultiSelectArrayExpression(this);
 		}
 	}
 
 	accept(visitor) {
 	    if ( visitor instanceof JsonFormulaVisitor ) {
-	        return visitor.visitMultiSelectHashExpression(this);
+	        return visitor.visitMultiSelectArrayExpression(this);
 	    } else {
 	        return visitor.visitChildren(this);
 	    }
@@ -1605,7 +1641,7 @@ class MultiSelectHashExpressionContext extends ExpressionContext {
 
 }
 
-JsonFormulaParser.MultiSelectHashExpressionContext = MultiSelectHashExpressionContext;
+JsonFormulaParser.MultiSelectArrayExpressionContext = MultiSelectArrayExpressionContext;
 
 class WildcardExpressionContext extends ExpressionContext {
 
@@ -1758,42 +1794,6 @@ class AddSubtractExpressionContext extends ExpressionContext {
 
 JsonFormulaParser.AddSubtractExpressionContext = AddSubtractExpressionContext;
 
-class MultiSelectListExpressionContext extends ExpressionContext {
-
-    constructor(parser, ctx) {
-        super(parser);
-        super.copyFrom(ctx);
-    }
-
-	multiSelectList() {
-	    return this.getTypedRuleContext(MultiSelectListContext,0);
-	};
-
-	enterRule(listener) {
-	    if(listener instanceof JsonFormulaListener ) {
-	        listener.enterMultiSelectListExpression(this);
-		}
-	}
-
-	exitRule(listener) {
-	    if(listener instanceof JsonFormulaListener ) {
-	        listener.exitMultiSelectListExpression(this);
-		}
-	}
-
-	accept(visitor) {
-	    if ( visitor instanceof JsonFormulaVisitor ) {
-	        return visitor.visitMultiSelectListExpression(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-JsonFormulaParser.MultiSelectListExpressionContext = MultiSelectListExpressionContext;
-
 class BracketedExpressionContext extends ExpressionContext {
 
     constructor(parser, ctx) {
@@ -1928,12 +1928,12 @@ class ChainedExpressionContext extends antlr4.ParserRuleContext {
 	    return this.getTypedRuleContext(IdentifierContext,0);
 	};
 
-	multiSelectList() {
-	    return this.getTypedRuleContext(MultiSelectListContext,0);
+	multiSelectArray() {
+	    return this.getTypedRuleContext(MultiSelectArrayContext,0);
 	};
 
-	multiSelectHash() {
-	    return this.getTypedRuleContext(MultiSelectHashContext,0);
+	multiSelectObject() {
+	    return this.getTypedRuleContext(MultiSelectObjectContext,0);
 	};
 
 	functionExpression() {
@@ -2009,7 +2009,7 @@ class WildcardContext extends antlr4.ParserRuleContext {
 
 
 
-class MultiSelectListContext extends antlr4.ParserRuleContext {
+class MultiSelectArrayContext extends antlr4.ParserRuleContext {
 
     constructor(parser, parent, invokingState) {
         if(parent===undefined) {
@@ -2020,7 +2020,7 @@ class MultiSelectListContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = JsonFormulaParser.RULE_multiSelectList;
+        this.ruleIndex = JsonFormulaParser.RULE_multiSelectArray;
     }
 
 	expression = function(i) {
@@ -2036,19 +2036,19 @@ class MultiSelectListContext extends antlr4.ParserRuleContext {
 
 	enterRule(listener) {
 	    if(listener instanceof JsonFormulaListener ) {
-	        listener.enterMultiSelectList(this);
+	        listener.enterMultiSelectArray(this);
 		}
 	}
 
 	exitRule(listener) {
 	    if(listener instanceof JsonFormulaListener ) {
-	        listener.exitMultiSelectList(this);
+	        listener.exitMultiSelectArray(this);
 		}
 	}
 
 	accept(visitor) {
 	    if ( visitor instanceof JsonFormulaVisitor ) {
-	        return visitor.visitMultiSelectList(this);
+	        return visitor.visitMultiSelectArray(this);
 	    } else {
 	        return visitor.visitChildren(this);
 	    }
@@ -2059,7 +2059,7 @@ class MultiSelectListContext extends antlr4.ParserRuleContext {
 
 
 
-class MultiSelectHashContext extends antlr4.ParserRuleContext {
+class MultiSelectObjectContext extends antlr4.ParserRuleContext {
 
     constructor(parser, parent, invokingState) {
         if(parent===undefined) {
@@ -2070,7 +2070,7 @@ class MultiSelectHashContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = JsonFormulaParser.RULE_multiSelectHash;
+        this.ruleIndex = JsonFormulaParser.RULE_multiSelectObject;
     }
 
 
@@ -2082,7 +2082,7 @@ class MultiSelectHashContext extends antlr4.ParserRuleContext {
 }
 
 
-class NonEmptyHashContext extends MultiSelectHashContext {
+class NonEmptyObjectContext extends MultiSelectObjectContext {
 
     constructor(parser, ctx) {
         super(parser);
@@ -2102,19 +2102,19 @@ class NonEmptyHashContext extends MultiSelectHashContext {
 
 	enterRule(listener) {
 	    if(listener instanceof JsonFormulaListener ) {
-	        listener.enterNonEmptyHash(this);
+	        listener.enterNonEmptyObject(this);
 		}
 	}
 
 	exitRule(listener) {
 	    if(listener instanceof JsonFormulaListener ) {
-	        listener.exitNonEmptyHash(this);
+	        listener.exitNonEmptyObject(this);
 		}
 	}
 
 	accept(visitor) {
 	    if ( visitor instanceof JsonFormulaVisitor ) {
-	        return visitor.visitNonEmptyHash(this);
+	        return visitor.visitNonEmptyObject(this);
 	    } else {
 	        return visitor.visitChildren(this);
 	    }
@@ -2123,9 +2123,9 @@ class NonEmptyHashContext extends MultiSelectHashContext {
 
 }
 
-JsonFormulaParser.NonEmptyHashContext = NonEmptyHashContext;
+JsonFormulaParser.NonEmptyObjectContext = NonEmptyObjectContext;
 
-class EmptyHashContext extends MultiSelectHashContext {
+class EmptyObjectContext extends MultiSelectObjectContext {
 
     constructor(parser, ctx) {
         super(parser);
@@ -2135,19 +2135,19 @@ class EmptyHashContext extends MultiSelectHashContext {
 
 	enterRule(listener) {
 	    if(listener instanceof JsonFormulaListener ) {
-	        listener.enterEmptyHash(this);
+	        listener.enterEmptyObject(this);
 		}
 	}
 
 	exitRule(listener) {
 	    if(listener instanceof JsonFormulaListener ) {
-	        listener.exitEmptyHash(this);
+	        listener.exitEmptyObject(this);
 		}
 	}
 
 	accept(visitor) {
 	    if ( visitor instanceof JsonFormulaVisitor ) {
-	        return visitor.visitEmptyHash(this);
+	        return visitor.visitEmptyObject(this);
 	    } else {
 	        return visitor.visitChildren(this);
 	    }
@@ -2156,7 +2156,7 @@ class EmptyHashContext extends MultiSelectHashContext {
 
 }
 
-JsonFormulaParser.EmptyHashContext = EmptyHashContext;
+JsonFormulaParser.EmptyObjectContext = EmptyObjectContext;
 
 class KeyvalExprContext extends antlr4.ParserRuleContext {
 
@@ -2691,8 +2691,8 @@ JsonFormulaParser.FormulaContext = FormulaContext;
 JsonFormulaParser.ExpressionContext = ExpressionContext; 
 JsonFormulaParser.ChainedExpressionContext = ChainedExpressionContext; 
 JsonFormulaParser.WildcardContext = WildcardContext; 
-JsonFormulaParser.MultiSelectListContext = MultiSelectListContext; 
-JsonFormulaParser.MultiSelectHashContext = MultiSelectHashContext; 
+JsonFormulaParser.MultiSelectArrayContext = MultiSelectArrayContext; 
+JsonFormulaParser.MultiSelectObjectContext = MultiSelectObjectContext; 
 JsonFormulaParser.KeyvalExprContext = KeyvalExprContext; 
 JsonFormulaParser.IndexExpressionContext = IndexExpressionContext; 
 JsonFormulaParser.SliceContext = SliceContext; 

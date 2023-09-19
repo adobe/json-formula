@@ -818,7 +818,7 @@
     },
     {
       "expression": "sortBy(people, &age)[].extra",
-      "result": ["foo", "bar"]
+      "result": [null, "foo", null, "bar", null]
     },
     {
       "expression": "sortBy(`[]`, &age)",

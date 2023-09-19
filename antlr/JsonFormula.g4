@@ -43,8 +43,8 @@ expression
   | '-' expression # unaryMinusExpression
   | '(' expression ')' # parenExpression
   | wildcard # wildcardExpression
-  | multiSelectList # multiSelectListExpression
-  | multiSelectHash # multiSelectHashExpression
+  | multiSelectArray # multiSelectArrayExpression
+  | multiSelectObject # multiSelectObjectExpression
   | JSON_FRAGMENT # literalExpression
   | functionExpression # functionCallExpression
   | expression '|' expression # pipeExpression
@@ -55,19 +55,19 @@ expression
 
 chainedExpression
   : identifier
-  | multiSelectList
-  | multiSelectHash
+  | multiSelectArray
+  | multiSelectObject
   | functionExpression
   | wildcard
   ;
 
 wildcard : '*' ;
 
-multiSelectList : '[' expression (',' expression)* ']' ;
+multiSelectArray : '[' expression (',' expression)* ']' ;
 
-multiSelectHash
-  : '{' '}' #emptyHash
-  | '{' keyvalExpr (',' keyvalExpr)* '}'  #nonEmptyHash
+multiSelectObject
+  : '{' '}' #emptyObject
+  | '{' keyvalExpr (',' keyvalExpr)* '}'  #nonEmptyObject
   ;
 
 keyvalExpr : identifier ':' expression ;
@@ -132,7 +132,7 @@ fragment HEX
   ;
 
 REAL_OR_EXPONENT_NUMBER
-  : INT '.' [0-9] + EXP?
+  : INT? '.' [0-9] + EXP?
   | INT EXP
   ;
 

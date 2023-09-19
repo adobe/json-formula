@@ -146,11 +146,11 @@
     },
     {
       "expression": "foo[:2].b",
-      "result": []
+      "result": [null, null]
     },
     {
       "expression": "foo[:2].a.b",
-      "result": []
+      "result": [null, null]
     },
     {
       "expression": "bar[::-1].a.b",
@@ -182,7 +182,7 @@
     },
     {
       "expression": "[:2].b",
-      "result": []
+      "result": [null, null]
     }
   ]
 }]
