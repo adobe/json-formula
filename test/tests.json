@@ -2404,7 +2404,7 @@
       "data": "{}",
       "expression": "null/0",
       "was": null,
-      "error": "syntax"
+      "error": "type-error"
     }
   ],
   [
@@ -2413,7 +2413,7 @@
       "data": "{}",
       "expression": "4/0",
       "was": null,
-      "error": "syntax"
+      "error": "type-error"
     }
   ],
   [
