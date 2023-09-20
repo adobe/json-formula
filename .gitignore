@@ -17,3 +17,5 @@ target/
 
 build
 lib/
+
+doc/grammar.g4

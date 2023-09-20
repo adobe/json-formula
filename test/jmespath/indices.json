@@ -132,15 +132,11 @@
         },
         {
            "expression": "reservations[].instances[].bar",
-           "result": []
+           "result": [null, null]
         },
         {
            "expression": "reservations[].notinstances[].foo",
-           "result": []
-        },
-        {
-           "expression": "reservations[].notinstances[].foo",
-           "result": []
+           "result": [null]
         }
     ]
 },
@@ -170,43 +166,43 @@
     "cases": [
         {
            "expression": "reservations[].instances[].foo[].bar",
-           "result": [1, 2, 4, 5, 6, 8]
+           "result": [1, 2, null, 4, 5, 6, null, 8, null, null, null, null, null, null, null, null, null, null]
         },
         {
            "expression": "reservations[].instances[].foo[].baz",
-           "result": []
+           "result": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
         },
         {
            "expression": "reservations[].instances[].notfoo[].bar",
-           "result": [20, 21, 22, 23, 24, 25]
+           "result": [null, null, null, 20, 21, null, 22, null, null, null, null, null, null, 23, 24, null, 25, null]
         },
         {
            "expression": "reservations[].instances[].notfoo[].notbar",
-           "result": [[7], [7]]
+           "result": [null,null,null,null,null,[7],null,null,null,null,null,null,null,null,null,[7],null,null]
         },
         {
            "expression": "reservations[].notinstances[].foo",
-           "result": []
+           "result": [null, null]
         },
         {
            "expression": "reservations[].instances[].foo[].notbar",
-           "result": [3, [7]]
+           "result": [null, null, 3, null, null, null, [7], null, null, null, null, null, null, null, null, null, null, null]
         },
         {
            "expression": "reservations[].instances[].bar[].baz",
-           "result": [[1], [2], [3], [4]]
+           "result": [null, null, null, null, [1], [2], [3], [4], null, null, null, null, null, null, null]
         },
         {
            "expression": "reservations[].instances[].baz[].baz",
-           "result": [[1, 2], [], [], [3, 4]]
+           "result": [null, null, null, null, null, [1, 2], [], [], [3, 4], null, null, null, null, null, null]
         },
         {
            "expression": "reservations[].instances[].qux[].baz",
-           "result": [[], [1, 2, 3], [4], [], [], [1, 2, 3], [4], []]
+           "result": [null, null, null, null, null, null, [], [1, 2, 3], [4], [], null, null, null, null, [], [1, 2, 3], [4], []]
         },
         {
            "expression": "reservations[].instances[].qux[].baz[]",
-           "result": [1, 2, 3, 4, 1, 2, 3, 4]
+           "result": [null, null, null, null, null, null, 1, 2, 3, 4, null, null, null, null, 1, 2, 3, 4]
         }
     ]
 },
@@ -230,19 +226,19 @@
         },
         {
            "expression": "foo[][1]",
-           "result": ["two", "four", "six", "eight"]
+           "result": ["two", "four", "six", "eight", null, null]
         },
         {
            "expression": "foo[][0][0]",
-           "result": []
+           "result": [null, null, null, null, null, null]
         },
          {
             "expression": "foo[][2][2]",
-            "result": []
+            "result": [null, null, null, null, null, null]
          },
          {
             "expression": "foo[][0][0][100]",
-            "result": []
+            "result": [null, null, null, null, null, null]
          }
     ]
 },

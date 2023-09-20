@@ -194,7 +194,7 @@
          },
          {
             "expression": "foo.[includeme, bar.baz[*].none]",
-            "result": [true, []]
+            "result": [true, [null, null]]
          },
          {
             "expression": "foo.[includeme, bar.baz[].common]",
@@ -366,7 +366,7 @@
     "cases": [
         {
            "expression": "foo.[baz[*].not_there || baz[*].bar, qux[0]]",
-           "result": [["a", "d"], "zero"]
+           "result": [[null, null], "zero"]
         }
     ]
 },

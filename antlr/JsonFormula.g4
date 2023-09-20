@@ -43,31 +43,31 @@ expression
   | '-' expression # unaryMinusExpression
   | '(' expression ')' # parenExpression
   | wildcard # wildcardExpression
-  | multiSelectList # multiSelectListExpression
-  | multiSelectHash # multiSelectHashExpression
+  | multiSelectArray # multiSelectArrayExpression
+  | multiSelectObject # multiSelectObjectExpression
   | JSON_FRAGMENT # literalExpression
   | functionExpression # functionCallExpression
   | expression '|' expression # pipeExpression
   | STRING # rawStringExpression
-  | '-'? (REAL_OR_EXPONENT_NUMBER | INT) # numberLiteral
+  | (REAL_OR_EXPONENT_NUMBER | INT) # numberLiteral
   | currentNode # currentNodeExpression
   ;
 
 chainedExpression
   : identifier
-  | multiSelectList
-  | multiSelectHash
+  | multiSelectArray
+  | multiSelectObject
   | functionExpression
   | wildcard
   ;
 
 wildcard : '*' ;
 
-multiSelectList : '[' expression (',' expression)* ']' ;
+multiSelectArray : '[' expression (',' expression)* ']' ;
 
-multiSelectHash
-  : '{' '}' #emptyHash
-  | '{' keyvalExpr (',' keyvalExpr)* '}'  #nonEmptyHash
+multiSelectObject
+  : '{' '}' #emptyObject
+  | '{' keyvalExpr (',' keyvalExpr)* '}'  #nonEmptyObject
   ;
 
 keyvalExpr : identifier ':' expression ;
@@ -121,7 +121,7 @@ JSON_FRAGMENT
 
 STRING : '"' (ESC | ~["\\])* '"' ;
 
-fragment ESC : '\\' (~[u] | UNICODE);
+fragment ESC : '\\' (UNICODE | [bfnrt\\`'"/]);
 
 fragment UNICODE
   : 'u' HEX HEX HEX HEX
@@ -132,7 +132,7 @@ fragment HEX
   ;
 
 REAL_OR_EXPONENT_NUMBER
-  : INT '.' [0-9] + EXP?
+  : INT? '.' [0-9] + EXP?
   | INT EXP
   ;
 

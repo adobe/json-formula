@@ -191,9 +191,7 @@ export default class TreeInterpreter {
         const collected = [];
         base.forEach(b => {
           const current = this.visit(node.children[1], b);
-          if (current !== null) {
-            collected.push(current);
-          }
+          collected.push(current);
         });
         return collected;
       },
@@ -206,7 +204,7 @@ export default class TreeInterpreter {
         const values = objValues(projection);
         values.forEach(val => {
           const current = this.visit(node.children[1], val);
-          if (current !== null) collected.push(current);
+          collected.push(current);
         });
         return collected;
       },
@@ -222,7 +220,7 @@ export default class TreeInterpreter {
         const finalResults = [];
         filtered.forEach(f => {
           const current = this.visit(node.children[1], f);
-          if (current !== null) finalResults.push(current);
+          finalResults.push(current);
         });
         return finalResults;
       },

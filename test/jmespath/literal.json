@@ -175,7 +175,7 @@
     },
     {
       "comment": "Raw String Literals",
-      "given": {},
+      "given": {"B": 42, "D": 43},
       "cases": [
         {
           "expression": "\"foo\"",
@@ -190,12 +190,8 @@
           "result": "0"
         },
         {
-          "expression": "\"newline\n\"",
+          "expression": "\"newline\\n\"",
           "result": "newline\n"
-        },
-        {
-          "expression": "\"\n\"",
-          "result": "\n"
         },
         {
           "expression": "\"✓\"",
@@ -214,9 +210,9 @@
           "result": "[foo]"
         },
         {
-          "comment": "Do not interpret escaped unicode.",
+          "comment": "interpret escaped unicode.",
           "expression": "\"\\u03a6\"",
-          "result": "\\u03a6"
+          "result": "Φ"
         },
         {
           "comment": "no need to escape the single quote",
@@ -230,19 +226,54 @@
           "result": "foo\"bar"
         },
         {
-          "comment": "Backslash not followed by double quote is treated as any other character",
+          "comment": "Backslash not followed by standard JSON escape character is an error",
           "expression": "\"\\z\"",
-          "result" : "\\z"
+          "error" : "syntax"
         },
         {
           "comment": "Backslash not followed by double quote is treated as any other character",
           "expression": "\"\\\\\"",
-          "result": "\\\\"
+          "result": "\\"
         },
         {
           "comment": "Backslash followed by only specific characters is valid",
-          "expression": "\"\\b\\f\\r\\t\\n\\/\\uAAAA\"",
-          "result": "\\b\\f\\r\\t\\n\\/\\uAAAA"
+          "expression": "\"\\b\\f\\r\\t\\n\\/\\u0042\"",
+          "result": "\b\f\r\t\n\/\u0042"
+        },
+        {
+          "comment": "Unicode sequence respected in name",
+          "expression": "'\\u0042'",
+          "result": 42
+        },
+        {
+          "comment": "Unicode sequence respected in string literal",
+          "expression": "\"\\u0042\"",
+          "result": "B"
+        },
+        {
+          "comment": "Unicode sequence respected in json literal",
+          "expression": "`\"\\u0042\"`",
+          "result": "B"
+        },
+        {
+          "comment": "Bad Unicode sequence fails",
+          "expression": "\"\\u042\"",
+          "error": "syntax"
+        },
+        {
+          "comment": "Bad escape sequence fails in json literal",
+          "expression": "`\"\\D\"`",
+          "error": "syntax"
+        },
+        {
+          "comment": "fail bad escape in string literal",
+          "expression": "\"\\D\"",
+          "error": "syntax"
+        },
+        {
+          "comment": "fail on bad escape in name",
+          "expression": "'\\D'",
+          "error": "syntax"
         }
       ]
     }

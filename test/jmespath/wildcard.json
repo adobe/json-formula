@@ -28,7 +28,7 @@
     "cases": [
          {
             "expression": "foo.*.baz",
-            "result": ["val", "val", "val"]
+            "result": ["val", "val", "val", null, null, null]
          },
          {
             "expression": "foo.bar.*",
@@ -36,15 +36,15 @@
          },
          {
             "expression": "foo.*.notbaz",
-            "result": [["a", "b", "c"], ["a", "b", "c"]]
+            "result": [null, null, null, ["a", "b", "c"], ["a", "b", "c"], null]
          },
          {
             "expression": "foo.*.notbaz[0]",
-            "result": ["a", "a"]
+            "result": [null, null, null, "a", "a", null]
          },
          {
             "expression": "foo.*.notbaz[-1]",
-            "result": ["c", "c"]
+            "result": [null, null, null, "c", "c", null]
          }
     ]
 }, {
@@ -73,11 +73,11 @@
          },
          {
             "expression": "foo.*.*.*",
-            "result": [[], [], []]
+            "result": [[null], [null], [null]]
          },
          {
             "expression": "foo.*.*.*.*",
-            "result": [[], [], []]
+            "result": [[null], [null], [null]]
          }
     ]
 }, {
@@ -95,7 +95,7 @@
     "cases": [
          {
             "expression": "*.bar",
-            "result": ["one", "one"]
+            "result": ["one", "one", null]
          }
     ]
 }, {
@@ -139,11 +139,11 @@
      "cases": [
          {
             "expression": "foo[*].bar",
-            "result": ["one", "two", "three"]
+            "result": ["one", "two", "three", null]
          },
          {
             "expression": "foo[*].notbar",
-            "result": ["four"]
+            "result": [null, null, null, "four"]
          }
      ]
 },
@@ -157,11 +157,11 @@
          },
          {
             "expression": "[*].bar",
-            "result": ["one", "two", "three"]
+            "result": ["one", "two", "three", null]
          },
          {
             "expression": "[*].notbar",
-            "result": ["four"]
+            "result": [null, null, null, "four"]
          }
      ]
 },
@@ -194,7 +194,7 @@
          },
          {
             "expression": "foo.bar[*].baz[3]",
-            "result": []
+            "result": [null, null, null]
          }
      ]
 },
@@ -243,11 +243,11 @@
      "cases": [
          {
             "expression": "foo[*].bar[*].kind",
-            "result": [["basic", "intermediate"], ["advanced", "expert"]]
+            "result": [["basic", "intermediate"], ["advanced", "expert"], null]
          },
          {
             "expression": "foo[*].bar[0].kind",
-            "result": ["basic", "advanced"]
+            "result": ["basic", "advanced", null]
          }
      ]
 },
@@ -264,7 +264,7 @@
      "cases": [
          {
             "expression": "foo[*].bar.kind",
-            "result": ["basic", "intermediate", "advanced", "expert"]
+            "result": ["basic", "intermediate", "advanced", "expert", null]
          }
      ]
 },
@@ -279,11 +279,11 @@
          },
          {
             "expression": "foo[*].bar[1]",
-            "result": ["two", "four"]
+            "result": ["two", "four", null]
          },
          {
             "expression": "foo[*].bar[2]",
-            "result": []
+            "result": [null, null, null]
          }
      ]
 },
@@ -294,7 +294,7 @@
      "cases": [
          {
             "expression": "foo[*].bar[0]",
-            "result": []
+            "result": [null, null, null]
          }
      ]
 },
@@ -309,7 +309,7 @@
          },
          {
             "expression": "foo[*][1]",
-            "result": ["two", "four"]
+            "result": ["two", "four", null]
          }
      ]
 },
@@ -344,19 +344,27 @@
          },
          {
             "expression": "foo[*][0][1]",
-            "result": ["two", "six"]
+            "result": ["two", "six", null]
          },
          {
             "expression": "foo[*][1][1]",
-            "result": ["four", "eight"]
+            "result": ["four", "eight", null]
          },
          {
             "expression": "foo[*][2]",
-            "result": []
+            "result": [
+               null,
+               null,
+               null
+             ]
          },
          {
             "expression": "foo[*][2][2]",
-            "result": []
+            "result": [
+               null,
+               null,
+               null
+             ]
          },
          {
             "expression": "bar[*]",

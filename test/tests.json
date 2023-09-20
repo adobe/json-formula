@@ -414,6 +414,30 @@
     }
   ],
   [
+    "literal number",
+    {
+      "data": "{}",
+      "expression": ".123",
+      "expected": 0.123
+    }
+  ],
+  [
+    "literal expressions",
+    {
+      "data": "{}",
+      "expression": "-.1 + -.1 + .1",
+      "expected": -0.1
+    }
+  ],
+  [
+    "Bad JSON literal",
+    {
+      "data": "{}",
+      "expression": "`.1`",
+      "error": "type-error"
+    }
+  ],
+  [
     "unary minus expression",
     {
       "data": "samples.'purchase-order'",
@@ -1575,10 +1599,10 @@
     }
   ],
   [
-    "trim(\" \tabc  def ghi   \")",
+    "trim(\" \\tabc  def ghi   \")",
     {
       "data": "`null`",
-      "expression": "trim(\" \tabc  def ghi   \")",
+      "expression": "trim(\" \\tabc  def ghi   \")",
       "expected": "\tabc def ghi"
     }
   ],
@@ -1743,10 +1767,10 @@
     }
   ],
   [
-    "codePoint(\"\t\")",
+    "codePoint(\"\\t\")",
     {
       "data": "`null`",
-      "expression": "codePoint(\"\t\")",
+      "expression": "codePoint(\"\\t\")",
       "expected": 9
     }
   ],
@@ -2269,7 +2293,7 @@
     "index objects using literals",
     {
       "data": "samples.'purchase-order'",
-      "expression": "address[`street`]",
+      "expression": "address[`\"street\"`]",
       "expected": "123 Oak Street"
     }
   ],
@@ -2277,7 +2301,7 @@
     "index objects using expressions",
     {
       "data": "samples.'purchase-order'",
-      "expression": "address[lower(`STREET`)]",
+      "expression": "address[lower(`\"STREET\"`)]",
       "expected": "123 Oak Street"
     }
   ],
@@ -2879,7 +2903,7 @@
     "search2",
     {
       "data": "`{}`",
-      "expression": "search(\".\\^$(+{]\", \"pad.\\^$(+{]\")",
+      "expression": "search(\".\\\\^$(+{]\", \"pad.\\\\^$(+{]\")",
       "expected": [3, ".\\^$(+{]"]
     }
   ],
@@ -2999,7 +3023,7 @@
     "search17",
     {
       "data": "`{}`",
-      "expression": "search(\".\\^$(+{]\", \"pada.\\^$(+{]b\")",
+      "expression": "search(\".\\\\^$(+{]\", \"pada.\\\\^$(+{]b\")",
       "expected": [4, ".\\^$(+{]"]
     }
   ],

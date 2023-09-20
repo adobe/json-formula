@@ -31,7 +31,7 @@ import tokenDefinitions from './tokenDefinitions.js';
 
 /* eslint-disable no-underscore-dangle */
 const {
-  TOK_LITERAL,
+  TOK_JSON,
   TOK_COLON,
   TOK_EOF,
   TOK_UNQUOTEDIDENTIFIER,
@@ -178,7 +178,7 @@ export default class Parser {
     let node;
     let args;
     switch (token.type) {
-      case TOK_LITERAL:
+      case TOK_JSON:
         return { type: 'Literal', value: token.value };
       case TOK_NUMBER:
         return { type: 'Number', value: token.value };

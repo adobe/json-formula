@@ -73,5 +73,6 @@ convertOne() {
 }
 
 # process all the files
-node strip.js
+node ./strip.js
 convertOne "./spec.adoc"
+rm ./grammar.g4

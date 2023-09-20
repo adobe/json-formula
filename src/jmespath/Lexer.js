@@ -65,7 +65,7 @@ const {
   TOK_LBRACE,
   TOK_LBRACKET,
   TOK_LPAREN,
-  TOK_LITERAL,
+  TOK_JSON,
 } = tokenDefinitions;
 
 // The "&", "[", "<", ">" tokens
@@ -101,7 +101,7 @@ const skipChars = {
   '\n': true,
 };
 
-function isNum(ch) {
+function isNumChar(ch) {
   return (ch >= '0' && ch <= '9') || (ch === '.');
 }
 
@@ -147,6 +147,9 @@ export default class Lexer {
           value: identifier,
           start,
         });
+      } else if (this._isNumber(stream)) {
+        token = this._consumeNumber(stream);
+        tokens.push(token);
       } else if (basicTokens[stream[this._current]] !== undefined) {
         tokens.push({
           type: basicTokens[stream[this._current]],
@@ -156,9 +159,6 @@ export default class Lexer {
         this._current += 1;
       } else if (stream[this._current] === '-' && ![TOK_GLOBAL, TOK_CURRENT, TOK_NUMBER, TOK_RPAREN, TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER, TOK_RBRACKET].includes(prev)) {
         token = this._consumeUnaryMinus(stream);
-        tokens.push(token);
-      } else if (isNum(stream[this._current])) {
-        token = this._consumeNumber(stream);
         tokens.push(token);
       } else if (stream[this._current] === '[') {
         // No need to increment this._current.  This happens
@@ -177,16 +177,16 @@ export default class Lexer {
         start = this._current;
         identifier = this._consumeRawStringLiteral(stream);
         tokens.push({
-          type: TOK_LITERAL,
+          type: TOK_JSON,
           value: identifier,
           start,
         });
       } else if (stream[this._current] === '`') {
         start = this._current;
-        const literal = this._consumeLiteral(stream);
+        const json = this._consumeJson(stream);
         tokens.push({
-          type: TOK_LITERAL,
-          value: literal,
+          type: TOK_JSON,
+          value: json,
           start,
         });
       } else if (operatorStartToken[stream[this._current]] !== undefined) {
@@ -329,14 +329,28 @@ export default class Lexer {
     if (this._current > maxLength) {
       throw new Error(`Unterminated string literal at ${start}, "${literal}`);
     }
-    return literal.replaceAll('\\"', '"');
+    try {
+      return JSON.parse(`"${literal}"`);
+    } catch (_e) {
+      throw new Error(`Invalid string literal: ${literal}`);
+    }
+  }
+
+  _isNumber(stream) {
+    // if we see the first two characters are either a digit or radix, then we have a number
+    let ch = stream[this._current];
+    if (ch >= '0' && ch <= '9') return true;
+    if (ch !== '.') return false;
+    if (this._current === stream.length) return false;
+    ch = stream[this._current + 1];
+    return ch >= '0' && ch <= '9';
   }
 
   _consumeNumber(stream) {
     const start = this._current;
     this._current += 1;
     const maxLength = stream.length;
-    while (isNum(stream[this._current]) && this._current < maxLength) {
+    while (isNumChar(stream[this._current]) && this._current < maxLength) {
       this._current += 1;
     }
     // check again for exponent character
@@ -347,7 +361,7 @@ export default class Lexer {
         this._current += 1;
       }
       // consume digits after exponent
-      while (isNum(stream[this._current]) && this._current < maxLength) {
+      while (isNumChar(stream[this._current]) && this._current < maxLength) {
         this._current += 1;
       }
     }
@@ -440,28 +454,10 @@ export default class Lexer {
     return { type: TOK_EQ, value: '=', start };
   }
 
-  _consumeLiteral(stream) {
-    function _looksLikeJSON(str) {
-      if (str === '') return false;
-      if ('[{"'.includes(str[0])) return true;
-      if (['true', 'false', 'null'].includes(str)) return true;
-
-      if ('-0123456789'.includes(str[0])) {
-        try {
-          JSON.parse(str);
-          return true;
-        } catch (ex) {
-          return false;
-        }
-      } else {
-        return false;
-      }
-    }
-
+  _consumeJson(stream) {
     this._current += 1;
     const start = this._current;
     const maxLength = stream.length;
-    let literal;
     let inQuotes = false;
     while ((inQuotes || stream[this._current] !== '`') && this._current < maxLength) {
       let current = this._current;
@@ -482,14 +478,8 @@ export default class Lexer {
     }
     let literalString = stream.slice(start, this._current).trimStart();
     literalString = literalString.replaceAll('\\`', '`');
-    if (_looksLikeJSON(literalString)) {
-      literal = JSON.parse(literalString);
-    } else {
-      // Try to JSON parse it as "<literal>"
-      literal = JSON.parse(`"${literalString}"`);
-    }
     // +1 gets us to the ending "`", +1 to move on to the next char.
     this._current += 1;
-    return literal;
+    return JSON.parse(literalString);
   }
 }

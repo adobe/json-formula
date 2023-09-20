@@ -106,7 +106,7 @@ Coercion is not always possible, and if so, an error shall be emitted -- most of
 | boolean | number | true => 1 false => 0
 | array | number | Not supported
 | object | number | Not supported
-| null | number | 0
+| null | number | null
 | number | array | create a single-element array with the number
 | string | array | create a single-element array with the string.
 | boolean | array | create a single-element array with the boolean.
@@ -210,7 +210,7 @@ QUOTED_NAME : '\'' (ESC | ~ ['\\])* '\'';
 ----
 
 An `identifier` is the most basic expression and can be used to extract a
-single element from a JSON document.  The return value for an `identifier` is the value associated with the identifier.  If the `identifier` does not exist in the JSON document, than a `null` value is returned.
+single element from a JSON document.  The return value for an `identifier` is the value associated with the identifier.  If the `identifier` does not exist in the JSON document, then a `null` value is returned.
 
 From the grammar rule listed above identifiers can be one or more characters,
 and must start with `A-Za-z_$`.
@@ -255,7 +255,6 @@ The following errors are defined:
 * `invalid-arity` is raised when an invalid number of function arguments is
   encountered during the evaluation process.
 
-
 == SubExpressions
 
 [source%unbreakable]
@@ -264,8 +263,8 @@ subExpression: expression '.' chainedExpression
 
 chainedExpression
   : identifier
-  | multiSelectList
-  | multiSelectHash
+  | multiSelectArray
+  | multiSelectObject
   | functionExpression
   | wildcard
   ;
@@ -288,7 +287,7 @@ In pseudo-code
 ----
 
 A subexpression is itself an expression, so there can be multiple levels of
-sub-expressions: `grandparent.parent.child`.
+chainedExpressions: `grandparent.parent.child`.
 
 === Examples
 
@@ -319,23 +318,23 @@ Additional examples
 expression: expression indexExpression
 
 indexExpression
-  : '[' '*' ']' # bracketStar
-  | '[' slice ']' # bracketSlice
-  | '[' ']' # bracketFlatten
-  | '[?' expression ']' # predicate
-  | '[' expression ']' # select
+  : '[' '*' ']'
+  | '[' slice ']'
+  | '[' ']'
+  | '[?' expression ']'
+  | '[' expression ']'
   ;
 
 ----
 
-From the `indexExpression` construction, an index expression is where the brackets contents provide access to the elements in a list or object.
+From the `indexExpression` construction, an index expression is where the brackets contents provide access to the elements in an array or object.
 
 When brackets are used with an object, the bracket contents are expected to be an expression that resolves to the name of a property. In the simple case, `foo["bar"]` is equivalent to `foo.bar`.
 
-Most commonly, brackets are used with lists.  With lists, bracketed expressions are expected to return an integer value to return an index in the list.
-Indexing is 0 based. The index of 0 refers to the first element of the list.  A negative number is a
+Most commonly, brackets are used with arrays.  With arrays, bracketed expressions are expected to return an integer value to return an index in the array.
+Indexing is 0 based. The index of 0 refers to the first element of the array.  A negative number is a
 valid index.  A negative number indicates that indexing is relative to the end
-of the list, specifically
+of the array, specifically
 
 [source%unbreakable]
 ----
@@ -343,7 +342,7 @@ of the list, specifically
 ----
 
 Given an array of length `N`, an index of `-1` would be equal to a positive
-index of `N - 1`, which is the last element of the list.  If an index
+index of `N - 1`, which is the last element of the array.  If an index
 expression refers to an index that is greater than the length of the array, a
 value of `null` is returned.
 
@@ -414,20 +413,20 @@ Slice expressions adhere to the following rules:
 
 When the character sequence `[]` is provided as a bracket specifier, then
 a flattening operation occurs on the current result.  The flattening operator
-will merge sub-lists in the current result into a single list.  The flattening
+will merge sub-arrays in the current result into a single array.  The flattening
 operator has the following semantics:
 
-* Create an empty result list.
+* Create an empty result array.
 * Iterate over the elements of the current result.
-* If the current element is not a list, add to the end of the result list.
-* If the current element is a list, add each element of the current element
-  to the end of the result list.
-* The result list is now the new current result.
+* If the current element is not an array, add to the end of the result array.
+* If the current element is an array, add each element of the current element
+  to the end of the result array.
+* The result array is now the new current result.
 
 Once the flattening operation has been performed, subsequent operations
-are projected onto the flattened list with the same semantics as a
+are projected onto the flattened array with the same semantics as a
 wildcard expression.  Thus the difference between `[*]` and `[]` is that
-`[]` will first flatten sub-lists in the current result.
+`[]` will first flatten sub-arrays in the current result.
 
 === Examples
 
@@ -520,7 +519,7 @@ The union operator (`~`) combines the contents of two arrays into a single array
   search(a ~ b, {"a": [[0,1,2]], "b": [[3,4,5]]}) -> [[0,1,2],[3,4,5]]
   search(a[] ~ b[], {"a": [[0,1,2]], "b": [[3,4,5]]}) -> [0,1,2,3,4,5]
   search(a ~ 10, {"a": [0,1,2]}) -> [0,1,2,10]
-  search(a ~ `null`, {}) -> [0,1,2]
+  search(a ~ `null`, {"a": [0,1,2]}) -> [0,1,2]
 ----
 
 === Array Operators
@@ -550,7 +549,7 @@ expression.  If the evaluation of the left expression can be coerced to a true v
 as the return value.  If the left expression cannot be coerced to a true value, then the evaluation of the right expression is used as the return value.
 The following conditions cannot be coerced to true:
 
-* Empty list: `[]`
+* Empty array: `[]`
 * Empty object: `{}`
 * Empty string: `""`
 * False boolean: `false`
@@ -566,8 +565,8 @@ The following conditions cannot be coerced to true:
   search(foo || bar, {"foo": "foo-value", "bar": "bar-value"}) -> "foo-value"
   search(foo || bar, {"baz": "baz-value"}) -> null
   search(foo || bar || baz, {"baz": "baz-value"}) -> "baz-value"
-  search(override || mylist[-1], {"mylist": ["one", "two"]}) -> "two"
-  search(override || mylist[-1], {"mylist": ["one", "two"], "override": "yes"}) -> "yes"
+  search(override || myarray[-1], {"myarray": ["one", "two"]}) -> "two"
+  search(override || myarray[-1], {"myarray": ["one", "two"], "override": "yes"}) -> "yes"
 ----
 
 == And Expressions
@@ -645,19 +644,19 @@ results in a truth-like value, a `notExpression` will change this value to
   search(!EmptyList, {"EmptyList": []}) -> true
 ----
 
-== MultiSelect List
+== MultiSelect Array
 
 [source%unbreakable]
 ----
-    multiSelectList : '[' expression (',' expression)* ']' ;
+    multiSelectArray : '[' expression (',' expression)* ']' ;
 ----
 
 A multiselect expression is used to extract a subset of elements from a JSON object or array.  There are two version of multiselect, one in which the multiselect expression is enclosed in `{...}` and one which is enclosed in `[...]`.
 This section describes the `[...]` version.  Within the start and closing
 characters is one or more expressions separated by a comma.  Each
 expression will be evaluated against the JSON document.  Each returned element
-will be the result of evaluating the expression. A `multi-select-list` with
-`N` expressions will result in a list of length `N`.  Given a multiselect
+will be the result of evaluating the expression. A `multiSelectArray` with
+`N` expressions will result in an array of length `N`.  Given a multiselect
 expression `[expr-1,expr-2,...,expr-n]`, the evaluated expression will return
 `[evaluate(expr-1), evaluate(expr-2), ..., evaluate(expr-n)]`.
 
@@ -671,38 +670,38 @@ expression `[expr-1,expr-2,...,expr-n]`, the evaluated expression will return
   search([foo,baz], {"foo": "a", "bar": "b"}) -> ["a", null]
 ----
 
-== MultiSelect Hash
+== MultiSelect Object
 
 [source%unbreakable]
 ----
-    multi-select-hash = "{" ( keyval-expr ( "," keyval-expr )*)? "}"
-    keyval-expr       = identifier ":" expression
+    multiSelectObject = "{" ( keyvalExpr ( "," keyvalExpr )*)? "}"
+    keyvalExpr       = identifier ":" expression
 ----
 
-A `multi-select-hash` expression is similar to a `multi-select-list`
-expression, except that a hash is created instead of a list.  A
-`multi-select-hash` expression also requires key names to be provided, as
-specified in the `keyval-expr` rule.  Given the following rule
+A `multiSelectObject` expression is similar to a `multiSelectArray`
+expression, except that an object is created instead of an array.  A
+`multiSelectObject` expression also requires key names to be provided, as
+specified in the `keyvalExpr` rule.  Given the following rule
 
 [source%unbreakable]
 ----
-    keyval-expr = identifier ":" expression
+    keyvalExpr = identifier ":" expression
 ----
 
 The `identifier` is used as the key name and the result of evaluating the
 `expression` is the value associated with the `identifier` key.
 
-Each `keyval-expr` within the `multi-select-hash` will correspond to a
-single key value pair in the created hash.
-Unlike the multi-select-list, a multi-select-hash may be empty.
+Each `keyvalExpr` within the `multiSelectObject` will correspond to a
+single key value pair in the created object.
+Unlike the `multiSelectArray`, a `multiSelectObject` may be empty.
 
 === Examples
 
-Given a `multi-select-hash` expression `{foo: one.two, bar: bar}` and the
+Given a `multiSelectObject` expression `{foo: one.two, bar: bar}` and the
 data `{"bar": "bar", {"one": {"two": "one-two"}}}`, the expression is
 evaluated as follows:
 
-1. A hash is created: `{}`
+1. An object is created: `{}`
 2. A key `foo` is created whose value is the result of evaluating `one.two`
    against the provided JSON document: `{"foo": evaluate(one.two, <data>)}`
 3. A key `bar` is created whose value is the result of evaluating the
@@ -731,11 +730,11 @@ There are two forms of wildcard expression: `[*]` from the `indexExpression` con
 [source%unbreakable]
 ----
 indexExpression
-  : '[' '*' ']' # bracketStar
-  | '[' slice ']' # bracketSlice
-  | '[' ']' # bracketFlatten
-  | '[?' expression ']' # predicate
-  | '[' expression ']' # select
+  : '[' '*' ']'
+  | '[' slice ']'
+  | '[' ']'
+  | '[?' expression ']'
+  | '[' expression ']'
   ;
 ----
 
@@ -746,8 +745,8 @@ expression : expression '.' chainedExpression
 
 chainedExpression
   : identifier
-  | multiSelectList
-  | multiSelectHash
+  | multiSelectArray
+  | multiSelectObject
   | functionExpression
   | wildcard
   ;
@@ -758,46 +757,43 @@ wildcard : '*' ;
 A wildcard expression is a expression of either `.*` or `[*]`.  A wildcard
 expression can return multiple elements, and the remaining expressions are
 evaluated against each returned element from a wildcard expression.  The
-`[*]` syntax applies to a list type and the `.*` syntax applies to a hash
+`[*]` syntax applies to an array type and the `.*` syntax applies to an object
 type.
 
-The `[*]` syntax (referred to as a list wildcard expression) will return all
-the elements in a list.  Any subsequent expressions will be evaluated against
-each individual element.  Given an expression `[*].child-expr`, and a list of
-N elements, the evaluation of this expression would be `[child-expr(el-0),
-child-expr(el-2), ..., child-expr(el-N)]`.  This is referred to as a
-**projection**, and the `child-expr` expression is projected onto the
-elements of the resulting list.
+The `[*]` syntax (referred to as an array wildcard expression) will return all
+the elements in an array.  Any subsequent expressions will be evaluated against
+each individual element.  Given an expression `[*].childExpr`, and an array of
+N elements, the evaluation of this expression would be `[childExpr(el-0),
+childExpr(el-2), ..., childExpr(el-N)]`.  This is referred to as a
+**projection**, and the `childExpr` expression is projected onto the
+elements of the resulting array.
 
 Once a projection has been created, all subsequent expressions are projected
-onto the resulting list.
+onto the resulting array.
 
-The `*` syntax (referred to as a hash wildcard expression) will return a list
-of the hash element's values.  Any subsequent expression will be evaluated
-against each individual element in the list (this is also referred to as a
+The `*` syntax (referred to as an object wildcard expression) will return an array
+of the object element's values.  Any subsequent expression will be evaluated
+against each individual element in the array (this is also referred to as a
 **projection**).
 
-Note that if any subsequent expression after a wildcard expression returns a
-`null` value, it is omitted from the final result list.
-
-A list wildcard expression is valid only for the JSON array type.  If a list
+An array wildcard expression is valid only for the JSON array type.  If an array
 wildcard expression is applied to any other JSON type, a value of `null` is
 returned.
 
-Similarly, a hash wildcard expression is valid only for the JSON object type.
-If a hash wildcard expression is applied to any other JSON type, a value of
-`null` is returned.  Note that JSON hashes are explicitly defined as
-unordered.  Therefore a hash wildcard expression can return the values
-associated with the hash in any order.  Implementations are not required
-to return the hash values in any specific order.
+Similarly, an object wildcard expression is valid only for the JSON object type.
+If an object wildcard expression is applied to any other JSON type, a value of
+`null` is returned.  Note that JSON objects are explicitly defined as
+unordered.  Therefore an object wildcard expression can return the values
+associated with the object in any order.  Implementations are not required
+to return the object values in any specific order.
 
 === Examples
 
 [source%unbreakable]
 ----
   search([*].foo, [{"foo": 1}, {"foo": 2}, {"foo": 3}]) -> [1, 2, 3]
-  search([*].foo, [{"foo": 1}, {"foo": 2}, {"bar": 3}]) -> [1, 2]
-  search(*.foo, {"a": {"foo": 1}, "b": {"foo": 2}, "c": {"bar": 1}}) -> [1, 2]
+  search([*].foo, [{"foo": 1}, {"foo": 2}, {"bar": 3}]) -> [1, 2, null]
+  search(*.foo, {"a": {"foo": 1}, "b": {"foo": 2}, "c": {"bar": 1}}) -> [1, 2, null]
 ----
 
 == JSON Literal Expressions
@@ -808,11 +804,11 @@ to return the hash values in any specific order.
 ----
 
 A JSON literal expression is an expression that allows arbitrary JSON objects to be
-specified.  This is useful in filter expressions as well as multi select hashes
+specified.  This is useful in filter expressions as well as multi select objects
 (to create arbitrary key value pairs), but is allowed anywhere an expression is
-allowed.  The specification includes the definition for JSON, implementations should
-use an existing JSON parser to parse literal values.  Note that the
-`\` character must now be escaped in a `json-value` which means
+allowed.  The specification includes JSON literals. Implementations should
+use an existing JSON parser to parse these literals.  Note that the
+`\` character must now be escaped in a JSON literal which means
 implementations need to handle this case before passing the resulting string to
 a JSON parser.
 
@@ -867,23 +863,22 @@ additional processing that JSON strings supports including:
   search(" bar ", {}) -> " bar "
   search("[baz]", {}) -> "[baz]"
   search("[baz]", {}) -> "[baz]"
-  search("\u03a6", {}) -> "\u03a6"
-  search("\"\\\"", {}) -> "\\"
+  search("\u03a6", {}) -> "Φ"
+  search("\"\\\\\"", {}) -> "\\"
 ----
 
 == Number literals
 
 [source%unbreakable]
 ----
-numberLiteral = (REAL_OR_EXPONENT_NUMBER | SIGNED_INT)
+numberLiteral = '-'? (REAL_OR_EXPONENT_NUMBER | INT)
+
 REAL_OR_EXPONENT_NUMBER
-  : '-'? INT '.' [0-9] + EXP?
-  | '-'? INT EXP
+  : INT? '.' [0-9] + EXP?
+  | INT EXP
   ;
 
-SIGNED_INT : '-'? INT ;
-
-fragment INT
+INT
   : '0'
   | [1-9] [0-9]*
   ;
@@ -895,7 +890,7 @@ fragment EXP
 
 As with raw strings, json-formula allows literal numbers in expressions.
 Allowing numbers in expressions does lead to some ambiguity.
-A bracket with a single signed digit e.g.: `[0]` can be interpreted as a flatten operation or a multi-select list with the number zero. To handle this ambiguity, the grammar sets a precedence so that `[-?[0-9]]` is consistently treated as a an index operation.  To explicitly express an array with one element, use a JSON literal: `` \`[0]` ``
+A bracket with a single signed digit e.g.: `[0]` can be interpreted as a flatten operation or a `multiSelectArray` with the number zero. To handle this ambiguity, the grammar sets a precedence so that `[-?[0-9]]` is consistently treated as a an index operation.  To explicitly express an array with one element, use a JSON literal: `` \`[0]` ``
 
 === Examples
 
@@ -915,11 +910,11 @@ A bracket with a single signed digit e.g.: `[0]` can be interpreted as a flatten
 [source%unbreakable]
 ----
 indexExpression
-  : '[' '*' ']' # bracketStar
-  | '[' slice ']' # bracketSlice
-  | '[' ']' # bracketFlatten
-  | '[?' expression ']' # filter
-  | '[' expression ']' # select
+  : '[' '*' ']'
+  | '[' slice ']'
+  | '[' ']'
+  | '[?' expression ']'
+  | '[' expression ']'
   ;
 ----
 
@@ -928,8 +923,8 @@ A filter expression provides a way to select JSON elements based on a
 comparison to another expression.  A filter expression is evaluated as follows:
 for each element in an array evaluate the `expression` against the
 element.  If the expression evaluates to a truth-like value, the item (in its
-entirety) is added to the result list.  Otherwise it is excluded from the
-result list.  A filter expression is defined only for a JSON array.  Attempting
+entirety) is added to the result array.  Otherwise it is excluded from the
+result array.  A filter expression is defined only for a JSON array.  Attempting
 to evaluate a filter expression against any other type will return `null`.
 
 === Examples:
@@ -949,14 +944,14 @@ search(foo[?a < b], {"foo": [
     {"a": 10, "b": "12"} ]
 ----
 
-The five elements in the foo list are evaluated against `a < b`:
+The five elements in the foo array are evaluated against `a < b`:
 
-* The first element resolves to the comparison `"char" < "bar"`, and because these types are string, the comparison of code points returns `false`, and the first element is excluded from the result list.
+* The first element resolves to the comparison `"char" < "bar"`, and because these types are string, the comparison of code points returns `false`, and the first element is excluded from the result array.
 * The second element resolves to `2 < 1`,
-which is `false`, so the second element is excluded from the result list.
-* The third expression resolves to `1 < 2` which evaluates to `true`, so the third element is included in the result list.
-* The fourth expression resolves to `false < "1"`. Since the left hand operand is boolean, both operands are coerced to numbers and evaluated as: `0 < 1` and so the fourth element included in the result list.
-* The final expression resolves to `10 < "12"`.  Since we have mixed operands, the right hand operand is coerced to the same type as the left hand operand (numeric) and evaluated as: `10 < 12` and the last element is included in the result list.
+which is `false`, so the second element is excluded from the result array.
+* The third expression resolves to `1 < 2` which evaluates to `true`, so the third element is included in the result array.
+* The fourth expression resolves to `false < "1"`. Since the left hand operand is boolean, both operands are coerced to numbers and evaluated as: `0 < 1` and so the fourth element included in the result array.
+* The final expression resolves to `10 < "12"`.  Since we have mixed operands, the right hand operand is coerced to the same type as the left hand operand (numeric) and evaluated as: `10 < 12` and the last element is included in the result array.
 
 === Examples
 
@@ -971,23 +966,28 @@ which is `false`, so the second element is excluded from the result list.
 
 [source%unbreakable]
 ----
-    function-expression = unquoted-string  (
-                            no-args  /
-                            one-or-more-args )
-    no-args             = "(" ")"
-    one-or-more-args    = "(" ( function-arg *( "," function-arg ) ) ")"
-    function-arg        = expression / current-node / expression-type
-    current-node        = "@"
-    expression-type     = "&" expression
+functionExpression
+  : NAME '(' functionArg (',' functionArg)* ')'
+  | NAME '(' ')'
+  ;
+
+functionArg
+  : expression
+  | expressionType
+  ;
+
+currentNode : '@' ;
+
+expressionType : '&' expression ;
 ----
 
 Functions allow users to easily transform and filter data in json-formula
 expressions.
 
-=== current-node
+=== currentNode
 
-The `current-node` token can be used to represent the current node being
-evaluated. The `current-node` token is useful for functions that require the
+The `currentNode` token can be used to represent the current node being
+evaluated. The `currentNode` token is useful for functions that require the
 current node being evaluated as an argument. For example, given:
 
 ```
@@ -1010,7 +1010,7 @@ expression creates an array of arrays where each nested array contains the total
 json-formula assumes that all function arguments operate on the current node unless the argument is a literal.  Because of this, an
 expression such as `@.name`` would be equivalent to just `name`.
 
-==== current-node state
+==== currentNode state
 
 At the start of an expression, the value of the current node is the data
 being evaluated by the json-formula expression. As an expression is evaluated, the
@@ -1024,15 +1024,15 @@ Functions are evaluated in applicative order.  Each argument must be an
 expression, each argument expression must be evaluated before evaluating the
 function. The function is then called with the evaluated function arguments.
 The one exception to this rule is the `if(expr, result1, result2)` function. In this case either result1 or result2 is evaluated, depending on the outcome of `expr`.
-The result of the `function-expression` is the result returned by the
-function call.  If a `function-expression` is evaluated for a function that
+The result of the `functionExpression` is the result returned by the
+function call.  If a `functionExpression` is evaluated for a function that
 does not exist, the json-formula implementation must indicate to the caller that an
 `unknown-function` error occurred.  How and when this error is raised is
 implementation specific, but implementations should indicate to the caller that
 this specific error occurred.
 
 Functions can either have a specific arity or be variadic with a minimum
-number of arguments.  If a `function-expression` is encountered where the
+number of arguments.  If a `functionExpression` is encountered where the
 arity does not match or the minimum number of arguments for a variadic function
 is not provided, then implementations must indicate to the caller than an
 `invalid-arity` error occurred.  How and when this error is raised is
@@ -1053,7 +1053,7 @@ be used to convert (and filter) all elements to numbers
 
 [source%unbreakable]
 ----
-    search([].toNumber(@), ["1", "2", "3", "notanumber", null, true]) -> [1,2,3,0,1]
+    search([].toNumber(@), ["1", "2", "3", "notanumber", null, true]) -> [1,2,3,0,null,1]
 ----
 
 This provides a simple mechanism to explicitly convert types when needed.
@@ -1071,7 +1071,7 @@ output.
     return_type function_name2(type1|type2 $argname)
 ----
 
-The list of data types supported by a function are:
+The array of data types supported by a function are:
 
 * number (integers and double-precision floating-point format in JSON)
 * string
@@ -1111,7 +1111,7 @@ choose to apply the expression reference as needed.  It is semantically similar
 to an anonymous function. See the `sortBy` function for an example
 usage of the expression type.
 
-Similarly how arrays can specify a type within a list using the
+Similarly how arrays can specify a type within an array using the
 `array[type]` syntax, expressions can specify their resolved type using
 `expression->type` syntax.  This means that the resolved type of the function
 argument must be an expression that itself will resolve to `type`.
@@ -1176,11 +1176,11 @@ Below is the same steps for evaluating `abs(bar)`:
 ----
 
 A pipe expression combines two expressions, separated by the `|` character.
-It is similar to a `sub-expression` with two important distinctions:
+It is similar to a `chainedExpression` with two important distinctions:
 
-1. Any expression can be used on the right hand side.  A `sub-expression`
+1. Any expression can be used on the right hand side.  A `chainedExpression`
    restricts the type of expression that can be used on the right hand side.
-2. A `pipe-expression` **stops projections on the left hand side for
+2. A `pipeExpression` **stops projections on the left hand side for
    propagating to the right hand side**.  If the left expression creates a
    projection, it does **not** apply to the right hand side.
 
@@ -1209,8 +1209,8 @@ The expression `foo[*].bar` gives the result of
 
 The first part of the expression, `foo[*]`, creates a projection.  At this
 point, the remaining expression, `bar` is projected onto each element of the
-list created from `foo[*]`.  If you project the `[0]` expression, you will
-get the first element from each sub list.  The expression `foo[*].bar[0]`
+array created from `foo[*]`.  If you project the `[0]` expression, you will
+get the first element from each sub array.  The expression `foo[*].bar[0]`
 will return
 
 [source%unbreakable]
@@ -1218,8 +1218,8 @@ will return
     ["first1", "first2"]
 ----
 
-If you instead wanted *only* the first sub list, `["first1", "second1"]`, you
-can use a `pipe-expression`
+If you instead wanted *only* the first sub array, `["first1", "second1"]`, you
+can use a `pipeExpression`
 
 [source%unbreakable]
 ----
