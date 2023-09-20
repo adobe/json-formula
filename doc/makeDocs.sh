@@ -3,7 +3,10 @@
 # add x for debugging
 set -eu
 
-# define the docker container
+# define the pandoc docker container
+PANDOC_IMG=pandoc/core
+
+# define the asciidoctor docker container
 AD_DOCKER_IMG=asciidoctor/docker-asciidoctor
 
 #detect platform that we're running on...
@@ -32,7 +35,13 @@ PARENT_PATH="$(dirname "${CURRENT_PATH}")"
 
 # this is the core routine to process one file...
 convertOne() {
+
 	# make sure we have the docker images
+	if [[ "$(docker images -q "${PANDOC_IMG}" 2> /dev/null)" == "" ]]; then
+		echo "Pulling Pandoc Docker image"
+		docker pull "${PANDOC_IMG}"
+	fi
+
 	if [[ "$(docker images -q "${AD_DOCKER_IMG}" 2> /dev/null)" == "" ]]; then
 		echo "Pulling AsciiDoc Docker image"
 		docker pull "${AD_DOCKER_IMG}"
@@ -43,7 +52,12 @@ convertOne() {
 	extension="${filename##*.}"
 	filename="${filename%.*}"
 	BASE_NAME=$filename
-	# echo "BaseName = $BASE_NAME"
+	echo "BaseName = $BASE_NAME"
+
+	echo "Converting functions.md to ADOC"
+	docker run --rm -v "${CURRENT_PATH}":"${CURRENT_PATH}" -w "${CURRENT_PATH}" \
+		pandoc/core functions.md -o functions.adoc
+
 
 	# Create the HTML version
 	echo "Converting "${BASE_NAME}".adoc to HTML"
@@ -73,6 +87,13 @@ convertOne() {
 }
 
 # process all the files
+npm run docs
+rm -f functions.md
+# get a copy of the generated function markdown docs and
+# tweak the output so it is suitable for the spec
+node ./modFunctions.js
+
+# remove comments and directives from the antlr grammar
 node ./strip.js
 convertOne "./spec.adoc"
 rm ./grammar.g4

@@ -1,0 +1,1709 @@
+== abs
+
+*abs(value) ⇒ number*
+
+Finds the absolute value of the provided argument `value`.
+
+*Returns*: number - returns the absolute value of the `value` argument
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|value |number |argument whose absolute value has to be returned
+|===
+
+*Example*
+
+[source,js]
+----
+abs(-1) //returns 1
+----
+
+== avg
+
+*avg(elements) ⇒ number*
+
+Finds the average of the elements in the provided array. An empty array
+will produce a return value of `null`.
+
+*Returns*: number - average value
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|elements |Array.<number> |array of elements whose average has to be
+computed
+|===
+
+*Example*
+
+[source,js]
+----
+avg(`[]`) //returns null
+----
+
+*Example*
+
+[source,js]
+----
+avg([1, 2, 3]) //returns 2
+----
+
+== ceil
+
+*ceil(num) ⇒ number*
+
+Finds the next highest integer value of the argument `num` by rounding
+up if necessary.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|num |number |number whose next highest integer value has to be computed
+|===
+
+*Example*
+
+[source,js]
+----
+ceil(10) //returns 10
+----
+
+*Example*
+
+[source,js]
+----
+ceil(10.4) //return 11
+----
+
+== contains
+
+*contains(subject, search) ⇒ boolean*
+
+Determines if the given `subject` contains the provided `search` string.
+If `subject` is an array, this function returns true if one of the
+elements in the array is equal to the provided `search` value. If the
+provided `subject` is a string, this function returns true if the string
+contains the provided `search` argument.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|subject |array | string |the subject in which the element has to be
+searched
+
+|search |string | boolean | number | date |element to search
+|===
+
+*Example*
+
+[source,js]
+----
+contains([1, 2, 3, 4], 2) //returns true
+----
+
+*Example*
+
+[source,js]
+----
+contains([1, 2, 3, 4], -1) //returns false
+----
+
+*Example*
+
+[source,js]
+----
+contains('Abcd', 'd') //returns true
+----
+
+*Example*
+
+[source,js]
+----
+contains('Abcd', 'x') //returns false
+----
+
+== endsWith
+
+*endsWith(subject, suffix) ⇒ boolean*
+
+Determines if the `subject` ends with the `suffix`
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|subject |string |subject in which the `suffix` is being searched for
+|suffix |string |suffix to search in the subject
+|===
+
+*Example*
+
+[source,js]
+----
+endsWith('Abcd', 'd') //returns true
+----
+
+*Example*
+
+[source,js]
+----
+endsWith('Abcd', 'A') //returns false
+----
+
+== floor
+
+*floor(num) ⇒ number*
+
+Calculates the next lowest integer value of the argument `num` by
+rounding down if necessary.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|num |number |number whose next lowest integer value has to be returned
+|===
+
+*Example*
+
+[source,js]
+----
+floor(10.4) //returns 10
+----
+
+*Example*
+
+[source,js]
+----
+floor(10) //returns 10
+----
+
+== join
+
+*join(glue, stringsarray) ⇒ string*
+
+Combines all the elements from the provided `stringsarray` array joined
+together using the `glue` argument as a separator between each.
+
+[cols=",",options="header",]
+|===
+|Param |Type
+|glue |string
+|stringsarray |Array.<string>
+|===
+
+*Example*
+
+[source,js]
+----
+join(',', ['a', 'b', 'c']) //returns 'a,b,c'
+----
+
+== keys
+
+*keys(obj) ⇒ array*
+
+Generates an array containing the keys of the provided object `obj`. If
+the passed object is null, the value returned is an empty array
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|obj |object |the object whose keys need to be extracted
+|===
+
+*Example*
+
+[source,js]
+----
+keys({a : 3, b : 4}) //returns ['a', 'b']
+----
+
+== length
+
+*length(subject) ⇒ number*
+
+Calculates the length of the given argument `subject` using the
+following types rules: * string: returns the number of code points in
+the string * array: returns the number of elements in the array *
+object: returns the number of key-value pairs in the object
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|subject |string | array | object |subject whose length has to be
+calculated
+|===
+
+*Example*
+
+[source,js]
+----
+length(`[]`) //returns 0
+----
+
+*Example*
+
+[source,js]
+----
+length('') //returns 0
+----
+
+*Example*
+
+[source,js]
+----
+length('abcd') //returns 4
+----
+
+*Example*
+
+[source,js]
+----
+length([1, 2, 3, 4]) //returns 4
+----
+
+*Example*
+
+[source,js]
+----
+length({}) // returns 0
+----
+
+*Example*
+
+[source,js]
+----
+length({a : 3, b : 4}) //returns 2
+----
+
+== map
+
+*map(expr, elements) ⇒ array*
+
+Apply the `expr` to every element in the `elements` array and return the
+array of results. An elements of length N will produce a return array of
+length N. Unlike a projection, `[*].bar`, `map()` will include the
+result of applying the `expr` for every element in the elements array,
+even if the result is `null`.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|expr |expression |expression to evaluate on each element
+
+|elements |array |array of elements on which the expression will be
+evaluated
+|===
+
+*Example*
+
+[source,js]
+----
+map(&(@ + 1), [1, 2, 3, 4]) // returns [2, 3, 4, 5]
+----
+
+*Example*
+
+[source,js]
+----
+map(&length(@), ['doe', 'nick', 'chris']) // returns [3,4, 5]
+----
+
+== max
+
+*max(collection) ⇒ number*
+
+Calculates the highest value in the provided `collection` arguments. If
+all collections are empty `null` is returned. max() can work on numbers
+or strings. If a mix of numbers and strings are provided, the type of
+the first value will be used.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|collection |Array.<number> | Array.<string> |array in which the maximum
+element is to be calculated
+|===
+
+*Example*
+
+[source,js]
+----
+max([1, 2, 3], [4, 5, 6], 7) //returns 7
+----
+
+*Example*
+
+[source,js]
+----
+max(`[]`) // returns null
+----
+
+*Example*
+
+[source,js]
+----
+max(['a', 'a1', 'b']) // returns 'b'
+----
+
+== merge
+
+*merge(…args) ⇒ object*
+
+Accepts 0 or more objects as arguments, and returns a single object with
+subsequent objects merged. Each subsequent object’s key/value pairs are
+added to the preceding object. This function is used to combine multiple
+objects into one. You can think of this as the first object being the
+base object, and each subsequent argument being overrides that are
+applied to the base object.
+
+[cols=",",options="header",]
+|===
+|Param |Type
+|…args |object
+|===
+
+*Example*
+
+[source,js]
+----
+merge({a: 1, b: 2}, {c : 3, d: 4}) // returns {a :1, b: 2, c: 3, d: 4}
+----
+
+*Example*
+
+[source,js]
+----
+merge({a: 1, b: 2}, {a : 3, d: 4}) // returns {a :3, b: 2, d: 4}
+----
+
+== min
+
+*min(collection) ⇒ number*
+
+Calculates the lowest value in the provided `collection` arguments. If
+all collections are empty `null` is returned. min() can work on numbers
+or strings. If a mix of numbers and strings are provided, the type of
+the first value will be used.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|collection |…Array.<number> | Array.<string> | number | string
+|elements
+|===
+
+*Example*
+
+[source,js]
+----
+min([1, 2, 3], [4, 5, 6], 7) //returns 1
+----
+
+*Example*
+
+[source,js]
+----
+min(`[]`) // returns null
+----
+
+*Example*
+
+[source,js]
+----
+min(['a', 'a1', 'b']) // returns 'a'
+----
+
+== notNull
+
+*notNull(…argument) ⇒ any*
+
+Finds the first argument that does not resolve to `null`. This function
+accepts one or more arguments, and will evaluate them in order until a
+non null argument is encountered. If all arguments values resolve to
+null, then a value of null is returned.
+
+[cols=",",options="header",]
+|===
+|Param |Type
+|…argument |any
+|===
+
+*Example*
+
+[source,js]
+----
+notNull(1, 2, 3, 4, `null`) //returns 1
+----
+
+*Example*
+
+[source,js]
+----
+notNull(`null`, 2, 3, 4, `null`) //returns 2
+----
+
+== reduce
+
+*reduce(expr, elements) ⇒ any*
+
+executes a user-supplied reducer expression `expr` on each element of
+the array, in order, passing in the return value from the calculation on
+the preceding element. The final result of running the reducer across
+all elements of the `elements` array is a single value. The expression
+can access the following properties * accumulated: accumulated value
+based on the previous calculations. Initial value is `null` * current:
+current element to process * index: index of the `current` element in
+the array * array: original array
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|expr |expression |reducer expr to be executed on each element
+
+|elements |array |array of elements on which the expression will be
+evaluated
+|===
+
+*Example*
+
+[source,js]
+----
+reduce(&(accumulated + current), [1, 2, 3]) //returns 6
+----
+
+*Example*
+
+[source,js]
+----
+// find maximum entry by age
+reduce(
+  &max(@.accumulated.age, @.current.age),
+  [{age: 10, name: 'Joe'},{age: 20, name: 'John'}], @[0].age
+)
+----
+
+*Example*
+
+[source,js]
+----
+reduce(&if(accumulated == `null`, current, accumulated * current), [3, 3, 3]) //returns 27
+----
+
+== register
+
+*register(functionName, expr) ⇒ Object*
+
+Register a function to allow code re-use. The registered function may
+take one parameter. If more parameters are needed, combine them in an
+array or map.
+
+*Returns*: Object - returns an empty object
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|functionName |string |Name of the function to register
+|expr |expression |Expression to execute with this function call
+|===
+
+*Example*
+
+[source,js]
+----
+register('product', &@[0] * @[1]) // can now call: product([2,21]) => returns 42
+----
+
+== reverse
+
+*reverse(argument) ⇒ array*
+
+Reverses the order of the `argument`.
+
+[cols=",",options="header",]
+|===
+|Param |Type
+|argument |string | array
+|===
+
+*Example*
+
+[source,js]
+----
+reverse(['a', 'b', 'c']) //returns ['c', 'b', 'a']
+----
+
+== sort
+
+*sort(list) ⇒ Array.<number> | Array.<string>*
+
+This function accepts an array `list` argument and returns the sorted
+elements of the `list` as an array. The array must be a list of strings
+or numbers. string sorting is based on code points. Locale is not taken
+into account.
+
+[width="100%",cols="50%,50%",options="header",]
+|===
+|Param |Type
+|list |Array.<number> | Array.<string>
+|===
+
+*Example*
+
+[source,js]
+----
+sort([1, 2, 4, 3, 1]) // returns [1, 1, 2, 3, 4]
+----
+
+== sortBy
+
+*sortBy(elements, expr) ⇒ array*
+
+Sort an array using an expression `expr` as the sort key. For each
+element in the array of elements, the `expr` expression is applied and
+the resulting value is used as the key used when sorting the elements.
+If the result of evaluating the `expr` against the current array element
+results in type other than a number or a string, a type error will
+occur.
+
+[cols=",",options="header",]
+|===
+|Param |Type
+|elements |array
+|expr |expression
+|===
+
+*Example*
+
+[source,js]
+----
+sortBy(['abcd', 'e', 'def'], &length(@)) //returns ['e', 'def', 'abcd']
+----
+
+*Example*
+
+[source,js]
+----
+// returns [{year: 1910}, {year: 2010}, {year: 2020}]
+sortBy([{year: 2010}, {year: 2020}, {year: 1910}], &year)
+----
+
+== startsWith
+
+*startsWith(subject, prefix) ⇒ boolean*
+
+Determines if the `subject` starts with the `prefix`.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|subject |string |subject in which the `prefix` is being searched for
+|prefix |string |prefix to search in the subject
+|===
+
+*Example*
+
+[source,js]
+----
+startsWith('jack is at home', 'jack') // returns true
+----
+
+== sum
+
+*sum(collection) ⇒ number*
+
+Calculates the sum of the provided `collection` array argument. An empty
+array will produce a return value of 0.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|collection |Array.<number> |array whose element’s sum has to be
+computed
+|===
+
+*Example*
+
+[source,js]
+----
+sum([1, 2, 3]) //returns 6
+----
+
+== toArray
+
+*toArray(arg) ⇒ array*
+
+Converts the passed `arg` to an array. The conversion happens as per the
+following rules * array - Returns the provided value. *
+number/string/object/boolean - Returns a one element array containing
+the argument.
+
+[cols=",",options="header",]
+|===
+|Param |Type
+|arg |any
+|===
+
+*Example*
+
+[source,js]
+----
+toArray(1) // returns [1]
+----
+
+*Example*
+
+[source,js]
+----
+toArray(null()) // returns [`null`]
+----
+
+== toNumber
+
+*toNumber(arg) ⇒ number*
+
+Converts the provided arg to a number. The conversion happens as per the
+following rules * string - Returns the parsed number. * number - Returns
+the passed in value. * array - null * object - null * boolean - 1 if
+true, 0 if false * null - null
+
+[cols=",",options="header",]
+|===
+|Param |Type
+|arg |any
+|===
+
+*Example*
+
+[source,js]
+----
+toNumber(1) //returns 1
+----
+
+*Example*
+
+[source,js]
+----
+toNumber('10') //returns 10
+----
+
+*Example*
+
+[source,js]
+----
+toNumber({a: 1}) //returns null
+----
+
+*Example*
+
+[source,js]
+----
+toNumber(true()) //returns 1
+----
+
+== toString
+
+*toString(arg) ⇒ string*
+
+Converts the provided `arg` to a string. The conversion happens as per
+the following rules * string - Returns the passed in value. *
+number/array/object/boolean - The JSON encoded value of the object.
+
+[cols=",",options="header",]
+|===
+|Param |Type
+|arg |any
+|===
+
+*Example*
+
+[source,js]
+----
+toString(1) //returns '1'
+----
+
+*Example*
+
+[source,js]
+----
+toString(true()) //returns 'true'
+----
+
+== type
+
+*type(subject) ⇒ string*
+
+Finds the JavaScript type of the given `subject` argument as a string
+value.
+
+The return value MUST be one of the following: * number * string *
+boolean * array * object * null
+
+[cols=",",options="header",]
+|===
+|Param |Type
+|subject |any
+|===
+
+*Example*
+
+[source,js]
+----
+type(1) //returns 'number'
+----
+
+*Example*
+
+[source,js]
+----
+type('') //returns 'string'
+----
+
+== values
+
+*values(obj) ⇒ array*
+
+Generates an array of the values of the provided object `obj`. Note that
+because JSON objects are inherently unordered, the values associated
+with the provided object are also unordered.
+
+[cols=",",options="header",]
+|===
+|Param |Type
+|obj |object
+|===
+
+*Example*
+
+[source,js]
+----
+values({a : 3, b : 4}) //returns [3, 4]
+----
+
+== zip
+
+*zip(…arrays) ⇒ array*
+
+Generates a convolved (zipped) array containing grouped arrays of values
+from the array arguments from index 0, 1, 2, etc. This function accepts
+a variable number of arguments. The length of the returned array is
+equal to the length of the shortest array.
+
+*Returns*: array - An array of arrays with elements zipped together
+
+[cols=",,",options="header",]
+|===
+|Param |Type |Description
+|…arrays |array |array of arrays to zip together
+|===
+
+*Example*
+
+[source,js]
+----
+zip([1, 2, 3], [4, 5, 6]) //returns [[1, 4], [2, 5], [3, 6]]
+----
+
+== casefold
+
+*casefold(input) ⇒ string*
+
+Generates a lower-case string of the `input` string using
+locale-specific mappings. e.g. Strings with German lowercase letter `ß'
+can be compared to `ss'
+
+*Returns*: string - A new string converted to lower case
+
+[cols=",,",options="header",]
+|===
+|Param |Type |Description
+|input |string |string to casefold
+|===
+
+*Example*
+
+[source,js]
+----
+casefold('AbC') // returns 'abc'
+----
+
+== day
+
+*day(The) ⇒ number*
+
+Finds the day of a date, represented by a serial number. The day is
+given as an integer ranging from 1 to 31.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|The |number |date of the day you are trying to find. Dates should be
+entered by using the datetime function
+|===
+
+*Example*
+
+[source,js]
+----
+day(datetime(2008,5,23)) //returns 23
+----
+
+== entries
+
+*entries(obj) ⇒ Array.<any>*
+
+returns an array of a given object’s property `[key, value]` pairs.
+
+*Returns*: Array.<any> - an array of [key, value] pairs
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|obj |object |Object whose `[key, value]` pairs need to be extracted
+|===
+
+*Example*
+
+[source,js]
+----
+entries({a: 1, b: 2}) //returns [['a', 1], ['b', 2]]
+----
+
+== eomonth
+
+*eomonth(startDate, monthAdd) ⇒ integer*
+
+Finds the serial number of the end of a month, given `startDate` plus
+`monthAdd` months
+
+*Returns*: integer - the number of days in the computed month
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|startDate |number |The base date to start from. Dates should be entered
+by using the datetime function
+
+|monthAdd |integer |Number of months to add to start date
+|===
+
+*Example*
+
+[source,js]
+----
+eomonth(datetime(2011, 1, 1), 1) | [month(@), day(@)] //returns [2, 28]
+----
+
+*Example*
+
+[source,js]
+----
+eomonth(datetime(2011, 1, 1), -3) | [month(@), day(@)] //returns [10, 31]
+----
+
+== exp
+
+*exp(x) ⇒ number*
+
+Finds e (the base of natural logarithms) raised to a power x. (i.e. ex)
+
+*Returns*: number - e (the base of natural logarithms) raised to a power
+x
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|x |number |A numeric expression representing the power of e.
+|===
+
+*Example*
+
+[source,js]
+----
+exp(10) //returns 22026.465794806718
+----
+
+== fromEntries
+
+*fromEntries(pairs) ⇒ object*
+
+returns an object by transforming a list of key-value `pairs` into an
+object.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|pairs |Array.<any> |list of key-value pairs to create the object from
+|===
+
+*Example*
+
+[source,js]
+----
+fromEntries([['a', 1], ['b', 2]]) //returns {a: 1, b: 2}
+----
+
+== hour
+
+*hour(The) ⇒ number*
+
+Extract the hour (0 through 23) from a time/datetime representation
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|The |number |datetime/time for which the hour is to be returned. Dates
+should be specified using the datetime or link:#time[time] function
+|===
+
+*Example*
+
+[source,js]
+----
+hour(datetime(2008,5,23,12, 0, 0)) //returns 12
+hour(time(12, 0, 0)) //returns 12
+----
+
+== left
+
+*left(subject, [elements]) ⇒ string | array*
+
+Return a selected number of text characters from the left or in case of
+array selected number of elements from the start
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|subject |string | array |The text/array of characters/elements to
+extract.
+
+|[elements] |number |number of elements to pick. Defaults to 1
+|===
+
+*Example*
+
+[source,js]
+----
+left('Sale Price', 4) //returns 'Sale'
+----
+
+*Example*
+
+[source,js]
+----
+left('Sweden') // returns 'S'
+----
+
+*Example*
+
+[source,js]
+----
+left([4, 5, 6], 2) // returns [4, 5]
+----
+
+== lower
+
+*lower(input) ⇒ string*
+
+Converts all the alphabetic characters in a string to lowercase. If the
+value is not a string it will be converted into string.
+
+*Returns*: string - the lower case value of the input string
+
+[cols=",,",options="header",]
+|===
+|Param |Type |Description
+|input |string |input string
+|===
+
+*Example*
+
+[source,js]
+----
+lower('E. E. Cummings') //returns e. e. cummings
+----
+
+== mid
+
+*mid(subject, startPos, length) ⇒ string | array*
+
+Extracts text, given an original text, starting position, and length. or
+in case of array, extracts a subset of the array from start till the
+length number of elements. Returns null if the `startPos` is greater
+than the length of the array
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|subject |string | array |the text string or array of characters or
+elements to extract.
+
+|startPos |number |the zero-position of the first character or element
+to extract. The position starts with 0
+
+|length |number |The number of characters or elements to return from
+text. If it is greater then the length of `subject` the argument is set
+to the length of the subject.
+|===
+
+*Example*
+
+[source,js]
+----
+mid('Fluid Flow',0,5) //returns 'Fluid'
+----
+
+*Example*
+
+[source,js]
+----
+mid('Fluid Flow',6,20) //returns 'Flow'
+----
+
+*Example*
+
+[source,js]
+----
+mid('Fluid Flow,20,5) //returns ''
+----
+
+== minute
+
+*minute(The) ⇒ number*
+
+Extract the minute (0 through 59) from a time/datetime representation
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|The |number |datetime/time for which the minute is to be returned.
+Dates should be specified using the datetime or link:#time[time]
+function
+|===
+
+*Example*
+
+[source,js]
+----
+minute(datetime(2008,5,23,12, 10, 0)) // returns 10
+minute(time(12, 10, 0)) //returns 10
+----
+
+== mod
+
+*mod(dividend, divisor) ⇒ number*
+
+Return the remainder when one number is divided by another number. The
+sign is the same as divisor
+
+*Returns*: number - Computes the remainder of `dividend`/`divisor`.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|dividend |number |The number for which to find the remainder.
+|divisor |number |The number by which to divide number.
+|===
+
+*Example*
+
+[source,js]
+----
+mod(3, 2) //returns 1
+----
+
+*Example*
+
+[source,js]
+----
+mod(-3, 2) //returns -1
+----
+
+== month
+
+*month(The) ⇒ number*
+
+Finds the month of a date represented by a serial number. The month is
+given as an integer, ranging from 1 (January) to 12 (December).
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|The |number |date for which the month is to be returned. Dates should
+be entered by using the datetime function
+|===
+
+*Example*
+
+[source,js]
+----
+month(datetime(2008,5,23)) //returns 5
+----
+
+== now
+
+*now() ⇒ number*
+
+returns the time since epoch with days as exponent and time of day as
+fraction
+
+*Returns*: number - representation of current time as a number +
+
+== power
+
+*power(a, x) ⇒ number*
+
+Computes `a` raised to a power `x`. (ax)
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|a |number |The base number. It can be any real number.
+|x |number |The exponent to which the base number is raised.
+|===
+
+*Example*
+
+[source,js]
+----
+power(10, 2) //returns 100 (10 raised to power 2)
+----
+
+== proper
+
+*proper(text) ⇒ string*
+
+Return the input string with the first letter of each word converted to
+an uppercase letter and the rest of the letters in the word converted to
+lowercase.
+
+[cols=",,",options="header",]
+|===
+|Param |Type |Description
+|text |string |the text to partially capitalize.
+|===
+
+*Example*
+
+[source,js]
+----
+proper('this is a TITLE') //returns 'This Is A Title'
+----
+
+*Example*
+
+[source,js]
+----
+proper('2-way street') //returns '2-Way Street'
+----
+
+*Example*
+
+[source,js]
+----
+proper('76BudGet') //returns '76Budget'
+----
+
+== random
+
+*random() ⇒ number*
+
+Generates a pseudo random number that is greater than or equal to zero,
+and less than one.
+
+*Example*
+
+[source,js]
+----
+random() // 0.022585461160693265
+----
+
+== replace
+
+*replace(text, start, length, replacement) ⇒ string*
+
+Generates text where an old text is substituted at a given start
+position and length, with a new text.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|text |string |original text
+
+|start |number |zero-based index in the original text from where to
+begin the replacement.
+
+|length |number |number of characters to be replaced
+
+|replacement |string |string to replace at the start index
+|===
+
+*Example*
+
+[source,js]
+----
+replace('abcdefghijk', 5, 5, '*') //returns abcde*k
+----
+
+*Example*
+
+[source,js]
+----
+replace('2009',2,2,'10') //returns  2010
+----
+
+*Example*
+
+[source,js]
+----
+replace('123456',0,3,'@') //returns @456
+----
+
+== rept
+
+*rept(text, count) ⇒ string*
+
+Return text repeated Count times.
+
+[cols=",,",options="header",]
+|===
+|Param |Type |Description
+|text |string |text to repeat
+|count |number |number of times to repeat the text
+|===
+
+*Example*
+
+[source,js]
+----
+rept('x', 5) //returns 'xxxxx'
+----
+
+== right
+
+*right(subject, [elements]) ⇒ string | array*
+
+Generates a string from the right-most characters of a `subject` string
+or in case of array, an array of elements from the end of `subject`
+array. Returns null if the number of elements is less than 0
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|subject |string | array |The text/array containing the
+characters/elements to extract.
+
+|[elements] |number |number of elements to pick. Defaults to 1
+|===
+
+*Example*
+
+[source,js]
+----
+right('Sale Price', 4) //returns 'rice'
+----
+
+*Example*
+
+[source,js]
+----
+right('Sweden') // returns 'n'
+----
+
+*Example*
+
+[source,js]
+----
+right([4, 5, 6], 2) // returns [5, 6]
+----
+
+== round
+
+*round(num, precision) ⇒ number*
+
+Round a number to a specified `precision`. ### Remarks *Remarks*
+
+* If `precision` is greater than zero, round to the specified number of
+decimal places.
+* If `precision` is 0, round to the nearest integer.
+* If `precision` is less than 0, round to the left of the decimal point.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|num |number |number to round off
+|precision |number |number is rounded to the specified precision.
+|===
+
+*Example*
+
+[source,js]
+----
+round(2.15, 1) //returns 2.2
+----
+
+*Example*
+
+[source,js]
+----
+round(626.3,-3) //returns 1000 (Rounds 626.3 to the nearest multiple of 1000)
+----
+
+*Example*
+
+[source,js]
+----
+round(626.3, 0) //returns 626
+----
+
+*Example*
+
+[source,js]
+----
+round(1.98,-1) //returns 0 (Rounds 1.98 to the nearest multiple of 10)
+----
+
+*Example*
+
+[source,js]
+----
+round(-50.55,-2) // -100 (round -50.55 to the nearest multiple of 100)
+----
+
+== search
+
+*search(findText, withinText, startPos) ⇒ array*
+
+Perform a wildcard search. The search is case-sensitive and supports two
+forms of wildcards: ``__” finds a a sequence of characters and ”?” finds
+a single character. To use ”__'' or ``?'' as text values, precede them
+with a tilde (``~'') character. Note that the wildcard search is not
+greedy. e.g. search(’a*b’, `abb') will return [0, `ab'] Not [0, `abb']
+
+*Returns*: array - returns an array with two values: The start position
+of the found text and the text string that was found. If a match was not
+found, an empty array is returned.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|findText |string |the search string – which may include wild cards.
+
+|withinText |string |The string to search.
+
+|startPos |integer |The zero-based position of withinText to start
+searching. Defaults to zero.
+|===
+
+*Example*
+
+[source,js]
+----
+search('a?c', 'acabc') //returns [2, 'abc']
+----
+
+== second
+
+*second(The) ⇒ number*
+
+Extract the second (0 through 59) from a time/datetime representation
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|The |number |datetime/time for which the second is to be returned.
+Dates should be specified using the datetime or link:#time[time]
+function
+|===
+
+*Example*
+
+[source,js]
+----
+second(datetime(2008,5,23,12, 10, 53)) //returns 53
+second(time(12, 10, 53)) //returns 53
+----
+
+== split
+
+*split(string, separator) ⇒ Array.<string>*
+
+split a string into an array, given a separator
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|string |string |string to split
+|separator |string |separator where the split should occur
+|===
+
+*Example*
+
+[source,js]
+----
+split('abcdef', '') //returns ['a', 'b', 'c', 'd', 'e', 'f']
+----
+
+*Example*
+
+[source,js]
+----
+split('abcdef', 'e') //returns ['abcd', 'f']
+----
+
+== sqrt
+
+*sqrt(num) ⇒ number*
+
+Return the square root of a number
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|num |number |number whose square root has to be calculated
+|===
+
+*Example*
+
+[source,js]
+----
+sqrt(4) //returns 2
+----
+
+== stdev
+
+*stdev(numbers) ⇒ number*
+
+Estimates standard deviation based on a sample. `stdev` assumes that its
+arguments are a sample of the entire population. If your data represents
+a entire population, then compute the standard deviation using
+link:#stdevp[stdevp].
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|numbers |Array.<number> |The array of numbers comprising the population
+|===
+
+*Example*
+
+[source,js]
+----
+stdev([1345, 1301, 1368]) //returns 34.044089061098404
+stdevp([1345, 1301, 1368]) //returns 27.797
+----
+
+== stdevp
+
+*stdevp(numbers) ⇒ number*
+
+Calculates standard deviation based on the entire population given as
+arguments. `stdevp` assumes that its arguments are the entire
+population. If your data represents a sample of the population, then
+compute the standard deviation using link:#stdev[stdev].
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|numbers |Array.<number> |The array of numbers comprising the population
+|===
+
+*Example*
+
+[source,js]
+----
+stdevp([1345, 1301, 1368]) //returns 27.797
+stdev([1345, 1301, 1368]) //returns 34.044
+----
+
+== time
+
+*time(hours, minutes, seconds) ⇒ number*
+
+Construct and returns time from hours, minutes, and seconds.
+
+*Returns*: number - Returns the fraction of the day consumed by the
+given time
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|hours |integer |Integer value between 0 and 23 representing the hour of
+the day. Defaults to 0.
+
+|minutes |integer |Integer value representing the minute segment of a
+time. The default is 0 minutes past the hour.
+
+|seconds |integer |Integer value representing the second segment of a
+time. The default is 0 seconds past the minute.
+|===
+
+*Example*
+
+[source,js]
+----
+time(12, 0, 0) | [hour(@), minute(@), second(@)] //returns [12, 0, 0]
+----
+
+== today
+
+*today() ⇒*
+
+returns the number of days since epoch
+
+*Returns*: number +
+
+== trim
+
+*trim(text) ⇒ string*
+
+Remove leading and trailing spaces, and replace all internal multiple
+spaces with a single space.
+
+*Returns*: string - removes all leading and trailing space. Any other
+sequence of 2 or more spaces is replaced with a single space.
+
+[cols=",,",options="header",]
+|===
+|Param |Type |Description
+|text |string |string to trim
+|===
+
+*Example*
+
+[source,js]
+----
+trim('   ab    c   ') //returns 'ab c'
+----
+
+== trunc
+
+*trunc(numA, [numB]) ⇒ number*
+
+Truncates a number to an integer by removing the fractional part of the
+number.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|numA |number |number to truncate
+
+|[numB] |number |A number specifying the precision of the truncation.
+Default is 0
+|===
+
+*Example*
+
+[source,js]
+----
+trunc(8.9) //returns 8
+trunc(-8.9) //returns -8
+trunc(8.912, 2) //returns 8.91
+----
+
+== unique
+
+*unique(input) ⇒ array*
+
+takes an array and returns unique elements within it
+
+*Returns*: array - array with duplicate elements removed
+
+[cols=",,",options="header",]
+|===
+|Param |Type |Description
+|input |array |input array
+|===
+
+*Example*
+
+[source,js]
+----
+unique([1, 2, 3, 4, 1, 1, 2]) //returns [1, 2, 3, 4]
+----
+
+== upper
+
+*upper(input) ⇒ string*
+
+Converts all the alphabetic characters in a string to uppercase. If the
+value is not a string it will be converted into string using the default
+toString method
+
+*Returns*: string - the upper case value of the input string
+
+[cols=",,",options="header",]
+|===
+|Param |Type |Description
+|input |string |input string
+|===
+
+*Example*
+
+[source,js]
+----
+upper('abcd') //returns 'ABCD'
+----
+
+== weekday
+
+*weekday(The, [returnType]) ⇒ number*
+
+Extract the day of the week from a date; if text, uses current locale to
+convert to a date.
+
+*Returns*: number - day of the week
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|The |number |datetime for which the day of the week is to be returned.
+Dates should be entered by using the datetime function
+
+|[returnType] |number |A number that determines the numeral
+representation (a number from 0 to 7) of the day of week. Default is 1.
+Supports the following values * 1 : Sunday (1), Monday (2), …, Saturday
+(7) * 2 : Monday (1), Tuesday (2), …, Sunday(7) * 3 : Monday (0),
+Tuesday (2), …., Sunday(6)
+|===
+
+*Example*
+
+[source,js]
+----
+weekday(datetime(2006,5,21)) // 1
+----
+
+*Example*
+
+[source,js]
+----
+weekday(datetime(2006,5,21), 2) // 7
+----
+
+*Example*
+
+[source,js]
+----
+weekday(datetime(2006,5,21), 3) // 6
+----
+
+== year
+
+*year(The) ⇒ number*
+
+Finds the year of a date represented by a serial number.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|The |number |date for which the year is to be returned. Dates should be
+entered by using the datetime function
+|===
+
+*Example*
+
+[source,js]
+----
+year(datetime(2008,5,23)) //returns 2008
+----

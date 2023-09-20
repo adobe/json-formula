@@ -1282,3 +1282,6 @@ A host may provide its own `toNumber()` function that json-formula will use in p
 
 A host may provide its own set of functions to augment the base set provided by json-formula
 
+== Function Reference
+
+include::functions.adoc[leveloffset=1]
