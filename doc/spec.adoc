@@ -863,8 +863,8 @@ additional processing that JSON strings supports including:
   search(" bar ", {}) -> " bar "
   search("[baz]", {}) -> "[baz]"
   search("[baz]", {}) -> "[baz]"
-  search("\u03a6", {}) -> "\u03a6"
-  search("\"\\\"", {}) -> "\\"
+  search("\u03a6", {}) -> "Φ"
+  search("\"\\\\\"", {}) -> "\\"
 ----
 
 == Number literals

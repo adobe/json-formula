@@ -121,7 +121,7 @@ JSON_FRAGMENT
 
 STRING : '"' (ESC | ~["\\])* '"' ;
 
-fragment ESC : '\\' (~[u] | UNICODE);
+fragment ESC : '\\' (UNICODE | [bfnrt\\`'"/]);
 
 fragment UNICODE
   : 'u' HEX HEX HEX HEX

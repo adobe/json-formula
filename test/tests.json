@@ -1599,10 +1599,10 @@
     }
   ],
   [
-    "trim(\" \tabc  def ghi   \")",
+    "trim(\" \\tabc  def ghi   \")",
     {
       "data": "`null`",
-      "expression": "trim(\" \tabc  def ghi   \")",
+      "expression": "trim(\" \\tabc  def ghi   \")",
       "expected": "\tabc def ghi"
     }
   ],
@@ -1767,10 +1767,10 @@
     }
   ],
   [
-    "codePoint(\"\t\")",
+    "codePoint(\"\\t\")",
     {
       "data": "`null`",
-      "expression": "codePoint(\"\t\")",
+      "expression": "codePoint(\"\\t\")",
       "expected": 9
     }
   ],
@@ -2903,7 +2903,7 @@
     "search2",
     {
       "data": "`{}`",
-      "expression": "search(\".\\^$(+{]\", \"pad.\\^$(+{]\")",
+      "expression": "search(\".\\\\^$(+{]\", \"pad.\\\\^$(+{]\")",
       "expected": [3, ".\\^$(+{]"]
     }
   ],
@@ -3023,7 +3023,7 @@
     "search17",
     {
       "data": "`{}`",
-      "expression": "search(\".\\^$(+{]\", \"pada.\\^$(+{]b\")",
+      "expression": "search(\".\\\\^$(+{]\", \"pada.\\\\^$(+{]b\")",
       "expected": [4, ".\\^$(+{]"]
     }
   ],

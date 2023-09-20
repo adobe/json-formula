@@ -329,7 +329,11 @@ export default class Lexer {
     if (this._current > maxLength) {
       throw new Error(`Unterminated string literal at ${start}, "${literal}`);
     }
-    return literal.replaceAll('\\"', '"');
+    try {
+      return JSON.parse(`"${literal}"`);
+    } catch (_e) {
+      throw new Error(`Invalid string literal: ${literal}`);
+    }
   }
 
   _isNumber(stream) {
