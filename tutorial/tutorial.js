@@ -73,9 +73,13 @@ window.addEventListener('load', () => {
   });
   run();
 
-  fetch('../antlr/jsonFormula.g4').then(r => {
+  fetch('../antlr/JsonFormula.g4').then(r => {
     r.text().then(g4 => {
-      document.getElementById('grammar-out').innerHTML = g4;
+      // remove comments and processing directives.
+      const strippedGrammar = g4
+        .replace(/[\s\S.]*grammar/m, 'grammar')
+        .replace(/#.*/g, '');
+      document.getElementById('grammar-out').innerHTML = strippedGrammar;
     });
   });
 });
