@@ -26,7 +26,7 @@
     ["right - left - 10", {"left": 8, "right": 12 }, -6],
     ["4 + 2 * 4", {}, 12],
     ["10 / 2 * 3", {}, 15],
-    ["left & \"\\\"\" & value & \"\\\"\" & right", {"left": "[", "right": "]", "value": "abc" }, "[\"abc\"]"],
+    ["left & value & right", {"left": "[", "right": "]", "value": "abc" }, "[abc]"],
     ["map(&\"$\" & @, values)", {"values": [123.45, 44.32, 99.00] }, ["$123.45", "$44.32", "$99"]],
     ["foo", {"foo": "bar"}, "bar"],
     ["foo", {"foo": "value"}, "value"],

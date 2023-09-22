@@ -32,7 +32,6 @@ import TreeInterpreter from './TreeInterpreter.js';
 import Parser from './Parser.js';
 import dataTypes from './dataTypes.js';
 import { matchType, getTypeName, getTypeNames } from './matchType.js';
-import openFormulaFunctions from './openFormulaFunctions.js';
 import functions from './functions.js';
 import {
   isArray, isObject, strictDeepEqual, getValueOf,
@@ -96,12 +95,6 @@ class Runtime {
       toString,
       debug,
     );
-
-    Object.entries(
-      openFormulaFunctions(getValueOf, toString, toNumber, debug),
-    ).forEach(([fname, func]) => {
-      this.functionTable[fname] = func;
-    });
 
     Object.entries(customFunctions).forEach(([fname, func]) => {
       // Provide the runtime to custom functions so that

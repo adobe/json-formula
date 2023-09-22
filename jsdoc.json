@@ -4,14 +4,13 @@
     "destination" : "./dist/jsdocs/"
   },
   "tags": {
-    "allowUnknownTags": ["category"]
   },
   "plugins": [
       "node_modules/better-docs/category",
       "plugins/markdown"
   ],
   "source": {
-    "include" : ["src/jmespath/"],
+    "include" : ["src/"],
     "includePattern": "\\.js$"
   }
 }

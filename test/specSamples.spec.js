@@ -10,13 +10,12 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 import JsonFormula from '../src/json-formula.js';
-import functions from '../src/jmespath/openFormulaFunctions.js';
-import stringToNumber from '../src/jmespath/stringToNumber.js';
+import stringToNumber from '../src/stringToNumber.js';
 import testGrammar from './testGrammar.js';
 
 const specSamples = require('./specSamples.json');
 
-const jsonFormula = new JsonFormula(functions, stringToNumber);
+const jsonFormula = new JsonFormula({}, stringToNumber);
 
 test.each(specSamples)('%s', (expr, data, expected) => {
   const language = 'en-US';

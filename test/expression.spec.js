@@ -11,14 +11,13 @@ governing permissions and limitations under the License.
 */
 import JsonFormula from '../src/json-formula.js';
 import createForm from '../tutorial/Form.js';
-import functions from '../src/jmespath/openFormulaFunctions.js';
-import stringToNumber from '../src/jmespath/stringToNumber.js';
+import stringToNumber from '../src/stringToNumber.js';
 import testGrammar from './testGrammar.js';
 
 const sampleData = require('./sampleData.json');
 const tests = require('./tests.json');
 
-const jsonFormula = new JsonFormula(functions, stringToNumber);
+const jsonFormula = new JsonFormula({}, stringToNumber);
 
 /*
 Register the 'summarize' function.  Given:

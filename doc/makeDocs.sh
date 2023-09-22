@@ -2,6 +2,8 @@
 
 # add x for debugging
 set -eu
+VERSION=`grep version ../package.json | sed 's/.*"version": "\(.*\)",.*/\1/'`
+OUTPUT_NAME="json-formula-specification"
 
 # define the pandoc docker container
 PANDOC_IMG=pandoc/core
@@ -13,7 +15,7 @@ AD_DOCKER_IMG=asciidoctor/docker-asciidoctor
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     machine=Linux;;
-    Darwin*)    machine=Mac;;
+    Darwin*)    machine=linux/amd64;;
     CYGWIN*)    machine=Cygwin;;
     MINGW*)     machine=MinGw;;
     *)          machine="UNKNOWN:${unameOut}"
@@ -55,35 +57,39 @@ convertOne() {
 	echo "BaseName = $BASE_NAME"
 
 	echo "Converting functions.md to ADOC"
-	docker run --rm -v "${CURRENT_PATH}":"${CURRENT_PATH}" -w "${CURRENT_PATH}" \
+	docker run --rm -v "${CURRENT_PATH}":"${CURRENT_PATH}" -w "${CURRENT_PATH}" --platform "${machine}"\
 		pandoc/core functions.md -o functions.adoc
 
+    # apply some touch-ups to the asciidoc output
+	node ./modFunctionsADoc.js
 
 	# Create the HTML version
 	echo "Converting "${BASE_NAME}".adoc to HTML"
-	docker run --rm -v "${CURRENT_PATH}":"${CURRENT_PATH}" -w "${CURRENT_PATH}" \
+	docker run --rm -v "${CURRENT_PATH}":"${CURRENT_PATH}" -w "${CURRENT_PATH}" --platform "${machine}"\
 			-v "${CURRENT_PATH}/fonts":"${CURRENT_PATH}/fonts"	\
 			-v "${PARENT_PATH}/antlr":"${CURRENT_PATH}/antlr"	\
 			"${AD_DOCKER_IMG}" asciidoctor \
 			--backend html5 \
 			-D ./output \
 			-a data-uri \
+			-a revnumber="${VERSION}" \
 			-a USING_DOCKER \
-			-o "${BASE_NAME}".html "${BASE_NAME}".adoc
+			-o "${OUTPUT_NAME}".html "${BASE_NAME}".adoc
 
 	# Create the PDF version
 	echo "Converting "${BASE_NAME}".adoc to PDF"
-	docker run --rm -v "${CURRENT_PATH}":"${CURRENT_PATH}" -w "${CURRENT_PATH}" \
+	docker run --rm -v "${CURRENT_PATH}":"${CURRENT_PATH}" -w "${CURRENT_PATH}" --platform "${machine}"\
 			-v "${CURRENT_PATH}/fonts":"${CURRENT_PATH}/fonts"	\
 			-v "${PARENT_PATH}/antlr":"${CURRENT_PATH}/antlr"	\
 			"${AD_DOCKER_IMG}" asciidoctor-pdf -r asciidoctor-diagram \
 			--backend=pdf \
 			-D ./output \
+			-a revnumber="${VERSION}" \
 			-a data-uri \
 			-a USING_DOCKER \
 			-a pdf-theme="${BASE_NAME}"-theme.yml \
 			-a pdf-fontsdir="fonts"  \
-			-o "${BASE_NAME}".pdf "${BASE_NAME}".adoc
+			-o "${OUTPUT_NAME}".pdf "${BASE_NAME}".adoc
 }
 
 # process all the files

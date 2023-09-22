@@ -13,7 +13,7 @@ governing permissions and limitations under the License.
 /* global window, document */
 import Formula from '../src/json-formula.js';
 import createForm from './Form.js';
-import stringToNumber from '../src/jmespath/stringToNumber.js';
+import stringToNumber from '../src/stringToNumber.js';
 
 window.addEventListener('load', () => {
   const dataElement = document.getElementById('data');

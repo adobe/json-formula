@@ -1,6 +1,6 @@
 = json-formula Specification
 John Brinkman <jbrinkma@adobe.com>
-1.0, {docdate}:
+{revnumber}, {docdate}:
 :toc: macro
 :outlinelevels: 3
 :appendix-caption: Appendix
@@ -78,6 +78,7 @@ The equality and inequality operators (`=`, `==`, `!=`, `<>`) do **not** perform
 
 Coercion is not always possible, and if so, an error shall be emitted -- most often an `invalid-type` error.
 
+[discrete]
 ==== Examples
 
 [source%unbreakable]
@@ -124,6 +125,7 @@ Coercion is not always possible, and if so, an error shall be emitted -- most of
 | null | boolean | false
 |===
 
+[discrete]
 ==== Examples
 
 [source%unbreakable]
@@ -137,17 +139,19 @@ Coercion is not always possible, and if so, an error shall be emitted -- most of
 == Date and Time Values
 In order to support date and time functions, json-formula needs to represent date and time values.  Date/time values are represented as a number where:
 
-* The integer portion of the number represents the number of days since the epoch: January 1, 1970, https://en.wikipedia.org/wiki/Coordinated_Universal_Time[UTC].
+* The integral portion of the number represents the number of days since the epoch: January 1, 1970, https://en.wikipedia.org/wiki/Coordinated_Universal_Time[UTC].
 * The fractional portion of the number represents the fractional portion of the day
-* As implied, the date/time value is offset from the current time zone to UTC.
+* The date/time value is offset from the current time zone to UTC.
 * The current time zone is determined by the host operating system.
 
 The preferred ways to create a date/time value are by using one of these functions:
 
-* `datetime()`
-* `now()`
-* `today()`
+* <<_datetime, `datetime()`>>
+* <<_now, `now()`>>
+* <<today, `today()`>>
+* <<time, `time()`>>
 
+[discrete]
 === Examples
 
 [source%unbreakable]
@@ -165,14 +169,14 @@ Authors should mitigate this behavior:
 
 * When comparing fractional results, do not compare for exact equality.  Instead, compare within a range. e.g.: instead of: `a == b`, use: `abs(a-b) < 0.000001`
 * leverage the built-in functions that manipulate fractional values:
-** ceil()
-** floor()
-** round()
-** trunc()
+** <<_ceil, ceil()>>
+** <<_floor, floor()>>
+** <<_round, round()>>
+** <<_trunc, trunc()>>
 
 == Grammar
 
-The grammar is specified using Antlr, as described https://www.antlr.org/[here].
+The grammar is specified using https://www.antlr.org/[Antlr].
 
 [source%unbreakable]
 ----
@@ -225,6 +229,7 @@ supported escape sequences, and six character unicode escape sequences.
 Note that any identifier that does not start with `A-Za-z_$` **must**
 be quoted.
 
+[discrete]
 === Examples
 
 [source%unbreakable]
@@ -272,7 +277,7 @@ chainedExpression
 wildcard : '*' ;
 ----
 
-A subexpression is a combination of two expressions separated by the '.' char.
+A subexpression is a combination of two expressions separated by the `.` char.
 A subexpression is evaluated as follows:
 
 * Evaluate the expression on the left with the original JSON document.
@@ -287,8 +292,9 @@ In pseudo-code
 ----
 
 A subexpression is itself an expression, so there can be multiple levels of
-chainedExpressions: `grandparent.parent.child`.
+chained expressions: `grandparent.parent.child`.
 
+[discrete]
 === Examples
 
 Given a JSON document: `{"foo": {"bar": "baz"}}`, and a json-formula expression:
@@ -346,7 +352,7 @@ index of `N - 1`, which is the last element of the array.  If an index
 expression refers to an index that is greater than the length of the array, a
 value of `null` is returned.
 
-Using a "*" character within a `indexExpression` is discussed below in the
+Using a '*' character within a `indexExpression` is discussed below in the
 <<Wildcard Expressions>> section.
 
 Using an expression prefixed with a "?" character within a `indexExpression` is discussed below in the <<Filter Expressions>> section.
@@ -395,6 +401,7 @@ Slice expressions adhere to the following rules:
 * If the element being sliced is an array and yields no results, the result
   MUST be an empty array.
 
+[discrete]
 === Examples
 
 [source%unbreakable]
@@ -425,9 +432,10 @@ operator has the following semantics:
 
 Once the flattening operation has been performed, subsequent operations
 are projected onto the flattened array with the same semantics as a
-wildcard expression.  Thus the difference between `[*]` and `[]` is that
+wildcard expression.  Thus the difference between `[{asterisk}]` and `[]` is that
 `[]` will first flatten sub-arrays in the current result.
 
+[discrete]
 === Examples
 
 [source%unbreakable]
@@ -503,8 +511,8 @@ The concatenation operator takes two string operands and combines them to form a
 
 [source%unbreakable]
 ----
-  search(left & "\"" & value & "\"" & right, {"left": "[", "right": "]", "value": "abc" }) ->
-      "[\"abc\"]"
+  search(left & value & right,
+    {"left": "[", "right": "]", "value": "abc" }) -> "[abc]"
   search(map(&"$" & @, values), {"values": [123.45, 44.32, 99.00] }) ->
       ["$123.45", "$44.32", "$99"]
 ----
@@ -524,7 +532,7 @@ The union operator (`~`) combines the contents of two arrays into a single array
 
 === Array Operators
 
-The numeric and concatenation operators (`*`, `+`, `-`, `*`, `/`, `&`) have special behavior when applied to arrays.
+The numeric and concatenation operators (`+`, `-`, `{asterisk}`, `/`, `&`) have special behavior when applied to arrays.
 
 * When these operators are provided arrays for both operands, the operator is applied to each element of the left operand array with the corresponding element from the right operand array
 * If both operands are arrays and they do not have the same size, the shorter array is padded with null values
@@ -556,6 +564,7 @@ The following conditions cannot be coerced to true:
 * Null value: `null`
 * zero value: `0`
 
+[discrete]
 === Examples
 
 [source%unbreakable]
@@ -566,14 +575,15 @@ The following conditions cannot be coerced to true:
   search(foo || bar, {"baz": "baz-value"}) -> null
   search(foo || bar || baz, {"baz": "baz-value"}) -> "baz-value"
   search(override || myarray[-1], {"myarray": ["one", "two"]}) -> "two"
-  search(override || myarray[-1], {"myarray": ["one", "two"], "override": "yes"}) -> "yes"
+  search(override || myarray[-1], {"myarray": ["one", "two"], "override": "yes"})
+       -> "yes"
 ----
 
 == And Expressions
 
 [source%unbreakable]
 ----
-  andExpression  = expression '&&' expression
+  andExpression = expression '&&' expression
 ----
 
 An and expression will evaluate to either the left expression or the right
@@ -592,8 +602,9 @@ expected truth table:
 |===
 
 This is the standard truth table for a
-`logical conjunction [AND](https://en.wikipedia.org/wiki/Truth_table#Logical_conjunction_.28AND.29).
+`logical conjunction https://en.wikipedia.org/wiki/Truth_table#Logical_conjunction_.28AND.29[AND].
 
+[discrete]
 === Examples
 
 [source%unbreakable]
@@ -608,12 +619,14 @@ This is the standard truth table for a
 
 [source%unbreakable]
 ----
-  parenExpression  = '(' expression ')'
+  parenExpression = '(' expression ')'
 ----
 
 A `parenExpression` allows a user to override the precedence order of
-an expression, e.g. `(a || b) && c`.
+an expression +
+e.g. `(a || b) && c`.
 
+[discrete]
 === Examples
 
 [source%unbreakable]
@@ -626,7 +639,7 @@ an expression, e.g. `(a || b) && c`.
 
 [source%unbreakable]
 ----
-    notExpression    = '!' expression
+    notExpression = '!' expression
 ----
 
 A `notExpression` negates the result of an expression.  If the expression
@@ -634,6 +647,7 @@ results in a truth-like value, a `notExpression` will change this value to
 `false`.  If the expression results in a false-like value, a
 `notExpression` will change this value to `true`.
 
+[discrete]
 === Examples
 
 [source%unbreakable]
@@ -660,6 +674,7 @@ will be the result of evaluating the expression. A `multiSelectArray` with
 expression `[expr-1,expr-2,...,expr-n]`, the evaluated expression will return
 `[evaluate(expr-1), evaluate(expr-2), ..., evaluate(expr-n)]`.
 
+[discrete]
 === Examples
 
 [source%unbreakable]
@@ -675,7 +690,7 @@ expression `[expr-1,expr-2,...,expr-n]`, the evaluated expression will return
 [source%unbreakable]
 ----
     multiSelectObject = "{" ( keyvalExpr ( "," keyvalExpr )*)? "}"
-    keyvalExpr       = identifier ":" expression
+    keyvalExpr = identifier ":" expression
 ----
 
 A `multiSelectObject` expression is similar to a `multiSelectArray`
@@ -695,6 +710,7 @@ Each `keyvalExpr` within the `multiSelectObject` will correspond to a
 single key value pair in the created object.
 Unlike the `multiSelectArray`, a `multiSelectObject` may be empty.
 
+[discrete]
 === Examples
 
 Given a `multiSelectObject` expression `{foo: one.two, bar: bar}` and the
@@ -725,8 +741,10 @@ Additional examples:
 
 == Wildcard Expressions
 
-There are two forms of wildcard expression: `[*]` from the `indexExpression` construction:
+There are two forms of wildcard expression:
 
+1. `[{asterisk}]` from the `indexExpression` construction:
++
 [source%unbreakable]
 ----
 indexExpression
@@ -738,7 +756,7 @@ indexExpression
   ;
 ----
 
-And `.*` from the chainedExpression construction:
+2.  `.{asterisk}` from the `chainedExpression` construction:
 [source%unbreakable]
 ----
 expression : expression '.' chainedExpression
@@ -754,15 +772,15 @@ chainedExpression
 wildcard : '*' ;
 ----
 
-A wildcard expression is a expression of either `.*` or `[*]`.  A wildcard
+A wildcard expression is an expression of either `.{asterisk}` or `[{asterisk}]`.  A wildcard
 expression can return multiple elements, and the remaining expressions are
 evaluated against each returned element from a wildcard expression.  The
-`[*]` syntax applies to an array type and the `.*` syntax applies to an object
+`[{asterisk}]` syntax applies to an array type and the `.{asterisk}` syntax applies to an object
 type.
 
-The `[*]` syntax (referred to as an array wildcard expression) will return all
+The `[{asterisk}]` syntax (referred to as an array wildcard expression) will return all
 the elements in an array.  Any subsequent expressions will be evaluated against
-each individual element.  Given an expression `[*].childExpr`, and an array of
+each individual element.  Given an expression `[{asterisk}].childExpr`, and an array of
 N elements, the evaluation of this expression would be `[childExpr(el-0),
 childExpr(el-2), ..., childExpr(el-N)]`.  This is referred to as a
 **projection**, and the `childExpr` expression is projected onto the
@@ -787,6 +805,7 @@ unordered.  Therefore an object wildcard expression can return the values
 associated with the object in any order.  Implementations are not required
 to return the object values in any specific order.
 
+[discrete]
 === Examples
 
 [source%unbreakable]
@@ -812,7 +831,7 @@ use an existing JSON parser to parse these literals.  Note that the
 implementations need to handle this case before passing the resulting string to
 a JSON parser.
 
-
+[discrete]
 === Examples
 
 [source%unbreakable]
@@ -822,22 +841,32 @@ a JSON parser.
   search(`[1, 2]`, {}) -> [1, 2]
   search(`true`, {}) -> true
   search(`{"a": "b"}`.a, {}) -> "b"
-  search({first: a, type: `"mytype"`}, {"a": "b", "c": "d"}) -> {"first": "b", "type": "mytype"}
+  search({first: a, type: `"mytype"`}, {"a": "b", "c": "d"})
+       -> {"first": "b", "type": "mytype"}
 ----
 
-== Raw String Literals
+== String Literals
 
 [source%unbreakable]
 ----
-RAW_STRING : '"' (RAW_ESC | ~["\\])* '"' ;
+STRING : '"' (ESC | ~["\\])* '"' ;
 
-fragment RAW_ESC : '\\' . ;
+fragment ESC : '\\' (UNICODE | [bfnrt\\`'"/]);
+
+fragment UNICODE
+  : 'u' HEX HEX HEX HEX
+  ;
+
+fragment HEX
+  : [0-9a-fA-F]
+  ;
 ----
 
-A raw string is an expression that allows for a literal string value to be
-specified.  The result of evaluating the raw string literal expression is a
-literal string value.  It is a simpler form of a JSON literal expression that is
-special cased for strings.  For example, the following expressions both
+A `STRING` is an expression that allows for a literal string value to be
+specified.  A literal string supports the same character escape sequences as strings in JSON.
+e.g. a unicode character 'A' could be specified as `\u0041`.
+
+A string literal can also be expressed as a JSON literal. For example, the following expressions both
 evaluate to the same value: "foo"
 
 [source%unbreakable]
@@ -846,32 +875,11 @@ evaluate to the same value: "foo"
     search("foo", "{}") -> "foo"
 ----
 
-As you can see in the examples above, it is meant as a more succinct
-form of the common scenario of specifying a json literal string value.
-
-In addition, it does not perform any of the
-additional processing that JSON strings supports including:
-
-* Not expanding unicode escape sequences
-* Not expanding newline characters
-* Not expanding tab characters or any other escape sequences documented
-  in RFC 4627 section 2.5.
-
-[source%unbreakable]
-----
-  search("foo", {}) -> "foo"
-  search(" bar ", {}) -> " bar "
-  search("[baz]", {}) -> "[baz]"
-  search("[baz]", {}) -> "[baz]"
-  search("\u03a6", {}) -> "Φ"
-  search("\"\\\\\"", {}) -> "\\"
-----
-
 == Number literals
 
 [source%unbreakable]
 ----
-numberLiteral = '-'? (REAL_OR_EXPONENT_NUMBER | INT)
+numberLiteral = REAL_OR_EXPONENT_NUMBER | INT
 
 REAL_OR_EXPONENT_NUMBER
   : INT? '.' [0-9] + EXP?
@@ -888,10 +896,14 @@ fragment EXP
   ;
 ----
 
-As with raw strings, json-formula allows literal numbers in expressions.
-Allowing numbers in expressions does lead to some ambiguity.
+As with literal strings, json-formula allows literal numbers in expressions.
+Number literals follow the same syntax rules as numeric values in JSON with the exception that number literals may omit a leading zero.  For example, `.123` is not valid JSON, but is allowed aas a number literal.
+Note that the grammar construction for a number literal does not include a minus sign.  Literal expressions are made negative by prefixing them with a unary minus.
+
+Allowing number literals in expressions leads to some ambiguity.
 A bracket with a single signed digit e.g.: `[0]` can be interpreted as a flatten operation or a `multiSelectArray` with the number zero. To handle this ambiguity, the grammar sets a precedence so that `[-?[0-9]]` is consistently treated as a an index operation.  To explicitly express an array with one element, use a JSON literal: `` \`[0]` ``
 
+[discrete]
 === Examples
 
 [source%unbreakable]
@@ -918,7 +930,7 @@ indexExpression
   ;
 ----
 
-A filter expression is defined by a `indexExpression` where the bracket contents are prefixed with a question mark character (`?`).
+A filter expression is defined by a `indexExpression` where the bracket contents are prefixed with a question mark character `?`.
 A filter expression provides a way to select JSON elements based on a
 comparison to another expression.  A filter expression is evaluated as follows:
 for each element in an array evaluate the `expression` against the
@@ -927,7 +939,8 @@ entirety) is added to the result array.  Otherwise it is excluded from the
 result array.  A filter expression is defined only for a JSON array.  Attempting
 to evaluate a filter expression against any other type will return `null`.
 
-=== Examples:
+[discrete]
+=== Examples
 
 [source%unbreakable]
 ----
@@ -953,13 +966,15 @@ which is `false`, so the second element is excluded from the result array.
 * The fourth expression resolves to `false < "1"`. Since the left hand operand is boolean, both operands are coerced to numbers and evaluated as: `0 < 1` and so the fourth element included in the result array.
 * The final expression resolves to `10 < "12"`.  Since we have mixed operands, the right hand operand is coerced to the same type as the left hand operand (numeric) and evaluated as: `10 < 12` and the last element is included in the result array.
 
+[discrete]
 === Examples
 
 [source%unbreakable]
 ----
   search(foo[?bar==10], {"foo": [{"bar": 1}, {"bar": 10}]}) -> [{"bar": 10}]
   search([?bar==10], [{"bar": 1}, {"bar": 10}]}) -> [{"bar": 10}]
-  search(foo[?a==b], {"foo": [{"a": 1, "b": 2}, {"a": 2, "b": 2}]}) -> [{"a": 2, "b": 2}]
+  search(foo[?a==b], {"foo": [{"a": 1, "b": 2}, {"a": 2, "b": 2}]})
+       -> [{"a": 2, "b": 2}]
 ----
 
 == Function Expressions
@@ -990,14 +1005,15 @@ The `currentNode` token can be used to represent the current node being
 evaluated. The `currentNode` token is useful for functions that require the
 current node being evaluated as an argument. For example, given:
 
-```
+[source%unbreakable]
+----
 {
   "family": [
     {"name": "Joe", "age": 22},
     {"name": "Jane", "age": 23, "occupation": "lawyer"}
   ]
 }
-```
+----
 
 The following
 expression creates an array of arrays where each nested array contains the total number of elements in the object and the 'name' property of the object:
@@ -1008,7 +1024,7 @@ expression creates an array of arrays where each nested array contains the total
 ----
 
 json-formula assumes that all function arguments operate on the current node unless the argument is a literal.  Because of this, an
-expression such as `@.name`` would be equivalent to just `name`.
+expression such as `@.name` would be equivalent to just `name`.
 
 ==== currentNode state
 
@@ -1060,7 +1076,7 @@ This provides a simple mechanism to explicitly convert types when needed.
 
 == Built-in Functions
 
-json-formula has a robust set of built-in functions that operate on different
+json-formula has a robust set of built-in <<Function Reference,functions>> that operate on different
 data types. Each function below has a signature
 that defines the expected types of the input and the type of the returned
 output.
@@ -1071,31 +1087,8 @@ output.
     return_type function_name2(type1|type2 $argname)
 ----
 
-The array of data types supported by a function are:
-
-* number (integers and double-precision floating-point format in JSON)
-* string
-* boolean (`true` or `false`)
-* array (an ordered, sequence of values)
-* object (an unordered collection of key value pairs)
-* null
-* expression (denoted by `&expression`)
-
-With the exception of the last item, all of the above types correspond
-to the types provided by JSON.
-
-If the resolved arguments do not
+Functions support the set of standard json-formula <<Data Types, data types>>. If the resolved arguments do not
 match the types specified in the signature, an `invalid-type` error occurs.
-
-The `array` type can further specify requirements on the type of the elements
-if they want to enforce homogeneous types.  The subtype is surrounded by
-`[type]`, for example, the function signature requires its input
-argument resolves to an array of numbers
-
-[source%unbreakable]
-----
-    return_type foo(array[number] $argname)
-----
 
 As a shorthand, the type `any` is used to indicate that the argument can be
 of any type (`array|object|number|string|boolean|null`).
@@ -1106,17 +1099,15 @@ Specifying an invalid type for a function argument will result in a
 
 The expression type, denoted by `&expression`, is used to specify a
 expression that is not immediately evaluated.  Instead, a reference to that
-expression is provided to the function being called.  The function can then
-choose to apply the expression reference as needed.  It is semantically similar
-to an anonymous function. See the `sortBy` function for an example
-usage of the expression type.
+expression is provided to the function being called.  The function can then apply the expression reference as needed.  It is semantically similar
+to an anonymous function. See the <<_sortBy, sortBy()>> function for an example of the expression type.
 
-Similarly how arrays can specify a type within an array using the
-`array[type]` syntax, expressions can specify their resolved type using
+Similar to how arrays can specify a type within an array using the
+`type[]` syntax, expressions can specify their resolved type using
 `expression->type` syntax.  This means that the resolved type of the function
 argument must be an expression that itself will resolve to `type`.
 
-To demonstrate the above points, consider this example using the `abs()` function.  Given:
+To demonstrate the above points, consider this example using the <<_abs, abs()>> function.  Given:
 
 [source%unbreakable]
 ----
@@ -1172,7 +1163,7 @@ Below is the same steps for evaluating `abs(bar)`:
 
 [source%unbreakable]
 ----
-    pipeExpression  = expression '|' expression
+    pipeExpression = expression '|' expression
 ----
 
 A pipe expression combines two expressions, separated by the `|` character.
@@ -1191,7 +1182,7 @@ For example, given the following data
     {"foo": [{"bar": ["first1", "second1"]}, {"bar": ["first2", "second2"]}]}
 ----
 
-The expression `foo[*].bar` gives the result of
+The expression `foo[{asterisk}].bar` gives the result of
 
 [source%unbreakable]
 ----
@@ -1207,10 +1198,10 @@ The expression `foo[*].bar` gives the result of
     ]
 ----
 
-The first part of the expression, `foo[*]`, creates a projection.  At this
+The first part of the expression, `foo[{asterisk}]`, creates a projection.  At this
 point, the remaining expression, `bar` is projected onto each element of the
-array created from `foo[*]`.  If you project the `[0]` expression, you will
-get the first element from each sub array.  The expression `foo[*].bar[0]`
+array created from `foo[{asterisk}]`.  If you project the `[0]` expression, you will
+get the first element from each sub array.  The expression `foo[{asterisk}].bar[0]`
 will return
 
 [source%unbreakable]
@@ -1227,6 +1218,7 @@ can use a `pipeExpression`
     foo[*].bar | [0] -> ["first1", "second1"]
 ----
 
+[discrete]
 === Examples
 
 [source%unbreakable]
@@ -1245,6 +1237,7 @@ The json-formula API allows integrations to customize various json-formula behav
 === Globals
 By default, json-formula has one global symbol: `@`. A host may inject additional global identifiers.  These identifiers must be prefixed with the dollar (`$`) symbol.
 
+[discrete]
 ==== Examples
 
 Given: a global symbol:

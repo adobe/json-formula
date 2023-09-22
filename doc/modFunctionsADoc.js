@@ -15,26 +15,23 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const docDir = path.dirname(fileURLToPath(import.meta.url));
+const adocFile = path.join(docDir, 'functions.adoc');
 
-const functionsFile = path.join(docDir, '..', 'dist', 'functions.md');
+const version = process.argv[1] || '1.0';
 
-/* The markdown has lines that look like:
+const functions = fs.readFileSync(adocFile).toString();
 
-## abs(value) ⇒ <code>number</code>
+/* The asciidoc has lines that look like:
 
+link:#datetime[datetime]
 transform it to:
 
-## abs
-** abs(value) ⇒ <code>number</code>**
-
+<<_datetime>>
 */
-
-const functions = fs.readFileSync(functionsFile).toString();
 const updatedFunctions = functions
-  // reduce the section header to just the name of the function instead
-  // of the full function signature.
-  .replace(/##\s*([a-zA-Z0-9]+)(.*)/g, '## $1\n**$1$2**\n')
-  .replace(/\*\*Kind\*\*: global function /g, '')
-  .replace(/\\\|/g, '{vbar}');
+  .replace(/link:#([a-zA-Z0-9]+)[[a-zA-Z0-9]+]/g, '<<_$1>>')
+  .replace(/1\.0, {docdate}:/, `${version}, {docdate}:`)
+  .replace(/`\*`/g, '`{asterisk}`')
+  .replace(/\\{vbar}/g, '{vbar}');
 
-fs.writeFileSync(path.join(docDir, 'functions.md'), updatedFunctions);
+fs.writeFileSync(path.join(docDir, 'functions.adoc'), updatedFunctions);
