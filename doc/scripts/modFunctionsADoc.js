@@ -15,7 +15,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const docDir = path.dirname(fileURLToPath(import.meta.url));
-const adocFile = path.join(docDir, 'functions.adoc');
+const adocFile = path.join(docDir, '..', 'functions.adoc');
 
 const version = process.argv[1] || '1.0';
 
@@ -34,4 +34,4 @@ const updatedFunctions = functions
   .replace(/`\*`/g, '`{asterisk}`')
   .replace(/\\{vbar}/g, '{vbar}');
 
-fs.writeFileSync(path.join(docDir, 'functions.adoc'), updatedFunctions);
+fs.writeFileSync(path.join(docDir, '..', 'functions.adoc'), updatedFunctions);

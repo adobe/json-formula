@@ -61,7 +61,7 @@ convertOne() {
 		pandoc/core functions.md -o functions.adoc
 
     # apply some touch-ups to the asciidoc output
-	node ./modFunctionsADoc.js
+	node ./scripts/modFunctionsADoc.js
 
 	# Create the HTML version
 	echo "Converting "${BASE_NAME}".adoc to HTML"
@@ -92,14 +92,14 @@ convertOne() {
 			-o "${OUTPUT_NAME}".pdf "${BASE_NAME}".adoc
 }
 
+rm -f functions.md functions.adoc
 # process all the files
 npm run docs
-rm -f functions.md
 # get a copy of the generated function markdown docs and
 # tweak the output so it is suitable for the spec
-node ./modFunctions.js
+node ./scripts/modFunctions.js
 
 # remove comments and directives from the antlr grammar
-node ./strip.js
+node ./scripts/strip.js
 convertOne "./spec.adoc"
 rm ./grammar.g4

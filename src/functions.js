@@ -2061,66 +2061,6 @@ export default function functions(
       },
       _signature: [{ types: [TYPE_ARRAY], variadic: true }],
     },
-
-    /**
-     * Encode a URL component as per: [encodeUrlComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent)
-     * @param {string} uriComponent to encode
-     * @return {string} encoded value
-     * @function encodeUrlComponent
-     * @example
-     * encodeURIComponent("a=b") // returns "a%3Db"
-     */
-    encodeUrlComponent: {
-      _func: args => encodeURIComponent(args[0]),
-      _signature: [
-        { types: [dataTypes.TYPE_STRING] },
-      ],
-    },
-
-    /**
-     * Encode a URL as per: [encodeURI()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI)
-     * @param {string} uri to encode
-     * @return {string} encoded value
-     * @function encodeUrl
-     * @example
-     * encodeUrl("https://example.com/&a=4% of 15") // returns ("a=b") // https://example.com/&a=4%25%20of%2015
-     */
-    encodeUrl: {
-      _func: args => encodeURI(args[0]),
-      _signature: [
-        { types: [dataTypes.TYPE_STRING] },
-      ],
-    },
-
-    /**
-     * Decode a URL component as per: [decodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent)
-     * @param {string} encodedString to decode
-     * @return {string} decoded value
-     * @function decodeUrlComponent
-     * @example
-     * decodeUrlComponent("%3B%2C%2F%3F%3A%40%26%3D%2B%24") // ";,/?:@&=+$"
-     */
-    decodeUrlComponent: {
-      _func: args => decodeURIComponent(args[0]),
-      _signature: [
-        { types: [dataTypes.TYPE_STRING] },
-      ],
-    },
-
-    /**
-     * Decode a URL as per: [decodeURI](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURI)
-     * @param {string} encodedURL to decode
-     * @return {string} decoded URL
-     * @function decodeUrl
-     * @example
-     * decodeUrl("https://example.com/?foo=%5Ba%25%5D") // "https://example.com/?foo=[a%]"
-     */
-    decodeUrl: {
-      _func: args => decodeURI(args[0]),
-      _signature: [
-        { types: [dataTypes.TYPE_STRING] },
-      ],
-    },
   };
   return functionMap;
 }

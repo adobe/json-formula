@@ -16,11 +16,25 @@ import { fileURLToPath } from 'url';
 
 const docDir = path.dirname(fileURLToPath(import.meta.url));
 
-const grammarFile = path.join(docDir, '..', 'antlr', 'JsonFormula.g4');
-// Remove comments from the antlr file for inclusion in the spec
-const grammar = fs.readFileSync(grammarFile).toString();
-const strippedGrammar = grammar
-  .replace(/[\s\S.]*grammar/m, 'grammar')
-  .replace(/#.*/g, '');
+const functionsFile = path.join(docDir, '..', 'functions.md');
 
-fs.writeFileSync(path.join(docDir, 'grammar.g4'), strippedGrammar);
+/* The markdown has lines that look like:
+
+## abs(value) ⇒ <code>number</code>
+
+transform it to:
+
+## abs
+** abs(value) ⇒ <code>number</code>**
+
+*/
+
+const functions = fs.readFileSync(functionsFile).toString();
+const updatedFunctions = functions
+  // reduce the section header to just the name of the function instead
+  // of the full function signature.
+  .replace(/##\s*([a-zA-Z0-9]+)(.*)/g, '## $1\n**$1$2**\n')
+  .replace(/\*\*Kind\*\*: global function /g, '')
+  .replace(/\\\|/g, '{vbar}');
+
+fs.writeFileSync(functionsFile, updatedFunctions);

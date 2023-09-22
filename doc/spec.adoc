@@ -1,14 +1,12 @@
 = json-formula Specification
-John Brinkman <jbrinkma@adobe.com>
-{revnumber}, {docdate}:
 :toc: macro
 :outlinelevels: 3
 :appendix-caption: Appendix
-
 ifdef::backend-pdf[]
-[.authors]
-{author} +
-{revnumber} {revremark} : {revdate}
+{revnumber}: {docdate}
+endif::[]
+ifdef::backend-html[]
+{revnumber}: {docdate}
 endif::[]
 
 // table of contents goes here
