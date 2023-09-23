@@ -112,5 +112,11 @@
     ["foo | bar", {"foo": {"bar": "baz"}}, "baz"],
     ["foo[*].bar | [0]", {"foo": [{"bar": ["first1", "second1"]}, {"bar": ["first2", "second2"]}]}, ["first1", "second1"]],
     ["foo | [0]", {"foo": [0, 1, 2]}, 0],
-    ["value($days, weekday(datetime(date.year, date.month, date.day), 3))", {"date": {"year": 2023,"month": 9,"day": 13}}, "Wednesday"]
+    ["value($days, weekday(datetime(date.year, date.month, date.day), 3))", {"date": {"year": 2023,"month": 9,"day": 13}}, "Wednesday"],
+    ["@.family[0].name", {"family": [{"name": "frank", "age": 22},{"name": "jane", "age": 23}]}, "frank"],
+    ["family[].[left(@.name), age]", {"family": [{"name": "frank", "age": 22},{"name": "jane", "age": 23}]}, [["f",22],["j",23]]],
+    ["family[?@.age == 23]", {"family": [{"name": "frank", "age": 22},{"name": "jane", "age": 23}]}, [{"name": "jane", "age": 23}]],
+    ["family[?age == 23]", {"family": [{"name": "frank", "age": 22},{"name": "jane", "age": 23}]}, [{"name": "jane", "age": 23}]],
+    ["family[].name.proper(@)", {"family": [{"name": "frank", "age": 22},{"name": "jane", "age": 23}]}, ["Frank", "Jane"]],
+    ["family[].age | avg(@)", {"family": [{"name": "frank", "age": 22},{"name": "jane", "age": 23}]}, 22.5]
 ]

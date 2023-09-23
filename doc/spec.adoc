@@ -453,8 +453,8 @@ wildcard expression.  Thus the difference between `[{asterisk}]` and `[]` is tha
 
 The following comparison operators are supported:
 
-* '=' / `==`, test for equality.
-* `!=`, "<>", test for inequality.
+* `=` / `==`, test for equality.
+* `!=`, `<>`, test for inequality.
 * `<`, less than.
 * `\<=`, less than or equal to.
 * `>`, greater than.
@@ -464,7 +464,7 @@ The following comparison operators are supported:
 * If both operands are strings, they are compared as strings, based on the values of the Unicode code points they contain.
 * If operands are mixed types, follow the <<Type Coercion,type coercion>> rules.
 
-The comparison semantics for each operator are defined in the discussion on <<Type Coercion,type coercion>>.
+The comparison semantics for each operator are defined in the discussion in <<Type Coercion,type coercion>>.
 
 ==== Equality Operators
 
@@ -915,6 +915,57 @@ A bracket with a single signed digit e.g.: `[0]` can be interpreted as a flatten
   search(6 / 3, {}) -> 2
 ----
 
+== currentNode
+
+[source%unbreakable]
+----
+currentNode : '@' ;
+----
+
+The `currentNode` token represents the node being
+evaluated in the current context. The `currentNode` token is commonly used for:
+
+* Functions that require the current node as an argument
+* Filter expressions that examine elements of an array
+* Access to the current context in projections
+
+json-formula assumes that all expressions operate on the current node.  Because of this, an
+expression such as `@.name` would be equivalent to just `name`.
+
+=== currentNode state
+
+At the start of an expression, the value of the current node is the data
+being evaluated by the json-formula expression. As an expression is evaluated, `currentNode` MUST change to reflect the node
+being evaluated. When in a projection, the current node value must be changed
+to the node being evaluated by the projection.
+
+[discrete]
+=== Examples
+
+[source%unbreakable]
+----
+Given:
+{
+  "family": [
+    {"name": "frank", "age": 22},
+    {"name": "jane", "age": 23}
+  ]
+}
+
+search(@.family[0].name, {...}) => "frank"
+
+search(family[].[left(@.name), age], {...}) =>
+   [["f", 22], ["j", 23]]
+
+search(family[?@.age == 23], {...}) => [{"name": "jane", "age": 23}]
+
+search(family[?age == 23], {...}) => [{"name": "jane", "age": 23}]
+
+search(family[].name.proper(@), {...}) => ["Frank", "Jane"]
+
+search(family[].age | avg(@), {...}) => 22.5
+----
+
 == Filter Expressions
 
 [source%unbreakable]
@@ -989,48 +1040,11 @@ functionArg
   | expressionType
   ;
 
-currentNode : '@' ;
-
 expressionType : '&' expression ;
 ----
 
 Functions allow users to easily transform and filter data in json-formula
 expressions.
-
-=== currentNode
-
-The `currentNode` token can be used to represent the current node being
-evaluated. The `currentNode` token is useful for functions that require the
-current node being evaluated as an argument. For example, given:
-
-[source%unbreakable]
-----
-{
-  "family": [
-    {"name": "Joe", "age": 22},
-    {"name": "Jane", "age": 23, "occupation": "lawyer"}
-  ]
-}
-----
-
-The following
-expression creates an array of arrays where each nested array contains the total number of elements in the object and the 'name' property of the object:
-
-[source%unbreakable]
-----
-    family[].[length(@), name]
-----
-
-json-formula assumes that all function arguments operate on the current node unless the argument is a literal.  Because of this, an
-expression such as `@.name` would be equivalent to just `name`.
-
-==== currentNode state
-
-At the start of an expression, the value of the current node is the data
-being evaluated by the json-formula expression. As an expression is evaluated, the
-value the current node represents MUST change to reflect the node currently
-being evaluated. When in a projection, the current node value must be changed
-to the node currently being evaluated by the projection.
 
 == Function Evaluation
 
@@ -1075,14 +1089,14 @@ This provides a simple mechanism to explicitly convert types when needed.
 == Built-in Functions
 
 json-formula has a robust set of built-in <<Function Reference,functions>> that operate on different
-data types. Each function below has a signature
+data types. Each function has a signature
 that defines the expected types of the input and the type of the returned
 output.
 
 [source%unbreakable]
 ----
     return_type function_name(type $argname)
-    return_type function_name2(type1|type2 $argname)
+    return_type function_name2(type1|type2 argname)
 ----
 
 Functions support the set of standard json-formula <<Data Types, data types>>. If the resolved arguments do not
@@ -1239,6 +1253,7 @@ By default, json-formula has one global symbol: `@`. A host may inject additiona
 ==== Examples
 
 Given: a global symbol:
+
 [source%unbreakable]
 ----
   {
