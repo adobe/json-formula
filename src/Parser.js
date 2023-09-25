@@ -254,7 +254,6 @@ export default class Parser {
     let right;
     let name;
     let args;
-    let expression;
     let node;
     let rbp;
     let leftNode;
@@ -299,15 +298,7 @@ export default class Parser {
         return { type: 'UnionExpression', children: [left, right] };
       case TOK_LPAREN:
         name = left.name;
-        args = [];
-        while (this._lookahead(0) !== TOK_RPAREN) {
-          expression = this.expression(0);
-          if (this._lookahead(0) === TOK_COMMA) {
-            this._match(TOK_COMMA);
-          }
-          args.push(expression);
-        }
-        this._match(TOK_RPAREN);
+        args = this._parseFunctionArgs();
         node = { type: 'Function', name, children: args };
         return node;
       case TOK_FILTER:
@@ -363,6 +354,20 @@ export default class Parser {
       token.value}"`);
     error.name = 'ParserError';
     throw error;
+  }
+
+  _parseFunctionArgs() {
+    let firstExpression = true;
+    const args = [];
+    while (this._lookahead(0) !== TOK_RPAREN) {
+      if (!firstExpression) {
+        this._match(TOK_COMMA);
+      }
+      args.push(this.expression(0));
+      firstExpression = false;
+    }
+    this._match(TOK_RPAREN);
+    return args;
   }
 
   _parseChainedIndexExpression() {

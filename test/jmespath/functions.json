@@ -16,6 +16,14 @@
   },
   "cases": [
     {
+      "expression": "and(true() true())",
+      "error": "syntax"
+    },
+    {
+      "expression": "and(true(),)",
+      "error": "syntax"
+    },
+    {
       "expression" : "power(2, 4)",
       "result" : 16
     },
