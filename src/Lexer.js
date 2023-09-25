@@ -234,6 +234,20 @@ export default class Lexer {
           TOK_OR,
           TOK_COMMA,
           TOK_COLON,
+          TOK_NOT,
+          TOK_MULTIPLY,
+          TOK_ADD,
+          TOK_SUBTRACT,
+          TOK_DIVIDE,
+          TOK_LPAREN,
+          TOK_CONCATENATE,
+          TOK_UNION,
+          TOK_GT,
+          TOK_GTE,
+          TOK_LT,
+          TOK_LTE,
+          TOK_EQ,
+          TOK_NE,
         ].includes(prevToken)) {
           tokens.push({ type: TOK_STAR, value: '*', start });
         } else {

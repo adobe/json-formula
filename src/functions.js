@@ -50,7 +50,7 @@ export default function functions(
   isObject,
   isArray,
   toNumber,
-  getTypeName,
+  getType,
   valueOf,
   toString,
   debug,
@@ -770,7 +770,7 @@ export default function functions(
         const first = array.find(r => r !== null);
         if (array.length === 0 || first === undefined) return null;
         // use the first value to determine the comparison type
-        const isNumber = getTypeName(first, true) === TYPE_NUMBER;
+        const isNumber = getType(first, true) === TYPE_NUMBER;
         const compare = isNumber
           ? (prev, cur) => {
             const current = toNumber(cur);
@@ -875,7 +875,7 @@ export default function functions(
         const first = array.find(r => r !== null);
         if (array.length === 0 || first === undefined) return null;
         // use the first value to determine the comparison type
-        const isNumber = getTypeName(first, true) === TYPE_NUMBER;
+        const isNumber = getType(first, true) === TYPE_NUMBER;
         const compare = isNumber
           ? (prev, cur) => {
             const current = toNumber(cur);
@@ -988,7 +988,7 @@ export default function functions(
      * notNull(`null`, 2, 3, 4, `null`) // returns 2
      */
     notNull: {
-      _func: resolvedArgs => resolvedArgs.find(arg => getTypeName(arg) !== TYPE_NULL) || null,
+      _func: resolvedArgs => resolvedArgs.find(arg => getType(arg) !== TYPE_NULL) || null,
       _signature: [{ types: [TYPE_ANY], variadic: true }],
     },
     /**
@@ -1046,7 +1046,7 @@ export default function functions(
      */
     power: {
       _func: args => {
-        const type = getTypeName(args[0]);
+        const type = getType(args[0]);
         if (type === dataTypes.TYPE_ARRAY
               || type === dataTypes.TYPE_ARRAY_STRING || type === dataTypes.TYPE_ARRAY_NUMBER) {
           return args[0].map(a => toNumber(a) ** args[1]);
@@ -1254,7 +1254,7 @@ export default function functions(
     reverse: {
       _func: resolvedArgs => {
         const originalStr = valueOf(resolvedArgs[0]);
-        const typeName = getTypeName(originalStr);
+        const typeName = getType(originalStr);
         if (typeName === TYPE_STRING) {
           let reversedStr = '';
           for (let i = originalStr.length - 1; i >= 0; i -= 1) {
@@ -1402,7 +1402,7 @@ export default function functions(
       _func: resolvedArgs => {
         const sortedArray = resolvedArgs[0].slice(0);
         if (sortedArray.length > 0) {
-          const normalize = getTypeName(resolvedArgs[0][0]) === TYPE_NUMBER ? toNumber : toString;
+          const normalize = getType(resolvedArgs[0][0]) === TYPE_NUMBER ? toNumber : toString;
           sortedArray.sort((a, b) => {
             const va = normalize(a);
             const vb = normalize(b);
@@ -1440,7 +1440,7 @@ export default function functions(
           return sortedArray;
         }
         const exprefNode = resolvedArgs[1];
-        const requiredType = getTypeName(
+        const requiredType = getType(
           runtime.interpreter.visit(exprefNode, sortedArray[0]),
         );
         if ([TYPE_NUMBER, TYPE_STRING].indexOf(requiredType) < 0) {
@@ -1460,15 +1460,15 @@ export default function functions(
         decorated.sort((a, b) => {
           const exprA = runtime.interpreter.visit(exprefNode, a[1]);
           const exprB = runtime.interpreter.visit(exprefNode, b[1]);
-          if (getTypeName(exprA) !== requiredType) {
+          if (getType(exprA) !== requiredType) {
             throw new Error(
               `TypeError: expected ${requiredType}, received ${
-                getTypeName(exprA)}`,
+                getType(exprA)}`,
             );
-          } else if (getTypeName(exprB) !== requiredType) {
+          } else if (getType(exprB) !== requiredType) {
             throw new Error(
               `TypeError: expected ${requiredType}, received ${
-                getTypeName(exprB)}`,
+                getType(exprB)}`,
             );
           }
           if (exprA > exprB) {
@@ -1717,7 +1717,7 @@ export default function functions(
      */
     toArray: {
       _func: resolvedArgs => {
-        if (getTypeName(resolvedArgs[0]) === TYPE_ARRAY) {
+        if (getType(resolvedArgs[0]) === TYPE_ARRAY) {
           return resolvedArgs[0];
         }
         return [resolvedArgs[0]];
@@ -1759,7 +1759,7 @@ export default function functions(
      */
     toNumber: {
       _func: resolvedArgs => {
-        const typeName = getTypeName(resolvedArgs[0]);
+        const typeName = getType(resolvedArgs[0]);
         if (typeName === TYPE_NUMBER) {
           return resolvedArgs[0];
         }
@@ -1790,7 +1790,7 @@ export default function functions(
      */
     toString: {
       _func: resolvedArgs => {
-        if (getTypeName(resolvedArgs[0]) === TYPE_STRING) {
+        if (getType(resolvedArgs[0]) === TYPE_STRING) {
           return resolvedArgs[0];
         }
         return JSON.stringify(resolvedArgs[0]);
@@ -1882,7 +1882,7 @@ export default function functions(
         [TYPE_BOOLEAN]: 'boolean',
         [TYPE_EXPREF]: 'expref',
         [TYPE_NULL]: 'null',
-      }[getTypeName(resolvedArgs[0])]),
+      }[getType(resolvedArgs[0])]),
       _signature: [{ types: [TYPE_ANY] }],
     },
 

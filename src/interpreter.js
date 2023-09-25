@@ -31,7 +31,7 @@ governing permissions and limitations under the License.
 import TreeInterpreter from './TreeInterpreter.js';
 import Parser from './Parser.js';
 import dataTypes from './dataTypes.js';
-import { matchType, getTypeName, getTypeNames } from './matchType.js';
+import { matchType, getType, getTypes } from './matchType.js';
 import functions from './functions.js';
 import {
   isArray, isObject, strictDeepEqual, getValueOf,
@@ -90,7 +90,7 @@ class Runtime {
       isObject,
       isArray,
       toNumber,
-      getTypeName,
+      getType,
       getValueOf,
       toString,
       debug,
@@ -147,7 +147,7 @@ class Runtime {
         : signature[i].types;
       // Try to avoid checks that will introspect the object and generate dependencies
       if (!matchClass(args[i], currentSpec) && !currentSpec.includes(TYPE_ANY)) {
-        actualType = getTypeNames(args[i]);
+        actualType = getTypes(args[i]);
         // eslint-disable-next-line no-param-reassign
         args[i] = matchType(actualType, currentSpec, args[i], argName, this.toNumber, toString);
       }

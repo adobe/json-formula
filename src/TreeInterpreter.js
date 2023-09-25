@@ -25,7 +25,7 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import { matchType, getTypeNames } from './matchType.js';
+import { matchType, getTypeName, getTypes } from './matchType.js';
 import dataTypes from './dataTypes.js';
 import tokenDefinitions from './tokenDefinitions.js';
 import {
@@ -188,11 +188,19 @@ export default class TreeInterpreter {
       },
 
       Comparator: (node, value) => {
-        const first = this.visit(node.children[0], value);
-        const second = this.visit(node.children[1], value);
+        const first = getValueOf(this.visit(node.children[0], value));
+        const second = getValueOf(this.visit(node.children[1], value));
 
         if (node.name === TOK_EQ) return strictDeepEqual(first, second);
         if (node.name === TOK_NE) return !strictDeepEqual(first, second);
+        if (isObject(first) || isArray(first)) {
+          this.debug.push(`Cannot use comparators with ${getTypeName(first)}`);
+          return false;
+        }
+        if (isObject(second) || isArray(second)) {
+          this.debug.push(`Cannot use comparators with ${getTypeName(second)}`);
+          return false;
+        }
         if (node.name === TOK_GT) return first > second;
         if (node.name === TOK_GTE) return first >= second;
         if (node.name === TOK_LT) return first < second;
@@ -257,16 +265,16 @@ export default class TreeInterpreter {
       ConcatenateExpression: (node, value) => {
         let first = this.visit(node.children[0], value);
         let second = this.visit(node.children[1], value);
-        first = matchType(getTypeNames(first), [TYPE_STRING, TYPE_ARRAY_STRING], first, 'concatenate', this.toNumber, this.toString);
-        second = matchType(getTypeNames(second), [TYPE_STRING, TYPE_ARRAY_STRING], second, 'concatenate', this.toNumber, this.toString);
+        first = matchType(getTypes(first), [TYPE_STRING, TYPE_ARRAY_STRING], first, 'concatenate', this.toNumber, this.toString);
+        second = matchType(getTypes(second), [TYPE_STRING, TYPE_ARRAY_STRING], second, 'concatenate', this.toNumber, this.toString);
         return this.applyOperator(first, second, '&');
       },
 
       UnionExpression: (node, value) => {
         let first = this.visit(node.children[0], value);
         let second = this.visit(node.children[1], value);
-        first = matchType(getTypeNames(first), [TYPE_ARRAY], first, 'union', this.toNumber, this.toString);
-        second = matchType(getTypeNames(second), [TYPE_ARRAY], second, 'union', this.toNumber, this.toString);
+        first = matchType(getTypes(first), [TYPE_ARRAY], first, 'union', this.toNumber, this.toString);
+        second = matchType(getTypes(second), [TYPE_ARRAY], second, 'union', this.toNumber, this.toString);
         return first.concat(second);
       },
 
