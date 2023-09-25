@@ -11,13 +11,13 @@
     "node": ">=16.0.0"
   },
   "scripts": {
-    "prejsdocs": "node -e \"var mkdir = require('make-dir');mkdir('build').then(() => process.exit(0));\"",
+    "prejsdocs": "mkdir -p build",
     "eslint": "eslint src test",
     "test": "jest",
-    "build": "rm -rf ./dist/ && rm -rf ./lib && webpack --config webpack.tutorial.js && npm run docs",
-    "spec": "cd doc && sh makeDocs.sh",
+    "build": "rm -rf ./dist/ && rm -rf ./lib && webpack --config webpack.tutorial.js && npm run jsdocs",
+    "spec": "cd doc && sh scripts/makeDocs.sh",
     "start": "webpack serve --config webpack-devserver.config.js",
-    "docs": "jsdoc2md -f src/jmespath/*unctions.js -g none > dist/functions.md && npm run jsdocs",
+    "docs": "jsdoc2md -f src/functions.js -g none > doc/functions.md",
     "jsdocs": "jsdoc2md -f src/json-formula.js -g none > build/Readme.md && jsdoc -c jsdoc.json -R build/Readme.md"
   },
   "repository": {

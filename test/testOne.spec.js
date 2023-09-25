@@ -11,13 +11,12 @@ governing permissions and limitations under the License.
 */
 import JsonFormula from '../src/json-formula.js';
 import createForm from '../tutorial/Form.js';
-import functions from '../src/jmespath/openFormulaFunctions.js';
 
 const sampleData = require('./sampleData.json');
 // This test file is useful to test one case in isolation.
 const tests = require('./testOne.json');
 
-const jsonFormula = new JsonFormula(functions);
+const jsonFormula = new JsonFormula({});
 
 test.each(tests)('%s', (_desc, tst) => {
   if (tst.fieldsOnly) return;

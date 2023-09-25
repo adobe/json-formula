@@ -144,6 +144,84 @@
     ]
   },
   {
+    "comment": "Wildcard combinations",
+    "given": {"a": 3},
+    "cases": [
+      {
+        "expression": "(@.*)",
+        "result": [3]
+      },
+      {
+        "expression": "(*)",
+        "result": [3]
+      },
+      {
+        "expression": "!@.*",
+        "result": false
+      },
+      {
+        "expression": "!*",
+        "result": false
+      },
+      {
+        "expression": "a * @.*",
+        "result": [9]
+      },
+      {
+        "expression": "a + *",
+        "result": [6]
+      },
+      {
+        "expression": "a - *",
+        "result": [0]
+      },
+      {
+        "expression": "a / *",
+        "result": [1]
+      },
+      {
+        "expression": "a ~ *",
+        "result": [3,3]
+      },
+      {
+        "expression": "a > *",
+        "result": false
+      },
+      {
+        "expression": "a >= *",
+        "result": false
+      },
+      {
+        "expression": "a < *",
+        "result": false
+      },
+      {
+        "expression": "a <= *",
+        "result": false
+      },
+      {
+        "expression": "a == *",
+        "result": false
+      },
+      {
+        "expression": "a = *",
+        "result": false
+      },
+      {
+        "expression": "a <> *",
+        "result": true
+      },
+      {
+        "expression": "a != *",
+        "result": true
+      },
+      {
+        "expression": "a & *",
+        "result": ["33"]
+      }
+    ]
+  },
+  {
     "comment": "Wildcard syntax",
     "given": {"type": "object"},
     "cases": [

@@ -1,9 +1,11 @@
 <a name="abs"></a>
 
-## abs(num) ⇒ <code>number</code>
+## abs
+**abs(num) ⇒ <code>number</code>**
+
 Find the absolute value of the provided argument `value`.
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - the absolute value of the `value` argument  
 
 | Param | Type | Description |
@@ -16,11 +18,13 @@ abs(-1) // returns 1
 ```
 <a name="and"></a>
 
-## and(firstOperand, [...additionalOperands]) ⇒ <code>boolean</code>
+## and
+**and(firstOperand, [...additionalOperands]) ⇒ <code>boolean</code>**
+
 Finds the logical AND result of all parameters.
 If the parameters are not boolean they will be cast to boolean as per the type coercion rules
 
-**Kind**: global function  
+ 
 **Returns**: <code>boolean</code> - The logical result of applying AND to all parameters  
 
 | Param | Type | Description |
@@ -35,11 +39,13 @@ and(`null`, length("foo") < 5) // returns false
 ```
 <a name="avg"></a>
 
-## avg(elements) ⇒ <code>number</code>
+## avg
+**avg(elements) ⇒ <code>number</code>**
+
 Finds the average of the elements in an array.
 An empty array will return an average of `null`.
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - average value  
 
 | Param | Type | Description |
@@ -53,11 +59,13 @@ avg([1, 2, 3]) // returns 2
 ```
 <a name="casefold"></a>
 
-## casefold(input) ⇒ <code>string</code>
+## casefold
+**casefold(input) ⇒ <code>string</code>**
+
 Generates a lower-case string of the `input` string using locale-specific mappings.
 e.g. Strings with German letter <span>&#223;</span> can be compared to "ss"
 
-**Kind**: global function  
+ 
 **Returns**: <code>string</code> - A new string converted to lower case  
 
 | Param | Type | Description |
@@ -70,10 +78,12 @@ casefold("AbC") // returns "abc"
 ```
 <a name="charCode"></a>
 
-## charCode(codePoint) ⇒ <code>number</code>
+## charCode
+**charCode(codePoint) ⇒ <code>number</code>**
+
 Create a string created from the specified code unit.
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - A string from a given code point  
 
 | Param | Type | Description |
@@ -87,10 +97,12 @@ charCode(65) == "\u0041" // true
 ```
 <a name="ceil"></a>
 
-## ceil(num) ⇒ <code>integer</code>
+## ceil
+**ceil(num) ⇒ <code>integer</code>**
+
 Finds the next highest integer value of the argument `num` by rounding up if necessary.
 
-**Kind**: global function  
+ 
 **Returns**: <code>integer</code> - The smallest integer greater than or equal to num  
 
 | Param | Type | Description |
@@ -104,10 +116,12 @@ ceil(10.4) // return 11
 ```
 <a name="codePoint"></a>
 
-## codePoint(str) ⇒ <code>integer</code>
+## codePoint
+**codePoint(str) ⇒ <code>integer</code>**
+
 Retrieve the code point from the first character of a string
 
-**Kind**: global function  
+ 
 **Returns**: <code>integer</code> - unicode code point value  
 
 | Param | Type | Description |
@@ -120,20 +134,22 @@ codePoint("ABC") // 65
 ```
 <a name="contains"></a>
 
-## contains(subject, search) ⇒ <code>boolean</code>
+## contains
+**contains(subject, search) ⇒ <code>boolean</code>**
+
 Determines if the given `subject` contains the `search` string.
 If `subject` is an array, this function returns true if one of the elements
 in the array is equal to the provided `search` value. If `subject`
 is a string, this function returns true if the string contains the
 `search` value.
 
-**Kind**: global function  
+ 
 **Returns**: <code>boolean</code> - true if found  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| subject | <code>array</code> \| <code>string</code> | the subject in which the element has to be searched |
-| search | <code>string</code> \| <code>boolean</code> \| <code>number</code> \| <code>date</code> | element to search |
+| subject | <code>array</code> {vbar} <code>string</code> | the subject in which the element has to be searched |
+| search | <code>string</code> {vbar} <code>boolean</code> {vbar} <code>number</code> {vbar} <code>date</code> | element to search |
 
 **Example**  
 ```js
@@ -144,7 +160,9 @@ contains("Abcd", "x") // returns false
 ```
 <a name="datedif"></a>
 
-## datedif(start_date, end_date, unit) ⇒ <code>integer</code>
+## datedif
+**datedif(start_date, end_date, unit) ⇒ <code>integer</code>**
+
 Return difference between two date values.
 The measurement of the difference is determined by the `unit` parameter. One of:
 
@@ -157,7 +175,7 @@ after subtracting whole years.
 * `yd` the number of days between start_date and end_date, assuming start_date
 and end_date were no more than one year apart
 
-**Kind**: global function  
+ 
 **Returns**: <code>integer</code> - The number of days/months/years difference  
 
 | Param | Type | Description |
@@ -176,10 +194,12 @@ datedif(datetime(2001, 6, 1), datetime(2003, 8, 15), "YD") // returns 75
 ```
 <a name="datetime"></a>
 
-## datetime(year, month, day, [hours], [minutes], [seconds], [milliseconds]) ⇒ <code>number</code>
+## datetime
+**datetime(year, month, day, [hours], [minutes], [seconds], [milliseconds]) ⇒ <code>number</code>**
+
 Return a date/time value.
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - A date/time numeric value to be used with other date/time functions  
 
 | Param | Type | Default | Description |
@@ -199,10 +219,12 @@ datetime(2010, 2, 28) // returns representation of February 28, 2010
 ```
 <a name="day"></a>
 
-## day(date) ⇒ <code>integer</code>
+## day
+**day(date) ⇒ <code>integer</code>**
+
 Finds the day of a date
 
-**Kind**: global function  
+ 
 **Returns**: <code>integer</code> - The day of the month ranging from 1 to 31.  
 
 | Param | Type | Description |
@@ -215,18 +237,20 @@ day(datetime(2008,5,23)) // returns 23
 ```
 <a name="deepScan"></a>
 
-## deepScan(object, name) ⇒ <code>Array.&lt;any&gt;</code>
+## deepScan
+**deepScan(object, name) ⇒ <code>Array.&lt;any&gt;</code>**
+
 Searches a nested hierarchy of objects to return an array of key values that match a `name`.
 The name can be either a key into an object or an array index.
 This is similar to the JSONPath deep scan operator (..)
 
-**Kind**: global function  
+ 
 **Returns**: <code>Array.&lt;any&gt;</code> - The array of matched elements  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| object | <code>object</code> \| <code>array</code> | The starting object or array where we start the search |
-| name | <code>string</code> \| <code>integer</code> | The name (or index position) of the elements to find |
+| object | <code>object</code> {vbar} <code>array</code> | The starting object or array where we start the search |
+| name | <code>string</code> {vbar} <code>integer</code> | The name (or index position) of the elements to find |
 
 **Example**  
 ```js
@@ -234,10 +258,12 @@ deepScan({a : {b1 : {c : 2}, b2 : {c : 3}}}, "c") // returns [2, 3]
 ```
 <a name="endsWith"></a>
 
-## endsWith(subject, suffix) ⇒ <code>boolean</code>
+## endsWith
+**endsWith(subject, suffix) ⇒ <code>boolean</code>**
+
 Determines if the `subject` string ends with a specific `suffix`
 
-**Kind**: global function  
+ 
 **Returns**: <code>boolean</code> - true if the `suffix` value is at the end of the `subject`  
 
 | Param | Type | Description |
@@ -252,11 +278,13 @@ endsWith("Abcd", "A") // returns false
 ```
 <a name="entries"></a>
 
-## entries(obj) ⇒ <code>Array.&lt;any&gt;</code>
+## entries
+**entries(obj) ⇒ <code>Array.&lt;any&gt;</code>**
+
 Returns an array of `[key, value]` pairs from an object.
 The `fromEntries()` function may be used to convert the array back to an object.
 
-**Kind**: global function  
+ 
 **Returns**: <code>Array.&lt;any&gt;</code> - an array of arrays where each child array has two elements
 representing the key and value of a pair  
 
@@ -270,10 +298,12 @@ entries({a: 1, b: 2}) // returns [["a", 1], ["b", 2]]
 ```
 <a name="eomonth"></a>
 
-## eomonth(startDate, monthAdd) ⇒ <code>integer</code>
+## eomonth
+**eomonth(startDate, monthAdd) ⇒ <code>integer</code>**
+
 Finds the serial number of the end of a month, given `startDate` plus `monthAdd` months
 
-**Kind**: global function  
+ 
 **Returns**: <code>integer</code> - the number of days in the computed month  
 
 | Param | Type | Description |
@@ -288,10 +318,12 @@ eomonth(datetime(2011, 1, 1), -3) | [month(@), day(@)] // returns [10, 31]
 ```
 <a name="exp"></a>
 
-## exp(x) ⇒ <code>number</code>
+## exp
+**exp(x) ⇒ <code>number</code>**
+
 Finds e (the base of natural logarithms) raised to a power x. (i.e. e<sup>x</sup>)
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - e (the base of natural logarithms) raised to a power x  
 
 | Param | Type | Description |
@@ -304,19 +336,23 @@ exp(10) // returns 22026.465794806718
 ```
 <a name="false"></a>
 
-## false() ⇒ <code>boolean</code>
+## false
+**false() ⇒ <code>boolean</code>**
+
 Return constant boolean false value.
 Note that expressions may also use the JSON literal false: `` `false` ``
 
-**Kind**: global function  
+ 
 **Returns**: <code>boolean</code> - constant boolean value `false`  
 <a name="find"></a>
 
-## find(query, text, [start]) ⇒ <code>integer</code> \| [<code>null</code>](#null)
+## find
+**find(query, text, [start]) ⇒ <code>integer</code> {vbar} [<code>null</code>](#null)**
+
 finds and returns the index of query in text from a start position
 
-**Kind**: global function  
-**Returns**: <code>integer</code> \| [<code>null</code>](#null) - The position of the found string, null if not found.  
+ 
+**Returns**: <code>integer</code> {vbar} [<code>null</code>](#null) - The position of the found string, null if not found.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -333,11 +369,13 @@ find("M", "abMcdM", 2) // returns 2
 ```
 <a name="fromEntries"></a>
 
-## fromEntries(pairs) ⇒ <code>object</code>
+## fromEntries
+**fromEntries(pairs) ⇒ <code>object</code>**
+
 returns an object by transforming a list of key-value `pairs` into an object.
 `fromEntries()` is the inverse operation of `entries()`.
 
-**Kind**: global function  
+ 
 **Returns**: <code>object</code> - An object constructed from the provided key-value pairs  
 
 | Param | Type | Description |
@@ -350,10 +388,12 @@ fromEntries([["a", 1], ["b", 2]]) // returns {a: 1, b: 2}
 ```
 <a name="floor"></a>
 
-## floor(num) ⇒ <code>integer</code>
+## floor
+**floor(num) ⇒ <code>integer</code>**
+
 Calculates the next lowest integer value of the argument `num` by rounding down if necessary.
 
-**Kind**: global function  
+ 
 **Returns**: <code>integer</code> - The largest integer smaller than or equal to num  
 
 | Param | Type | Description |
@@ -367,10 +407,12 @@ floor(10) // returns 10
 ```
 <a name="hour"></a>
 
-## hour(date) ⇒ <code>integer</code>
+## hour
+**hour(date) ⇒ <code>integer</code>**
+
 Extract the hour from a date/time representation
 
-**Kind**: global function  
+ 
 **Returns**: <code>integer</code> - value between 0 and 23  
 
 | Param | Type | Description |
@@ -384,10 +426,12 @@ hour(time(12, 0, 0)) // returns 12
 ```
 <a name="if"></a>
 
-## if(condition, result1, result2) ⇒ <code>any</code>
+## if
+**if(condition, result1, result2) ⇒ <code>any</code>**
+
 Return one of two values `result1` or `result2`, depending on the `condition`
 
-**Kind**: global function  
+ 
 **Returns**: <code>any</code> - either result1 or result2  
 
 | Param | Type | Description |
@@ -403,11 +447,13 @@ if(false(), 1, 2) // returns 2
 ```
 <a name="join"></a>
 
-## join(glue, stringsarray) ⇒ <code>string</code>
+## join
+**join(glue, stringsarray) ⇒ <code>string</code>**
+
 Combines all the elements from the provided
 array, joined together using the `glue` argument as a separator between each.
 
-**Kind**: global function  
+ 
 **Returns**: <code>string</code> - String representation of the array  
 
 | Param | Type | Description |
@@ -422,11 +468,13 @@ join(" and ", ["apples", "bananas"]) // returns "apples and bananas"
 ```
 <a name="keys"></a>
 
-## keys(obj) ⇒ <code>array</code>
+## keys
+**keys(obj) ⇒ <code>array</code>**
+
 Generates an array of the keys of the input object. If the
 object is null, the value return an empty array
 
-**Kind**: global function  
+ 
 **Returns**: <code>array</code> - the array of all the key names  
 
 | Param | Type | Description |
@@ -439,14 +487,16 @@ keys({a : 3, b : 4}) // returns ["a", "b"]
 ```
 <a name="left"></a>
 
-## left(subject, [elements]) ⇒ <code>string</code> \| <code>array</code>
+## left
+**left(subject, [elements]) ⇒ <code>string</code> {vbar} <code>array</code>**
+
 Return a substring from the start of a string or the left-most elements of an array
 
-**Kind**: global function  
+ 
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| subject | <code>string</code> \| <code>array</code> |  | The source text/array of characters/elements |
+| subject | <code>string</code> {vbar} <code>array</code> |  | The source text/array of characters/elements |
 | [elements] | <code>integer</code> | <code>1</code> | number of elements to pick |
 
 **Example**  
@@ -457,19 +507,21 @@ left([4, 5, 6], 2) // returns [4, 5]
 ```
 <a name="length"></a>
 
-## length(subject) ⇒ <code>integer</code>
+## length
+**length(subject) ⇒ <code>integer</code>**
+
 Calculates the length of the input argument based on types:
 
 * string: returns the number of code points
 * array: returns the number of array elements
 * object: returns the number of key-value pairs
 
-**Kind**: global function  
+ 
 **Returns**: <code>integer</code> - the length of the input subject  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| subject | <code>string</code> \| <code>array</code> \| <code>object</code> | subject whose length to calculate |
+| subject | <code>string</code> {vbar} <code>array</code> {vbar} <code>object</code> | subject whose length to calculate |
 
 **Example**  
 ```js
@@ -482,11 +534,13 @@ length({a : 3, b : 4}) // returns 2
 ```
 <a name="lower"></a>
 
-## lower(input) ⇒ <code>string</code>
+## lower
+**lower(input) ⇒ <code>string</code>**
+
 Converts all the alphabetic characters in a string to lowercase. If the value
 is not a string it will be converted into string.
 
-**Kind**: global function  
+ 
 **Returns**: <code>string</code> - the lower case value of the input string  
 
 | Param | Type | Description |
@@ -499,11 +553,13 @@ lower("E. E. Cummings") // returns e. e. cummings
 ```
 <a name="map"></a>
 
-## map(expr, elements) ⇒ <code>array</code>
+## map
+**map(expr, elements) ⇒ <code>array</code>**
+
 Apply an expression to every element in an array and return the array of results.
 An input array of length N will return an array of length N.
 
-**Kind**: global function  
+ 
 **Returns**: <code>array</code> - the mapped array  
 
 | Param | Type | Description |
@@ -518,19 +574,21 @@ map(&length(@), ["doe", "nick", "chris"]) // returns [3, 4, 5]
 ```
 <a name="max"></a>
 
-## max(collection) ⇒ <code>number</code>
+## max
+**max(collection) ⇒ <code>number</code>**
+
 Calculates the largest value in the provided `collection` arguments.
 If all collections are empty `null` is returned.
 max() can work on numbers or strings.
 If a mix of numbers and strings are provided, all values with be coerced to
 the type of the first value.
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - the largest value found  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| collection | <code>Array.&lt;number&gt;</code> \| <code>Array.&lt;string&gt;</code> | array in which the maximum element is to be calculated |
+| collection | <code>Array.&lt;number&gt;</code> {vbar} <code>Array.&lt;string&gt;</code> | array in which the maximum element is to be calculated |
 
 **Example**  
 ```js
@@ -540,7 +598,9 @@ max(["a", "a1", "b"]) // returns "b"
 ```
 <a name="merge"></a>
 
-## merge(...args) ⇒ <code>object</code>
+## merge
+**merge(...args) ⇒ <code>object</code>**
+
 Accepts one or more objects, and returns a single object with
 all objects merged.
 The first object is copied, and then
@@ -548,7 +608,7 @@ and each key value pair from each subsequent object
 are added to the first object.  Duplicate keys in subsequent objects will
 override those found in earlier objects.
 
-**Kind**: global function  
+ 
 **Returns**: <code>object</code> - The combined object  
 
 | Param | Type |
@@ -562,18 +622,20 @@ merge({a: 1, b: 2}, {a : 3, d: 4}) // returns {a :3, b: 2, d: 4}
 ```
 <a name="mid"></a>
 
-## mid(subject, startPos, length) ⇒ <code>string</code> \| <code>array</code>
+## mid
+**mid(subject, startPos, length) ⇒ <code>string</code> {vbar} <code>array</code>**
+
 Extracts a substring from source text, or a subset of an array.
 or in case of array, extracts a subset of the array from start till the length
 number of elements.
 Returns null if the `startPos` is greater than the length of the array
 
-**Kind**: global function  
-**Returns**: <code>string</code> \| <code>array</code> - The resulting substring or array subset  
+ 
+**Returns**: <code>string</code> {vbar} <code>array</code> - The resulting substring or array subset  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| subject | <code>string</code> \| <code>array</code> | the text string or array of characters or elements to extract. |
+| subject | <code>string</code> {vbar} <code>array</code> | the text string or array of characters or elements to extract. |
 | startPos | <code>integer</code> | the zero-position of the first character or element to extract. |
 | length | <code>integer</code> | The number of characters or elements to return from the string or array. If greater then the length of `subject` the argument is set to the length of the subject. |
 
@@ -586,17 +648,19 @@ mid([0,1,2,3,4,5,6,7,8,9], 2, 3) // returns [2,3,4]
 ```
 <a name="min"></a>
 
-## min(collection) ⇒ <code>number</code>
+## min
+**min(collection) ⇒ <code>number</code>**
+
 Calculates the smallest value in the input arguments.
 If all collections are empty `null` is returned.
 min() can work on numbers or strings.
 If a mix of numbers and strings are provided, the type of the first value will be used.
 
-**Kind**: global function  
+ 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| collection | <code>...Array.&lt;number&gt;</code> \| <code>Array.&lt;string&gt;</code> \| <code>number</code> \| <code>string</code> | to search for the minimum value |
+| collection | <code>...Array.&lt;number&gt;</code> {vbar} <code>Array.&lt;string&gt;</code> {vbar} <code>number</code> {vbar} <code>string</code> | to search for the minimum value |
 
 **Example**  
 ```js
@@ -606,10 +670,12 @@ min(["a", "a1", "b"]) // returns "a"
 ```
 <a name="minute"></a>
 
-## minute(date) ⇒ <code>integer</code>
+## minute
+**minute(date) ⇒ <code>integer</code>**
+
 Extract the minute (0 through 59) from a time/datetime representation
 
-**Kind**: global function  
+ 
 **Returns**: <code>integer</code> - Number of minutes in the time portion of the date/time value  
 
 | Param | Type | Description |
@@ -623,10 +689,12 @@ minute(time(12, 10, 0)) // returns 10
 ```
 <a name="mod"></a>
 
-## mod(dividend, divisor) ⇒ <code>number</code>
+## mod
+**mod(dividend, divisor) ⇒ <code>number</code>**
+
 Return the remainder when one number is divided by another number.
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - Computes the remainder of `dividend`/`divisor`.
 If `dividend` is negative, the result will also be negative.  
 
@@ -642,10 +710,12 @@ mod(-3, 2) // returns -1
 ```
 <a name="month"></a>
 
-## month(date) ⇒ <code>number</code>
+## month
+**month(date) ⇒ <code>number</code>**
+
 Finds the month of a date.
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - The month number as an integer, ranging from 1 (January) to 12 (December).  
 
 | Param | Type | Description |
@@ -658,12 +728,14 @@ month(datetime(2008,5,23)) // returns 5
 ```
 <a name="not"></a>
 
-## not(value) ⇒ <code>boolean</code>
+## not
+**not(value) ⇒ <code>boolean</code>**
+
 Compute logical NOT of a value. If the parameter is not boolean it will be cast to boolean
 as per the type coercion rules.
 Note the related unary not operator: `!`
 
-**Kind**: global function  
+ 
 **Returns**: <code>boolean</code> - The logical NOT applied to the input parameter  
 
 | Param | Type | Description |
@@ -679,13 +751,15 @@ not("") // returns true
 ```
 <a name="notNull"></a>
 
-## notNull(...argument) ⇒ <code>any</code>
+## notNull
+**notNull(...argument) ⇒ <code>any</code>**
+
 Finds the first argument that does not resolve to `null`.
 This function accepts one or more arguments, and will evaluate
 them in order until a non-null argument is encountered. If all
 arguments values resolve to null, then return a null value.
 
-**Kind**: global function  
+ 
 
 | Param | Type |
 | --- | --- |
@@ -698,28 +772,34 @@ notNull(`null`, 2, 3, 4, `null`) // returns 2
 ```
 <a name="now"></a>
 
-## now() ⇒ <code>number</code>
+## now
+**now() ⇒ <code>number</code>**
+
 Retrieve the current date/time.
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - representation of current date/time as a number  
 <a name="null"></a>
 
-## null() ⇒ <code>boolean</code>
+## null
+**null() ⇒ <code>boolean</code>**
+
 Return constant null value.
 Note that expressions may also use the JSON literal null: `` `null` ``
 
-**Kind**: global function  
+ 
 **Returns**: <code>boolean</code> - True  
 <a name="or"></a>
 
-## or(first, [...operand]) ⇒ <code>boolean</code>
+## or
+**or(first, [...operand]) ⇒ <code>boolean</code>**
+
 Determines the logical OR result of a set of parameters.
 If the parameters are not boolean they will be cast to
 boolean as per the type coercion rules.
 Note the related 'or' operator: `A || B`.
 
-**Kind**: global function  
+ 
 **Returns**: <code>boolean</code> - The logical result of applying OR to all parameters  
 
 | Param | Type | Description |
@@ -733,10 +813,12 @@ or((x / 2) == y, (y * 2) == x) // true
 ```
 <a name="power"></a>
 
-## power(a, x) ⇒ <code>number</code>
+## power
+**power(a, x) ⇒ <code>number</code>**
+
 Computes `a` raised to a power `x`. (a<sup>x</sup>)
 
-**Kind**: global function  
+ 
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -749,12 +831,14 @@ power(10, 2) // returns 100 (10 raised to power 2)
 ```
 <a name="proper"></a>
 
-## proper(text) ⇒ <code>string</code>
+## proper
+**proper(text) ⇒ <code>string</code>**
+
 Apply proper casing to a string.  Proper casing is where the first letter of each
 word is converted to an
 uppercase letter and the rest of the letters in the word converted to lowercase.
 
-**Kind**: global function  
+ 
 **Returns**: <code>string</code> - source string with proper casing applied.  
 
 | Param | Type | Description |
@@ -769,10 +853,12 @@ proper("76BudGet") // returns "76Budget"
 ```
 <a name="random"></a>
 
-## random() ⇒ <code>number</code>
+## random
+**random() ⇒ <code>number</code>**
+
 Generate a pseudo random number.
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - A value greater than or equal to zero, and less than one.  
 **Example**  
 ```js
@@ -780,7 +866,9 @@ random() // 0.022585461160693265
 ```
 <a name="reduce"></a>
 
-## reduce(expr, elements, initialValue) ⇒ <code>any</code>
+## reduce
+**reduce(expr, elements, initialValue) ⇒ <code>any</code>**
+
 Executes a user-supplied reducer expression on each element of an
 array, in order, passing in the return value from the expression from the preceding element.
 The final result of running the reducer across all elements of the input array is a
@@ -793,7 +881,7 @@ For the first array element use the `initialValue` parameter.  If not provided, 
 * index: index of the current element in the array
 * array: original array
 
-**Kind**: global function  
+ 
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -813,11 +901,13 @@ reduce(&accumulated * current, [3, 3, 3], 1) // returns 27
 ```
 <a name="register"></a>
 
-## register(functionName, expr) ⇒ <code>Object</code>
+## register
+**register(functionName, expr) ⇒ <code>Object</code>**
+
 Register a function.  The registered function may take one parameter.
 If more parameters are needed, combine them in an array or object.
 
-**Kind**: global function  
+ 
 **Returns**: <code>Object</code> - returns an empty object  
 
 | Param | Type | Description |
@@ -831,11 +921,13 @@ register("product", &@[0] * @[1]) // can now call: product([2,21]) => returns 42
 ```
 <a name="replace"></a>
 
-## replace(text, start, length, replacement) ⇒ <code>string</code>
+## replace
+**replace(text, start, length, replacement) ⇒ <code>string</code>**
+
 Generates text where an old text is substituted at a given start position and
 length, with a new text.
 
-**Kind**: global function  
+ 
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -852,10 +944,12 @@ replace("123456",0,3,"@") // returns @456
 ```
 <a name="rept"></a>
 
-## rept(text, count) ⇒ <code>string</code>
+## rept
+**rept(text, count) ⇒ <code>string</code>**
+
 Return text repeated `count` times.
 
-**Kind**: global function  
+ 
 **Returns**: <code>string</code> - Text generated from the repeated text  
 
 | Param | Type | Description |
@@ -869,15 +963,17 @@ rept("x", 5) // returns "xxxxx"
 ```
 <a name="reverse"></a>
 
-## reverse(argument) ⇒ <code>array</code>
+## reverse
+**reverse(argument) ⇒ <code>array</code>**
+
 Reverses the order of an array or string
 
-**Kind**: global function  
+ 
 **Returns**: <code>array</code> - The resulting reversed array or string  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| argument | <code>string</code> \| <code>array</code> | the source to be reversed |
+| argument | <code>string</code> {vbar} <code>array</code> | the source to be reversed |
 
 **Example**  
 ```js
@@ -885,17 +981,19 @@ reverse(["a", "b", "c"]) // returns ["c", "b", "a"]
 ```
 <a name="right"></a>
 
-## right(subject, [elements]) ⇒ <code>string</code> \| <code>array</code>
+## right
+**right(subject, [elements]) ⇒ <code>string</code> {vbar} <code>array</code>**
+
 Generates a string from the right-most characters of a string or
 a subset of elements from the end of an array
 
-**Kind**: global function  
-**Returns**: <code>string</code> \| <code>array</code> - The extracted characters or array subset
+ 
+**Returns**: <code>string</code> {vbar} <code>array</code> - The extracted characters or array subset
 Returns null if the number of elements is less than 0  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| subject | <code>string</code> \| <code>array</code> |  | The text/array containing the characters/elements to extract |
+| subject | <code>string</code> {vbar} <code>array</code> |  | The text/array containing the characters/elements to extract |
 | [elements] | <code>integer</code> | <code>1</code> | number of elements to pick |
 
 **Example**  
@@ -906,14 +1004,16 @@ right([4, 5, 6], 2) // returns [5, 6]
 ```
 <a name="round"></a>
 
-## round(num, precision) ⇒ <code>number</code>
+## round
+**round(num, precision) ⇒ <code>number</code>**
+
 Round a number to a specified precision:
 
 * If `precision` is greater than zero, round to the specified number of decimal places.
 * If `precision` is 0, round to the nearest integer.
 * If `precision` is less than 0, round to the left of the decimal point.
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - rounded value  
 
 | Param | Type | Description |
@@ -931,14 +1031,16 @@ round(-50.55,-2) // -100 (round -50.55 to the nearest multiple of 100)
 ```
 <a name="search"></a>
 
-## search(findText, withinText, [startPos]) ⇒ <code>array</code>
+## search
+**search(findText, withinText, [startPos]) ⇒ <code>array</code>**
+
 Perform a wildcard search.  The search is case-sensitive and supports two forms of wildcards:
 `*` finds a sequence of characters and `?` finds a single character.
 To use `*` or `?` as text values, precede them with a tilde (`~`) character.
 Note that the wildcard search is not greedy.
 e.g. `search("a{asterisk}b", "abb")` will return `[0, "ab"]` Not `[0, "abb"]`
 
-**Kind**: global function  
+ 
 **Returns**: <code>array</code> - returns an array with two values:
 
 * The start position of the found text and the text string that was found.
@@ -956,10 +1058,12 @@ search("a?c", "acabc") // returns [2, "abc"]
 ```
 <a name="second"></a>
 
-## second(date) ⇒ <code>integer</code>
+## second
+**second(date) ⇒ <code>integer</code>**
+
 Extract the seconds of the time value in a time/datetime representation
 
-**Kind**: global function  
+ 
 **Returns**: <code>integer</code> - The number of seconds: 0 through 59  
 
 | Param | Type | Description |
@@ -973,17 +1077,19 @@ second(time(12, 10, 53)) // returns 53
 ```
 <a name="sort"></a>
 
-## sort(list) ⇒ <code>Array.&lt;number&gt;</code> \| <code>Array.&lt;string&gt;</code>
+## sort
+**sort(list) ⇒ <code>Array.&lt;number&gt;</code> {vbar} <code>Array.&lt;string&gt;</code>**
+
 This function accepts an array of strings or numbers and returns a
 re-orderd array with the elements in sorted order.
 String sorting is based on code points. Locale is not taken into account.
 
-**Kind**: global function  
-**Returns**: <code>Array.&lt;number&gt;</code> \| <code>Array.&lt;string&gt;</code> - The ordered result  
+ 
+**Returns**: <code>Array.&lt;number&gt;</code> {vbar} <code>Array.&lt;string&gt;</code> - The ordered result  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| list | <code>Array.&lt;number&gt;</code> \| <code>Array.&lt;string&gt;</code> | to be sorted |
+| list | <code>Array.&lt;number&gt;</code> {vbar} <code>Array.&lt;string&gt;</code> | to be sorted |
 
 **Example**  
 ```js
@@ -991,14 +1097,16 @@ sort([1, 2, 4, 3, 1]) // returns [1, 1, 2, 3, 4]
 ```
 <a name="sortBy"></a>
 
-## sortBy(elements, expr) ⇒ <code>array</code>
+## sortBy
+**sortBy(elements, expr) ⇒ <code>array</code>**
+
 Sort an array using an expression to find the sort key. For each element
 in the array, the expression is applied and the resulting
 value is used as the sort value. If the result of
 evaluating the expression against the current array element results in type
 other than a number or a string, a type-error will occur.
 
-**Kind**: global function  
+ 
 **Returns**: <code>array</code> - The sorted array  
 
 | Param | Type | Description |
@@ -1016,10 +1124,12 @@ sortBy([-15, 30, -10, -11, 5], &abs(@)) // [5, -10, -11, -15, 30]
 ```
 <a name="split"></a>
 
-## split(string, separator) ⇒ <code>Array.&lt;string&gt;</code>
+## split
+**split(string, separator) ⇒ <code>Array.&lt;string&gt;</code>**
+
 split a string into an array, given a separator
 
-**Kind**: global function  
+ 
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1033,10 +1143,12 @@ split("abcdef", "e") // returns ["abcd", "f"]
 ```
 <a name="sqrt"></a>
 
-## sqrt(num) ⇒ <code>number</code>
+## sqrt
+**sqrt(num) ⇒ <code>number</code>**
+
 Return the square root of a number
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - the calculated square root value  
 
 | Param | Type | Description |
@@ -1049,10 +1161,12 @@ sqrt(4) // returns 2
 ```
 <a name="startsWith"></a>
 
-## startsWith(subject, prefix) ⇒ <code>boolean</code>
+## startsWith
+**startsWith(subject, prefix) ⇒ <code>boolean</code>**
+
 Determine if a string starts with a prefix.
 
-**Kind**: global function  
+ 
 **Returns**: <code>boolean</code> - true if `prefix` matches the start of `subject`  
 
 | Param | Type | Description |
@@ -1066,13 +1180,15 @@ startsWith("jack is at home", "jack") // returns true
 ```
 <a name="stdev"></a>
 
-## stdev(numbers) ⇒ <code>number</code>
+## stdev
+**stdev(numbers) ⇒ <code>number</code>**
+
 Estimates standard deviation based on a sample.
 `stdev` assumes that its arguments are a sample of the entire population.
 If your data represents a entire population,
 then compute the standard deviation using [stdevp](#stdevp).
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - [Standard deviation](https://en.wikipedia.org/wiki/Standard_deviation)  
 
 | Param | Type | Description |
@@ -1086,13 +1202,15 @@ stdevp([1345, 1301, 1368]) // returns 27.797
 ```
 <a name="stdevp"></a>
 
-## stdevp(numbers) ⇒ <code>number</code>
+## stdevp
+**stdevp(numbers) ⇒ <code>number</code>**
+
 Calculates standard deviation based on the entire population given as arguments.
 `stdevp` assumes that its arguments are the entire population.
 If your data represents a sample of the population,
 then compute the standard deviation using [stdev](#stdev).
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - Calculated standard deviation  
 
 | Param | Type | Description |
@@ -1106,13 +1224,15 @@ stdev([1345, 1301, 1368]) // returns 34.044
 ```
 <a name="substitute"></a>
 
-## substitute(text, old, new, [which]) ⇒ <code>string</code>
+## substitute
+**substitute(text, old, new, [which]) ⇒ <code>string</code>**
+
 Generates a string from the input `text`,
 with text `old` replaced by text `new` (when searching from the left).
 If there is no match, or if `old` has length 0, `text` is returned unchanged.
 Note that `old` and `new` may have different lengths. If `which` < 1, return `text` unchanged
 
-**Kind**: global function  
+ 
 **Returns**: <code>string</code> - replaced string  
 
 | Param | Type | Description |
@@ -1130,11 +1250,13 @@ substitute("Quarter 1, 1008", "1", "2", 2) // returns "Quarter 1, 2008"
 ```
 <a name="sum"></a>
 
-## sum(collection) ⇒ <code>number</code>
+## sum
+**sum(collection) ⇒ <code>number</code>**
+
 Calculates the sum of the provided array.
 An empty array will produce a return value of 0.
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - The sum of elements  
 
 | Param | Type | Description |
@@ -1147,10 +1269,12 @@ sum([1, 2, 3]) // returns 6
 ```
 <a name="time"></a>
 
-## time(hours, [minutes], [seconds]) ⇒ <code>number</code>
+## time
+**time(hours, [minutes], [seconds]) ⇒ <code>number</code>**
+
 Construct and returns a time value.
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - Returns a date/time value representing the fraction
 of the day consumed by the given time  
 
@@ -1166,14 +1290,16 @@ time(12, 0, 0) | [hour(@), minute(@), second(@)] // returns [12, 0, 0]
 ```
 <a name="toArray"></a>
 
-## toArray(arg) ⇒ <code>array</code>
+## toArray
+**toArray(arg) ⇒ <code>array</code>**
+
 Converts the provided argument to an array.
 The conversion happens as per the following rules:
 
 * array - Returns the provided value.
 * number/string/object/boolean/null - Returns a one element array containing the argument.
 
-**Kind**: global function  
+ 
 **Returns**: <code>array</code> - The resulting array  
 
 | Param | Type | Description |
@@ -1187,17 +1313,21 @@ toArray(null()) // returns [`null`]
 ```
 <a name="today"></a>
 
-## today() ⇒ <code>number</code>
+## today
+**today() ⇒ <code>number</code>**
+
 Returns a date/time value representing the start of the current day. i.e. midnight
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - today at midnight  
 <a name="toNumber"></a>
 
-## toNumber(arg) ⇒ <code>number</code>
+## toNumber
+**toNumber(arg) ⇒ <code>number</code>**
+
 Converts the provided arg to a number. The conversion happens as per the type coercion rules.
 
-**Kind**: global function  
+ 
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1213,11 +1343,13 @@ toNumber("10f") // returns 0
 ```
 <a name="toString"></a>
 
-## toString(arg) ⇒ <code>string</code>
+## toString
+**toString(arg) ⇒ <code>string</code>**
+
 Converts the provided argument to a string.
 The conversion happens as per the type coercion rules.
 
-**Kind**: global function  
+ 
 **Returns**: <code>string</code> - The result string  
 
 | Param | Type | Description |
@@ -1232,11 +1364,13 @@ toString({sum: 12 + 13}) // "{"sum":25}"
 ```
 <a name="trim"></a>
 
-## trim(text) ⇒ <code>string</code>
+## trim
+**trim(text) ⇒ <code>string</code>**
+
 Remove leading and trailing spaces, and replace all internal multiple spaces
 with a single space.
 
-**Kind**: global function  
+ 
 **Returns**: <code>string</code> - trimmed string  
 
 | Param | Type | Description |
@@ -1249,18 +1383,22 @@ trim("   ab    c   ") // returns "ab c"
 ```
 <a name="true"></a>
 
-## true() ⇒ <code>boolean</code>
+## true
+**true() ⇒ <code>boolean</code>**
+
 Return constant boolean true value.
 Note that expressions may also use the JSON literal true: `` `true` ``
 
-**Kind**: global function  
+ 
 **Returns**: <code>boolean</code> - True  
 <a name="trunc"></a>
 
-## trunc(numA, [numB]) ⇒ <code>number</code>
+## trunc
+**trunc(numA, [numB]) ⇒ <code>number</code>**
+
 Truncates a number to an integer by removing the fractional part of the number.
 
-**Kind**: global function  
+ 
 **Returns**: <code>number</code> - Truncated value  
 
 | Param | Type | Default | Description |
@@ -1276,7 +1414,9 @@ trunc(8.912, 2) // returns 8.91
 ```
 <a name="type"></a>
 
-## type(subject) ⇒ <code>string</code>
+## type
+**type(subject) ⇒ <code>string</code>**
+
 Finds the JavaScript type of the given `subject` argument as a string value.
 The return value MUST be one of the following:
 
@@ -1287,7 +1427,7 @@ The return value MUST be one of the following:
 * object
 * null
 
-**Kind**: global function  
+ 
 **Returns**: <code>string</code> - The type of the subject  
 
 | Param | Type | Description |
@@ -1301,10 +1441,12 @@ type("") // returns "string"
 ```
 <a name="unique"></a>
 
-## unique(input) ⇒ <code>array</code>
+## unique
+**unique(input) ⇒ <code>array</code>**
+
 Find the set of unique elements within an array
 
-**Kind**: global function  
+ 
 **Returns**: <code>array</code> - array with duplicate elements removed  
 
 | Param | Type | Description |
@@ -1317,12 +1459,14 @@ unique([1, 2, 3, 4, 1, 1, 2]) // returns [1, 2, 3, 4]
 ```
 <a name="upper"></a>
 
-## upper(input) ⇒ <code>string</code>
+## upper
+**upper(input) ⇒ <code>string</code>**
+
 Converts all the alphabetic characters in a string to uppercase.
 If the value is not a string it will be converted into string
 according to the type coercion rules.
 
-**Kind**: global function  
+ 
 **Returns**: <code>string</code> - the upper case value of the input string  
 
 | Param | Type | Description |
@@ -1335,16 +1479,18 @@ upper("abcd") // returns "ABCD"
 ```
 <a name="value"></a>
 
-## value(object, index) ⇒ <code>any</code>
+## value
+**value(object, index) ⇒ <code>any</code>**
+
 Perform an indexed lookup on an object or array
 
-**Kind**: global function  
+ 
 **Returns**: <code>any</code> - the result of the lookup -- or `null` if not found.  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| object | <code>object</code> \| <code>array</code> | on which to perform the lookup |
-| index | <code>string</code> \| <code>integer</code> | a named child for an object or an integer offset for an array |
+| object | <code>object</code> {vbar} <code>array</code> | on which to perform the lookup |
+| index | <code>string</code> {vbar} <code>integer</code> | a named child for an object or an integer offset for an array |
 
 **Example**  
 ```js
@@ -1353,13 +1499,15 @@ value([1, 2, 3, 4], 2) // returns 3
 ```
 <a name="values"></a>
 
-## values(obj) ⇒ <code>array</code>
+## values
+**values(obj) ⇒ <code>array</code>**
+
 Generates an array of the values of the provided object.
 Note that because JSON objects are
 inherently unordered, the values associated with the provided object are
 also unordered.
 
-**Kind**: global function  
+ 
 **Returns**: <code>array</code> - array of the key values  
 
 | Param | Type | Description |
@@ -1372,7 +1520,9 @@ values({a : 3, b : 4}) // returns [3, 4]
 ```
 <a name="weekday"></a>
 
-## weekday(date, [returnType]) ⇒ <code>integer</code>
+## weekday
+**weekday(date, [returnType]) ⇒ <code>integer</code>**
+
 Extract the day of the week from a date.
 The specific numbering of the day of week is controlled by the `returnType` parameter:
 
@@ -1380,7 +1530,7 @@ The specific numbering of the day of week is controlled by the `returnType` para
 * 2 : Monday (1), Tuesday (2), ..., Sunday(7)
 * 3 : Monday (0), Tuesday (2), ...., Sunday(6)
 
-**Kind**: global function  
+ 
 **Returns**: <code>integer</code> - day of the week  
 
 | Param | Type | Default | Description |
@@ -1396,10 +1546,12 @@ weekday(datetime(2006,5,21), 3) // 6
 ```
 <a name="year"></a>
 
-## year(date) ⇒ <code>integer</code>
+## year
+**year(date) ⇒ <code>integer</code>**
+
 Finds the year of a datetime value
 
-**Kind**: global function  
+ 
 **Returns**: <code>integer</code> - The year value  
 
 | Param | Type | Description |
@@ -1412,13 +1564,15 @@ year(datetime(2008,5,23)) // returns 2008
 ```
 <a name="zip"></a>
 
-## zip(...arrays) ⇒ <code>array</code>
+## zip
+**zip(...arrays) ⇒ <code>array</code>**
+
 Generates a convolved (zipped) array containing grouped arrays of values from
 the array arguments from index 0, 1, 2, etc.
 This function accepts a variable number of arguments.
 The length of the returned array is equal to the length of the shortest array.
 
-**Kind**: global function  
+ 
 **Returns**: <code>array</code> - An array of arrays with elements zipped together  
 
 | Param | Type | Description |
@@ -1431,10 +1585,12 @@ zip([1, 2, 3], [4, 5, 6, 7]) // returns [[1, 4], [2, 5], [3, 6]]
 ```
 <a name="encodeUrlComponent"></a>
 
-## encodeUrlComponent(uriComponent) ⇒ <code>string</code>
+## encodeUrlComponent
+**encodeUrlComponent(uriComponent) ⇒ <code>string</code>**
+
 Encode a URL component as per: [encodeUrlComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent)
 
-**Kind**: global function  
+ 
 **Returns**: <code>string</code> - encoded value  
 
 | Param | Type | Description |
@@ -1447,10 +1603,12 @@ encodeURIComponent("a=b") // returns "a%3Db"
 ```
 <a name="encodeUrl"></a>
 
-## encodeUrl(uri) ⇒ <code>string</code>
+## encodeUrl
+**encodeUrl(uri) ⇒ <code>string</code>**
+
 Encode a URL as per: [encodeURI()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI)
 
-**Kind**: global function  
+ 
 **Returns**: <code>string</code> - encoded value  
 
 | Param | Type | Description |
@@ -1463,10 +1621,12 @@ encodeUrl("https://example.com/&a=4% of 15") // returns ("a=b") // https://examp
 ```
 <a name="decodeUrlComponent"></a>
 
-## decodeUrlComponent(encodedString) ⇒ <code>string</code>
+## decodeUrlComponent
+**decodeUrlComponent(encodedString) ⇒ <code>string</code>**
+
 Decode a URL component as per: [decodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent)
 
-**Kind**: global function  
+ 
 **Returns**: <code>string</code> - decoded value  
 
 | Param | Type | Description |
@@ -1479,10 +1639,12 @@ decodeUrlComponent("%3B%2C%2F%3F%3A%40%26%3D%2B%24") // ";,/?:@&=+$"
 ```
 <a name="decodeUrl"></a>
 
-## decodeUrl(encodedURL) ⇒ <code>string</code>
+## decodeUrl
+**decodeUrl(encodedURL) ⇒ <code>string</code>**
+
 Decode a URL as per: [decodeURI](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURI)
 
-**Kind**: global function  
+ 
 **Returns**: <code>string</code> - decoded URL  
 
 | Param | Type | Description |

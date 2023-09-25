@@ -15,12 +15,23 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const docDir = path.dirname(fileURLToPath(import.meta.url));
+const adocFile = path.join(docDir, '..', 'functions.adoc');
 
-const grammarFile = path.join(docDir, '..', 'antlr', 'JsonFormula.g4');
-// Remove comments from the antlr file for inclusion in the spec
-const grammar = fs.readFileSync(grammarFile).toString();
-const strippedGrammar = grammar
-  .replace(/[\s\S.]*grammar/m, 'grammar')
-  .replace(/#.*/g, '');
+const version = process.argv[1] || '1.0';
 
-fs.writeFileSync(path.join(docDir, 'grammar.g4'), strippedGrammar);
+const functions = fs.readFileSync(adocFile).toString();
+
+/* The asciidoc has lines that look like:
+
+link:#datetime[datetime]
+transform it to:
+
+<<_datetime>>
+*/
+const updatedFunctions = functions
+  .replace(/link:#([a-zA-Z0-9]+)[[a-zA-Z0-9]+]/g, '<<_$1>>')
+  .replace(/1\.0, {docdate}:/, `${version}, {docdate}:`)
+  .replace(/`\*`/g, '`{asterisk}`')
+  .replace(/\\{vbar}/g, '{vbar}');
+
+fs.writeFileSync(path.join(docDir, '..', 'functions.adoc'), updatedFunctions);

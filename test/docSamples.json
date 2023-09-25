@@ -258,9 +258,9 @@
   ],
 
   [
-    "reduce(&if(accumulated == `null`, current, accumulated * current), [3, 3, 3])",
+    "reduce(&accumulated * current, [3, 3, 3], 1) ",
     {
-      "expression": "reduce(&if(accumulated == `null`, current, accumulated * current), [3, 3, 3])",
+      "expression": "reduce(&accumulated * current, [3, 3, 3], 1) ",
       "expected": 27
     }
   ],
@@ -307,6 +307,14 @@
   ],
 
   [
+    "sortBy([-15, 30, -10, -11, 5], &abs(@))",
+    {
+      "expression": "sortBy([-15, 30, -10, -11, 5], &abs(@))",
+      "expected": [5, -10, -11, -15, 30]
+    }
+  ],
+
+  [
     "startsWith(\"jack is at home\", \"jack\")",
     {
       "expression": "startsWith(\"jack is at home\", \"jack\")",
@@ -344,6 +352,14 @@
     }
   ],
 
+  [
+    "toNumber(\"10f\")",
+    {
+      "expression": "toNumber(\"10f\")",
+      "expected": 0
+    }
+  ],
+
   ["type(1)", { "expression": "type(1)", "expected": "number" }],
 
   ["type(\"\")", { "expression": "type(\"\")", "expected": "string" }],
@@ -357,9 +373,9 @@
   ],
 
   [
-    "zip([1, 2, 3], [4, 5, 6])",
+    "zip([1, 2, 3], [4, 5, 6, 7])",
     {
-      "expression": "zip([1, 2, 3], [4, 5, 6])",
+      "expression": "zip([1, 2, 3], [4, 5, 6, 7])",
       "expected": [
         [1, 4],
         [2, 5],
@@ -520,6 +536,13 @@
     {
       "expression": "mid(\"Fluid Flow\",20,5)",
       "expected": ""
+    }
+  ],
+  [
+    "mid([0,1,2,3,4,5,6,7,8,9], 2, 3)",
+    {
+      "expression": "mid([0,1,2,3,4,5,6,7,8,9], 2, 3)",
+      "expected": [2,3,4]
     }
   ],
 

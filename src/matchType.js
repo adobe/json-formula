@@ -62,7 +62,7 @@ const TYPE_NAME_TABLE = {
   [TYPE_ARRAY_ARRAY]: 'Array<array>',
 };
 
-export function getTypeName(inputObj, useValueOf = true) {
+export function getType(inputObj, useValueOf = true) {
   if (inputObj === null) return TYPE_NULL;
   let obj = inputObj;
   if (useValueOf) {
@@ -94,11 +94,15 @@ export function getTypeName(inputObj, useValueOf = true) {
   }
 }
 
-export function getTypeNames(inputObj) {
+export function getTypeName(arg) {
+  return TYPE_NAME_TABLE[getType(arg)];
+}
+
+export function getTypes(inputObj) {
   // return the types with and without using valueOf
   // needed for the cases where we really need an object passed to a function -- not it's value
-  const type1 = getTypeName(inputObj);
-  const type2 = getTypeName(inputObj, false);
+  const type1 = getType(inputObj);
+  const type2 = getType(inputObj, false);
   return [type1, type2];
 }
 
@@ -161,7 +165,7 @@ export function matchType(actuals, expectedList, argValue, context, toNumber, to
       // We're going to modify the array, so take a copy
       const returnArray = argValue.slice();
       for (let i = 0; i < returnArray.length; i += 1) {
-        const indexType = getTypeNames(returnArray[i]);
+        const indexType = getTypes(returnArray[i]);
         returnArray[i] = matchType(
           indexType,
           [subtype],

@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Home</title>
+  <title> exports</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,17 +73,58 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p></p>
-                    <h1>Home</h1>
+                    <p>Class</p>
+                    <h1>exports</h1>
                 </header>
                 
 
 
 
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>exports<span class="signature">(customFunctions, stringToNumber, language, debug)</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>Returns an instance of JSON JsonFormula Expression that can be executed later on with
+multiple instances of JSON Data. The instance of the class has a single search
+function that can be used to evaluate the expression on a json payload. The advantage
+of using this over {jsonJsonFormula} function is that it can be performant if a single expression
+has to be used for multiple json data instances.</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class='vertical-section'>
+                <div class="members">
+                    <div class="member">
+                        <div class=name>
+                            <span class="tag">Constructor</span>
+                        </div>
+                        
+
+
+    
+    <h4 class="name" id="exports">
+        <a class="href-link" href="#exports">#</a>
+        
+        <span class="code-name">
+            
+                new exports<span class="signature">(customFunctions, stringToNumber, language, debug)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
     
 
 
-    <h3> </h3>
 
 
 
@@ -91,75 +132,243 @@
 
 
 
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+            <th>Default</th>
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>customFunctions</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">*</code>
 
 
+  
+  </td>
+
+  
+
+  
+      <td class="default">
+      
+      </td>
+  
+
+  <td class="description last"><p>custom functions needed by a hosting application.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>stringToNumber</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">function</code>
+
+
+  
+  </td>
+
+  
+
+  
+      <td class="default">
+      
+          null
+      
+      </td>
+  
+
+  <td class="description last"><p>A function that converts string values to numbers.
+Can be used to convert currencies/dates to numbers</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>language</code></td>
+  
+
+  <td class="type">
+  
+  </td>
+
+  
+
+  
+      <td class="default">
+      
+      </td>
+  
+
+  <td class="description last"></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>debug</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">array</code>
+
+
+  
+  </td>
+
+  
+
+  
+      <td class="default">
+      
+      </td>
+  
+
+  <td class="description last"><p>will be populated with any errors/warnings</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
 
     
 
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="json-formula.js.html" class="button">View Source</a>
+            <span>
+                <a href="json-formula.js.html">json-formula.js</a>, <a href="json-formula.js.html#line21">line 21</a>
+            </span>
+        </p>
+    
+</dl>
 
 
 
-    <section>
-        <article><p><a name="search"></a></p>
-<h2>search(json, globals) ⇒ <code>*</code></h2>
-<p>Evaluates the JsonFormula on a particular json payload and return the result</p>
-<p><strong>Kind</strong>: global function<br>
-<strong>Returns</strong>: <code>*</code> - the result of the expression being evaluated</p>
-<table>
-<thead>
-<tr>
-<th>Param</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>json</td>
-<td><code>object</code></td>
-<td>the json data on which the expression needs to be evaluated</td>
-</tr>
-<tr>
-<td>globals</td>
-<td><code>*</code></td>
-<td>global objects that can be accessed via custom functions.</td>
-</tr>
-</tbody>
-</table>
-<p><a name="run"></a></p>
-<h2>run(ast, json, globals) ⇒ <code>*</code></h2>
-<p>Execute a previously compiled expression against a json object and return the result</p>
-<p><strong>Kind</strong>: global function<br>
-<strong>Returns</strong>: <code>*</code> - the result of the expression being evaluated</p>
-<table>
-<thead>
-<tr>
-<th>Param</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ast</td>
-<td><code>object</code></td>
-<td>The abstract syntax tree returned from compile()</td>
-</tr>
-<tr>
-<td>json</td>
-<td><code>object</code></td>
-<td>the json data on which the expression needs to be evaluated</td>
-</tr>
-<tr>
-<td>globals</td>
-<td><code>*</code></td>
-<td>set of objects available in global scope</td>
-</tr>
-</tbody>
-</table></article>
-    </section>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

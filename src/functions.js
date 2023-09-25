@@ -1,91 +1,4 @@
-
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> functions.js</title>
-
-  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="./build/entry.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
-  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
-  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
-  <link type="text/css" rel="stylesheet" href="">
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-
-
-</head>
-
-
-
-<body class="layout small-header">
-    <div id="stickyNavbarOverlay"></div>
-
-
-<div class="top-nav">
-    <div class="inner">
-        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-        <div class="logo">
-
-
-        </div>
-        <div class="menu">
-
-            <div class="navigation">
-                <a
-                    href="index.html"
-                    class="link"
-                >
-                    Documentation
-                </a>
-
-
-
-            </div>
-        </div>
-    </div>
-</div>
-    <div id="main">
-        <div
-            class="sidebar "
-            id="sidebarNav"
-        >
-
-            <nav>
-
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#abs">abs</a></li><li><a href="global.html#and">and</a></li><li><a href="global.html#avg">avg</a></li><li><a href="global.html#casefold">casefold</a></li><li><a href="global.html#ceil">ceil</a></li><li><a href="global.html#charCode">charCode</a></li><li><a href="global.html#codePoint">codePoint</a></li><li><a href="global.html#contains">contains</a></li><li><a href="global.html#datedif">datedif</a></li><li><a href="global.html#datetime">datetime</a></li><li><a href="global.html#day">day</a></li><li><a href="global.html#decodeUrl">decodeUrl</a></li><li><a href="global.html#decodeUrlComponent">decodeUrlComponent</a></li><li><a href="global.html#deepScan">deepScan</a></li><li><a href="global.html#encodeUrl">encodeUrl</a></li><li><a href="global.html#encodeUrlComponent">encodeUrlComponent</a></li><li><a href="global.html#endsWith">endsWith</a></li><li><a href="global.html#entries">entries</a></li><li><a href="global.html#eomonth">eomonth</a></li><li><a href="global.html#exp">exp</a></li><li><a href="global.html#false">false</a></li><li><a href="global.html#find">find</a></li><li><a href="global.html#floor">floor</a></li><li><a href="global.html#fromEntries">fromEntries</a></li><li><a href="global.html#hour">hour</a></li><li><a href="global.html#if">if</a></li><li><a href="global.html#join">join</a></li><li><a href="global.html#keys">keys</a></li><li><a href="global.html#left">left</a></li><li><a href="global.html#length">length</a></li><li><a href="global.html#lower">lower</a></li><li><a href="global.html#map">map</a></li><li><a href="global.html#max">max</a></li><li><a href="global.html#merge">merge</a></li><li><a href="global.html#mid">mid</a></li><li><a href="global.html#min">min</a></li><li><a href="global.html#minute">minute</a></li><li><a href="global.html#mod">mod</a></li><li><a href="global.html#month">month</a></li><li><a href="global.html#not">not</a></li><li><a href="global.html#notNull">notNull</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#null">null</a></li><li><a href="global.html#or">or</a></li><li><a href="global.html#power">power</a></li><li><a href="global.html#proper">proper</a></li><li><a href="global.html#random">random</a></li><li><a href="global.html#reduce">reduce</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#replace">replace</a></li><li><a href="global.html#rept">rept</a></li><li><a href="global.html#reverse">reverse</a></li><li><a href="global.html#right">right</a></li><li><a href="global.html#round">round</a></li><li><a href="global.html#run">run</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#second">second</a></li><li><a href="global.html#sort">sort</a></li><li><a href="global.html#sortBy">sortBy</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#sqrt">sqrt</a></li><li><a href="global.html#startsWith">startsWith</a></li><li><a href="global.html#stdev">stdev</a></li><li><a href="global.html#stdevp">stdevp</a></li><li><a href="global.html#substitute">substitute</a></li><li><a href="global.html#sum">sum</a></li><li><a href="global.html#time">time</a></li><li><a href="global.html#toArray">toArray</a></li><li><a href="global.html#today">today</a></li><li><a href="global.html#toNumber">toNumber</a></li><li><a href="global.html#toString">toString</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#true">true</a></li><li><a href="global.html#trunc">trunc</a></li><li><a href="global.html#type">type</a></li><li><a href="global.html#unique">unique</a></li><li><a href="global.html#upper">upper</a></li><li><a href="global.html#value">value</a></li><li><a href="global.html#values">values</a></li><li><a href="global.html#weekday">weekday</a></li><li><a href="global.html#year">year</a></li><li><a href="global.html#zip">zip</a></li></ul></div>
-
-            </nav>
-        </div>
-        <div class="core" id="main-content-wrapper">
-            <div class="content">
-                <header class="page-title">
-                    <p>Source</p>
-                    <h1>functions.js</h1>
-                </header>
-
-
-
-
-
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/*
+/*
 Copyright 2014 James Saryerwinnie
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -115,7 +28,7 @@ governing permissions and limitations under the License.
 
 /* eslint-disable no-underscore-dangle */
 import dataTypes from './dataTypes.js';
-import { getProperty, debugAvailable } from './utils.js';
+import { getProperty, debugAvailable, toBoolean } from './utils.js';
 
 function round(num, digits) {
   const precision = 10 ** digits;
@@ -156,8 +69,8 @@ export default function functions(
   } = dataTypes;
 
   const functionMap = {
-    // name: [function, &lt;signature>]
-    // The &lt;signature> can be:
+    // name: [function, <signature>]
+    // The <signature> can be:
     //
     // {
     //   args: [[type1, type2], [type1, type2]],
@@ -188,15 +101,15 @@ export default function functions(
      * @param {...any} [additionalOperands] any number of additional expressions
      * @returns {boolean} The logical result of applying AND to all parameters
      * @example
-     * and(10 > 8, length("foo") &lt; 5) // returns true
-     * and(`null`, length("foo") &lt; 5) // returns false
+     * and(10 > 8, length("foo") < 5) // returns true
+     * and(`null`, length("foo") < 5) // returns false
      * @function and
      */
     and: {
       _func: resolvedArgs => {
-        let result = !!valueOf(resolvedArgs[0]);
+        let result = toBoolean(valueOf(resolvedArgs[0]));
         resolvedArgs.slice(1).forEach(arg => {
-          result = result &amp;&amp; !!valueOf(arg);
+          result = result && toBoolean(valueOf(arg));
         });
         return result;
       },
@@ -228,7 +141,7 @@ export default function functions(
 
     /**
      * Generates a lower-case string of the `input` string using locale-specific mappings.
-     * e.g. Strings with German letter &lt;span>&amp;#223;&lt;/span> can be compared to "ss"
+     * e.g. Strings with German letter <span>&#223;</span> can be compared to "ss"
      * @param {string} input string to casefold
      * @returns {string} A new string converted to lower case
      * @function casefold
@@ -351,7 +264,7 @@ export default function functions(
         const date1 = getDateObj(args[0]);
         const date2 = getDateObj(args[1]);
         if (date2 === date1) return 0;
-        if (date2 &lt; date1) return null;
+        if (date2 < date1) return null;
         if (unit === 'd') return Math.floor(getDateNum(date2 - date1));
         const yearDiff = date2.getFullYear() - date1.getFullYear();
         let monthDiff = date2.getMonth() - date1.getMonth();
@@ -359,21 +272,21 @@ export default function functions(
 
         if (unit === 'y') {
           let y = yearDiff;
-          if (monthDiff &lt; 0) y -= 1;
-          if (monthDiff === 0 &amp;&amp; dayDiff &lt; 0) y -= 1;
+          if (monthDiff < 0) y -= 1;
+          if (monthDiff === 0 && dayDiff < 0) y -= 1;
           return y;
         }
         if (unit === 'm') {
-          return yearDiff * 12 + monthDiff + (dayDiff &lt; 0 ? -1 : 0);
+          return yearDiff * 12 + monthDiff + (dayDiff < 0 ? -1 : 0);
         }
         if (unit === 'ym') {
-          if (dayDiff &lt; 0) monthDiff -= 1;
-          if (monthDiff &lt;= 0 &amp;&amp; yearDiff > 0) return 12 + monthDiff;
+          if (dayDiff < 0) monthDiff -= 1;
+          if (monthDiff <= 0 && yearDiff > 0) return 12 + monthDiff;
           return monthDiff;
         }
         if (unit === 'yd') {
-          if (dayDiff &lt; 0) monthDiff -= 1;
-          if (monthDiff &lt; 0) date2.setFullYear(date1.getFullYear() + 1);
+          if (dayDiff < 0) monthDiff -= 1;
+          if (monthDiff < 0) date2.setFullYear(date1.getFullYear() + 1);
           else date2.setFullYear(date1.getFullYear());
           return Math.floor(getDateNum(date2 - date1));
         }
@@ -556,7 +469,7 @@ export default function functions(
     },
 
     /**
-     * Finds e (the base of natural logarithms) raised to a power x. (i.e. e&lt;sup>x&lt;/sup>)
+     * Finds e (the base of natural logarithms) raised to a power x. (i.e. e<sup>x</sup>)
      * @param x {number} A numeric expression representing the power of e.
      * @returns {number} e (the base of natural logarithms) raised to a power x
      * @function exp
@@ -658,7 +571,7 @@ export default function functions(
      */
     hour: {
       _func: args => {
-        if (args[0] &lt; 0) {
+        if (args[0] < 0) {
           return null;
         }
 
@@ -687,7 +600,7 @@ export default function functions(
         const leftBranchNode = unresolvedArgs[1];
         const rightBranchNode = unresolvedArgs[2];
         const condition = interpreter.visit(conditionNode, data);
-        if (valueOf(condition)) {
+        if (toBoolean(valueOf(condition))) {
           return interpreter.visit(leftBranchNode, data);
         }
         return interpreter.visit(rightBranchNode, data);
@@ -751,7 +664,7 @@ export default function functions(
     left: {
       _func: args => {
         const numEntries = args.length > 1 ? args[1] : 1;
-        if (numEntries &lt; 0) return null;
+        if (numEntries < 0) return null;
         if (args[0] instanceof Array) {
           return args[0].slice(0, numEntries);
         }
@@ -818,8 +731,8 @@ export default function functions(
      * @return {array} the mapped array
      * @function map
      * @example
-     * map(&amp;(@ + 1), [1, 2, 3, 4]) // returns [2, 3, 4, 5]
-     * map(&amp;length(@), ["doe", "nick", "chris"]) // returns [3, 4, 5]
+     * map(&(@ + 1), [1, 2, 3, 4]) // returns [2, 3, 4, 5]
+     * map(&length(@), ["doe", "nick", "chris"]) // returns [3, 4, 5]
 
      */
     map: {
@@ -861,7 +774,7 @@ export default function functions(
         const compare = isNumber
           ? (prev, cur) => {
             const current = toNumber(cur);
-            return prev &lt;= current ? current : prev;
+            return prev <= current ? current : prev;
           }
           : (prev, cur) => {
             const current = toString(cur);
@@ -923,7 +836,7 @@ export default function functions(
       _func: args => {
         const startPos = args[1];
         const numEntries = args[2];
-        if (startPos &lt; 0) return null;
+        if (startPos < 0) return null;
         if (args[0] instanceof Array) {
           return args[0].slice(startPos, startPos + numEntries);
         }
@@ -966,7 +879,7 @@ export default function functions(
         const compare = isNumber
           ? (prev, cur) => {
             const current = toNumber(cur);
-            return prev &lt;= current ? prev : current;
+            return prev <= current ? prev : current;
           }
           : (prev, cur) => {
             const current = toString(cur);
@@ -992,7 +905,7 @@ export default function functions(
      */
     minute: {
       _func: args => {
-        if (args[0] &lt; 0) {
+        if (args[0] < 0) {
           return null;
         }
         return getDateObj(args[0]).getMinutes();
@@ -1113,9 +1026,9 @@ export default function functions(
      */
     or: {
       _func: resolvedArgs => {
-        let result = !!valueOf(resolvedArgs[0]);
+        let result = toBoolean(valueOf(resolvedArgs[0]));
         resolvedArgs.slice(1).forEach(arg => {
-          result = result || !!valueOf(arg);
+          result = result || toBoolean(valueOf(arg));
         });
         return result;
       },
@@ -1123,7 +1036,7 @@ export default function functions(
     },
 
     /**
-     * Computes `a` raised to a power `x`. (a&lt;sup>x&lt;/sup>)
+     * Computes `a` raised to a power `x`. (a<sup>x</sup>)
      * @param {number} a The base number -- can be any real number.
      * @param {number} x The exponent to which the base number is raised.
      * @return {number}
@@ -1210,13 +1123,13 @@ export default function functions(
      * @return {any}
      * @function reduce
      * @example
-     * reduce(&amp;(accumulated + current), [1, 2, 3]) // returns 6
+     * reduce(&(accumulated + current), [1, 2, 3]) // returns 6
      * // find maximum entry by age
      * reduce(
-     *   &amp;max(@.accumulated.age, @.current.age),
+     *   &max(@.accumulated.age, @.current.age),
      *   [{age: 10, name: "Joe"},{age: 20, name: "John"}], @[0].age
      * )
-     * reduce(&amp;accumulated * current, [3, 3, 3], 1) // returns 27
+     * reduce(&accumulated * current, [3, 3, 3], 1) // returns 27
      */
     reduce: {
       _func: resolvedArgs => {
@@ -1243,14 +1156,14 @@ export default function functions(
      * @return {{}} returns an empty object
      * @function register
      * @example
-     * register("product", &amp;@[0] * @[1]) // can now call: product([2,21]) => returns 42
+     * register("product", &@[0] * @[1]) // can now call: product([2,21]) => returns 42
      */
     register: {
       _func: resolvedArgs => {
         const functionName = resolvedArgs[0];
         const exprefNode = resolvedArgs[1];
 
-        if (functionMap[functionName] &amp;&amp; !functionMap[functionName].custom) {
+        if (functionMap[functionName] && !functionMap[functionName].custom) {
           // custom functions can be re-registered
           // but not any other functions
           debug.push(`Cannot override function: "${functionName}"`);
@@ -1290,7 +1203,7 @@ export default function functions(
         const startNum = args[1];
         const numChars = args[2];
         const newText = toString(args[3]);
-        if (startNum &lt; 0) {
+        if (startNum < 0) {
           return null;
         }
 
@@ -1319,7 +1232,7 @@ export default function functions(
       _func: args => {
         const text = toString(args[0]);
         const count = args[1];
-        if (count &lt; 0) {
+        if (count < 0) {
           return null;
         }
         return text.repeat(count);
@@ -1372,7 +1285,7 @@ export default function functions(
     right: {
       _func: args => {
         const numEntries = args.length > 1 ? args[1] : 1;
-        if (numEntries &lt; 0) return null;
+        if (numEntries < 0) return null;
         if (args[0] instanceof Array) {
           if (numEntries === 0) return [];
           return args[0].slice(numEntries * -1);
@@ -1469,7 +1382,7 @@ export default function functions(
      * second(time(12, 10, 53)) // returns 53
      */
     second: {
-      _func: args => (args[0] &lt; 0 ? null : getDateObj(args[0]).getSeconds()),
+      _func: args => (args[0] < 0 ? null : getDateObj(args[0]).getSeconds()),
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
       ],
@@ -1493,7 +1406,7 @@ export default function functions(
           sortedArray.sort((a, b) => {
             const va = normalize(a);
             const vb = normalize(b);
-            if (va &lt; vb) return -1;
+            if (va < vb) return -1;
             if (va > vb) return 1;
             return 0;
           });
@@ -1514,11 +1427,11 @@ export default function functions(
      * @return {array} The sorted array
      * @function sortBy
      * @example
-     * sortBy(["abcd", "e", "def"], &amp;length(@)) // returns ["e", "def", "abcd"]
+     * sortBy(["abcd", "e", "def"], &length(@)) // returns ["e", "def", "abcd"]
      *
      * // returns [{year: 1910}, {year: 2010}, {year: 2020}]
-     * sortBy([{year: 2010}, {year: 2020}, {year: 1910}], &amp;year)
-     * sortBy([-15, 30, -10, -11, 5], &amp;abs(@)) // [5, -10, -11, -15, 30]
+     * sortBy([{year: 2010}, {year: 2020}, {year: 1910}], &year)
+     * sortBy([-15, 30, -10, -11, 5], &abs(@)) // [5, -10, -11, -15, 30]
      */
     sortBy: {
       _func: resolvedArgs => {
@@ -1530,7 +1443,7 @@ export default function functions(
         const requiredType = getType(
           runtime.interpreter.visit(exprefNode, sortedArray[0]),
         );
-        if ([TYPE_NUMBER, TYPE_STRING].indexOf(requiredType) &lt; 0) {
+        if ([TYPE_NUMBER, TYPE_STRING].indexOf(requiredType) < 0) {
           throw new Error('TypeError');
         }
         // In order to get a stable sort out of an unstable
@@ -1541,7 +1454,7 @@ export default function functions(
         // After the decorated list has been sorted, it will be
         // undecorated to extract the original elements.
         const decorated = [];
-        for (let i = 0; i &lt; sortedArray.length; i += 1) {
+        for (let i = 0; i < sortedArray.length; i += 1) {
           decorated.push([i, sortedArray[i]]);
         }
         decorated.sort((a, b) => {
@@ -1561,7 +1474,7 @@ export default function functions(
           if (exprA > exprB) {
             return 1;
           }
-          if (exprA &lt; exprB) {
+          if (exprA < exprB) {
             return -1;
           }
           // If they"re equal compare the items by their
@@ -1570,7 +1483,7 @@ export default function functions(
           return a[0] - b[0];
         });
         // Undecorate: extract out the original list elements.
-        for (let j = 0; j &lt; decorated.length; j += 1) {
+        for (let j = 0; j < decorated.length; j += 1) {
           [, sortedArray[j]] = decorated[j];
         }
         return sortedArray;
@@ -1646,7 +1559,7 @@ export default function functions(
     stdev: {
       _func: args => {
         const values = args[0];
-        if (values.length &lt;= 1) {
+        if (values.length <= 1) {
           return null;
         }
         const coercedValues = values.map(value => toNumber(value));
@@ -1697,7 +1610,7 @@ export default function functions(
      * Generates a string from the input `text`,
      * with text `old` replaced by text `new` (when searching from the left).
      * If there is no match, or if `old` has length 0, `text` is returned unchanged.
-     * Note that `old` and `new` may have different lengths. If `which` &lt; 1, return `text` unchanged
+     * Note that `old` and `new` may have different lengths. If `which` < 1, return `text` unchanged
      * @param {string} text The text for which to substitute characters.
      * @param {string} old The text to replace.
      * @param {string} new The text to replace `old` with.
@@ -1716,12 +1629,12 @@ export default function functions(
         const old = args[1];
         const replacement = args[2];
         // no third parameter? replace all instances
-        if (args.length &lt;= 3) return src.replaceAll(old, replacement);
+        if (args.length <= 3) return src.replaceAll(old, replacement);
         const whch = args[3];
-        if (whch &lt; 1) return src;
+        if (whch < 1) return src;
         // find the instance to replace
         let pos = -1;
-        for (let i = 0; i &lt; whch; i += 1) {
+        for (let i = 0; i < whch; i += 1) {
           pos += 1;
           const nextFind = src.slice(pos).indexOf(old);
           // no instance to match "Which"
@@ -1776,7 +1689,7 @@ export default function functions(
         const hours = args[0];
         const minutes = args.length > 1 ? args[1] : 0;
         const seconds = args.length > 2 ? args[2] : 0;
-        if (hours &lt; 0 || minutes &lt; 0 || seconds &lt; 0) return null;
+        if (hours < 0 || minutes < 0 || seconds < 0) return null;
         // Since time values are interchangeable with date and datetime values, it"s consistent
         // to create them at the epoch
         const epochTime = new Date(1970, 0, 1, hours, minutes, seconds);
@@ -2138,7 +2051,7 @@ export default function functions(
       _func: args => {
         const count = args.reduce((min, current) => Math.min(min, current.length), args[0].length);
         const result = new Array(count);
-        for (let i = 0; i &lt; count; i += 1) {
+        for (let i = 0; i < count; i += 1) {
           result[i] = [];
           args.forEach(a => {
             result[i].push(a[i]);
@@ -2148,96 +2061,6 @@ export default function functions(
       },
       _signature: [{ types: [TYPE_ARRAY], variadic: true }],
     },
-
-    /**
-     * Encode a URL component as per: [encodeUrlComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent)
-     * @param {string} uriComponent to encode
-     * @return {string} encoded value
-     * @function encodeUrlComponent
-     * @example
-     * encodeURIComponent("a=b") // returns "a%3Db"
-     */
-    encodeUrlComponent: {
-      _func: args => encodeURIComponent(args[0]),
-      _signature: [
-        { types: [dataTypes.TYPE_STRING] },
-      ],
-    },
-
-    /**
-     * Encode a URL as per: [encodeURI()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI)
-     * @param {string} uri to encode
-     * @return {string} encoded value
-     * @function encodeUrl
-     * @example
-     * encodeUrl("https://example.com/&amp;a=4% of 15") // returns ("a=b") // https://example.com/&amp;a=4%25%20of%2015
-     */
-    encodeUrl: {
-      _func: args => encodeURI(args[0]),
-      _signature: [
-        { types: [dataTypes.TYPE_STRING] },
-      ],
-    },
-
-    /**
-     * Decode a URL component as per: [decodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent)
-     * @param {string} encodedString to decode
-     * @return {string} decoded value
-     * @function decodeUrlComponent
-     * @example
-     * decodeUrlComponent("%3B%2C%2F%3F%3A%40%26%3D%2B%24") // ";,/?:@&amp;=+$"
-     */
-    decodeUrlComponent: {
-      _func: args => decodeURIComponent(args[0]),
-      _signature: [
-        { types: [dataTypes.TYPE_STRING] },
-      ],
-    },
-
-    /**
-     * Decode a URL as per: [decodeURI](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURI)
-     * @param {string} encodedURL to decode
-     * @return {string} decoded URL
-     * @function decodeUrl
-     * @example
-     * decodeUrl("https://example.com/?foo=%5Ba%25%5D") // "https://example.com/?foo=[a%]"
-     */
-    decodeUrl: {
-      _func: args => decodeURI(args[0]),
-      _signature: [
-        { types: [dataTypes.TYPE_STRING] },
-      ],
-    },
   };
   return functionMap;
 }
-</code></pre>
-        </article>
-    </section>
-
-
-
-
-            </div>
-
-            <footer class="footer">
-                <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a></p>
-                    <p class="sidebar-created-by">
-                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
-                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
-                    </p>
-                </div>
-            </footer>
-
-        </div>
-        <div id="side-nav" class="side-nav">
-        </div>
-    </div>
-<script src="scripts/app.min.js"></script>
-<script>PR.prettyPrint();</script>
-<script src="scripts/linenumber.js"> </script>
-
-
-</body>
-</html>

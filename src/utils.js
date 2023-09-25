@@ -25,6 +25,7 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
+
 export function isArray(obj) {
   return Array.isArray(obj);
 }
@@ -45,6 +46,18 @@ export function getValueOf(a) {
   // and just return the object.
   if (typeof (a.valueOf) !== 'function') return a;
   return a.valueOf();
+}
+
+export function toBoolean(param) {
+  if (param === null) return false;
+  // in case it's an object with a valueOf defined
+  const val = getValueOf(param);
+
+  // empty arrays are false
+  if (Array.isArray(val)) return val.length > 0;
+  // empty objects are false
+  if (isObject(val)) return Object.keys(val).length > 0;
+  return !!val;
 }
 
 export function strictDeepEqual(lhs, rhs) {
