@@ -584,10 +584,10 @@ The following conditions cannot be coerced to true:
   andExpression = expression '&&' expression
 ----
 
-An and expression will evaluate to either the left expression or the right
+An `and` expression will evaluate to either the left expression or the right
 expression.  If the expression on the left hand side is a truth-like value,
 then the value on the right hand side is returned.  Otherwise the result of the
-expression on the left hand side is returned.  This also reduces to the
+expression on the left hand side is returned.  This reduces to the
 expected truth table:
 
 [%header,cols="1,1,1"]
@@ -600,7 +600,7 @@ expected truth table:
 |===
 
 This is the standard truth table for a
-`logical conjunction https://en.wikipedia.org/wiki/Truth_table#Logical_conjunction_.28AND.29[AND].
+https://en.wikipedia.org/wiki/Truth_table#Logical_conjunction_.28AND.29[logical conjunction].
 
 [discrete]
 === Examples
