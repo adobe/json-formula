@@ -71,6 +71,22 @@
     }
   ],
   [
+    "and(3)",
+    {
+      "data": "{}",
+      "expression": "and({}, [])",
+      "expected": false
+    }
+  ],
+  [
+    "and(4)",
+    {
+      "data": "{}",
+      "expression": "and({a: 3}, [3,4])",
+      "expected": true
+    }
+  ],
+  [
     "or(1)",
     {
       "data": "samples.'purchase-order'",
@@ -87,6 +103,30 @@
     }
   ],
   [
+    "or(3)",
+    {
+      "data": "{}",
+      "expression": "or({}, [])",
+      "expected": false
+    }
+  ],
+  [
+    "or(4)",
+    {
+      "data": "{}",
+      "expression": "or({a: 12})",
+      "expected": true
+    }
+  ],
+  [
+    "or(5)",
+    {
+      "data": "{}",
+      "expression": "or([2,3])",
+      "expected": true
+    }
+  ],
+  [
     "if() first condition",
     {
       "data": "samples.'purchase-order'",
@@ -100,6 +140,38 @@
       "data": "samples.'purchase-order'",
       "expression": "if(sum(items[*].price) == 0, \"first\", \"second\")",
       "expected": "second"
+    }
+  ],
+  [
+    "if() empty array",
+    {
+      "data": "{}",
+      "expression": "if(`[]`, \"first\", \"second\")",
+      "expected": "second"
+    }
+  ],
+  [
+    "if() empty object",
+    {
+      "data": "{}",
+      "expression": "if(`{}`, \"first\", \"second\")",
+      "expected": "second"
+    }
+  ],
+  [
+    "if() populated object",
+    {
+      "data": "{}",
+      "expression": "if(`{\"A\": 21}`, \"first\", \"second\")",
+      "expected": "first"
+    }
+  ],
+  [
+    "if() populated array",
+    {
+      "data": "{}",
+      "expression": "if(`[2]`, \"first\", \"second\")",
+      "expected": "first"
     }
   ],
   [

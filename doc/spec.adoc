@@ -1288,6 +1288,40 @@ A host may provide its own `toNumber()` function that json-formula will use in p
 
 A host may provide its own set of functions to augment the base set provided by json-formula
 
+=== Hidden Properties
+A host system may construct its source JSON data with complex properties that have nested structure that can be found through explicit navigation, but will not be found through normal tree searching.  In JavaScript, this can be configured as:
+
+[source%unbreakable]
+----
+function createField(id, value) {
+  class Field {
+    valueOf() { return value; }
+
+    toString() { return value.toString(); }
+
+    toJSON() { return value; }
+  }
+  const f = new Field();
+  Object.defineProperty(f, '$id', { get: () => id });
+  Object.defineProperty(f, '$value', { get: () => value });
+
+  return f;
+}
+
+const json = {
+  "street": createField("abc123", "Maple Street"),
+  "city": createField("def456", "New York")
+}
+
+Given this configuration, these search results are possible:
+
+street => "Maple Street"
+street.$value => "Maple Street"
+street.$id => "abc123"
+type(street) => "string"
+keys(street) => []
+----
+
 == Function Reference
 
 include::functions.adoc[leveloffset=1]

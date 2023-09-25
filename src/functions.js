@@ -28,7 +28,7 @@ governing permissions and limitations under the License.
 
 /* eslint-disable no-underscore-dangle */
 import dataTypes from './dataTypes.js';
-import { getProperty, debugAvailable } from './utils.js';
+import { getProperty, debugAvailable, toBoolean } from './utils.js';
 
 function round(num, digits) {
   const precision = 10 ** digits;
@@ -107,9 +107,9 @@ export default function functions(
      */
     and: {
       _func: resolvedArgs => {
-        let result = !!valueOf(resolvedArgs[0]);
+        let result = toBoolean(valueOf(resolvedArgs[0]));
         resolvedArgs.slice(1).forEach(arg => {
-          result = result && !!valueOf(arg);
+          result = result && toBoolean(valueOf(arg));
         });
         return result;
       },
@@ -600,7 +600,7 @@ export default function functions(
         const leftBranchNode = unresolvedArgs[1];
         const rightBranchNode = unresolvedArgs[2];
         const condition = interpreter.visit(conditionNode, data);
-        if (valueOf(condition)) {
+        if (toBoolean(valueOf(condition))) {
           return interpreter.visit(leftBranchNode, data);
         }
         return interpreter.visit(rightBranchNode, data);
@@ -1026,9 +1026,9 @@ export default function functions(
      */
     or: {
       _func: resolvedArgs => {
-        let result = !!valueOf(resolvedArgs[0]);
+        let result = toBoolean(valueOf(resolvedArgs[0]));
         resolvedArgs.slice(1).forEach(arg => {
-          result = result || !!valueOf(arg);
+          result = result || toBoolean(valueOf(arg));
         });
         return result;
       },

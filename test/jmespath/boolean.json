@@ -76,6 +76,9 @@
       "False": false,
       "Number": 5,
       "EmptyList": [],
+      "EmptyObject": {},
+      "Obj": {"oneEntry": "one"},
+      "Array": ["oneEntry"],
       "Zero": 0,
       "nested": {
         "False": false,
@@ -116,6 +119,10 @@
         "result": []
       },
       {
+        "expression": "Number && EmptyObject",
+        "result": {}
+      },
+      {
         "expression": "Number && True",
         "result": true
       },
@@ -126,6 +133,30 @@
       {
         "expression": "EmptyList && False",
         "result": []
+      },
+      {
+        "expression": "EmptyObject && True",
+        "result": {}
+      },
+      {
+        "expression": "EmptyObject && False",
+        "result": {}
+      },
+      {
+        "expression": "Obj && True",
+        "result": true
+      },
+      {
+        "expression": "Array && False",
+        "result": false
+      },
+      {
+        "expression": "Obj && True",
+        "result": true
+      },
+      {
+        "expression": "Array && False",
+        "result": false
       },
       {
         "expression": "True || False",
@@ -186,6 +217,18 @@
       {
         "expression": "!EmptyList",
         "result": true
+      },
+      {
+        "expression": "!EmptyObject",
+        "result": true
+      },
+      {
+        "expression": "!Array",
+        "result": false
+      },
+      {
+        "expression": "!Obj",
+        "result": false
       },
       {
         "expression": "True && !False",

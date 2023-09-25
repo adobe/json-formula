@@ -29,7 +29,7 @@ import { matchType, getTypeNames } from './matchType.js';
 import dataTypes from './dataTypes.js';
 import tokenDefinitions from './tokenDefinitions.js';
 import {
-  isArray, isObject, strictDeepEqual, getValueOf, getProperty, debugAvailable,
+  isArray, isObject, strictDeepEqual, getValueOf, getProperty, debugAvailable, toBoolean,
 } from './utils.js';
 
 const {
@@ -51,44 +51,6 @@ const {
   TYPE_ARRAY_STRING,
   TYPE_ARRAY,
 } = dataTypes;
-
-function isFalse(value) {
-  // From the spec:
-  // A false value corresponds to the following values:
-  // Empty list
-  // Empty object
-  // Empty string
-  // False boolean
-  // null value
-  // (new) use JS truthy evaluation.  This changes the spec behavior.
-  // Where in the past a zero (0) would be True, it's now false
-
-  // First check the scalar values.
-  if (value === null) return true;
-  // in case it's an object with a valueOf defined
-  const obj = getValueOf(value);
-  if (obj === '' || obj === false || obj === null) {
-    return true;
-  }
-  if (isArray(obj) && obj.length === 0) {
-    // Check for an empty array.
-    return true;
-  }
-  if (isObject(obj)) {
-    // Check for an empty object.
-    // eslint-disable-next-line no-restricted-syntax
-    for (const key in obj) {
-      // If there are any keys, then
-      // the object is not empty so the object
-      // is not false.
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        return false;
-      }
-    }
-    return true;
-  }
-  return !obj;
-}
 
 function objValues(obj) {
   return Object.values(obj);
@@ -214,7 +176,7 @@ export default class TreeInterpreter {
         if (!isArray(base)) return null;
         const filtered = base.filter(b => {
           const matched = this.visit(node.children[2], b);
-          return !isFalse(matched);
+          return toBoolean(matched);
         });
 
         const finalResults = [];
@@ -275,14 +237,14 @@ export default class TreeInterpreter {
 
       OrExpression: (node, value) => {
         let matched = this.visit(node.children[0], value);
-        if (isFalse(matched)) matched = this.visit(node.children[1], value);
+        if (!toBoolean(matched)) matched = this.visit(node.children[1], value);
         return matched;
       },
 
       AndExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
 
-        if (isFalse(first) === true) return first;
+        if (!toBoolean(first)) return first;
         return this.visit(node.children[1], value);
       },
 
@@ -328,7 +290,7 @@ export default class TreeInterpreter {
 
       NotExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
-        return isFalse(first);
+        return !toBoolean(first);
       },
 
       UnaryMinusExpression: (node, value) => {
