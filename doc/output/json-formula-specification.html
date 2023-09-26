@@ -440,7 +440,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>json-formula Specification</h1>
 <div class="details">
-<span id="revnumber">version 0.1.53</span>
+<span id="revnumber">version 0.2.0</span>
 </div>
 </div>
 <div id="content">
@@ -2002,12 +2002,12 @@ to return the object values in any specific order.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>A JSON literal expression is an expression that allows arbitrary JSON objects to be
+<p>A JSON literal expression allows arbitrary JSON objects to be
 specified.  This is useful in filter expressions as well as multi select objects
 (to create arbitrary key value pairs), but is allowed anywhere an expression is
-allowed.  The specification includes JSON literals. Implementations should
+allowed. Implementations should
 use an existing JSON parser to parse these literals.  Note that the
-<code>\</code> character must now be escaped in a JSON literal which means
+<code> ` </code> character must now be escaped in a JSON literal which means
 implementations need to handle this case before passing the resulting string to
 a JSON parser.</p>
 </div>
@@ -2044,9 +2044,9 @@ fragment HEX
 </div>
 </div>
 <div class="paragraph">
-<p>A <code>STRING</code> is an expression that allows for a literal string value to be
-specified.  A literal string supports the same character escape sequences as strings in JSON.
-e.g. a unicode character 'A' could be specified as <code>\u0041</code>.</p>
+<p>A <code>STRING</code> is an expression that allows a literal string value to be
+specified.  A literal string is enclosed in double quotes and supports the same character escape sequences as strings in JSON.
+e.g. a character 'A' could be specified as the unicode sequence: <code>\u0041</code>.</p>
 </div>
 <div class="paragraph">
 <p>A string literal can also be expressed as a JSON literal. For example, the following expressions both
@@ -2054,8 +2054,8 @@ evaluate to the same value: "foo"</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>    search(`"foo"`, "{}") -&gt; "foo"
-    search("foo", "{}") -&gt; "foo"</code></pre>
+<pre class="highlight"><code>    search(`"foo"`, {}) -&gt; "foo"
+    search("foo", {}) -&gt; "foo"</code></pre>
 </div>
 </div>
 </div>
@@ -2084,12 +2084,12 @@ fragment EXP
 </div>
 <div class="paragraph">
 <p>As with literal strings, json-formula allows literal numbers in expressions.
-Number literals follow the same syntax rules as numeric values in JSON with the exception that number literals may omit a leading zero.  For example, <code>.123</code> is not valid JSON, but is allowed aas a number literal.
+Number literals follow the same syntax rules as numeric values in JSON with the exception that number literals may omit a leading zero.  For example, <code>.123</code> is not valid JSON, but is allowed as a number literal.
 Note that the grammar construction for a number literal does not include a minus sign.  Literal expressions are made negative by prefixing them with a unary minus.</p>
 </div>
 <div class="paragraph">
 <p>Allowing number literals in expressions leads to some ambiguity.
-A bracket with a single signed digit e.g.: <code>[0]</code> can be interpreted as a flatten operation or a <code>multiSelectArray</code> with the number zero. To handle this ambiguity, the grammar sets a precedence so that <code>[-?[0-9]]</code> is consistently treated as a an index operation.  To explicitly express an array with one element, use a JSON literal: <code> `[0]` </code></p>
+A bracket with a single signed digit e.g.: <code>[0]</code> can be interpreted as a flatten operation or a <code>multiSelectArray</code> with the number zero. To resolve this ambiguity, the grammar sets a precedence order so that <code>[-?[0-9]]</code> is treated as a an index operation.  To explicitly express an array with one element, use a JSON literal: <code> `[0]` </code></p>
 </div>
 <h3 id="_examples_16" class="discrete">Examples</h3>
 <div class="listingblock">
@@ -2574,7 +2574,7 @@ A host may provide its own <code>toNumber()</code> function that json-formula wi
 <div class="sect2">
 <h3 id="_hidden_properties">27.5. Hidden Properties</h3>
 <div class="paragraph">
-<p>A host system may construct its source JSON data with complex properties that have nested structure that can be found through explicit navigation, but will not be found through normal tree searching.  In JavaScript, this can be configured as:</p>
+<p>A host system may construct its source JSON data with complex properties that have nested structure that can be found through explicit navigation, but will not be found through normal tree searching.  Here is an example of how this can be configured in JavaScript:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -6222,8 +6222,8 @@ equal to the length of the shortest array.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 0.1.53<br>
-Last updated 2023-09-25 19:47:54 UTC
+Version 0.2.0<br>
+Last updated 2023-09-26 01:55:02 UTC
 </div>
 </div>
 </body>

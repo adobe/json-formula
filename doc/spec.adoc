@@ -820,12 +820,12 @@ to return the object values in any specific order.
     jsonLiteral = '`' jsonValue '`'
 ----
 
-A JSON literal expression is an expression that allows arbitrary JSON objects to be
+A JSON literal expression allows arbitrary JSON objects to be
 specified.  This is useful in filter expressions as well as multi select objects
 (to create arbitrary key value pairs), but is allowed anywhere an expression is
-allowed.  The specification includes JSON literals. Implementations should
+allowed. Implementations should
 use an existing JSON parser to parse these literals.  Note that the
-`\` character must now be escaped in a JSON literal which means
+`` ` `` character must now be escaped in a JSON literal which means
 implementations need to handle this case before passing the resulting string to
 a JSON parser.
 
@@ -860,17 +860,17 @@ fragment HEX
   ;
 ----
 
-A `STRING` is an expression that allows for a literal string value to be
-specified.  A literal string supports the same character escape sequences as strings in JSON.
-e.g. a unicode character 'A' could be specified as `\u0041`.
+A `STRING` is an expression that allows a literal string value to be
+specified.  A literal string is enclosed in double quotes and supports the same character escape sequences as strings in JSON.
+e.g. a character 'A' could be specified as the unicode sequence: `\u0041`.
 
 A string literal can also be expressed as a JSON literal. For example, the following expressions both
 evaluate to the same value: "foo"
 
 [source%unbreakable]
 ----
-    search(`"foo"`, "{}") -> "foo"
-    search("foo", "{}") -> "foo"
+    search(`"foo"`, {}) -> "foo"
+    search("foo", {}) -> "foo"
 ----
 
 == Number literals
@@ -895,11 +895,11 @@ fragment EXP
 ----
 
 As with literal strings, json-formula allows literal numbers in expressions.
-Number literals follow the same syntax rules as numeric values in JSON with the exception that number literals may omit a leading zero.  For example, `.123` is not valid JSON, but is allowed aas a number literal.
+Number literals follow the same syntax rules as numeric values in JSON with the exception that number literals may omit a leading zero.  For example, `.123` is not valid JSON, but is allowed as a number literal.
 Note that the grammar construction for a number literal does not include a minus sign.  Literal expressions are made negative by prefixing them with a unary minus.
 
 Allowing number literals in expressions leads to some ambiguity.
-A bracket with a single signed digit e.g.: `[0]` can be interpreted as a flatten operation or a `multiSelectArray` with the number zero. To handle this ambiguity, the grammar sets a precedence so that `[-?[0-9]]` is consistently treated as a an index operation.  To explicitly express an array with one element, use a JSON literal: `` \`[0]` ``
+A bracket with a single signed digit e.g.: `[0]` can be interpreted as a flatten operation or a `multiSelectArray` with the number zero. To resolve this ambiguity, the grammar sets a precedence order so that `[-?[0-9]]` is treated as a an index operation.  To explicitly express an array with one element, use a JSON literal: `` \`[0]` ``
 
 [discrete]
 === Examples
@@ -1289,7 +1289,7 @@ A host may provide its own `toNumber()` function that json-formula will use in p
 A host may provide its own set of functions to augment the base set provided by json-formula
 
 === Hidden Properties
-A host system may construct its source JSON data with complex properties that have nested structure that can be found through explicit navigation, but will not be found through normal tree searching.  In JavaScript, this can be configured as:
+A host system may construct its source JSON data with complex properties that have nested structure that can be found through explicit navigation, but will not be found through normal tree searching.  Here is an example of how this can be configured in JavaScript:
 
 [source%unbreakable]
 ----
