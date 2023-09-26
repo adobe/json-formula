@@ -488,106 +488,104 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_json_literal_expressions">18. JSON Literal Expressions</a></li>
 <li><a href="#_string_literals">19. String Literals</a></li>
 <li><a href="#_number_literals">20. Number literals</a></li>
-<li><a href="#_filter_expressions">21. Filter Expressions</a></li>
-<li><a href="#_function_expressions">22. Function Expressions</a>
+<li><a href="#_currentnode">21. currentNode</a>
 <ul class="sectlevel2">
-<li><a href="#_currentnode">22.1. currentNode</a></li>
+<li><a href="#_currentnode_state">21.1. currentNode state</a></li>
 </ul>
 </li>
-<li><a href="#_function_evaluation">23. Function Evaluation</a></li>
-<li><a href="#_built_in_functions">24. Built-in Functions</a></li>
-<li><a href="#_pipe_expressions">25. Pipe Expressions</a></li>
-<li><a href="#_integrations">26. Integrations</a>
+<li><a href="#_filter_expressions">22. Filter Expressions</a></li>
+<li><a href="#_function_expressions">23. Function Expressions</a></li>
+<li><a href="#_function_evaluation">24. Function Evaluation</a></li>
+<li><a href="#_built_in_functions">25. Built-in Functions</a></li>
+<li><a href="#_pipe_expressions">26. Pipe Expressions</a></li>
+<li><a href="#_integrations">27. Integrations</a>
 <ul class="sectlevel2">
-<li><a href="#_globals">26.1. Globals</a></li>
-<li><a href="#_specify_locale">26.2. Specify locale</a></li>
-<li><a href="#_custom_tonumber">26.3. Custom toNumber</a></li>
-<li><a href="#_additional_functions">26.4. Additional Functions</a></li>
+<li><a href="#_globals">27.1. Globals</a></li>
+<li><a href="#_specify_locale">27.2. Specify locale</a></li>
+<li><a href="#_custom_tonumber">27.3. Custom toNumber</a></li>
+<li><a href="#_additional_functions">27.4. Additional Functions</a></li>
+<li><a href="#_hidden_properties">27.5. Hidden Properties</a></li>
 </ul>
 </li>
-<li><a href="#_function_reference">27. Function Reference</a>
+<li><a href="#_function_reference">28. Function Reference</a>
 <ul class="sectlevel2">
-<li><a href="#_abs">27.1. abs</a></li>
-<li><a href="#_and">27.2. and</a></li>
-<li><a href="#_avg">27.3. avg</a></li>
-<li><a href="#_casefold">27.4. casefold</a></li>
-<li><a href="#_charcode">27.5. charCode</a></li>
-<li><a href="#_ceil">27.6. ceil</a></li>
-<li><a href="#_codepoint">27.7. codePoint</a></li>
-<li><a href="#_contains">27.8. contains</a></li>
-<li><a href="#_datedif">27.9. datedif</a></li>
-<li><a href="#_datetime">27.10. datetime</a></li>
-<li><a href="#_day">27.11. day</a></li>
-<li><a href="#_deepscan">27.12. deepScan</a></li>
-<li><a href="#_endswith">27.13. endsWith</a></li>
-<li><a href="#_entries">27.14. entries</a></li>
-<li><a href="#_eomonth">27.15. eomonth</a></li>
-<li><a href="#_exp">27.16. exp</a></li>
-<li><a href="#_false">27.17. false</a></li>
-<li><a href="#_find">27.18. find</a></li>
-<li><a href="#_fromentries">27.19. fromEntries</a></li>
-<li><a href="#_floor">27.20. floor</a></li>
-<li><a href="#_hour">27.21. hour</a></li>
-<li><a href="#_if">27.22. if</a></li>
-<li><a href="#_join">27.23. join</a></li>
-<li><a href="#_keys">27.24. keys</a></li>
-<li><a href="#_left">27.25. left</a></li>
-<li><a href="#_length">27.26. length</a></li>
-<li><a href="#_lower">27.27. lower</a></li>
-<li><a href="#_map">27.28. map</a></li>
-<li><a href="#_max">27.29. max</a></li>
-<li><a href="#_merge">27.30. merge</a></li>
-<li><a href="#_mid">27.31. mid</a></li>
-<li><a href="#_min">27.32. min</a></li>
-<li><a href="#_minute">27.33. minute</a></li>
-<li><a href="#_mod">27.34. mod</a></li>
-<li><a href="#_month">27.35. month</a></li>
-<li><a href="#_not">27.36. not</a></li>
-<li><a href="#_notnull">27.37. notNull</a></li>
-<li><a href="#_now">27.38. now</a></li>
-<li><a href="#_null">27.39. null</a></li>
-<li><a href="#_or">27.40. or</a></li>
-<li><a href="#_power">27.41. power</a></li>
-<li><a href="#_proper">27.42. proper</a></li>
-<li><a href="#_random">27.43. random</a></li>
-<li><a href="#_reduce">27.44. reduce</a></li>
-<li><a href="#_register">27.45. register</a></li>
-<li><a href="#_replace">27.46. replace</a></li>
-<li><a href="#_rept">27.47. rept</a></li>
-<li><a href="#_reverse">27.48. reverse</a></li>
-<li><a href="#_right">27.49. right</a></li>
-<li><a href="#_round">27.50. round</a></li>
-<li><a href="#_search">27.51. search</a></li>
-<li><a href="#_second">27.52. second</a></li>
-<li><a href="#_sort">27.53. sort</a></li>
-<li><a href="#_sortby">27.54. sortBy</a></li>
-<li><a href="#_split">27.55. split</a></li>
-<li><a href="#_sqrt">27.56. sqrt</a></li>
-<li><a href="#_startswith">27.57. startsWith</a></li>
-<li><a href="#_stdev">27.58. stdev</a></li>
-<li><a href="#_stdevp">27.59. stdevp</a></li>
-<li><a href="#_substitute">27.60. substitute</a></li>
-<li><a href="#_sum">27.61. sum</a></li>
-<li><a href="#_time">27.62. time</a></li>
-<li><a href="#_toarray">27.63. toArray</a></li>
-<li><a href="#_today">27.64. today</a></li>
-<li><a href="#_tonumber">27.65. toNumber</a></li>
-<li><a href="#_tostring">27.66. toString</a></li>
-<li><a href="#_trim">27.67. trim</a></li>
-<li><a href="#_true">27.68. true</a></li>
-<li><a href="#_trunc">27.69. trunc</a></li>
-<li><a href="#_type">27.70. type</a></li>
-<li><a href="#_unique">27.71. unique</a></li>
-<li><a href="#_upper">27.72. upper</a></li>
-<li><a href="#_value">27.73. value</a></li>
-<li><a href="#_values">27.74. values</a></li>
-<li><a href="#_weekday">27.75. weekday</a></li>
-<li><a href="#_year">27.76. year</a></li>
-<li><a href="#_zip">27.77. zip</a></li>
-<li><a href="#_encodeurlcomponent">27.78. encodeUrlComponent</a></li>
-<li><a href="#_encodeurl">27.79. encodeUrl</a></li>
-<li><a href="#_decodeurlcomponent">27.80. decodeUrlComponent</a></li>
-<li><a href="#_decodeurl">27.81. decodeUrl</a></li>
+<li><a href="#_abs">28.1. abs</a></li>
+<li><a href="#_and">28.2. and</a></li>
+<li><a href="#_avg">28.3. avg</a></li>
+<li><a href="#_casefold">28.4. casefold</a></li>
+<li><a href="#_charcode">28.5. charCode</a></li>
+<li><a href="#_ceil">28.6. ceil</a></li>
+<li><a href="#_codepoint">28.7. codePoint</a></li>
+<li><a href="#_contains">28.8. contains</a></li>
+<li><a href="#_datedif">28.9. datedif</a></li>
+<li><a href="#_datetime">28.10. datetime</a></li>
+<li><a href="#_day">28.11. day</a></li>
+<li><a href="#_deepscan">28.12. deepScan</a></li>
+<li><a href="#_endswith">28.13. endsWith</a></li>
+<li><a href="#_entries">28.14. entries</a></li>
+<li><a href="#_eomonth">28.15. eomonth</a></li>
+<li><a href="#_exp">28.16. exp</a></li>
+<li><a href="#_false">28.17. false</a></li>
+<li><a href="#_find">28.18. find</a></li>
+<li><a href="#_fromentries">28.19. fromEntries</a></li>
+<li><a href="#_floor">28.20. floor</a></li>
+<li><a href="#_hour">28.21. hour</a></li>
+<li><a href="#_if">28.22. if</a></li>
+<li><a href="#_join">28.23. join</a></li>
+<li><a href="#_keys">28.24. keys</a></li>
+<li><a href="#_left">28.25. left</a></li>
+<li><a href="#_length">28.26. length</a></li>
+<li><a href="#_lower">28.27. lower</a></li>
+<li><a href="#_map">28.28. map</a></li>
+<li><a href="#_max">28.29. max</a></li>
+<li><a href="#_merge">28.30. merge</a></li>
+<li><a href="#_mid">28.31. mid</a></li>
+<li><a href="#_min">28.32. min</a></li>
+<li><a href="#_minute">28.33. minute</a></li>
+<li><a href="#_mod">28.34. mod</a></li>
+<li><a href="#_month">28.35. month</a></li>
+<li><a href="#_not">28.36. not</a></li>
+<li><a href="#_notnull">28.37. notNull</a></li>
+<li><a href="#_now">28.38. now</a></li>
+<li><a href="#_null">28.39. null</a></li>
+<li><a href="#_or">28.40. or</a></li>
+<li><a href="#_power">28.41. power</a></li>
+<li><a href="#_proper">28.42. proper</a></li>
+<li><a href="#_random">28.43. random</a></li>
+<li><a href="#_reduce">28.44. reduce</a></li>
+<li><a href="#_register">28.45. register</a></li>
+<li><a href="#_replace">28.46. replace</a></li>
+<li><a href="#_rept">28.47. rept</a></li>
+<li><a href="#_reverse">28.48. reverse</a></li>
+<li><a href="#_right">28.49. right</a></li>
+<li><a href="#_round">28.50. round</a></li>
+<li><a href="#_search">28.51. search</a></li>
+<li><a href="#_second">28.52. second</a></li>
+<li><a href="#_sort">28.53. sort</a></li>
+<li><a href="#_sortby">28.54. sortBy</a></li>
+<li><a href="#_split">28.55. split</a></li>
+<li><a href="#_sqrt">28.56. sqrt</a></li>
+<li><a href="#_startswith">28.57. startsWith</a></li>
+<li><a href="#_stdev">28.58. stdev</a></li>
+<li><a href="#_stdevp">28.59. stdevp</a></li>
+<li><a href="#_substitute">28.60. substitute</a></li>
+<li><a href="#_sum">28.61. sum</a></li>
+<li><a href="#_time">28.62. time</a></li>
+<li><a href="#_toarray">28.63. toArray</a></li>
+<li><a href="#_today">28.64. today</a></li>
+<li><a href="#_tonumber">28.65. toNumber</a></li>
+<li><a href="#_tostring">28.66. toString</a></li>
+<li><a href="#_trim">28.67. trim</a></li>
+<li><a href="#_true">28.68. true</a></li>
+<li><a href="#_trunc">28.69. trunc</a></li>
+<li><a href="#_type">28.70. type</a></li>
+<li><a href="#_unique">28.71. unique</a></li>
+<li><a href="#_upper">28.72. upper</a></li>
+<li><a href="#_value">28.73. value</a></li>
+<li><a href="#_values">28.74. values</a></li>
+<li><a href="#_weekday">28.75. weekday</a></li>
+<li><a href="#_year">28.76. year</a></li>
+<li><a href="#_zip">28.77. zip</a></li>
 </ul>
 </li>
 </ul>
@@ -1034,6 +1032,7 @@ COMPARATOR
   : '&lt;'
   | '&lt;='
   | '=='
+  | '='
   | '&gt;='
   | '&gt;'
   | '!='
@@ -1488,22 +1487,22 @@ wildcard expression.  Thus the difference between <code>[*]</code> and <code>[]<
 <div class="ulist">
 <ul>
 <li>
-<p>'=' / <code>==</code>, test for equality.</p>
+<p><code>=</code> , <code>==</code>: test for equality.</p>
 </li>
 <li>
-<p><code>!=</code>, "&lt;&gt;", test for inequality.</p>
+<p><code>!=</code>, <code>&lt;&gt;</code>: test for inequality.</p>
 </li>
 <li>
-<p><code>&lt;</code>, less than.</p>
+<p><code>&lt;</code>: less than.</p>
 </li>
 <li>
-<p><code>&lt;=</code>, less than or equal to.</p>
+<p><code>&lt;=</code>: less than or equal to.</p>
 </li>
 <li>
-<p><code>&gt;</code>, greater than.</p>
+<p><code>&gt;</code>: greater than.</p>
 </li>
 <li>
-<p><code>&gt;=</code>, greater than or equal to.</p>
+<p><code>&gt;=</code>: greater than or equal to.</p>
 </li>
 <li>
 <p>If both operands are numbers, a numeric comparison is performed.</p>
@@ -1517,7 +1516,7 @@ wildcard expression.  Thus the difference between <code>[*]</code> and <code>[]<
 </ul>
 </div>
 <div class="paragraph">
-<p>The comparison semantics for each operator are defined in the discussion on <a href="#_type_coercion">type coercion</a>.</p>
+<p>The comparison semantics for each operator are defined in the discussion in <a href="#_type_coercion">type coercion</a>.</p>
 </div>
 <div class="sect3">
 <h4 id="_equality_operators">10.1.1. Equality Operators</h4>
@@ -1700,10 +1699,10 @@ The following conditions cannot be coerced to true:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>An and expression will evaluate to either the left expression or the right
+<p>An <code>and</code> expression will evaluate to either the left expression or the right
 expression.  If the expression on the left hand side is a truth-like value,
 then the value on the right hand side is returned.  Otherwise the result of the
-expression on the left hand side is returned.  This also reduces to the
+expression on the left hand side is returned.  This reduces to the
 expected truth table:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -1744,7 +1743,7 @@ expected truth table:</p>
 </table>
 <div class="paragraph">
 <p>This is the standard truth table for a
-`logical conjunction <a href="https://en.wikipedia.org/wiki/Truth_table#Logical_conjunction_.28AND.29">AND</a>.</p>
+<a href="https://en.wikipedia.org/wiki/Truth_table#Logical_conjunction_.28AND.29">logical conjunction</a>.</p>
 </div>
 <h3 id="_examples_9" class="discrete">Examples</h3>
 <div class="listingblock">
@@ -1768,7 +1767,7 @@ expected truth table:</p>
 <div class="paragraph">
 <p>A <code>parenExpression</code> allows a user to override the precedence order of
 an expression<br>
-e.g. <code>(a || b) &amp;&amp; c</code>.</p>
+e.g. <code>(a || b) &amp;&amp; c</code></p>
 </div>
 <h3 id="_examples_10" class="discrete">Examples</h3>
 <div class="listingblock">
@@ -2107,7 +2106,72 @@ A bracket with a single signed digit e.g.: <code>[0]</code> can be interpreted a
 </div>
 </div>
 <div class="sect1">
-<h2 id="_filter_expressions">21. Filter Expressions</h2>
+<h2 id="_currentnode">21. currentNode</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>currentNode : '@' ;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>currentNode</code> token represents the node being
+evaluated in the current context. The <code>currentNode</code> token is commonly used for:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Functions that require the current node as an argument</p>
+</li>
+<li>
+<p>Filter expressions that examine elements of an array</p>
+</li>
+<li>
+<p>Access to the current context in projections</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>json-formula assumes that all expressions operate on the current node.  Because of this, an
+expression such as <code>@.name</code> would be equivalent to just <code>name</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="_currentnode_state">21.1. currentNode state</h3>
+<div class="paragraph">
+<p>At the start of an expression, the value of the current node is the data
+being evaluated by the json-formula expression. As an expression is evaluated, <code>currentNode</code> MUST change to reflect the node
+being evaluated. When in a projection, the current node value must be changed
+to the node being evaluated by the projection.</p>
+</div>
+<h3 id="_examples_17" class="discrete">Examples</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>Given:
+{
+  "family": [
+    {"name": "frank", "age": 22},
+    {"name": "jane", "age": 23}
+  ]
+}
+
+search(@.family[0].name, {...}) =&gt; "frank"
+
+search(family[].[left(@.name), age], {...}) =&gt;
+   [["f", 22], ["j", 23]]
+
+search(family[?@.age == 23], {...}) =&gt; [{"name": "jane", "age": 23}]
+
+search(family[?age == 23], {...}) =&gt; [{"name": "jane", "age": 23}]
+
+search(family[].name.proper(@), {...}) =&gt; ["Frank", "Jane"]
+
+search(family[].age | avg(@), {...}) =&gt; 22.5</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_filter_expressions">22. Filter Expressions</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
@@ -2130,7 +2194,7 @@ entirety) is added to the result array.  Otherwise it is excluded from the
 result array.  A filter expression is defined only for a JSON array.  Attempting
 to evaluate a filter expression against any other type will return <code>null</code>.</p>
 </div>
-<h3 id="_examples_17" class="discrete">Examples</h3>
+<h3 id="_examples_18" class="discrete">Examples</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>search(foo[?a &lt; b], {"foo": [
@@ -2169,7 +2233,7 @@ which is <code>false</code>, so the second element is excluded from the result a
 </li>
 </ul>
 </div>
-<h3 id="_examples_18" class="discrete">Examples</h3>
+<h3 id="_examples_19" class="discrete">Examples</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>  search(foo[?bar==10], {"foo": [{"bar": 1}, {"bar": 10}]}) -&gt; [{"bar": 10}]
@@ -2181,7 +2245,7 @@ which is <code>false</code>, so the second element is excluded from the result a
 </div>
 </div>
 <div class="sect1">
-<h2 id="_function_expressions">22. Function Expressions</h2>
+<h2 id="_function_expressions">23. Function Expressions</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
@@ -2195,8 +2259,6 @@ functionArg
   | expressionType
   ;
 
-currentNode : '@' ;
-
 expressionType : '&amp;' expression ;</code></pre>
 </div>
 </div>
@@ -2204,51 +2266,10 @@ expressionType : '&amp;' expression ;</code></pre>
 <p>Functions allow users to easily transform and filter data in json-formula
 expressions.</p>
 </div>
-<div class="sect2">
-<h3 id="_currentnode">22.1. currentNode</h3>
-<div class="paragraph">
-<p>The <code>currentNode</code> token can be used to represent the current node being
-evaluated. The <code>currentNode</code> token is useful for functions that require the
-current node being evaluated as an argument. For example, given:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>{
-  "family": [
-    {"name": "Joe", "age": 22},
-    {"name": "Jane", "age": 23, "occupation": "lawyer"}
-  ]
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The following
-expression creates an array of arrays where each nested array contains the total number of elements in the object and the 'name' property of the object:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>    family[].[length(@), name]</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>json-formula assumes that all function arguments operate on the current node unless the argument is a literal.  Because of this, an
-expression such as <code>@.name</code> would be equivalent to just <code>name</code>.</p>
-</div>
-<div class="sect3">
-<h4 id="_currentnode_state">22.1.1. currentNode state</h4>
-<div class="paragraph">
-<p>At the start of an expression, the value of the current node is the data
-being evaluated by the json-formula expression. As an expression is evaluated, the
-value the current node represents MUST change to reflect the node currently
-being evaluated. When in a projection, the current node value must be changed
-to the node currently being evaluated by the projection.</p>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_function_evaluation">23. Function Evaluation</h2>
+<h2 id="_function_evaluation">24. Function Evaluation</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Functions are evaluated in applicative order.  Each argument must be an
@@ -2297,18 +2318,18 @@ be used to convert (and filter) all elements to numbers</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_built_in_functions">24. Built-in Functions</h2>
+<h2 id="_built_in_functions">25. Built-in Functions</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>json-formula has a robust set of built-in <a href="#_function_reference">functions</a> that operate on different
-data types. Each function below has a signature
+data types. Each function has a signature
 that defines the expected types of the input and the type of the returned
 output.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>    return_type function_name(type $argname)
-    return_type function_name2(type1|type2 $argname)</code></pre>
+    return_type function_name2(type1|type2 argname)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2411,7 +2432,7 @@ argument must be an expression that itself will resolve to <code>type</code>.</p
 </div>
 </div>
 <div class="sect1">
-<h2 id="_pipe_expressions">25. Pipe Expressions</h2>
+<h2 id="_pipe_expressions">26. Pipe Expressions</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
@@ -2482,7 +2503,7 @@ can use a <code>pipeExpression</code></p>
     foo[*].bar | [0] -&gt; ["first1", "second1"]</code></pre>
 </div>
 </div>
-<h3 id="_examples_19" class="discrete">Examples</h3>
+<h3 id="_examples_20" class="discrete">Examples</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>   search(foo | bar, {"foo": {"bar": "baz"}}) -&gt; "baz"
@@ -2495,17 +2516,17 @@ can use a <code>pipeExpression</code></p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_integrations">26. Integrations</h2>
+<h2 id="_integrations">27. Integrations</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The json-formula API allows integrations to customize various json-formula behaviors.</p>
 </div>
 <div class="sect2">
-<h3 id="_globals">26.1. Globals</h3>
+<h3 id="_globals">27.1. Globals</h3>
 <div class="paragraph">
 <p>By default, json-formula has one global symbol: <code>@</code>. A host may inject additional global identifiers.  These identifiers must be prefixed with the dollar (<code>$</code>) symbol.</p>
 </div>
-<h4 id="_examples_20" class="discrete">Examples</h4>
+<h4 id="_examples_21" class="discrete">Examples</h4>
 <div class="paragraph">
 <p>Given: a global symbol:</p>
 </div>
@@ -2532,31 +2553,68 @@ can use a <code>pipeExpression</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_specify_locale">26.2. Specify locale</h3>
+<h3 id="_specify_locale">27.2. Specify locale</h3>
 <div class="paragraph">
 <p>The default locale for json-formula is <code>en-US</code>.  A host may specify an alternate locale.  Overall, the locale setting has little effect on processing.  One specific area that is affected is the behavior of the <code>casefold()</code> function.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_custom_tonumber">26.3. Custom toNumber</h3>
+<h3 id="_custom_tonumber">27.3. Custom toNumber</h3>
 <div class="paragraph">
 <p>In various contexts, json-formula converts values to numbers.  The default string-to-number functionality will make a modest attempt to convert currencies or date values to number&#8201;&#8212;&#8201;however this functionality is rudimentary and is not necessarily consistent in different locales.
 A host may provide its own <code>toNumber()</code> function that json-formula will use in place of the default functionality.  For example, a custom <code>toNumber()</code> could make use of locale-specific date formats to attempt to convert a string to a date value.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_additional_functions">26.4. Additional Functions</h3>
+<h3 id="_additional_functions">27.4. Additional Functions</h3>
 <div class="paragraph">
 <p>A host may provide its own set of functions to augment the base set provided by json-formula</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hidden_properties">27.5. Hidden Properties</h3>
+<div class="paragraph">
+<p>A host system may construct its source JSON data with complex properties that have nested structure that can be found through explicit navigation, but will not be found through normal tree searching.  In JavaScript, this can be configured as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>function createField(id, value) {
+  class Field {
+    valueOf() { return value; }
+
+    toString() { return value.toString(); }
+
+    toJSON() { return value; }
+  }
+  const f = new Field();
+  Object.defineProperty(f, '$id', { get: () =&gt; id });
+  Object.defineProperty(f, '$value', { get: () =&gt; value });
+
+  return f;
+}
+
+const json = {
+  "street": createField("abc123", "Maple Street"),
+  "city": createField("def456", "New York")
+}
+
+Given this configuration, these search results are possible:
+
+street =&gt; "Maple Street"
+street.$value =&gt; "Maple Street"
+street.$id =&gt; "abc123"
+type(street) =&gt; "string"
+keys(street) =&gt; []</code></pre>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_function_reference">27. Function Reference</h2>
+<h2 id="_function_reference">28. Function Reference</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_abs">27.1. abs</h3>
+<h3 id="_abs">28.1. abs</h3>
 <div class="paragraph">
 <p><strong>abs(num) ⇒ number</strong></p>
 </div>
@@ -2597,7 +2655,7 @@ A host may provide its own <code>toNumber()</code> function that json-formula wi
 </div>
 </div>
 <div class="sect2">
-<h3 id="_and">27.2. and</h3>
+<h3 id="_and">28.2. and</h3>
 <div class="paragraph">
 <p><strong>and(firstOperand, […additionalOperands]) ⇒ boolean</strong></p>
 </div>
@@ -2646,7 +2704,7 @@ and(`null`, length("foo") &lt; 5) // returns false</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_avg">27.3. avg</h3>
+<h3 id="_avg">28.3. avg</h3>
 <div class="paragraph">
 <p><strong>avg(elements) ⇒ number</strong></p>
 </div>
@@ -2689,7 +2747,7 @@ avg([1, 2, 3]) // returns 2</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_casefold">27.4. casefold</h3>
+<h3 id="_casefold">28.4. casefold</h3>
 <div class="paragraph">
 <p><strong>casefold(input) ⇒ string</strong></p>
 </div>
@@ -2732,7 +2790,7 @@ compared to ``ss''</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_charcode">27.5. charCode</h3>
+<h3 id="_charcode">28.5. charCode</h3>
 <div class="paragraph">
 <p><strong>charCode(codePoint) ⇒ number</strong></p>
 </div>
@@ -2774,7 +2832,7 @@ charCode(65) == "\u0041" // true</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_ceil">27.6. ceil</h3>
+<h3 id="_ceil">28.6. ceil</h3>
 <div class="paragraph">
 <p><strong>ceil(num) ⇒ integer</strong></p>
 </div>
@@ -2817,7 +2875,7 @@ ceil(10.4) // return 11</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_codepoint">27.7. codePoint</h3>
+<h3 id="_codepoint">28.7. codePoint</h3>
 <div class="paragraph">
 <p><strong>codePoint(str) ⇒ integer</strong></p>
 </div>
@@ -2858,7 +2916,7 @@ ceil(10.4) // return 11</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_contains">27.8. contains</h3>
+<h3 id="_contains">28.8. contains</h3>
 <div class="paragraph">
 <p><strong>contains(subject, search) ⇒ boolean</strong></p>
 </div>
@@ -2913,7 +2971,7 @@ contains("Abcd", "x") // returns false</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_datedif">27.9. datedif</h3>
+<h3 id="_datedif">28.9. datedif</h3>
 <div class="paragraph">
 <p><strong>datedif(start_date, end_date, unit) ⇒ integer</strong></p>
 </div>
@@ -2997,7 +3055,7 @@ datedif(datetime(2001, 6, 1), datetime(2003, 8, 15), "YD") // returns 75
 </div>
 </div>
 <div class="sect2">
-<h3 id="_datetime">27.10. datetime</h3>
+<h3 id="_datetime">28.10. datetime</h3>
 <div class="paragraph">
 <p><strong>datetime(year, month, day, [hours], [minutes], [seconds],
 [milliseconds]) ⇒ number</strong></p>
@@ -3087,7 +3145,7 @@ datetime(2010, 2, 28) // returns representation of February 28, 2010</code></pre
 </div>
 </div>
 <div class="sect2">
-<h3 id="_day">27.11. day</h3>
+<h3 id="_day">28.11. day</h3>
 <div class="paragraph">
 <p><strong>day(date) ⇒ integer</strong></p>
 </div>
@@ -3130,7 +3188,7 @@ be generated using the <a href="#_datetime">datetime</a>, <a href="#_today">toda
 </div>
 </div>
 <div class="sect2">
-<h3 id="_deepscan">27.12. deepScan</h3>
+<h3 id="_deepscan">28.12. deepScan</h3>
 <div class="paragraph">
 <p><strong>deepScan(object, name) ⇒ Array.&lt;any&gt;</strong></p>
 </div>
@@ -3180,7 +3238,7 @@ elements to find</p></td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_endswith">27.13. endsWith</h3>
+<h3 id="_endswith">28.13. endsWith</h3>
 <div class="paragraph">
 <p><strong>endsWith(subject, suffix) ⇒ boolean</strong></p>
 </div>
@@ -3228,7 +3286,7 @@ endsWith("Abcd", "A") // returns false</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_entries">27.14. entries</h3>
+<h3 id="_entries">28.14. entries</h3>
 <div class="paragraph">
 <p><strong>entries(obj) ⇒ Array.&lt;any&gt;</strong></p>
 </div>
@@ -3272,7 +3330,7 @@ two elements representing the key and value of a pair</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_eomonth">27.15. eomonth</h3>
+<h3 id="_eomonth">28.15. eomonth</h3>
 <div class="paragraph">
 <p><strong>eomonth(startDate, monthAdd) ⇒ integer</strong></p>
 </div>
@@ -3322,7 +3380,7 @@ eomonth(datetime(2011, 1, 1), -3) | [month(@), day(@)] // returns [10, 31]</code
 </div>
 </div>
 <div class="sect2">
-<h3 id="_exp">27.16. exp</h3>
+<h3 id="_exp">28.16. exp</h3>
 <div class="paragraph">
 <p><strong>exp(x) ⇒ number</strong></p>
 </div>
@@ -3364,7 +3422,7 @@ x</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_false">27.17. false</h3>
+<h3 id="_false">28.17. false</h3>
 <div class="paragraph">
 <p><strong>false() ⇒ boolean</strong></p>
 </div>
@@ -3377,7 +3435,7 @@ the JSON literal false: <code>\'false\'</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_find">27.18. find</h3>
+<h3 id="_find">28.18. find</h3>
 <div class="paragraph">
 <p><strong>find(query, text, [start]) ⇒ integer | <a href="#_null">null</a></strong></p>
 </div>
@@ -3437,7 +3495,7 @@ find("M", "abMcdM", 2) // returns 2</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_fromentries">27.19. fromEntries</h3>
+<h3 id="_fromentries">28.19. fromEntries</h3>
 <div class="paragraph">
 <p><strong>fromEntries(pairs) ⇒ object</strong></p>
 </div>
@@ -3481,7 +3539,7 @@ object from</p></td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_floor">27.20. floor</h3>
+<h3 id="_floor">28.20. floor</h3>
 <div class="paragraph">
 <p><strong>floor(num) ⇒ integer</strong></p>
 </div>
@@ -3524,7 +3582,7 @@ floor(10) // returns 10</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_hour">27.21. hour</h3>
+<h3 id="_hour">28.21. hour</h3>
 <div class="paragraph">
 <p><strong>hour(date) ⇒ integer</strong></p>
 </div>
@@ -3568,7 +3626,7 @@ hour(time(12, 0, 0)) // returns 12</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_if">27.22. if</h3>
+<h3 id="_if">28.22. if</h3>
 <div class="paragraph">
 <p><strong>if(condition, result1, result2) ⇒ any</strong></p>
 </div>
@@ -3621,7 +3679,7 @@ if(false(), 1, 2) // returns 2</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_join">27.23. join</h3>
+<h3 id="_join">28.23. join</h3>
 <div class="paragraph">
 <p><strong>join(glue, stringsarray) ⇒ string</strong></p>
 </div>
@@ -3670,7 +3728,7 @@ join(" and ", ["apples", "bananas"]) // returns "apples and bananas"</code></pre
 </div>
 </div>
 <div class="sect2">
-<h3 id="_keys">27.24. keys</h3>
+<h3 id="_keys">28.24. keys</h3>
 <div class="paragraph">
 <p><strong>keys(obj) ⇒ array</strong></p>
 </div>
@@ -3712,7 +3770,7 @@ null, the value return an empty array</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_left">27.25. left</h3>
+<h3 id="_left">28.25. left</h3>
 <div class="paragraph">
 <p><strong>left(subject, [elements]) ⇒ string | array</strong></p>
 </div>
@@ -3763,7 +3821,7 @@ left([4, 5, 6], 2) // returns [4, 5]</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_length">27.26. length</h3>
+<h3 id="_length">28.26. length</h3>
 <div class="paragraph">
 <p><strong>length(subject) ⇒ integer</strong></p>
 </div>
@@ -3823,7 +3881,7 @@ length({a : 3, b : 4}) // returns 2</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_lower">27.27. lower</h3>
+<h3 id="_lower">28.27. lower</h3>
 <div class="paragraph">
 <p><strong>lower(input) ⇒ string</strong></p>
 </div>
@@ -3865,7 +3923,7 @@ value is not a string it will be converted into string.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_map">27.28. map</h3>
+<h3 id="_map">28.28. map</h3>
 <div class="paragraph">
 <p><strong>map(expr, elements) ⇒ array</strong></p>
 </div>
@@ -3913,7 +3971,7 @@ map(&amp;length(@), ["doe", "nick", "chris"]) // returns [3, 4, 5]</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_max">27.29. max</h3>
+<h3 id="_max">28.29. max</h3>
 <div class="paragraph">
 <p><strong>max(collection) ⇒ number</strong></p>
 </div>
@@ -3960,7 +4018,7 @@ max(["a", "a1", "b"]) // returns "b"</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_merge">27.30. merge</h3>
+<h3 id="_merge">28.30. merge</h3>
 <div class="paragraph">
 <p><strong>merge(…args) ⇒ object</strong></p>
 </div>
@@ -4003,7 +4061,7 @@ merge({a: 1, b: 2}, {a : 3, d: 4}) // returns {a :3, b: 2, d: 4}</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_mid">27.31. mid</h3>
+<h3 id="_mid">28.31. mid</h3>
 <div class="paragraph">
 <p><strong>mid(subject, startPos, length) ⇒ string | array</strong></p>
 </div>
@@ -4065,7 +4123,7 @@ mid([0,1,2,3,4,5,6,7,8,9], 2, 3) // returns [2,3,4]</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_min">27.32. min</h3>
+<h3 id="_min">28.32. min</h3>
 <div class="paragraph">
 <p><strong>min(collection) ⇒ number</strong></p>
 </div>
@@ -4109,7 +4167,7 @@ min(["a", "a1", "b"]) // returns "a"</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_minute">27.33. minute</h3>
+<h3 id="_minute">28.33. minute</h3>
 <div class="paragraph">
 <p><strong>minute(date) ⇒ integer</strong></p>
 </div>
@@ -4154,7 +4212,7 @@ minute(time(12, 10, 0)) // returns 10</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_mod">27.34. mod</h3>
+<h3 id="_mod">28.34. mod</h3>
 <div class="paragraph">
 <p><strong>mod(dividend, divisor) ⇒ number</strong></p>
 </div>
@@ -4202,7 +4260,7 @@ mod(-3, 2) // returns -1</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_month">27.35. month</h3>
+<h3 id="_month">28.35. month</h3>
 <div class="paragraph">
 <p><strong>month(date) ⇒ number</strong></p>
 </div>
@@ -4246,7 +4304,7 @@ and <a href="#_time">time</a> functions.</p></td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_not">27.36. not</h3>
+<h3 id="_not">28.36. not</h3>
 <div class="paragraph">
 <p><strong>not(value) ⇒ boolean</strong></p>
 </div>
@@ -4292,7 +4350,7 @@ not("") // returns true</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_notnull">27.37. notNull</h3>
+<h3 id="_notnull">28.37. notNull</h3>
 <div class="paragraph">
 <p><strong>notNull(…argument) ⇒ any</strong></p>
 </div>
@@ -4331,7 +4389,7 @@ notNull(`null`, 2, 3, 4, `null`) // returns 2</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_now">27.38. now</h3>
+<h3 id="_now">28.38. now</h3>
 <div class="paragraph">
 <p><strong>now() ⇒ number</strong></p>
 </div>
@@ -4343,7 +4401,7 @@ notNull(`null`, 2, 3, 4, `null`) // returns 2</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_null">27.39. null</h3>
+<h3 id="_null">28.39. null</h3>
 <div class="paragraph">
 <p><strong>null() ⇒ boolean</strong></p>
 </div>
@@ -4356,7 +4414,7 @@ literal null: <code>\'null\'</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_or">27.40. or</h3>
+<h3 id="_or">28.40. or</h3>
 <div class="paragraph">
 <p><strong>or(first, […operand]) ⇒ boolean</strong></p>
 </div>
@@ -4404,7 +4462,7 @@ coercion rules. Note the related <code>or' operator: `A || B</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_power">27.41. power</h3>
+<h3 id="_power">28.41. power</h3>
 <div class="paragraph">
 <p><strong>power(a, x) ⇒ number</strong></p>
 </div>
@@ -4447,7 +4505,7 @@ coercion rules. Note the related <code>or' operator: `A || B</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_proper">27.42. proper</h3>
+<h3 id="_proper">28.42. proper</h3>
 <div class="paragraph">
 <p><strong>proper(text) ⇒ string</strong></p>
 </div>
@@ -4492,7 +4550,7 @@ proper("76BudGet") // returns "76Budget"</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_random">27.43. random</h3>
+<h3 id="_random">28.43. random</h3>
 <div class="paragraph">
 <p><strong>random() ⇒ number</strong></p>
 </div>
@@ -4511,7 +4569,7 @@ one.<br>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_reduce">27.44. reduce</h3>
+<h3 id="_reduce">28.44. reduce</h3>
 <div class="paragraph">
 <p><strong>reduce(expr, elements, initialValue) ⇒ any</strong></p>
 </div>
@@ -4589,7 +4647,7 @@ reduce(&amp;accumulated * current, [3, 3, 3], 1) // returns 27</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_register">27.45. register</h3>
+<h3 id="_register">28.45. register</h3>
 <div class="paragraph">
 <p><strong>register(functionName, expr) ⇒ Object</strong></p>
 </div>
@@ -4636,7 +4694,7 @@ more parameters are needed, combine them in an array or object.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_replace">27.46. replace</h3>
+<h3 id="_replace">28.46. replace</h3>
 <div class="paragraph">
 <p><strong>replace(text, start, length, replacement) ⇒ string</strong></p>
 </div>
@@ -4693,7 +4751,7 @@ replace("123456",0,3,"@") // returns @456</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_rept">27.47. rept</h3>
+<h3 id="_rept">28.47. rept</h3>
 <div class="paragraph">
 <p><strong>rept(text, count) ⇒ string</strong></p>
 </div>
@@ -4739,7 +4797,7 @@ replace("123456",0,3,"@") // returns @456</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_reverse">27.48. reverse</h3>
+<h3 id="_reverse">28.48. reverse</h3>
 <div class="paragraph">
 <p><strong>reverse(argument) ⇒ array</strong></p>
 </div>
@@ -4780,7 +4838,7 @@ replace("123456",0,3,"@") // returns @456</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_right">27.49. right</h3>
+<h3 id="_right">28.49. right</h3>
 <div class="paragraph">
 <p><strong>right(subject, [elements]) ⇒ string | array</strong></p>
 </div>
@@ -4835,7 +4893,7 @@ right([4, 5, 6], 2) // returns [5, 6]</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_round">27.50. round</h3>
+<h3 id="_round">28.50. round</h3>
 <div class="paragraph">
 <p><strong>round(num, precision) ⇒ number</strong></p>
 </div>
@@ -4899,7 +4957,7 @@ round(-50.55,-2) // -100 (round -50.55 to the nearest multiple of 100)</code></p
 </div>
 </div>
 <div class="sect2">
-<h3 id="_search">27.51. search</h3>
+<h3 id="_search">28.51. search</h3>
 <div class="paragraph">
 <p><strong>search(findText, withinText, [startPos]) ⇒ array</strong></p>
 </div>
@@ -4972,7 +5030,7 @@ searching.</p></td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_second">27.52. second</h3>
+<h3 id="_second">28.52. second</h3>
 <div class="paragraph">
 <p><strong>second(date) ⇒ integer</strong></p>
 </div>
@@ -5016,7 +5074,7 @@ second(time(12, 10, 53)) // returns 53</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sort">27.53. sort</h3>
+<h3 id="_sort">28.53. sort</h3>
 <div class="paragraph">
 <p><strong>sort(list) ⇒ Array.&lt;number&gt; | Array.&lt;string&gt;</strong></p>
 </div>
@@ -5059,7 +5117,7 @@ based on code points. Locale is not taken into account.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sortby">27.54. sortBy</h3>
+<h3 id="_sortby">28.54. sortBy</h3>
 <div class="paragraph">
 <p><strong>sortBy(elements, expr) ⇒ array</strong></p>
 </div>
@@ -5113,7 +5171,7 @@ sortBy([-15, 30, -10, -11, 5], &amp;abs(@)) // [5, -10, -11, -15, 30]</code></pr
 </div>
 </div>
 <div class="sect2">
-<h3 id="_split">27.55. split</h3>
+<h3 id="_split">28.55. split</h3>
 <div class="paragraph">
 <p><strong>split(string, separator) ⇒ Array.&lt;string&gt;</strong></p>
 </div>
@@ -5157,7 +5215,7 @@ split("abcdef", "e") // returns ["abcd", "f"]</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sqrt">27.56. sqrt</h3>
+<h3 id="_sqrt">28.56. sqrt</h3>
 <div class="paragraph">
 <p><strong>sqrt(num) ⇒ number</strong></p>
 </div>
@@ -5198,7 +5256,7 @@ split("abcdef", "e") // returns ["abcd", "f"]</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_startswith">27.57. startsWith</h3>
+<h3 id="_startswith">28.57. startsWith</h3>
 <div class="paragraph">
 <p><strong>startsWith(subject, prefix) ⇒ boolean</strong></p>
 </div>
@@ -5244,7 +5302,7 @@ split("abcdef", "e") // returns ["abcd", "f"]</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_stdev">27.58. stdev</h3>
+<h3 id="_stdev">28.58. stdev</h3>
 <div class="paragraph">
 <p><strong>stdev(numbers) ⇒ number</strong></p>
 </div>
@@ -5290,7 +5348,7 @@ stdevp([1345, 1301, 1368]) // returns 27.797</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_stdevp">27.59. stdevp</h3>
+<h3 id="_stdevp">28.59. stdevp</h3>
 <div class="paragraph">
 <p><strong>stdevp(numbers) ⇒ number</strong></p>
 </div>
@@ -5335,7 +5393,7 @@ stdev([1345, 1301, 1368]) // returns 34.044</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_substitute">27.60. substitute</h3>
+<h3 id="_substitute">28.60. substitute</h3>
 <div class="paragraph">
 <p><strong>substitute(text, old, new, [which]) ⇒ string</strong></p>
 </div>
@@ -5399,7 +5457,7 @@ substitute("Quarter 1, 1008", "1", "2", 2) // returns "Quarter 1, 2008"</code></
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sum">27.61. sum</h3>
+<h3 id="_sum">28.61. sum</h3>
 <div class="paragraph">
 <p><strong>sum(collection) ⇒ number</strong></p>
 </div>
@@ -5441,7 +5499,7 @@ return value of 0.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_time">27.62. time</h3>
+<h3 id="_time">28.62. time</h3>
 <div class="paragraph">
 <p><strong>time(hours, [minutes], [seconds]) ⇒ number</strong></p>
 </div>
@@ -5501,7 +5559,7 @@ seconds segment of a time.</p></td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_toarray">27.63. toArray</h3>
+<h3 id="_toarray">28.63. toArray</h3>
 <div class="paragraph">
 <p><strong>toArray(arg) ⇒ array</strong></p>
 </div>
@@ -5555,7 +5613,7 @@ toArray(null()) // returns [`null`]</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_today">27.64. today</h3>
+<h3 id="_today">28.64. today</h3>
 <div class="paragraph">
 <p><strong>today() ⇒ number</strong></p>
 </div>
@@ -5568,7 +5626,7 @@ i.e. midnight</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_tonumber">27.65. toNumber</h3>
+<h3 id="_tonumber">28.65. toNumber</h3>
 <div class="paragraph">
 <p><strong>toNumber(arg) ⇒ number</strong></p>
 </div>
@@ -5611,7 +5669,7 @@ toNumber("10f") // returns 0</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_tostring">27.66. toString</h3>
+<h3 id="_tostring">28.66. toString</h3>
 <div class="paragraph">
 <p><strong>toString(arg) ⇒ string</strong></p>
 </div>
@@ -5655,7 +5713,7 @@ toString({sum: 12 + 13}) // "{"sum":25}"</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_trim">27.67. trim</h3>
+<h3 id="_trim">28.67. trim</h3>
 <div class="paragraph">
 <p><strong>trim(text) ⇒ string</strong></p>
 </div>
@@ -5697,7 +5755,7 @@ spaces with a single space.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_true">27.68. true</h3>
+<h3 id="_true">28.68. true</h3>
 <div class="paragraph">
 <p><strong>true() ⇒ boolean</strong></p>
 </div>
@@ -5710,7 +5768,7 @@ the JSON literal true: <code>\'true\'</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_trunc">27.69. trunc</h3>
+<h3 id="_trunc">28.69. trunc</h3>
 <div class="paragraph">
 <p><strong>trunc(numA, [numB]) ⇒ number</strong></p>
 </div>
@@ -5764,7 +5822,7 @@ trunc(8.912, 2) // returns 8.91</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_type">27.70. type</h3>
+<h3 id="_type">28.70. type</h3>
 <div class="paragraph">
 <p><strong>type(subject) ⇒ string</strong></p>
 </div>
@@ -5829,7 +5887,7 @@ type("") // returns "string"</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_unique">27.71. unique</h3>
+<h3 id="_unique">28.71. unique</h3>
 <div class="paragraph">
 <p><strong>unique(input) ⇒ array</strong></p>
 </div>
@@ -5870,7 +5928,7 @@ type("") // returns "string"</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_upper">27.72. upper</h3>
+<h3 id="_upper">28.72. upper</h3>
 <div class="paragraph">
 <p><strong>upper(input) ⇒ string</strong></p>
 </div>
@@ -5913,7 +5971,7 @@ type coercion rules.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_value">27.73. value</h3>
+<h3 id="_value">28.73. value</h3>
 <div class="paragraph">
 <p><strong>value(object, index) ⇒ any</strong></p>
 </div>
@@ -5961,7 +6019,7 @@ value([1, 2, 3, 4], 2) // returns 3</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_values">27.74. values</h3>
+<h3 id="_values">28.74. values</h3>
 <div class="paragraph">
 <p><strong>values(obj) ⇒ array</strong></p>
 </div>
@@ -6004,7 +6062,7 @@ with the provided object are also unordered.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_weekday">27.75. weekday</h3>
+<h3 id="_weekday">28.75. weekday</h3>
 <div class="paragraph">
 <p><strong>weekday(date, [returnType]) ⇒ integer</strong></p>
 </div>
@@ -6073,7 +6131,7 @@ weekday(datetime(2006,5,21), 3) // 6</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_year">27.76. year</h3>
+<h3 id="_year">28.76. year</h3>
 <div class="paragraph">
 <p><strong>year(date) ⇒ integer</strong></p>
 </div>
@@ -6116,7 +6174,7 @@ and <a href="#_time">time</a> functions.</p></td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_zip">27.77. zip</h3>
+<h3 id="_zip">28.77. zip</h3>
 <div class="paragraph">
 <p><strong>zip(…arrays) ⇒ array</strong></p>
 </div>
@@ -6159,181 +6217,13 @@ equal to the length of the shortest array.</p>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_encodeurlcomponent">27.78. encodeUrlComponent</h3>
-<div class="paragraph">
-<p><strong>encodeUrlComponent(uriComponent) ⇒ string</strong></p>
-</div>
-<div class="paragraph">
-<p>Encode a URL component as per:
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">encodeUrlComponent</a></p>
-</div>
-<div class="paragraph">
-<p><strong>Returns</strong>: string - encoded value</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Param</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">uriComponent</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">to encode</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p><strong>Example</strong></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">encodeURIComponent("a=b") // returns "a%3Db"</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_encodeurl">27.79. encodeUrl</h3>
-<div class="paragraph">
-<p><strong>encodeUrl(uri) ⇒ string</strong></p>
-</div>
-<div class="paragraph">
-<p>Encode a URL as per:
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI">encodeURI()</a></p>
-</div>
-<div class="paragraph">
-<p><strong>Returns</strong>: string - encoded value</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Param</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">uri</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">to encode</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p><strong>Example</strong></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">encodeUrl("https://example.com/&amp;a=4% of 15") // returns ("a=b") // https://example.com/&amp;a=4%25%20of%2015</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_decodeurlcomponent">27.80. decodeUrlComponent</h3>
-<div class="paragraph">
-<p><strong>decodeUrlComponent(encodedString) ⇒ string</strong></p>
-</div>
-<div class="paragraph">
-<p>Decode a URL component as per:
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent">decodeURIComponent</a></p>
-</div>
-<div class="paragraph">
-<p><strong>Returns</strong>: string - decoded value</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Param</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">encodedString</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">to decode</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p><strong>Example</strong></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">decodeUrlComponent("%3B%2C%2F%3F%3A%40%26%3D%2B%24") // ";,/?:@&amp;=+$"</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_decodeurl">27.81. decodeUrl</h3>
-<div class="paragraph">
-<p><strong>decodeUrl(encodedURL) ⇒ string</strong></p>
-</div>
-<div class="paragraph">
-<p>Decode a URL as per:
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURI">decodeURI</a></p>
-</div>
-<div class="paragraph">
-<p><strong>Returns</strong>: string - decoded URL</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Param</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">encodedURL</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">to decode</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p><strong>Example</strong></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">decodeUrl("https://example.com/?foo=%5Ba%25%5D") // "https://example.com/?foo=[a%]"</code></pre>
-</div>
-</div>
-</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.1.53<br>
-Last updated 2023-09-22 17:08:20 UTC
+Last updated 2023-09-25 19:47:54 UTC
 </div>
 </div>
 </body>

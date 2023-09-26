@@ -453,12 +453,12 @@ wildcard expression.  Thus the difference between `[{asterisk}]` and `[]` is tha
 
 The following comparison operators are supported:
 
-* `=` / `==`, test for equality.
-* `!=`, `<>`, test for inequality.
-* `<`, less than.
-* `\<=`, less than or equal to.
-* `>`, greater than.
-* `>=`, greater than or equal to.
+* `=` , `==`: test for equality.
+* `!=`, `<>`: test for inequality.
+* `<`: less than.
+* `\<=`: less than or equal to.
+* `>`: greater than.
+* `>=`: greater than or equal to.
 
 * If both operands are numbers, a numeric comparison is performed.
 * If both operands are strings, they are compared as strings, based on the values of the Unicode code points they contain.
@@ -622,7 +622,7 @@ https://en.wikipedia.org/wiki/Truth_table#Logical_conjunction_.28AND.29[logical 
 
 A `parenExpression` allows a user to override the precedence order of
 an expression +
-e.g. `(a || b) && c`.
+e.g. `(a || b) && c`
 
 [discrete]
 === Examples
