@@ -19,6 +19,28 @@ Find the absolute value of the provided argument `value`.
 abs(-1) // returns 1
 ----
 
+== acos
+
+*acos(cosine) ⇒ number*
+
+Compute the inverse cosine (in radians) of a number.
+
+*Returns*: number - The inverse cosine angle in radians between 0 and PI
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|cosine |number |A number between -1 and 1, inclusive, representing the
+angle’s cosine value.
+|===
+
+*Example*
+
+[source,js]
+----
+acos(0) => 1.5707963267948966
+----
+
 == and
 
 *and(firstOperand, […additionalOperands]) ⇒ boolean*
@@ -42,6 +64,53 @@ parameters
 ----
 and(10 > 8, length("foo") < 5) // returns true
 and(`null`, length("foo") < 5) // returns false
+----
+
+== asin
+
+*asin(sine) ⇒ number*
+
+Compute the inverse sine (in radians) of a number.
+
+*Returns*: number - The inverse sine angle in radians between -PI/2 and
+PI/2
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|sine |number |A number between -1 and 1, inclusive, representing the
+angle’s sine value.
+|===
+
+*Example*
+
+[source,js]
+----
+Math.asin(0) => 0
+----
+
+== atan2
+
+*atan2(y, x) ⇒ number*
+
+Compute the angle in the plane (in radians) between the positive x-axis
+and the ray from (0, 0) to the point (x, y)
+
+*Returns*: number - The angle in radians (between -PI and PI), between
+the positive x-axis and the ray from (0, 0) to the point (x, y).
+
+[cols=",,",options="header",]
+|===
+|Param |Type |Description
+|y |number |The y coordinate of the point
+|x |number |The x coordinate of the point
+|===
+
+*Example*
+
+[source,js]
+----
+atan2(20,10) => 1.1071487177940904
 ----
 
 == avg
@@ -186,6 +255,28 @@ contains([1, 2, 3, 4], 2) // returns true
 contains([1, 2, 3, 4], -1) // returns false
 contains("Abcd", "d") // returns true
 contains("Abcd", "x") // returns false
+----
+
+== cos
+
+*cos(angle) ⇒ number*
+
+Compute the cosine (in radians) of a number.
+
+*Returns*: number - The cosine of the angle, between -1 and 1,
+inclusive.
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|angle |number |A number representing an angle in radians
+|===
+
+*Example*
+
+[source,js]
+----
+cos(1.0471975512) => 0.4999999999970535
 ----
 
 == datedif
@@ -457,6 +548,29 @@ find("M", "ab") // returns `null`
 find("M", "abMcdM", 2) // returns 2
 ----
 
+== floor
+
+*floor(num) ⇒ integer*
+
+Calculates the next lowest integer value of the argument `num` by
+rounding down if necessary.
+
+*Returns*: integer - The largest integer smaller than or equal to num
+
+[cols=",,",options="header",]
+|===
+|Param |Type |Description
+|num |number |numeric value
+|===
+
+*Example*
+
+[source,js]
+----
+floor(10.4) // returns 10
+floor(10) // returns 10
+----
+
 == fromEntries
 
 *fromEntries(pairs) ⇒ object*
@@ -481,27 +595,27 @@ object from
 fromEntries([["a", 1], ["b", 2]]) // returns {a: 1, b: 2}
 ----
 
-== floor
+== fround
 
-*floor(num) ⇒ integer*
+*fround(num) ⇒ number*
 
-Calculates the next lowest integer value of the argument `num` by
-rounding down if necessary.
+Compute the nearest 32-bit single precision float representation of a
+number
 
-*Returns*: integer - The largest integer smaller than or equal to num
+*Returns*: number - The rounded representation of `num`
 
 [cols=",,",options="header",]
 |===
 |Param |Type |Description
-|num |number |numeric value
+|num |number |input to be rounded
 |===
 
 *Example*
 
 [source,js]
 ----
-floor(10.4) // returns 10
-floor(10) // returns 10
+fround(2147483650.987) => 2147483648
+fround(100.44444444444444444444) => 100.44444274902344
 ----
 
 == hour
@@ -655,6 +769,48 @@ length("abcd") // returns 4
 length([1, 2, 3, 4]) // returns 4
 length({}) // returns 0
 length({a : 3, b : 4}) // returns 2
+----
+
+== log
+
+*log(num) ⇒ number*
+
+Compute the natural logarithm (base e) of a number
+
+*Returns*: number - The natural log value
+
+[cols=",,",options="header",]
+|===
+|Param |Type |Description
+|num |number |A number greater than zero
+|===
+
+*Example*
+
+[source,js]
+----
+log(10) // 2.302585092994046
+----
+
+== log10
+
+*log10(num) ⇒ number*
+
+Compute the base 10 logarithm of a number.
+
+*Returns*: number - The base 10 log result
+
+[cols=",,",options="header",]
+|===
+|Param |Type |Description
+|num |number |A number greater than or equal to zero
+|===
+
+*Example*
+
+[source,js]
+----
+log10(100000) // 5
 ----
 
 == lower
@@ -1295,6 +1451,52 @@ second(datetime(2008,5,23,12, 10, 53)) // returns 53
 second(time(12, 10, 53)) // returns 53
 ----
 
+== sign
+
+*sign(num) ⇒ number*
+
+Computes the sign of a number passed as argument.
+
+*Returns*: number - returns 1 or -1, indicating the sign of `num`. If
+the `num` is 0, it will be returned 0.
+
+[cols=",,",options="header",]
+|===
+|Param |Type |Description
+|num |number |any number
+|===
+
+*Example*
+
+[source,js]
+----
+sign(5) // 1
+sign(-5) // -1
+sign(0) // 0
+----
+
+== sin
+
+*sin(angle) ⇒ number*
+
+Computes the sine of a number in radians
+
+*Returns*: number - The sine of `angle`, between -1 and 1, inclusive
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|angle |number |A number representing an angle in radians.
+|===
+
+*Example*
+
+[source,js]
+----
+sin(0) // 0
+sin(1) // 0.8414709848078965
+----
+
 == sort
 
 *sort(list) ⇒ Array.<number> {vbar} Array.<string>*
@@ -1518,6 +1720,28 @@ return value of 0.
 [source,js]
 ----
 sum([1, 2, 3]) // returns 6
+----
+
+== tan
+
+*tan(angle) ⇒ number*
+
+Computes the tangent of a number in radians
+
+*Returns*: number - The tangent of `angle`
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+|Param |Type |Description
+|angle |number |A number representing an angle in radians.
+|===
+
+*Example*
+
+[source,js]
+----
+tan(0) // 0
+tan(1) // 1.5574077246549023
 ----
 
 == time

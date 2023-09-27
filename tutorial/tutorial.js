@@ -24,11 +24,36 @@ window.addEventListener('load', () => {
   // keep one instance active for the entire session so that any registered
   // functions are retained
   const formula = new Formula({}, stringToNumber, debugInfo);
+  const defaultData = `{
+    "address": {
+      "street": "12 Oak St",
+      "city": "San Jose",
+      "state": "CA",
+      "country": "USA",
+      "phone": "1234561234"
+    },
+    "items": [
+      {
+        "desc": "pens",
+        "quantity": 2,
+        "price": 3.23
+      },
+      {
+        "desc": "pencils",
+        "quantity": 3,
+        "price": 1.34
+      }
+    ],
+    "tax": 1.13
+  }`;
 
   const d = window.localStorage.getItem('data');
   if (d) dataElement.value = d;
+  else dataElement.value = defaultData;
+
   const exp = window.localStorage.getItem('expression');
   if (exp) expression.value = exp;
+  else expression.value = 'sum(items[*].price * items[*].quantity)';
 
   function run() {
     // save for next time...
@@ -67,6 +92,12 @@ window.addEventListener('load', () => {
 
   dataElement.addEventListener('blur', run);
   expression.addEventListener('blur', run);
+  document.getElementById('data-reset').addEventListener(
+    'click',
+    () => {
+      dataElement.value = defaultData;
+    },
+  );
   document.getElementById('canned').addEventListener('change', e => {
     expression.value = e.target.value;
     run();
