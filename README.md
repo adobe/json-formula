@@ -9,7 +9,7 @@ functions and operators and [JMESPath](https://jmespath.org/) a JSON query langu
 Visit the [Playground](https://opensource.adobe.com/json-formula/dist/index.html)
 
 # Documentation
-[Specification / Reference](https://opensource.adobe.com/json-formula/dist/doc/json-formula-specifcation.html)
+[Specification / Reference](https://opensource.adobe.com/json-formula/dist/doc/json-formula-specification.html)
 
 [JS API](https://opensource.adobe.com/json-formula/dist/jsdocs/index.html)
 
