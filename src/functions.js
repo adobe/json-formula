@@ -45,6 +45,12 @@ function getDateNum(dateObj) {
   return dateObj / MS_IN_DAY;
 }
 
+function validNumber(n) {
+  if (Number.isNaN(n)) return null;
+  if (!Number.isFinite(n)) return null;
+  return n;
+}
+
 export default function functions(
   runtime,
   isObject,
@@ -95,6 +101,20 @@ export default function functions(
       _signature: [{ types: [TYPE_NUMBER] }],
     },
     /**
+     * Compute the inverse cosine (in radians) of a number.
+     * @param {number} cosine A number between -1 and 1, inclusive,
+     * representing the angle's cosine value.
+     * @return {number} The inverse cosine angle in radians between 0 and PI
+     * @function acos
+     * @example
+     * acos(0) => 1.5707963267948966
+     */
+    acos: {
+      _func: resolvedArgs => validNumber(Math.acos(resolvedArgs[0])),
+      _signature: [{ types: [TYPE_NUMBER] }],
+    },
+
+    /**
      * Finds the logical AND result of all parameters.
      * If the parameters are not boolean they will be cast to boolean as per the type coercion rules
      * @param {any} firstOperand logical expression
@@ -114,6 +134,39 @@ export default function functions(
         return result;
       },
       _signature: [{ types: [dataTypes.TYPE_ANY], variadic: true }],
+    },
+
+    /**
+     * Compute the inverse sine (in radians) of a number.
+     * @param {number} sine A number between -1 and 1, inclusive,
+     * representing the angle's sine value.
+     * @return {number} The inverse sine angle in radians between -PI/2 and PI/2
+     * @function asin
+     * @example
+     * Math.asin(0) => 0
+     */
+    asin: {
+      _func: resolvedArgs => validNumber(Math.asin(resolvedArgs[0])),
+      _signature: [{ types: [TYPE_NUMBER] }],
+    },
+
+    /**
+     * Compute the angle in the plane (in radians) between the positive
+     * x-axis and the ray from (0, 0) to the point (x, y)
+     * @param {number} y The y coordinate of the point
+     * @param {number} x The x coordinate of the point
+     * @return {number} The angle in radians (between -PI and PI),
+     * between the positive x-axis and the ray from (0, 0) to the point (x, y).
+     * @function atan2
+     * @example
+     * atan2(20,10) => 1.1071487177940904
+     */
+    atan2: {
+      _func: resolvedArgs => validNumber(Math.atan2(resolvedArgs[0], resolvedArgs[1])),
+      _signature: [
+        { types: [TYPE_NUMBER] },
+        { types: [TYPE_NUMBER] },
+      ],
     },
 
     /**
@@ -231,6 +284,19 @@ export default function functions(
       _signature: [{ types: [TYPE_STRING, TYPE_ARRAY] },
         { types: [TYPE_ANY] }],
     },
+    /**
+     * Compute the cosine (in radians) of a number.
+     * @param {number} angle A number representing an angle in radians
+     * @return {number} The cosine of the angle, between -1 and 1, inclusive.
+     * @function cos
+     * @example
+     * cos(1.0471975512) => 0.4999999999970535
+     */
+    cos: {
+      _func: resolvedArgs => validNumber(Math.cos(resolvedArgs[0])),
+      _signature: [{ types: [TYPE_NUMBER] }],
+    },
+
     /**
      * Return difference between two date values.
      * The measurement of the difference is determined by the `unit` parameter. One of:
@@ -526,6 +592,20 @@ export default function functions(
     },
 
     /**
+     * Calculates the next lowest integer value of the argument `num` by rounding down if necessary.
+     * @param {number} num numeric value
+     * @return {integer} The largest integer smaller than or equal to num
+     * @function floor
+     * @example
+     * floor(10.4) // returns 10
+     * floor(10) // returns 10
+     */
+    floor: {
+      _func: resolvedArgs => Math.floor(resolvedArgs[0]),
+      _signature: [{ types: [TYPE_NUMBER] }],
+    },
+
+    /**
      * returns an object by transforming a list of key-value `pairs` into an object.
      * `fromEntries()` is the inverse operation of `entries()`.
      * @param {any[]} pairs A nested array of key-value pairs to create the object from
@@ -545,18 +625,19 @@ export default function functions(
     },
 
     /**
-     * Calculates the next lowest integer value of the argument `num` by rounding down if necessary.
-     * @param {number} num numeric value
-     * @return {integer} The largest integer smaller than or equal to num
-     * @function floor
+     * Compute the nearest 32-bit single precision float representation of a number
+     * @param {number} num input to be rounded
+     * @return {number} The rounded representation of `num`
+     * @function fround
      * @example
-     * floor(10.4) // returns 10
-     * floor(10) // returns 10
+     * fround(2147483650.987) => 2147483648
+     * fround(100.44444444444444444444) => 100.44444274902344
      */
-    floor: {
-      _func: resolvedArgs => Math.floor(resolvedArgs[0]),
+    fround: {
+      _func: resolvedArgs => Math.fround(resolvedArgs[0]),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
+
     /**
      * Extract the hour from a date/time representation
      * @param {number} date The datetime/time for which the hour is to be returned.
@@ -705,6 +786,32 @@ export default function functions(
     },
 
     /**
+     * Compute the natural logarithm (base e) of a number
+     * @param {number} num A number greater than zero
+     * @return {number} The natural log value
+     * @function log
+     * @example
+     * log(10) // 2.302585092994046
+     */
+    log: {
+      _func: resolvedArgs => validNumber(Math.log(resolvedArgs[0])),
+      _signature: [{ types: [TYPE_NUMBER] }],
+    },
+
+    /**
+     * Compute the base 10 logarithm of a number.
+     * @param {number} num A number greater than or equal to zero
+     * @return {number} The base 10 log result
+     * @function log10
+     * @example
+     * log10(100000) // 5
+     */
+    log10: {
+      _func: resolvedArgs => validNumber(Math.log10(resolvedArgs[0])),
+      _signature: [{ types: [TYPE_NUMBER] }],
+    },
+
+    /**
      * Converts all the alphabetic characters in a string to lowercase. If the value
      * is not a string it will be converted into string.
      * @param {string} input input string
@@ -733,7 +840,6 @@ export default function functions(
      * @example
      * map(&(@ + 1), [1, 2, 3, 4]) // returns [2, 3, 4, 5]
      * map(&length(@), ["doe", "nick", "chris"]) // returns [3, 4, 5]
-
      */
     map: {
       _func: resolvedArgs => {
@@ -1389,6 +1495,36 @@ export default function functions(
     },
 
     /**
+     * Computes the sign of a number passed as argument.
+     * @param {number} num any number
+     * @return {number} returns 1 or -1, indicating the sign of `num`.
+     * If the `num` is 0, it will be returned 0.
+     * @function sign
+     * @example
+     * sign(5) // 1
+     * sign(-5) // -1
+     * sign(0) // 0
+     */
+    sign: {
+      _func: resolvedArgs => Math.sign(resolvedArgs[0]),
+      _signature: [{ types: [TYPE_NUMBER] }],
+    },
+
+    /**
+     * Computes the sine of a number in radians
+     * @param {number} angle A number representing an angle in radians.
+     * @return {number} The sine of `angle`, between -1 and 1, inclusive
+     * @function sin
+     * @example
+     * sin(0) // 0
+     * sin(1) // 0.8414709848078965
+     */
+    sin: {
+      _func: resolvedArgs => validNumber(Math.sin(resolvedArgs[0])),
+      _signature: [{ types: [TYPE_NUMBER] }],
+    },
+
+    /**
      * This function accepts an array of strings or numbers and returns a
      * re-orderd array with the elements in sorted order.
      * String sorting is based on code points. Locale is not taken into account.
@@ -1670,6 +1806,20 @@ export default function functions(
       },
       _signature: [{ types: [TYPE_ARRAY_NUMBER] }],
     },
+    /**
+     * Computes the tangent of a number in radians
+     * @param {number} angle A number representing an angle in radians.
+     * @return {number} The tangent of `angle`
+     * @function tan
+     * @example
+     * tan(0) // 0
+     * tan(1) // 1.5574077246549023
+     */
+    tan: {
+      _func: resolvedArgs => validNumber(Math.tan(resolvedArgs[0])),
+      _signature: [{ types: [TYPE_NUMBER] }],
+    },
+
     /**
      * Construct and returns a time value.
      * @param {integer} hours Zero-based integer value between 0 and 23 representing

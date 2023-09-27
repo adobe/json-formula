@@ -12,19 +12,17 @@ governing permissions and limitations under the License.
 import Formula from './interpreter.js';
 
 /**
- * Returns an instance of JSON JsonFormula Expression that can be executed later on with
- * multiple instances of JSON Data. The instance of the class has a single search
- * function that can be used to evaluate the expression on a json payload. The advantage
- * of using this over {jsonJsonFormula} function is that it can be performant if a single expression
- * has to be used for multiple json data instances.
+ * Class represents an instance of a JsonFormula Expression that can be executed later on with
+ * multiple instances of JSON Data. The instance of the class has a search
+ * function that can be used to evaluate the expression on a json payload.
  */
-export default class JsonFormula {
+class JsonFormula {
   /**
-   * @param customFunctions {*} custom functions needed by a hosting application.
-   * @param stringToNumber {function} A function that converts string values to numbers.
+   * @param {object} [customFunctions={}] custom functions needed by a hosting application.
+   * @param {function} [stringToNumber='null'] A function that converts string values to numbers.
    * Can be used to convert currencies/dates to numbers
-   * @param language
-   * @param debug {array} will be populated with any errors/warnings
+   * @param {string} [language=en-US]
+   * @param {array} [debug=[]]  will be populated with any errors/warnings
    */
   constructor(
     customFunctions = {},
@@ -39,8 +37,8 @@ export default class JsonFormula {
 
   /**
    * Evaluates the JsonFormula on a particular json payload and return the result
-   * @param json {object} the json data on which the expression needs to be evaluated
-   * @param globals {*} global objects that can be accessed via custom functions.
+   * @param {object|array} json the json data on which the expression needs to be evaluated
+   * @param {object} [globals={}] global objects that can be accessed via custom functions.
    * @returns {*} the result of the expression being evaluated
    */
   search(expression, json, globals = {}, language = 'en-US') {
@@ -50,8 +48,8 @@ export default class JsonFormula {
 
   /**
    * Execute a previously compiled expression against a json object and return the result
-   * @param ast {object} The abstract syntax tree returned from compile()
-   * @param json {object} the json data on which the expression needs to be evaluated
+   * @param {object} ast The abstract syntax tree returned from compile()
+   * @param {object|array} json the json data on which the expression needs to be evaluated
    * @param globals {*} set of objects available in global scope
    * @returns {*} the result of the expression being evaluated
    */
@@ -64,18 +62,33 @@ export default class JsonFormula {
     );
   }
 
-  /*
+  /**
    * Creates a compiled expression that can be executed later on with some data.
-   * @param expression {string} the expression to evaluate
-   * @param allowedGlobalNames {string[]} A list of names of the global variables
+   * @param {string} expression the expression to evaluate
+   * @param {string[]} [allowedGlobalNames=[]] A list of names of the global variables
    * being used in the expression.
-   * @param debug {array} will be populated with any errors/warnings
+   * @param {array} [debug=[]] will be populated with any errors/warnings
    */
   compile(expression, allowedGlobalNames = []) {
     this.debug.length = 0;
     return this.formula.compile(expression, allowedGlobalNames);
   }
 }
+
+/**
+ * Compile and execute a json-formula expression.
+ * If executing the same expression multiple times, it is more efficient to create a
+ * class instance of {JsonFormula} and call the search method multiple times.
+* @param {object|array} json the json data on which the expression needs to be evaluated
+* @param {object} globals  global objects that can be accessed via custom functions.
+* @param {string} expression the expression to evaluate
+* @param {object} [customFunctions={}] custom functions needed by a hosting application.
+* @param {function} [stringToNumber='null'] A function that converts string values to numbers.
+* Can be used to convert currencies/dates to numbers
+* @param {string} [language=en-US]
+* @param  {array} [debug=[]] will be populated with any errors/warnings
+* @returns {*} the result of the expression being evaluated
+ */
 
 export function jsonFormula(
   json,
@@ -89,3 +102,5 @@ export function jsonFormula(
   return new JsonFormula(customFunctions, stringToNumber, debug)
     .search(expression, json, globals, language);
 }
+
+export default JsonFormula;

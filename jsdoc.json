@@ -10,7 +10,6 @@
       "plugins/markdown"
   ],
   "source": {
-    "include" : ["src/"],
-    "includePattern": "\\.js$"
+    "include" : ["src/json-formula.js"]
   }
 }
