@@ -1807,34 +1807,34 @@
     }
   ],
   [
-    "charCode(13055)",
+    "fromCodePoint(13055)",
     {
       "data": "`null`",
-      "expression": "charCode(13055)",
+      "expression": "fromCodePoint(13055)",
       "expected": "㋿"
     }
   ],
   [
-    "charCode(9)",
+    "fromCodePoint(9)",
     {
       "data": "`null`",
-      "expression": "charCode(9)",
+      "expression": "fromCodePoint(9)",
       "expected": "\t"
     }
   ],
   [
-    "charCode(9.123)",
+    "fromCodePoint(9.123)",
     {
       "data": "`null`",
-      "expression": "charCode(9.123)",
+      "expression": "fromCodePoint(9.123)",
       "expected": null
     }
   ],
   [
-    "charCode(missing)",
+    "fromCodePoint(missing)",
     {
       "data": "samples.'purchase-order'",
-      "expression": "charCode(missing)",
+      "expression": "fromCodePoint(missing)",
       "expected": null
     }
   ],

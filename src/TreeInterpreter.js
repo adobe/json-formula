@@ -108,7 +108,7 @@ export default class TreeInterpreter {
           }
           const result = value[index];
           if (result === undefined) {
-            this.debug.push(`Index ${index} out of range`);
+            this.debug.push(`Index: ${index} out of range for array size: ${value.length}`);
             return null;
           }
           return result;

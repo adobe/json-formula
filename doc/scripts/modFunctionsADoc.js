@@ -32,6 +32,12 @@ const updatedFunctions = functions
   .replace(/link:#([a-zA-Z0-9]+)[[a-zA-Z0-9]+]/g, '<<_$1>>')
   .replace(/1\.0, {docdate}:/, `${version}, {docdate}:`)
   .replace(/`\*`/g, '`{asterisk}`')
-  .replace(/\\{vbar}/g, '{vbar}');
+  .replace(/\\{vbar}/g, '{vbar}')
+  .replace(/\*Description\*/gm, '\nDescription::\n')
+  .replace(/\*Returns\*:/gm, 'Returns::\n')
+  .replace(/^(\[.*cols.*\])$/gm, 'Parameters::\n+\n$1')
+  .replace(/``([^']+)''/g, '"$1"')
+  .replace(/`\\'/g, '`{backtick}')
+  .replace(/\\'`/g, '{backtick}`');
 
-fs.writeFileSync(path.join(docDir, '..', 'functions.adoc'), updatedFunctions);
+fs.writeFileSync(adocFile, updatedFunctions);

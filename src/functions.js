@@ -89,9 +89,9 @@ export default function functions(
     // occurs on the argument.  Variadic is optional
     // and if not provided is assumed to be false.
     /**
-     * Find the absolute value of the provided argument `value`.
-     * @param {number} num a numeric value
-     * @return {number} the absolute value of the `value` argument
+     * Find the absolute (non-negative) value of the provided argument `value`.
+     * @param {number} value a numeric value
+     * @return {number} If `value < 0`, returns `-value`, otherwise returns `value`
      * @function abs
      * @example
      * abs(-1) // returns 1
@@ -116,7 +116,8 @@ export default function functions(
 
     /**
      * Finds the logical AND result of all parameters.
-     * If the parameters are not boolean they will be cast to boolean as per the type coercion rules
+     * If the parameters are not boolean they will be <<Type Coercion Rules,cast to boolean>>.
+     * Note the related <<And Operator>>.
      * @param {any} firstOperand logical expression
      * @param {...any} [additionalOperands] any number of additional expressions
      * @returns {boolean} The logical result of applying AND to all parameters
@@ -194,7 +195,7 @@ export default function functions(
 
     /**
      * Generates a lower-case string of the `input` string using locale-specific mappings.
-     * e.g. Strings with German letter <span>&#223;</span> can be compared to "ss"
+     * e.g. Strings with German letter <span>&#223;</span> (eszett) can be compared to "ss"
      * @param {string} input string to casefold
      * @returns {string} A new string converted to lower case
      * @function casefold
@@ -208,25 +209,6 @@ export default function functions(
       },
       _signature: [
         { types: [dataTypes.TYPE_STRING] },
-      ],
-    },
-
-    /**
-     * Create a string created from the specified code unit.
-     * @param {integer} codePoint unicode code point value
-     * @return {number} A string from a given code point
-     * @function charCode
-     * @example
-     * charCode(65) // "A"
-     * charCode(65) == "\u0041" // true
-     */
-    charCode: {
-      _func: args => {
-        const code = args[0];
-        return !Number.isInteger(code) ? null : String.fromCharCode(code);
-      },
-      _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
       ],
     },
 
@@ -269,7 +251,9 @@ export default function functions(
      * is a string, this function returns true if the string contains the
      * `search` value.
      * @param {array|string} subject the subject in which the element has to be searched
-     * @param {string|boolean|number|date} search element to search
+     * @param {string|boolean|number|date|null} search element to find.
+     * If `subject` is an array, search for an exact match for `search` in the array.
+     * If `subject` is a string, `search` will be <<Type Coercion Rules,coerced to a string>>.
      * @return {boolean} true if found
      * @function contains
      * @example
@@ -366,7 +350,10 @@ export default function functions(
     },
 
     /**
-     * Return a date/time value.
+     * Generate a date/time value from individual date/time parts.
+     * If any of the units are greater than their normal range,
+     * the overflow will be added to the next greater unit.
+     * e.g. specifying 25 hours will increment the day value by 1.
      * @param {integer} year The year to use for date construction.
      * Values from 0 to 99 map to the years 1900 to 1999. All other values are the actual year
      * @param {integer} month The month: beginning with 1 for
@@ -382,6 +369,7 @@ export default function functions(
      * @example
      * datetime(2010, 10, 10) // returns representation of October 10, 2010
      * datetime(2010, 2, 28) // returns representation of February 28, 2010
+     * datetime(2023,13,5) | year(@) & "/" & month(@) // returns 2024/1
      */
     datetime: {
       _func: args => {
@@ -409,9 +397,8 @@ export default function functions(
     },
 
     /**
-     * Finds the day of a date
-     * @param {number} date of the day you are trying to find.
-     * Date/time values can be generated using the
+     * Finds the day of the month for a date value
+     * @param {number} date date/time generated using the
      * [datetime]{@link datetime}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {integer} The day of the month ranging from 1 to 31.
@@ -429,7 +416,7 @@ export default function functions(
     /**
      * Searches a nested hierarchy of objects to return an array of key values that match a `name`.
      * The name can be either a key into an object or an array index.
-     * This is similar to the JSONPath deep scan operator (..)
+     * This is similar to the Descendant Accessor operator (`..`) from [E4X](https://www.ecma-international.org/publications-and-standards/standards/ecma-357/).
      * @param {object|array} object The starting object or array where we start the search
      * @param {string|integer} name The name (or index position) of the elements to find
      * @returns {any[]} The array of matched elements
@@ -535,9 +522,9 @@ export default function functions(
     },
 
     /**
-     * Finds e (the base of natural logarithms) raised to a power x. (i.e. e<sup>x</sup>)
-     * @param x {number} A numeric expression representing the power of e.
-     * @returns {number} e (the base of natural logarithms) raised to a power x
+     * Finds e (the base of natural logarithms) raised to a power. (i.e. e^x)
+     * @param {number} x A numeric expression representing the power of e.
+     * @returns {number} e (the base of natural logarithms) raised to power x
      * @function exp
      * @example
      * exp(10) // returns 22026.465794806718
@@ -551,7 +538,7 @@ export default function functions(
 
     /**
      * Return constant boolean false value.
-     * Note that expressions may also use the JSON literal false: `` `false` ``
+     * Expressions may also use the JSON literal: `` `false` ``
      * @returns {boolean} constant boolean value `false`
      * @function false
      */
@@ -606,7 +593,27 @@ export default function functions(
     },
 
     /**
-     * returns an object by transforming a list of key-value `pairs` into an object.
+     * Create a string created from a code point.
+     * @param {integer} codePoint An integer between 0 and 0x10FFFF (inclusive)
+     * representing a Unicode code point.
+     * @return {number} A string from a given code point
+     * @function fromCodePoint
+     * @example
+     * fromCodePoint(65) // "A"
+     * fromCodePoint(65) == "\u0041" // true
+     */
+    fromCodePoint: {
+      _func: args => {
+        const code = args[0];
+        return !Number.isInteger(code) ? null : String.fromCodePoint(code);
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_NUMBER] },
+      ],
+    },
+
+    /**
+     * Returns an object by transforming a list of key-value `pairs` into an object.
      * `fromEntries()` is the inverse operation of `entries()`.
      * @param {any[]} pairs A nested array of key-value pairs to create the object from
      * @returns {object} An object constructed from the provided key-value pairs
@@ -812,8 +819,7 @@ export default function functions(
     },
 
     /**
-     * Converts all the alphabetic characters in a string to lowercase. If the value
-     * is not a string it will be converted into string.
+     * Converts all the alphabetic characters in a string to lowercase.
      * @param {string} input input string
      * @returns {string} the lower case value of the input string
      * @function lower
@@ -1064,9 +1070,9 @@ export default function functions(
     },
 
     /**
-     * Compute logical NOT of a value. If the parameter is not boolean it will be cast to boolean
-     * as per the type coercion rules.
-     * Note the related unary not operator: `!`
+     * Compute logical NOT of a value. If the parameter is not boolean
+     * it will be <<Type Coercion Rules,cast to boolean>>
+     * Note the related <<Not Operator,unary NOT operator>>.
      * @param {any} value - any data type
      * @returns {boolean} The logical NOT applied to the input parameter
      * @example
@@ -1109,7 +1115,7 @@ export default function functions(
 
     /**
      * Return constant null value.
-     * Note that expressions may also use the JSON literal null: `` `null` ``
+     * Expressions may also use the JSON literal: `` `null` ``
      * @returns {boolean} True
      * @function null
      */
@@ -1120,9 +1126,9 @@ export default function functions(
 
     /**
      * Determines the logical OR result of a set of parameters.
-     * If the parameters are not boolean they will be cast to
-     * boolean as per the type coercion rules.
-     * Note the related 'or' operator: `A || B`.
+     * If the parameters are not boolean they will be <<Type Coercion Rules,cast to
+     * boolean>>.
+     * Note the related <<Or Operator>>.
      * @param {any} first logical expression
      * @param {...any} [operand] any number of additional expressions
      * @returns {boolean} The logical result of applying OR to all parameters
@@ -1142,7 +1148,7 @@ export default function functions(
     },
 
     /**
-     * Computes `a` raised to a power `x`. (a<sup>x</sup>)
+     * Computes `a` raised to a power `x`. (a^x)
      * @param {number} a The base number -- can be any real number.
      * @param {number} x The exponent to which the base number is raised.
      * @return {number}
@@ -1525,9 +1531,9 @@ export default function functions(
     },
 
     /**
-     * This function accepts an array of strings or numbers and returns a
-     * re-orderd array with the elements in sorted order.
-     * String sorting is based on code points. Locale is not taken into account.
+     * This function accepts an array of strings or numbers and returns an
+     * array with the elements in sorted order.
+     * String sorting is based on code points. Sort is not locale-sensitive.
      * @param {number[]|string[]} list to be sorted
      * @return {number[]|string[]} The ordered result
      * @function sort
@@ -1563,11 +1569,14 @@ export default function functions(
      * @return {array} The sorted array
      * @function sortBy
      * @example
-     * sortBy(["abcd", "e", "def"], &length(@)) // returns ["e", "def", "abcd"]
+     * // returns ["e", "def", "abcd"]
+     * sortBy(["abcd", "e", "def"], &length(@))
      *
      * // returns [{year: 1910}, {year: 2010}, {year: 2020}]
      * sortBy([{year: 2010}, {year: 2020}, {year: 1910}], &year)
-     * sortBy([-15, 30, -10, -11, 5], &abs(@)) // [5, -10, -11, -15, 30]
+     *
+     * // returns [5, -10, -11, -15, 30]
+     * sortBy([-15, 30, -10, -11, 5], &abs(@))
      */
     sortBy: {
       _func: resolvedArgs => {
@@ -1628,10 +1637,10 @@ export default function functions(
     },
 
     /**
-     * split a string into an array, given a separator
+     * Split a string into an array, given a separator
      * @param {string} string string to split
      * @param {string} separator separator where the split(s) should occur
-     * @return {string[]}
+     * @return {string[]} The array of separated strings
      * @function split
      * @example
      * split("abcdef", "") // returns ["a", "b", "c", "d", "e", "f"]
@@ -1650,9 +1659,9 @@ export default function functions(
     },
 
     /**
-         * Return the square root of a number
+         * Find the square root of a number
          * @param {number} num source number
-         * @return {number} the calculated square root value
+         * @return {number} The calculated square root value
          * @function sqrt
          * @example
          * sqrt(4) // returns 2
@@ -1790,8 +1799,8 @@ export default function functions(
     /**
      * Calculates the sum of the provided array.
      * An empty array will produce a return value of 0.
-     * @param {number[]} collection array of elements
-     * @return {number} The sum of elements
+     * @param {number[]} collection array of numbers
+     * @return {number} The computed sum
      * @function sum
      * @example
      * sum([1, 2, 3]) // returns 6
@@ -1895,7 +1904,7 @@ export default function functions(
     },
 
     /**
-     * Converts the provided arg to a number. The conversion happens as per the type coercion rules.
+     * Converts the provided arg to a number as per the <<Type Coercion Rules,type coercion rules>>.
      *
      * @param {any} arg to convert to number
      * @return {number}
@@ -1928,8 +1937,8 @@ export default function functions(
     },
 
     /**
-     * Converts the provided argument to a string.
-     * The conversion happens as per the type coercion rules.
+     * Converts the provided argument to a string
+     * as per the <<Type Coercion Rules,type coercion rules>>.
      * @param {any} arg Value to be converted to a string
      * @return {string} The result string
      * @function toString
@@ -1972,7 +1981,7 @@ export default function functions(
 
     /**
      * Return constant boolean true value.
-     * Note that expressions may also use the JSON literal true: `` `true` ``
+     * Expressions may also use the JSON literal: `` `true` ``
      * @returns {boolean} True
      * @function true
      */
@@ -2006,8 +2015,8 @@ export default function functions(
     },
 
     /**
-     * Finds the JavaScript type of the given `subject` argument as a string value.
-     * The return value MUST be one of the following:
+     * Finds the type name of the given `subject` argument as a string value.
+     * The return value will be one of the following:
      *
      * * number
      * * string
@@ -2016,7 +2025,7 @@ export default function functions(
      * * object
      * * null
      * @param {any} subject type to evaluate
-     * @return {string} The type of the subject
+     * @return {string} The type name
      *
      * @function type
      * @example
@@ -2058,8 +2067,6 @@ export default function functions(
 
     /**
      * Converts all the alphabetic characters in a string to uppercase.
-     * If the value is not a string it will be converted into string
-     * according to the type coercion rules.
      * @param {string} input input string
      * @returns {string} the upper case value of the input string
      * @function upper
@@ -2090,7 +2097,8 @@ export default function functions(
         const result = getProperty(obj, index);
 
         if (result === undefined) {
-          debugAvailable(debug, obj, index);
+          if (isArray(obj)) debug.push(`Index: ${index} out of range for array size: ${obj.length}`);
+          else debugAvailable(debug, obj, index);
           return null;
         }
         return result;

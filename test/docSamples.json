@@ -806,5 +806,12 @@
       "expression": "year(datetime(2008,5,23))",
       "expected": 2008
     }
+  ],
+  [
+    "datetime(2023,13,5) | year(@) & \"/\" month(@)",
+    {
+      "expression": "datetime(2023,13,5) | year(@) & \"/\" & month(@)",
+      "expected": "2024/1"
+    }
   ]
 ]

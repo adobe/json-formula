@@ -139,7 +139,7 @@ test('debug output', () => {
   new JsonFormula({}, null, debug).search(expression, { $form: form1 }, form1);
 
   expect(debug).toEqual([
-    'Index 10 out of range',
+    'Index: 10 out of range for array size: 6',
     'Failed to find: \'$value\'',
     'Available fields: 0..5,\'$name\',\'$fields\'',
     'Failed to find: \'foo\'',

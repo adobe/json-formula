@@ -1,9 +1,9 @@
 # json-formula: A Query Language for JSON with Spreadsheet Functions
 
-This project hosts an implementation of a form expression grammar.
+This project hosts an implementation of a expression grammar that operates on JSON documents.
 The grammar is a mashup of
-[spreadsheet-like](https://www.oasis-open.org/committees/download.php/16826/openformula-spec-20060221.html)
-functions and operators and [JMESPath](https://jmespath.org/) a JSON query language.
+[OpenFormula](https://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part2.html)
+and the [JMESPath](https://jmespath.org/) query language.
 
 # Demo
 Visit the [Playground](https://opensource.adobe.com/json-formula/dist/index.html)

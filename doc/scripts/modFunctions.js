@@ -25,16 +25,18 @@ const functionsFile = path.join(docDir, '..', 'functions.md');
 transform it to:
 
 ## abs
-** abs(value) ⇒ <code>number</code>**
-
+Signature
+:abs(value) ⇒ <code>number</code>
 */
 
 const functions = fs.readFileSync(functionsFile).toString();
 const updatedFunctions = functions
   // reduce the section header to just the name of the function instead
   // of the full function signature.
-  .replace(/##\s*([a-zA-Z0-9]+)(.*)/g, '## $1\n**$1$2**\n')
+  .replace(/##\s*([a-zA-Z0-9]+)(.*)/g, '\n## $1\n**$1$2**\n\n**Description**')
   .replace(/\*\*Kind\*\*: global function /g, '')
-  .replace(/\\\|/g, '{vbar}');
+  .replace(/\\\|/g, '{vbar}')
+  // weirdly, the markdown generator makes 'null' parameters a link to the null() function
+  .replace(/\[<code>null<\/code>\]\(#null\)/g, 'null');
 
 fs.writeFileSync(functionsFile, updatedFunctions);
