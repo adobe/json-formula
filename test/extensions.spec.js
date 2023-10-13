@@ -134,9 +134,22 @@ test('debug output', () => {
   form1.prop.p1[Symbol.for('track')] = (obj, key) => {
     debugTracking = `Access ${key} from ${JSON.stringify(obj)}`;
   };
-  const expression = 'merge($form.array1[10], $form.array1.$value, $form.foo, $form.prop.$readOnly, $form.prop.p1)';
+  const expression = `merge(
+    $form.array1[10],
+    $form.array1.$value,
+    $form.foo,
+    $form.prop.$readOnly,
+    $form.prop.p1,
+    length("a").{foo: bar},
+    {m: -"s", n: 2*"b", o: toNumber(1,1)},
+    {m: "abc"[0:2]},
+    {m: {m: 2}[*]},
+    {m: [2,3,4].*},
+    {m: {m: 2}[?true()]},
+    {m: "aaa"[]}
+  )`;
   const debug = [];
-  new JsonFormula({}, null, debug).search(expression, { $form: form1 }, form1);
+  new JsonFormula({}, stringToNumber, debug).search(expression, { $form: form1 }, form1);
 
   expect(debug).toEqual([
     'Index: 10 out of range for array size: 6',
@@ -146,6 +159,15 @@ test('debug output', () => {
     'Available fields: \'array1\',\'prop\'',
     'Failed to find: \'$readOnly\'',
     'Available fields: \'$name\',\'$fields\',\'p1\'',
+    'Failed to find: \'bar\'',
+    'Failed to convert "s" to number',
+    'Failed to convert "b" to number',
+    'Invalid base: "1" for toNumber(), using "10"',
+    'Slices apply to arrays only',
+    'Bracketed wildcards apply to arrays only',
+    'Chained wildcards apply to objects only',
+    'Filter expressions apply to arrays only',
+    'Flatten expressions apply to arrays only',
   ]);
   expect(debugTracking).toBe('Access p1 from {"p1":"property1"}');
 });

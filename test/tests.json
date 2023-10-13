@@ -211,7 +211,7 @@
     {
       "data": "`{}`",
       "expression": "2 * \"$2\" + `null`",
-      "expected": 4
+      "expected": 0
     }
   ],
   [
@@ -531,6 +531,22 @@
       "data": "samples.'purchase-order'",
       "expression": "4 + -items[0].quantity",
       "expected": 2
+    }
+  ],
+  [
+    "bad unary minus expression",
+    {
+      "data": "`{}`",
+      "expression": "-\"string\"",
+      "expected": 0
+    }
+  ],
+  [
+    "bad unary minus expression",
+    {
+      "data": "`{\"s\": \"string\"}`",
+      "expression": "-s",
+      "expected": 0
     }
   ],
   [

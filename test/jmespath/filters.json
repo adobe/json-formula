@@ -85,7 +85,7 @@
       {"top": {"name": "b"}}]},
     "cases": [
       {
-        "comment": "Filter with subexpression",
+        "comment": "Filter with chained expression",
         "expression": "foo[?top.name == \"a\"]",
         "result": [{"top": {"name": "a"}}]
       }

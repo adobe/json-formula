@@ -31,8 +31,8 @@ formula : expression EOF ;
 
 expression
   : expression '.' chainedExpression # chainExpression
-  | expression indexExpression # bracketedExpression
-  | indexExpression # indexedExpression
+  | expression bracketExpression # bracketedExpression
+  | bracketExpression # indexedExpression
   | expression ('*' | '/' | '&' | '~') expression	# multDivExpression
   | expression ('+' | '-') expression	# addSubtractExpression
   | expression COMPARATOR expression # comparisonExpression
@@ -43,8 +43,8 @@ expression
   | '-' expression # unaryMinusExpression
   | '(' expression ')' # parenExpression
   | wildcard # wildcardExpression
-  | multiSelectArray # multiSelectArrayExpression
-  | multiSelectObject # multiSelectObjectExpression
+  | arrayExpression # arrExpression
+  | objectExpression # objExpression
   | JSON_FRAGMENT # literalExpression
   | functionExpression # functionCallExpression
   | expression '|' expression # pipeExpression
@@ -55,24 +55,24 @@ expression
 
 chainedExpression
   : identifier
-  | multiSelectArray
-  | multiSelectObject
+  | arrayExpression
+  | objectExpression
   | functionExpression
   | wildcard
   ;
 
 wildcard : '*' ;
 
-multiSelectArray : '[' expression (',' expression)* ']' ;
+arrayExpression : '[' expression (',' expression)* ']' ;
 
-multiSelectObject
+objectExpression
   : '{' '}' #emptyObject
   | '{' keyvalExpr (',' keyvalExpr)* '}'  #nonEmptyObject
   ;
 
 keyvalExpr : identifier ':' expression ;
 
-indexExpression
+bracketExpression
   : '[' '*' ']' # bracketStar
   | '[' slice ']' # bracketSlice
   | '[' ']' # bracketFlatten
@@ -112,7 +112,7 @@ identifier
   | QUOTED_NAME
   ;
 
-NAME : [@a-zA-Z_$] [a-zA-Z0-9_$]* ;
+NAME : [a-zA-Z_$] [a-zA-Z0-9_$]* ;
 
 QUOTED_NAME : '\'' (ESC | ~ ['\\])* '\'';
 
@@ -138,8 +138,7 @@ REAL_OR_EXPONENT_NUMBER
   ;
 
 INT
-  : '0'
-  | [1-9] [0-9]*
+  : [0-9]+
   ;
 
 fragment EXP
