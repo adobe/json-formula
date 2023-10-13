@@ -32,15 +32,6 @@ export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by JsonFormulaParser#multiSelectObjectExpression.
-	enterMultiSelectObjectExpression(ctx) {
-	}
-
-	// Exit a parse tree produced by JsonFormulaParser#multiSelectObjectExpression.
-	exitMultiSelectObjectExpression(ctx) {
-	}
-
-
 	// Enter a parse tree produced by JsonFormulaParser#multDivExpression.
 	enterMultDivExpression(ctx) {
 	}
@@ -131,15 +122,6 @@ export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by JsonFormulaParser#multiSelectArrayExpression.
-	enterMultiSelectArrayExpression(ctx) {
-	}
-
-	// Exit a parse tree produced by JsonFormulaParser#multiSelectArrayExpression.
-	exitMultiSelectArrayExpression(ctx) {
-	}
-
-
 	// Enter a parse tree produced by JsonFormulaParser#wildcardExpression.
 	enterWildcardExpression(ctx) {
 	}
@@ -194,6 +176,24 @@ export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
+	// Enter a parse tree produced by JsonFormulaParser#arrExpression.
+	enterArrExpression(ctx) {
+	}
+
+	// Exit a parse tree produced by JsonFormulaParser#arrExpression.
+	exitArrExpression(ctx) {
+	}
+
+
+	// Enter a parse tree produced by JsonFormulaParser#objExpression.
+	enterObjExpression(ctx) {
+	}
+
+	// Exit a parse tree produced by JsonFormulaParser#objExpression.
+	exitObjExpression(ctx) {
+	}
+
+
 	// Enter a parse tree produced by JsonFormulaParser#numberLiteral.
 	enterNumberLiteral(ctx) {
 	}
@@ -221,12 +221,12 @@ export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by JsonFormulaParser#multiSelectArray.
-	enterMultiSelectArray(ctx) {
+	// Enter a parse tree produced by JsonFormulaParser#arrayExpression.
+	enterArrayExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by JsonFormulaParser#multiSelectArray.
-	exitMultiSelectArray(ctx) {
+	// Exit a parse tree produced by JsonFormulaParser#arrayExpression.
+	exitArrayExpression(ctx) {
 	}
 
 

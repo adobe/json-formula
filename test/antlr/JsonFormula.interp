@@ -67,10 +67,10 @@ formula
 expression
 chainedExpression
 wildcard
-multiSelectArray
-multiSelectObject
+arrayExpression
+objectExpression
 keyvalExpr
-indexExpression
+bracketExpression
 slice
 functionExpression
 functionArg

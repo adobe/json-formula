@@ -48,15 +48,13 @@ function getToNumber(stringToNumber, debug = []) {
     const n = getValueOf(value); // in case it's an object that implements valueOf()
     if (n === null) return null;
     if (n instanceof Array) {
-      debug.push('Converted array to zero');
-      return 0;
+      throw new TypeError('Failed to convert array to number');
     }
     const type = typeof n;
     if (type === 'number') return n;
     if (type === 'string') return stringToNumber(n, debug);
     if (type === 'boolean') return n ? 1 : 0;
-    debug.push('Converted object to zero');
-    return 0;
+    throw new TypeError('Failed to convert object to number');
   };
 }
 function toString(a) {

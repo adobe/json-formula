@@ -24,12 +24,6 @@ export default class JsonFormulaVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
-	// Visit a parse tree produced by JsonFormulaParser#multiSelectObjectExpression.
-	visitMultiSelectObjectExpression(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
 	// Visit a parse tree produced by JsonFormulaParser#multDivExpression.
 	visitMultDivExpression(ctx) {
 	  return this.visitChildren(ctx);
@@ -90,12 +84,6 @@ export default class JsonFormulaVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
-	// Visit a parse tree produced by JsonFormulaParser#multiSelectArrayExpression.
-	visitMultiSelectArrayExpression(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
 	// Visit a parse tree produced by JsonFormulaParser#wildcardExpression.
 	visitWildcardExpression(ctx) {
 	  return this.visitChildren(ctx);
@@ -132,6 +120,18 @@ export default class JsonFormulaVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
+	// Visit a parse tree produced by JsonFormulaParser#arrExpression.
+	visitArrExpression(ctx) {
+	  return this.visitChildren(ctx);
+	}
+
+
+	// Visit a parse tree produced by JsonFormulaParser#objExpression.
+	visitObjExpression(ctx) {
+	  return this.visitChildren(ctx);
+	}
+
+
 	// Visit a parse tree produced by JsonFormulaParser#numberLiteral.
 	visitNumberLiteral(ctx) {
 	  return this.visitChildren(ctx);
@@ -150,8 +150,8 @@ export default class JsonFormulaVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
-	// Visit a parse tree produced by JsonFormulaParser#multiSelectArray.
-	visitMultiSelectArray(ctx) {
+	// Visit a parse tree produced by JsonFormulaParser#arrayExpression.
+	visitArrayExpression(ctx) {
 	  return this.visitChildren(ctx);
 	}
 

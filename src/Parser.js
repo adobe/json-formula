@@ -102,9 +102,9 @@ const bindingPower = {
   [TOK_FLATTEN]: 9,
   [TOK_STAR]: 20,
   [TOK_FILTER]: 21,
-  [TOK_DOT]: 40,
   [TOK_NOT]: 30,
   [TOK_UNARY_MINUS]: 30,
+  [TOK_DOT]: 40,
   [TOK_LBRACE]: 50,
   [TOK_LBRACKET]: 55,
   [TOK_LPAREN]: 60,
@@ -199,7 +199,7 @@ export default class Parser {
       case TOK_STAR:
         left = { type: 'Identity' };
         if (this._lookahead(0) === TOK_RBRACKET) {
-          // This can happen in a multiselect,
+          // This can happen in a ArrayExpression,
           // [a, b, *]
           right = { type: 'Identity' };
         } else {
@@ -209,7 +209,7 @@ export default class Parser {
       case TOK_FILTER:
         return this.led(token.type, { type: 'Identity' });
       case TOK_LBRACE:
-        return this._parseMultiselectHash();
+        return this._parseObjectExpression();
       case TOK_FLATTEN:
         left = { type: TOK_FLATTEN, children: [{ type: 'Identity' }] };
         right = this._parseProjectionRHS(bindingPower.Flatten);
@@ -225,7 +225,7 @@ export default class Parser {
             children: [{ type: 'Identity' }, right],
           };
         }
-        return this._parseUnchainedIndexExpression();
+        return this._parseUnchainedBracketExpression();
       case TOK_CURRENT:
         return { type: TOK_CURRENT };
       case TOK_GLOBAL:
@@ -266,7 +266,7 @@ export default class Parser {
         rbp = bindingPower.Dot;
         if (this._lookahead(0) !== TOK_STAR) {
           right = this._parseDotRHS(rbp);
-          return { type: 'Subexpression', children: [left, right] };
+          return { type: 'ChainedExpression', children: [left, right] };
         }
         // Creating a projection.
         this._advance();
@@ -327,9 +327,9 @@ export default class Parser {
           this._advance();
           this._advance();
           right = this._parseProjectionRHS(bindingPower.Star);
-          return { type: 'Projection', children: [left, right] };
+          return { type: 'Projection', children: [left, right], debug: 'Wildcard' };
         }
-        right = this._parseChainedIndexExpression();
+        right = this._parseChainedBracketExpression();
         return this._projectIfSlice(left, right);
       default:
         this._errorToken(this._lookaheadToken(0));
@@ -370,7 +370,7 @@ export default class Parser {
     return args;
   }
 
-  _parseChainedIndexExpression() {
+  _parseChainedBracketExpression() {
     const oldIndex = this._getIndex();
     if (this._lookahead(0) === TOK_COLON) {
       return this._parseSliceExpression();
@@ -390,7 +390,7 @@ export default class Parser {
     };
   }
 
-  _parseUnchainedIndexExpression() {
+  _parseUnchainedBracketExpression() {
     const oldIndex = this._getIndex();
     const firstToken = this._lookahead(0);
     if (firstToken === TOK_COLON) {
@@ -401,7 +401,7 @@ export default class Parser {
     const currentToken = this._lookahead(0);
     if (currentToken === TOK_COMMA) {
       this._setIndex(oldIndex);
-      return this._parseMultiselectList();
+      return this._parseArrayExpression();
     }
     if (currentToken === TOK_COLON) {
       this._setIndex(oldIndex);
@@ -416,11 +416,11 @@ export default class Parser {
       };
     }
     this._setIndex(oldIndex);
-    return this._parseMultiselectList();
+    return this._parseArrayExpression();
   }
 
   _projectIfSlice(left, right) {
-    const indexExpr = { type: 'IndexExpression', children: [left, right] };
+    const indexExpr = { type: 'BracketExpression', children: [left, right] };
     if (right.type === 'Slice') {
       return {
         type: 'Projection',
@@ -474,11 +474,11 @@ export default class Parser {
     }
     if (lookahead === TOK_LBRACKET) {
       this._match(TOK_LBRACKET);
-      return this._parseMultiselectList();
+      return this._parseArrayExpression();
     }
     if (lookahead === TOK_LBRACE) {
       this._match(TOK_LBRACE);
-      return this._parseMultiselectHash();
+      return this._parseObjectExpression();
     }
   }
 
@@ -495,7 +495,7 @@ export default class Parser {
       right = this._parseDotRHS(rbp);
     } else {
       const t = this._lookaheadToken(0);
-      const error = new Error(`Sytanx error, unexpected token: ${
+      const error = new Error(`Syntax error, unexpected token: ${
         t.value}(${t.type})`);
       error.name = 'ParserError';
       throw error;
@@ -503,7 +503,7 @@ export default class Parser {
     return right;
   }
 
-  _parseMultiselectList() {
+  _parseArrayExpression() {
     const expressions = [];
     while (this._lookahead(0) !== TOK_RBRACKET) {
       const expression = this.expression(0);
@@ -516,17 +516,17 @@ export default class Parser {
       }
     }
     this._match(TOK_RBRACKET);
-    return { type: 'MultiSelectList', children: expressions };
+    return { type: 'ArrayExpression', children: expressions };
   }
 
-  _parseMultiselectHash() {
+  _parseObjectExpression() {
     const pairs = [];
     const identifierTypes = [TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER];
     let keyToken; let keyName; let value; let
       node;
     if (this._lookahead(0) === TOK_RBRACE) {
       this._advance();
-      return { type: 'MultiSelectHash', children: [] };
+      return { type: 'ObjectExpression', children: [] };
     }
     for (;;) {
       keyToken = this._lookaheadToken(0);
@@ -547,6 +547,6 @@ export default class Parser {
         break;
       }
     }
-    return { type: 'MultiSelectHash', children: pairs };
+    return { type: 'ObjectExpression', children: pairs };
   }
 }

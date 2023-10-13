@@ -669,11 +669,35 @@
       },
       {
         "expression": "toNumber(`[0]`)",
-        "result": null
+        "error": "invalid-type"
       },
       {
         "expression": "toNumber(`{\"foo\": 0}`)",
-        "result": null
+        "error": "invalid-type"
+      },
+      {
+        "expression": "toNumber(\"FF\", 16)",
+        "result": 255
+      },
+      {
+        "expression": "toNumber(\"FF.EE\", 16)",
+        "result": 255
+      },
+      {
+        "expression": "toNumber(10, 16)",
+        "result": 16
+      },
+      {
+        "expression": "toNumber(11, 8)",
+        "result": 9
+      },
+      {
+        "expression": "toNumber(11, 2)",
+        "result": 3
+      },
+      {
+        "expression": "toNumber(\"11\", 12)",
+        "result": 11
       },
       {
         "expression": "\"toString\"(`1.0`)",

@@ -1906,34 +1906,40 @@ export default function functions(
     /**
      * Converts the provided arg to a number as per the <<Type Coercion Rules,type coercion rules>>.
      *
-     * @param {any} arg to convert to number
+     * @param {string|number|boolean|null} arg to convert to number
+     * @param {integer} [base=10] The base to use.  One of: 2, 8, 10, 16. Defaults to 10.
      * @return {number}
      * @function toNumber
      * @example
      * toNumber(1) // returns 1
      * toNumber("10") // returns 10
-     * toNumber({a: 1}) // returns null
+     * toNumber({a: 1}) // fails
      * toNumber(true()) // returns 1
      * toNumber("10f") // returns 0
+     * toNumber("FF", 16) // returns 255
      */
     toNumber: {
       _func: resolvedArgs => {
-        const typeName = getType(resolvedArgs[0]);
-        if (typeName === TYPE_NUMBER) {
-          return resolvedArgs[0];
-        }
-        if (typeName === TYPE_STRING) {
-          return toNumber(resolvedArgs[0]);
-        }
-        if (typeName === TYPE_BOOLEAN) {
-          if (resolvedArgs[0] === true) {
-            return 1;
+        const num = resolvedArgs[0];
+        const base = resolvedArgs.length > 1 ? resolvedArgs[1] : 10;
+        if (base !== 10) {
+          if (![2, 8, 16].includes(base)) {
+            debug.push(`Invalid base: "${base}" for toNumber(), using "10"`);
+            return toNumber(num);
           }
-          return 0;
+          const result = parseInt(num, base);
+          if (Number.isNaN(result)) {
+            debug.push(`Failed to convert "${num}" base "${base}" to number`);
+            return 0;
+          }
+          return result;
         }
-        return null;
+        return toNumber(num);
       },
-      _signature: [{ types: [TYPE_ANY] }],
+      _signature: [
+        { types: [TYPE_STRING, TYPE_NUMBER, TYPE_BOOLEAN, TYPE_NULL] },
+        { types: [dataTypes.TYPE_NUMBER], optional: true },
+      ],
     },
 
     /**

@@ -338,8 +338,6 @@
 
   ["toNumber(\"10\")", { "expression": "toNumber(\"10\")", "expected": 10 }],
 
-  ["toNumber({a: 1})", { "expression": "toNumber({a: 1})", "expected": null }],
-
   ["toNumber(true())", { "expression": "toNumber(true())", "expected": 1 }],
 
   ["toString(1)", { "expression": "toString(1)", "expected": "1" }],

@@ -83,10 +83,11 @@ export default class TreeInterpreter {
           }
           return field;
         }
+        debugAvailable(this.debug, value, node.name);
         return null;
       },
 
-      Subexpression: (node, value) => {
+      ChainedExpression: (node, value) => {
         let result = this.visit(node.children[0], value);
         for (let i = 1; i < node.children.length; i += 1) {
           result = this.visit(node.children[1], result);
@@ -95,7 +96,7 @@ export default class TreeInterpreter {
         return result;
       },
 
-      IndexExpression: (node, value) => {
+      BracketExpression: (node, value) => {
         const left = this.visit(node.children[0], value);
         return this.visit(node.children[1], left);
       },
@@ -127,7 +128,10 @@ export default class TreeInterpreter {
       },
 
       Slice: (node, value) => {
-        if (!isArray(value)) return null;
+        if (!isArray(value)) {
+          this.debug.push('Slices apply to arrays only');
+          return null;
+        }
         const sliceParams = node.children.slice(0).map(
           param => (param != null ? this.toNumber(this.visit(param, value)) : null),
         );
@@ -149,7 +153,12 @@ export default class TreeInterpreter {
       Projection: (node, value) => {
       // Evaluate left child.
         const base = this.visit(node.children[0], value);
-        if (!isArray(base)) return null;
+        if (!isArray(base)) {
+          if (node.debug === 'Wildcard') {
+            this.debug.push('Bracketed wildcards apply to arrays only');
+          }
+          return null;
+        }
         const collected = [];
         base.forEach(b => {
           const current = this.visit(node.children[1], b);
@@ -158,10 +167,14 @@ export default class TreeInterpreter {
         return collected;
       },
 
+      // wildcard: ".*"
       ValueProjection: (node, value) => {
       // Evaluate left child.
         const projection = this.visit(node.children[0], value);
-        if (!isObject(getValueOf(projection))) return null;
+        if (!isObject(getValueOf(projection))) {
+          this.debug.push('Chained wildcards apply to objects only');
+          return null;
+        }
         const collected = [];
         const values = objValues(projection);
         values.forEach(val => {
@@ -173,7 +186,10 @@ export default class TreeInterpreter {
 
       FilterProjection: (node, value) => {
         const base = this.visit(node.children[0], value);
-        if (!isArray(base)) return null;
+        if (!isArray(base)) {
+          this.debug.push('Filter expressions apply to arrays only');
+          return null;
+        }
         const filtered = base.filter(b => {
           const matched = this.visit(node.children[2], b);
           return toBoolean(matched);
@@ -210,7 +226,10 @@ export default class TreeInterpreter {
 
       [TOK_FLATTEN]: (node, value) => {
         const original = this.visit(node.children[0], value);
-        if (!isArray(original)) return null;
+        if (!isArray(original)) {
+          this.debug.push('Flatten expressions apply to arrays only');
+          return null;
+        }
         const merged = [];
         original.forEach(current => {
           if (isArray(current)) {
@@ -224,9 +243,9 @@ export default class TreeInterpreter {
 
       Identity: (_node, value) => value,
 
-      MultiSelectList: (node, value) => node.children.map(child => this.visit(child, value)),
+      ArrayExpression: (node, value) => node.children.map(child => this.visit(child, value)),
 
-      MultiSelectHash: (node, value) => {
+      ObjectExpression: (node, value) => {
         // at one time we used to have this:
         // if (value === null) return null;
         // BUT then an expression such as:
@@ -303,7 +322,12 @@ export default class TreeInterpreter {
 
       UnaryMinusExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
-        return first * -1;
+        const minus = first * -1;
+        if (Number.isNaN(minus)) {
+          this.debug.push(`Failed to convert "${first}" to number`);
+          return 0;
+        }
+        return minus;
       },
 
       Literal: node => node.value,
