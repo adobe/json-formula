@@ -31,6 +31,7 @@ import tokenDefinitions from './tokenDefinitions.js';
 import {
   isArray, isObject, strictDeepEqual, getValueOf, getProperty, debugAvailable, toBoolean,
 } from './utils.js';
+import { evaluationError, syntaxError } from './errors.js';
 
 const {
   TOK_CURRENT,
@@ -221,7 +222,7 @@ export default class TreeInterpreter {
         if (node.name === TOK_GTE) return first >= second;
         if (node.name === TOK_LT) return first < second;
         if (node.name === TOK_LTE) return first <= second;
-        throw new Error(`Unknown comparator: ${node.name}`);
+        throw syntaxError(`Unknown comparator: ${node.name}`);
       },
 
       [TOK_FLATTEN]: (node, value) => {
@@ -366,7 +367,7 @@ export default class TreeInterpreter {
       },
     };
     const fn = n && visitFunctions[n.type];
-    if (!fn) throw new Error(`Unknown/missing node type ${(n && n.type) || ''}`);
+    if (!fn) throw syntaxError(`Unknown/missing node type ${(n && n.type) || ''}`);
     return fn(n, v);
   }
 
@@ -389,9 +390,7 @@ export default class TreeInterpreter {
     if (step === null) {
       step = 1;
     } else if (step === 0) {
-      const error = new Error('Invalid slice, step cannot be 0');
-      error.name = 'RuntimeError';
-      throw error;
+      throw evaluationError('Invalid slice, step cannot be 0');
     }
     const stepValueNegative = step < 0;
 
@@ -435,10 +434,10 @@ export default class TreeInterpreter {
     if (operator === '/') {
       const result = first / second;
       if (second === 0) {
-        throw new Error(`Division by zero ${first}/${second}`);
+        throw evaluationError(`Division by zero ${first}/${second}`);
       }
       return Number.isFinite(result) ? result : null;
     }
-    throw new Error(`Unknown operator: ${operator}`);
+    throw syntaxError(`Unknown operator: ${operator}`);
   }
 }

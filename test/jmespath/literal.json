@@ -169,7 +169,7 @@
         {
           "comment": "Literal on RHS of subexpr not allowed",
           "expression": "foo.`\"bar\"`",
-          "error": "syntax"
+          "error": "SyntaxError"
         }
       ]
     },
@@ -228,7 +228,7 @@
         {
           "comment": "Backslash not followed by standard JSON escape character is an error",
           "expression": "\"\\z\"",
-          "error" : "syntax"
+          "error" : "SyntaxError"
         },
         {
           "comment": "Backslash not followed by double quote is treated as any other character",
@@ -258,22 +258,22 @@
         {
           "comment": "Bad Unicode sequence fails",
           "expression": "\"\\u042\"",
-          "error": "syntax"
+          "error": "SyntaxError"
         },
         {
           "comment": "Bad escape sequence fails in json literal",
           "expression": "`\"\\D\"`",
-          "error": "syntax"
+          "error": "SyntaxError"
         },
         {
           "comment": "fail bad escape in string literal",
           "expression": "\"\\D\"",
-          "error": "syntax"
+          "error": "SyntaxError"
         },
         {
           "comment": "fail on bad escape in name",
           "expression": "'\\D'",
-          "error": "syntax"
+          "error": "SyntaxError"
         }
       ]
     }

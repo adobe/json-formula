@@ -135,9 +135,11 @@ export function debugAvailable(debug, obj, key) {
     if (isArray(obj) && obj.length > 0) {
       available.push(`${0}..${obj.length - 1}`);
     }
-    available = [...available, ...Object.entries(Object.getOwnPropertyDescriptors(obj, key))
-      .filter(([k, desc]) => (desc?.enumerable || !!desc?.get) && !/^[0-9]+$/.test(k) && (!k.startsWith('$') || key.startsWith('$')))
-      .map(([k]) => `'${k}'`)];
+    if (obj !== null) {
+      available = [...available, ...Object.entries(Object.getOwnPropertyDescriptors(obj, key))
+        .filter(([k, desc]) => (desc?.enumerable || !!desc?.get) && !/^[0-9]+$/.test(k) && (!k.startsWith('$') || key.startsWith('$')))
+        .map(([k]) => `'${k}'`)];
+    }
     if (available.length) debug.push(`Available fields: ${available}`);
   // eslint-disable-next-line no-empty
   } catch (e) {}

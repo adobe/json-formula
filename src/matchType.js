@@ -27,6 +27,7 @@ governing permissions and limitations under the License.
 */
 import dataTypes from './dataTypes.js';
 import tokenDefinitions from './tokenDefinitions.js';
+import { typeError } from './errors.js';
 
 const {
   TYPE_NUMBER,
@@ -131,7 +132,7 @@ export function matchType(actuals, expectedList, argValue, context, toNumber, to
     wrongType = true;
   }
   if (wrongType) {
-    throw new Error(`TypeError: ${context} expected argument to be type ${TYPE_NAME_TABLE[expectedList[0]]} but received type ${TYPE_NAME_TABLE[actual]} instead.`);
+    throw typeError(`${context} expected argument to be type ${TYPE_NAME_TABLE[expectedList[0]]} but received type ${TYPE_NAME_TABLE[actual]} instead.`);
   }
   // no exact match in the list of possible types, see if we can coerce an array type
   let expected = -1;
@@ -197,5 +198,5 @@ export function matchType(actuals, expectedList, argValue, context, toNumber, to
       return argValue;
     }
   }
-  throw new Error(`TypeError: ${context} expected argument to be type ${TYPE_NAME_TABLE[expectedList[0]]} but received type ${TYPE_NAME_TABLE[actual]} instead.`);
+  throw typeError(`${context} expected argument to be type ${TYPE_NAME_TABLE[expectedList[0]]} but received type ${TYPE_NAME_TABLE[actual]} instead.`);
 }

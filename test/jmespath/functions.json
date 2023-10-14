@@ -17,11 +17,11 @@
     "cases": [
       {
         "expression": "and(true() true())",
-        "error": "syntax"
+        "error": "SyntaxError"
       },
       {
         "expression": "and(true(),)",
-        "error": "syntax"
+        "error": "SyntaxError"
       },
       {
         "expression": "power(2, 4)",
@@ -74,7 +74,7 @@
       {
         "expression": "abs(str)",
         "result": 0,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "abs(array[1])",
@@ -87,7 +87,7 @@
       {
         "expression": "abs(`false`)",
         "result": 0,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "abs(`-24`)",
@@ -99,15 +99,15 @@
       },
       {
         "expression": "abs(`1`, `2`)",
-        "error": "invalid-arity"
+        "error": "ParameterError"
       },
       {
         "expression": "abs()",
-        "error": "invalid-arity"
+        "error": "ParameterError"
       },
       {
         "expression": "unknown_function(`1`, `2`)",
-        "error": "unknown-function"
+        "error": "UnknownFunction"
       },
       {
         "expression": "avg(numbers)",
@@ -116,26 +116,26 @@
       {
         "expression": "avg(array)",
         "result": 18.5,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "avg('abc')",
         "result": 0,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "avg(foo)",
         "result": -1,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "avg(@)",
-        "error": "invalid-type"
+        "error": "TypeError"
       },
       {
         "expression": "avg(strings)",
         "result": 0,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "ceil(`1.2`)",
@@ -156,7 +156,7 @@
       {
         "expression": "ceil(\"string\")",
         "result": 0,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "contains(\"abc\", \"a\")",
@@ -169,7 +169,7 @@
       {
         "expression": "contains(`false`, \"d\")",
         "result": false,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "contains(strings, \"a\")",
@@ -206,7 +206,7 @@
       {
         "expression": "endsWith(str, `0`)",
         "result": false,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "floor(`1.2`)",
@@ -215,7 +215,7 @@
       {
         "expression": "floor(\"string\")",
         "result": 0,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "floor(decimals[0])",
@@ -228,7 +228,7 @@
       {
         "expression": "floor(str)",
         "result": 0,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "length(\"abc\")",
@@ -265,12 +265,12 @@
       {
         "expression": "length(`false`)",
         "result": 5,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "length(foo)",
         "result": 2,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "length(strings[0])",
@@ -291,12 +291,12 @@
       {
         "expression": "max(abc)",
         "result": null,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "max(array)",
         "result": 100,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "max(decimals)",
@@ -352,11 +352,11 @@
       },
       {
         "expression": "merge(`{\"a\": 1}`, `{\"a\": 2}`, \"82\")",
-        "error": "invalid-argument"
+        "error": "TypeError"
       },
       {
         "expression": "merge([1, 2, 3], [4, 5, 6])",
-        "error": "invalid-argument"
+        "error": "TypeError"
       },
       {
         "expression": "min(numbers)",
@@ -369,12 +369,12 @@
       {
         "expression": "min(abc)",
         "result": null,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "min(array)",
         "result": -1,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "min(empty_list)",
@@ -455,17 +455,17 @@
       {
         "expression": "keys(foo)",
         "result": [],
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "keys(strings)",
         "result": ["0", "1", "2"],
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "keys(`false`)",
         "result": [],
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "sort(values(objects))",
@@ -482,7 +482,7 @@
       {
         "expression": "values(foo)",
         "result": [],
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "values(null())",
@@ -503,12 +503,12 @@
       {
         "expression": "join(\",\", `[\"a\", 0]`)",
         "result": "a,0",
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "join(\", \", str)",
         "result": "Str",
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "join(\"|\", strings)",
@@ -517,12 +517,12 @@
       {
         "expression": "join(`2`, strings)",
         "result": "a2b2c",
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "join(\"|\", decimals)",
         "result": "1.01|1.2|-1.5",
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "join(\"|\", decimals[].toString(@))",
@@ -575,7 +575,7 @@
       {
         "expression": "startsWith(str, `0`)",
         "result": false,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "sum(numbers)",
@@ -588,7 +588,7 @@
       {
         "expression": "sum(array)",
         "result": 111,
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "sum(array[].toNumber(@))",
@@ -669,11 +669,11 @@
       },
       {
         "expression": "toNumber(`[0]`)",
-        "error": "invalid-type"
+        "error": "TypeError"
       },
       {
         "expression": "toNumber(`{\"foo\": 0}`)",
-        "error": "invalid-type"
+        "error": "TypeError"
       },
       {
         "expression": "toNumber(\"FF\", 16)",
@@ -700,8 +700,8 @@
         "result": 11
       },
       {
-        "expression": "\"toString\"(`1.0`)",
-        "error": "syntax"
+        "expression": "'toString'(`1.0`)",
+        "error": "UnknownFunction"
       },
       {
         "expression": "sort(numbers)",
@@ -718,12 +718,12 @@
       {
         "expression": "sort(array)",
         "result": [-1, "a", 3, 4, 5, "100"],
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "sort(abc)",
         "result": [],
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "sort(empty_list)",
@@ -731,7 +731,7 @@
       },
       {
         "expression": "sort(@)",
-        "error": "invalid-type"
+        "error": "TypeError"
       },
       {
         "expression": "notNull(unknown_key, str)",
@@ -751,7 +751,7 @@
       },
       {
         "expression": "notNull()",
-        "error": "invalid-arity"
+        "error": "ParameterError"
       },
       {
         "description": "function projection on single arg function",
@@ -882,19 +882,19 @@
       },
       {
         "expression": "sortBy(people, &extra)",
-        "error": "invalid-type"
+        "error": "TypeError"
       },
       {
         "expression": "sortBy(people, &bool)",
-        "error": "invalid-type"
+        "error": "TypeError"
       },
       {
         "expression": "sortBy(people, &name)",
-        "error": "invalid-type"
+        "error": "TypeError"
       },
       {
         "expression": "sortBy(people, name)",
-        "error": "invalid-type"
+        "error": "TypeError"
       },
       {
         "expression": "sortBy(people, &age)[].extra",
@@ -969,7 +969,7 @@
       {
         "expression": "map(&a, badkey)",
         "result": [],
-        "was": "invalid-type"
+        "was": "TypeError"
       },
       {
         "expression": "map(&foo, empty)",

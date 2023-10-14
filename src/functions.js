@@ -29,6 +29,7 @@ governing permissions and limitations under the License.
 /* eslint-disable no-underscore-dangle */
 import dataTypes from './dataTypes.js';
 import { getProperty, debugAvailable, toBoolean } from './utils.js';
+import { typeError } from './errors.js';
 
 function round(num, digits) {
   const precision = 10 ** digits;
@@ -340,7 +341,7 @@ export default function functions(
           else date2.setFullYear(date1.getFullYear());
           return Math.floor(getDateNum(date2 - date1));
         }
-        throw new TypeError(`Unrecognized unit parameter "${unit}" for datedif()`);
+        throw typeError(`Unrecognized unit parameter "${unit}" for datedif()`);
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -1589,7 +1590,7 @@ export default function functions(
           runtime.interpreter.visit(exprefNode, sortedArray[0]),
         );
         if ([TYPE_NUMBER, TYPE_STRING].indexOf(requiredType) < 0) {
-          throw new Error('TypeError');
+          throw typeError('Bad data type for sortBy()');
         }
         // In order to get a stable sort out of an unstable
         // sort algorithm, we decorate/sort/undecorate (DSU)
@@ -1606,15 +1607,9 @@ export default function functions(
           const exprA = runtime.interpreter.visit(exprefNode, a[1]);
           const exprB = runtime.interpreter.visit(exprefNode, b[1]);
           if (getType(exprA) !== requiredType) {
-            throw new Error(
-              `TypeError: expected ${requiredType}, received ${
-                getType(exprA)}`,
-            );
+            throw typeError(`sortBy expected ${requiredType}, received ${getType(exprA)}`);
           } else if (getType(exprB) !== requiredType) {
-            throw new Error(
-              `TypeError: expected ${requiredType}, received ${
-                getType(exprB)}`,
-            );
+            throw typeError(`sortyBy expected ${requiredType}, received ${getType(exprB)}`);
           }
           if (exprA > exprB) {
             return 1;

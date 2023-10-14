@@ -189,7 +189,7 @@ The following errors are defined:
   evaluation process.
 * `unknown-function` is raised when an unknown function is encountered during
   the evaluation process.
-* `invalid-arity` is raised when an invalid number of function arguments is
+* `ParameterError` is raised when an invalid number of function arguments is
   encountered during the evaluation process.
 
 == Grammar
@@ -1223,7 +1223,7 @@ Functions can either have a specific arity or be variadic with a minimum
 number of arguments.  If a `functionExpression` is encountered where the
 arity does not match, or the minimum number of arguments for a variadic function
 is not provided, or too many arguments are provided, then an
-`invalid-arity` error is raised.
+`ParameterError` error is raised.
 
 Functions are evaluated in applicative order.  Each argument must be an
 expression, each argument expression must be evaluated before evaluating the

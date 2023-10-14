@@ -438,7 +438,7 @@
     {
       "data": "`{}`",
       "expression": "2 ^ [1,2,4]",
-      "error" : "syntax",
+      "error" : "SyntaxError",
       "was": [2,4,16]
     }
   ],
@@ -447,7 +447,7 @@
     {
       "data": "`{}`",
       "expression": "[4,2,1] ^ 2",
-      "error" : "syntax",
+      "error" : "SyntaxError",
       "was": [16,4,1]
     }
   ],
@@ -456,7 +456,7 @@
     {
       "data": "`{}`",
       "expression": "[1,\"2\",3] ^ [1,1,3,8]",
-      "error" : "syntax",
+      "error" : "SyntaxError",
       "was": [1,2,27,0]
     }
   ],
@@ -506,7 +506,7 @@
     {
       "data": "{}",
       "expression": "`.1`",
-      "error": "type-error"
+      "error": "SyntaxError"
     }
   ],
   [
@@ -834,7 +834,7 @@
     {
       "data": "`null`",
       "expression": "power(2)",
-      "error": "invalid-arity"
+      "error": "ParameterError"
     }
   ],
   [
@@ -1098,7 +1098,7 @@
     {
       "data": "`null`",
       "expression": "mid(\"abc\")",
-      "error": "invalid-arity"
+      "error": "ParameterError"
     }
   ],
   [
@@ -1266,7 +1266,7 @@
     {
       "data": "`null`",
       "expression": "mid(split(\"abc\", \"\"))",
-      "error": "invalid-arity"
+      "error": "ParameterError"
     }
   ],
   [
@@ -1971,7 +1971,7 @@
     {
       "data": "`null`",
       "expression": "datetime(1970,1)",
-      "error": "invalid-arity"
+      "error": "ParameterError"
     }
   ],
   [
@@ -2414,7 +2414,7 @@
     {
       "data": "`null`",
       "expression": "entries(`null`)",
-      "error": "type-error"
+      "error": "TypeError"
     }
   ],
   [
@@ -2459,7 +2459,7 @@
     {
       "data": "samples.'purchase-order'",
       "expression": "fromEntries(address.street)",
-      "error": "type-error"
+      "error": "TypeError"
     }
   ],
   [
@@ -2467,7 +2467,7 @@
     {
       "data": "samples.'purchase-order'",
       "expression": "fromEntries(items)",
-      "error": "type-error"
+      "error": "TypeError"
     }
   ],
   [
@@ -2516,7 +2516,7 @@
       "data": "{}",
       "expression": "null/0",
       "was": null,
-      "error": "type-error"
+      "error": "EvaluationError"
     }
   ],
   [
@@ -2525,7 +2525,7 @@
       "data": "{}",
       "expression": "4/0",
       "was": null,
-      "error": "type-error"
+      "error": "EvaluationError"
     }
   ],
   [
@@ -2605,7 +2605,7 @@
     {
       "data": "samples.'purchase-order'.items[*]",
       "expression": "[].quantity ~ {a: 4}",
-      "error": "type-error"
+      "error": "TypeError"
     }
   ],
   [
@@ -3164,7 +3164,7 @@
     {
       "data": "{}",
       "expression": "random(2)",
-      "error": "invalid-arity"
+      "error": "ParameterError"
     }
   ],
   [

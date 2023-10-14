@@ -919,7 +919,7 @@ evaluation process.</p>
 the evaluation process.</p>
 </li>
 <li>
-<p><code>invalid-arity</code> is raised when an invalid number of function arguments is
+<p><code>ParameterError</code> is raised when an invalid number of function arguments is
 encountered during the evaluation process.</p>
 </li>
 </ul>
@@ -939,27 +939,27 @@ encountered during the evaluation process.</p>
 formula : expression EOF ;
 
 expression
-  : expression '.' chainedExpression 
-  | expression bracketExpression 
-  | bracketExpression 
-  | expression ('*' | '/' | '&amp;' | '~') expression	
-  | expression ('+' | '-') expression	
-  | expression COMPARATOR expression 
-  | expression '&amp;&amp;' expression 
-  | expression '||' expression 
-  | identifier 
-  | '!' expression 
-  | '-' expression 
-  | '(' expression ')' 
-  | wildcard 
-  | arrayExpression 
-  | objectExpression 
-  | JSON_FRAGMENT 
-  | functionExpression 
-  | expression '|' expression 
-  | STRING 
-  | (REAL_OR_EXPONENT_NUMBER | INT) 
-  | currentNode 
+  : expression '.' chainedExpression
+  | expression bracketExpression
+  | bracketExpression
+  | expression ('*' | '/' | '&amp;' | '~') expression
+  | expression ('+' | '-') expression
+  | expression COMPARATOR expression
+  | expression '&amp;&amp;' expression
+  | expression '||' expression
+  | identifier
+  | '!' expression
+  | '-' expression
+  | '(' expression ')'
+  | wildcard
+  | arrayExpression
+  | objectExpression
+  | JSON_FRAGMENT
+  | functionExpression
+  | expression '|' expression
+  | STRING
+  | (REAL_OR_EXPONENT_NUMBER | INT)
+  | currentNode
   ;
 
 chainedExpression
@@ -975,18 +975,18 @@ wildcard : '*' ;
 arrayExpression : '[' expression (',' expression)* ']' ;
 
 objectExpression
-  : '{' '}' 
-  | '{' keyvalExpr (',' keyvalExpr)* '}'  
+  : '{' '}'
+  | '{' keyvalExpr (',' keyvalExpr)* '}'
   ;
 
 keyvalExpr : identifier ':' expression ;
 
 bracketExpression
-  : '[' '*' ']' 
-  | '[' slice ']' 
-  | '[' ']' 
-  | '[?' expression ']' 
-  | '[' expression ']' 
+  : '[' '*' ']'
+  | '[' slice ']'
+  | '[' ']'
+  | '[?' expression ']'
+  | '[' expression ']'
   ;
 
 slice : start=expression? ':' stop=expression? (':' step=expression?)? ;
@@ -2438,7 +2438,7 @@ does not exist, an <code>unknown-function</code> error is raised.</p>
 number of arguments.  If a <code>functionExpression</code> is encountered where the
 arity does not match, or the minimum number of arguments for a variadic function
 is not provided, or too many arguments are provided, then an
-<code>invalid-arity</code> error is raised.</p>
+<code>ParameterError</code> error is raised.</p>
 </div>
 <div class="paragraph">
 <p>Functions are evaluated in applicative order.  Each argument must be an

@@ -28,6 +28,7 @@ governing permissions and limitations under the License.
 
 /* eslint-disable no-underscore-dangle */
 import tokenDefinitions from './tokenDefinitions.js';
+import { syntaxError } from './errors.js';
 
 const {
   TOK_UNQUOTEDIDENTIFIER,
@@ -267,9 +268,7 @@ export default class Lexer {
           tokens.push({ type: TOK_PIPE, value: '|', start });
         }
       } else {
-        const error = new Error(`Unknown character:${stream[this._current]}`);
-        error.name = 'LexerError';
-        throw error;
+        throw syntaxError(`Unknown character:${stream[this._current]}`);
       }
     }
     return tokens;
@@ -341,12 +340,12 @@ export default class Lexer {
     this._current += 1;
     const literal = stream.slice(start + 1, this._current - 1);
     if (this._current > maxLength) {
-      throw new Error(`Unterminated string literal at ${start}, "${literal}`);
+      throw syntaxError(`Unterminated string literal at ${start}, "${literal}`);
     }
     try {
       return JSON.parse(`"${literal}"`);
     } catch (_e) {
-      throw new Error(`Invalid string literal: ${literal}`);
+      throw syntaxError(`Invalid string literal: ${literal}`);
     }
   }
 

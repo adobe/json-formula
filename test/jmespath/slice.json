@@ -116,20 +116,20 @@
     },
     {
       "expression": "foo[8:2:0]",
-      "error": "invalid-value"
+      "error": "EvaluationError"
     },
     {
       "expression": "foo[8:2:0:1]",
-      "error": "syntax"
+      "error": "SyntaxError"
     },
     {
       "expression": "foo[8:2&]",
-      "error": "syntax"
+      "error": "SyntaxError"
     },
     {
       "expression": "foo[2:a:3]",
       "result": [2, 5, 8],
-      "was": "syntax"
+      "was": "SyntaxError"
     }
   ]
 }, {

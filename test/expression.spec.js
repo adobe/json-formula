@@ -77,6 +77,7 @@ test.each(filtered)('%s', (_desc, tst) => {
     result = jsonFormula.search(tst.expression, data, { $: 42, $$: 43 }, language);
   } catch (e) {
     expect(tst.error).toBeDefined();
+    expect(tst.error).toBe(e.name);
     return;
   }
   if (typeof result === 'number') {

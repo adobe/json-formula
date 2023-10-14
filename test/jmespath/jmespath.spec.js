@@ -53,14 +53,14 @@ const jsonFormula = new JsonFormula(functions, stringToNumber);
 
 function executeTest(desc, tst) {
   const grammarResult = testGrammar(tst.expression);
-  if (grammarResult === 'error') expect(tst.error).toBe('syntax');
-  else expect(tst.error).not.toBe('syntax');
+  if (grammarResult === 'SyntaxError') expect(tst.error).not.toBeUndefined();
 
   let result;
   try {
     result = jsonFormula.search(tst.expression, tst.given);
   } catch (e) {
     expect(tst.error).not.toBeUndefined();
+    expect(e.name).toBe(tst.error);
     return;
   }
   expect(result).toEqual(tst.result === undefined ? tst.error : tst.result);
