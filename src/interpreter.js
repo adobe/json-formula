@@ -37,7 +37,7 @@ import {
   isArray, isObject, strictDeepEqual, getValueOf,
 } from './utils.js';
 import {
-  evaluationError, typeError, functionError, syntaxError,
+  evaluationError, typeError, functionError,
 } from './errors.js';
 
 // Type constants used to define functions.
@@ -173,16 +173,8 @@ export default class Formula {
   }
 
   compile(stream, allowedGlobalNames = []) {
-    let ast;
-    try {
-      const parser = new Parser(allowedGlobalNames);
-      ast = parser.parse(stream, this.debug);
-    } catch (e) {
-      this.debug.push(e.toString());
-      if (e.name !== 'Error') throw e;
-      throw syntaxError(e.toString());
-    }
-    return ast;
+    const parser = new Parser(allowedGlobalNames);
+    return parser.parse(stream, this.debug);
   }
 
   search(node, data, globals = {}, language = 'en-US') {
