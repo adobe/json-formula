@@ -31,7 +31,7 @@ import tokenDefinitions from './tokenDefinitions.js';
 import {
   isArray, isObject, strictDeepEqual, getValueOf, getProperty, debugAvailable, toBoolean,
 } from './utils.js';
-import { evaluationError, syntaxError } from './errors.js';
+import { evaluationError } from './errors.js';
 
 const {
   TOK_CURRENT,
@@ -42,7 +42,6 @@ const {
   TOK_GT,
   TOK_LT,
   TOK_GTE,
-  TOK_LTE,
   TOK_NE,
   TOK_FLATTEN,
 } = tokenDefinitions;
@@ -221,8 +220,9 @@ export default class TreeInterpreter {
         if (node.name === TOK_GT) return first > second;
         if (node.name === TOK_GTE) return first >= second;
         if (node.name === TOK_LT) return first < second;
-        if (node.name === TOK_LTE) return first <= second;
-        throw syntaxError(`Unknown comparator: ${node.name}`);
+        // if (node.name === TOK_LTE)
+        // must be LTE
+        return first <= second;
       },
 
       [TOK_FLATTEN]: (node, value) => {
@@ -367,7 +367,6 @@ export default class TreeInterpreter {
       },
     };
     const fn = n && visitFunctions[n.type];
-    if (!fn) throw syntaxError(`Unknown/missing node type ${(n && n.type) || ''}`);
     return fn(n, v);
   }
 
@@ -431,13 +430,12 @@ export default class TreeInterpreter {
       return this.toNumber(first) + this.toNumber(second);
     }
     if (operator === '-') return this.toNumber(first) - this.toNumber(second);
-    if (operator === '/') {
-      const result = first / second;
-      if (second === 0) {
-        throw evaluationError(`Division by zero ${first}/${second}`);
-      }
-      return Number.isFinite(result) ? result : null;
+    // if (operator === '/') {
+    // Must be division
+    const result = first / second;
+    if (second === 0) {
+      throw evaluationError(`Division by zero ${first}/${second}`);
     }
-    throw syntaxError(`Unknown operator: ${operator}`);
+    return Number.isFinite(result) ? result : null;
   }
 }

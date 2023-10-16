@@ -20,15 +20,9 @@ export function syntaxError(desc) {
   return e;
 }
 
-export function parameterError(desc) {
+export function functionError(desc) {
   const e = new Error(desc);
-  e.name = 'ParameterError';
-  return e;
-}
-
-export function unknownFunction(desc) {
-  const e = new Error(desc);
-  e.name = 'UnknownFunction';
+  e.name = 'FunctionError';
   return e;
 }
 

@@ -834,7 +834,7 @@
     {
       "data": "`null`",
       "expression": "power(2)",
-      "error": "ParameterError"
+      "error": "FunctionError"
     }
   ],
   [
@@ -1098,7 +1098,7 @@
     {
       "data": "`null`",
       "expression": "mid(\"abc\")",
-      "error": "ParameterError"
+      "error": "FunctionError"
     }
   ],
   [
@@ -1266,7 +1266,7 @@
     {
       "data": "`null`",
       "expression": "mid(split(\"abc\", \"\"))",
-      "error": "ParameterError"
+      "error": "FunctionError"
     }
   ],
   [
@@ -1971,7 +1971,7 @@
     {
       "data": "`null`",
       "expression": "datetime(1970,1)",
-      "error": "ParameterError"
+      "error": "FunctionError"
     }
   ],
   [
@@ -3164,7 +3164,7 @@
     {
       "data": "{}",
       "expression": "random(2)",
-      "error": "ParameterError"
+      "error": "FunctionError"
     }
   ],
   [

@@ -37,7 +37,7 @@ import {
   isArray, isObject, strictDeepEqual, getValueOf,
 } from './utils.js';
 import {
-  evaluationError, typeError, parameterError, syntaxError, unknownFunction,
+  evaluationError, typeError, functionError, syntaxError,
 } from './errors.js';
 
 // Type constants used to define functions.
@@ -114,7 +114,7 @@ class Runtime {
     // a minimum number of args to be required.  Otherwise it has to
     // be an exact amount.
     if (signature.length === 0 && args.length > 0) {
-      throw parameterError(`${argName}() does not accept parameters`);
+      throw functionError(`${argName}() does not accept parameters`);
     }
 
     if (signature.length === 0) {
@@ -126,12 +126,12 @@ class Runtime {
     if (lastArg.variadic) {
       if (args.length < signature.length) {
         pluralized = signature.length === 1 ? ' argument' : ' arguments';
-        throw parameterError(`${argName}() takes at least ${signature.length}${pluralized
+        throw functionError(`${argName}() takes at least ${signature.length}${pluralized
         } but received ${args.length}`);
       }
     } else if (args.length < argsNeeded || args.length > signature.length) {
       pluralized = signature.length === 1 ? ' argument' : ' arguments';
-      throw parameterError(`${argName}() takes ${signature.length}${pluralized
+      throw functionError(`${argName}() takes ${signature.length}${pluralized
       } but received ${args.length}`);
     }
     // if the arguments are unresolved, there's no point in validating types
@@ -156,7 +156,7 @@ class Runtime {
   callFunction(name, resolvedArgs, data, interpreter, bResolved = true) {
     // this check will weed out 'valueOf', 'toString' etc
     if (!Object.prototype.hasOwnProperty.call(this.functionTable, name)) {
-      throw unknownFunction(`${name}()`);
+      throw functionError(`${name}()`);
     }
 
     const functionEntry = this.functionTable[name];

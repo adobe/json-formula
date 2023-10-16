@@ -134,12 +134,12 @@
       {
         "comment": "invalid start of function",
         "expression": "@(foo)",
-        "error": "UnknownFunction"
+        "error": "FunctionError"
       },
       {
         "comment": "function names cannot be quoted",
         "expression": "'foo'(bar)",
-        "error": "UnknownFunction"
+        "error": "SyntaxError"
       }
     ]
   },

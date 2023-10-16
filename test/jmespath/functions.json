@@ -99,15 +99,15 @@
       },
       {
         "expression": "abs(`1`, `2`)",
-        "error": "ParameterError"
+        "error": "FunctionError"
       },
       {
         "expression": "abs()",
-        "error": "ParameterError"
+        "error": "FunctionError"
       },
       {
         "expression": "unknown_function(`1`, `2`)",
-        "error": "UnknownFunction"
+        "error": "FunctionError"
       },
       {
         "expression": "avg(numbers)",
@@ -701,7 +701,7 @@
       },
       {
         "expression": "'toString'(`1.0`)",
-        "error": "UnknownFunction"
+        "error": "SyntaxError"
       },
       {
         "expression": "sort(numbers)",
@@ -751,7 +751,7 @@
       },
       {
         "expression": "notNull()",
-        "error": "ParameterError"
+        "error": "FunctionError"
       },
       {
         "description": "function projection on single arg function",

@@ -28,7 +28,7 @@ governing permissions and limitations under the License.
 
 import Lexer from './Lexer.js';
 import tokenDefinitions from './tokenDefinitions.js';
-import { unknownFunction, syntaxError } from './errors.js';
+import { syntaxError } from './errors.js';
 
 /* eslint-disable no-underscore-dangle */
 const {
@@ -184,7 +184,7 @@ export default class Parser {
       case TOK_QUOTEDIDENTIFIER:
         node = { type: 'Field', name: token.value };
         if (this._lookahead(0) === TOK_LPAREN) {
-          throw unknownFunction('Quoted identifier not allowed for function names.');
+          throw syntaxError('Quoted identifier not allowed for function names.');
         }
         return node;
       case TOK_NOT:
@@ -471,6 +471,7 @@ export default class Parser {
       this._match(TOK_LBRACE);
       return this._parseObjectExpression();
     }
+    throw syntaxError('Expecting one of: "*", "[", "{", name or quoted name after a dot');
   }
 
   _parseProjectionRHS(rbp) {
