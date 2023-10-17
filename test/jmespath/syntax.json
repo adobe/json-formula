@@ -134,7 +134,7 @@
       {
         "comment": "invalid start of function",
         "expression": "@(foo)",
-        "error": "FunctionError"
+        "error": "SyntaxError"
       },
       {
         "comment": "function names cannot be quoted",

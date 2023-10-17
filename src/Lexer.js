@@ -31,7 +31,7 @@ import tokenDefinitions from './tokenDefinitions.js';
 import { syntaxError } from './errors.js';
 
 const {
-  TOK_UNQUOTEDIDENTIFIER,
+  TOK_IDENTIFIER,
   TOK_QUOTEDIDENTIFIER,
   TOK_RBRACKET,
   TOK_RPAREN,
@@ -144,7 +144,7 @@ export default class Lexer {
         start = this._current;
         identifier = this._consumeUnquotedIdentifier(stream);
         tokens.push({
-          type: TOK_UNQUOTEDIDENTIFIER,
+          type: TOK_IDENTIFIER,
           value: identifier,
           start,
         });
@@ -158,7 +158,7 @@ export default class Lexer {
           start: this._current,
         });
         this._current += 1;
-      } else if (stream[this._current] === '-' && ![TOK_GLOBAL, TOK_CURRENT, TOK_NUMBER, TOK_RPAREN, TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER, TOK_RBRACKET].includes(prev)) {
+      } else if (stream[this._current] === '-' && ![TOK_GLOBAL, TOK_CURRENT, TOK_NUMBER, TOK_RPAREN, TOK_IDENTIFIER, TOK_QUOTEDIDENTIFIER, TOK_RBRACKET].includes(prev)) {
         token = this._consumeUnaryMinus(stream);
         tokens.push(token);
       } else if (stream[this._current] === '[') {

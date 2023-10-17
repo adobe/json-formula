@@ -70,22 +70,25 @@ export default class TreeInterpreter {
     return this.visit(node, value);
   }
 
-  visit(n, v) {
-    const visitFunctions = {
-      Field: (node, value) => {
-        // we used to check isObject(value) here -- but it is possible for an array-based
-        // object to have properties.  So we'll allow the child check on objects and arrays.
-        if (value !== null && (isObject(value) || isArray(value))) {
-          const field = getProperty(value, node.name);
-          if (field === undefined) {
-            debugAvailable(this.debug, value, node.name);
-            return null;
-          }
-          return field;
-        }
+  field(node, value) {
+    // we used to check isObject(value) here -- but it is possible for an array-based
+    // object to have properties.  So we'll allow the child check on objects and arrays.
+    if (value !== null && (isObject(value) || isArray(value))) {
+      const field = getProperty(value, node.name);
+      if (field === undefined) {
         debugAvailable(this.debug, value, node.name);
         return null;
-      },
+      }
+      return field;
+    }
+    debugAvailable(this.debug, value, node.name);
+    return null;
+  }
+
+  visit(n, v) {
+    const visitFunctions = {
+      Identifier: this.field.bind(this),
+      QuotedIdentifier: this.field.bind(this),
 
       ChainedExpression: (node, value) => {
         let result = this.visit(node.children[0], value);

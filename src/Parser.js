@@ -35,7 +35,7 @@ const {
   TOK_JSON,
   TOK_COLON,
   TOK_EOF,
-  TOK_UNQUOTEDIDENTIFIER,
+  TOK_IDENTIFIER,
   TOK_QUOTEDIDENTIFIER,
   TOK_RBRACKET,
   TOK_RPAREN,
@@ -45,7 +45,6 @@ const {
   TOK_NUMBER,
   TOK_CURRENT,
   TOK_GLOBAL,
-  TOK_FIELD,
   TOK_EXPREF,
   TOK_PIPE,
   TOK_OR,
@@ -74,7 +73,7 @@ const {
 
 const bindingPower = {
   [TOK_EOF]: 0,
-  [TOK_UNQUOTEDIDENTIFIER]: 0,
+  [TOK_IDENTIFIER]: 0,
   [TOK_QUOTEDIDENTIFIER]: 0,
   [TOK_RBRACKET]: 0,
   [TOK_RPAREN]: 0,
@@ -83,7 +82,6 @@ const bindingPower = {
   [TOK_NUMBER]: 0,
   [TOK_CURRENT]: 0,
   [TOK_GLOBAL]: 0,
-  [TOK_FIELD]: 0,
   [TOK_EXPREF]: 0,
   [TOK_PIPE]: 1,
   [TOK_OR]: 2,
@@ -179,13 +177,10 @@ export default class Parser {
         return { type: 'Literal', value: token.value };
       case TOK_NUMBER:
         return { type: 'Number', value: token.value };
-      case TOK_UNQUOTEDIDENTIFIER:
-        return { type: 'Field', name: token.value };
+      case TOK_IDENTIFIER:
+        return { type: 'Identifier', name: token.value };
       case TOK_QUOTEDIDENTIFIER:
-        node = { type: 'Field', name: token.value };
-        if (this._lookahead(0) === TOK_LPAREN) {
-          throw syntaxError('Quoted identifier not allowed for function names.');
-        }
+        node = { type: 'QuotedIdentifier', name: token.value };
         return node;
       case TOK_NOT:
         right = this.expression(bindingPower.Not);
@@ -227,8 +222,6 @@ export default class Parser {
         return { type: TOK_CURRENT };
       case TOK_GLOBAL:
         return { type: TOK_GLOBAL, name: token.name };
-      case TOK_FIELD:
-        return { type: TOK_FIELD };
       case TOK_EXPREF:
         expression = this.expression(bindingPower.Expref);
         return { type: 'ExpressionReference', children: [expression] };
@@ -294,6 +287,9 @@ export default class Parser {
         right = this.expression(bindingPower.Union);
         return { type: 'UnionExpression', children: [left, right] };
       case TOK_LPAREN:
+        if (left.type !== TOK_IDENTIFIER) {
+          throw syntaxError('Bad function syntax. Parenthesis must be preceded by an unquoted indentifier');
+        }
         name = left.name;
         args = this._parseFunctionArgs();
         node = { type: 'Function', name, children: args };
@@ -344,7 +340,7 @@ export default class Parser {
 
   // eslint-disable-next-line class-methods-use-this
   _errorToken(token) {
-    throw syntaxError(`Invalid token (${
+    throw syntaxError(`Unexpected token (${
       token.type}): "${
       token.value}"`);
   }
@@ -459,7 +455,7 @@ export default class Parser {
   // eslint-disable-next-line consistent-return
   _parseDotRHS(rbp) {
     const lookahead = this._lookahead(0);
-    const exprTokens = [TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER, TOK_STAR];
+    const exprTokens = [TOK_IDENTIFIER, TOK_QUOTEDIDENTIFIER, TOK_STAR];
     if (exprTokens.indexOf(lookahead) >= 0) {
       return this.expression(rbp);
     }
@@ -511,7 +507,7 @@ export default class Parser {
 
   _parseObjectExpression() {
     const pairs = [];
-    const identifierTypes = [TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER];
+    const identifierTypes = [TOK_IDENTIFIER, TOK_QUOTEDIDENTIFIER];
     let keyToken; let keyName; let value; let
       node;
     if (this._lookahead(0) === TOK_RBRACE) {
