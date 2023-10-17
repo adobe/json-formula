@@ -136,17 +136,45 @@ export default class Parser {
     const leftToken = this._lookaheadToken(0);
     this._advance();
     let left = this.nud(leftToken);
-    let currentToken = this._lookahead(0);
+    let currentToken = this._lookahead(0, left.type);
     while (rbp < bindingPower[currentToken]) {
       this._advance();
       left = this.led(currentToken, left);
-      currentToken = this._lookahead(0);
+      currentToken = this._lookahead(0, left.type);
     }
     return left;
   }
 
-  _lookahead(number) {
-    return this.tokens[this.index + number].type;
+  _lookahead(number, previous) {
+    const next = this.tokens[this.index + number].type;
+    // disambiguate multiply and star
+    if (next === TOK_STAR) {
+      if ([
+        undefined,
+        TOK_LBRACKET,
+        TOK_DOT,
+        TOK_PIPE,
+        TOK_AND,
+        TOK_OR,
+        TOK_COMMA,
+        TOK_COLON,
+        TOK_NOT,
+        TOK_MULTIPLY,
+        TOK_ADD,
+        TOK_SUBTRACT,
+        TOK_DIVIDE,
+        TOK_LPAREN,
+        TOK_CONCATENATE,
+        TOK_UNION,
+        TOK_GT,
+        TOK_GTE,
+        TOK_LT,
+        TOK_LTE,
+        TOK_EQ,
+        TOK_NE].includes(previous)) return TOK_STAR;
+      return TOK_MULTIPLY;
+    }
+    return next;
   }
 
   _lookaheadToken(number) {
@@ -288,7 +316,7 @@ export default class Parser {
         return { type: 'UnionExpression', children: [left, right] };
       case TOK_LPAREN:
         if (left.type !== TOK_IDENTIFIER) {
-          throw syntaxError('Bad function syntax. Parenthesis must be preceded by an unquoted indentifier');
+          throw syntaxError('Bad function syntax. Parenthesis must be preceded by an unquoted identifier');
         }
         name = left.name;
         args = this._parseFunctionArgs();
