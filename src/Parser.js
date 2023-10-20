@@ -69,7 +69,7 @@ const {
   TOK_LBRACE,
   TOK_LBRACKET,
   TOK_LPAREN,
-  TOK_STRING
+  TOK_STRING,
 } = tokenDefinitions;
 
 const bindingPower = {
