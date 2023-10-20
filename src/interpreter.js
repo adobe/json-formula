@@ -36,6 +36,9 @@ import functions from './functions.js';
 import {
   isArray, isObject, strictDeepEqual, getValueOf,
 } from './utils.js';
+import {
+  evaluationError, typeError, functionError,
+} from './errors.js';
 
 // Type constants used to define functions.
 const {
@@ -48,13 +51,13 @@ function getToNumber(stringToNumber, debug = []) {
     const n = getValueOf(value); // in case it's an object that implements valueOf()
     if (n === null) return null;
     if (n instanceof Array) {
-      throw new TypeError('Failed to convert array to number');
+      throw typeError('Failed to convert array to number');
     }
     const type = typeof n;
     if (type === 'number') return n;
     if (type === 'string') return stringToNumber(n, debug);
     if (type === 'boolean') return n ? 1 : 0;
-    throw new TypeError('Failed to convert object to number');
+    throw typeError('Failed to convert object to number');
   };
 }
 function toString(a) {
@@ -111,7 +114,7 @@ class Runtime {
     // a minimum number of args to be required.  Otherwise it has to
     // be an exact amount.
     if (signature.length === 0 && args.length > 0) {
-      throw new Error(`ArgumentError: ${argName}() does not accept parameters`);
+      throw functionError(`${argName}() does not accept parameters`);
     }
 
     if (signature.length === 0) {
@@ -123,14 +126,12 @@ class Runtime {
     if (lastArg.variadic) {
       if (args.length < signature.length) {
         pluralized = signature.length === 1 ? ' argument' : ' arguments';
-        throw new Error(`ArgumentError: ${argName}() `
-        + `takes at least${signature.length}${pluralized
+        throw functionError(`${argName}() takes at least ${signature.length}${pluralized
         } but received ${args.length}`);
       }
     } else if (args.length < argsNeeded || args.length > signature.length) {
       pluralized = signature.length === 1 ? ' argument' : ' arguments';
-      throw new Error(`ArgumentError: ${argName}() `
-      + `takes ${signature.length}${pluralized
+      throw functionError(`${argName}() takes ${signature.length}${pluralized
       } but received ${args.length}`);
     }
     // if the arguments are unresolved, there's no point in validating types
@@ -154,7 +155,9 @@ class Runtime {
 
   callFunction(name, resolvedArgs, data, interpreter, bResolved = true) {
     // this check will weed out 'valueOf', 'toString' etc
-    if (!Object.prototype.hasOwnProperty.call(this.functionTable, name)) throw new Error(`Unknown function: ${name}()`);
+    if (!Object.prototype.hasOwnProperty.call(this.functionTable, name)) {
+      throw functionError(`${name}()`);
+    }
 
     const functionEntry = this.functionTable[name];
     this._validateArgs(name, resolvedArgs, functionEntry._signature, bResolved);
@@ -170,15 +173,8 @@ export default class Formula {
   }
 
   compile(stream, allowedGlobalNames = []) {
-    let ast;
-    try {
-      const parser = new Parser(allowedGlobalNames);
-      ast = parser.parse(stream, this.debug);
-    } catch (e) {
-      this.debug.push(e.toString());
-      throw e;
-    }
-    return ast;
+    const parser = new Parser(allowedGlobalNames);
+    return parser.parse(stream, this.debug);
   }
 
   search(node, data, globals = {}, language = 'en-US') {
@@ -198,6 +194,7 @@ export default class Formula {
       return this.runtime.interpreter.search(node, data);
     } catch (e) {
       this.debug.push(e.message || e.toString());
+      if (e.name === 'Error') throw evaluationError(e.message || e.toString());
       throw e;
     }
   }

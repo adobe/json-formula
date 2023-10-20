@@ -36,7 +36,7 @@ export default function testGrammar(expression) {
     parser.addErrorListener(new FormulaErrorListener());
     result = parser.formula();
   } catch (e) {
-    return 'error';
+    return 'SyntaxError';
   }
   if (typeof result === 'undefined') return 'error';
   return 'result';

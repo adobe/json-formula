@@ -12,6 +12,7 @@ governing permissions and limitations under the License.
 import JsonFormula from '../src/json-formula.js';
 import stringToNumber from '../src/stringToNumber.js';
 import createForm from '../tutorial/Form.js';
+import { typeError } from '../src/errors.js';
 
 test('if executes correct branch', () => {
   const customFunctions = {
@@ -48,7 +49,7 @@ test('handle function that throws', () => {
   const customFunctions = {
     throw: {
       _func: () => {
-        throw new RangeError('big mistake');
+        throw typeError('big mistake');
       },
       _signature: [],
     },

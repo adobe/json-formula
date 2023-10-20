@@ -27,7 +27,7 @@ governing permissions and limitations under the License.
 */
 export default {
   TOK_EOF: 'EOF',
-  TOK_UNQUOTEDIDENTIFIER: 'UnquotedIdentifier',
+  TOK_IDENTIFIER: 'Identifier',
   TOK_QUOTEDIDENTIFIER: 'QuotedIdentifier',
   TOK_RBRACKET: 'Rbracket',
   TOK_RPAREN: 'Rparen',
@@ -38,7 +38,6 @@ export default {
   TOK_NUMBER: 'Number',
   TOK_CURRENT: 'Current',
   TOK_GLOBAL: 'Global',
-  TOK_FIELD: 'Field',
   TOK_EXPREF: 'Expref',
   TOK_PIPE: 'Pipe',
   TOK_OR: 'Or',

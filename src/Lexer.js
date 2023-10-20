@@ -28,9 +28,10 @@ governing permissions and limitations under the License.
 
 /* eslint-disable no-underscore-dangle */
 import tokenDefinitions from './tokenDefinitions.js';
+import { syntaxError } from './errors.js';
 
 const {
-  TOK_UNQUOTEDIDENTIFIER,
+  TOK_IDENTIFIER,
   TOK_QUOTEDIDENTIFIER,
   TOK_RBRACKET,
   TOK_RPAREN,
@@ -48,7 +49,6 @@ const {
   TOK_ADD,
   TOK_SUBTRACT,
   TOK_UNARY_MINUS,
-  TOK_MULTIPLY,
   TOK_DIVIDE,
   TOK_UNION,
   TOK_EQ,
@@ -143,7 +143,7 @@ export default class Lexer {
         start = this._current;
         identifier = this._consumeUnquotedIdentifier(stream);
         tokens.push({
-          type: TOK_UNQUOTEDIDENTIFIER,
+          type: TOK_IDENTIFIER,
           value: identifier,
           start,
         });
@@ -157,7 +157,7 @@ export default class Lexer {
           start: this._current,
         });
         this._current += 1;
-      } else if (stream[this._current] === '-' && ![TOK_GLOBAL, TOK_CURRENT, TOK_NUMBER, TOK_RPAREN, TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER, TOK_RBRACKET].includes(prev)) {
+      } else if (stream[this._current] === '-' && ![TOK_GLOBAL, TOK_CURRENT, TOK_NUMBER, TOK_RPAREN, TOK_IDENTIFIER, TOK_QUOTEDIDENTIFIER, TOK_RBRACKET].includes(prev)) {
         token = this._consumeUnaryMinus(stream);
         tokens.push(token);
       } else if (stream[this._current] === '[') {
@@ -223,36 +223,7 @@ export default class Lexer {
       } else if (stream[this._current] === '*') {
         start = this._current;
         this._current += 1;
-        // based on previous token we'll know if this asterix is a star -- not a multiply
-        // might be better to list the prev tokens that are valid for multiply?
-        const prevToken = tokens.length && tokens.slice(-1)[0].type;
-        if (tokens.length === 0 || [
-          TOK_LBRACKET,
-          TOK_DOT,
-          TOK_PIPE,
-          TOK_AND,
-          TOK_OR,
-          TOK_COMMA,
-          TOK_COLON,
-          TOK_NOT,
-          TOK_MULTIPLY,
-          TOK_ADD,
-          TOK_SUBTRACT,
-          TOK_DIVIDE,
-          TOK_LPAREN,
-          TOK_CONCATENATE,
-          TOK_UNION,
-          TOK_GT,
-          TOK_GTE,
-          TOK_LT,
-          TOK_LTE,
-          TOK_EQ,
-          TOK_NE,
-        ].includes(prevToken)) {
-          tokens.push({ type: TOK_STAR, value: '*', start });
-        } else {
-          tokens.push({ type: TOK_MULTIPLY, value: '*', start });
-        }
+        tokens.push({ type: TOK_STAR, value: '*', start });
       } else if (stream[this._current] === '/') {
         start = this._current;
         this._current += 1;
@@ -267,9 +238,7 @@ export default class Lexer {
           tokens.push({ type: TOK_PIPE, value: '|', start });
         }
       } else {
-        const error = new Error(`Unknown character:${stream[this._current]}`);
-        error.name = 'LexerError';
-        throw error;
+        throw syntaxError(`Unknown character:${stream[this._current]}`);
       }
     }
     return tokens;
@@ -341,12 +310,12 @@ export default class Lexer {
     this._current += 1;
     const literal = stream.slice(start + 1, this._current - 1);
     if (this._current > maxLength) {
-      throw new Error(`Unterminated string literal at ${start}, "${literal}`);
+      throw syntaxError(`Unterminated string literal at ${start}, "${literal}`);
     }
     try {
       return JSON.parse(`"${literal}"`);
     } catch (_e) {
-      throw new Error(`Invalid string literal: ${literal}`);
+      throw syntaxError(`Invalid string literal: ${literal}`);
     }
   }
 

@@ -28,13 +28,14 @@ governing permissions and limitations under the License.
 
 import Lexer from './Lexer.js';
 import tokenDefinitions from './tokenDefinitions.js';
+import { syntaxError } from './errors.js';
 
 /* eslint-disable no-underscore-dangle */
 const {
   TOK_JSON,
   TOK_COLON,
   TOK_EOF,
-  TOK_UNQUOTEDIDENTIFIER,
+  TOK_IDENTIFIER,
   TOK_QUOTEDIDENTIFIER,
   TOK_RBRACKET,
   TOK_RPAREN,
@@ -44,7 +45,6 @@ const {
   TOK_NUMBER,
   TOK_CURRENT,
   TOK_GLOBAL,
-  TOK_FIELD,
   TOK_EXPREF,
   TOK_PIPE,
   TOK_OR,
@@ -73,7 +73,7 @@ const {
 
 const bindingPower = {
   [TOK_EOF]: 0,
-  [TOK_UNQUOTEDIDENTIFIER]: 0,
+  [TOK_IDENTIFIER]: 0,
   [TOK_QUOTEDIDENTIFIER]: 0,
   [TOK_RBRACKET]: 0,
   [TOK_RPAREN]: 0,
@@ -82,7 +82,6 @@ const bindingPower = {
   [TOK_NUMBER]: 0,
   [TOK_CURRENT]: 0,
   [TOK_GLOBAL]: 0,
-  [TOK_FIELD]: 0,
   [TOK_EXPREF]: 0,
   [TOK_PIPE]: 1,
   [TOK_OR]: 2,
@@ -121,11 +120,7 @@ export default class Parser {
     const ast = this.expression(0);
     if (this._lookahead(0) !== TOK_EOF) {
       const t = this._lookaheadToken(0);
-      const error = new Error(
-        `Unexpected token type: ${t.type}, value: ${t.value}`,
-      );
-      error.name = 'ParserError';
-      throw error;
+      throw syntaxError(`Unexpected token type: ${t.type}, value: ${t.value}`);
     }
     return ast;
   }
@@ -141,17 +136,45 @@ export default class Parser {
     const leftToken = this._lookaheadToken(0);
     this._advance();
     let left = this.nud(leftToken);
-    let currentToken = this._lookahead(0);
+    let currentToken = this._lookahead(0, left.type);
     while (rbp < bindingPower[currentToken]) {
       this._advance();
       left = this.led(currentToken, left);
-      currentToken = this._lookahead(0);
+      currentToken = this._lookahead(0, left.type);
     }
     return left;
   }
 
-  _lookahead(number) {
-    return this.tokens[this.index + number].type;
+  _lookahead(number, previous) {
+    const next = this.tokens[this.index + number].type;
+    // disambiguate multiply and star
+    if (next === TOK_STAR) {
+      if ([
+        undefined,
+        TOK_LBRACKET,
+        TOK_DOT,
+        TOK_PIPE,
+        TOK_AND,
+        TOK_OR,
+        TOK_COMMA,
+        TOK_COLON,
+        TOK_NOT,
+        TOK_MULTIPLY,
+        TOK_ADD,
+        TOK_SUBTRACT,
+        TOK_DIVIDE,
+        TOK_LPAREN,
+        TOK_CONCATENATE,
+        TOK_UNION,
+        TOK_GT,
+        TOK_GTE,
+        TOK_LT,
+        TOK_LTE,
+        TOK_EQ,
+        TOK_NE].includes(previous)) return TOK_STAR;
+      return TOK_MULTIPLY;
+    }
+    return next;
   }
 
   _lookaheadToken(number) {
@@ -182,13 +205,10 @@ export default class Parser {
         return { type: 'Literal', value: token.value };
       case TOK_NUMBER:
         return { type: 'Number', value: token.value };
-      case TOK_UNQUOTEDIDENTIFIER:
-        return { type: 'Field', name: token.value };
+      case TOK_IDENTIFIER:
+        return { type: 'Identifier', name: token.value };
       case TOK_QUOTEDIDENTIFIER:
-        node = { type: 'Field', name: token.value };
-        if (this._lookahead(0) === TOK_LPAREN) {
-          throw new Error('Quoted identifier not allowed for function names.');
-        }
+        node = { type: 'QuotedIdentifier', name: token.value };
         return node;
       case TOK_NOT:
         right = this.expression(bindingPower.Not);
@@ -230,8 +250,6 @@ export default class Parser {
         return { type: TOK_CURRENT };
       case TOK_GLOBAL:
         return { type: TOK_GLOBAL, name: token.name };
-      case TOK_FIELD:
-        return { type: TOK_FIELD };
       case TOK_EXPREF:
         expression = this.expression(bindingPower.Expref);
         return { type: 'ExpressionReference', children: [expression] };
@@ -297,6 +315,9 @@ export default class Parser {
         right = this.expression(bindingPower.Union);
         return { type: 'UnionExpression', children: [left, right] };
       case TOK_LPAREN:
+        if (left.type !== TOK_IDENTIFIER) {
+          throw syntaxError('Bad function syntax. Parenthesis must be preceded by an unquoted identifier');
+        }
         name = left.name;
         args = this._parseFunctionArgs();
         node = { type: 'Function', name, children: args };
@@ -341,19 +362,15 @@ export default class Parser {
       this._advance();
     } else {
       const t = this._lookaheadToken(0);
-      const error = new Error(`Expected ${tokenType}, got: ${t.type}`);
-      error.name = 'ParserError';
-      throw error;
+      throw syntaxError(`Expected ${tokenType}, got: ${t.type}`);
     }
   }
 
   // eslint-disable-next-line class-methods-use-this
   _errorToken(token) {
-    const error = new Error(`Invalid token (${
+    throw syntaxError(`Unexpected token (${
       token.type}): "${
       token.value}"`);
-    error.name = 'ParserError';
-    throw error;
   }
 
   _parseFunctionArgs() {
@@ -445,10 +462,8 @@ export default class Parser {
         // check next token to be either colon or rbracket
         const t = this._lookahead(0);
         if (t !== TOK_COLON && t !== TOK_RBRACKET) {
-          const error = new Error(`Syntax error, unexpected token: ${
+          throw syntaxError(`Unexpected token: ${
             t.value}(${t.type})`);
-          error.name = 'Parsererror';
-          throw error;
         }
       }
       currentToken = this._lookahead(0);
@@ -468,7 +483,7 @@ export default class Parser {
   // eslint-disable-next-line consistent-return
   _parseDotRHS(rbp) {
     const lookahead = this._lookahead(0);
-    const exprTokens = [TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER, TOK_STAR];
+    const exprTokens = [TOK_IDENTIFIER, TOK_QUOTEDIDENTIFIER, TOK_STAR];
     if (exprTokens.indexOf(lookahead) >= 0) {
       return this.expression(rbp);
     }
@@ -480,6 +495,7 @@ export default class Parser {
       this._match(TOK_LBRACE);
       return this._parseObjectExpression();
     }
+    throw syntaxError('Expecting one of: "*", "[", "{", name or quoted name after a dot');
   }
 
   _parseProjectionRHS(rbp) {
@@ -495,10 +511,8 @@ export default class Parser {
       right = this._parseDotRHS(rbp);
     } else {
       const t = this._lookaheadToken(0);
-      const error = new Error(`Syntax error, unexpected token: ${
+      throw syntaxError(`Unexpected token: ${
         t.value}(${t.type})`);
-      error.name = 'ParserError';
-      throw error;
     }
     return right;
   }
@@ -511,7 +525,7 @@ export default class Parser {
       if (this._lookahead(0) === TOK_COMMA) {
         this._match(TOK_COMMA);
         if (this._lookahead(0) === TOK_RBRACKET) {
-          throw new Error('Unexpected token Rbracket');
+          throw syntaxError('Unexpected token Rbracket');
         }
       }
     }
@@ -521,7 +535,7 @@ export default class Parser {
 
   _parseObjectExpression() {
     const pairs = [];
-    const identifierTypes = [TOK_UNQUOTEDIDENTIFIER, TOK_QUOTEDIDENTIFIER];
+    const identifierTypes = [TOK_IDENTIFIER, TOK_QUOTEDIDENTIFIER];
     let keyToken; let keyName; let value; let
       node;
     if (this._lookahead(0) === TOK_RBRACE) {
@@ -531,7 +545,7 @@ export default class Parser {
     for (;;) {
       keyToken = this._lookaheadToken(0);
       if (identifierTypes.indexOf(keyToken.type) < 0) {
-        throw new Error(`Expecting an identifier token, got: ${
+        throw syntaxError(`Expecting an identifier token, got: ${
           keyToken.type}`);
       }
       keyName = keyToken.value;

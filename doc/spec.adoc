@@ -177,20 +177,13 @@ Authors should mitigate this behavior:
 
 == Errors
 
-Errors may be raised during the json-formula evaluation process. How and when
-errors are raised is implementation specific, but implementations should
-indicate to the caller when errors have occurred.
-
+Errors may be raised during the json-formula evaluation process.
 The following errors are defined:
 
-* `invalid-type` is raised when an invalid type is encountered during the
-  evaluation process.
-* `invalid-value` is raised when an invalid value is encountered during the
-  evaluation process.
-* `unknown-function` is raised when an unknown function is encountered during
-  the evaluation process.
-* `invalid-arity` is raised when an invalid number of function arguments is
-  encountered during the evaluation process.
+* `EvaluationError` is raised when an unexpected runtime condition occurs. For example, divide by zero.
+* `FunctionError` is raised when an unknown function is encountered or when a function receives the wrong number of arguments.
+* `SyntaxError` is raised when the supplied expression does not conform to the json-formula grammar.
+* `TypeError` is raised when the provided type cannot be coerced to the correct type for the current evaluation context.
 
 == Grammar
 
@@ -1222,8 +1215,8 @@ does not exist, an `unknown-function` error is raised.
 Functions can either have a specific arity or be variadic with a minimum
 number of arguments.  If a `functionExpression` is encountered where the
 arity does not match, or the minimum number of arguments for a variadic function
-is not provided, or too many arguments are provided, then an
-`invalid-arity` error is raised.
+is not provided, or too many arguments are provided, then a
+`FunctionError` error is raised.
 
 Functions are evaluated in applicative order.  Each argument must be an
 expression, each argument expression must be evaluated before evaluating the

@@ -31,6 +31,7 @@ import tokenDefinitions from './tokenDefinitions.js';
 import {
   isArray, isObject, strictDeepEqual, getValueOf, getProperty, debugAvailable, toBoolean,
 } from './utils.js';
+import { evaluationError } from './errors.js';
 
 const {
   TOK_CURRENT,
@@ -41,7 +42,6 @@ const {
   TOK_GT,
   TOK_LT,
   TOK_GTE,
-  TOK_LTE,
   TOK_NE,
   TOK_FLATTEN,
 } = tokenDefinitions;
@@ -70,22 +70,25 @@ export default class TreeInterpreter {
     return this.visit(node, value);
   }
 
-  visit(n, v) {
-    const visitFunctions = {
-      Field: (node, value) => {
-        // we used to check isObject(value) here -- but it is possible for an array-based
-        // object to have properties.  So we'll allow the child check on objects and arrays.
-        if (value !== null && (isObject(value) || isArray(value))) {
-          const field = getProperty(value, node.name);
-          if (field === undefined) {
-            debugAvailable(this.debug, value, node.name);
-            return null;
-          }
-          return field;
-        }
+  field(node, value) {
+    // we used to check isObject(value) here -- but it is possible for an array-based
+    // object to have properties.  So we'll allow the child check on objects and arrays.
+    if (value !== null && (isObject(value) || isArray(value))) {
+      const field = getProperty(value, node.name);
+      if (field === undefined) {
         debugAvailable(this.debug, value, node.name);
         return null;
-      },
+      }
+      return field;
+    }
+    debugAvailable(this.debug, value, node.name);
+    return null;
+  }
+
+  visit(n, v) {
+    const visitFunctions = {
+      Identifier: this.field.bind(this),
+      QuotedIdentifier: this.field.bind(this),
 
       ChainedExpression: (node, value) => {
         let result = this.visit(node.children[0], value);
@@ -220,8 +223,9 @@ export default class TreeInterpreter {
         if (node.name === TOK_GT) return first > second;
         if (node.name === TOK_GTE) return first >= second;
         if (node.name === TOK_LT) return first < second;
-        if (node.name === TOK_LTE) return first <= second;
-        throw new Error(`Unknown comparator: ${node.name}`);
+        // if (node.name === TOK_LTE)
+        // must be LTE
+        return first <= second;
       },
 
       [TOK_FLATTEN]: (node, value) => {
@@ -366,7 +370,6 @@ export default class TreeInterpreter {
       },
     };
     const fn = n && visitFunctions[n.type];
-    if (!fn) throw new Error(`Unknown/missing node type ${(n && n.type) || ''}`);
     return fn(n, v);
   }
 
@@ -389,9 +392,7 @@ export default class TreeInterpreter {
     if (step === null) {
       step = 1;
     } else if (step === 0) {
-      const error = new Error('Invalid slice, step cannot be 0');
-      error.name = 'RuntimeError';
-      throw error;
+      throw evaluationError('Invalid slice, step cannot be 0');
     }
     const stepValueNegative = step < 0;
 
@@ -432,13 +433,12 @@ export default class TreeInterpreter {
       return this.toNumber(first) + this.toNumber(second);
     }
     if (operator === '-') return this.toNumber(first) - this.toNumber(second);
-    if (operator === '/') {
-      const result = first / second;
-      if (second === 0) {
-        throw new Error(`Division by zero ${first}/${second}`);
-      }
-      return Number.isFinite(result) ? result : null;
+    // if (operator === '/') {
+    // Must be division
+    const result = first / second;
+    if (second === 0) {
+      throw evaluationError(`Division by zero ${first}/${second}`);
     }
-    throw new Error(`Unknown operator: ${operator}`);
+    return Number.isFinite(result) ? result : null;
   }
 }
