@@ -118,7 +118,12 @@ export default class TreeInterpreter {
           return result;
         }
         if (isObject(value)) {
-          const key = this.toString(this.visit(node.value, value));
+          const key = this.visit(node.value, value);
+          if (getTypeName(key) !== 'string') {
+            this.debug.push(`Invalid key (${key}) for indexing an object`);
+            if (getTypeName(key) === 'number') this.debug.push('Were you trying to define a one-element array? (use a JSON literal)');
+            return null;
+          }
           const result = value[key];
           if (result === undefined) {
             this.debug.push(`Key ${key} does not exist`);
@@ -333,6 +338,8 @@ export default class TreeInterpreter {
         }
         return minus;
       },
+
+      String: node => node.value,
 
       Literal: node => node.value,
 

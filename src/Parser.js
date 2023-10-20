@@ -69,6 +69,7 @@ const {
   TOK_LBRACE,
   TOK_LBRACKET,
   TOK_LPAREN,
+  TOK_STRING
 } = tokenDefinitions;
 
 const bindingPower = {
@@ -201,6 +202,8 @@ export default class Parser {
     let node;
     let args;
     switch (token.type) {
+      case TOK_STRING:
+        return { type: 'String', value: token.value };
       case TOK_JSON:
         return { type: 'Literal', value: token.value };
       case TOK_NUMBER:
@@ -425,7 +428,7 @@ export default class Parser {
       const right = this._parseSliceExpression();
       return this._projectIfSlice({ type: 'Identity' }, right);
     }
-    if (firstToken === TOK_NUMBER || firstToken === TOK_UNARY_MINUS) {
+    if (firstToken === TOK_STRING || firstToken === TOK_NUMBER || firstToken === TOK_UNARY_MINUS) {
       this._match(TOK_RBRACKET);
       return {
         type: 'Index',

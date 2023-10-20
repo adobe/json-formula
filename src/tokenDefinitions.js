@@ -63,4 +63,5 @@ export default {
   TOK_LBRACKET: 'Lbracket',
   TOK_LPAREN: 'Lparen',
   TOK_JSON: 'Literal',
+  TOK_STRING: 'String',
 };
