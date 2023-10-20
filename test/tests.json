@@ -3206,5 +3206,21 @@
       "expression": "2----1",
       "expected": 3
     }
+  ],
+  [
+    "zero key",
+    {
+      "data": "`{\"0\": \"zero\",\"1\": \"one\"}`",
+      "expression": "@[0] ~ @[\"1\"]",
+      "expected": ["one"]
+    }
+  ],
+  [
+    "0 key",
+    {
+      "data": "`{\"0\": \"zero\",\"1\": \"one\"}`",
+      "expression": "[\"0\"]",
+      "expected": "zero"
+    }
   ]
 ]

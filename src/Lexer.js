@@ -66,6 +66,7 @@ const {
   TOK_LBRACKET,
   TOK_LPAREN,
   TOK_JSON,
+  TOK_STRING,
 } = tokenDefinitions;
 
 // The "&", "[", "<", ">" tokens
@@ -177,7 +178,7 @@ export default class Lexer {
         start = this._current;
         identifier = this._consumeRawStringLiteral(stream);
         tokens.push({
-          type: TOK_JSON,
+          type: TOK_STRING,
           value: identifier,
           start,
         });
