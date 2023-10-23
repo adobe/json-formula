@@ -215,6 +215,7 @@ export default function functions(
 
     /**
      * Finds the next highest integer value of the argument `num` by rounding up if necessary.
+     * i.e. ceil() rounds toward positive infinity.
      * @param {number} num numeric value
      * @return {integer} The smallest integer greater than or equal to num
      * @function ceil
@@ -415,7 +416,8 @@ export default function functions(
     },
 
     /**
-     * Searches a nested hierarchy of objects to return an array of key values that match a `name`.
+     * Performs a depth-first search of a nested hierarchy to
+     * return an array of key values that match a `name`.
      * The name can be either a key into an object or an array index.
      * This is similar to the Descendant Accessor operator (`..`) from [E4X](https://www.ecma-international.org/publications-and-standards/standards/ecma-357/).
      * @param {object|array} object The starting object or array where we start the search
@@ -581,6 +583,7 @@ export default function functions(
 
     /**
      * Calculates the next lowest integer value of the argument `num` by rounding down if necessary.
+     * i.e. floor() rounds toward negative infinity.
      * @param {number} num numeric value
      * @return {integer} The largest integer smaller than or equal to num
      * @function floor
@@ -597,7 +600,7 @@ export default function functions(
      * Create a string created from a code point.
      * @param {integer} codePoint An integer between 0 and 0x10FFFF (inclusive)
      * representing a Unicode code point.
-     * @return {number} A string from a given code point
+     * @return {string} A string from a given code point
      * @function fromCodePoint
      * @example
      * fromCodePoint(65) // "A"

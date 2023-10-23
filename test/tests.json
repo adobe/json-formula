@@ -426,11 +426,11 @@
     }
   ],
   [
-    "[2,[3,4],6,8,10] / [1,2,3]",
+    "[2,[2,4],12,8] / [1,2,3,4,5]",
     {
       "data": "`{}`",
-      "expression": "[2,[3,4],6,8,10] / [1,2,3]",
-      "expected": [2,[1.5,2],2,null,null]
+      "expression": "[2,[2,4],12,8] / [1,2,3,4,5]",
+      "expected": [2,[1,2],4,2,0]
     }
   ],
   [
@@ -555,6 +555,22 @@
       "data": "samples.'purchase-order'",
       "expression": "items[0].quantity - 2",
       "expected": 0
+    }
+  ],
+  [
+    "subtract JSON literals",
+    {
+      "data": "{}",
+      "expression": "`5` - `4`",
+      "expected": 1
+    }
+  ],
+  [
+    "subtract string literals",
+    {
+      "data": "{}",
+      "expression": "\"5\" - `4`",
+      "expected": 1
     }
   ],
   [
@@ -2529,6 +2545,14 @@
     }
   ],
   [
+    "bad divide 3",
+    {
+      "data": "{}",
+      "expression": "4/\"b\"",
+      "error": "EvaluationError"
+    }
+  ],
+  [
     "context expression",
     {
       "data": "`null`",
@@ -2558,6 +2582,22 @@
       "data": "samples.'purchase-order'.items[*].quantity",
       "expression": "@ + 2",
       "expected": [4, 5]
+    }
+  ],
+  [
+    "array concat",
+    {
+      "data": "{}",
+      "expression": "`[]` & `[\"s\"]`",
+      "expected": ["s"]
+    }
+  ],
+  [
+    "array divide",
+    {
+      "data": "{}",
+      "expression": "`[100,100]` / `[50]`",
+      "error": "EvaluationError"
     }
   ],
   [
