@@ -56,6 +56,16 @@ function objValues(obj) {
   return Object.values(obj);
 }
 
+function balanceArrayOperands(opLeft, opRight) {
+  if (isArray(opLeft) && isArray(opRight)) {
+    // balance the size of the arrays by padding with nulls
+    const shorter = opLeft.length < opRight.length ? opLeft : opRight;
+    const diff = Math.abs(opLeft.length - opRight.length);
+    shorter.length += diff;
+    shorter.fill(null, shorter.length - diff);
+  }
+}
+
 export default class TreeInterpreter {
   constructor(runtime, globals, toNumber, toString, debug, language) {
     this.runtime = runtime;
@@ -287,12 +297,14 @@ export default class TreeInterpreter {
       AddExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
         const second = this.visit(node.children[1], value);
+        balanceArrayOperands(first, second);
         return this.applyOperator(first, second, '+');
       },
 
       ConcatenateExpression: (node, value) => {
         let first = this.visit(node.children[0], value);
         let second = this.visit(node.children[1], value);
+        balanceArrayOperands(first, second);
         first = matchType(getTypes(first), [TYPE_STRING, TYPE_ARRAY_STRING], first, 'concatenate', this.toNumber, this.toString);
         second = matchType(getTypes(second), [TYPE_STRING, TYPE_ARRAY_STRING], second, 'concatenate', this.toNumber, this.toString);
         return this.applyOperator(first, second, '&');
@@ -309,18 +321,21 @@ export default class TreeInterpreter {
       SubtractExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
         const second = this.visit(node.children[1], value);
+        balanceArrayOperands(first, second);
         return this.applyOperator(first, second, '-');
       },
 
       MultiplyExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
         const second = this.visit(node.children[1], value);
+        balanceArrayOperands(first, second);
         return this.applyOperator(first, second, '*');
       },
 
       DivideExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
         const second = this.visit(node.children[1], value);
+        balanceArrayOperands(first, second);
         return this.applyOperator(first, second, '/');
       },
 
@@ -419,11 +434,6 @@ export default class TreeInterpreter {
 
   applyOperator(first, second, operator) {
     if (isArray(first) && isArray(second)) {
-      // balance the size of the arrays
-      const shorter = first.length < second.length ? first : second;
-      const diff = Math.abs(first.length - second.length);
-      shorter.length += diff;
-      shorter.fill(null, shorter.length - diff);
       const result = [];
       for (let i = 0; i < first.length; i += 1) {
         result.push(this.applyOperator(first[i], second[i], operator));
@@ -434,18 +444,18 @@ export default class TreeInterpreter {
     if (isArray(first)) return first.map(a => this.applyOperator(a, second, operator));
     if (isArray(second)) return second.map(a => this.applyOperator(first, a, operator));
 
-    if (operator === '*') return this.toNumber(first) * this.toNumber(second);
     if (operator === '&') return first + second;
-    if (operator === '+') {
-      return this.toNumber(first) + this.toNumber(second);
-    }
-    if (operator === '-') return this.toNumber(first) - this.toNumber(second);
+    if (operator === '*') return this.toNumber(first) * this.toNumber(second);
+    const n1 = this.toNumber(first);
+    const n2 = this.toNumber(second);
+    if (operator === '+') return n1 + n2;
+    if (operator === '-') return n1 - n2;
     // if (operator === '/') {
     // Must be division
-    const result = first / second;
-    if (second === 0) {
+    const result = n1 / n2;
+    if (!Number.isFinite(result)) {
       throw evaluationError(`Division by zero ${first}/${second}`);
     }
-    return Number.isFinite(result) ? result : null;
+    return result;
   }
 }

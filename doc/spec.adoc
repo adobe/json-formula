@@ -383,6 +383,7 @@ own literal values
 keys and values. Two JSON objects `x` and `y`, are consider equal if they have the same number of key/value pairs and if, for each key value
 pair `(i, j)` in `x`, there exists an equivalent pair `(i, j)` in `y`
 * Two JSON arrays are equal if they have equal elements in the same order. Two arrays `x` and `y` are considered equal if they have the same length and, for each `i` from `0` until `length(x)`, `x[i] == y[i]`
+* The comparison of array and objects is a deep comparison.  That is, where nested arrays or objects are found, the nested elements will included in the comparison.
 
 ==== Ordering Operators
 
