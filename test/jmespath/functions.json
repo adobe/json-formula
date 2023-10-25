@@ -644,8 +644,7 @@
       },
       {
         "expression": "toNumber(\"notanumber\")",
-        "result": 0,
-        "was": null
+        "result": null
       },
       {
         "expression": "toNumber(`false`)",
@@ -665,7 +664,11 @@
       },
       {
         "expression": "toNumber(`null`)",
-        "result": null
+        "result": 0
+      },
+      {
+        "expression": "toNumber(toNumber(\"a\"))",
+        "result": 0
       },
       {
         "expression": "toNumber(`[0]`)",
@@ -761,7 +764,7 @@
       {
         "description": "function projection on single arg function",
         "expression": "array[].toNumber(@)",
-        "result": [-1, 3, 4, 5, 0, 100],
+        "result": [-1, 3, 4, 5, null, 100],
         "was": [-1, 3, 4, 5, 100]
       }
     ]

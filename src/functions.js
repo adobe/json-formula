@@ -469,14 +469,15 @@ export default function functions(
     },
 
     /**
-     * Returns an array of `[key, value]` pairs from an object.
-     * The `fromEntries()` function may be used to convert the array back to an object.
-     * @param {object} obj source object
+     * Returns an array of `[key, value]` pairs from an object or array.
+     * The `fromEntries()` function may be used to convert an array to an object.
+     * @param {object|array} obj source object or array
      * @returns {any[]} an array of arrays where each child array has two elements
      * representing the key and value of a pair
      * @function entries
      * @example
      * entries({a: 1, b: 2}) // returns [["a", 1], ["b", 2]]
+     * entries([4,5]) // returns [["0", 4],["1", 5]]
      */
     entries: {
       _func: args => {
@@ -486,11 +487,8 @@ export default function functions(
       _signature: [
         {
           types: [
-            dataTypes.TYPE_NUMBER,
-            dataTypes.TYPE_STRING,
             dataTypes.TYPE_ARRAY,
             dataTypes.TYPE_OBJECT,
-            dataTypes.TYPE_BOOLEAN,
           ],
         },
       ],
@@ -609,7 +607,8 @@ export default function functions(
     fromCodePoint: {
       _func: args => {
         const code = args[0];
-        return !Number.isInteger(code) ? null : String.fromCodePoint(code);
+        if (!Number.isInteger(code)) throw typeError(`fromCodePoint() requires an integer parameter.  Received: "${code}"`);
+        return String.fromCodePoint(code);
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -772,7 +771,7 @@ export default function functions(
     /**
      * Calculates the length of the input argument based on types:
      *
-     * * string: returns the number of code points
+     * * string: returns the number of unicode code points
      * * array: returns the number of array elements
      * * object: returns the number of key-value pairs
      * @param {string | array | object} subject subject whose length to calculate
@@ -1906,14 +1905,14 @@ export default function functions(
      *
      * @param {string|number|boolean|null} arg to convert to number
      * @param {integer} [base=10] The base to use.  One of: 2, 8, 10, 16. Defaults to 10.
-     * @return {number}
+     * @return {number} The resulting number.  If conversion to number fails, return null.
      * @function toNumber
      * @example
      * toNumber(1) // returns 1
      * toNumber("10") // returns 10
      * toNumber({a: 1}) // fails
      * toNumber(true()) // returns 1
-     * toNumber("10f") // returns 0
+     * toNumber("10f") // returns null
      * toNumber("FF", 16) // returns 255
      */
     toNumber: {

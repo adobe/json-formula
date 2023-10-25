@@ -107,7 +107,7 @@ Coercion is not always possible, and if so, an `invalid-type` <<Errors,error>> s
 | boolean | number | true -> 1 false -> 0
 | array | number | Not supported
 | object | number | Not supported
-| null | number | null
+| null | number | 0
 | number | array | create a single-element array with the number
 | string | array | create a single-element array with the string
 | boolean | array | create a single-element array with the boolean
@@ -1281,7 +1281,7 @@ be used to convert all elements to numbers:
 
 [source%unbreakable]
 ----
-    eval([].toNumber(@), ["1", "2", "3", "notanumber", null, true]) -> [1,2,3,0,null,1]
+    eval([].toNumber(@), ["1", "2", "3", "notanumber", null, true]) -> [1,2,3,null,0,1]
 ----
 
 === Function Reference

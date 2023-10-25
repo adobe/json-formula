@@ -35,7 +35,13 @@
       ]
     }
   ],
-
+  [
+    "entries([4,5])",
+    {
+      "expression": "entries([4,5])",
+      "expected": [["0", 4],["1", 5]]
+    }
+  ],
   [
     "fromEntries([[\"a\", 1], [\"b\", 2]])",
     {
@@ -354,7 +360,7 @@
     "toNumber(\"10f\")",
     {
       "expression": "toNumber(\"10f\")",
-      "expected": 0
+      "expected": null
     }
   ],
 
