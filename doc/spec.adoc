@@ -626,11 +626,8 @@ From the `bracketExpression` construction, the bracketed contents provide access
 
 ==== Index Expressions
 
-When brackets enclose an expression (`'[' expression ']'`), the results of that expression are used to index into an object or array.
-
-When used with an object, the bracketed expression is used as the name of a key in that object. For example, `foo["bar"]` is equivalent to `foo.bar`. If the expression returns a key not present in the object, a `null` value is returned.
-
-Most commonly, index expressions are used with arrays.  With arrays, an expression in brackets is expected to return an integer value to return an offset in the array.
+When brackets enclose an expression (`'[' expression ']'`), the results of that expression are used to index into an array.
+The bracketed expression is expected to return an integer value to return an offset in the array.
 Indexing is 0 based where an index of 0 refers to the first element of the array.  A negative index indicates that indexing is relative to the end of the array, specifically:
 
 [source%unbreakable]
@@ -643,27 +640,11 @@ index of `N - 1`, which is the last element of the array.
 An expression is outside the bounds of the array when the value is greater than or equal to the length of the array or less than the negative length of the array.
 If an index expression is outside the bounds of the array then a value of `null` is returned.
 
-Index expressions are evaluated in the context of the left hand expression. For example, given the source JSON:
-
-[source%unbreakable]
-----
-{
-  "partners": {
-    "partner1": "Joe",
-    "partner2": "Frank",
-    "seniorPartner": "partner1"
-  }
-}
-----
-
-The expression: `partners[@.seniorPartner]` (or `partners[seniorPartner]`) will evaluate to `"Joe"`.  Specifically, the nested expression inside: `partners[partners.seniorPartner]` will return `null`.
-
 [discrete]
 ===== Examples
 
 [source%unbreakable]
 ----
-  eval(foo["bar"], {"foo": {"bar": 21}}) -> 21
   eval(a[1], {a: [5,6,7,8,9]}) -> 6
   eval(a[-2], {a: [5,6,7,8,9]}) -> 8
   eval([0], ["first", "second", "third"]) -> "first"

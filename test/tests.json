@@ -2386,30 +2386,6 @@
     }
   ],
   [
-    "index objects using strings",
-    {
-      "data": "samples.'purchase-order'",
-      "expression": "address[\"street\"]",
-      "expected": "123 Oak Street"
-    }
-  ],
-  [
-    "index objects using literals",
-    {
-      "data": "samples.'purchase-order'",
-      "expression": "address[`\"street\"`]",
-      "expected": "123 Oak Street"
-    }
-  ],
-  [
-    "index objects using expressions",
-    {
-      "data": "samples.'purchase-order'",
-      "expression": "address[lower(`\"STREET\"`)]",
-      "expected": "123 Oak Street"
-    }
-  ],
-  [
    "entries literal",
    {
      "data": "`null`",
@@ -3252,7 +3228,7 @@
     {
       "data": "`{\"0\": \"zero\",\"1\": \"one\"}`",
       "expression": "@[0] ~ @[\"1\"]",
-      "expected": ["one"]
+      "expected": []
     }
   ],
   [
@@ -3260,7 +3236,7 @@
     {
       "data": "`{\"0\": \"zero\",\"1\": \"one\"}`",
       "expression": "[\"0\"]",
-      "expected": "zero"
+      "expected": null
     }
   ]
 ]
