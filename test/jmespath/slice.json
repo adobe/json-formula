@@ -128,8 +128,7 @@
     },
     {
       "expression": "foo[2:a:3]",
-      "result": [],
-      "was": "SyntaxError"
+      "error": "SyntaxError"
     }
   ]
 }, {

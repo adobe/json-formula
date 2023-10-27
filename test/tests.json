@@ -2382,7 +2382,7 @@
     {
       "data": "samples.'purchase-order'",
       "expression": "items[length(@)-1].desc",
-      "expected": "pencils"
+      "error": "SyntaxError"
     }
   ],
   [
@@ -3152,14 +3152,6 @@
     }
   ],
   [
-    "global access",
-    {
-      "data": "samples.'purchase-order'",
-      "expression": "items[$-42].quantity",
-      "expected": 2
-    }
-  ],
-  [
     "random-floor",
     {
       "data": "{}",
@@ -3228,7 +3220,7 @@
     {
       "data": "`{\"0\": \"zero\",\"1\": \"one\"}`",
       "expression": "@[0] ~ @[\"1\"]",
-      "expected": []
+      "error": "SyntaxError"
     }
   ],
   [
@@ -3236,7 +3228,7 @@
     {
       "data": "`{\"0\": \"zero\",\"1\": \"one\"}`",
       "expression": "[\"0\"]",
-      "expected": null
+      "expected": ["0"]
     }
   ]
 ]

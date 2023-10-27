@@ -116,7 +116,7 @@ export default class TreeInterpreter {
 
       Index: (node, value) => {
         if (isArray(value)) {
-          let index = this.toNumber(this.visit(node.value, value));
+          let index = node.value.value;
           if (index < 0) {
             index = value.length + index;
           }
@@ -136,11 +136,8 @@ export default class TreeInterpreter {
           this.debug.push('Slices apply to arrays only');
           return null;
         }
-        const sliceParams = node.children.slice(0).map(
-          param => (param != null ? this.toNumber(this.visit(param, value)) : null),
-        );
-        const computed = this.computeSliceParams(value.length, sliceParams);
-        const [start, stop, step] = computed;
+        const sliceParams = node.children.map(param => (param === null ? null : param.value));
+        const [start, stop, step] = this.computeSliceParams(value.length, sliceParams);
         const result = [];
         if (step > 0) {
           for (let i = start; i < stop; i += step) {
@@ -345,6 +342,8 @@ export default class TreeInterpreter {
       Literal: node => node.value,
 
       Number: node => node.value,
+
+      Integer: node => node.value,
 
       [TOK_PIPE]: (node, value) => {
         const left = this.visit(node.children[0], value);
