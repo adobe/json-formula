@@ -67,6 +67,7 @@ const {
   TOK_LPAREN,
   TOK_JSON,
   TOK_STRING,
+  TOK_INT,
 } = tokenDefinitions;
 
 // The "&", "[", "<", ">" tokens
@@ -77,7 +78,6 @@ const {
 
 const basicTokens = {
   '.': TOK_DOT,
-  // "*": TOK_STAR,
   ',': TOK_COMMA,
   ':': TOK_COLON,
   '{': TOK_LBRACE,
@@ -158,7 +158,7 @@ export default class Lexer {
           start: this._current,
         });
         this._current += 1;
-      } else if (stream[this._current] === '-' && ![TOK_GLOBAL, TOK_CURRENT, TOK_NUMBER, TOK_RPAREN, TOK_IDENTIFIER, TOK_QUOTEDIDENTIFIER, TOK_RBRACKET, TOK_JSON, TOK_STRING].includes(prev)) {
+      } else if (stream[this._current] === '-' && ![TOK_GLOBAL, TOK_CURRENT, TOK_NUMBER, TOK_INT, TOK_RPAREN, TOK_IDENTIFIER, TOK_QUOTEDIDENTIFIER, TOK_RBRACKET, TOK_JSON, TOK_STRING].includes(prev)) {
         token = this._consumeUnaryMinus(stream);
         tokens.push(token);
       } else if (stream[this._current] === '[') {
@@ -277,7 +277,7 @@ export default class Lexer {
     this._current += 1;
     const val = stream.slice(start, this._current);
     // Check for unnecessary single quotes.
-    // json-formula uses single quotes to escape characters that don't belong in names names.
+    // json-formula uses single quotes to escape characters that don't belong in names.
     // e.g. "purchase-order".address
     // If we find a single-quoted entity with spaces or all legal characters, issue a warning
     try {
@@ -353,10 +353,10 @@ export default class Lexer {
     let value;
     if (n.includes('.') || n.toLowerCase().includes('e')) {
       value = parseFloat(n);
-    } else {
-      value = parseInt(n, 10);
+      return { type: TOK_NUMBER, value, start };
     }
-    return { type: TOK_NUMBER, value, start };
+    value = parseInt(n, 10);
+    return { type: TOK_INT, value, start };
   }
 
   _consumeUnaryMinus() {

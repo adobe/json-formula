@@ -2382,31 +2382,7 @@
     {
       "data": "samples.'purchase-order'",
       "expression": "items[length(@)-1].desc",
-      "expected": "pencils"
-    }
-  ],
-  [
-    "index objects using strings",
-    {
-      "data": "samples.'purchase-order'",
-      "expression": "address[\"street\"]",
-      "expected": "123 Oak Street"
-    }
-  ],
-  [
-    "index objects using literals",
-    {
-      "data": "samples.'purchase-order'",
-      "expression": "address[`\"street\"`]",
-      "expected": "123 Oak Street"
-    }
-  ],
-  [
-    "index objects using expressions",
-    {
-      "data": "samples.'purchase-order'",
-      "expression": "address[lower(`\"STREET\"`)]",
-      "expected": "123 Oak Street"
+      "error": "SyntaxError"
     }
   ],
   [
@@ -3176,14 +3152,6 @@
     }
   ],
   [
-    "global access",
-    {
-      "data": "samples.'purchase-order'",
-      "expression": "items[$-42].quantity",
-      "expected": 2
-    }
-  ],
-  [
     "random-floor",
     {
       "data": "{}",
@@ -3252,7 +3220,7 @@
     {
       "data": "`{\"0\": \"zero\",\"1\": \"one\"}`",
       "expression": "@[0] ~ @[\"1\"]",
-      "expected": ["one"]
+      "error": "SyntaxError"
     }
   ],
   [
@@ -3260,7 +3228,7 @@
     {
       "data": "`{\"0\": \"zero\",\"1\": \"one\"}`",
       "expression": "[\"0\"]",
-      "expected": "zero"
+      "expected": ["0"]
     }
   ]
 ]

@@ -327,8 +327,7 @@
       {
         "comment": "slice expected colon or rbracket",
         "expression": "[:@]",
-        "result": null,
-        "was": "SyntaxError"
+        "error": "SyntaxError"
       },
       {
         "comment": "slice has too many colons",
@@ -338,8 +337,7 @@
       {
         "comment": "slice expected number",
         "expression": "[:@:]",
-        "result": null,
-        "was": "SyntaxError"
+        "error": "SyntaxError"
       },
       {
         "comment": "slice expected number of colon",
@@ -393,8 +391,7 @@
       {
         "comment": "Multi-select of a list using an identifier index",
         "expression": "foo[abc]",
-        "was": "SyntaxError",
-        "result": null
+        "error": "SyntaxError"
       },
       {
         "comment": "Multi-select of a list using identifier indices",
@@ -661,8 +658,7 @@
       },
       {
         "expression": "foo[bar==baz]",
-        "result": null,
-        "was": "SyntaxError"
+        "error": "SyntaxError"
       },
       {
         "comment": "Quoted identifier in filter expression no spaces",

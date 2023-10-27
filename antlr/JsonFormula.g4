@@ -77,10 +77,10 @@ bracketExpression
   | '[' slice ']' # bracketSlice
   | '[' ']' # bracketFlatten
   | '[?' expression ']' # filter
-  | '[' expression ']' # select
+  | '[' signedInt ']' # select
   ;
 
-slice : start=expression? ':' stop=expression? (':' step=expression?)? ;
+slice : start=signedInt? ':' stop=signedInt? (':' step=signedInt?)? ;
 
 COMPARATOR
   : '<'
@@ -110,6 +110,10 @@ expressionType : '&' expression ;
 identifier
   : NAME
   | QUOTED_NAME
+  ;
+
+signedInt
+  : '-'? INT+
   ;
 
 NAME : [a-zA-Z_$] [a-zA-Z0-9_$]* ;

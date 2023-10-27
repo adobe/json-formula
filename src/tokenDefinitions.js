@@ -64,4 +64,5 @@ export default {
   TOK_LPAREN: 'Lparen',
   TOK_JSON: 'Literal',
   TOK_STRING: 'String',
+  TOK_INT: 'Integer',
 };

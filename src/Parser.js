@@ -70,6 +70,7 @@ const {
   TOK_LBRACKET,
   TOK_LPAREN,
   TOK_STRING,
+  TOK_INT,
 } = tokenDefinitions;
 
 const bindingPower = {
@@ -81,6 +82,7 @@ const bindingPower = {
   [TOK_COMMA]: 0,
   [TOK_RBRACE]: 0,
   [TOK_NUMBER]: 0,
+  [TOK_INT]: 0,
   [TOK_CURRENT]: 0,
   [TOK_GLOBAL]: 0,
   [TOK_EXPREF]: 0,
@@ -186,6 +188,15 @@ export default class Parser {
     this.index += 1;
   }
 
+  _lookAheadIndex() {
+    let idx = 0;
+    if (this._lookahead(idx) === TOK_UNARY_MINUS) idx += 1;
+    if (this._lookahead(idx) === TOK_INT) idx += 1;
+    if (this._lookahead(idx) === TOK_RBRACKET
+      || this._lookahead(idx) === TOK_COLON) return true;
+    return false;
+  }
+
   _getIndex() {
     return this.index;
   }
@@ -208,6 +219,8 @@ export default class Parser {
         return { type: 'Literal', value: token.value };
       case TOK_NUMBER:
         return { type: 'Number', value: token.value };
+      case TOK_INT:
+        return { type: 'Integer', value: token.value };
       case TOK_IDENTIFIER:
         return { type: 'Identifier', name: token.value };
       case TOK_QUOTEDIDENTIFIER:
@@ -238,8 +251,11 @@ export default class Parser {
         right = this._parseProjectionRHS(bindingPower.Flatten);
         return { type: 'Projection', children: [left, right] };
       case TOK_LBRACKET:
-        if (this._lookahead(0) === TOK_STAR
-            && this._lookahead(1) === TOK_RBRACKET) {
+        if (this._lookAheadIndex()) {
+          right = this._parseIndexExpression();
+          return this._projectIfSlice({ type: 'Identity' }, right);
+        }
+        if (this._lookahead(0) === TOK_STAR && this._lookahead(1) === TOK_RBRACKET) {
           this._advance();
           this._advance();
           right = this._parseProjectionRHS(bindingPower.Star);
@@ -248,7 +264,8 @@ export default class Parser {
             children: [{ type: 'Identity' }, right],
           };
         }
-        return this._parseUnchainedBracketExpression();
+        return this._parseArrayExpression();
+
       case TOK_CURRENT:
         return { type: TOK_CURRENT };
       case TOK_GLOBAL:
@@ -353,7 +370,7 @@ export default class Parser {
           right = this._parseProjectionRHS(bindingPower.Star);
           return { type: 'Projection', children: [left, right], debug: 'Wildcard' };
         }
-        right = this._parseChainedBracketExpression();
+        right = this._parseIndexExpression();
         return this._projectIfSlice(left, right);
       default:
         this._errorToken(this._lookaheadToken(0));
@@ -361,12 +378,12 @@ export default class Parser {
   }
 
   _match(tokenType) {
-    if (this._lookahead(0) === tokenType) {
+    const token = this._lookaheadToken(0);
+    if (token.type === tokenType) {
       this._advance();
-    } else {
-      const t = this._lookaheadToken(0);
-      throw syntaxError(`Expected ${tokenType}, got: ${t.type}`);
+      return token;
     }
+    throw syntaxError(`Expected ${tokenType}, got: ${token.type}`);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -390,13 +407,31 @@ export default class Parser {
     return args;
   }
 
-  _parseChainedBracketExpression() {
+  _parseSignedInt() {
+    const first = this._lookaheadToken(0);
+    if (first.type === TOK_UNARY_MINUS) {
+      this._advance();
+      const value = this._match(TOK_INT);
+      return {
+        type: 'SignedInt',
+        value: -value.value,
+      };
+    }
+    if (first.type !== TOK_INT) this._errorToken(first);
+    this._advance();
+    return {
+      type: 'SignedInt',
+      value: first.value,
+    };
+  }
+
+  _parseIndexExpression() {
     const oldIndex = this._getIndex();
     if (this._lookahead(0) === TOK_COLON) {
       return this._parseSliceExpression();
     }
     // look ahead of the first expression to determine the type
-    const first = this.expression(0);
+    const first = this._parseSignedInt();
     const token = this._lookahead(0);
     if (token === TOK_COLON) {
       // now that we know the type revert back to the old position and parse
@@ -408,35 +443,6 @@ export default class Parser {
       type: 'Index',
       value: first,
     };
-  }
-
-  _parseUnchainedBracketExpression() {
-    const oldIndex = this._getIndex();
-    const firstToken = this._lookahead(0);
-    if (firstToken === TOK_COLON) {
-      const right = this._parseSliceExpression();
-      return this._projectIfSlice({ type: 'Identity' }, right);
-    }
-    const first = this.expression(0);
-    const currentToken = this._lookahead(0);
-    if (currentToken === TOK_COMMA) {
-      this._setIndex(oldIndex);
-      return this._parseArrayExpression();
-    }
-    if (currentToken === TOK_COLON) {
-      this._setIndex(oldIndex);
-      const right = this._parseSliceExpression();
-      return this._projectIfSlice({ type: 'Identity' }, right);
-    }
-    if (firstToken === TOK_STRING || firstToken === TOK_NUMBER || firstToken === TOK_UNARY_MINUS) {
-      this._match(TOK_RBRACKET);
-      return {
-        type: 'Index',
-        value: first,
-      };
-    }
-    this._setIndex(oldIndex);
-    return this._parseArrayExpression();
   }
 
   _projectIfSlice(left, right) {
@@ -461,7 +467,7 @@ export default class Parser {
         index += 1;
         this._advance();
       } else {
-        parts[index] = this.expression(0);
+        parts[index] = this._parseSignedInt();
         // check next token to be either colon or rbracket
         const t = this._lookahead(0);
         if (t !== TOK_COLON && t !== TOK_RBRACKET) {
@@ -483,7 +489,6 @@ export default class Parser {
     return { type: 'Comparator', name: comparator, children: [left, right] };
   }
 
-  // eslint-disable-next-line consistent-return
   _parseDotRHS(rbp) {
     const lookahead = this._lookahead(0);
     const exprTokens = [TOK_IDENTIFIER, TOK_QUOTEDIDENTIFIER, TOK_STAR];
