@@ -49,7 +49,7 @@ const {
 function getToNumber(stringToNumber, debug = []) {
   return value => {
     const n = getValueOf(value); // in case it's an object that implements valueOf()
-    if (n === null) return null;
+    if (n === null) return 0;
     if (n instanceof Array) {
       throw typeError('Failed to convert array to number');
     }

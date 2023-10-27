@@ -14,7 +14,7 @@ export default function stringToNumber(n, debug) {
   const ret = +n;
   if (Number.isNaN(ret)) {
     if (debug) debug.push(`Failed to convert "${n}" to number`);
-    return 0;
+    return null;
   }
   return ret;
 }

@@ -1859,7 +1859,7 @@
     {
       "data": "`null`",
       "expression": "fromCodePoint(9.123)",
-      "expected": null
+      "error": "TypeError"
     }
   ],
   [
@@ -1867,7 +1867,7 @@
     {
       "data": "samples.'purchase-order'",
       "expression": "fromCodePoint(missing)",
-      "expected": null
+      "expected": "\u0000"
     }
   ],
   [
@@ -2430,7 +2430,7 @@
     {
       "data": "`null`",
       "expression": "entries(`null`)",
-      "error": "TypeError"
+      "expected": []
     }
   ],
   [
@@ -2438,7 +2438,7 @@
     {
       "data": "samples.'purchase-order'",
       "expression": "entries(address.country)",
-      "expected": [["0", "U"], ["1", "S"], ["2", "A"]]
+      "expected": [["0", "USA"]]
     }
   ],
   [
