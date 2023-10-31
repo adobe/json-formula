@@ -631,6 +631,22 @@
         "result": "[0,1]"
       },
       {
+        "expression": "toString(numbers)",
+        "result": "[-1,3,4,5]"
+      },
+      {
+        "expression": "toString(numbers,1)",
+        "result": "[\n -1,\n 3,\n 4,\n 5\n]"
+      },
+      {
+        "expression": "toString(objects)",
+        "result": "{\"foo\":\"bar\",\"bar\":\"baz\"}"
+      },
+      {
+        "expression": "toString(objects,2)",
+        "result": "{\n  \"foo\": \"bar\",\n  \"bar\": \"baz\"\n}"
+      },
+      {
         "expression": "toNumber(\"1.0\")",
         "result": 1.0
       },

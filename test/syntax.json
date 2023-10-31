@@ -347,7 +347,7 @@
     ]
   },
   {
-    "comment": "Multi-select list syntax",
+    "comment": "Array expression syntax",
     "given": {"type": "object"},
     "cases": [
       {
@@ -355,7 +355,7 @@
         "result": null
       },
       {
-        "comment": "Valid multi-select of a list",
+        "comment": "Valid Array expression",
         "expression": "foo[0, 1]",
         "error": "SyntaxError"
       },
@@ -369,73 +369,73 @@
         "result": [null]
       },
       {
-        "comment": "Multi-select of a list with trailing comma",
+        "comment": "Array expression with trailing comma",
         "expression": "foo[0, ]",
         "error": "SyntaxError"
       },
       {
-        "comment": "Multi-select of a list with trailing comma and no close",
+        "comment": "Array expression with trailing comma and no close",
         "expression": "foo[0,",
         "error": "SyntaxError"
       },
       {
-        "comment": "Multi-select of a list with trailing comma and no close",
+        "comment": "Array expression with trailing comma and no close",
         "expression": "foo.[a",
         "error": "SyntaxError"
       },
       {
-        "comment": "Multi-select of a list with extra comma",
+        "comment": "Array expression with extra comma",
         "expression": "foo[0,, 1]",
         "error": "SyntaxError"
       },
       {
-        "comment": "Multi-select of a list using an identifier index",
+        "comment": "Array expression using an identifier index",
         "expression": "foo[abc]",
         "error": "SyntaxError"
       },
       {
-        "comment": "Multi-select of a list using identifier indices",
+        "comment": "Array expression using identifier indices",
         "expression": "foo[abc, def]",
         "error": "SyntaxError"
       },
       {
-        "comment": "Multi-select of a list using an identifier index",
+        "comment": "Array expression using an identifier index",
         "expression": "foo[abc, 1]",
         "error": "SyntaxError"
       },
       {
-        "comment": "Multi-select of a list using an identifier index with trailing comma",
+        "comment": "Array expression using an identifier index with trailing comma",
         "expression": "foo[abc, ]",
         "error": "SyntaxError"
       },
       {
-        "comment": "Valid multi-select of a hash using an identifier index",
+        "comment": "Valid Object expression using an identifier index",
         "expression": "foo.[abc]",
         "result": [null]
       },
       {
-        "comment": "Valid multi-select of a hash",
+        "comment": "Valid Object expression",
         "expression": "foo.[abc, def]",
         "result": [null, null]
       },
       {
-        "comment": "Multi-select of a hash using a numeric index",
+        "comment": "Object expression using a numeric index",
         "expression": "foo.[abc, 1]",
         "result": [null, 1],
         "was": "SyntaxError"
       },
       {
-        "comment": "Multi-select of a hash with a trailing comma",
+        "comment": "Object expression with a trailing comma",
         "expression": "foo.[abc, ]",
         "error": "SyntaxError"
       },
       {
-        "comment": "Multi-select of a hash with extra commas",
+        "comment": "Object expression with extra commas",
         "expression": "foo.[abc,, def]",
         "error": "SyntaxError"
       },
       {
-        "comment": "Multi-select of a hash using number indices",
+        "comment": "Object expression using number indices",
         "expression": "foo.[0, 1]",
         "result": [0, 1],
         "was": "SyntaxError"
@@ -443,7 +443,7 @@
     ]
   },
   {
-    "comment": "Multi-select hash syntax",
+    "comment": "Object expression syntax",
     "given": {"type": "object"},
     "cases": [
       {
@@ -501,12 +501,12 @@
         "error": "SyntaxError"
       },
       {
-        "comment": "Valid multi-select hash extraction",
+        "comment": "Valid object expression extraction",
         "expression": "a.{foo: bar}",
         "result": {"foo": null}
       },
       {
-        "comment": "Valid multi-select hash extraction",
+        "comment": "Valid object expression extraction",
         "expression": "a.{foo: bar, baz: bam}",
         "result": {"baz": null, "foo": null}
       },

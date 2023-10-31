@@ -16,6 +16,8 @@ import testGrammar from './testGrammar.js';
 
 const sampleData = require('./sampleData.json');
 const tests = require('./tests.json');
+const docSamples = require('./docSamples.json');
+const specSamples = require('./specSamples.json');
 
 const jsonFormula = new JsonFormula({}, stringToNumber);
 
@@ -62,57 +64,91 @@ jsonFormula.search(
   'register("product", &@[0] * [1])',
   {},
 );
-
 // in case running only specific tests update the filter clause
 // eslint-disable-next-line no-unused-vars
 const filterClause = ([_desc, _tst]) => true;
-const filtered = tests.filter(filterClause);
 
-test.each(filtered)('%s', (_desc, tst) => {
-  if (tst.fieldsOnly) return;
-  const language = tst.language || 'en-US';
-  const data = jsonFormula.search(tst.data, sampleData, {}, language);
-  let result;
-  try {
-    result = jsonFormula.search(tst.expression, data, { $: 42, $$: 43 }, language);
-  } catch (e) {
-    expect(tst.error).toBeDefined();
-    expect(tst.error).toBe(e.name);
-    return;
-  }
-  if (typeof result === 'number') {
-    expect(result).toBeCloseTo(tst.expected, 5);
-  } else {
-    expect(result).toEqual(tst.expected);
-  }
+[tests, docSamples, specSamples].forEach(testSuite => {
+  const filtered = testSuite.filter(filterClause);
+
+  test.each(filtered)('%s', (_desc, tst) => {
+    if (tst.fieldsOnly) return;
+    const language = tst.language || 'en-US';
+    let data;
+    if (typeof tst.data === 'string') {
+      data = jsonFormula.search(tst.data, sampleData, {}, language);
+    } else {
+      data = tst.data || {};
+    }
+    let result;
+    try {
+      result = jsonFormula.search(
+        tst.expression,
+        data,
+        {
+          $: 42,
+          $$: 43,
+          $days: [
+            'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday',
+          ],
+        },
+        language,
+      );
+    } catch (e) {
+      expect(tst.error).toBeDefined();
+      expect(tst.error).toBe(e.name);
+      return;
+    }
+    if (typeof result === 'number') {
+      expect(result).toBeCloseTo(tst.expected, 5);
+    } else {
+      expect(result).toEqual(tst.expected);
+    }
+  });
 });
 
 // run again -- with field definitions
-test.each(filtered)('%s', (_desc, tst) => {
-  const grammarResult = testGrammar(tst.expression);
-  if (grammarResult === 'error') expect(tst.error).toBe('syntax');
-  else expect(tst.error).not.toBe('syntax');
+[tests, docSamples, specSamples].forEach(testSuite => {
+  const filtered = testSuite.filter(filterClause);
 
-  const language = tst.language || 'en-US';
-  const data = jsonFormula.search(tst.data, sampleData, {}, language);
-  let jsonResult;
-  try {
-    const root = createForm(data);
-    jsonResult = jsonFormula.search(
-      tst.expression,
-      root,
-      { $form: root, $: 42, $$: 43 },
-      language,
-    );
-  } catch (e) {
-    expect(tst.error).toBeDefined();
-    return;
-  }
-  // stringify/parse so that the comparison doesn't get confused by field objects
-  const result = JSON.parse(JSON.stringify(jsonResult));
-  if (typeof result === 'number') {
-    expect(result).toBeCloseTo(tst.expected, 5);
-  } else {
-    expect(result).toEqual(tst.expected);
-  }
+  test.each(filtered)('%s', (_desc, tst) => {
+    const grammarResult = testGrammar(tst.expression);
+    if (grammarResult === 'error') expect(tst.error).toBe('syntax');
+    else expect(tst.error).not.toBe('syntax');
+
+    const language = tst.language || 'en-US';
+    let data;
+    if (typeof tst.data === 'string') {
+      data = jsonFormula.search(tst.data, sampleData, {}, language);
+    } else {
+      data = tst.data || {};
+    }
+    let jsonResult;
+    try {
+      const root = createForm(data);
+      jsonResult = jsonFormula.search(
+        tst.expression,
+        root,
+        {
+          $form: root,
+          $: 42,
+          $$: 43,
+          $days: [
+            'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday',
+          ],
+        },
+        language,
+      );
+    } catch (e) {
+      expect(tst.error).toBeDefined();
+      return;
+    }
+    // stringify/parse so that the comparison doesn't get confused by field objects
+    const result = JSON.parse(JSON.stringify(jsonResult));
+    if (typeof result === 'number') {
+      expect(result).toBeCloseTo(tst.expected, 5);
+    } else {
+      expect(result).toEqual(tst.expected);
+    }
+  });
 });

@@ -1943,7 +1943,10 @@ export default function functions(
      * Converts the provided argument to a string
      * as per the <<Type Coercion Rules,type coercion rules>>.
      * @param {any} arg Value to be converted to a string
-     * @return {string} The result string
+     * @param {integer} [indent=0] Indentation to use when converting
+     * objects and arrays to a JSON string
+     * @return {string} The result string.  If the value to be converted to string is an
+     * array or object, a JSON string is returned.
      * @function toString
      * @example
      * toString(1) // returns "1"
@@ -1955,10 +1958,11 @@ export default function functions(
         if (getType(resolvedArgs[0]) === TYPE_STRING) {
           return resolvedArgs[0];
         }
-        return JSON.stringify(resolvedArgs[0]);
+        const indent = resolvedArgs.length > 1 ? resolvedArgs[1] : 0;
+        return JSON.stringify(resolvedArgs[0], null, indent);
       },
 
-      _signature: [{ types: [TYPE_ANY] }],
+      _signature: [{ types: [TYPE_ANY] }, { types: [TYPE_NUMBER], optional: true }],
     },
 
     /**
