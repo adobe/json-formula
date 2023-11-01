@@ -45,18 +45,13 @@ const {
   TOK_EXPREF,
   TOK_PIPE,
   TOK_OR,
+  TOK_COMPARATOR,
   TOK_AND,
   TOK_ADD,
   TOK_SUBTRACT,
   TOK_UNARY_MINUS,
   TOK_DIVIDE,
   TOK_UNION,
-  TOK_EQ,
-  TOK_GT,
-  TOK_LT,
-  TOK_GTE,
-  TOK_LTE,
-  TOK_NE,
   TOK_FLATTEN,
   TOK_STAR,
   TOK_FILTER,
@@ -408,34 +403,33 @@ export default class Lexer {
     if (startingChar === '!') {
       if (stream[this._current] === '=') {
         this._current += 1;
-        return { type: TOK_NE, value: '!=', start };
+        return { type: TOK_COMPARATOR, value: '!=', start };
       }
       return { type: TOK_NOT, value: '!', start };
     }
     if (startingChar === '<') {
       if (stream[this._current] === '=') {
         this._current += 1;
-        return { type: TOK_LTE, value: '<=', start };
+        return { type: TOK_COMPARATOR, value: '<=', start };
       }
       if (stream[this._current] === '>') {
         this._current += 1;
-        return { type: TOK_NE, value: '<>', start };
+        return { type: TOK_COMPARATOR, value: '!=', start };
       }
-      return { type: TOK_LT, value: '<', start };
+      return { type: TOK_COMPARATOR, value: '<', start };
     }
     if (startingChar === '>') {
       if (stream[this._current] === '=') {
         this._current += 1;
-        return { type: TOK_GTE, value: '>=', start };
+        return { type: TOK_COMPARATOR, value: '>=', start };
       }
-      return { type: TOK_GT, value: '>', start };
+      return { type: TOK_COMPARATOR, value: '>', start };
     }
     // startingChar is '='
     if (stream[this._current] === '=') {
       this._current += 1;
-      return { type: TOK_EQ, value: '==', start };
     }
-    return { type: TOK_EQ, value: '=', start };
+    return { type: TOK_COMPARATOR, value: '==', start };
   }
 
   _consumeJson(stream) {

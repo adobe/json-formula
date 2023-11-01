@@ -55,12 +55,7 @@ const {
   TOK_MULTIPLY,
   TOK_DIVIDE,
   TOK_UNION,
-  TOK_EQ,
-  TOK_GT,
-  TOK_LT,
-  TOK_GTE,
-  TOK_LTE,
-  TOK_NE,
+  TOK_COMPARATOR,
   TOK_FLATTEN,
   TOK_STAR,
   TOK_FILTER,
@@ -95,12 +90,7 @@ const bindingPower = {
   [TOK_MULTIPLY]: 7,
   [TOK_DIVIDE]: 7,
   [TOK_UNION]: 7,
-  [TOK_EQ]: 5,
-  [TOK_GT]: 5,
-  [TOK_LT]: 5,
-  [TOK_GTE]: 5,
-  [TOK_LTE]: 5,
-  [TOK_NE]: 5,
+  [TOK_COMPARATOR]: 5,
   [TOK_FLATTEN]: 9,
   [TOK_STAR]: 20,
   [TOK_FILTER]: 21,
@@ -140,20 +130,24 @@ export default class Parser {
     const leftToken = this._lookaheadToken(0);
     this._advance();
     let left = this.nud(leftToken);
-    let currentToken = this._lookahead(0, left.type);
-    while (rbp < bindingPower[currentToken]) {
+    let currentToken = this._lookaheadToken(0, left);
+    while (rbp < bindingPower[currentToken.type]) {
       this._advance();
       left = this.led(currentToken, left);
-      currentToken = this._lookahead(0, left.type);
+      currentToken = this._lookaheadToken(0, left);
     }
     return left;
   }
 
-  _lookahead(number, previous) {
-    const next = this.tokens[this.index + number].type;
+  _lookahead(number) {
+    return this.tokens[this.index + number].type;
+  }
+
+  _lookaheadToken(number, previous = {}) {
+    const next = this.tokens[this.index + number];
     // disambiguate multiply and star
-    if (next === TOK_STAR) {
-      if ([
+    if (next.type === TOK_STAR) {
+      if (![
         undefined,
         TOK_LBRACKET,
         TOK_DOT,
@@ -169,19 +163,12 @@ export default class Parser {
         TOK_LPAREN,
         TOK_CONCATENATE,
         TOK_UNION,
-        TOK_GT,
-        TOK_GTE,
-        TOK_LT,
-        TOK_LTE,
-        TOK_EQ,
-        TOK_NE].includes(previous)) return TOK_STAR;
-      return TOK_MULTIPLY;
+        TOK_COMPARATOR].includes(previous.type)) {
+        next.type = TOK_MULTIPLY;
+      }
     }
-    return next;
-  }
 
-  _lookaheadToken(number) {
-    return this.tokens[this.index + number];
+    return next;
   }
 
   _advance() {
@@ -243,7 +230,7 @@ export default class Parser {
         }
         return { type: 'ValueProjection', children: [left, right] };
       case TOK_FILTER:
-        return this.led(token.type, { type: 'Identity' });
+        return this.led(token, { type: 'Identity' });
       case TOK_LBRACE:
         return this._parseObjectExpression();
       case TOK_FLATTEN:
@@ -287,7 +274,7 @@ export default class Parser {
   }
 
   // eslint-disable-next-line consistent-return
-  led(tokenName, left) {
+  led(token, left) {
     let condition;
     let right;
     let name;
@@ -296,6 +283,7 @@ export default class Parser {
     let rbp;
     let leftNode;
     let rightNode;
+    const tokenName = token.type;
     switch (tokenName) {
       case TOK_CONCATENATE:
         right = this.expression(bindingPower.Concatenate);
@@ -355,13 +343,8 @@ export default class Parser {
         leftNode = { type: TOK_FLATTEN, children: [left] };
         rightNode = this._parseProjectionRHS(bindingPower.Flatten);
         return { type: 'Projection', children: [leftNode, rightNode] };
-      case TOK_EQ:
-      case TOK_NE:
-      case TOK_GT:
-      case TOK_GTE:
-      case TOK_LT:
-      case TOK_LTE:
-        return this._parseComparator(left, tokenName);
+      case TOK_COMPARATOR:
+        return this._parseComparator(left, token);
       case TOK_LBRACKET:
         if (this._lookahead(0) === TOK_STAR
             && this._lookahead(1) === TOK_RBRACKET) {
@@ -373,7 +356,7 @@ export default class Parser {
         right = this._parseIndexExpression();
         return this._projectIfSlice(left, right);
       default:
-        this._errorToken(this._lookaheadToken(0));
+        this._errorToken(token);
     }
   }
 
@@ -485,8 +468,8 @@ export default class Parser {
   }
 
   _parseComparator(left, comparator) {
-    const right = this.expression(bindingPower[comparator]);
-    return { type: 'Comparator', name: comparator, children: [left, right] };
+    const right = this.expression(bindingPower[comparator.type]);
+    return { type: 'Comparator', value: comparator.value, children: [left, right] };
   }
 
   _parseDotRHS(rbp) {
