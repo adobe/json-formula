@@ -66,8 +66,7 @@ wildcard : '*' ;
 arrayExpression : '[' expression (',' expression)* ']' ;
 
 objectExpression
-  : '{' '}' #emptyObject
-  | '{' keyvalExpr (',' keyvalExpr)* '}'  #nonEmptyObject
+  : '{' keyvalExpr (',' keyvalExpr)* '}'  #nonEmptyObject
   ;
 
 keyvalExpr : identifier ':' expression ;

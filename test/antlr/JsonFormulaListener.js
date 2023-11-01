@@ -230,15 +230,6 @@ export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by JsonFormulaParser#emptyObject.
-	enterEmptyObject(ctx) {
-	}
-
-	// Exit a parse tree produced by JsonFormulaParser#emptyObject.
-	exitEmptyObject(ctx) {
-	}
-
-
 	// Enter a parse tree produced by JsonFormulaParser#nonEmptyObject.
 	enterNonEmptyObject(ctx) {
 	}

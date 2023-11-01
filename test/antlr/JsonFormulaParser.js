@@ -4,66 +4,65 @@ import antlr4 from 'antlr4';
 import JsonFormulaListener from './JsonFormulaListener.js';
 import JsonFormulaVisitor from './JsonFormulaVisitor.js';
 
-const serializedATN = [4,1,29,190,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,
+const serializedATN = [4,1,29,186,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,
 4,2,5,7,5,2,6,7,6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,
 2,13,7,13,2,14,7,14,1,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,53,8,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,1,78,
 8,1,10,1,12,1,81,9,1,1,2,1,2,1,2,1,2,1,2,3,2,88,8,2,1,3,1,3,1,4,1,4,1,4,
-1,4,5,4,96,8,4,10,4,12,4,99,9,4,1,4,1,4,1,5,1,5,1,5,1,5,1,5,1,5,5,5,109,
-8,5,10,5,12,5,112,9,5,1,5,1,5,3,5,116,8,5,1,6,1,6,1,6,1,6,1,7,1,7,1,7,1,
-7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,3,7,139,8,7,1,8,3,
-8,142,8,8,1,8,1,8,3,8,146,8,8,1,8,1,8,3,8,150,8,8,3,8,152,8,8,1,9,1,9,1,
-9,1,9,1,9,5,9,159,8,9,10,9,12,9,162,9,9,1,9,1,9,1,9,1,9,1,9,3,9,169,8,9,
-1,10,1,10,3,10,173,8,10,1,11,1,11,1,12,1,12,1,12,1,13,1,13,1,14,3,14,183,
-8,14,1,14,4,14,186,8,14,11,14,12,14,187,1,14,0,1,2,15,0,2,4,6,8,10,12,14,
-16,18,20,22,24,26,28,0,4,1,0,27,28,1,0,2,5,1,0,6,7,1,0,23,24,214,0,30,1,
-0,0,0,2,52,1,0,0,0,4,87,1,0,0,0,6,89,1,0,0,0,8,91,1,0,0,0,10,115,1,0,0,0,
-12,117,1,0,0,0,14,138,1,0,0,0,16,141,1,0,0,0,18,168,1,0,0,0,20,172,1,0,0,
-0,22,174,1,0,0,0,24,176,1,0,0,0,26,179,1,0,0,0,28,182,1,0,0,0,30,31,3,2,
-1,0,31,32,5,0,0,1,32,1,1,0,0,0,33,34,6,1,-1,0,34,53,3,14,7,0,35,53,3,26,
-13,0,36,37,5,10,0,0,37,53,3,2,1,12,38,39,5,7,0,0,39,53,3,2,1,11,40,41,5,
-11,0,0,41,42,3,2,1,0,42,43,5,12,0,0,43,53,1,0,0,0,44,53,3,6,3,0,45,53,3,
-8,4,0,46,53,3,10,5,0,47,53,5,25,0,0,48,53,3,18,9,0,49,53,5,26,0,0,50,53,
-7,0,0,0,51,53,3,22,11,0,52,33,1,0,0,0,52,35,1,0,0,0,52,36,1,0,0,0,52,38,
-1,0,0,0,52,40,1,0,0,0,52,44,1,0,0,0,52,45,1,0,0,0,52,46,1,0,0,0,52,47,1,
-0,0,0,52,48,1,0,0,0,52,49,1,0,0,0,52,50,1,0,0,0,52,51,1,0,0,0,53,79,1,0,
-0,0,54,55,10,18,0,0,55,56,7,1,0,0,56,78,3,2,1,19,57,58,10,17,0,0,58,59,7,
-2,0,0,59,78,3,2,1,18,60,61,10,16,0,0,61,62,5,22,0,0,62,78,3,2,1,17,63,64,
-10,15,0,0,64,65,5,8,0,0,65,78,3,2,1,16,66,67,10,14,0,0,67,68,5,9,0,0,68,
-78,3,2,1,15,69,70,10,4,0,0,70,71,5,13,0,0,71,78,3,2,1,5,72,73,10,21,0,0,
-73,74,5,1,0,0,74,78,3,4,2,0,75,76,10,20,0,0,76,78,3,14,7,0,77,54,1,0,0,0,
-77,57,1,0,0,0,77,60,1,0,0,0,77,63,1,0,0,0,77,66,1,0,0,0,77,69,1,0,0,0,77,
-72,1,0,0,0,77,75,1,0,0,0,78,81,1,0,0,0,79,77,1,0,0,0,79,80,1,0,0,0,80,3,
-1,0,0,0,81,79,1,0,0,0,82,88,3,26,13,0,83,88,3,8,4,0,84,88,3,10,5,0,85,88,
-3,18,9,0,86,88,3,6,3,0,87,82,1,0,0,0,87,83,1,0,0,0,87,84,1,0,0,0,87,85,1,
-0,0,0,87,86,1,0,0,0,88,5,1,0,0,0,89,90,5,2,0,0,90,7,1,0,0,0,91,92,5,14,0,
-0,92,97,3,2,1,0,93,94,5,15,0,0,94,96,3,2,1,0,95,93,1,0,0,0,96,99,1,0,0,0,
-97,95,1,0,0,0,97,98,1,0,0,0,98,100,1,0,0,0,99,97,1,0,0,0,100,101,5,16,0,
-0,101,9,1,0,0,0,102,103,5,17,0,0,103,116,5,18,0,0,104,105,5,17,0,0,105,110,
-3,12,6,0,106,107,5,15,0,0,107,109,3,12,6,0,108,106,1,0,0,0,109,112,1,0,0,
-0,110,108,1,0,0,0,110,111,1,0,0,0,111,113,1,0,0,0,112,110,1,0,0,0,113,114,
-5,18,0,0,114,116,1,0,0,0,115,102,1,0,0,0,115,104,1,0,0,0,116,11,1,0,0,0,
-117,118,3,26,13,0,118,119,5,19,0,0,119,120,3,2,1,0,120,13,1,0,0,0,121,122,
-5,14,0,0,122,123,5,2,0,0,123,139,5,16,0,0,124,125,5,14,0,0,125,126,3,16,
-8,0,126,127,5,16,0,0,127,139,1,0,0,0,128,129,5,14,0,0,129,139,5,16,0,0,130,
-131,5,20,0,0,131,132,3,2,1,0,132,133,5,16,0,0,133,139,1,0,0,0,134,135,5,
-14,0,0,135,136,3,28,14,0,136,137,5,16,0,0,137,139,1,0,0,0,138,121,1,0,0,
-0,138,124,1,0,0,0,138,128,1,0,0,0,138,130,1,0,0,0,138,134,1,0,0,0,139,15,
-1,0,0,0,140,142,3,28,14,0,141,140,1,0,0,0,141,142,1,0,0,0,142,143,1,0,0,
-0,143,145,5,19,0,0,144,146,3,28,14,0,145,144,1,0,0,0,145,146,1,0,0,0,146,
-151,1,0,0,0,147,149,5,19,0,0,148,150,3,28,14,0,149,148,1,0,0,0,149,150,1,
-0,0,0,150,152,1,0,0,0,151,147,1,0,0,0,151,152,1,0,0,0,152,17,1,0,0,0,153,
-154,5,23,0,0,154,155,5,11,0,0,155,160,3,20,10,0,156,157,5,15,0,0,157,159,
-3,20,10,0,158,156,1,0,0,0,159,162,1,0,0,0,160,158,1,0,0,0,160,161,1,0,0,
-0,161,163,1,0,0,0,162,160,1,0,0,0,163,164,5,12,0,0,164,169,1,0,0,0,165,166,
-5,23,0,0,166,167,5,11,0,0,167,169,5,12,0,0,168,153,1,0,0,0,168,165,1,0,0,
-0,169,19,1,0,0,0,170,173,3,2,1,0,171,173,3,24,12,0,172,170,1,0,0,0,172,171,
-1,0,0,0,173,21,1,0,0,0,174,175,5,21,0,0,175,23,1,0,0,0,176,177,5,4,0,0,177,
-178,3,2,1,0,178,25,1,0,0,0,179,180,7,3,0,0,180,27,1,0,0,0,181,183,5,7,0,
-0,182,181,1,0,0,0,182,183,1,0,0,0,183,185,1,0,0,0,184,186,5,28,0,0,185,184,
-1,0,0,0,186,187,1,0,0,0,187,185,1,0,0,0,187,188,1,0,0,0,188,29,1,0,0,0,17,
-52,77,79,87,97,110,115,138,141,145,149,151,160,168,172,182,187];
+1,4,5,4,96,8,4,10,4,12,4,99,9,4,1,4,1,4,1,5,1,5,1,5,1,5,5,5,107,8,5,10,5,
+12,5,110,9,5,1,5,1,5,1,6,1,6,1,6,1,6,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,
+1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,3,7,135,8,7,1,8,3,8,138,8,8,1,8,1,8,3,8,
+142,8,8,1,8,1,8,3,8,146,8,8,3,8,148,8,8,1,9,1,9,1,9,1,9,1,9,5,9,155,8,9,
+10,9,12,9,158,9,9,1,9,1,9,1,9,1,9,1,9,3,9,165,8,9,1,10,1,10,3,10,169,8,10,
+1,11,1,11,1,12,1,12,1,12,1,13,1,13,1,14,3,14,179,8,14,1,14,4,14,182,8,14,
+11,14,12,14,183,1,14,0,1,2,15,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,0,
+4,1,0,27,28,1,0,2,5,1,0,6,7,1,0,23,24,209,0,30,1,0,0,0,2,52,1,0,0,0,4,87,
+1,0,0,0,6,89,1,0,0,0,8,91,1,0,0,0,10,102,1,0,0,0,12,113,1,0,0,0,14,134,1,
+0,0,0,16,137,1,0,0,0,18,164,1,0,0,0,20,168,1,0,0,0,22,170,1,0,0,0,24,172,
+1,0,0,0,26,175,1,0,0,0,28,178,1,0,0,0,30,31,3,2,1,0,31,32,5,0,0,1,32,1,1,
+0,0,0,33,34,6,1,-1,0,34,53,3,14,7,0,35,53,3,26,13,0,36,37,5,10,0,0,37,53,
+3,2,1,12,38,39,5,7,0,0,39,53,3,2,1,11,40,41,5,11,0,0,41,42,3,2,1,0,42,43,
+5,12,0,0,43,53,1,0,0,0,44,53,3,6,3,0,45,53,3,8,4,0,46,53,3,10,5,0,47,53,
+5,25,0,0,48,53,3,18,9,0,49,53,5,26,0,0,50,53,7,0,0,0,51,53,3,22,11,0,52,
+33,1,0,0,0,52,35,1,0,0,0,52,36,1,0,0,0,52,38,1,0,0,0,52,40,1,0,0,0,52,44,
+1,0,0,0,52,45,1,0,0,0,52,46,1,0,0,0,52,47,1,0,0,0,52,48,1,0,0,0,52,49,1,
+0,0,0,52,50,1,0,0,0,52,51,1,0,0,0,53,79,1,0,0,0,54,55,10,18,0,0,55,56,7,
+1,0,0,56,78,3,2,1,19,57,58,10,17,0,0,58,59,7,2,0,0,59,78,3,2,1,18,60,61,
+10,16,0,0,61,62,5,22,0,0,62,78,3,2,1,17,63,64,10,15,0,0,64,65,5,8,0,0,65,
+78,3,2,1,16,66,67,10,14,0,0,67,68,5,9,0,0,68,78,3,2,1,15,69,70,10,4,0,0,
+70,71,5,13,0,0,71,78,3,2,1,5,72,73,10,21,0,0,73,74,5,1,0,0,74,78,3,4,2,0,
+75,76,10,20,0,0,76,78,3,14,7,0,77,54,1,0,0,0,77,57,1,0,0,0,77,60,1,0,0,0,
+77,63,1,0,0,0,77,66,1,0,0,0,77,69,1,0,0,0,77,72,1,0,0,0,77,75,1,0,0,0,78,
+81,1,0,0,0,79,77,1,0,0,0,79,80,1,0,0,0,80,3,1,0,0,0,81,79,1,0,0,0,82,88,
+3,26,13,0,83,88,3,8,4,0,84,88,3,10,5,0,85,88,3,18,9,0,86,88,3,6,3,0,87,82,
+1,0,0,0,87,83,1,0,0,0,87,84,1,0,0,0,87,85,1,0,0,0,87,86,1,0,0,0,88,5,1,0,
+0,0,89,90,5,2,0,0,90,7,1,0,0,0,91,92,5,14,0,0,92,97,3,2,1,0,93,94,5,15,0,
+0,94,96,3,2,1,0,95,93,1,0,0,0,96,99,1,0,0,0,97,95,1,0,0,0,97,98,1,0,0,0,
+98,100,1,0,0,0,99,97,1,0,0,0,100,101,5,16,0,0,101,9,1,0,0,0,102,103,5,17,
+0,0,103,108,3,12,6,0,104,105,5,15,0,0,105,107,3,12,6,0,106,104,1,0,0,0,107,
+110,1,0,0,0,108,106,1,0,0,0,108,109,1,0,0,0,109,111,1,0,0,0,110,108,1,0,
+0,0,111,112,5,18,0,0,112,11,1,0,0,0,113,114,3,26,13,0,114,115,5,19,0,0,115,
+116,3,2,1,0,116,13,1,0,0,0,117,118,5,14,0,0,118,119,5,2,0,0,119,135,5,16,
+0,0,120,121,5,14,0,0,121,122,3,16,8,0,122,123,5,16,0,0,123,135,1,0,0,0,124,
+125,5,14,0,0,125,135,5,16,0,0,126,127,5,20,0,0,127,128,3,2,1,0,128,129,5,
+16,0,0,129,135,1,0,0,0,130,131,5,14,0,0,131,132,3,28,14,0,132,133,5,16,0,
+0,133,135,1,0,0,0,134,117,1,0,0,0,134,120,1,0,0,0,134,124,1,0,0,0,134,126,
+1,0,0,0,134,130,1,0,0,0,135,15,1,0,0,0,136,138,3,28,14,0,137,136,1,0,0,0,
+137,138,1,0,0,0,138,139,1,0,0,0,139,141,5,19,0,0,140,142,3,28,14,0,141,140,
+1,0,0,0,141,142,1,0,0,0,142,147,1,0,0,0,143,145,5,19,0,0,144,146,3,28,14,
+0,145,144,1,0,0,0,145,146,1,0,0,0,146,148,1,0,0,0,147,143,1,0,0,0,147,148,
+1,0,0,0,148,17,1,0,0,0,149,150,5,23,0,0,150,151,5,11,0,0,151,156,3,20,10,
+0,152,153,5,15,0,0,153,155,3,20,10,0,154,152,1,0,0,0,155,158,1,0,0,0,156,
+154,1,0,0,0,156,157,1,0,0,0,157,159,1,0,0,0,158,156,1,0,0,0,159,160,5,12,
+0,0,160,165,1,0,0,0,161,162,5,23,0,0,162,163,5,11,0,0,163,165,5,12,0,0,164,
+149,1,0,0,0,164,161,1,0,0,0,165,19,1,0,0,0,166,169,3,2,1,0,167,169,3,24,
+12,0,168,166,1,0,0,0,168,167,1,0,0,0,169,21,1,0,0,0,170,171,5,21,0,0,171,
+23,1,0,0,0,172,173,5,4,0,0,173,174,3,2,1,0,174,25,1,0,0,0,175,176,7,3,0,
+0,176,27,1,0,0,0,177,179,5,7,0,0,178,177,1,0,0,0,178,179,1,0,0,0,179,181,
+1,0,0,0,180,182,5,28,0,0,181,180,1,0,0,0,182,183,1,0,0,0,183,181,1,0,0,0,
+183,184,1,0,0,0,184,29,1,0,0,0,16,52,77,79,87,97,108,134,137,141,145,147,
+156,164,168,178,183];
 
 
 const atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
@@ -571,43 +570,26 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	    this.enterRule(localctx, 10, JsonFormulaParser.RULE_objectExpression);
 	    var _la = 0;
 	    try {
-	        this.state = 115;
+	        localctx = new NonEmptyObjectContext(this, localctx);
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 102;
+	        this.match(JsonFormulaParser.T__16);
+	        this.state = 103;
+	        this.keyvalExpr();
+	        this.state = 108;
 	        this._errHandler.sync(this);
-	        var la_ = this._interp.adaptivePredict(this._input,6,this._ctx);
-	        switch(la_) {
-	        case 1:
-	            localctx = new EmptyObjectContext(this, localctx);
-	            this.enterOuterAlt(localctx, 1);
-	            this.state = 102;
-	            this.match(JsonFormulaParser.T__16);
-	            this.state = 103;
-	            this.match(JsonFormulaParser.T__17);
-	            break;
-
-	        case 2:
-	            localctx = new NonEmptyObjectContext(this, localctx);
-	            this.enterOuterAlt(localctx, 2);
+	        _la = this._input.LA(1);
+	        while(_la===15) {
 	            this.state = 104;
-	            this.match(JsonFormulaParser.T__16);
+	            this.match(JsonFormulaParser.T__14);
 	            this.state = 105;
 	            this.keyvalExpr();
 	            this.state = 110;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
-	            while(_la===15) {
-	                this.state = 106;
-	                this.match(JsonFormulaParser.T__14);
-	                this.state = 107;
-	                this.keyvalExpr();
-	                this.state = 112;
-	                this._errHandler.sync(this);
-	                _la = this._input.LA(1);
-	            }
-	            this.state = 113;
-	            this.match(JsonFormulaParser.T__17);
-	            break;
-
 	        }
+	        this.state = 111;
+	        this.match(JsonFormulaParser.T__17);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
 		        localctx.exception = re;
@@ -629,11 +611,11 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	    this.enterRule(localctx, 12, JsonFormulaParser.RULE_keyvalExpr);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 117;
+	        this.state = 113;
 	        this.identifier();
-	        this.state = 118;
+	        this.state = 114;
 	        this.match(JsonFormulaParser.T__18);
-	        this.state = 119;
+	        this.state = 115;
 	        this.expression(0);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -655,60 +637,60 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	    let localctx = new BracketExpressionContext(this, this._ctx, this.state);
 	    this.enterRule(localctx, 14, JsonFormulaParser.RULE_bracketExpression);
 	    try {
-	        this.state = 138;
+	        this.state = 134;
 	        this._errHandler.sync(this);
-	        var la_ = this._interp.adaptivePredict(this._input,7,this._ctx);
+	        var la_ = this._interp.adaptivePredict(this._input,6,this._ctx);
 	        switch(la_) {
 	        case 1:
 	            localctx = new BracketStarContext(this, localctx);
 	            this.enterOuterAlt(localctx, 1);
-	            this.state = 121;
+	            this.state = 117;
 	            this.match(JsonFormulaParser.T__13);
-	            this.state = 122;
+	            this.state = 118;
 	            this.match(JsonFormulaParser.T__1);
-	            this.state = 123;
+	            this.state = 119;
 	            this.match(JsonFormulaParser.T__15);
 	            break;
 
 	        case 2:
 	            localctx = new BracketSliceContext(this, localctx);
 	            this.enterOuterAlt(localctx, 2);
-	            this.state = 124;
+	            this.state = 120;
 	            this.match(JsonFormulaParser.T__13);
-	            this.state = 125;
+	            this.state = 121;
 	            this.slice();
-	            this.state = 126;
+	            this.state = 122;
 	            this.match(JsonFormulaParser.T__15);
 	            break;
 
 	        case 3:
 	            localctx = new BracketFlattenContext(this, localctx);
 	            this.enterOuterAlt(localctx, 3);
-	            this.state = 128;
+	            this.state = 124;
 	            this.match(JsonFormulaParser.T__13);
-	            this.state = 129;
+	            this.state = 125;
 	            this.match(JsonFormulaParser.T__15);
 	            break;
 
 	        case 4:
 	            localctx = new FilterContext(this, localctx);
 	            this.enterOuterAlt(localctx, 4);
-	            this.state = 130;
+	            this.state = 126;
 	            this.match(JsonFormulaParser.T__19);
-	            this.state = 131;
+	            this.state = 127;
 	            this.expression(0);
-	            this.state = 132;
+	            this.state = 128;
 	            this.match(JsonFormulaParser.T__15);
 	            break;
 
 	        case 5:
 	            localctx = new SelectContext(this, localctx);
 	            this.enterOuterAlt(localctx, 5);
-	            this.state = 134;
+	            this.state = 130;
 	            this.match(JsonFormulaParser.T__13);
-	            this.state = 135;
+	            this.state = 131;
 	            this.signedInt();
-	            this.state = 136;
+	            this.state = 132;
 	            this.match(JsonFormulaParser.T__15);
 	            break;
 
@@ -735,35 +717,35 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
+	        this.state = 137;
+	        this._errHandler.sync(this);
+	        _la = this._input.LA(1);
+	        if(_la===7 || _la===28) {
+	            this.state = 136;
+	            localctx.start = this.signedInt();
+	        }
+
+	        this.state = 139;
+	        this.match(JsonFormulaParser.T__18);
 	        this.state = 141;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
 	        if(_la===7 || _la===28) {
 	            this.state = 140;
-	            localctx.start = this.signedInt();
-	        }
-
-	        this.state = 143;
-	        this.match(JsonFormulaParser.T__18);
-	        this.state = 145;
-	        this._errHandler.sync(this);
-	        _la = this._input.LA(1);
-	        if(_la===7 || _la===28) {
-	            this.state = 144;
 	            localctx.stop = this.signedInt();
 	        }
 
-	        this.state = 151;
+	        this.state = 147;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
 	        if(_la===19) {
-	            this.state = 147;
+	            this.state = 143;
 	            this.match(JsonFormulaParser.T__18);
-	            this.state = 149;
+	            this.state = 145;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
 	            if(_la===7 || _la===28) {
-	                this.state = 148;
+	                this.state = 144;
 	                localctx.step = this.signedInt();
 	            }
 
@@ -790,41 +772,41 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	    this.enterRule(localctx, 18, JsonFormulaParser.RULE_functionExpression);
 	    var _la = 0;
 	    try {
-	        this.state = 168;
+	        this.state = 164;
 	        this._errHandler.sync(this);
-	        var la_ = this._interp.adaptivePredict(this._input,13,this._ctx);
+	        var la_ = this._interp.adaptivePredict(this._input,12,this._ctx);
 	        switch(la_) {
 	        case 1:
 	            this.enterOuterAlt(localctx, 1);
-	            this.state = 153;
+	            this.state = 149;
 	            this.match(JsonFormulaParser.NAME);
-	            this.state = 154;
+	            this.state = 150;
 	            this.match(JsonFormulaParser.T__10);
-	            this.state = 155;
+	            this.state = 151;
 	            this.functionArg();
-	            this.state = 160;
+	            this.state = 156;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
 	            while(_la===15) {
-	                this.state = 156;
+	                this.state = 152;
 	                this.match(JsonFormulaParser.T__14);
-	                this.state = 157;
+	                this.state = 153;
 	                this.functionArg();
-	                this.state = 162;
+	                this.state = 158;
 	                this._errHandler.sync(this);
 	                _la = this._input.LA(1);
 	            }
-	            this.state = 163;
+	            this.state = 159;
 	            this.match(JsonFormulaParser.T__11);
 	            break;
 
 	        case 2:
 	            this.enterOuterAlt(localctx, 2);
-	            this.state = 165;
+	            this.state = 161;
 	            this.match(JsonFormulaParser.NAME);
-	            this.state = 166;
+	            this.state = 162;
 	            this.match(JsonFormulaParser.T__10);
-	            this.state = 167;
+	            this.state = 163;
 	            this.match(JsonFormulaParser.T__11);
 	            break;
 
@@ -849,7 +831,7 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	    let localctx = new FunctionArgContext(this, this._ctx, this.state);
 	    this.enterRule(localctx, 20, JsonFormulaParser.RULE_functionArg);
 	    try {
-	        this.state = 172;
+	        this.state = 168;
 	        this._errHandler.sync(this);
 	        switch(this._input.LA(1)) {
 	        case 2:
@@ -867,12 +849,12 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	        case 27:
 	        case 28:
 	            this.enterOuterAlt(localctx, 1);
-	            this.state = 170;
+	            this.state = 166;
 	            this.expression(0);
 	            break;
 	        case 4:
 	            this.enterOuterAlt(localctx, 2);
-	            this.state = 171;
+	            this.state = 167;
 	            this.expressionType();
 	            break;
 	        default:
@@ -899,7 +881,7 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	    this.enterRule(localctx, 22, JsonFormulaParser.RULE_currentNode);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 174;
+	        this.state = 170;
 	        this.match(JsonFormulaParser.T__20);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -922,9 +904,9 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	    this.enterRule(localctx, 24, JsonFormulaParser.RULE_expressionType);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 176;
+	        this.state = 172;
 	        this.match(JsonFormulaParser.T__3);
-	        this.state = 177;
+	        this.state = 173;
 	        this.expression(0);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -948,7 +930,7 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 179;
+	        this.state = 175;
 	        _la = this._input.LA(1);
 	        if(!(_la===23 || _la===24)) {
 	        this._errHandler.recoverInline(this);
@@ -979,21 +961,21 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 182;
+	        this.state = 178;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
 	        if(_la===7) {
-	            this.state = 181;
+	            this.state = 177;
 	            this.match(JsonFormulaParser.T__6);
 	        }
 
-	        this.state = 185; 
+	        this.state = 181; 
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
 	        do {
-	            this.state = 184;
+	            this.state = 180;
 	            this.match(JsonFormulaParser.INT);
-	            this.state = 187; 
+	            this.state = 183; 
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
 	        } while(_la===28);
@@ -2159,39 +2141,6 @@ class NonEmptyObjectContext extends ObjectExpressionContext {
 }
 
 JsonFormulaParser.NonEmptyObjectContext = NonEmptyObjectContext;
-
-class EmptyObjectContext extends ObjectExpressionContext {
-
-    constructor(parser, ctx) {
-        super(parser);
-        super.copyFrom(ctx);
-    }
-
-
-	enterRule(listener) {
-	    if(listener instanceof JsonFormulaListener ) {
-	        listener.enterEmptyObject(this);
-		}
-	}
-
-	exitRule(listener) {
-	    if(listener instanceof JsonFormulaListener ) {
-	        listener.exitEmptyObject(this);
-		}
-	}
-
-	accept(visitor) {
-	    if ( visitor instanceof JsonFormulaVisitor ) {
-	        return visitor.visitEmptyObject(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-JsonFormulaParser.EmptyObjectContext = EmptyObjectContext;
 
 class KeyvalExprContext extends antlr4.ParserRuleContext {
 

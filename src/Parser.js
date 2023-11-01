@@ -118,7 +118,8 @@ export default class Parser {
   }
 
   parse(expression, debug) {
-    this._loadTokens(expression, debug);
+    this.debug = debug;
+    this._loadTokens(expression);
     this.index = 0;
     const ast = this.expression(0);
     if (this._lookahead(0) !== TOK_EOF) {
@@ -128,8 +129,8 @@ export default class Parser {
     return ast;
   }
 
-  _loadTokens(expression, debug) {
-    const lexer = new Lexer(this._allowedGlobalNames, debug);
+  _loadTokens(expression) {
+    const lexer = new Lexer(this._allowedGlobalNames, this.debug);
     const tokens = lexer.tokenize(expression);
     tokens.push({ type: TOK_EOF, value: '', start: expression.length });
     this.tokens = tokens;
@@ -160,7 +161,6 @@ export default class Parser {
         TOK_AND,
         TOK_OR,
         TOK_COMMA,
-        TOK_COLON,
         TOK_NOT,
         TOK_MULTIPLY,
         TOK_ADD,
@@ -547,8 +547,8 @@ export default class Parser {
     let keyToken; let keyName; let value; let
       node;
     if (this._lookahead(0) === TOK_RBRACE) {
-      this._advance();
-      return { type: 'ObjectExpression', children: [] };
+      this.debug.push('To create an empty object, use a JSON literal: `{}`');
+      throw syntaxError('An empty object expression is not allowed');
     }
     for (;;) {
       keyToken = this._lookaheadToken(0);

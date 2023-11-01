@@ -156,7 +156,7 @@ class Runtime {
   callFunction(name, resolvedArgs, data, interpreter, bResolved = true) {
     // this check will weed out 'valueOf', 'toString' etc
     if (!Object.prototype.hasOwnProperty.call(this.functionTable, name)) {
-      throw functionError(`${name}()`);
+      throw functionError(`No such function: ${name}()`);
     }
 
     const functionEntry = this.functionTable[name];

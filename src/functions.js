@@ -782,7 +782,7 @@ export default function functions(
      * length("") // returns 0
      * length("abcd") // returns 4
      * length([1, 2, 3, 4]) // returns 4
-     * length({}) // returns 0
+     * length(`{}`) // returns 0
      * length({a : 3, b : 4}) // returns 2
      */
     length: {

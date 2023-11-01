@@ -156,12 +156,6 @@ export default class JsonFormulaVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
-	// Visit a parse tree produced by JsonFormulaParser#emptyObject.
-	visitEmptyObject(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
 	// Visit a parse tree produced by JsonFormulaParser#nonEmptyObject.
 	visitNonEmptyObject(ctx) {
 	  return this.visitChildren(ctx);

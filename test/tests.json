@@ -73,15 +73,15 @@
   [
     "and(3)",
     {
-      "data": "{}",
-      "expression": "and({}, [])",
+      "data": "`{}`",
+      "expression": "and(`{}`, `[]`)",
       "expected": false
     }
   ],
   [
     "and(4)",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "and({a: 3}, [3,4])",
       "expected": true
     }
@@ -105,15 +105,15 @@
   [
     "or(3)",
     {
-      "data": "{}",
-      "expression": "or({}, [])",
+      "data": "`{}`",
+      "expression": "or(`{}`, `[]`)",
       "expected": false
     }
   ],
   [
     "or(4)",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "or({a: 12})",
       "expected": true
     }
@@ -121,7 +121,7 @@
   [
     "or(5)",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "or([2,3])",
       "expected": true
     }
@@ -145,7 +145,7 @@
   [
     "if() empty array",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "if(`[]`, \"first\", \"second\")",
       "expected": "second"
     }
@@ -153,7 +153,7 @@
   [
     "if() empty object",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "if(`{}`, \"first\", \"second\")",
       "expected": "second"
     }
@@ -161,7 +161,7 @@
   [
     "if() populated object",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "if(`{\"A\": 21}`, \"first\", \"second\")",
       "expected": "first"
     }
@@ -169,7 +169,7 @@
   [
     "if() populated array",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "if(`[2]`, \"first\", \"second\")",
       "expected": "first"
     }
@@ -488,7 +488,7 @@
   [
     "literal number",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": ".123",
       "expected": 0.123
     }
@@ -496,7 +496,7 @@
   [
     "literal expressions",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "-.1 + -.1 + .1",
       "expected": -0.1
     }
@@ -504,7 +504,7 @@
   [
     "Bad JSON literal",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "`.1`",
       "error": "SyntaxError"
     }
@@ -560,7 +560,7 @@
   [
     "subtract JSON literals",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "`5` - `4`",
       "expected": 1
     }
@@ -568,7 +568,7 @@
   [
     "subtract string literals",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "\"5\" - `4`",
       "expected": 1
     }
@@ -2505,7 +2505,7 @@
   [
     "bad divide 1",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "null/0",
       "was": null,
       "error": "EvaluationError"
@@ -2514,7 +2514,7 @@
   [
     "bad divide 2",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "4/0",
       "was": null,
       "error": "EvaluationError"
@@ -2523,7 +2523,7 @@
   [
     "bad divide 3",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "4/\"b\"",
       "error": "EvaluationError"
     }
@@ -2563,7 +2563,7 @@
   [
     "array concat",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "`[]` & `[\"s\"]`",
       "expected": ["s"]
     }
@@ -2571,7 +2571,7 @@
   [
     "array divide",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "`[100,100]` / `[50]`",
       "error": "EvaluationError"
     }
@@ -2835,7 +2835,7 @@
   [
     "zip 1",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "zip([1,2,3], [4,5,6])",
       "expected": [[1,4] ,[2,5], [3,6]]
     }
@@ -2843,7 +2843,7 @@
   [
     "zip 2",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "zip([1,2,3],[4,5],[7,8,9])",
       "expected": [[1,4,7], [2,5,8]]
     }
@@ -2851,7 +2851,7 @@
   [
     "zip 3",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "zip([1,2,3])",
       "expected": [[1], [2], [3]]
     }
@@ -2859,7 +2859,7 @@
   [
     "zip 4",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "zip([])",
       "expected": []
     }
@@ -2867,7 +2867,7 @@
   [
     "null1",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "null() == `null`",
       "expected": true
     }
@@ -2875,7 +2875,7 @@
   [
     "null2",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "null() == notfound",
       "expected": true
     }
@@ -3154,7 +3154,7 @@
   [
     "random-floor",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "floor(random())",
       "expected": 0
     }
@@ -3162,7 +3162,7 @@
   [
     "random-ceil",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "ceil(random())",
       "expected": 1
     }
@@ -3170,7 +3170,7 @@
   [
     "random(2)",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "random(2)",
       "error": "FunctionError"
     }
@@ -3178,7 +3178,7 @@
   [
     "$",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "$",
       "expected": 42
     }
@@ -3186,7 +3186,7 @@
   [
     "$$",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "$$",
       "expected": 43
     }
@@ -3194,7 +3194,7 @@
   [
     "2--1",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "2--1",
       "expected": 3
     }
@@ -3202,7 +3202,7 @@
   [
     "2---1",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "2---1",
       "expected": 1
     }
@@ -3210,7 +3210,7 @@
   [
     "2----1",
     {
-      "data": "{}",
+      "data": "`{}`",
       "expression": "2----1",
       "expected": 3
     }
