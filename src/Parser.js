@@ -502,9 +502,7 @@ export default class Parser {
       this._match(TOK_DOT);
       right = this._parseDotRHS(rbp);
     } else {
-      const t = this._lookaheadToken(0);
-      throw syntaxError(`Unexpected token: ${
-        t.value}(${t.type})`);
+      throw syntaxError(`Unexpected token: ${next.value}(${next.type})`);
     }
     return right;
   }
