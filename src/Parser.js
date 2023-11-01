@@ -491,13 +491,14 @@ export default class Parser {
 
   _parseProjectionRHS(rbp) {
     let right;
-    if (bindingPower[this._lookahead(0)] < 10) {
+    const next = this._lookaheadToken(0, { type: TOK_STAR });
+    if (bindingPower[next.type] < 10) {
       right = { type: 'Identity' };
-    } else if (this._lookahead(0) === TOK_LBRACKET) {
+    } else if (next.type === TOK_LBRACKET) {
       right = this.expression(rbp);
-    } else if (this._lookahead(0) === TOK_FILTER) {
+    } else if (next.type === TOK_FILTER) {
       right = this.expression(rbp);
-    } else if (this._lookahead(0) === TOK_DOT) {
+    } else if (next.type === TOK_DOT) {
       this._match(TOK_DOT);
       right = this._parseDotRHS(rbp);
     } else {
