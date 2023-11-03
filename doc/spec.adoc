@@ -195,22 +195,22 @@ include::./grammar.g4[]
 endif::[]
 ----
 
-In addition to the grammar, there is a token precedence ordered
-from weakest to tightest binding:
+The order of expression definitions found in the antlr grammar indicates
+the token precedence. These are the operators listed from strongest to weakest binding:
 
-* pipe: `|`
-* or: `||`
-* and: `&&`
-* concatenate: `&`
-* add: `+`, subtract: `-`
-* multiply: `*`, divide: `/`, union: `~`
-* Equals: `=` (or `==`), Greater than: `>`, Less than: `<`, Greater than or equal: `>=`, Less than or equal: `\<=`, Not equals: `!=` (or `<>`)
+* Parenthesis `()`
+* Bracket Expression `[...]`
+* Braces `{}`
+* Dot `.` (chained expressions)
 * Flatten: `[]`
 * Unary not `!`, unary minus: `-`
-* Dot `.` (expression combinations)
-* Braces `{}`
-* Bracket Expression `[...]`
-* Parenthesis `()`
+* multiply: `*`, divide: `/`
+* add: `+`, subtract: `-`, union: `~`
+* concatenate: `&`
+* Comparison operators: `=`, `==`, `>`, `<`, `>=`, `\<=`,  `!=`, `<>`
+* and: `&&`
+* or: `||`
+* pipe: `|`
 
 == Literals
 === JSON Literals

@@ -23,6 +23,15 @@ export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
+	// Enter a parse tree produced by JsonFormulaParser#addSubtractUnionExpression.
+	enterAddSubtractUnionExpression(ctx) {
+	}
+
+	// Exit a parse tree produced by JsonFormulaParser#addSubtractUnionExpression.
+	exitAddSubtractUnionExpression(ctx) {
+	}
+
+
 	// Enter a parse tree produced by JsonFormulaParser#identifierExpression.
 	enterIdentifierExpression(ctx) {
 	}
@@ -149,15 +158,6 @@ export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by JsonFormulaParser#addSubtractExpression.
-	enterAddSubtractExpression(ctx) {
-	}
-
-	// Exit a parse tree produced by JsonFormulaParser#addSubtractExpression.
-	exitAddSubtractExpression(ctx) {
-	}
-
-
 	// Enter a parse tree produced by JsonFormulaParser#bracketedExpression.
 	enterBracketedExpression(ctx) {
 	}
@@ -176,12 +176,12 @@ export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by JsonFormulaParser#arrExpression.
-	enterArrExpression(ctx) {
+	// Enter a parse tree produced by JsonFormulaParser#concatenationExpression.
+	enterConcatenationExpression(ctx) {
 	}
 
-	// Exit a parse tree produced by JsonFormulaParser#arrExpression.
-	exitArrExpression(ctx) {
+	// Exit a parse tree produced by JsonFormulaParser#concatenationExpression.
+	exitConcatenationExpression(ctx) {
 	}
 
 
@@ -191,6 +191,15 @@ export default class JsonFormulaListener extends antlr4.tree.ParseTreeListener {
 
 	// Exit a parse tree produced by JsonFormulaParser#objExpression.
 	exitObjExpression(ctx) {
+	}
+
+
+	// Enter a parse tree produced by JsonFormulaParser#arrExpression.
+	enterArrExpression(ctx) {
+	}
+
+	// Exit a parse tree produced by JsonFormulaParser#arrExpression.
+	exitArrExpression(ctx) {
 	}
 
 

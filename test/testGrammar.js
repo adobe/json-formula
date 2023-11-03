@@ -16,7 +16,7 @@ import JsonFormulaLexer from './antlr/JsonFormulaLexer.js';
 
 class FormulaErrorListener extends antlr4.error.ErrorListener {
   // eslint-disable-next-line class-methods-use-this
-  syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, exception) {
+  syntaxError(_recognizer, _offendingSymbol, _line, _charPositionInLine, _msg, exception) {
     throw new Error(exception);
   }
 }
@@ -39,5 +39,5 @@ export default function testGrammar(expression) {
     return 'SyntaxError';
   }
   if (typeof result === 'undefined') return 'error';
-  return 'result';
+  return result;
 }

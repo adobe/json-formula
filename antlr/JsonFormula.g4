@@ -30,24 +30,25 @@ grammar JsonFormula;
 formula : expression EOF ;
 
 expression
-  : expression '.' chainedExpression # chainExpression
+  : '(' expression ')' # parenExpression
   | expression bracketExpression # bracketedExpression
   | bracketExpression # indexedExpression
-  | expression ('*' | '/' | '&' | '~') expression	# multDivExpression
-  | expression ('+' | '-') expression	# addSubtractExpression
+  | objectExpression # objExpression
+  | expression '.' chainedExpression # chainExpression
+  | '!' expression # notExpression
+  | '-' expression # unaryMinusExpression
+  | expression ('*' | '/') expression	# multDivExpression
+  | expression ('+' | '-' | '~') expression	# addSubtractUnionExpression
+  | expression '&' expression	# concatenationExpression
   | expression COMPARATOR expression # comparisonExpression
   | expression '&&' expression # andExpression
   | expression '||' expression # orExpression
+  | expression '|' expression # pipeExpression
   | identifier # identifierExpression
-  | '!' expression # notExpression
-  | '-' expression # unaryMinusExpression
-  | '(' expression ')' # parenExpression
   | wildcard # wildcardExpression
   | arrayExpression # arrExpression
-  | objectExpression # objExpression
   | JSON_FRAGMENT # literalExpression
   | functionExpression # functionCallExpression
-  | expression '|' expression # pipeExpression
   | STRING # rawStringExpression
   | (REAL_OR_EXPONENT_NUMBER | INT) # numberLiteral
   | currentNode # currentNodeExpression

@@ -84,18 +84,18 @@ const bindingPower = {
   [TOK_PIPE]: 1,
   [TOK_OR]: 2,
   [TOK_AND]: 3,
+  [TOK_COMPARATOR]: 4,
   [TOK_CONCATENATE]: 5,
   [TOK_ADD]: 6,
   [TOK_SUBTRACT]: 6,
+  [TOK_UNION]: 6,
   [TOK_MULTIPLY]: 7,
   [TOK_DIVIDE]: 7,
-  [TOK_UNION]: 7,
-  [TOK_COMPARATOR]: 5,
-  [TOK_FLATTEN]: 9,
+  [TOK_NOT]: 8,
+  [TOK_UNARY_MINUS]: 8,
+  [TOK_FLATTEN]: 10,
   [TOK_STAR]: 20,
   [TOK_FILTER]: 21,
-  [TOK_NOT]: 30,
-  [TOK_UNARY_MINUS]: 30,
   [TOK_DOT]: 40,
   [TOK_LBRACE]: 50,
   [TOK_LBRACKET]: 55,
@@ -249,6 +249,7 @@ export default class Parser {
           return {
             type: 'Projection',
             children: [{ type: 'Identity' }, right],
+            debug: 'Wildcard',
           };
         }
         return this._parseArrayExpression();
@@ -333,11 +334,7 @@ export default class Parser {
       case TOK_FILTER:
         condition = this.expression(0);
         this._match(TOK_RBRACKET);
-        if (this._lookahead(0) === TOK_FLATTEN) {
-          right = { type: 'Identity' };
-        } else {
-          right = this._parseProjectionRHS(bindingPower.Filter);
-        }
+        right = this._parseProjectionRHS(bindingPower.Filter);
         return { type: 'FilterProjection', children: [left, right, condition] };
       case TOK_FLATTEN:
         leftNode = { type: TOK_FLATTEN, children: [left] };
@@ -492,7 +489,7 @@ export default class Parser {
   _parseProjectionRHS(rbp) {
     let right;
     const next = this._lookaheadToken(0, { type: TOK_STAR });
-    if (bindingPower[next.type] < 10) {
+    if (bindingPower[next.type] <= bindingPower[TOK_FLATTEN]) {
       right = { type: 'Identity' };
     } else if (next.type === TOK_LBRACKET) {
       right = this.expression(rbp);

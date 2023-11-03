@@ -485,14 +485,6 @@
     }
   ],
   [
-    "operator precedence",
-    {
-      "data": "`{}`",
-      "expression": "1 + 2 & 2 * 2",
-      "expected": "34"
-    }
-  ],
-  [
     "literal number",
     {
       "data": "`{}`",

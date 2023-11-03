@@ -1,0 +1,83 @@
+[
+ [
+    "operator precedence 1",
+    {
+      "data": "`{}`",
+      "expression": "1 + 2 & 2 * 2",
+      "expected": "34",
+      "precedence": "(1+2)&(2*2)"
+    }
+  ],
+  [
+    "operator precedence 2",
+    {
+      "data": "`{}`",
+      "expression": "2 & 3 + 4 * 5",
+      "expected": "223",
+      "precedence": "2&(3+(4*5))"
+    }
+  ],
+  [
+    "operator precedence 3",
+    {
+      "data": "`{}`",
+      "expression": "1 || 2 && false()",
+      "expected": 1,
+      "precedence": "1||(2&&false())"
+    }
+  ],
+  [
+    "operator precedence 4",
+    {
+      "data": "`{}`",
+      "expression": "2 || 0 == 2",
+      "expected": 2,
+      "precedence": "2||(0==2)"
+    }
+  ],
+  [
+    "operator precedence 5",
+    {
+      "data": "`{}`",
+      "expression": "  !true() + true()",
+      "expected": 1,
+      "precedence": "(!true())+true()"
+    }
+  ],
+  [
+    "operator precedence 6",
+    {
+      "data": "`{}`",
+      "expression": "true() || true() && false()",
+      "expected": true,
+      "precedence": "true()||(true()&&false())"
+    }
+  ],
+  [
+    "Verify precedence of or/and expressions",
+    {
+      "data": {"foo": [{"a": 1, "b": 2, "c": 3}, {"a": 3, "b": 4}]},
+      "expression": "foo[?a == `1` || b ==`2` && c == `5`]",
+      "expected": [{"a": 1, "b": 2, "c": 3}],
+      "precedence": "foo([?((a==`1`)||((b==`2`)&&(c==`5`)))])"
+    }
+  ],
+  [
+    "Parentheses can alter precedence",
+    {
+      "data": {"foo": [{"a": 1, "b": 2, "c": 3}, {"a": 3, "b": 4}]},
+      "expression": "foo[?(a == `1` || b ==`2`) && c == `5`]",
+      "expected": [],
+      "precedence": "foo([?(((((a==`1`)||(b==`2`))))&&(c==`5`))])"
+    }
+  ],
+  [
+    "Not expressions combined with and/or",
+    {
+      "data": {"foo": [{"a": 1, "b": 2, "c": 3}, {"a": 3, "b": 4}]},
+      "expression": "foo[?!(a == `1` || b ==`2`)]",
+      "expected": [{"a": 3, "b": 4}],
+      "precedence": "foo([?(!((((a==`1`)||(b==`2`)))))])"
+    }
+  ]
+]
