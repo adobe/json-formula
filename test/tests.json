@@ -49,7 +49,7 @@
   [
     "`true`",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "`true`",
       "expected": true
     }
@@ -73,7 +73,7 @@
   [
     "and(3)",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "and(`{}`, `[]`)",
       "expected": false
     }
@@ -81,7 +81,7 @@
   [
     "and(4)",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "and({a: 3}, [3,4])",
       "expected": true
     }
@@ -105,7 +105,7 @@
   [
     "or(3)",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "or(`{}`, `[]`)",
       "expected": false
     }
@@ -113,7 +113,7 @@
   [
     "or(4)",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "or({a: 12})",
       "expected": true
     }
@@ -121,7 +121,7 @@
   [
     "or(5)",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "or([2,3])",
       "expected": true
     }
@@ -145,7 +145,7 @@
   [
     "if() empty array",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "if(`[]`, \"first\", \"second\")",
       "expected": "second"
     }
@@ -153,7 +153,7 @@
   [
     "if() empty object",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "if(`{}`, \"first\", \"second\")",
       "expected": "second"
     }
@@ -161,7 +161,7 @@
   [
     "if() populated object",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "if(`{\"A\": 21}`, \"first\", \"second\")",
       "expected": "first"
     }
@@ -169,7 +169,7 @@
   [
     "if() populated array",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "if(`[2]`, \"first\", \"second\")",
       "expected": "first"
     }
@@ -185,7 +185,7 @@
   [
     "sum(array)",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "sum(`[2,4,6]`)",
       "expected": 12
     }
@@ -193,7 +193,7 @@
   [
     "sum(array)",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "sum([2,\"4\",6,`true`])",
       "expected": 13
     }
@@ -201,7 +201,7 @@
   [
     "math",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "(3 + 2) * 10 / 2 - 5",
       "expected": 20
     }
@@ -209,7 +209,7 @@
   [
     "math",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "2 * \"$2\" + `null`",
       "expected": 0
     }
@@ -217,7 +217,7 @@
   [
     "<",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "1 < 2",
       "expected": true
     }
@@ -225,7 +225,7 @@
   [
     ">",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "1 > 2",
       "expected": false
     }
@@ -233,7 +233,7 @@
   [
     ">= equal",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "12 >= 12",
       "expected": true
     }
@@ -241,7 +241,7 @@
   [
     ">= greater",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "12 >= 10",
       "expected": true
     }
@@ -249,7 +249,7 @@
   [
     "<= equal",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "10 <= 10",
       "expected": true
     }
@@ -257,7 +257,7 @@
   [
     "<= less",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "12 <= 10",
       "expected": false
     }
@@ -265,7 +265,7 @@
   [
     "== true",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "10 == 10",
       "expected": true
     }
@@ -273,7 +273,7 @@
   [
     "== false",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "10 == 11",
       "expected": false
     }
@@ -281,7 +281,7 @@
   [
     "== false",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "10 == 11",
       "expected": false
     }
@@ -289,7 +289,7 @@
   [
     "!= true",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "10 != 11",
       "expected": true
     }
@@ -297,7 +297,7 @@
   [
     "!= false",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "10 != 10",
       "expected": false
     }
@@ -305,7 +305,7 @@
   [
     "4 + \"8\"",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "4 + \"8\"",
       "expected": 12
     }
@@ -313,7 +313,7 @@
   [
     "\"4\" + \"8\"",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "\"4\" + \"8\"",
       "expected": 12
     }
@@ -321,7 +321,7 @@
   [
     "[1,2,3] * 2",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "[1,2,3] * 2",
       "expected": [2,4,6]
     }
@@ -329,7 +329,7 @@
   [
     "[1,2,3] * [2,4,6,8]",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "[1,2,3] * [2,4,6,8]",
       "expected": [2,8,18,0]
     }
@@ -337,7 +337,7 @@
   [
     "[1,2,3] * [2,[3,4],6,8,10]",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "[1,2,3] * [2,[3,4],6,8,10]",
       "expected": [2,[6,8],18,0,0]
     }
@@ -353,7 +353,7 @@
   [
     "[1,2,3] + 2",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "[1,2,3] + 2",
       "expected": [3,4,5]
     }
@@ -361,7 +361,7 @@
   [
     "[1,2,3] + [2,4,6,8]",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "[1,2,3] + [2,4,6,8]",
       "expected": [3,6,9,8]
     }
@@ -369,7 +369,7 @@
   [
     "[1,2,3] + [2,[3,4],6,8,10]",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "[1,2,3] + [2,[3,4],6,8,10]",
       "expected": [3,[5,6],9,8,10]
     }
@@ -378,7 +378,7 @@
   [
     "2 - [1,2,3]",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "2 - [1,2,3]",
       "expected": [1,0,-1]
     }
@@ -386,7 +386,7 @@
   [
     "[1,2,3] - 2",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "[1,2,3] - 2",
       "expected": [-1,0,1]
     }
@@ -394,7 +394,7 @@
   [
     "[1,2,3] - [2,4,6,8]",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "[1,2,3] - [2,4,6,8]",
       "expected": [-1,-2,-3,-8]
     }
@@ -402,7 +402,7 @@
   [
     "[2,[3,4],6,8,10] - [1,2,3]",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "[2,[3,4],6,8,10] - [1,2,3]",
       "expected": [1,[1,2],3,8,10]
     }
@@ -411,7 +411,7 @@
   [
     "4 / [1,2,4]",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "4 / [1,2,4]",
       "expected": [4,2,1]
     }
@@ -419,7 +419,7 @@
   [
     "[4,2,1] / 2",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "[4,2,1] / 2",
       "expected": [2,1,0.5]
     }
@@ -427,7 +427,7 @@
   [
     "[1,\"2\",3] / [1,1,3,8]",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "[1,\"2\",3] / [1,1,3,8]",
       "expected": [1,2,1,0]
     }
@@ -435,7 +435,7 @@
   [
     "[2,[2,4],12,8] / [1,2,3,4,5]",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "[2,[2,4],12,8] / [1,2,3,4,5]",
       "expected": [2,[1,2],4,2,0]
     }
@@ -443,7 +443,7 @@
   [
     "2 ^ [1,2,4]",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "2 ^ [1,2,4]",
       "error" : "SyntaxError",
       "was": [2,4,16]
@@ -452,7 +452,7 @@
   [
     "[4,2,1] ^ 2",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "[4,2,1] ^ 2",
       "error" : "SyntaxError",
       "was": [16,4,1]
@@ -461,7 +461,7 @@
   [
     "[1,\"2\",3] ^ [1,1,3,8]",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "[1,\"2\",3] ^ [1,1,3,8]",
       "error" : "SyntaxError",
       "was": [1,2,27,0]
@@ -471,7 +471,7 @@
   [
     "[1,\"a\",\"b\"] & [\"b\",1,2]",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "[1,\"a\",\"b\"] & [\"b\",1,2]",
       "expected": ["1b", "a1", "b2"]
     }
@@ -479,7 +479,7 @@
   [
     "12 & 34 & \"b\" & true()",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "12 & 34 & \"b\" & true()",
       "expected": "1234btrue"
     }
@@ -487,7 +487,7 @@
   [
     "literal number",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": ".123",
       "expected": 0.123
     }
@@ -495,7 +495,7 @@
   [
     "literal expressions",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "-.1 + -.1 + .1",
       "expected": -0.1
     }
@@ -503,7 +503,7 @@
   [
     "Bad JSON literal",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "`.1`",
       "error": "SyntaxError"
     }
@@ -535,7 +535,7 @@
   [
     "bad unary minus expression",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "-\"string\"",
       "expected": 0
     }
@@ -559,7 +559,7 @@
   [
     "subtract JSON literals",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "`5` - `4`",
       "expected": 1
     }
@@ -567,7 +567,7 @@
   [
     "subtract string literals",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "\"5\" - `4`",
       "expected": 1
     }
@@ -599,7 +599,7 @@
   [
     "substitute(4)",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "substitute(\"deed\", \"d\", \"f\", 0)",
       "expected": "deed"
     }
@@ -2395,7 +2395,7 @@
   [
     "entries array",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "entries([\"a\", 1])",
       "expected": [["0","a"],["1",1]]
     }
@@ -2419,7 +2419,7 @@
   [
     "fromEntries list",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "fromEntries([[\"a\", 1], [\"b\", 2, 4], [\"a\", 3]])",
       "expected": {"a": 3, "b": 2}
     }
@@ -2504,7 +2504,7 @@
   [
     "bad divide 1",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "null/0",
       "was": null,
       "error": "EvaluationError"
@@ -2513,7 +2513,7 @@
   [
     "bad divide 2",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "4/0",
       "was": null,
       "error": "EvaluationError"
@@ -2522,7 +2522,7 @@
   [
     "bad divide 3",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "4/\"b\"",
       "error": "EvaluationError"
     }
@@ -2562,7 +2562,7 @@
   [
     "array concat",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "`[]` & `[\"s\"]`",
       "expected": ["s"]
     }
@@ -2570,7 +2570,7 @@
   [
     "array divide",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "`[100,100]` / `[50]`",
       "error": "EvaluationError"
     }
@@ -2586,7 +2586,7 @@
   [
     "mod2",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "mod(7, 4)",
       "expected": 3
     }
@@ -2610,7 +2610,7 @@
   [
     "union3",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "[{a:1}, {b:2}, 3] ~ [[4,5],6]",
       "expected": [{"a":1}, {"b":2}, 3, [4,5], 6]
     }
@@ -2834,7 +2834,7 @@
   [
     "zip 1",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "zip([1,2,3], [4,5,6])",
       "expected": [[1,4] ,[2,5], [3,6]]
     }
@@ -2842,7 +2842,7 @@
   [
     "zip 2",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "zip([1,2,3],[4,5],[7,8,9])",
       "expected": [[1,4,7], [2,5,8]]
     }
@@ -2850,7 +2850,7 @@
   [
     "zip 3",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "zip([1,2,3])",
       "expected": [[1], [2], [3]]
     }
@@ -2858,7 +2858,7 @@
   [
     "zip 4",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "zip([])",
       "expected": []
     }
@@ -2866,7 +2866,7 @@
   [
     "null1",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "null() == `null`",
       "expected": true
     }
@@ -2874,7 +2874,7 @@
   [
     "null2",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "null() == notfound",
       "expected": true
     }
@@ -2965,7 +2965,7 @@
   [
     "search2",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\".\\\\^$(+{]\", \"pad.\\\\^$(+{]\")",
       "expected": [3, ".\\^$(+{]"]
     }
@@ -2973,7 +2973,7 @@
   [
     "search3",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\"a?b\", \"bcd\")",
       "expected": []
     }
@@ -2981,7 +2981,7 @@
   [
     "search4",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\"*\", \"bcd\")",
       "expected": [0, ""]
     }
@@ -2989,7 +2989,7 @@
   [
     "search5",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\"*\", \"\")",
       "expected": []
     }
@@ -2997,7 +2997,7 @@
   [
     "search6",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\"\", \"bcd\")",
       "expected": [0, ""]
     }
@@ -3005,7 +3005,7 @@
   [
     "search7",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\"\", \"\")",
       "expected": []
     }
@@ -3013,7 +3013,7 @@
   [
     "search8",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\"a~~c\", \"pada~c\")",
       "expected": [3, "a~c"]
     }
@@ -3021,7 +3021,7 @@
   [
     "search9",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\"a~~~?c\", \"pada~?c\", 3)",
       "expected": [3, "a~?c"]
     }
@@ -3029,7 +3029,7 @@
   [
     "search10",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\"a~?~?c\", \"pada??c\", 2)",
       "expected": [3, "a??c"]
     }
@@ -3037,7 +3037,7 @@
   [
     "search11",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\"a~*~*c\", \"pada**c\")",
       "expected": [3, "a**c"]
     }
@@ -3045,7 +3045,7 @@
   [
     "search12",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\"a*c??c\", \"padacabc\")",
       "expected": [1, "adacabc"]
     }
@@ -3053,7 +3053,7 @@
   [
     "search13",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\"a*c*c\", \"padacabc\")",
       "expected": [1, "adacabc"]
     }
@@ -3061,7 +3061,7 @@
   [
     "search14",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\"a*c\", \"padacabc\", 2)",
       "expected": [3, "ac"]
     }
@@ -3069,7 +3069,7 @@
   [
     "search15",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\"a?c\", \"padacabc\")",
       "expected": [5, "abc"]
     }
@@ -3077,7 +3077,7 @@
   [
     "search16",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\")]\", \"pad[()]\")",
       "expected": [5, ")]"]
     }
@@ -3085,7 +3085,7 @@
   [
     "search17",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\".\\\\^$(+{]\", \"pada.\\\\^$(+{]b\")",
       "expected": [4, ".\\^$(+{]"]
     }
@@ -3093,7 +3093,7 @@
   [
     "search18",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\"\", null)",
       "expected": []
     }
@@ -3101,7 +3101,7 @@
   [
     "search19",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "search(\"\", null)",
       "expected": []
     }
@@ -3135,7 +3135,7 @@
   [
     "registered product function",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "product([3, 4]) + product([4, 5])",
       "expected": 32
     }
@@ -3143,7 +3143,7 @@
   [
     "register 2 functions",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "merge(register(\"p1\", &42), register(\"p2\", &43), {r: p1() + p2()})",
       "expected": {
         "r": 85
@@ -3153,7 +3153,7 @@
   [
     "random-floor",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "floor(random())",
       "expected": 0
     }
@@ -3161,7 +3161,7 @@
   [
     "random-ceil",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "ceil(random())",
       "expected": 1
     }
@@ -3169,7 +3169,7 @@
   [
     "random(2)",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "random(2)",
       "error": "FunctionError"
     }
@@ -3177,7 +3177,7 @@
   [
     "$",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "$",
       "expected": 42
     }
@@ -3185,7 +3185,7 @@
   [
     "$$",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "$$",
       "expected": 43
     }
@@ -3193,7 +3193,7 @@
   [
     "2--1",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "2--1",
       "expected": 3
     }
@@ -3201,7 +3201,7 @@
   [
     "2---1",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "2---1",
       "expected": 1
     }
@@ -3209,7 +3209,7 @@
   [
     "2----1",
     {
-      "data": "`{}`",
+      "data": {},
       "expression": "2----1",
       "expected": 3
     }

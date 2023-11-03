@@ -195,8 +195,9 @@ include::./grammar.g4[]
 endif::[]
 ----
 
-The order of expression definitions found in the antlr grammar indicates
-the token precedence. These are the operators listed from strongest to weakest binding:
+=== Operator Precedence
+
+The antlr grammar defines operator precedence by virtue of the order of expressions in the grammar. These are the operators listed from strongest to weakest binding:
 
 * Parenthesis `()`
 * Bracket Expression `[...]`
