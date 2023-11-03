@@ -147,7 +147,8 @@ test('debug output', () => {
     {m: {m: 2}[*]},
     {m: [2,3,4].*},
     {m: {m: 2}[?true()]},
-    {m: "aaa"[]}
+    {m: "aaa"[]},
+    {a: 12} | [2]
   )`;
   const debug = [];
   new JsonFormula({}, stringToNumber, debug).search(expression, { $form: form1 }, form1);
@@ -168,7 +169,9 @@ test('debug output', () => {
     'Bracketed wildcards apply to arrays only',
     'Chained wildcards apply to objects only',
     'Filter expressions apply to arrays only',
-    'Flatten expressions apply to arrays only',
+    'Flatten expressions apply to arrays only. If you want an empty array, use a JSON literal: `[]`',
+    'Left side of index expression must be an array',
+    'Did you intend a single-element array? if so, use a JSON literal: `[2]`',
   ]);
   expect(debugTracking).toBe('Access p1 from {"p1":"property1"}');
 });

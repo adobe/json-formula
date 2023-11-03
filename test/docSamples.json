@@ -161,7 +161,7 @@
     { "expression": "length([1, 2, 3, 4])", "expected": 4 }
   ],
 
-  ["length({})", { "expression": "length({})", "expected": 0 }],
+  ["length(`{}`)", { "expression": "length(`{}`)", "expected": 0 }],
 
   [
     "length({a : 3, b : 4})",

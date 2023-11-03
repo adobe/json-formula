@@ -401,8 +401,7 @@
        {
          "comment": "Empty object",
          "expression": "{}",
-         "result": {},
-         "was": "syntax"
+         "error": "SyntaxError"
        }
    ]
 },
@@ -412,8 +411,7 @@
        {
          "comment": "Empty object inside if",
          "expression": "if(foo == \"bar\", {}, \"foo != bar\")",
-         "result": {},
-         "was": "syntax"
+         "error": "SyntaxError"
        }
    ]
 },
@@ -423,8 +421,7 @@
        {
          "comment": "Empty object inside array",
          "expression": "[{}]",
-         "result": [{}],
-         "was": "syntax"
+         "error": "SyntaxError"
        }
    ]
 },
@@ -434,8 +431,7 @@
        {
          "comment": "Empty object inside object",
          "expression": "{a : {}, b : foo}",
-         "result": {"a" : {}, "b": "bar"},
-         "was": "syntax"
+         "error": "SyntaxError"
        }
    ]
 },
@@ -445,8 +441,7 @@
       {
          "comment": "Missing key-value pair",
          "expression": "foo.{}",
-         "result": {},
-         "was": "syntax"
+         "error": "SyntaxError"
        }
    ]
 }

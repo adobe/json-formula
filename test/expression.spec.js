@@ -18,6 +18,7 @@ const sampleData = require('./sampleData.json');
 const tests = require('./tests.json');
 const docSamples = require('./docSamples.json');
 const specSamples = require('./specSamples.json');
+const precedence = require('./precedence.json');
 
 const jsonFormula = new JsonFormula({}, stringToNumber);
 
@@ -68,7 +69,7 @@ jsonFormula.search(
 // eslint-disable-next-line no-unused-vars
 const filterClause = ([_desc, _tst]) => true;
 
-[tests, docSamples, specSamples].forEach(testSuite => {
+[tests, docSamples, specSamples, precedence].forEach(testSuite => {
   const filtered = testSuite.filter(filterClause);
 
   test.each(filtered)('%s', (_desc, tst) => {
@@ -108,7 +109,7 @@ const filterClause = ([_desc, _tst]) => true;
 });
 
 // run again -- with field definitions
-[tests, docSamples, specSamples].forEach(testSuite => {
+[tests, docSamples, specSamples, precedence].forEach(testSuite => {
   const filtered = testSuite.filter(filterClause);
 
   test.each(filtered)('%s', (_desc, tst) => {
@@ -151,4 +152,19 @@ const filterClause = ([_desc, _tst]) => true;
       expect(result).toEqual(tst.expected);
     }
   });
+});
+
+test.each(precedence)('%s', (_desc, tst) => {
+  // check that the precedence computed by antlr matches our implementation
+  const grammarResult = testGrammar(tst.expression);
+  const tree = grammarResult.toStringTree()
+    // clean up extra brackets to make the output easier to read
+    .replace(/\[[0-9 ]*\]/g, '')
+    .replace(/ /g, '')
+    .replace(/\(\(([^(]+)\)\)/g, '$1')
+    .replace(/\(([`0-9]+)\)/g, '$1')
+    .replace(/\(\((true\(\)|false\(\))\)\)/g, '$1')
+    .replace(/^\(\(/, '')
+    .replace(/\)<EOF>\)/, '');
+  expect(tree).toBe(tst.precedence);
 });

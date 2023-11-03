@@ -38,11 +38,6 @@ const {
   TOK_GLOBAL,
   TOK_EXPREF,
   TOK_PIPE,
-  TOK_EQ,
-  TOK_GT,
-  TOK_LT,
-  TOK_GTE,
-  TOK_NE,
   TOK_FLATTEN,
 } = tokenDefinitions;
 
@@ -128,6 +123,7 @@ export default class TreeInterpreter {
           return result;
         }
         this.debug.push('Left side of index expression must be an array');
+        this.debug.push(`Did you intend a single-element array? if so, use a JSON literal: \`[${node.value.value}]\``);
         return null;
       },
 
@@ -208,8 +204,8 @@ export default class TreeInterpreter {
         const first = getValueOf(this.visit(node.children[0], value));
         const second = getValueOf(this.visit(node.children[1], value));
 
-        if (node.name === TOK_EQ) return strictDeepEqual(first, second);
-        if (node.name === TOK_NE) return !strictDeepEqual(first, second);
+        if (node.value === '==') return strictDeepEqual(first, second);
+        if (node.value === '!=') return !strictDeepEqual(first, second);
         if (isObject(first) || isArray(first)) {
           this.debug.push(`Cannot use comparators with ${getTypeName(first)}`);
           return false;
@@ -218,10 +214,10 @@ export default class TreeInterpreter {
           this.debug.push(`Cannot use comparators with ${getTypeName(second)}`);
           return false;
         }
-        if (node.name === TOK_GT) return first > second;
-        if (node.name === TOK_GTE) return first >= second;
-        if (node.name === TOK_LT) return first < second;
-        // if (node.name === TOK_LTE)
+        if (node.value === '>') return first > second;
+        if (node.value === '>=') return first >= second;
+        if (node.value === '<') return first < second;
+        // if (node.value === '<=)
         // must be LTE
         return first <= second;
       },
@@ -229,7 +225,7 @@ export default class TreeInterpreter {
       [TOK_FLATTEN]: (node, value) => {
         const original = this.visit(node.children[0], value);
         if (!isArray(original)) {
-          this.debug.push('Flatten expressions apply to arrays only');
+          this.debug.push('Flatten expressions apply to arrays only. If you want an empty array, use a JSON literal: `[]`');
           return null;
         }
         const merged = [];
