@@ -297,7 +297,7 @@ export default function functions(
      * and end_date were no more than one year apart
      * @param {number} start_date The starting date.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @param {number} end_date The end date -- must be greater or equal to start_date.
      * @param {string} unit
@@ -401,7 +401,7 @@ export default function functions(
     /**
      * Finds the day of the month for a date value
      * @param {number} date date/time generated using the
-     * [datetime]{@link datetime}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {integer} The day of the month ranging from 1 to 31.
      * @function day
@@ -498,7 +498,7 @@ export default function functions(
      * Finds the serial number of the end of a month, given `startDate` plus `monthAdd` months
      * @param {number} startDate The base date to start from.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @param {integer} monthAdd Number of months to add to start date
      * @return {integer} the number of days in the computed month
@@ -652,7 +652,7 @@ export default function functions(
      * Extract the hour from a date/time representation
      * @param {number} date The datetime/time for which the hour is to be returned.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {integer} value between 0 and 23
      * @function hour
@@ -1010,7 +1010,7 @@ export default function functions(
      * Extract the minute (0 through 59) from a time/datetime representation
      * @param {number} date A datetime/time value.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {integer} Number of minutes in the time portion of the date/time value
      * @function minute
@@ -1057,7 +1057,7 @@ export default function functions(
      * Finds the month of a date.
      * @param {number} date source date value.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {number} The month number as an integer, ranging from 1 (January) to 12 (December).
      * @function month
@@ -1488,7 +1488,7 @@ export default function functions(
      * Extract the seconds of the time value in a time/datetime representation
      * @param {number} date datetime/time for which the second is to be returned.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {integer} The number of seconds: 0 through 59
      * @function second
@@ -1883,6 +1883,38 @@ export default function functions(
     },
 
     /**
+     * Converts the provided string to a date/time value
+     *
+     * @param {string} ISOString An ISO8601 formatted string
+     * @return {number} The resulting date/time number. If conversion fails, return null.
+     * @function toDate
+     * @example
+     * toDate("20231110T130000+04:00") // returns 19671.375
+     * toDate("toDate("2023-11-10T13:00:00+04:00")") // returns 19671.375
+     * toDate("20231110") | year(@) & "/" & month(@) // returns "2023/11"
+     */
+    toDate: {
+      _func: resolvedArgs => {
+        // expand compact notation so that the Date() constructor will
+        // accept the value
+        const iso = resolvedArgs[0]
+          .replace(/(\d\d\d\d)(\d\d)(\d\d)/, '$1-$2-$3')
+          .replace(/T(\d\d)(\d\d)(\d\d)/, 'T$1:$2:$3');
+        const [date, time] = iso.split(/T|\+/);
+        if (date.length !== 10 || (time && time.length !== 8)) {
+          debug.push(`Failed to convert "${resolvedArgs[0]}" to a date`);
+          return null;
+        }
+        const d = new Date(iso);
+        if (d instanceof Date && Number.isFinite(d.getTime())) return getDateNum(d);
+        debug.push(`Failed to convert "${resolvedArgs[0]}" to a date`);
+
+        return null;
+      },
+      _signature: [{ types: [TYPE_STRING] }],
+    },
+
+    /**
      * Returns a date/time value representing the start of the current day. i.e. midnight
      * @return {number} today at midnight
      * @function today
@@ -2145,7 +2177,7 @@ export default function functions(
      * * 3 : Monday (0), Tuesday (2), ...., Sunday(6)
      * @param {number} date datetime for which the day of the week is to be returned.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @param {integer} [returnType=1] Determines the
      * representation of the result
@@ -2187,7 +2219,7 @@ export default function functions(
      * Finds the year of a datetime value
      * @param {number} date input date/time value.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {integer} The year value
      * @function year

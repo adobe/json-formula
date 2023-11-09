@@ -1,14 +1,15 @@
 /*
+ * Copyright (c) Mike Lischke. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
+
+/*
  * This file contains all default CSS rules for the dark vscode them, used for various diagrams and graphs.
  * Use the "antlr4.customCSS" setting in vscode to specify your own file, if you like to override some rules.
  *
  * Usually most of the appearance is defined in light.css and here we only have some adjustments for
  * the dark theme.
  */
-
-body.vscode-dark svg {
-    background: rgba(255, 255, 255, 0.05);
-}
 
 /* ATN graphs. */
 
@@ -44,12 +45,8 @@ body.vscode-dark .atn-graph-save-image {
     background: rgba(206, 11, 70, 1) url('../misc/save-dark.png');
 }
 
-body.vscode-dark .rrd-save-image {
-    background: rgba(10, 188, 80, 1) url('../misc/save-dark.png');
-}
-
 body.vscode-dark .call-graph-save-image {
-    background: rgba(255, 191, 15, 1) url('../misc/save-dark.png');
+    background: url('../misc/save-svg-dark.svg');
 }
 
 body.vscode-dark .parse-tree-save-image {
@@ -238,4 +235,18 @@ body.vscode-dark g .token-range {
     font: 8pt "Source Code Pro", "Hack", "Consolas", "Andale Mono", monospace;
 }
 
-/* Default CSS for internal elements, only visible in vscode */
+body.vscode-dark .saveSVGButton {
+    background-image: url(./save-svg-dark.svg);
+}
+
+body.vscode-dark .saveHTMLButton {
+    background-image: url(./save-html-dark.svg);
+}
+
+body.vscode-dark .rrdIcon {
+    background-image: url(./rrd-dark.svg);
+}
+
+body.vscode-dark .atnIcon {
+    background-image: url(./atn-dark.png);
+}

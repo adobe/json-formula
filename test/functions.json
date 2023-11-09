@@ -647,6 +647,14 @@
         "result": "{\n  \"foo\": \"bar\",\n  \"bar\": \"baz\"\n}"
       },
       {
+        "expression": "toDate(\"2023111\")",
+        "result": null
+      },
+      {
+        "expression": "toDate(\"20231111T12345\")",
+        "result": null
+      },
+      {
         "expression": "toNumber(\"1.0\")",
         "result": 1.0
       },

@@ -442,8 +442,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h1>json-formula Specification</h1>
 <div class="details">
 <span id="author" class="author">PDF Association Forms Technical Working Group</span><br>
-<span id="revnumber">version 0.2.1,</span>
-<span id="revdate">2023-10-13</span>
+<span id="revnumber">version 0.2.2,</span>
+<span id="revdate">2023-11-03</span>
 <br><span id="revremark"></span>
 </div>
 </div>
@@ -464,7 +464,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_date_and_time_values">3. Date and Time Values</a></li>
 <li><a href="#_floating_point_precision">4. Floating Point Precision</a></li>
 <li><a href="#_errors">5. Errors</a></li>
-<li><a href="#_grammar">6. Grammar</a></li>
+<li><a href="#_grammar">6. Grammar</a>
+<ul class="sectlevel2">
+<li><a href="#_operator_precedence">6.1. Operator Precedence</a></li>
+</ul>
+</li>
 <li><a href="#_literals">7. Literals</a>
 <ul class="sectlevel2">
 <li><a href="#_json_literals">7.1. JSON Literals</a></li>
@@ -623,9 +627,6 @@ json-formula functions:</p>
 <li>
 <p>Parameters to functions shall be coerced to the expected type as defined by the function signature</p>
 </li>
-<li>
-<p>Slice and index operations shall coerce operands to a number</p>
-</li>
 </ul>
 </div>
 <div class="paragraph">
@@ -643,7 +644,6 @@ json-formula functions:</p>
     eval(123 &lt; "124", {}) -&gt; true
     eval("23" &gt; 111, {}) -&gt; false
     eval(abs("-2"), {}) -&gt; 2
-    eval([1,2,3,4]["1"], {}) -&gt; 2
     eval(1 == "1", {}) -&gt; false</code></pre>
 </div>
 </div>
@@ -712,7 +712,7 @@ json-formula functions:</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
@@ -897,30 +897,22 @@ json-formula functions:</p>
 <h2 id="_errors">5. Errors</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Errors may be raised during the json-formula evaluation process. How and when
-errors are raised is implementation specific, but implementations should
-indicate to the caller when errors have occurred.</p>
-</div>
-<div class="paragraph">
-<p>The following errors are defined:</p>
+<p>Errors may be raised during the json-formula evaluation process.
+The following errors are defined:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>invalid-type</code> is raised when an invalid type is encountered during the
-evaluation process.</p>
+<p><code>EvaluationError</code> is raised when an unexpected runtime condition occurs. For example, divide by zero.</p>
 </li>
 <li>
-<p><code>invalid-value</code> is raised when an invalid value is encountered during the
-evaluation process.</p>
+<p><code>FunctionError</code> is raised when an unknown function is encountered or when a function receives the wrong number of arguments.</p>
 </li>
 <li>
-<p><code>unknown-function</code> is raised when an unknown function is encountered during
-the evaluation process.</p>
+<p><code>SyntaxError</code> is raised when the supplied expression does not conform to the json-formula grammar.</p>
 </li>
 <li>
-<p><code>ParameterError</code> is raised when an invalid number of function arguments is
-encountered during the evaluation process.</p>
+<p><code>TypeError</code> is raised when the provided type cannot be coerced to the correct type for the current evaluation context.</p>
 </li>
 </ul>
 </div>
@@ -939,27 +931,28 @@ encountered during the evaluation process.</p>
 formula : expression EOF ;
 
 expression
-  : expression '.' chainedExpression
-  | expression bracketExpression
-  | bracketExpression
-  | expression ('*' | '/' | '&amp;' | '~') expression
-  | expression ('+' | '-') expression
-  | expression COMPARATOR expression
-  | expression '&amp;&amp;' expression
-  | expression '||' expression
-  | identifier
-  | '!' expression
-  | '-' expression
-  | '(' expression ')'
-  | wildcard
-  | arrayExpression
-  | objectExpression
-  | JSON_FRAGMENT
-  | functionExpression
-  | expression '|' expression
-  | STRING
-  | (REAL_OR_EXPONENT_NUMBER | INT)
-  | currentNode
+  : '(' expression ')' 
+  | expression bracketExpression 
+  | bracketExpression 
+  | objectExpression 
+  | expression '.' chainedExpression 
+  | '!' expression 
+  | '-' expression 
+  | expression ('*' | '/') expression	
+  | expression ('+' | '-' | '~') expression	
+  | expression '&amp;' expression	
+  | expression COMPARATOR expression 
+  | expression '&amp;&amp;' expression 
+  | expression '||' expression 
+  | expression '|' expression 
+  | identifier 
+  | wildcard 
+  | arrayExpression 
+  | JSON_FRAGMENT 
+  | functionExpression 
+  | STRING 
+  | (REAL_OR_EXPONENT_NUMBER | INT) 
+  | currentNode 
   ;
 
 chainedExpression
@@ -975,21 +968,20 @@ wildcard : '*' ;
 arrayExpression : '[' expression (',' expression)* ']' ;
 
 objectExpression
-  : '{' '}'
-  | '{' keyvalExpr (',' keyvalExpr)* '}'
+  : '{' keyvalExpr (',' keyvalExpr)* '}'  
   ;
 
 keyvalExpr : identifier ':' expression ;
 
 bracketExpression
-  : '[' '*' ']'
-  | '[' slice ']'
-  | '[' ']'
-  | '[?' expression ']'
-  | '[' expression ']'
+  : '[' '*' ']' 
+  | '[' slice ']' 
+  | '[' ']' 
+  | '[?' expression ']' 
+  | '[' signedInt ']' 
   ;
 
-slice : start=expression? ':' stop=expression? (':' step=expression?)? ;
+slice : start=signedInt? ':' stop=signedInt? (':' step=signedInt?)? ;
 
 COMPARATOR
   : '&lt;'
@@ -1019,6 +1011,10 @@ expressionType : '&amp;' expression ;
 identifier
   : NAME
   | QUOTED_NAME
+  ;
+
+signedInt
+  : '-'? INT+
   ;
 
 NAME : [a-zA-Z_$] [a-zA-Z0-9_$]* ;
@@ -1059,32 +1055,24 @@ WS
   ;</code></pre>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_operator_precedence">6.1. Operator Precedence</h3>
 <div class="paragraph">
-<p>In addition to the grammar, there is a token precedence ordered
-from weakest to tightest binding:</p>
+<p>The antlr grammar defines operator precedence by virtue of the order of expressions in the grammar. These are the operators listed from strongest to weakest binding:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>pipe: <code>|</code></p>
+<p>Parenthesis <code>()</code></p>
 </li>
 <li>
-<p>or: <code>||</code></p>
+<p>Bracket Expression <code>[&#8230;&#8203;]</code></p>
 </li>
 <li>
-<p>and: <code>&amp;&amp;</code></p>
+<p>Braces <code>{}</code></p>
 </li>
 <li>
-<p>concatenate: <code>&amp;</code></p>
-</li>
-<li>
-<p>add: <code>+</code>, subtract: <code>-</code></p>
-</li>
-<li>
-<p>multiply: <code>*</code>, divide: <code>/</code>, union: <code>~</code></p>
-</li>
-<li>
-<p>Equals: <code>=</code> (or <code>==</code>), Greater than: <code>&gt;</code>, Less than: <code>&lt;</code>, Greater than or equal: <code>&gt;=</code>, Less than or equal: <code>&lt;=</code>, Not equals: <code>!=</code> (or <code>&lt;&gt;</code>)</p>
+<p>Dot <code>.</code> (chained expressions)</p>
 </li>
 <li>
 <p>Flatten: <code>[]</code></p>
@@ -1093,18 +1081,28 @@ from weakest to tightest binding:</p>
 <p>Unary not <code>!</code>, unary minus: <code>-</code></p>
 </li>
 <li>
-<p>Dot <code>.</code> (expression combinations)</p>
+<p>multiply: <code>*</code>, divide: <code>/</code></p>
 </li>
 <li>
-<p>Braces <code>{}</code></p>
+<p>add: <code>+</code>, subtract: <code>-</code>, union: <code>~</code></p>
 </li>
 <li>
-<p>Bracket Expression <code>[&#8230;&#8203;]</code></p>
+<p>concatenate: <code>&amp;</code></p>
 </li>
 <li>
-<p>Parenthesis <code>()</code></p>
+<p>Comparison operators: <code>=</code>, <code>==</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>,  <code>!=</code>, <code>&lt;&gt;</code></p>
+</li>
+<li>
+<p>and: <code>&amp;&amp;</code></p>
+</li>
+<li>
+<p>or: <code>||</code></p>
+</li>
+<li>
+<p>pipe: <code>|</code></p>
 </li>
 </ul>
+</div>
 </div>
 </div>
 </div>
@@ -1326,6 +1324,9 @@ pair <code>(i, j)</code> in <code>x</code>, there exists an equivalent pair <cod
 </li>
 <li>
 <p>Two JSON arrays are equal if they have equal elements in the same order. Two arrays <code>x</code> and <code>y</code> are considered equal if they have the same length and, for each <code>i</code> from <code>0</code> until <code>length(x)</code>, <code>x[i] == y[i]</code></p>
+</li>
+<li>
+<p>The comparison of array and objects is a deep comparison.  That is, where nested arrays or objects are found, the nested elements will included in the comparison.</p>
 </li>
 </ul>
 </div>
@@ -1663,14 +1664,18 @@ chained expressions: <code>grandparent.parent.child</code>.</p>
 bracketExpression
   : '[' '*' ']'
   | '[?' expression ']'
-  | '[' expression ']'
+  | '[' signedInt ']'
   | '[' slice ']'
   | '[' ']'
+  ;
+
+signedInt
+  : '-'? INT+
   ;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>From the <code>bracketExpression</code> construction, the bracketed contents provide access to the elements in an array or object.</p>
+<p>From the <code>bracketExpression</code> construction, the bracketed contents provide access to the elements in an array.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1685,13 +1690,7 @@ bracketExpression
 <div class="sect3">
 <h4 id="_index_expressions">10.2.1. Index Expressions</h4>
 <div class="paragraph">
-<p>When brackets enclose an expression (<code>'[' expression ']'</code>), the results of that expression are used to index into an object or array.</p>
-</div>
-<div class="paragraph">
-<p>When used with an object, the bracketed expression is used as the name of a key in that object. For example, <code>foo["bar"]</code> is equivalent to <code>foo.bar</code>. If the expression returns a key not present in the object, a <code>null</code> value is returned.</p>
-</div>
-<div class="paragraph">
-<p>Most commonly, index expressions are used with arrays.  With arrays, an expression in brackets is expected to return an integer value to return an offset in the array.
+<p>When brackets enclose a signed integer (<code>'[' signedInt ']'</code>), the integer value is used to index into an array.
 Indexing is 0 based where an index of 0 refers to the first element of the array.  A negative index indicates that indexing is relative to the end of the array, specifically:</p>
 </div>
 <div class="listingblock">
@@ -1702,31 +1701,13 @@ Indexing is 0 based where an index of 0 refers to the first element of the array
 <div class="paragraph">
 <p>Given an array of length <code>N</code>, an index of <code>-1</code> would be equal to a positive
 index of <code>N - 1</code>, which is the last element of the array.
-An expression is outside the bounds of the array when the value is greater than or equal to the length of the array or less than the negative length of the array.
-If an index expression is outside the bounds of the array then a value of <code>null</code> is returned.</p>
-</div>
-<div class="paragraph">
-<p>Index expressions are evaluated in the context of the left hand expression. For example, given the source JSON:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>{
-  "partners": {
-    "partner1": "Joe",
-    "partner2": "Frank",
-    "seniorPartner": "partner1"
-  }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The expression: <code>partners[@.seniorPartner]</code> (or <code>partners[seniorPartner]</code>) will evaluate to <code>"Joe"</code>.  Specifically, the nested expression inside: <code>partners[partners.seniorPartner]</code> will return <code>null</code>.</p>
+An index value is outside the bounds of the array when the value is greater than or equal to the length of the array or less than the negative length of the array.
+If an index is outside the bounds of the array then a value of <code>null</code> is returned.</p>
 </div>
 <h5 id="_examples_12" class="discrete">Examples</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>  eval(foo["bar"], {"foo": {"bar": 21}}) -&gt; 21
-  eval(a[1], {a: [5,6,7,8,9]}) -&gt; 6
+<pre class="highlight"><code>  eval(a[1], {a: [5,6,7,8,9]}) -&gt; 6
   eval(a[-2], {a: [5,6,7,8,9]}) -&gt; 8
   eval([0], ["first", "second", "third"]) -&gt; "first"
   eval([-1], ["first", "second", "third"]) -&gt; "third"
@@ -1741,7 +1722,7 @@ If an index expression is outside the bounds of the array then a value of <code>
 <h4 id="_slices">10.2.2. Slices</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>  slice : start=expression? ':' stop=expression? (':' step=expression?)? ;</code></pre>
+<pre class="highlight"><code>  slice : start=signedInt? ':' stop=signedInt? (':' step=signedInt?)? ;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2437,8 +2418,8 @@ does not exist, an <code>unknown-function</code> error is raised.</p>
 <p>Functions can either have a specific arity or be variadic with a minimum
 number of arguments.  If a <code>functionExpression</code> is encountered where the
 arity does not match, or the minimum number of arguments for a variadic function
-is not provided, or too many arguments are provided, then an
-<code>ParameterError</code> error is raised.</p>
+is not provided, or too many arguments are provided, then a
+<code>FunctionError</code> error is raised.</p>
 </div>
 <div class="paragraph">
 <p>Functions are evaluated in applicative order.  Each argument must be an
@@ -2524,7 +2505,7 @@ be used to convert all elements to numbers:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>    eval([].toNumber(@), ["1", "2", "3", "notanumber", null, true]) -&gt; [1,2,3,0,null,1]</code></pre>
+<pre class="highlight"><code>    eval([].toNumber(@), ["1", "2", "3", "notanumber", null, true]) -&gt; [1,2,3,null,0,1]</code></pre>
 </div>
 </div>
 <div class="sect2">
@@ -2914,7 +2895,8 @@ be compared to "ss"</p>
 <dt class="hdlist1">Description</dt>
 <dd>
 <p> Finds the next highest integer value of the argument <code>num</code>
-by rounding up if necessary.</p>
+by rounding up if necessary. i.e. ceil() rounds toward positive
+infinity.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -3379,10 +3361,10 @@ datetime(2023,13,5) | year(@) &amp; "/" &amp; month(@) // returns 2024/1</code><
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p> Searches a nested hierarchy of objects to return an array
-of key values that match a <code>name</code>. The name can be either a key into an
-object or an array index. This is similar to the Descendant Accessor
-operator (<code>..</code>) from
+<p> Performs a depth-first search of a nested hierarchy to
+return an array of key values that match a <code>name</code>. The name can be
+either a key into an object or an array index. This is similar to the
+Descendant Accessor operator (<code>..</code>) from
 <a href="https://www.ecma-international.org/publications-and-standards/standards/ecma-357/">E4X</a>.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
@@ -3498,9 +3480,9 @@ endsWith("Abcd", "A") // returns false</code></pre>
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p> Returns an array of <code>[key, value]</code> pairs from an object.
-The <code>fromEntries()</code> function may be used to convert the array back to an
-object.</p>
+<p> Returns an array of <code>[key, value]</code> pairs from an object or
+array. The <code>fromEntries()</code> function may be used to convert an array to
+an object.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -3511,9 +3493,9 @@ two elements representing the key and value of a pair</p>
 <dd>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 34%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
 </colgroup>
 <thead>
 <tr>
@@ -3525,8 +3507,8 @@ two elements representing the key and value of a pair</p>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">obj</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">source object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object | array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">source object or array</p></td>
 </tr>
 </tbody>
 </table>
@@ -3538,7 +3520,8 @@ two elements representing the key and value of a pair</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">entries({a: 1, b: 2}) // returns [["a", 1], ["b", 2]]</code></pre>
+<pre class="highlight"><code class="language-js" data-lang="js">entries({a: 1, b: 2}) // returns [["a", 1], ["b", 2]]
+entries([4,5]) // returns [["0", 4],["1", 5]]</code></pre>
 </div>
 </div>
 </div>
@@ -3751,7 +3734,8 @@ find("M", "abMcdM", 2) // returns 2</code></pre>
 <dt class="hdlist1">Description</dt>
 <dd>
 <p> Calculates the next lowest integer value of the argument
-<code>num</code> by rounding down if necessary.</p>
+<code>num</code> by rounding down if necessary. i.e. floor() rounds toward negative
+infinity.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -3796,7 +3780,7 @@ floor(10) // returns 10</code></pre>
 <div class="sect3">
 <h4 id="_fromcodepoint">11.1.23. fromCodePoint</h4>
 <div class="paragraph">
-<p><strong>fromCodePoint(codePoint) ⇒ number</strong></p>
+<p><strong>fromCodePoint(codePoint) ⇒ string</strong></p>
 </div>
 <div class="dlist">
 <dl>
@@ -3806,7 +3790,7 @@ floor(10) // returns 10</code></pre>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
-<p>number - A string from a given code point</p>
+<p>string - A string from a given code point</p>
 </dd>
 <dt class="hdlist1">Parameters</dt>
 <dd>
@@ -4248,7 +4232,7 @@ types:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>string: returns the number of code points</p>
+<p>string: returns the number of unicode code points</p>
 </li>
 <li>
 <p>array: returns the number of array elements</p>
@@ -4299,7 +4283,7 @@ calculate</p></td>
 length("") // returns 0
 length("abcd") // returns 4
 length([1, 2, 3, 4]) // returns 4
-length({}) // returns 0
+length(`{}`) // returns 0
 length({a : 3, b : 4}) // returns 2</code></pre>
 </div>
 </div>
@@ -6623,7 +6607,60 @@ toArray(null()) // returns [`null`]</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_today">11.1.74. today</h4>
+<h4 id="_todate">11.1.74. toDate</h4>
+<div class="paragraph">
+<p><strong>toDate(ISOString) ⇒ number</strong></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Description</dt>
+<dd>
+<p>Converts the provided string to a date/time value</p>
+</dd>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p> number - The resulting date/time number. If conversion fails,
+return null.</p>
+</dd>
+<dt class="hdlist1">Parameters</dt>
+<dd>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Param</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ISOString</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An ISO8601 formatted string</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p><strong>Example</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-js" data-lang="js">toDate("20231110T130000+04:00") // returns 19671.375
+toDate("toDate("2023-11-10T13:00:00+04:00")") // returns 19671.375
+toDate("20231110") | year(@) &amp; "/" &amp; month(@) &amp; "/" &amp; day(@) // returns "2023/11/10"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_today">11.1.75. today</h4>
 <div class="paragraph">
 <p><strong>today() ⇒ number</strong></p>
 </div>
@@ -6642,7 +6679,7 @@ current day. i.e. midnight</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_tonumber">11.1.75. toNumber</h4>
+<h4 id="_tonumber">11.1.76. toNumber</h4>
 <div class="paragraph">
 <p><strong>toNumber(arg, [base]) ⇒ number</strong></p>
 </div>
@@ -6652,6 +6689,11 @@ current day. i.e. midnight</p>
 <dd>
 <p> Converts the provided arg to a number as per the <a href="#Type
 Coercion Rules">type coercion rules</a>.</p>
+</dd>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p> number - The resulting number. If conversion to number fails,
+return null.</p>
 </dd>
 <dt class="hdlist1">Parameters</dt>
 <dd>
@@ -6699,15 +6741,15 @@ to number</p></td>
 toNumber("10") // returns 10
 toNumber({a: 1}) // fails
 toNumber(true()) // returns 1
-toNumber("10f") // returns 0
+toNumber("10f") // returns null
 toNumber("FF", 16) // returns 255</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_tostring">11.1.76. toString</h4>
+<h4 id="_tostring">11.1.77. toString</h4>
 <div class="paragraph">
-<p><strong>toString(arg) ⇒ string</strong></p>
+<p><strong>toString(arg, [indent]) ⇒ string</strong></p>
 </div>
 <div class="dlist">
 <dl>
@@ -6718,20 +6760,23 @@ toNumber("FF", 16) // returns 255</code></pre>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
-<p>string - The result string</p>
+<p> string - The result string. If the value to be converted to
+string is an array or object, a JSON string is returned.</p>
 </dd>
 <dt class="hdlist1">Parameters</dt>
 <dd>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">Param</th>
 <th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Default</th>
 <th class="tableblock halign-left valign-top">Description</th>
 </tr>
 </thead>
@@ -6739,7 +6784,15 @@ toNumber("FF", 16) // returns 255</code></pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">arg</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">any</p></td>
+<td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Value to be converted to a string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[indent]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">integer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indentation to use when converting objects and
+arrays to a JSON string</p></td>
 </tr>
 </tbody>
 </table>
@@ -6758,7 +6811,7 @@ toString({sum: 12 + 13}) // "{"sum":25}"</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_trim">11.1.77. trim</h4>
+<h4 id="_trim">11.1.78. trim</h4>
 <div class="paragraph">
 <p><strong>trim(text) ⇒ string</strong></p>
 </div>
@@ -6809,7 +6862,7 @@ internal multiple spaces with a single space.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_true">11.1.78. true</h4>
+<h4 id="_true">11.1.79. true</h4>
 <div class="paragraph">
 <p><strong>true() ⇒ boolean</strong></p>
 </div>
@@ -6828,7 +6881,7 @@ use the JSON literal: <code>`true`</code></p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_trunc">11.1.79. trunc</h4>
+<h4 id="_trunc">11.1.80. trunc</h4>
 <div class="paragraph">
 <p><strong>trunc(numA, [numB]) ⇒ number</strong></p>
 </div>
@@ -6891,7 +6944,7 @@ trunc(8.912, 2) // returns 8.91</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_type">11.1.80. type</h4>
+<h4 id="_type">11.1.81. type</h4>
 <div class="paragraph">
 <p><strong>type(subject) ⇒ string</strong></p>
 </div>
@@ -6965,7 +7018,7 @@ type("") // returns "string"</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_unique">11.1.81. unique</h4>
+<h4 id="_unique">11.1.82. unique</h4>
 <div class="paragraph">
 <p><strong>unique(input) ⇒ array</strong></p>
 </div>
@@ -7015,7 +7068,7 @@ type("") // returns "string"</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_upper">11.1.82. upper</h4>
+<h4 id="_upper">11.1.83. upper</h4>
 <div class="paragraph">
 <p><strong>upper(input) ⇒ string</strong></p>
 </div>
@@ -7066,7 +7119,7 @@ uppercase.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_value">11.1.83. value</h4>
+<h4 id="_value">11.1.84. value</h4>
 <div class="paragraph">
 <p><strong>value(object, index) ⇒ any</strong></p>
 </div>
@@ -7123,7 +7176,7 @@ value([1, 2, 3, 4], 2) // returns 3</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_values">11.1.84. values</h4>
+<h4 id="_values">11.1.85. values</h4>
 <div class="paragraph">
 <p><strong>values(obj) ⇒ array</strong></p>
 </div>
@@ -7175,7 +7228,7 @@ associated with the provided object are also unordered.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_weekday">11.1.85. weekday</h4>
+<h4 id="_weekday">11.1.86. weekday</h4>
 <div class="paragraph">
 <p><strong>weekday(date, [returnType]) ⇒ integer</strong></p>
 </div>
@@ -7254,7 +7307,7 @@ weekday(datetime(2006,5,21), 3) // 6</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_year">11.1.86. year</h4>
+<h4 id="_year">11.1.87. year</h4>
 <div class="paragraph">
 <p><strong>year(date) ⇒ integer</strong></p>
 </div>
@@ -7306,7 +7359,7 @@ and <a href="#_time">time</a> functions.</p></td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_zip">11.1.87. zip</h4>
+<h4 id="_zip">11.1.88. zip</h4>
 <div class="paragraph">
 <p><strong>zip(…arrays) ⇒ array</strong></p>
 </div>
@@ -7459,8 +7512,8 @@ keys(street) -&gt; []</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 0.2.1<br>
-Last updated 2023-10-13 14:31:13 UTC
+Version 0.2.2<br>
+Last updated 2023-11-03 11:37:30 UTC
 </div>
 </div>
 </body>

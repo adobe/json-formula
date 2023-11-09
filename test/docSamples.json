@@ -340,6 +340,24 @@
     }
   ],
 
+  ["toDate(\"20231110T131211.123+05:00\")",
+    {
+      "expression": "toDate(\"20231110T130000+04:00\")",
+      "expected": 19671.375
+    }
+  ],
+  ["toDate(\"2023-11-10T13:00:00+04:00\")",
+    {
+      "expression": "toDate(\"2023-11-10T13:00:00+04:00\")",
+      "expected": 19671.375
+    }
+  ],
+  ["toDate(\"20231110\") | year(@) & \"/\" & month(@)",
+    {
+      "expression": "toDate(\"20231110\") | year(@) & \"/\" & month(@)",
+      "expected": "2023/11"
+    }
+  ],
   ["toNumber(1)", { "expression": "toNumber(1)", "expected": 1 }],
 
   ["toNumber(\"10\")", { "expression": "toNumber(\"10\")", "expected": 10 }],
