@@ -148,7 +148,8 @@ test('debug output', () => {
     {m: [2,3,4].*},
     {m: {m: 2}[?true()]},
     {m: "aaa"[]},
-    {a: 12} | [2]
+    {a: 12} | [2],
+    toDate("2023111")
   )`;
   const debug = [];
   new JsonFormula({}, stringToNumber, debug).search(expression, { $form: form1 }, form1);
@@ -172,6 +173,7 @@ test('debug output', () => {
     'Flatten expressions apply to arrays only. If you want an empty array, use a JSON literal: `[]`',
     'Left side of index expression must be an array',
     'Did you intend a single-element array? if so, use a JSON literal: `[2]`',
+    'Failed to convert "2023111" to a date',
   ]);
   expect(debugTracking).toBe('Access p1 from {"p1":"property1"}');
 });

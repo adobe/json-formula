@@ -146,6 +146,7 @@ The preferred ways to create a date/time value are by using one of these functio
 
 * <<_datetime, `datetime()`>>
 * <<_now, `now()`>>
+* <<_todate, `toDate()`>>
 * <<today, `today()`>>
 * <<time, `time()`>>
 
