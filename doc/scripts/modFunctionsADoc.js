@@ -21,23 +21,22 @@ const version = process.argv[1] || '1.0';
 
 const functions = fs.readFileSync(adocFile).toString();
 
-/* The asciidoc has lines that look like:
-
-link:#datetime[datetime]
-transform it to:
-
-<<_datetime>>
-*/
 const updatedFunctions = functions
+  // The asciidoc has lines that look like:
+  // link:#datetime[datetime]
+  // transform to:
+  // <<_datetime>>
   .replace(/link:#([a-zA-Z0-9]+)[[a-zA-Z0-9]+]/g, '<<_$1>>')
+  // fix the version/date in the header
   .replace(/1\.0, {docdate}:/, `${version}, {docdate}:`)
+  // various escape sequences are problematic
   .replace(/`\*`/g, '`{asterisk}`')
+  .replace(/`\\'/g, '`{backtick}')
+  .replace(/\\'`/g, '{backtick}`')
   .replace(/\\{vbar}/g, '{vbar}')
   .replace(/\*Description\*/gm, '\nDescription::\n')
   .replace(/\*Returns\*:/gm, 'Returns::\n')
   .replace(/^(\[.*cols.*\])$/gm, 'Parameters::\n+\n$1')
-  .replace(/``([^']+)''/g, '"$1"')
-  .replace(/`\\'/g, '`{backtick}')
-  .replace(/\\'`/g, '{backtick}`');
+  .replace(/``([^']+)''/g, '"$1"');
 
 fs.writeFileSync(adocFile, updatedFunctions);
