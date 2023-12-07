@@ -3035,9 +3035,10 @@ be searched</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">search</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string | boolean | number | date | null</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">element to find. If <code>subject</code> is an array, search for an exact match
-for <code>search</code> in the array. If <code>subject</code> is a string, <code>search</code> will be
+<td class="tableblock halign-left valign-top"><p class="tableblock">string | boolean | number | null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">element to
+find. If <code>subject</code> is an array, search for an exact match for <code>search</code>
+in the array. If <code>subject</code> is a string, <code>search</code> will be
 <a href="#_type_coercion_rules">coerced to a string</a>.</p></td>
 </tr>
 </tbody>
@@ -3122,25 +3123,25 @@ of the difference is determined by the <code>unit</code> parameter. One of:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>y</code> the number of whole years between start_date and end_date</p>
+<p><code>y</code> the number of whole years between <code>start_date</code> and <code>end_date</code></p>
 </li>
 <li>
-<p><code>m</code> the number of whole months between start_date and end_date.</p>
+<p><code>m</code> the number of whole months between <code>start_date</code> and <code>end_date</code>.</p>
 </li>
 <li>
-<p><code>d</code> the number of days between start_date and end_date</p>
+<p><code>d</code> the number of days between <code>start_date</code> and <code>end_date</code></p>
 </li>
 <li>
-<p><code>md</code> the number of days between start_date and end_date after
+<p><code>md</code> the number of days between <code>start_date</code> and <code>end_date</code> after
 subtracting whole months.</p>
 </li>
 <li>
-<p><code>ym</code> the number of whole months between start_date and end_date after
-subtracting whole years.</p>
+<p><code>ym</code> the number of whole months between <code>start_date</code> and <code>end_date</code>
+after subtracting whole years.</p>
 </li>
 <li>
-<p><code>yd</code> the number of days between start_date and end_date, assuming
-start_date and end_date were no more than one year apart</p>
+<p><code>yd</code> the number of days between <code>start_date</code> and <code>end_date</code>, assuming
+<code>start_date</code> and <code>end_date</code> were no more than one year apart</p>
 </li>
 </ul>
 </div>
@@ -3168,15 +3169,16 @@ start_date and end_date were no more than one year apart</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">start_date</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The starting date. Date/time values can be
-generated using the <a href="#_datetime">datetime</a>, <a href="#_toDate">[_toDate]</a>,
-<a href="#_today">today</a>, <a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The starting <a href="#_date_and_time_values">date/time
+value</a>. Date/time values can be generated using the
+<a href="#_datetime">datetime</a>, <a href="todate">toDate</a>, <a href="#_today">today</a>,
+<a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">end_date</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The end date – must be greater or equal to
-start_date.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The end <a href="#_date_and_time_values">date/time value</a> –
+must be greater or equal to start_date.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">unit</p></td>
@@ -3218,8 +3220,8 @@ hours will increment the day value by 1.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
-<p> number - A <a href="#_date_and_time_values">date/time numeric value</a>
-to be used with other date/time functions</p>
+<p> number - A <a href="#_date_and_time_values">date/time value</a> to be
+used with other date/time functions</p>
 </dd>
 <dt class="hdlist1">Parameters</dt>
 <dd>
@@ -3338,9 +3340,9 @@ datetime(2023,13,5) | year(@) &amp; "/" &amp; month(@) // returns 2024/1</code><
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">date/time generated using the <a href="#_datetime">datetime</a>,
-<a href="#_toDate">[_toDate]</a>, <a href="#_today">today</a>, <a href="#_now">now</a> and
-<a href="#_time">time</a> functions.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#_date_and_time_values">date/time value</a> generated
+using the <a href="#_datetime">datetime</a>, <a href="todate">toDate</a>,
+<a href="#_today">today</a>, <a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
 </tr>
 </tbody>
 </table>
@@ -3369,7 +3371,7 @@ datetime(2023,13,5) | year(@) &amp; "/" &amp; month(@) // returns 2024/1</code><
 return an array of key values that match a <code>name</code>. The name can be
 either a key into an object or an array index. This is similar to the
 Descendant Accessor operator (<code>..</code>) from
-<a href="https://www.ecma-international.org/publications-and-standards/standards/ecma-357/">E4X</a>.</p>
+<a href="https://ecma-international.org/publications-and-standards/standards/ecma-357/">E4X</a>.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -3564,9 +3566,10 @@ entries([4,5]) // returns [["0", 4],["1", 5]]</code></pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">startDate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The base date to start from. Date/time values can be
-generated using the <a href="#_datetime">datetime</a>, <a href="#_toDate">[_toDate]</a>,
-<a href="#_today">today</a>, <a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The base date to start from.
+<a href="#_date_and_time_values">Date/time values</a> can be generated using the
+<a href="#_datetime">datetime</a>, <a href="todate">toDate</a>, <a href="#_today">today</a>,
+<a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">monthAdd</p></td>
@@ -3661,13 +3664,13 @@ use the JSON literal: <code>`false`</code></p>
 <div class="sect3">
 <h4 id="_find">11.1.21. find</h4>
 <div class="paragraph">
-<p><strong>find(query, text, [start]) ⇒ integer | null</strong></p>
+<p><strong>find(findText, withinText, [start]) ⇒ integer | null</strong></p>
 </div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p> finds and returns the index of query in text from a start
+<p> Finds and returns the index of query in text from a start
 position</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
@@ -3694,13 +3697,13 @@ if not found.</p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">query</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findText</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string to search</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">text</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">withinText</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">text to be searched</p></td>
@@ -3948,7 +3951,8 @@ fround(100.44444444444444444444) =&gt; 100.44444274902344</code></pre>
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p>Extract the hour from a date/time representation</p>
+<p> Extract the hour from a <a href="#_date_and_time_values">date/time
+value</a></p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -3975,7 +3979,7 @@ fround(100.44444444444444444444) =&gt; 100.44444274902344</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The datetime/time for which the hour is to be returned.
 Date/time values can be generated using the <a href="#_datetime">datetime</a>,
-<a href="#_toDate">[_toDate]</a>, <a href="#_today">today</a>, <a href="#_now">now</a> and
+<a href="todate">toDate</a>, <a href="#_today">today</a>, <a href="#_now">now</a> and
 <a href="#_time">time</a> functions.</p></td>
 </tr>
 </tbody>
@@ -4742,8 +4746,8 @@ min(["a", "a1", "b"]) // returns "a"</code></pre>
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p> Extract the minute (0 through 59) from a time/datetime
-representation</p>
+<p> Extract the minute (0 through 59) from a
+<a href="#_date_and_time_values">date/time value</a></p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -4770,7 +4774,7 @@ date/time value</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">A datetime/time value. Date/time values can be generated
-using the <a href="#_datetime">datetime</a>, <a href="#_toDate">[_toDate]</a>,
+using the <a href="#_datetime">datetime</a>, <a href="todate">toDate</a>,
 <a href="#_today">today</a>, <a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
 </tr>
 </tbody>
@@ -4881,9 +4885,10 @@ mod(-3, 2) // returns -1</code></pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">source date value. Date/time values can be generated
-using the <a href="#_datetime">datetime</a>, <a href="#_toDate">[_toDate]</a>,
-<a href="#_today">today</a>, <a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">source <a href="#_date_and_time_values">date/time value</a>.
+Date/time values can be generated using the <a href="#_datetime">datetime</a>,
+<a href="todate">toDate</a>, <a href="#_today">today</a>, <a href="#_now">now</a> and
+<a href="#_time">time</a> functions.</p></td>
 </tr>
 </tbody>
 </table>
@@ -5014,8 +5019,7 @@ notNull(`null`, 2, 3, 4, `null`) // returns 2</code></pre>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
-<p> number - representation of current date/time as a
-<a href="#_date_and_time_values">number</a><br></p>
+<p> number - representation of the <a href="#_date_and_time_values">current date/time value</a>.<br></p>
 </dd>
 </dl>
 </div>
@@ -5492,7 +5496,7 @@ replace("123456",0,3,"@") // returns @456</code></pre>
 <div class="sect3">
 <h4 id="_reverse">11.1.55. reverse</h4>
 <div class="paragraph">
-<p><strong>reverse(argument) ⇒ array</strong></p>
+<p><strong>reverse(subject) ⇒ array</strong></p>
 </div>
 <div class="dlist">
 <dl>
@@ -5521,9 +5525,9 @@ replace("123456",0,3,"@") // returns @456</code></pre>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">argument</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">subject</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string | array</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">the source to be reversed</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">the sourceto be reversed</p></td>
 </tr>
 </tbody>
 </table>
@@ -5767,8 +5771,8 @@ searching.</p></td>
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p> Extract the seconds of the time value in a time/datetime
-representation</p>
+<p> Extract the seconds of the time value in a
+<a href="#_date_and_time_values">date/time value</a>.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -5795,7 +5799,7 @@ representation</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">datetime/time for which the second is to be returned.
 Date/time values can be generated using the <a href="#_datetime">datetime</a>,
-<a href="#_toDate">[_toDate]</a>, <a href="#_today">today</a>, <a href="#_now">now</a> and
+<a href="todate">toDate</a>, <a href="#_today">today</a>, <a href="#_now">now</a> and
 <a href="#_time">time</a> functions.</p></td>
 </tr>
 </tbody>
@@ -6623,7 +6627,7 @@ toArray(null()) // returns [`null`]</code></pre>
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p>Converts the provided string to a date/time value</p>
+<p>Converts the provided string to a date/time value.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -6634,9 +6638,9 @@ number</a>. If conversion fails, return null.</p>
 <dd>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 34%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
 </colgroup>
 <thead>
 <tr>
@@ -6649,7 +6653,9 @@ number</a>. If conversion fails, return null.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ISOString</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">An ISO8601 formatted string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An
+<a href="https://www.iso.org/iso-8601-date-and-time-format.html">ISO8601 formatted
+string</a>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -7287,10 +7293,10 @@ parameter:</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
 <td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">datetime for which the day of the week is to be
-returned. Date/time values can be generated using the
-<a href="#_datetime">datetime</a>, <a href="#_toDate">[_toDate]</a>, <a href="#_today">today</a>,
-<a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#_date_and_time_values">date/time value</a> for which
+the day of the week is to be returned. Date/time values can be generated
+using the <a href="#_datetime">datetime</a>, <a href="todate">toDate</a>,
+<a href="#_today">today</a>, <a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">[returnType]</p></td>
@@ -7348,9 +7354,10 @@ weekday(datetime(2006,5,21), 3) // 6</code></pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">input date/time value. Date/time values can be generated
-using the <a href="#_datetime">datetime</a>, <a href="#_toDate">[_toDate]</a>,
-<a href="#_today">today</a>, <a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">input <a href="#_date_and_time_values">date/time value</a>
+Date/time values can be generated using the <a href="#_datetime">datetime</a>,
+<a href="todate">toDate</a>, <a href="#_today">today</a>, <a href="#_now">now</a> and
+<a href="#_time">time</a> functions.</p></td>
 </tr>
 </tbody>
 </table>

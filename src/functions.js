@@ -253,7 +253,7 @@ export default function functions(
      * is a string, this function returns true if the string contains the
      * `search` value.
      * @param {array|string} subject the subject in which the element has to be searched
-     * @param {string|boolean|number|date|null} search element to find.
+     * @param {string|boolean|number|null} search element to find.
      * If `subject` is an array, search for an exact match for `search` in the array.
      * If `subject` is a string, `search` will be <<_type_coercion_rules,coerced to a string>>.
      * @return {boolean} true if found
@@ -287,19 +287,20 @@ export default function functions(
      * Return difference between two date values.
      * The measurement of the difference is determined by the `unit` parameter. One of:
      *
-     * * `y` the number of whole years between start_date and end_date
-     * * `m` the number of whole months between start_date and end_date.
-     * * `d` the number of days between start_date and end_date
-     * * `md` the number of days between start_date and end_date after subtracting whole months.
-     * * `ym` the number of whole months between start_date and end_date
+     * * `y` the number of whole years between `start_date` and `end_date`
+     * * `m` the number of whole months between `start_date` and `end_date`.
+     * * `d` the number of days between `start_date` and `end_date`
+     * * `md` the number of days between `start_date` and `end_date` after subtracting whole months.
+     * * `ym` the number of whole months between `start_date` and `end_date`
      * after subtracting whole years.
-     * * `yd` the number of days between start_date and end_date, assuming start_date
-     * and end_date were no more than one year apart
-     * @param {number} start_date The starting date.
+     * * `yd` the number of days between `start_date` and `end_date`, assuming `start_date`
+     * and `end_date` were no more than one year apart
+     * @param {number} start_date The starting <<_date_and_time_values, date/time value>>.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
-     * @param {number} end_date The end date -- must be greater or equal to start_date.
+     * @param {number} end_date The end <<_date_and_time_values, date/time value>> -- must
+     * be greater or equal to start_date.
      * @param {string} unit
      * @returns {integer} The number of days/months/years difference
      * @function datedif
@@ -366,7 +367,7 @@ export default function functions(
      * @param {integer} [seconds=0] Integer value representing the second segment of a time.
      * @param {integer} [milliseconds=0] Integer value representing the
      * millisecond segment of a time.
-     * @returns {number} A <<_date_and_time_values, date/time numeric value>>
+     * @returns {number} A <<_date_and_time_values, date/time value>>
      * to be used with other date/time functions
      * @function datetime
      * @example
@@ -401,8 +402,8 @@ export default function functions(
 
     /**
      * Finds the day of the month for a date value
-     * @param {number} date date/time generated using the
-     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
+     * @param {number} date <<_date_and_time_values, date/time value>> generated using the
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {integer} The day of the month ranging from 1 to 31.
      * @function day
@@ -420,7 +421,7 @@ export default function functions(
      * Performs a depth-first search of a nested hierarchy to
      * return an array of key values that match a `name`.
      * The name can be either a key into an object or an array index.
-     * This is similar to the Descendant Accessor operator (`..`) from [E4X](https://www.ecma-international.org/publications-and-standards/standards/ecma-357/).
+     * This is similar to the Descendant Accessor operator (`..`) from [E4X](https://ecma-international.org/publications-and-standards/standards/ecma-357/).
      * @param {object|array} object The starting object or array where we start the search
      * @param {string|integer} name The name (or index position) of the elements to find
      * @returns {any[]} The array of matched elements
@@ -498,8 +499,8 @@ export default function functions(
     /**
      * Finds the serial number of the end of a month, given `startDate` plus `monthAdd` months
      * @param {number} startDate The base date to start from.
-     * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
+     * <<_date_and_time_values, Date/time values>> can be generated using the
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @param {integer} monthAdd Number of months to add to start date
      * @return {integer} the number of days in the computed month
@@ -550,9 +551,9 @@ export default function functions(
     },
 
     /**
-     * finds and returns the index of query in text from a start position
-     * @param {string} query string to search
-     * @param {string} text text to be searched
+     * Finds and returns the index of query in text from a start position
+     * @param {string} findText string to search
+     * @param {string} withinText text to be searched
      * @param {integer} [start=0] zero-based position to start searching
      * @returns {integer|null} The position of the found string, null if not found.
      * @function find
@@ -650,10 +651,10 @@ export default function functions(
     },
 
     /**
-     * Extract the hour from a date/time representation
+     * Extract the hour from a <<_date_and_time_values, date/time value>>
      * @param {number} date The datetime/time for which the hour is to be returned.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {integer} value between 0 and 23
      * @function hour
@@ -1006,10 +1007,10 @@ export default function functions(
     },
 
     /**
-     * Extract the minute (0 through 59) from a time/datetime representation
+     * Extract the minute (0 through 59) from a <<_date_and_time_values, date/time value>>
      * @param {number} date A datetime/time value.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {integer} Number of minutes in the time portion of the date/time value
      * @function minute
@@ -1054,9 +1055,9 @@ export default function functions(
 
     /**
      * Finds the month of a date.
-     * @param {number} date source date value.
+     * @param {number} date source <<_date_and_time_values, date/time value>>.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {number} The month number as an integer, ranging from 1 (January) to 12 (December).
      * @function month
@@ -1107,7 +1108,7 @@ export default function functions(
     },
     /**
      * Retrieve the current date/time.
-     * @return {number} representation of current date/time as a <<_date_and_time_values, number>>
+     * @return {number} representation of the <<_date_and_time_values, current date/time value>>.
      * @function now
      */
     now: {
@@ -1352,7 +1353,7 @@ export default function functions(
 
     /**
      * Reverses the order of an array or string
-     * @param {string|array} argument the source to be reversed
+     * @param {string|array} subject the sourceto be reversed
      * @return {array} The resulting reversed array or string
      * @function reverse
      * @example
@@ -1477,10 +1478,10 @@ export default function functions(
     },
 
     /**
-     * Extract the seconds of the time value in a time/datetime representation
+     * Extract the seconds of the time value in a <<_date_and_time_values, date/time value>>.
      * @param {number} date datetime/time for which the second is to be returned.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {integer} The number of seconds: 0 through 59
      * @function second
@@ -1875,9 +1876,9 @@ export default function functions(
     },
 
     /**
-     * Converts the provided string to a date/time value
+     * Converts the provided string to a date/time value.
      *
-     * @param {string} ISOString An ISO8601 formatted string
+     * @param {string} ISOString An [ISO8601 formatted string]{@link https://www.iso.org/iso-8601-date-and-time-format.html}.
      * @return {number} The resulting <<_date_and_time_values, date/time number>>.
      * If conversion fails, return null.
      * @function toDate
@@ -2170,9 +2171,10 @@ export default function functions(
      * * 1 : Sunday (1), Monday (2), ..., Saturday (7)
      * * 2 : Monday (1), Tuesday (2), ..., Sunday(7)
      * * 3 : Monday (0), Tuesday (2), ...., Sunday(6)
-     * @param {number} date datetime for which the day of the week is to be returned.
+     * @param {number} date <<_date_and_time_values, date/time value>> for
+     * which the day of the week is to be returned.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @param {integer} [returnType=1] Determines the
      * representation of the result
@@ -2212,9 +2214,9 @@ export default function functions(
 
     /**
      * Finds the year of a datetime value
-     * @param {number} date input date/time value.
+     * @param {number} date input <<_date_and_time_values, date/time value>>
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {integer} The year value
      * @function year
