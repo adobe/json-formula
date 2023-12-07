@@ -3035,9 +3035,10 @@ be searched</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">search</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string | boolean | number | date | null</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">element to find. If <code>subject</code> is an array, search for an exact match
-for <code>search</code> in the array. If <code>subject</code> is a string, <code>search</code> will be
+<td class="tableblock halign-left valign-top"><p class="tableblock">string | boolean | number | null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">element to
+find. If <code>subject</code> is an array, search for an exact match for <code>search</code>
+in the array. If <code>subject</code> is a string, <code>search</code> will be
 <a href="#_type_coercion_rules">coerced to a string</a>.</p></td>
 </tr>
 </tbody>
@@ -3122,25 +3123,25 @@ of the difference is determined by the <code>unit</code> parameter. One of:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>y</code> the number of whole years between start_date and end_date</p>
+<p><code>y</code> the number of whole years between <code>start_date</code> and <code>end_date</code></p>
 </li>
 <li>
-<p><code>m</code> the number of whole months between start_date and end_date.</p>
+<p><code>m</code> the number of whole months between <code>start_date</code> and <code>end_date</code>.</p>
 </li>
 <li>
-<p><code>d</code> the number of days between start_date and end_date</p>
+<p><code>d</code> the number of days between <code>start_date</code> and <code>end_date</code></p>
 </li>
 <li>
-<p><code>md</code> the number of days between start_date and end_date after
+<p><code>md</code> the number of days between <code>start_date</code> and <code>end_date</code> after
 subtracting whole months.</p>
 </li>
 <li>
-<p><code>ym</code> the number of whole months between start_date and end_date after
-subtracting whole years.</p>
+<p><code>ym</code> the number of whole months between <code>start_date</code> and <code>end_date</code>
+after subtracting whole years.</p>
 </li>
 <li>
-<p><code>yd</code> the number of days between start_date and end_date, assuming
-start_date and end_date were no more than one year apart</p>
+<p><code>yd</code> the number of days between <code>start_date</code> and <code>end_date</code>, assuming
+<code>start_date</code> and <code>end_date</code> were no more than one year apart</p>
 </li>
 </ul>
 </div>
@@ -3176,8 +3177,8 @@ value</a>. Date/time values can be generated using the
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">end_date</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The end date/time value – must be greater or equal to
-start_date.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The end <a href="#_date_and_time_values">date/time value</a> –
+must be greater or equal to start_date.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">unit</p></td>
@@ -5018,8 +5019,7 @@ notNull(`null`, 2, 3, 4, `null`) // returns 2</code></pre>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
-<p> number - representation of <a href="#_date_and_time_values">current
-date/time as a number</a><br></p>
+<p> number - representation of the <a href="#_date_and_time_values">current date/time value</a>.<br></p>
 </dd>
 </dl>
 </div>
@@ -6638,9 +6638,9 @@ number</a>. If conversion fails, return null.</p>
 <dd>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 34%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
 </colgroup>
 <thead>
 <tr>
@@ -6653,7 +6653,9 @@ number</a>. If conversion fails, return null.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ISOString</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">An ISO8601 formatted string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An
+<a href="https://www.iso.org/iso-8601-date-and-time-format.html">ISO8601 formatted
+string</a>.</p></td>
 </tr>
 </tbody>
 </table>

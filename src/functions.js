@@ -253,7 +253,7 @@ export default function functions(
      * is a string, this function returns true if the string contains the
      * `search` value.
      * @param {array|string} subject the subject in which the element has to be searched
-     * @param {string|boolean|number|date|null} search element to find.
+     * @param {string|boolean|number|null} search element to find.
      * If `subject` is an array, search for an exact match for `search` in the array.
      * If `subject` is a string, `search` will be <<_type_coercion_rules,coerced to a string>>.
      * @return {boolean} true if found
@@ -287,19 +287,20 @@ export default function functions(
      * Return difference between two date values.
      * The measurement of the difference is determined by the `unit` parameter. One of:
      *
-     * * `y` the number of whole years between start_date and end_date
-     * * `m` the number of whole months between start_date and end_date.
-     * * `d` the number of days between start_date and end_date
-     * * `md` the number of days between start_date and end_date after subtracting whole months.
-     * * `ym` the number of whole months between start_date and end_date
+     * * `y` the number of whole years between `start_date` and `end_date`
+     * * `m` the number of whole months between `start_date` and `end_date`.
+     * * `d` the number of days between `start_date` and `end_date`
+     * * `md` the number of days between `start_date` and `end_date` after subtracting whole months.
+     * * `ym` the number of whole months between `start_date` and `end_date`
      * after subtracting whole years.
-     * * `yd` the number of days between start_date and end_date, assuming start_date
-     * and end_date were no more than one year apart
+     * * `yd` the number of days between `start_date` and `end_date`, assuming `start_date`
+     * and `end_date` were no more than one year apart
      * @param {number} start_date The starting <<_date_and_time_values, date/time value>>.
      * Date/time values can be generated using the
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
-     * @param {number} end_date The end date/time value -- must be greater or equal to start_date.
+     * @param {number} end_date The end <<_date_and_time_values, date/time value>> -- must
+     * be greater or equal to start_date.
      * @param {string} unit
      * @returns {integer} The number of days/months/years difference
      * @function datedif
@@ -1107,7 +1108,7 @@ export default function functions(
     },
     /**
      * Retrieve the current date/time.
-     * @return {number} representation of <<_date_and_time_values, current date/time as a number>>
+     * @return {number} representation of the <<_date_and_time_values, current date/time value>>.
      * @function now
      */
     now: {
@@ -1877,7 +1878,7 @@ export default function functions(
     /**
      * Converts the provided string to a date/time value.
      *
-     * @param {string} ISOString An ISO8601 formatted string
+     * @param {string} ISOString An [ISO8601 formatted string]{@link https://www.iso.org/iso-8601-date-and-time-format.html}.
      * @return {number} The resulting <<_date_and_time_values, date/time number>>.
      * If conversion fails, return null.
      * @function toDate
