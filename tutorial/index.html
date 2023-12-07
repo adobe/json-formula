@@ -81,7 +81,7 @@
         <option>items[*].price</option>
         <option>items[*].price * items[*].quantity</option>
         <option>sum(items[*].price * items[*].quantity)</option>
-        <option>map(&price * quantity, items)</option>
+        <option>map(items, &price * quantity)</option>
         <option>items[*].{subtotal: price * quantity}</option>
         <option>items[*].merge(@, {subtotal: price*quantity})</option>
         <option>sum(items[*].price * items[*].quantity) * tax</option>

@@ -147,8 +147,8 @@ The preferred ways to create a date/time value are by using one of these functio
 * <<_datetime, `datetime()`>>
 * <<_now, `now()`>>
 * <<_todate, `toDate()`>>
-* <<today, `today()`>>
-* <<time, `time()`>>
+* <<_today, `today()`>>
+* <<_time, `time()`>>
 
 [discrete]
 === Examples
@@ -418,7 +418,7 @@ The concatenation operator (`&`) takes two string operands and combines them to 
 ----
   eval(left & value & right,
     {"left": "[", "right": "]", "value": "abc" }) -> "[abc]"
-  eval(map(&"$" & @, values), {"values": [123.45, 44.32, 99.00] }) ->
+  eval(map(values, &"$" & @), {"values": [123.45, 44.32, 99.00] }) ->
       ["$123.45", "$44.32", "$99"]
 ----
 

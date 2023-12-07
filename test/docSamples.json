@@ -135,9 +135,9 @@
   ["floor(10)", { "expression": "floor(10)", "expected": 10 }],
 
   [
-    "join(\",\", [\"a\", \"b\", \"c\"])",
+    "join([\"a\", \"b\", \"c\"], \",\")",
     {
-      "expression": "join(\",\", [\"a\", \"b\", \"c\"])",
+      "expression": "join([\"a\", \"b\", \"c\"], \",\")",
       "expected": "a,b,c"
     }
   ],
@@ -172,17 +172,17 @@
   ],
 
   [
-    "map(&(@ + 1), [1, 2, 3, 4])",
+    "map([1, 2, 3, 4], &(@ + 1))",
     {
-      "expression": "map(&(@ + 1), [1, 2, 3, 4])",
+      "expression": "map([1, 2, 3, 4], &(@ + 1))",
       "expected": [2, 3, 4, 5]
     }
   ],
 
   [
-    "map(&length(@), [\"doe\", \"nick\", \"chris\"])",
+    "map(map([\"doe\", \"nick\", \"chris\"], &length(@))",
     {
-      "expression": "map(&length(@), [\"doe\", \"nick\", \"chris\"])",
+      "expression": "map([\"doe\", \"nick\", \"chris\"], &length(@))",
       "expected": [3, 4, 5]
     }
   ],
@@ -256,17 +256,17 @@
   ],
 
   [
-    "reduce(&(accumulated + current), [1, 2, 3])",
+    "reduce([1, 2, 3], &(accumulated + current))",
     {
-      "expression": "reduce(&(accumulated + current), [1, 2, 3])",
+      "expression": "reduce([1, 2, 3], &(accumulated + current))",
       "expected": 6
     }
   ],
 
   [
-    "reduce(&accumulated * current, [3, 3, 3], 1) ",
+    "reduce([3, 3, 3], &accumulated * current, 1) ",
     {
-      "expression": "reduce(&accumulated * current, [3, 3, 3], 1) ",
+      "expression": "reduce([3, 3, 3], &accumulated * current, 1) ",
       "expected": 27
     }
   ],

@@ -32,35 +32,35 @@
         "result": [1, 16, 256]
       },
       {
-        "expression": "reduce(&@.accumulated + @.current, numbers)",
+        "expression": "reduce(numbers, &@.accumulated + @.current)",
         "result": 11
       },
       {
-        "expression": "reduce(&@.accumulated & @.current, strings, \":\")",
+        "expression": "reduce(strings, &@.accumulated & @.current, \":\")",
         "result": ":abc"
       },
       {
-        "expression": "reduce(&@.accumulated - @.current, numbers, 100)",
+        "expression": "reduce(numbers, &@.accumulated - @.current, 100)",
         "result": 89
       },
       {
-        "expression": "reduce(&if(abs(mod(@.current, 2)) == 1, {odd: @.accumulated.odd + 1, even: @.accumulated.even},{odd: @.accumulated.odd, even: @.accumulated.even + 1}), numbers, {odd: 0, even: 0})",
+        "expression": "reduce(numbers, &if(abs(mod(@.current, 2)) == 1, {odd: @.accumulated.odd + 1, even: @.accumulated.even},{odd: @.accumulated.odd, even: @.accumulated.even + 1}), {odd: 0, even: 0})",
         "result": { "odd": 3, "even": 1 }
       },
       {
-        "expression": "reduce(&value(`{\"0\":0,\"1\":1,\"2\":2,\"3\":3,\"4\":4,\"5\":5,\"6\":6,\"7\":7,\"8\":8,\"9\":9,\"A\":10,\"B\":11,\"C\":12,\"D\":13,\"E\":14,\"F\":15}`, @.current) + 16*@.accumulated, split(\"A2\",\"\"), 0)",
+        "expression": "reduce(split(\"A2\",\"\"), &value(`{\"0\":0,\"1\":1,\"2\":2,\"3\":3,\"4\":4,\"5\":5,\"6\":6,\"7\":7,\"8\":8,\"9\":9,\"A\":10,\"B\":11,\"C\":12,\"D\":13,\"E\":14,\"F\":15}`, @.current) + 16*@.accumulated, 0)",
         "result": 162
       },
       {
-        "expression": "reduce(&if(@.current == \"apple\", @.index, @.accumulated), [\"orange\", \"apple\", \"banana\"], -1)",
+        "expression": "reduce([\"orange\", \"apple\", \"banana\"], &if(@.current == \"apple\", @.index, @.accumulated), -1)",
         "result": 1
       },
       {
-        "expression": "reduce(&if (@.index+1 == length(@.array),(@.accumulated + @.current)/length(@.array),@.accumulated + @.current),numbers, 0)",
+        "expression": "reduce(numbers, &if (@.index+1 == length(@.array),(@.accumulated + @.current)/length(@.array),@.accumulated + @.current), 0)",
         "result": 2.75
       },
       {
-        "expression": "reduce(&max(@.accumulated.age, @.current.age), [{age: 10, name: 'Joe'},{age: 20, name: 'John'}], @[0].age)",
+        "expression": "reduce([{age: 10, name: 'Joe'},{age: 20, name: 'John'}], &max(@.accumulated.age, @.current.age), @[0].age)",
         "result": 20
       },
       {
@@ -489,47 +489,43 @@
         "result": []
       },
       {
-        "expression": "join(\", \", strings)",
+        "expression": "join(strings, \", \")",
         "result": "a, b, c"
       },
       {
-        "expression": "join(\", \", strings)",
-        "result": "a, b, c"
-      },
-      {
-        "expression": "join(\",\", `[\"a\", \"b\"]`)",
+        "expression": "join(`[\"a\", \"b\"]`, \",\")",
         "result": "a,b"
       },
       {
-        "expression": "join(\",\", `[\"a\", 0]`)",
+        "expression": "join(`[\"a\", 0]`, \",\")",
         "result": "a,0",
         "was": "TypeError"
       },
       {
-        "expression": "join(\", \", str)",
+        "expression": "join(str, \", \")",
         "result": "Str",
         "was": "TypeError"
       },
       {
-        "expression": "join(\"|\", strings)",
+        "expression": "join(strings, \"|\")",
         "result": "a|b|c"
       },
       {
-        "expression": "join(`2`, strings)",
+        "expression": "join(strings, `2`)",
         "result": "a2b2c",
         "was": "TypeError"
       },
       {
-        "expression": "join(\"|\", decimals)",
+        "expression": "join(decimals, \"|\")",
         "result": "1.01|1.2|-1.5",
         "was": "TypeError"
       },
       {
-        "expression": "join(\"|\", decimals[].toString(@))",
+        "expression": "join(decimals[].toString(@), \"|\")",
         "result": "1.01|1.2|-1.5"
       },
       {
-        "expression": "join(\"|\", empty_list)",
+        "expression": "join(empty_list, \"|\")",
         "result": ""
       },
       {
@@ -986,20 +982,20 @@
     },
     "cases": [
       {
-        "expression": "map(&a, people)",
+        "expression": "map(people, &a)",
         "result": [10, 10, 10, 10, 10, 10, 10, 10, 10]
       },
       {
-        "expression": "map(&c, people)",
+        "expression": "map(people, &c)",
         "result": ["z", null, null, "z", null, null, "z", null, null]
       },
       {
-        "expression": "map(&a, badkey)",
+        "expression": "map(badkey, &a)",
         "result": [],
         "was": "TypeError"
       },
       {
-        "expression": "map(&foo, empty)",
+        "expression": "map(empty, &foo)",
         "result": []
       }
     ]
@@ -1020,15 +1016,15 @@
     },
     "cases": [
       {
-        "expression": "map(&foo.bar, array)",
+        "expression": "map(array, &foo.bar)",
         "result": ["yes1", "yes2", null]
       },
       {
-        "expression": "map(&foo1.bar, array)",
+        "expression": "map(array, &foo1.bar)",
         "result": [null, null, "no"]
       },
       {
-        "expression": "map(&foo.bar.baz, array)",
+        "expression": "map(array, &foo.bar.baz)",
         "result": [null, null, null]
       }
     ]
@@ -1042,7 +1038,7 @@
     },
     "cases": [
       {
-        "expression": "map(&[], array)",
+        "expression": "map(array, &[])",
         "result": [
           [1, 2, 3, 4],
           [5, 6, 7, 8, 9]

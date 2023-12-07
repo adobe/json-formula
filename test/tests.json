@@ -13,7 +13,7 @@
     {
       "fieldsOnly": true,
       "data": "samples.'purchase-order'",
-      "expression": "map(&price, items)[*].$name",
+      "expression": "map(items, &price)[*].$name",
       "expected": ["price", "price"]
     }
   ],
@@ -1330,6 +1330,12 @@
       "data": "samples.'purchase-order'",
       "expression": "proper(missing)",
       "expected": ""
+    },
+    "proper(\"Χάρηκα πολύ\")",
+    {
+      "data": "samples.'purchase-order'",
+      "expression": "proper(\"Χάρηκα πολύ\")",
+      "expected": "\"Χάρηκα Πολύ\""
     }
   ],
   [
@@ -2539,7 +2545,7 @@
     "expression ref",
     {
       "data": "[1,2,3,4]",
-      "expression": "map(&(@ + 1), @)",
+      "expression": "map(@, &(@ + 1))",
       "expected": [2,3,4,5]
     }
   ],
@@ -2547,7 +2553,7 @@
     "expression ref2",
     {
       "data": "[1,2,3,4]",
-      "expression": "map(&@ - 1, @)",
+      "expression": "map(@, &@ - 1)",
       "expected": [0,1,2,3]
     }
   ],

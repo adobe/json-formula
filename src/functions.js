@@ -117,8 +117,8 @@ export default function functions(
 
     /**
      * Finds the logical AND result of all parameters.
-     * If the parameters are not boolean they will be <<Type Coercion Rules,cast to boolean>>.
-     * Note the related <<And Operator>>.
+     * If the parameters are not boolean they will be <<_type_coercion_rules,cast to boolean>>.
+     * Note the related <<_and_operator, And Operator>>.
      * @param {any} firstOperand logical expression
      * @param {...any} [additionalOperands] any number of additional expressions
      * @returns {boolean} The logical result of applying AND to all parameters
@@ -255,7 +255,7 @@ export default function functions(
      * @param {array|string} subject the subject in which the element has to be searched
      * @param {string|boolean|number|date|null} search element to find.
      * If `subject` is an array, search for an exact match for `search` in the array.
-     * If `subject` is a string, `search` will be <<Type Coercion Rules,coerced to a string>>.
+     * If `subject` is a string, `search` will be <<_type_coercion_rules,coerced to a string>>.
      * @return {boolean} true if found
      * @function contains
      * @example
@@ -297,7 +297,7 @@ export default function functions(
      * and end_date were no more than one year apart
      * @param {number} start_date The starting date.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @param {number} end_date The end date -- must be greater or equal to start_date.
      * @param {string} unit
@@ -366,7 +366,8 @@ export default function functions(
      * @param {integer} [seconds=0] Integer value representing the second segment of a time.
      * @param {integer} [milliseconds=0] Integer value representing the
      * millisecond segment of a time.
-     * @returns {number} A date/time numeric value to be used with other date/time functions
+     * @returns {number} A <<_date_and_time_values, date/time numeric value>>
+     * to be used with other date/time functions
      * @function datetime
      * @example
      * datetime(2010, 10, 10) // returns representation of October 10, 2010
@@ -401,7 +402,7 @@ export default function functions(
     /**
      * Finds the day of the month for a date value
      * @param {number} date date/time generated using the
-     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {integer} The day of the month ranging from 1 to 31.
      * @function day
@@ -498,7 +499,7 @@ export default function functions(
      * Finds the serial number of the end of a month, given `startDate` plus `monthAdd` months
      * @param {number} startDate The base date to start from.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @param {integer} monthAdd Number of months to add to start date
      * @return {integer} the number of days in the computed month
@@ -652,7 +653,7 @@ export default function functions(
      * Extract the hour from a date/time representation
      * @param {number} date The datetime/time for which the hour is to be returned.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {integer} value between 0 and 23
      * @function hour
@@ -705,23 +706,23 @@ export default function functions(
     /**
      * Combines all the elements from the provided
      * array, joined together using the `glue` argument as a separator between each.
-     * @param {string} glue
      * @param {string[]} stringsarray array of strings or values that can be coerced to strings
+     * @param {string} glue
      * @return {string} String representation of the array
      * @function join
      * @example
-     * join(",", ["a", "b", "c"]) // returns "a,b,c"
-     * join(" and ", ["apples", "bananas"]) // returns "apples and bananas"
+     * join(["a", "b", "c"], ",") // returns "a,b,c"
+     * join(["apples", "bananas"], " and ") // returns "apples and bananas"
      */
     join: {
       _func: resolvedArgs => {
-        const joinChar = resolvedArgs[0];
-        const listJoin = resolvedArgs[1];
+        const listJoin = resolvedArgs[0];
+        const joinChar = resolvedArgs[1];
         return listJoin.join(joinChar);
       },
       _signature: [
-        { types: [TYPE_STRING] },
         { types: [TYPE_ARRAY_STRING] },
+        { types: [TYPE_STRING] },
       ],
     },
 
@@ -842,20 +843,20 @@ export default function functions(
     /**
      * Apply an expression to every element in an array and return the array of results.
      * An input array of length N will return an array of length N.
-     * @param {expression} expr expression to evaluate
      * @param {array} elements array of elements to process
+     * @param {expression} expr expression to evaluate
      * @return {array} the mapped array
      * @function map
      * @example
-     * map(&(@ + 1), [1, 2, 3, 4]) // returns [2, 3, 4, 5]
-     * map(&length(@), ["doe", "nick", "chris"]) // returns [3, 4, 5]
+     * map([1, 2, 3, 4], &(@ + 1)) // returns [2, 3, 4, 5]
+     * map(["doe", "nick", "chris"], &length(@)) // returns [3, 4, 5]
      */
     map: {
       _func: resolvedArgs => {
-        const exprefNode = resolvedArgs[0];
-        return resolvedArgs[1].map(arg => runtime.interpreter.visit(exprefNode, arg));
+        const exprefNode = resolvedArgs[1];
+        return resolvedArgs[0].map(arg => runtime.interpreter.visit(exprefNode, arg));
       },
-      _signature: [{ types: [TYPE_EXPREF] }, { types: [TYPE_ARRAY] }],
+      _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }],
     },
 
     /**
@@ -864,12 +865,12 @@ export default function functions(
      * max() can work on numbers or strings.
      * If a mix of numbers and strings are provided, all values with be coerced to
      * the type of the first value.
-     * @param {(number[]|string[])} collection array in which the maximum
+     * @param {...(number[]|string[])} collection array(s) in which the maximum
      * element is to be calculated
      * @return {number} the largest value found
      * @function max
      * @example
-     * max([1, 2, 3], [4, 5, 6], 7) // returns 7
+     * max([1, 2, 3], [4, 5, 6]) // returns 6
      * max(`[]`) // returns null
      * max(["a", "a1", "b"]) // returns "b"
      */
@@ -877,8 +878,7 @@ export default function functions(
       _func: args => {
         // flatten the args into a single array
         const array = args.reduce((prev, cur) => {
-          if (Array.isArray(cur)) prev.push(...cur);
-          else prev.push(cur);
+          prev.push(...cur);
           return prev;
         }, []);
 
@@ -967,14 +967,14 @@ export default function functions(
 
     /**
      * Calculates the smallest value in the input arguments.
-     * If all collections are empty `null` is returned.
+     * If all arrays are empty `null` is returned.
      * min() can work on numbers or strings.
      * If a mix of numbers and strings are provided, the type of the first value will be used.
-     * @param {...number[]|string[]|number|string} collection to search for the minimum value
+     * @param {...(number[]|string[])} collection Arrays to search for the minimum value
      * @return {number}
      * @function min
      * @example
-     * min([1, 2, 3], [4, 5, 6], 7) // returns 1
+     * min([1, 2, 3], [4, 5, 6]) // returns 1
      * min(`[]`) // returns null
      * min(["a", "a1", "b"]) // returns "a"
      */
@@ -982,8 +982,7 @@ export default function functions(
       _func: args => {
         // flatten the args into a single array
         const array = args.reduce((prev, cur) => {
-          if (Array.isArray(cur)) prev.push(...cur);
-          else prev.push(cur);
+          prev.push(...cur);
           return prev;
         }, []);
 
@@ -1010,7 +1009,7 @@ export default function functions(
      * Extract the minute (0 through 59) from a time/datetime representation
      * @param {number} date A datetime/time value.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {integer} Number of minutes in the time portion of the date/time value
      * @function minute
@@ -1057,7 +1056,7 @@ export default function functions(
      * Finds the month of a date.
      * @param {number} date source date value.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {number} The month number as an integer, ranging from 1 (January) to 12 (December).
      * @function month
@@ -1074,8 +1073,8 @@ export default function functions(
 
     /**
      * Compute logical NOT of a value. If the parameter is not boolean
-     * it will be <<Type Coercion Rules,cast to boolean>>
-     * Note the related <<Not Operator,unary NOT operator>>.
+     * it will be <<_type_coercion_rules,cast to boolean>>
+     * Note the related <<_not_operator, unary NOT operator>>.
      * @param {any} value - any data type
      * @returns {boolean} The logical NOT applied to the input parameter
      * @example
@@ -1108,7 +1107,7 @@ export default function functions(
     },
     /**
      * Retrieve the current date/time.
-     * @return {number} representation of current date/time as a number
+     * @return {number} representation of current date/time as a <<_date_and_time_values, number>>
      * @function now
      */
     now: {
@@ -1129,9 +1128,9 @@ export default function functions(
 
     /**
      * Determines the logical OR result of a set of parameters.
-     * If the parameters are not boolean they will be <<Type Coercion Rules,cast to
+     * If the parameters are not boolean they will be <<_type_coercion_rules,cast to
      * boolean>>.
-     * Note the related <<Or Operator>>.
+     * Note the related <<_or_operator, Or Operator>>.
      * @param {any} first logical expression
      * @param {...any} [operand] any number of additional expressions
      * @returns {boolean} The logical result of applying OR to all parameters
@@ -1191,18 +1190,12 @@ export default function functions(
      */
     proper: {
       _func: args => {
-        const capitalize = word => (/\w/.test(word)
-          ? `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`
-          : word);
+        const capitalize = word => `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`;
         const original = toString(args[0]);
-        const wordParts = original.match(/\W+|\w+/g);
-        if (wordParts === null) return original;
-        const words = wordParts.map(word => {
-          const digitParts = word.match(/\d+|[^\d]+/g);
-          if (digitParts === null) return capitalize(word);
-          return digitParts.map(part => capitalize(part)).join('');
-        });
-        return words.join('');
+        // split the string by whitespace, punctuation, and numbers
+        const wordParts = original.match(/[\s\d\p{P}]+|[^\s\d\p{P}]+/gu);
+        if (wordParts !== null) return wordParts.map(w => capitalize(w)).join('');
+        return capitalize(original);
       },
       _signature: [
         { types: [dataTypes.TYPE_STRING] },
@@ -1232,24 +1225,23 @@ export default function functions(
      * * current: current element to process
      * * index: index of the current element in the array
      * * array: original array
-     * @param {expression} expr reducer expression to be executed on each element
      * @param {array} elements array of elements on which the expression will be evaluated
+     * @param {expression} expr reducer expression to be executed on each element
      * @param {any} initialValue the accumulated value to pass to the first array element
      * @return {any}
      * @function reduce
      * @example
-     * reduce(&(accumulated + current), [1, 2, 3]) // returns 6
+     * reduce([1, 2, 3], &(accumulated + current)) // returns 6
      * // find maximum entry by age
      * reduce(
-     *   &max(@.accumulated.age, @.current.age),
-     *   [{age: 10, name: "Joe"},{age: 20, name: "John"}], @[0].age
-     * )
-     * reduce(&accumulated * current, [3, 3, 3], 1) // returns 27
+     *   [{age: 10, name: "Joe"},{age: 20, name: "John"}],
+     *   &max(@.accumulated.age, @.current.age), @[0].age)
+     * reduce([3, 3, 3], &accumulated * current, 1) // returns 27
      */
     reduce: {
       _func: resolvedArgs => {
-        const exprefNode = resolvedArgs[0];
-        return resolvedArgs[1].reduce(
+        const exprefNode = resolvedArgs[1];
+        return resolvedArgs[0].reduce(
           (accumulated, current, index, array) => runtime.interpreter.visit(exprefNode, {
             accumulated, current, index, array,
           }),
@@ -1257,8 +1249,8 @@ export default function functions(
         );
       },
       _signature: [
-        { types: [TYPE_EXPREF] },
         { types: [TYPE_ARRAY] },
+        { types: [TYPE_EXPREF] },
         { types: [TYPE_ANY], optional: true },
       ],
     },
@@ -1488,7 +1480,7 @@ export default function functions(
      * Extract the seconds of the time value in a time/datetime representation
      * @param {number} date datetime/time for which the second is to be returned.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {integer} The number of seconds: 0 through 59
      * @function second
@@ -1827,7 +1819,7 @@ export default function functions(
     },
 
     /**
-     * Construct and returns a time value.
+     * Construct and returns a <<_date_and_time_values, time value>>.
      * @param {integer} hours Zero-based integer value between 0 and 23 representing
      * the hour of the day.
      * @param {integer} [minutes=0] Zero-based integer value representing
@@ -1886,7 +1878,8 @@ export default function functions(
      * Converts the provided string to a date/time value
      *
      * @param {string} ISOString An ISO8601 formatted string
-     * @return {number} The resulting date/time number. If conversion fails, return null.
+     * @return {number} The resulting <<_date_and_time_values, date/time number>>.
+     * If conversion fails, return null.
      * @function toDate
      * @example
      * toDate("20231110T130000+04:00") // returns 19671.375
@@ -1915,7 +1908,8 @@ export default function functions(
     },
 
     /**
-     * Returns a date/time value representing the start of the current day. i.e. midnight
+     * Returns a <<_date_and_time_values, date/time>> value representing
+     * the start of the current day. i.e. midnight
      * @return {number} today at midnight
      * @function today
      */
@@ -1933,7 +1927,8 @@ export default function functions(
     },
 
     /**
-     * Converts the provided arg to a number as per the <<Type Coercion Rules,type coercion rules>>.
+     * Converts the provided arg to a number as per
+     * the <<_type_coercion_rules,type coercion rules>>.
      *
      * @param {string|number|boolean|null} arg to convert to number
      * @param {integer} [base=10] The base to use.  One of: 2, 8, 10, 16. Defaults to 10.
@@ -1973,7 +1968,7 @@ export default function functions(
 
     /**
      * Converts the provided argument to a string
-     * as per the <<Type Coercion Rules,type coercion rules>>.
+     * as per the <<_type_coercion_rules,type coercion rules>>.
      * @param {any} arg Value to be converted to a string
      * @param {integer} [indent=0] Indentation to use when converting
      * objects and arrays to a JSON string
@@ -2177,7 +2172,7 @@ export default function functions(
      * * 3 : Monday (0), Tuesday (2), ...., Sunday(6)
      * @param {number} date datetime for which the day of the week is to be returned.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @param {integer} [returnType=1] Determines the
      * representation of the result
@@ -2219,7 +2214,7 @@ export default function functions(
      * Finds the year of a datetime value
      * @param {number} date input date/time value.
      * Date/time values can be generated using the
-     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
+     * [datetime]{@link datetime}, [toDate]{@link toDate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @return {integer} The year value
      * @function year

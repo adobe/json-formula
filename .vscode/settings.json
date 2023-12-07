@@ -29,5 +29,6 @@
     "Saryerwinnie",
     "trunc",
     "undecorate"
-  ]
+  ],
+  "asciidoc.antora.enableAntoraSupport": true
 }

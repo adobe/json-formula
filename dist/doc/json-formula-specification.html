@@ -442,8 +442,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h1>json-formula Specification</h1>
 <div class="details">
 <span id="author" class="author">PDF Association Forms Technical Working Group</span><br>
-<span id="revnumber">version 0.2.2,</span>
-<span id="revdate">2023-11-03</span>
+<span id="revnumber">version 0.2.3,</span>
+<span id="revdate">2023-12-07</span>
 <br><span id="revremark"></span>
 </div>
 </div>
@@ -837,10 +837,13 @@ json-formula functions:</p>
 <p><a href="#_now"><code>now()</code></a></p>
 </li>
 <li>
-<p><a href="#today"><code>today()</code></a></p>
+<p><a href="#_todate"><code>toDate()</code></a></p>
 </li>
 <li>
-<p><a href="#time"><code>time()</code></a></p>
+<p><a href="#_today"><code>today()</code></a></p>
+</li>
+<li>
+<p><a href="#_time"><code>time()</code></a></p>
 </li>
 </ul>
 </div>
@@ -1390,7 +1393,7 @@ pair <code>(i, j)</code> in <code>x</code>, there exists an equivalent pair <cod
 <div class="content">
 <pre class="highlight"><code>  eval(left &amp; value &amp; right,
     {"left": "[", "right": "]", "value": "abc" }) -&gt; "[abc]"
-  eval(map(&amp;"$" &amp; @, values), {"values": [123.45, 44.32, 99.00] }) -&gt;
+  eval(map(values, &amp;"$" &amp; @), {"values": [123.45, 44.32, 99.00] }) -&gt;
       ["$123.45", "$44.32", "$99"]</code></pre>
 </div>
 </div>
@@ -2624,7 +2627,7 @@ angle’s cosine value.</p></td>
 <dd>
 <p> Finds the logical AND result of all parameters. If the
 parameters are not boolean they will be <a href="#_type_coercion_rules">cast to
-boolean</a>. Note the related &lt;&gt;.</p>
+boolean</a>. Note the related <a href="#_and_operator">And Operator</a>.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -3166,8 +3169,8 @@ start_date and end_date were no more than one year apart</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">start_date</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The starting date. Date/time values can be
-generated using the <a href="#_datetime">datetime</a>, <a href="#_today">today</a>,
-<a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
+generated using the <a href="#_datetime">datetime</a>, <a href="#_toDate">[_toDate]</a>,
+<a href="#_today">today</a>, <a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">end_date</p></td>
@@ -3215,8 +3218,8 @@ hours will increment the day value by 1.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
-<p> number - A date/time numeric value to be used with other
-date/time functions</p>
+<p> number - A <a href="#_date_and_time_values">date/time numeric value</a>
+to be used with other date/time functions</p>
 </dd>
 <dt class="hdlist1">Parameters</dt>
 <dd>
@@ -3336,7 +3339,8 @@ datetime(2023,13,5) | year(@) &amp; "/" &amp; month(@) // returns 2024/1</code><
 <td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">date/time generated using the <a href="#_datetime">datetime</a>,
-<a href="#_today">today</a>, <a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
+<a href="#_toDate">[_toDate]</a>, <a href="#_today">today</a>, <a href="#_now">now</a> and
+<a href="#_time">time</a> functions.</p></td>
 </tr>
 </tbody>
 </table>
@@ -3561,8 +3565,8 @@ entries([4,5]) // returns [["0", 4],["1", 5]]</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">startDate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The base date to start from. Date/time values can be
-generated using the <a href="#_datetime">datetime</a>, <a href="#_today">today</a>,
-<a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
+generated using the <a href="#_datetime">datetime</a>, <a href="#_toDate">[_toDate]</a>,
+<a href="#_today">today</a>, <a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">monthAdd</p></td>
@@ -3971,7 +3975,8 @@ fround(100.44444444444444444444) =&gt; 100.44444274902344</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The datetime/time for which the hour is to be returned.
 Date/time values can be generated using the <a href="#_datetime">datetime</a>,
-<a href="#_today">today</a>, <a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
+<a href="#_toDate">[_toDate]</a>, <a href="#_today">today</a>, <a href="#_now">now</a> and
+<a href="#_time">time</a> functions.</p></td>
 </tr>
 </tbody>
 </table>
@@ -4053,7 +4058,7 @@ if(false(), 1, 2) // returns 2</code></pre>
 <div class="sect3">
 <h4 id="_join">11.1.28. join</h4>
 <div class="paragraph">
-<p><strong>join(glue, stringsarray) ⇒ string</strong></p>
+<p><strong>join(stringsarray, glue) ⇒ string</strong></p>
 </div>
 <div class="dlist">
 <dl>
@@ -4083,15 +4088,15 @@ together using the <code>glue</code> argument as a separator between each.</p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">glue</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">stringsarray</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Array.&lt;string&gt;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">array of strings or values that can be
 coerced to strings</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">glue</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
 </table>
@@ -4103,8 +4108,8 @@ coerced to strings</p></td>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">join(",", ["a", "b", "c"]) // returns "a,b,c"
-join(" and ", ["apples", "bananas"]) // returns "apples and bananas"</code></pre>
+<pre class="highlight"><code class="language-js" data-lang="js">join(["a", "b", "c"], ",") // returns "a,b,c"
+join(["apples", "bananas"], " and ") // returns "apples and bananas"</code></pre>
 </div>
 </div>
 </div>
@@ -4442,7 +4447,7 @@ lowercase.</p>
 <div class="sect3">
 <h4 id="_map">11.1.35. map</h4>
 <div class="paragraph">
-<p><strong>map(expr, elements) ⇒ array</strong></p>
+<p><strong>map(elements, expr) ⇒ array</strong></p>
 </div>
 <div class="dlist">
 <dl>
@@ -4473,14 +4478,14 @@ array of length N.</p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">expr</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">expression</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">expression to evaluate</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">elements</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">array</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">array of elements to process</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">expr</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">expression</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">expression to evaluate</p></td>
 </tr>
 </tbody>
 </table>
@@ -4492,15 +4497,15 @@ array of length N.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">map(&amp;(@ + 1), [1, 2, 3, 4]) // returns [2, 3, 4, 5]
-map(&amp;length(@), ["doe", "nick", "chris"]) // returns [3, 4, 5]</code></pre>
+<pre class="highlight"><code class="language-js" data-lang="js">map([1, 2, 3, 4], &amp;(@ + 1)) // returns [2, 3, 4, 5]
+map(["doe", "nick", "chris"], &amp;length(@)) // returns [3, 4, 5]</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_max">11.1.36. max</h4>
 <div class="paragraph">
-<p><strong>max(collection) ⇒ number</strong></p>
+<p><strong>max(…collection) ⇒ number</strong></p>
 </div>
 <div class="dlist">
 <dl>
@@ -4532,10 +4537,10 @@ provided, all values with be coerced to the type of the first value.</p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">collection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">…collection</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Array.&lt;number&gt; | Array.&lt;string&gt;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">array in which the
-maximum element is to be calculated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">array(s) in which
+the maximum element is to be calculated</p></td>
 </tr>
 </tbody>
 </table>
@@ -4547,7 +4552,7 @@ maximum element is to be calculated</p></td>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">max([1, 2, 3], [4, 5, 6], 7) // returns 7
+<pre class="highlight"><code class="language-js" data-lang="js">max([1, 2, 3], [4, 5, 6]) // returns 6
 max(`[]`) // returns null
 max(["a", "a1", "b"]) // returns "b"</code></pre>
 </div>
@@ -4679,16 +4684,16 @@ mid([0,1,2,3,4,5,6,7,8,9], 2, 3) // returns [2,3,4]</code></pre>
 <div class="sect3">
 <h4 id="_min">11.1.39. min</h4>
 <div class="paragraph">
-<p><strong>min(collection) ⇒ number</strong></p>
+<p><strong>min(…collection) ⇒ number</strong></p>
 </div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
 <p> Calculates the smallest value in the input arguments. If
-all collections are empty <code>null</code> is returned. min() can work on numbers
-or strings. If a mix of numbers and strings are provided, the type of
-the first value will be used.</p>
+all arrays are empty <code>null</code> is returned. min() can work on numbers or
+strings. If a mix of numbers and strings are provided, the type of the
+first value will be used.</p>
 </dd>
 <dt class="hdlist1">Parameters</dt>
 <dd>
@@ -4707,10 +4712,10 @@ the first value will be used.</p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">collection</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">…Array.&lt;number&gt; | Array.&lt;string&gt; | number
-| string</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">to search for the minimum value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">…collection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Array.&lt;number&gt; | Array.&lt;string&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Arrays to search
+for the minimum value</p></td>
 </tr>
 </tbody>
 </table>
@@ -4722,7 +4727,7 @@ the first value will be used.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">min([1, 2, 3], [4, 5, 6], 7) // returns 1
+<pre class="highlight"><code class="language-js" data-lang="js">min([1, 2, 3], [4, 5, 6]) // returns 1
 min(`[]`) // returns null
 min(["a", "a1", "b"]) // returns "a"</code></pre>
 </div>
@@ -4765,8 +4770,8 @@ date/time value</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">A datetime/time value. Date/time values can be generated
-using the <a href="#_datetime">datetime</a>, <a href="#_today">today</a>, <a href="#_now">now</a>
-and <a href="#_time">time</a> functions.</p></td>
+using the <a href="#_datetime">datetime</a>, <a href="#_toDate">[_toDate]</a>,
+<a href="#_today">today</a>, <a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
 </tr>
 </tbody>
 </table>
@@ -4877,8 +4882,8 @@ mod(-3, 2) // returns -1</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">source date value. Date/time values can be generated
-using the <a href="#_datetime">datetime</a>, <a href="#_today">today</a>, <a href="#_now">now</a>
-and <a href="#_time">time</a> functions.</p></td>
+using the <a href="#_datetime">datetime</a>, <a href="#_toDate">[_toDate]</a>,
+<a href="#_today">today</a>, <a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
 </tr>
 </tbody>
 </table>
@@ -5009,7 +5014,8 @@ notNull(`null`, 2, 3, 4, `null`) // returns 2</code></pre>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
-<p>number - representation of current date/time as a number<br></p>
+<p> number - representation of current date/time as a
+<a href="#_date_and_time_values">number</a><br></p>
 </dd>
 </dl>
 </div>
@@ -5043,8 +5049,9 @@ JSON literal: <code>`null`</code></p>
 <dt class="hdlist1">Description</dt>
 <dd>
 <p> Determines the logical OR result of a set of parameters.
-If the parameters are not boolean they will be <a href="#Type Coercion
-Rules">cast to boolean</a>. Note the related &lt;&gt;.</p>
+If the parameters are not boolean they will be
+<a href="#_type_coercion_rules">cast to boolean</a>. Note the related
+<a href="#_or_operator">Or Operator</a>.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -5223,7 +5230,7 @@ one.<br>
 <div class="sect3">
 <h4 id="_reduce">11.1.51. reduce</h4>
 <div class="paragraph">
-<p><strong>reduce(expr, elements, initialValue) ⇒ any</strong></p>
+<p><strong>reduce(elements, expr, initialValue) ⇒ any</strong></p>
 </div>
 <div class="dlist">
 <dl>
@@ -5270,15 +5277,15 @@ provided, then <code>null</code></p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">expr</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">expression</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">reducer expression to be executed on each element</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">elements</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">array</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">array of elements on which the expression will be
 evaluated</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">expr</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">expression</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">reducer expression to be executed on each element</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">initialValue</p></td>
@@ -5296,13 +5303,12 @@ element</p></td>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">reduce(&amp;(accumulated + current), [1, 2, 3]) // returns 6
+<pre class="highlight"><code class="language-js" data-lang="js">reduce([1, 2, 3], &amp;(accumulated + current)) // returns 6
 // find maximum entry by age
 reduce(
-  &amp;max(@.accumulated.age, @.current.age),
-  [{age: 10, name: "Joe"},{age: 20, name: "John"}], @[0].age
-)
-reduce(&amp;accumulated * current, [3, 3, 3], 1) // returns 27</code></pre>
+  [{age: 10, name: "Joe"},{age: 20, name: "John"}],
+  &amp;max(@.accumulated.age, @.current.age), @[0].age)
+reduce([3, 3, 3], &amp;accumulated * current, 1) // returns 27</code></pre>
 </div>
 </div>
 </div>
@@ -5789,7 +5795,8 @@ representation</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">datetime/time for which the second is to be returned.
 Date/time values can be generated using the <a href="#_datetime">datetime</a>,
-<a href="#_today">today</a>, <a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
+<a href="#_toDate">[_toDate]</a>, <a href="#_today">today</a>, <a href="#_now">now</a> and
+<a href="#_time">time</a> functions.</p></td>
 </tr>
 </tbody>
 </table>
@@ -6483,7 +6490,8 @@ tan(1) // 1.5574077246549023</code></pre>
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p>Construct and returns a time value.</p>
+<p> Construct and returns a <a href="#_date_and_time_values">time
+value</a>.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -6619,8 +6627,8 @@ toArray(null()) // returns [`null`]</code></pre>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
-<p> number - The resulting date/time number. If conversion fails,
-return null.</p>
+<p> number - The resulting <a href="#_date_and_time_values">date/time
+number</a>. If conversion fails, return null.</p>
 </dd>
 <dt class="hdlist1">Parameters</dt>
 <dd>
@@ -6655,7 +6663,7 @@ return null.</p>
 <div class="content">
 <pre class="highlight"><code class="language-js" data-lang="js">toDate("20231110T130000+04:00") // returns 19671.375
 toDate("toDate("2023-11-10T13:00:00+04:00")") // returns 19671.375
-toDate("20231110") | year(@) &amp; "/" &amp; month(@) &amp; "/" &amp; day(@) // returns "2023/11/10"</code></pre>
+toDate("20231110") | year(@) &amp; "/" &amp; month(@) // returns "2023/11"</code></pre>
 </div>
 </div>
 </div>
@@ -6668,8 +6676,8 @@ toDate("20231110") | year(@) &amp; "/" &amp; month(@) &amp; "/" &amp; day(@) // 
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p> Returns a date/time value representing the start of the
-current day. i.e. midnight</p>
+<p> Returns a <a href="#_date_and_time_values">date/time</a> value
+representing the start of the current day. i.e. midnight</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -6687,8 +6695,8 @@ current day. i.e. midnight</p>
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p> Converts the provided arg to a number as per the <a href="#Type
-Coercion Rules">type coercion rules</a>.</p>
+<p> Converts the provided arg to a number as per the
+<a href="#_type_coercion_rules">type coercion rules</a>.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -7281,8 +7289,8 @@ parameter:</p>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">datetime for which the day of the week is to be
 returned. Date/time values can be generated using the
-<a href="#_datetime">datetime</a>, <a href="#_today">today</a>, <a href="#_now">now</a> and
-<a href="#_time">time</a> functions.</p></td>
+<a href="#_datetime">datetime</a>, <a href="#_toDate">[_toDate]</a>, <a href="#_today">today</a>,
+<a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">[returnType]</p></td>
@@ -7341,8 +7349,8 @@ weekday(datetime(2006,5,21), 3) // 6</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">date</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">input date/time value. Date/time values can be generated
-using the <a href="#_datetime">datetime</a>, <a href="#_today">today</a>, <a href="#_now">now</a>
-and <a href="#_time">time</a> functions.</p></td>
+using the <a href="#_datetime">datetime</a>, <a href="#_toDate">[_toDate]</a>,
+<a href="#_today">today</a>, <a href="#_now">now</a> and <a href="#_time">time</a> functions.</p></td>
 </tr>
 </tbody>
 </table>
@@ -7512,8 +7520,8 @@ keys(street) -&gt; []</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 0.2.2<br>
-Last updated 2023-11-03 11:37:30 UTC
+Version 0.2.3<br>
+Last updated 2023-12-07 12:58:11 UTC
 </div>
 </div>
 </body>

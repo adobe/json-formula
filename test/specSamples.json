@@ -216,9 +216,9 @@
       }
   ],
   [
-    "map(&\"$\" & @, values)",
+    "map(values, &\"$\" & @)",
     {
-       "expression": "map(&\"$\" & @, values)",
+       "expression": "map(values, &\"$\" & @)",
        "data": {"values": [123.45, 44.32, 99.00] },
        "expected":  ["$123.45", "$44.32", "$99"]
       }

@@ -38,9 +38,9 @@ returns:
 jsonFormula.search(
   `register("summarize",
     &reduce(
-      &merge(accumulated, fromEntries([[current, 1 + value(accumulated, current)]])),
       @,
-      fromEntries(map(&[@, 0], @))
+      &merge(accumulated, fromEntries([[current, 1 + value(accumulated, current)]])),
+      fromEntries(map(@, &[@, 0]))
     )
   )`,
   {},
