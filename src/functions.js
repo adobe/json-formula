@@ -651,6 +651,30 @@ export default function functions(
     },
 
     /**
+     * Determine if an object has a property or if an array index is in range.
+     * @param {object|array} obj source object or array.
+     * May also be a scalar, but then the result is always false.
+     * @param {string|integer} name The name (or index position) of the element to find
+     * @returns {boolean} true if the element exists
+     * @function hasProperty
+     * @example
+     * hasProperty({a: 1, b: 2}, "a") // returns true
+     * hasProperty(["apples", "oranges"], 3) // returns false
+     * hasProperty(`null`, "a") // returns false
+     */
+    hasProperty: {
+      _func: args => {
+        if (args[0] === null) return false;
+        const key = valueOf(args[1]);
+        const result = getProperty(args[0], key);
+        return result !== undefined;
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_ANY] },
+        { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_NUMBER] },
+      ],
+    },
+    /**
      * Extract the hour from a <<_date_and_time_values, date/time value>>
      * @param {number} date The datetime/time for which the hour is to be returned.
      * Date/time values can be generated using the
@@ -1879,6 +1903,8 @@ export default function functions(
      * Converts the provided string to a date/time value.
      *
      * @param {string} ISOString An [ISO8601 formatted string]{@link https://www.iso.org/iso-8601-date-and-time-format.html}.
+     * If the string does not include a timezone offset (or trailing 'Z'),
+     * it will be assumed to be local time
      * @return {number} The resulting <<_date_and_time_values, date/time number>>.
      * If conversion fails, return null.
      * @function toDate
@@ -1891,15 +1917,30 @@ export default function functions(
       _func: resolvedArgs => {
         // expand compact notation so that the Date() constructor will
         // accept the value
-        const iso = resolvedArgs[0]
+        const iso = toString(resolvedArgs[0])
           .replace(/(\d\d\d\d)(\d\d)(\d\d)/, '$1-$2-$3')
           .replace(/T(\d\d)(\d\d)(\d\d)/, 'T$1:$2:$3');
-        const [date, time] = iso.split(/T|\+/);
-        if (date.length !== 10 || (time && time.length !== 8)) {
-          debug.push(`Failed to convert "${resolvedArgs[0]}" to a date`);
-          return null;
+        const dateparts = iso.split(/[\D,zZ]+/);
+        let d;
+        if (dateparts.length < 7) {
+          // no timezone component, so assume local time
+          // The date constructor always parses an ISO string as
+          // UTC -- with or without a trailing 'z'
+          // But if there's no timezone component, it needs to be local time
+
+          const range = [99999, 12, 31, 23, 59, 59, 999];
+          // check that the date parts are in range
+          for (let i = 0; i < dateparts.length; i += 1) {
+            if (dateparts[i] > range[i]) {
+              debug.push(`Failed to convert "${resolvedArgs[0]}" to a date`);
+              return null;
+            }
+          }
+          // account for zero-based date month parts
+          d = new Date(...dateparts.map((x, i) => (i === 1 ? x - 1 : x * 1)));
+        } else {
+          d = new Date(iso);
         }
-        const d = new Date(iso);
         if (d instanceof Date && Number.isFinite(d.getTime())) return getDateNum(d);
         debug.push(`Failed to convert "${resolvedArgs[0]}" to a date`);
 

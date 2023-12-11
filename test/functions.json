@@ -12,9 +12,38 @@
       "empty_list": [],
       "empty_hash": {},
       "objects": { "foo": "bar", "bar": "baz" },
-      "null_key": null
+      "null_key": null,
+      "datestr": "2023-11-11T12:34:56.789Z"
     },
     "cases": [
+      {
+        "expression": "hasProperty(foo, \"bar\")",
+        "result": false
+      },
+      {
+        "expression": "hasProperty(objects, \"foo\")",
+        "result": true
+      },
+      {
+        "expression": "hasProperty(empty_hash, \"foo\")",
+        "result": false
+      },
+      {
+        "expression": "hasProperty(numbers, 3)",
+        "result": true
+      },
+      {
+        "expression": "hasProperty(numbers, 4)",
+        "result": false
+      },
+      {
+        "expression": "hasProperty(null_key, 4)",
+        "result": false
+      },
+      {
+        "expression": "hasProperty(@, \"null_key\")",
+        "result": true
+      },
       {
         "expression": "and(true() true())",
         "error": "SyntaxError"
@@ -244,7 +273,7 @@
       },
       {
         "expression": "length(@)",
-        "result": 12
+        "result": 13
       },
       {
         "expression": "length(strings[0])",
@@ -643,8 +672,28 @@
         "result": "{\n  \"foo\": \"bar\",\n  \"bar\": \"baz\"\n}"
       },
       {
+        "expression": "toDate(datestr)",
+        "result": 19672.524268391204
+      },
+      {
+        "expression": "toDate(\"2023-11-11T12:34:56.789\")|day(@) & \":\" & hour(@)",
+        "result": "11:12"
+      },
+      {
+        "expression": "(toDate(\"2023-12-11T20:00:00+0000\")|hour(@)) - (toDate(\"2023-12-11T20:00:00+0300\")|hour(@))",
+        "result": 3
+      },
+      {
+        "expression": "toDate(\"2023-11-12\")|month(@) & \":\" & day(@) & \":\" & hour(@)",
+        "result": "11:12:0"
+      },
+      {
         "expression": "toDate(\"2023111\")",
         "result": null
+      },
+      {
+        "expression": "toDate(\"20231111T12:11:10\") | year(@) &\":\"& month(@) &\":\"& day(@) &\":\"& hour(@) &\":\"& minute(@) &\":\"& second(@)",
+        "result": "2023:11:11:12:11:10"
       },
       {
         "expression": "toDate(\"20231111T12345\")",

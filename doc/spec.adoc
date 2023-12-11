@@ -1351,3 +1351,11 @@ street.$id -> "abc123"
 type(street) -> "string"
 keys(street) -> []
 ----
+=== Tracking
+
+A host system may want to track which properties are accessed during the evaluation of an expression.  This can be done by providing a `track` function on the object being evaluated.  The `track` function will be called with the object being evaluated and the key being accessed.  Here is an example of how this can be configured in JavaScript:
+
+[source%unbreakable]
+----
+properties[Symbol.for('track')] = (obj, key) => trackDependent(obj, key);
+----
