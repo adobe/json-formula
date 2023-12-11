@@ -370,7 +370,7 @@ export default class Parser {
   _errorToken(token) {
     throw syntaxError(`Unexpected token (${
       token.type}): "${
-      token.value}"`);
+      token.value || token.name}"`);
   }
 
   _parseFunctionArgs() {
