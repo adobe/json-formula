@@ -1,0 +1,1224 @@
+[
+  {
+    "given": {
+      "foo": -1,
+      "zero": 0,
+      "numbers": [-1, 3, 4, 5],
+      "array": [-1, 3, 4, 5, "a", "100"],
+      "strings": ["a", "b", "c"],
+      "decimals": [1.01, 1.2, -1.5],
+      "str": "Str",
+      "false": false,
+      "empty_list": [],
+      "empty_hash": {},
+      "objects": { "foo": "bar", "bar": "baz" },
+      "null_key": null,
+      "datestr": "2023-11-11T12:34:56.789Z",
+      "extended":  "𝒜𝒞𝒟𝒢𝒥"
+    },
+    "cases": [
+      {
+        "expression": "hasProperty(foo, \"bar\")",
+        "result": false
+      },
+      {
+        "expression": "hasProperty(objects, \"foo\")",
+        "result": true
+      },
+      {
+        "expression": "hasProperty(empty_hash, \"foo\")",
+        "result": false
+      },
+      {
+        "expression": "hasProperty(numbers, 3)",
+        "result": true
+      },
+      {
+        "expression": "hasProperty(numbers, 4)",
+        "result": false
+      },
+      {
+        "expression": "hasProperty(null_key, 4)",
+        "result": false
+      },
+      {
+        "expression": "hasProperty(@, \"null_key\")",
+        "result": true
+      },
+      {
+        "expression": "and(true() true())",
+        "error": "SyntaxError"
+      },
+      {
+        "expression": "and(true(),)",
+        "error": "SyntaxError"
+      },
+      {
+        "expression": "power(2, 4)",
+        "result": 16
+      },
+      {
+        "expression": "power([1, 2, 4], 4)",
+        "result": [1, 16, 256]
+      },
+      {
+        "expression": "reduce(numbers, &@.accumulated + @.current)",
+        "result": 11
+      },
+      {
+        "expression": "reduce(strings, &@.accumulated & @.current, \":\")",
+        "result": ":abc"
+      },
+      {
+        "expression": "reduce(numbers, &@.accumulated - @.current, 100)",
+        "result": 89
+      },
+      {
+        "expression": "reduce(numbers, &if(abs(mod(@.current, 2)) == 1, {odd: @.accumulated.odd + 1, even: @.accumulated.even},{odd: @.accumulated.odd, even: @.accumulated.even + 1}), {odd: 0, even: 0})",
+        "result": { "odd": 3, "even": 1 }
+      },
+      {
+        "expression": "reduce(split(\"A2\",\"\"), &value(`{\"0\":0,\"1\":1,\"2\":2,\"3\":3,\"4\":4,\"5\":5,\"6\":6,\"7\":7,\"8\":8,\"9\":9,\"A\":10,\"B\":11,\"C\":12,\"D\":13,\"E\":14,\"F\":15}`, @.current) + 16*@.accumulated, 0)",
+        "result": 162
+      },
+      {
+        "expression": "reduce([\"orange\", \"apple\", \"banana\"], &if(@.current == \"apple\", @.index, @.accumulated), -1)",
+        "result": 1
+      },
+      {
+        "expression": "reduce(numbers, &if (@.index+1 == length(@.array),(@.accumulated + @.current)/length(@.array),@.accumulated + @.current), 0)",
+        "result": 2.75
+      },
+      {
+        "expression": "reduce([{age: 10, name: 'Joe'},{age: 20, name: 'John'}], &max(@.accumulated.age, @.current.age), @[0].age)",
+        "result": 20
+      },
+      {
+        "expression": "abs(foo)",
+        "result": 1
+      },
+      {
+        "expression": "abs(foo)",
+        "result": 1
+      },
+      {
+        "expression": "abs(str)",
+        "result": 0,
+        "was": "TypeError"
+      },
+      {
+        "expression": "abs(array[1])",
+        "result": 3
+      },
+      {
+        "expression": "abs(array[1])",
+        "result": 3
+      },
+      {
+        "expression": "abs(`false`)",
+        "result": 0,
+        "was": "TypeError"
+      },
+      {
+        "expression": "abs(`-24`)",
+        "result": 24
+      },
+      {
+        "expression": "abs(`-24`)",
+        "result": 24
+      },
+      {
+        "expression": "abs(`1`, `2`)",
+        "error": "FunctionError"
+      },
+      {
+        "expression": "abs()",
+        "error": "FunctionError"
+      },
+      {
+        "expression": "unknown_function(`1`, `2`)",
+        "error": "FunctionError"
+      },
+      {
+        "expression": "avg(numbers)",
+        "result": 2.75
+      },
+      {
+        "expression": "avg(array)",
+        "result": 18.5,
+        "was": "TypeError"
+      },
+      {
+        "expression": "avg('abc')",
+        "result": 0,
+        "was": "TypeError"
+      },
+      {
+        "expression": "avg(foo)",
+        "result": -1,
+        "was": "TypeError"
+      },
+      {
+        "expression": "avg(@)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "avg(strings)",
+        "result": 0,
+        "was": "TypeError"
+      },
+      {
+        "expression": "ceil(`1.2`)",
+        "result": 2
+      },
+      {
+        "expression": "ceil(decimals[0])",
+        "result": 2
+      },
+      {
+        "expression": "ceil(decimals[1])",
+        "result": 2
+      },
+      {
+        "expression": "ceil(decimals[2])",
+        "result": -1
+      },
+      {
+        "expression": "ceil(\"string\")",
+        "result": 0,
+        "was": "TypeError"
+      },
+      {
+        "expression": "contains(\"abc\", \"a\")",
+        "result": true
+      },
+      {
+        "expression": "contains(\"abc\", \"d\")",
+        "result": false
+      },
+      {
+        "expression": "contains(`false`, \"d\")",
+        "result": false,
+        "was": "TypeError"
+      },
+      {
+        "expression": "contains(strings, \"a\")",
+        "result": true
+      },
+      {
+        "expression": "contains(decimals, `1.2`)",
+        "result": true
+      },
+      {
+        "expression": "contains(decimals, `false`)",
+        "result": false
+      },
+      {
+        "expression": "endsWith(str, \"r\")",
+        "result": true
+      },
+      {
+        "expression": "endsWith(str, \"tr\")",
+        "result": true
+      },
+      {
+        "expression": "endsWith(str, \"Str\")",
+        "result": true
+      },
+      {
+        "expression": "endsWith(str, \"SStr\")",
+        "result": false
+      },
+      {
+        "expression": "endsWith(str, \"foo\")",
+        "result": false
+      },
+      {
+        "expression": "endsWith(str, `0`)",
+        "result": false,
+        "was": "TypeError"
+      },
+      {
+        "expression": "floor(`1.2`)",
+        "result": 1
+      },
+      {
+        "expression": "floor(\"string\")",
+        "result": 0,
+        "was": "TypeError"
+      },
+      {
+        "expression": "floor(decimals[0])",
+        "result": 1
+      },
+      {
+        "expression": "floor(foo)",
+        "result": -1
+      },
+      {
+        "expression": "floor(str)",
+        "result": 0,
+        "was": "TypeError"
+      },
+      {
+        "expression": "length(\"abc\")",
+        "result": 3
+      },
+      {
+        "expression": "length(\"✓foo\")",
+        "result": 4
+      },
+      {
+        "expression": "length(\"\")",
+        "result": 0
+      },
+      {
+        "expression": "length(@)",
+        "result": 14
+      },
+      {
+        "expression": "length(strings[0])",
+        "result": 1
+      },
+      {
+        "expression": "length(str)",
+        "result": 3
+      },
+      {
+        "expression": "length(array)",
+        "result": 6
+      },
+      {
+        "expression": "length(objects)",
+        "result": 2
+      },
+      {
+        "expression": "length(`false`)",
+        "result": 5,
+        "was": "TypeError"
+      },
+      {
+        "expression": "length(foo)",
+        "result": 2,
+        "was": "TypeError"
+      },
+      {
+        "expression": "length(strings[0])",
+        "result": 1
+      },
+      {
+        "expression": "length(extended)",
+        "result": 5
+      },
+      {
+        "expression": "codePoint(extended)",
+        "result": 119964
+      },
+      {
+        "expression": "split(extended, \"\")",
+        "result": ["𝒜", "𝒞", "𝒟", "𝒢", "𝒥"]
+      },
+      {
+        "expression": "contains(extended, \"𝒟\")",
+        "result": true
+      },
+      {
+        "expression": "contains(extended, \"\ud835\")",
+        "result": false
+      },
+      {
+        "expression": "endsWith(extended, \"\uDCA5\")",
+        "result": false
+      },
+      {
+        "expression": "find(\"\ud835\", extended) & \":\" & find(\"𝒜\", extended)",
+        "result": ":0"
+      },
+      {
+        "expression": "left(extended, 3)",
+        "result": "𝒜𝒞𝒟"
+      },
+      {
+        "expression": "right(extended, 3)",
+        "result": "𝒟𝒢𝒥"
+      },
+      {
+        "expression": "mid(extended, 1, 2)",
+        "result": "𝒞𝒟"
+      },
+      {
+        "expression": "replace(extended, 1, 2, \"cd\")",
+        "result": "𝒜cd𝒢𝒥"
+      },
+      {
+        "expression": "reverse(extended)",
+        "result": "𝒥𝒢𝒟𝒞𝒜"
+      },
+      {
+        "expression": "startsWith(extended, \"\ud835\")",
+        "result": false
+      },
+      {
+        "expression": "substitute(extended, \"\ud835\", \"A\", 1)",
+        "result": "𝒜𝒞𝒟𝒢𝒥"
+      },
+      {
+        "expression": "max(numbers)",
+        "result": 5
+      },
+      {
+        "expression": "max(decimals)",
+        "result": 1.2
+      },
+      {
+        "expression": "max(strings)",
+        "result": "c"
+      },
+      {
+        "expression": "max(abc)",
+        "result": null,
+        "was": "TypeError"
+      },
+      {
+        "expression": "max(array)",
+        "result": 100,
+        "was": "TypeError"
+      },
+      {
+        "expression": "max(decimals)",
+        "result": 1.2
+      },
+      {
+        "expression": "max(empty_list)",
+        "result": null
+      },
+      {
+        "expression": "max(strings, [\"A\", \"B\", \"C\"])",
+        "result": "C"
+      },
+      {
+        "expression": "max([\"D\", \"E\", \"F\"], [\"A\", \"B\", \"C\"])",
+        "result": "F"
+      },
+      {
+        "expression": "max(empty_list, \"a\")",
+        "result": "a"
+      },
+      {
+        "expression": "max(empty_list, decimals, 0)",
+        "result": 1.2
+      },
+      {
+        "expression": "max(`null`, empty_list, decimals, 0, [null(), 2])",
+        "result": 2
+      },
+      {
+        "expression": "max([1, \"2\"])",
+        "result": 2
+      },
+      {
+        "expression": "merge(`{}`)",
+        "result": {}
+      },
+      {
+        "expression": "merge(`{}`, `{}`)",
+        "result": {}
+      },
+      {
+        "expression": "merge(`{\"a\": 1}`, `{\"b\": 2}`)",
+        "result": { "a": 1, "b": 2 }
+      },
+      {
+        "expression": "merge(`{\"a\": 1}`, `{\"a\": 2}`)",
+        "result": { "a": 2 }
+      },
+      {
+        "expression": "merge(`{\"a\": 1, \"b\": 2}`, `{\"a\": 2, \"c\": 3}`, `{\"d\": 4}`)",
+        "result": { "a": 2, "b": 2, "c": 3, "d": 4 }
+      },
+      {
+        "expression": "merge(`{\"a\": 1}`, `{\"a\": 2}`, \"82\")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "merge([1, 2, 3], [4, 5, 6])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "min(numbers)",
+        "result": -1
+      },
+      {
+        "expression": "min(decimals)",
+        "result": -1.5
+      },
+      {
+        "expression": "min(abc)",
+        "result": null,
+        "was": "TypeError"
+      },
+      {
+        "expression": "min(array)",
+        "result": -1,
+        "was": "TypeError"
+      },
+      {
+        "expression": "min(empty_list)",
+        "result": null
+      },
+      {
+        "expression": "min(decimals)",
+        "result": -1.5
+      },
+      {
+        "expression": "min(strings)",
+        "result": "a"
+      },
+      {
+        "expression": "min(strings, [\"A\", \"B\", \"C\"])",
+        "result": "a"
+      },
+      {
+        "expression": "min([\"D\", \"E\", \"F\"], [\"A\", \"B\", \"C\"])",
+        "result": "A"
+      },
+      {
+        "expression": "min(empty_list, \"a\")",
+        "result": "a"
+      },
+      {
+        "expression": "min(empty_list, decimals, 0)",
+        "result": -1.5
+      },
+      {
+        "expression": "min(`null`, empty_list, decimals, 0, [-2, null()])",
+        "result": -2
+      },
+      {
+        "expression": "min(`null`, 23, \"21\")",
+        "result": 21
+      },
+      {
+        "expression": "type(\"abc\")",
+        "result": "string"
+      },
+      {
+        "expression": "type(`1.0`)",
+        "result": "number"
+      },
+      {
+        "expression": "type(`2`)",
+        "result": "number"
+      },
+      {
+        "expression": "type(`true`)",
+        "result": "boolean"
+      },
+      {
+        "expression": "type(`false`)",
+        "result": "boolean"
+      },
+      {
+        "expression": "type(`null`)",
+        "result": "null"
+      },
+      {
+        "expression": "type(`[0]`)",
+        "result": "array"
+      },
+      {
+        "expression": "type(`{\"a\": \"b\"}`)",
+        "result": "object"
+      },
+      {
+        "expression": "type(@)",
+        "result": "object"
+      },
+      {
+        "expression": "sort(keys(objects))",
+        "result": ["bar", "foo"]
+      },
+      {
+        "expression": "keys(foo)",
+        "result": [],
+        "was": "TypeError"
+      },
+      {
+        "expression": "keys(strings)",
+        "result": ["0", "1", "2"],
+        "was": "TypeError"
+      },
+      {
+        "expression": "keys(`false`)",
+        "result": [],
+        "was": "TypeError"
+      },
+      {
+        "expression": "sort(values(objects))",
+        "result": ["bar", "baz"]
+      },
+      {
+        "expression": "keys(empty_hash)",
+        "result": []
+      },
+      {
+        "expression": "keys(`null`)",
+        "result": []
+      },
+      {
+        "expression": "values(foo)",
+        "result": [],
+        "was": "TypeError"
+      },
+      {
+        "expression": "values(null())",
+        "result": []
+      },
+      {
+        "expression": "join(strings, \", \")",
+        "result": "a, b, c"
+      },
+      {
+        "expression": "join(`[\"a\", \"b\"]`, \",\")",
+        "result": "a,b"
+      },
+      {
+        "expression": "join(`[\"a\", 0]`, \",\")",
+        "result": "a,0",
+        "was": "TypeError"
+      },
+      {
+        "expression": "join(str, \", \")",
+        "result": "Str",
+        "was": "TypeError"
+      },
+      {
+        "expression": "join(strings, \"|\")",
+        "result": "a|b|c"
+      },
+      {
+        "expression": "join(strings, `2`)",
+        "result": "a2b2c",
+        "was": "TypeError"
+      },
+      {
+        "expression": "join(decimals, \"|\")",
+        "result": "1.01|1.2|-1.5",
+        "was": "TypeError"
+      },
+      {
+        "expression": "join(decimals[].toString(@), \"|\")",
+        "result": "1.01|1.2|-1.5"
+      },
+      {
+        "expression": "join(empty_list, \"|\")",
+        "result": ""
+      },
+      {
+        "expression": "reverse(numbers)",
+        "result": [5, 4, 3, -1]
+      },
+      {
+        "expression": "reverse(array)",
+        "result": ["100", "a", 5, 4, 3, -1]
+      },
+      {
+        "expression": "reverse(`[]`)",
+        "result": []
+      },
+      {
+        "expression": "reverse(\"\")",
+        "result": ""
+      },
+      {
+        "expression": "reverse(\"hello world\")",
+        "result": "dlrow olleh"
+      },
+      {
+        "expression": "startsWith(str, \"S\")",
+        "result": true
+      },
+      {
+        "expression": "startsWith(str, \"St\")",
+        "result": true
+      },
+      {
+        "expression": "startsWith(str, \"Str\")",
+        "result": true
+      },
+      {
+        "expression": "startsWith(str, \"String\")",
+        "result": false
+      },
+      {
+        "expression": "startsWith(\"ALABAMA\", \"A\")",
+        "result": true
+      },
+      {
+        "expression": "startsWith(str, `0`)",
+        "result": false,
+        "was": "TypeError"
+      },
+      {
+        "expression": "sum(numbers)",
+        "result": 11
+      },
+      {
+        "expression": "sum(decimals)",
+        "result": 0.71
+      },
+      {
+        "expression": "sum(array)",
+        "result": 111,
+        "was": "TypeError"
+      },
+      {
+        "expression": "sum(array[].toNumber(@))",
+        "result": 111
+      },
+      {
+        "expression": "sum(`[]`)",
+        "result": 0
+      },
+      {
+        "expression": "toArray(\"foo\")",
+        "result": ["foo"]
+      },
+      {
+        "expression": "toArray(`0`)",
+        "result": [0]
+      },
+      {
+        "expression": "toArray(objects)",
+        "result": [{ "foo": "bar", "bar": "baz" }]
+      },
+      {
+        "expression": "toArray(`[1, 2, 3]`)",
+        "result": [1, 2, 3]
+      },
+      {
+        "expression": "toArray(false)",
+        "result": [false]
+      },
+      {
+        "expression": "toString(\"foo\")",
+        "result": "foo"
+      },
+      {
+        "expression": "toString(`1.2`)",
+        "result": "1.2"
+      },
+      {
+        "expression": "toString(`[0, 1]`)",
+        "result": "[0,1]"
+      },
+      {
+        "expression": "toString(numbers)",
+        "result": "[-1,3,4,5]"
+      },
+      {
+        "expression": "toString(numbers,1)",
+        "result": "[\n -1,\n 3,\n 4,\n 5\n]"
+      },
+      {
+        "expression": "toString(objects)",
+        "result": "{\"foo\":\"bar\",\"bar\":\"baz\"}"
+      },
+      {
+        "expression": "toString(objects,2)",
+        "result": "{\n  \"foo\": \"bar\",\n  \"bar\": \"baz\"\n}"
+      },
+      {
+        "expression": "toDate(datestr)",
+        "result": 19672.524268391204
+      },
+      {
+        "expression": "toDate(\"2023-11-11T12:34:56.789\")|day(@) & \":\" & hour(@)",
+        "result": "11:12"
+      },
+      {
+        "expression": "(toDate(\"2023-12-11T20:00:00+0000\")|hour(@)) - (toDate(\"2023-12-11T20:00:00+0300\")|hour(@))",
+        "result": 3
+      },
+      {
+        "expression": "toDate(\"2023-11-12\")|month(@) & \":\" & day(@) & \":\" & hour(@)",
+        "result": "11:12:0"
+      },
+      {
+        "expression": "toDate(\"2023111\")",
+        "result": null
+      },
+      {
+        "expression": "toDate(\"20231111T12:11:10\") | year(@) &\":\"& month(@) &\":\"& day(@) &\":\"& hour(@) &\":\"& minute(@) &\":\"& second(@)",
+        "result": "2023:11:11:12:11:10"
+      },
+      {
+        "expression": "toDate(\"20231111T12345\")",
+        "result": null
+      },
+      {
+        "expression": "toNumber(\"1.0\")",
+        "result": 1.0
+      },
+      {
+        "expression": "toNumber(\"1.1\")",
+        "result": 1.1
+      },
+      {
+        "expression": "toNumber(\"4\")",
+        "result": 4
+      },
+      {
+        "expression": "toNumber(\"notanumber\")",
+        "result": null
+      },
+      {
+        "expression": "toNumber(`false`)",
+        "result": 0
+      },
+      {
+        "expression": "toNumber(`true`)",
+        "result": 1
+      },
+      {
+        "expression": "toNumber(false())",
+        "result": 0
+      },
+      {
+        "expression": "toNumber(true())",
+        "result": 1
+      },
+      {
+        "expression": "toNumber(`null`)",
+        "result": 0
+      },
+      {
+        "expression": "toNumber(toNumber(\"a\"))",
+        "result": 0
+      },
+      {
+        "expression": "toNumber(`[0]`)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "toNumber(`{\"foo\": 0}`)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "toNumber(\"FF\", 16)",
+        "result": 255
+      },
+      {
+        "expression": "toNumber(\"FF.EE\", 16)",
+        "result": 255
+      },
+      {
+        "expression": "toNumber(10, 16)",
+        "result": 16
+      },
+      {
+        "expression": "toNumber(11, 8)",
+        "result": 9
+      },
+      {
+        "expression": "toNumber(11, 2)",
+        "result": 3
+      },
+      {
+        "expression": "toNumber(\"11\", 12)",
+        "result": 11
+      },
+      {
+        "expression": "'toString'(`1.0`)",
+        "error": "SyntaxError"
+      },
+      {
+        "expression": "sort(numbers)",
+        "result": [-1, 3, 4, 5]
+      },
+      {
+        "expression": "sort(strings)",
+        "result": ["a", "b", "c"]
+      },
+      {
+        "expression": "sort(decimals)",
+        "result": [-1.5, 1.01, 1.2]
+      },
+      {
+        "expression": "sort(array)",
+        "result": [-1, "a", 3, 4, 5, "100"],
+        "was": "TypeError"
+      },
+      {
+        "expression": "sort(abc)",
+        "result": [],
+        "was": "TypeError"
+      },
+      {
+        "expression": "sort(empty_list)",
+        "result": []
+      },
+      {
+        "expression": "sort(@)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "notNull(unknown_key, str)",
+        "result": "Str"
+      },
+      {
+        "expression": "notNull(unknown_key, foo.bar, empty_list, str)",
+        "result": []
+      },
+      {
+        "expression": "notNull(unknown_key, null_key, empty_list, str)",
+        "result": []
+      },
+      {
+        "expression": "notNull(all, expressions, are_null)",
+        "result": null
+      },
+      {
+        "expression": "notNull()",
+        "error": "FunctionError"
+      },
+      {
+        "description": "function projection on single arg function",
+        "expression": "numbers[].toString(@)",
+        "result": ["-1", "3", "4", "5"]
+      },
+      {
+        "description": "function projection on single arg function",
+        "expression": "array[].toNumber(@)",
+        "result": [-1, 3, 4, 5, null, 100],
+        "was": [-1, 3, 4, 5, 100]
+      }
+    ]
+  },
+  {
+    "given": {
+      "foo": [
+        { "b": "b", "a": "a" },
+        { "c": "c", "b": "b" },
+        { "d": "d", "c": "c" },
+        { "e": "e", "d": "d" },
+        { "f": "f", "e": "e" }
+      ]
+    },
+    "cases": [
+      {
+        "description": "function projection on variadic function",
+        "expression": "foo[].notNull(f, e, d, c, b, a)",
+        "result": ["b", "c", "d", "e", "f"]
+      }
+    ]
+  },
+  {
+    "given": {
+      "people": [
+        {
+          "age": 20,
+          "age_str": "20",
+          "bool": true,
+          "name": "a",
+          "extra": "foo"
+        },
+        {
+          "age": 40,
+          "age_str": "40",
+          "bool": false,
+          "name": "b",
+          "extra": "bar"
+        },
+        { "age": 30, "age_str": "30", "bool": true, "name": "c" },
+        { "age": 50, "age_str": "50", "bool": false, "name": "d" },
+        { "age": 10, "age_str": "10", "bool": true, "name": 3 }
+      ]
+    },
+    "cases": [
+      {
+        "description": "sort by field expression",
+        "expression": "sortBy(people, &age)",
+        "result": [
+          { "age": 10, "age_str": "10", "bool": true, "name": 3 },
+          {
+            "age": 20,
+            "age_str": "20",
+            "bool": true,
+            "name": "a",
+            "extra": "foo"
+          },
+          { "age": 30, "age_str": "30", "bool": true, "name": "c" },
+          {
+            "age": 40,
+            "age_str": "40",
+            "bool": false,
+            "name": "b",
+            "extra": "bar"
+          },
+          { "age": 50, "age_str": "50", "bool": false, "name": "d" }
+        ]
+      },
+      {
+        "expression": "sortBy(people, &age_str)",
+        "result": [
+          { "age": 10, "age_str": "10", "bool": true, "name": 3 },
+          {
+            "age": 20,
+            "age_str": "20",
+            "bool": true,
+            "name": "a",
+            "extra": "foo"
+          },
+          { "age": 30, "age_str": "30", "bool": true, "name": "c" },
+          {
+            "age": 40,
+            "age_str": "40",
+            "bool": false,
+            "name": "b",
+            "extra": "bar"
+          },
+          { "age": 50, "age_str": "50", "bool": false, "name": "d" }
+        ]
+      },
+      {
+        "description": "sort by function expression",
+        "expression": "sortBy(people, &toNumber(age_str))",
+        "result": [
+          { "age": 10, "age_str": "10", "bool": true, "name": 3 },
+          {
+            "age": 20,
+            "age_str": "20",
+            "bool": true,
+            "name": "a",
+            "extra": "foo"
+          },
+          { "age": 30, "age_str": "30", "bool": true, "name": "c" },
+          {
+            "age": 40,
+            "age_str": "40",
+            "bool": false,
+            "name": "b",
+            "extra": "bar"
+          },
+          { "age": 50, "age_str": "50", "bool": false, "name": "d" }
+        ]
+      },
+      {
+        "description": "function projection on sortBy function",
+        "expression": "sortBy(people, &age)[].name",
+        "result": [3, "a", "c", "b", "d"]
+      },
+      {
+        "expression": "sortBy(people, &extra)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "sortBy(people, &bool)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "sortBy(people, &name)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "sortBy(people, name)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "sortBy(people, &age)[].extra",
+        "result": [null, "foo", null, "bar", null]
+      },
+      {
+        "expression": "sortBy(`[]`, &age)",
+        "result": []
+      }
+    ]
+  },
+  {
+    "given": {
+      "people": [
+        { "age": 10, "order": "1" },
+        { "age": 10, "order": "2" },
+        { "age": 10, "order": "3" },
+        { "age": 10, "order": "4" },
+        { "age": 10, "order": "5" },
+        { "age": 10, "order": "6" },
+        { "age": 10, "order": "7" },
+        { "age": 10, "order": "8" },
+        { "age": 10, "order": "9" },
+        { "age": 10, "order": "10" },
+        { "age": 10, "order": "11" }
+      ]
+    },
+    "cases": [
+      {
+        "description": "stable sort order",
+        "expression": "sortBy(people, &age)",
+        "result": [
+          { "age": 10, "order": "1" },
+          { "age": 10, "order": "2" },
+          { "age": 10, "order": "3" },
+          { "age": 10, "order": "4" },
+          { "age": 10, "order": "5" },
+          { "age": 10, "order": "6" },
+          { "age": 10, "order": "7" },
+          { "age": 10, "order": "8" },
+          { "age": 10, "order": "9" },
+          { "age": 10, "order": "10" },
+          { "age": 10, "order": "11" }
+        ]
+      }
+    ]
+  },
+  {
+    "given": {
+      "people": [
+        { "a": 10, "b": 1, "c": "z" },
+        { "a": 10, "b": 2, "c": null },
+        { "a": 10, "b": 3 },
+        { "a": 10, "b": 4, "c": "z" },
+        { "a": 10, "b": 5, "c": null },
+        { "a": 10, "b": 6 },
+        { "a": 10, "b": 7, "c": "z" },
+        { "a": 10, "b": 8, "c": null },
+        { "a": 10, "b": 9 }
+      ],
+      "empty": []
+    },
+    "cases": [
+      {
+        "expression": "map(people, &a)",
+        "result": [10, 10, 10, 10, 10, 10, 10, 10, 10]
+      },
+      {
+        "expression": "map(people, &c)",
+        "result": ["z", null, null, "z", null, null, "z", null, null]
+      },
+      {
+        "expression": "map(badkey, &a)",
+        "result": [],
+        "was": "TypeError"
+      },
+      {
+        "expression": "map(empty, &foo)",
+        "result": []
+      }
+    ]
+  },
+  {
+    "given": {
+      "array": [
+        {
+          "foo": { "bar": "yes1" }
+        },
+        {
+          "foo": { "bar": "yes2" }
+        },
+        {
+          "foo1": { "bar": "no" }
+        }
+      ]
+    },
+    "cases": [
+      {
+        "expression": "map(array, &foo.bar)",
+        "result": ["yes1", "yes2", null]
+      },
+      {
+        "expression": "map(array, &foo1.bar)",
+        "result": [null, null, "no"]
+      },
+      {
+        "expression": "map(array, &foo.bar.baz)",
+        "result": [null, null, null]
+      }
+    ]
+  },
+  {
+    "given": {
+      "array": [
+        [1, 2, 3, [4]],
+        [5, 6, 7, [8, 9]]
+      ]
+    },
+    "cases": [
+      {
+        "expression": "map(array, &[])",
+        "result": [
+          [1, 2, 3, 4],
+          [5, 6, 7, 8, 9]
+        ]
+      }
+    ]
+  },
+  {
+    "given": {},
+    "cases": [
+      {
+        "expression": "acos(0)",
+        "result": 1.5707963267948966
+      },
+      {
+        "expression": "Math.asin(0)",
+        "result": 0
+      },
+      {
+        "expression": "Math.asin(2)",
+        "result": null
+      },
+      {
+        "expression": "atan2(20,10)",
+        "result": 1.1071487177940904
+      },
+      {
+        "expression": "cos(1.0471975512)",
+        "result": 0.4999999999970535
+      },
+      {
+        "expression": "fround(2147483650.987)",
+        "result": 2147483648
+      },
+      {
+        "expression": "fround(100.44444444444444444444)",
+        "result": 100.44444274902344
+      },
+      {
+        "expression": "log(10)",
+        "result": 2.302585092994046
+      },
+      {
+        "expression": "log10(100000)",
+        "result": 5
+      },
+      {
+        "expression": "sign(5)",
+        "result": 1
+      },
+      {
+        "expression": "sign(-5)",
+        "result": -1
+      },
+      {
+        "expression": "sign(0)",
+        "result": 0
+      },
+      {
+        "expression": "sin(0)",
+        "result": 0
+      },
+      {
+        "expression": "sin(1)",
+        "result": 0.8414709848078965
+      },
+      {
+        "expression": "tan(0)",
+        "result": 0
+      },
+      {
+        "expression": "tan(1)",
+        "result": 1.5574077246549023
+      }
+    ]
+  }
+]

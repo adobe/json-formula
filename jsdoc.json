@@ -1,0 +1,13 @@
+{
+  "opts": {
+    "destination" : "./dist/jsdocs/"
+  },
+  "tags": {
+  },
+  "plugins": [
+      "plugins/markdown"
+  ],
+  "source": {
+    "include" : ["src/json-formula.js"]
+  }
+}

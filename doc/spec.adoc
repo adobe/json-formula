@@ -1,0 +1,1362 @@
+= json-formula Specification
+PDF Association Forms Technical Working Group
+0.2.0, {docdate}:
+:toc: macro
+:outlinelevels: 3
+:appendix-caption: Appendix
+
+ifdef::backend-pdf[]
+[.authors]
+{author} +
+Version {revnumber} {revremark} {revdate}
+endif::[]
+
+// table of contents goes here
+toc::[]
+
+// page break
+<<<
+
+// [abstract]
+== Abstract
+
+This document is the specification for json-formula, an expression grammar that operates on JSON documents.
+The grammar borrows from
+
+* https://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part2.html[OpenFormula] for spreadsheet operators and function
+* https://jmespath.org/[JMESPath] for JSON query semantics
+
+// start numbering the sections from here...
+:sectnums:
+
+== Notation
+In the specification, examples are shown through the use of a `search` function.  The syntax for this function is:
+
+[source%unbreakable]
+----
+eval(<json-formula expr>, <JSON document>) -> <return value>
+----
+
+For simplicity, the json-formula expression and the JSON document are not quoted.  For example:
+
+[source%unbreakable]
+----
+eval(foo, {"foo": "bar"}) -> "bar"
+----
+
+The result of applying a json-formula expression against a JSON document will result in valid JSON, provided there are no errors during the evaluation process.
+
+== Data Types
+
+json-formula supports all the JSON types:
+
+* number: All numbers are represented as double-precision floating-point
+* string
+* boolean: `true` or `false`
+* array: an ordered, sequence of values
+* object: an unordered collection of key value pairs
+* null
+
+There is an additional type that is not a JSON type that's used in
+json-formula functions:
+
+* expression: A string prefixed with an ampersand (`&`) character
+
+=== Type Coercion
+
+If the supplied data is not correct for the execution context, json-formula will attempt to coerce the data to the correct type. Coercion will occur in these contexts:
+
+* Operands of the concatenation operator (`&`) shall be coerced to a string, except when an operand is an array. Arrays shall be coerced to an array of strings.
+* Operands of numeric operators (`+`, `-`, `*`, `/`) shall be coerced to numbers except when the operand is an array. Arrays shall be coerced to an array of numbers.
+* Operands of the union operator (`~`) shall be coerced to an array
+* The left-hand operand of ordering comparison operators (`>`, `>=`, `<`, `\<=`) must be a string or number.  Any other type shall be coerced to a number.
+* If the operands of an ordering comparison are different, they shall both be coerced to a number
+* Parameters to functions shall be coerced to the expected type as defined by the function signature
+
+The equality and inequality operators (`=`, `==`, `!=`, `<>`) do **not** perform type coercion.  If operands are different types, the values are considered not equal.
+
+Coercion is not always possible, and if so, an `TypeError` <<Errors,error>> shall be emitted.
+
+[discrete]
+==== Examples
+
+[source%unbreakable]
+----
+    eval("abc" & 123, {}) -> "abc123"
+    eval("123" * 2, {}) -> 246
+    eval([1,2,3] ~ 4, {}) -> [1,2,3,4]
+    eval(123 < "124", {}) -> true
+    eval("23" > 111, {}) -> false
+    eval(abs("-2"), {}) -> 2
+    eval(1 == "1", {}) -> false
+----
+
+=== Type Coercion Rules
+
+[%header,cols="1,1,1"]
+|===
+| Provided Type | Expected Type | Result
+| number | string | number converted to a string. Similar to JavaScript `toString()`
+| boolean | string | "true" or "false"
+| array | string | Not supported
+| object | string | Not supported
+| null | string | "" (empty string)
+| string | number | Parse string to a number.  If the string is not a well-formed number, will return 0
+| boolean | number | true -> 1 false -> 0
+| array | number | Not supported
+| object | number | Not supported
+| null | number | 0
+| number | array | create a single-element array with the number
+| string | array | create a single-element array with the string
+| boolean | array | create a single-element array with the boolean
+| object | array | Not supported
+| null | array | Empty array
+| number | object | No supported
+| string | object | Not supported
+| boolean | object | Not supported
+| array | object | Not supported. Use: `fromEntries(entries(array))`
+| null | object | Empty object
+| number | boolean | zero is false, all other numbers are true
+| string | boolean | Empty string is false, populated strings are true
+| array | boolean | Empty array is false, populated arrays are true
+| object | boolean | Empty object is false, populated objects are true
+| null | boolean | false
+|===
+
+[discrete]
+==== Examples
+
+[source%unbreakable]
+----
+    eval("\"$123.00\" + 1", {}) -> 1"
+    eval("truth is " & `true`, {}) -> "truth is true"
+    eval(2 + `true`, {}) -> 3
+    eval(avg("20"), {}) -> 20
+----
+
+== Date and Time Values
+In order to support date and time functions, json-formula needs to represent date and time values.  Date/time values are represented as a number where:
+
+* The integral portion of the number represents the number of days since the epoch: January 1, 1970, https://en.wikipedia.org/wiki/Coordinated_Universal_Time[UTC]
+* The fractional portion of the number represents the fractional portion of the day
+* The date/time value is offset from the current time zone to UTC
+* The current time zone is determined by the host operating system
+
+The preferred ways to create a date/time value are by using one of these functions:
+
+* <<_datetime, `datetime()`>>
+* <<_now, `now()`>>
+* <<_todate, `toDate()`>>
+* <<_today, `today()`>>
+* <<_time, `time()`>>
+
+Functions that operate on a date/time value will convert the date/time value back to the local time zone.
+
+[discrete]
+=== Examples
+
+[source%unbreakable]
+----
+    eval(datetime(1970,1,2,0,0,0) - datetime(1970,1,1,0,0,0), {}) -> 1
+    eval(datetime(2010,1,21,12,0,0) |
+      {month: month(@), day: day(@), hour: hour(@)}, {}) ->
+        {"month": 1, "day": 21, "hour": 12}
+----
+
+== Floating Point Precision
+Numbers are represented in https://en.wikipedia.org/wiki/Double-precision_floating-point_format[double-precision floating-point format].  As with any system that uses this level of precision, results of expressions may be off by a tiny fraction. e.g.
+`10 * 1.44 -> 14.399999999999999`
+
+Authors should mitigate this behavior:
+
+* When comparing fractional results, do not compare for exact equality.  Instead, compare within a range. e.g.: instead of: `a == b`, use: `abs(a-b) < 0.000001`
+* leverage the built-in functions that manipulate fractional values:
+** <<_ceil, ceil()>>
+** <<_floor, floor()>>
+** <<_round, round()>>
+** <<_trunc, trunc()>>
+
+== Errors
+
+Errors may be raised during the json-formula evaluation process.
+The following errors are defined:
+
+* `EvaluationError` is raised when an unexpected runtime condition occurs. For example, divide by zero.
+* `FunctionError` is raised when an unknown function is encountered or when a function receives the wrong number of arguments.
+* `SyntaxError` is raised when the supplied expression does not conform to the json-formula grammar.
+* `TypeError` is raised when the provided type cannot be coerced to the correct type for the current evaluation context.
+
+== Grammar
+
+The grammar is specified using https://www.antlr.org/[Antlr].
+
+[source%unbreakable]
+----
+
+ifdef::USING_DOCKER[]
+include::./grammar.g4[]
+endif::[]
+----
+
+=== Operator Precedence
+
+The antlr grammar defines operator precedence by the order of expressions in the grammar. These are the operators listed from strongest to weakest binding:
+
+* Parenthesis `()`
+* Bracket Expression `[...]`
+* Braces `{}`
+* Dot `.` (chained expressions)
+* Flatten: `[]`
+* Unary not `!`, unary minus: `-`
+* multiply: `*`, divide: `/`
+* add: `+`, subtract: `-`, union: `~`
+* concatenate: `&`
+* Comparison operators: `=`, `==`, `>`, `<`, `>=`, `\<=`,  `!=`, `<>`
+* and: `&&`
+* or: `||`
+* pipe: `|`
+
+== Literals
+=== JSON Literals
+
+[source%unbreakable]
+----
+    jsonLiteral = '`' jsonValue '`'
+----
+
+A JSON literal expression allows arbitrary JSON objects to be
+specified.  This is allowed anywhere an expression is permitted. Implementations should
+use an existing JSON parser to parse these literals.  Note that the backtick character
+(`` ` ``) character must now be escaped in a JSON literal which means
+implementations need to handle this case before passing the resulting string to
+a JSON parser.
+
+[discrete]
+==== Examples
+
+[source%unbreakable]
+----
+  eval(`"foo"`, {}) -> "foo"
+  eval(`"foo\`bar"`, {}) -> "foo`bar"
+  eval(`[1, 2]`, {}) -> [1, 2]
+  eval(`true`, {}) -> true
+  eval(`{"a": "b"}`.a, {}) -> "b"
+  eval({first: a, type: `"mytype"`}, {"a": "b", "c": "d"})
+       -> {"first": "b", "type": "mytype"}
+----
+
+=== String Literals
+
+[source%unbreakable]
+----
+STRING : '"' (ESC | ~["\\])* '"' ;
+
+fragment ESC : '\\' (UNICODE | [bfnrt\\`'"/]);
+
+fragment UNICODE
+  : 'u' HEX HEX HEX HEX
+  ;
+
+fragment HEX
+  : [0-9a-fA-F]
+  ;
+----
+
+A `STRING` literal is a value enclosed in double quotes and supports the same character escape sequences as strings in JSON.
+e.g., a character 'A' could be specified as the unicode sequence: `\u0041`.
+
+A string literal can also be expressed as a JSON literal. For example, the following expressions both
+evaluate to the same value: "foo"
+
+[source%unbreakable]
+----
+    eval(`"foo"`, {}) -> "foo"
+    eval("foo", {}) -> "foo"
+----
+
+=== Number literals
+
+[source%unbreakable]
+----
+numberLiteral = REAL_OR_EXPONENT_NUMBER | INT
+
+REAL_OR_EXPONENT_NUMBER
+  : INT? '.' [0-9] + EXP?
+  | INT EXP
+  ;
+
+INT
+  : [0-9]+
+  ;
+
+fragment EXP
+  : [Ee] [+\-]? INT
+  ;
+----
+
+Number literals follow the same syntax rules as numeric values in JSON with two exceptions:
+
+1. Number literals may omit a leading zero.  For example, `.123` is not valid JSON, but is allowed as a number literal.
+2. The grammar construction for a number literal does not include a minus sign.  Literal expressions are made negative by prefixing them with a unary minus.
+
+Note that number literals (and JSON numbers) allow scientific notation.
+
+[discrete]
+==== Examples
+
+[source%unbreakable]
+----
+  eval(44, {}) -> 44
+  eval([12, 13], {}) -> [12, 13]
+  eval({a: 12, b: 13}, {}) -> {"a": 12, "b": 13}
+  eval(foo | [1], {"foo": [3,4,5]}) -> 4
+  eval(foo | @[-1], {"foo": [3,4,5]}) -> 5
+  eval(foo | [1, 2], {"foo": [3,4,5]}) -> [1, 2]
+  eval(6 / 3, {}) -> 2
+  eval(1e2, {}) -> 100
+----
+
+== Identifiers
+
+[source%unbreakable]
+----
+identifier
+  : NAME
+  | QUOTED_NAME
+  ;
+
+NAME : [a-zA-Z_$] [a-zA-Z0-9_$]* ;
+
+QUOTED_NAME : '\'' (ESC | ~ ['\\])* '\'';
+----
+
+An `identifier` is the most basic expression and can be used to extract a
+single element from a JSON document.  The return value for an `identifier` is the value associated with the identifier.  If the `identifier` does not exist in the JSON document, then a `null` value is returned.
+
+Using the `NAME` token grammar rule, identifiers can be one or more characters,
+and must start with a character in the range: `A-Za-z_$`.
+
+When an identifier has a
+character sequence that does not match a `NAME` token, an identifier may the `QUOTED_NAME` token rule where an identifier is specified with a single quote (`'`), followed by
+any number of characters, followed by another
+single quote.  Any valid string can be used between single quotes, include JSON
+supported escape sequences.
+
+[discrete]
+=== Examples
+
+[source%unbreakable]
+----
+   eval(foo, {"foo": "value"}) -> "value"
+   eval(bar, {"foo": "value"}) -> null
+   eval(foo, {"foo": [0, 1, 2]}) -> [0, 1, 2]
+   eval('with space', {"with space": "value"}) -> "value"
+   eval('special chars: !@#"', {"special chars: !@#": "value"}) -> "value"
+   eval('quote\'char', {"quote'char": "value"}) -> "value"
+   eval('\u2713', {"\u2713": "value"}) -> "value"
+----
+
+== Operators
+
+=== Comparison Operators
+
+The following comparison operators are supported:
+
+* `=` , `==`: test for equality
+* `!=`, `<>`: test for inequality
+* `<`: less than
+* `\<=`: less than or equal to
+* `>`: greater than
+* `>=`: greater than or equal to
+
+==== Equality Operators
+
+Two representations of the equality and inequality operators are supported: `=` and `==` are equivalent in functionality.  Both variations are supported in order to provide familiarity to users with experience with similar grammars. Similarly, `!=` and `<>` function identically. Note that there is no ambiguity with the `=` operator, since json-formula does not have an assignment operator.
+
+* A `string` is equal to another `string` if they they have the exact same sequence
+of code points
+* `number` values are compared for an exact match.  When comparing fractional values, authors should take into account <<Floating Point Precision,floating point precision>> considerations.
+* The literal values `true/false/null` are equal only to their
+own literal values
+* Two JSON objects are equal if they have the same set of
+keys and values. Two JSON objects `x` and `y`, are consider equal if they have the same number of key/value pairs and if, for each key value
+pair `(i, j)` in `x`, there exists an equivalent pair `(i, j)` in `y`
+* Two JSON arrays are equal if they have equal elements in the same order. Two arrays `x` and `y` are considered equal if they have the same length and, for each `i` from `0` until `length(x)`, `x[i] == y[i]`
+* The comparison of array and objects is a deep comparison.  That is, where nested arrays or objects are found, the nested elements will included in the comparison.
+
+==== Ordering Operators
+
+Ordering comparisons follow these rules:
+
+* If both operands are numbers, a numeric comparison is performed
+* If both operands are strings, they are compared as strings, based on the values of the Unicode code points they contain
+* If operands are mixed types, <<Type Coercion,type coercion>> is applied before performing the comparison
+
+=== Numeric Operators
+
+The following operators work with numeric operands:
+
+* addition: `+`
+* subtraction: `-`
+* multiplication `*`
+* division: `/`
+
+[source%unbreakable]
+----
+  eval(left + right, {"left": 8, "right": 12 }) -> 20
+  eval(right - left - 10, {"left": 8, "right": 12 }) -> -6
+  eval(4 + 2 * 4, {}) -> 12
+  eval(10 / 2 * 3, {}) -> 15
+----
+
+=== Concatenation Operator
+
+The concatenation operator (`&`) takes two string operands and combines them to form a single string.
+
+[source%unbreakable]
+----
+  eval(left & value & right,
+    {"left": "[", "right": "]", "value": "abc" }) -> "[abc]"
+  eval(map(values, &"$" & @), {"values": [123.45, 44.32, 99.00] }) ->
+      ["$123.45", "$44.32", "$99"]
+----
+
+=== Array Operands
+
+The numeric and concatenation operators (`+`, `-`, `{asterisk}`, `/`, `&`) have special behavior when applied to arrays.
+
+* When both operands are arrays, a new array is returned where the elements are populated by applying the operator on each element of the left operand array with the corresponding element from the right operand array
+* If both operands are arrays and they do not have the same size, the shorter array is padded with null values
+* If one operand is an array and one is a scalar value, a new array is returned where the operator is applied with the scalar against each element in the array
+
+[source%unbreakable]
+----
+  eval([1,2,3] + [2,3,4], {}) -> [3,5,7]
+  eval([1,2,3,4] * [1,2,3], {}) -> [1,4,9,0]
+  eval([1,2,3,4] & "%", {}) -> ["1%", "2%", "3%", "4%"]
+----
+
+==== Union Operator
+
+The union operator (`~`) returns an array formed by concatenating the contents of two arrays.
+
+[source%unbreakable]
+----
+  eval(a ~ b, {"a": [0,1,2], "b": [3,4,5]}) -> [0,1,2,3,4,5]
+  eval(a ~ b, {"a": [[0,1,2]], "b": [[3,4,5]]}) -> [[0,1,2],[3,4,5]]
+  eval(a[] ~ b[], {"a": [[0,1,2]], "b": [[3,4,5]]}) -> [0,1,2,3,4,5]
+  eval(a ~ 10, {"a": [0,1,2]}) -> [0,1,2,10]
+  eval(a ~ `null`, {"a": [0,1,2]}) -> [0,1,2]
+----
+
+=== Boolean Operators
+==== Or Operator
+
+The OR operator (`||`) will evaluate to either the left operand or the right
+operand.  If the left operand can be coerced to a true value, it is used
+as the return value.  If the left operand cannot be coerced to a true value, then the right operand is used as the return value.
+
+The following conditions cannot be coerced to true:
+
+* Empty array: `[]`
+* Empty object: `{}`
+* Empty string: `""`
+* False boolean: `false`
+* Null value: `null`
+* zero value: `0`
+
+[discrete]
+===== Examples
+
+[source%unbreakable]
+----
+  eval(foo || bar, {"foo": "foo-value"}) -> "foo-value"
+  eval(foo || bar, {"bar": "bar-value"}) -> "bar-value"
+  eval(foo || bar, {"foo": "foo-value", "bar": "bar-value"}) -> "foo-value"
+  eval(foo || bar, {"baz": "baz-value"}) -> null
+  eval(foo || bar || baz, {"baz": "baz-value"}) -> "baz-value"
+  eval(override || myarray[-1], {"myarray": ["one", "two"]}) -> "two"
+  eval(override || myarray[-1], {"myarray": ["one", "two"], "override": "yes"})
+       -> "yes"
+----
+
+==== And Operator
+
+The AND operator (`&&`) will evaluate to either the left operand or the right
+operand.  If the left operand is a truth-like value,
+then the right operand is returned.  Otherwise the left operand is returned.  This reduces to the
+expected truth table:
+
+[%header,cols="1,1,1"]
+|===
+| LHS | RHS | Result
+| True | True | True
+| True | False | False
+| False | True | False
+| False | False | False
+|===
+
+This is the standard truth table for a
+https://en.wikipedia.org/wiki/Truth_table#Logical_conjunction_.28AND.29[logical conjunction].
+
+[discrete]
+===== Examples
+
+[source%unbreakable]
+----
+  eval(True && False, {"True": true, "False": false}) -> false
+  eval(Number && EmptyList, {"Number": 5, "EmptyList": []}) -> []
+  eval(foo[?a == `1` && b == `2`],
+         {"foo": [{"a": 1, "b": 2}, {"a": 1, "b": 3}]}) -> [{"a": 1, "b": 2}]
+----
+
+=== Unary Operators
+==== Not Operator
+
+A unary NOT operator (`!`) is a boolean operator that negates the result of an expression.  If the expression
+results in a truth-like value, NOT operator will change this value to
+`false`.  If the expression results in a false-like value, a
+NOT operator will change the value to `true`.
+
+[discrete]
+===== Examples
+
+[source%unbreakable]
+----
+  eval(!True, {"True": true}) -> false
+  eval(!False, {"False": false}) -> true
+  eval(!Number, {"Number": 5}) -> false
+  eval(!EmptyList, {"EmptyList": []}) -> true
+----
+
+==== Minus Operator
+
+A unary Minus operator (`-`) is a numeric operator that negates the value of an operand.
+
+[discrete]
+===== Examples
+
+[source%unbreakable]
+----
+  eval(-11, {}) -> -11
+  eval(-n, {"n": 5, "nn": -10}) -> -5
+  eval(-nn, {"n": 5, "nn": -10}) -> 10
+  eval(--n, {"n": 5, "nn": -10}) -> 5
+----
+== Expressions
+
+=== Chained Expressions
+
+[source%unbreakable]
+----
+expression: expression '.' chainedExpression
+
+chainedExpression
+  : identifier
+  | arrayExpression
+  | objectExpression
+  | functionExpression
+  | wildcard
+  ;
+
+wildcard : '*' ;
+----
+
+A chained expression is a combination of two expressions separated by the dot (`.`) char.
+A chained expression is evaluated as follows:
+
+* Evaluate the expression on the left against the source JSON document
+* Evaluate the expression on the right against the result of the left expression
+  evaluation
+
+In pseudo-code
+[source%unbreakable]
+----
+  left-evaluation = eval(left-expression, original-json-document)
+  result = eval(right-expression, left-evaluation)
+----
+
+A chained expression is itself an expression, so there can be multiple levels of
+chained expressions: `grandparent.parent.child`.
+
+[discrete]
+==== Examples
+
+Given a JSON document: `{"foo": {"bar": "baz"}}`, and a json-formula expression:
+`foo.bar`, the evaluation process would be
+[source%unbreakable]
+----
+  left-evaluation = eval(foo, {"foo": {"bar": "baz"}}) -> {"bar": "baz"}
+  result = eval(bar, {"bar": "baz"}) -> "baz"
+----
+
+The final result in this example is `"baz"`.
+
+Additional examples
+
+[source%unbreakable]
+----
+   eval(foo.bar, {"foo": {"bar": "value"}}) -> "value"
+   eval(foo.'bar', {"foo": {"bar": "value"}}) -> "value"
+   eval(foo.bar, {"foo": {"baz": "value"}}) -> null
+   eval(foo.bar.baz, {"foo": {"bar": {"baz": "value"}}}) -> "value"
+----
+
+=== Bracket Expressions
+
+[source%unbreakable]
+----
+expression: expression bracketExpression
+
+bracketExpression
+  : '[' '*' ']'
+  | '[?' expression ']'
+  | '[' signedInt ']'
+  | '[' slice ']'
+  | '[' ']'
+  ;
+
+signedInt
+  : '-'? INT+
+  ;
+
+----
+
+From the `bracketExpression` construction, the bracketed contents provide access to the elements in an array.
+
+* The wildcard: (`'[' '*' ']'`) variation is discussed in the <<Wildcard Expressions>> section
+* The filtering: (`'[?' expression ']'`) variation is discussed in the <<Filter Expressions>> section
+
+==== Index Expressions
+
+When brackets enclose a signed integer (`'[' signedInt ']'`), the integer value is used to index into an array.
+Indexing is 0 based where an index of 0 refers to the first element of the array.  A negative index indicates that indexing is relative to the end of the array, specifically:
+
+[source%unbreakable]
+----
+  negative-index == (length of array) + negative-index
+----
+
+Given an array of length `N`, an index of `-1` would be equal to a positive
+index of `N - 1`, which is the last element of the array.
+An index value is outside the bounds of the array when the value is greater than or equal to the length of the array or less than the negative length of the array.
+If an index is outside the bounds of the array then a value of `null` is returned.
+
+[discrete]
+===== Examples
+
+[source%unbreakable]
+----
+  eval(a[1], {a: [5,6,7,8,9]}) -> 6
+  eval(a[-2], {a: [5,6,7,8,9]}) -> 8
+  eval([0], ["first", "second", "third"]) -> "first"
+  eval([-1], ["first", "second", "third"]) -> "third"
+  eval([100], ["first", "second", "third"]) -> null
+  eval(foo[0], {"foo": ["first", "second", "third"]}) -> "first"
+  eval(foo[100], {"foo": ["first", "second", "third"]}) -> null
+  eval(foo[0][0], {"foo": [[0, 1], [1, 2]]}) -> 0
+----
+
+==== Slices
+
+[source%unbreakable]
+----
+  slice : start=signedInt? ':' stop=signedInt? (':' step=signedInt?)? ;
+----
+
+A slice expression allows you to select a contiguous subset of an array.  A
+slice has a `start`, `stop`, and `step` value.  The general form of a
+slice is `[start:stop:step]`. Each component of the slice is optional and can
+be omitted, but there must be at least one colon (`:`) character.
+
+====
+Slices in json-formula have the same semantics as python slices.  If you're
+familiar with python slices, you're familiar with json-formula slices.
+====
+
+Given a `start`, `stop`, and `step` value, the sub elements in an array
+are extracted as follows:
+
+* The first element in the extracted array is the index denoted by `start`.
+* The last element in the extracted array is the index denoted by `end - 1`.
+* The `step` value determines the amount by which the index increases or decreases.  The default step value is 1. For example, a step value of 2 will return every second value from the array.  If step is negative, slicing is performed in reverse -- from the last (stop) element to the start.
+
+Slice expressions adhere to the following rules:
+
+* If a negative start position is given, it is calculated as the total length
+  of the array plus the given start position.
+* If no start position is given, it is assumed to be 0 if the given step is
+  greater than 0 or the end of the array if the given step is less than 0.
+* If a negative stop position is given, it is calculated as the total length
+  of the array plus the given stop position.
+* If no stop position is given, it is assumed to be the length of the array if
+  the given step is greater than 0 or 0 if the given step is less than 0.
+* If the given step is omitted, it is assumed to be 1.
+* If the given step is 0, an `EvaluationError` error must be raised.
+* If the element being sliced is not an array, the result is `null`.
+* If the element being sliced is an array and yields no results, the result
+  must be an empty array.
+
+[discrete]
+==== Examples
+
+[source%unbreakable]
+----
+  eval([0:4:1], [0, 1, 2, 3]) -> [0, 1, 2, 3]
+  eval([0:4], [0, 1, 2, 3]) -> [0, 1, 2, 3]
+  eval([0:3], [0, 1, 2, 3]) -> [0, 1, 2]
+  eval([:2], [0, 1, 2, 3]) -> [0, 1]
+  eval([::2], [0, 1, 2, 3]) -> [0, 2]
+  eval([::-1], [0, 1, 2, 3]) -> [3, 2, 1, 0]
+  eval([-2:], [0, 1, 2, 3]) -> [2, 3]
+----
+
+==== Flatten Operator
+
+When the character sequence `[]` is provided as a bracket specifier, then
+a flattening operation occurs on the current result.  The flattening operator
+will merge one level of sub-arrays in the current result into a single array.  The flattening
+operator follows these processing steps:
+
+* Create an empty result array
+* Iterate over the elements of the current result
+* If the current element is not an array, add to the end of the result array
+* If the current element is an array, add each element of the current element
+  to the end of the result array
+* The result array is returned as a <<Projections,projection>>
+
+Once the flattening operation has been performed, subsequent operations
+are projected onto the flattened array.  The difference between a bracketed wildcard (`[{asterisk}]`) and flatten (`[]`) is that
+flatten will first merge sub-arrays.
+
+[discrete]
+==== Examples
+
+[source%unbreakable]
+----
+  eval(foo[], {"foo": [[0, 1], [1, 2], 3]}) -> [0,1,1,2,3]
+  eval(foo[], {"foo": [[0, 1], [1, 2], [3,[4,5]]]}) -> [0,1,1,2,3,[4,5]]
+  eval(foo[][], {"foo": [[0, 1], [1, 2], [3,[4,5]]]}) -> [0,1,1,2,3,4,5]
+----
+
+=== Projections
+
+Projections allow you to apply an expression to a collection of elements. Projections are created when any form of a <<Bracket Expressions, Bracket Expression>> transforms a source array or when a <<Wildcard Expressions,wildcard>> is applied to an object:
+
+Given the source JSON:
+
+[source%unbreakable]
+----
+{
+  "items": [
+    {
+      "desc": "pens",
+      "price": 3.23
+    },
+    {
+      "desc": "pencils",
+      "price": 1.34
+    },
+    {
+      "desc": "staplers",
+      "price": 10.79
+    }
+  ]
+}
+----
+
+These expressions will create a projection:
+
+* `items[*]`
+* `items[]`
+* `items[0:2]`
+* `items[?expr]`
+* `items[0].*`
+
+When a <<Chained Expressions, chained expression>> or <<Bracket Expressions, bracket expression>> is applied to a projection, their behavior is changed so that the expression is applied to each element of the projection, rather than the underlying array itself.
+
+[discrete]
+==== Examples
+
+[source%unbreakable]
+----
+  eval(items[*].desc, items) -> ["pens", "pencils", "staplers"]
+  eval(items[*].desc.upper(@), items) -> ["PENS", "PENCILS", "STAPLERS"]
+  eval(items[].*, items) -> [
+                                ["pens", 3.23],
+                                ["pencils", 1.34],
+                                ["staplers", 10.79]
+                              ]
+  eval(items[0:2].price * 2, items) -> [6.46, 2.68]
+  eval(items[?price < 3], items) -> [{"desc": "pencils", "price": 1.34}]
+----
+
+A <<Pipe Expressions, pipe expression>> will stop the current projection and process it as a normal array.
+
+For example, if you wanted to sum the `price` values, this expression: `items[{asterisk}].price.sum(@)` will sum each individual price, returning: `[3.23,1.34,10.79]`. Whereas using a pipe operator will sum the array: `items[*].price | sum(@) -> 15.36`.
+
+
+=== Paren Expressions
+
+[source%unbreakable]
+----
+  parenExpression = '(' expression ')'
+----
+
+A `parenExpression` allows a user to override the precedence order of
+an expression +
+e.g. `(a || b) && c`
+
+[discrete]
+==== Examples
+
+[source%unbreakable]
+----
+  eval(foo[?(a == 1 || b == 2) && c == 5],
+         {"foo": [{"a": 1, "b": 2, "c": 3}, {"a": 3, "b": 4}]}) -> []
+----
+
+=== Array Expression
+
+[source%unbreakable]
+----
+    arrayExpression : '[' expression (',' expression)* ']' ;
+----
+
+An array expression is used to extract a subset of elements from the JSON document into an array.
+Within the start and closing
+brackets are one or more expressions separated by a comma.  Each
+expression will be evaluated against the JSON document, and each result will be added to the array
+
+An `arrayExpression` with `N` expressions will result in an array of length `N`.  Given an array
+expression `[expr-1,expr-2,...,expr-n]`, the evaluated expression will return
+`[evaluate(expr-1), evaluate(expr-2), ..., evaluate(expr-n)]`.
+
+Given an array expression: `[n, "doubled", n * 2]` and the
+data `{"n": 4}`, the expression is evaluated as follows:
+
+1. An empty array is created: `[]`
+2. The expression `n` is evaluated against the source document and the result (`4`) is appended to the array
+3. The literal expression `"doubled"` is appended to the array
+4. The expression `n * 2` is evaluated against the source document and the result (`8`) is appended to the array
+
+The final result will be: `[4, "doubled", 8]`.
+
+[discrete]
+==== Examples
+
+[source%unbreakable]
+----
+  eval([foo,bar], {"foo": "a", "bar": "b", "baz": "c"}) -> ["a", "b"]
+  eval([foo,bar[0]], {"foo": "a", "bar": ["b"], "baz": "c"}) -> ["a", "b"]
+  eval([foo,bar.baz], {"foo": "a", "bar": {"baz": "b"}}) -> ["a", "b"]
+  eval([foo,baz], {"foo": "a", "bar": "b"}) -> ["a", null]
+----
+
+The grammar contains one ambiguity: a bracket with a single signed digit e.g., `[0]` can be interpreted as a flatten operation or an `arrayExpression` with the number zero. To resolve this ambiguity, the grammar sets a precedence order so that `[-?[0-9]]` is treated as a an <<Index Expressions, index expression>>.  To explicitly express an array with one element, use a JSON literal: `` \`[0]` ``
+
+=== Object Expression
+
+[source%unbreakable]
+----
+    objectExpression = "{" ( keyvalExpr ( "," keyvalExpr )*)? "}"
+    keyvalExpr = identifier ":" expression
+----
+
+An object expression is used to extract a subset of elements from the JSON document into an object.
+An `objectExpression` requires key names to be provided, as
+specified in the `keyvalExpr` rule.  Given the following rule
+
+[source%unbreakable]
+----
+    keyvalExpr = identifier ":" expression
+----
+
+The `identifier` is used as the key name and the result of evaluating the
+`expression` is the value associated with the `identifier` key.
+
+Each `keyvalExpr` within the `objectExpression` will correspond to a
+single key value pair in the created object.
+Unlike the `arrayExpression`, an `objectExpression` may be empty.
+
+[discrete]
+==== Examples
+
+Given an object expression `{foo: one.two, bar: bar}` and the
+data `{"bar": "bar", {"one": {"two": "one-two"}}}`, the expression is
+evaluated as follows:
+
+1. An object is created: `{}`
+2. A key `foo` is created whose value is the result of evaluating `one.two`
+   against the provided JSON document: `{"foo": evaluate(one.two, <data>)}`
+3. A key `bar` is created whose value is the result of evaluating the
+   expression `bar` against the provided JSON document.
+
+The final result will be: `{"foo": "one-two", "bar": "bar"}`.
+
+Additional examples:
+
+[source%unbreakable]
+----
+  eval({foo: foo, bar: bar}, {"foo": "a", "bar": "b", "baz": "c"})
+                -> {"foo": "a", "bar": "b"}
+  eval({foo: foo, firstbar: bar[0]}, {"foo": "a", "bar": ["b"]})
+                -> {"foo": "a", "firstbar": "b"}
+  eval({foo: foo, 'bar.baz': bar.baz}, {"foo": "a", "bar": {"baz": "b"}})
+                -> {"foo": "a", "bar.baz": "b"}
+  eval({foo: foo, baz: baz}, {"foo": "a", "bar": "b"})
+                -> {"foo": "a", "baz": null}
+----
+
+=== Wildcard Expressions
+
+There are two forms of wildcard expression:
+
+1. `[{asterisk}]` from the `bracketExpression` construction:
++
+[source%unbreakable]
+----
+bracketExpression
+  : '[' '*' ']'
+  | '[' slice ']'
+  | '[' ']'
+  | '[?' expression ']'
+  | '[' expression ']'
+  ;
+----
+
+2.  `.{asterisk}` from the `chainedExpression` construction:
+[source%unbreakable]
+----
+expression : expression '.' chainedExpression
+
+chainedExpression
+  : identifier
+  | arrayExpression
+  | objectExpression
+  | functionExpression
+  | wildcard
+  ;
+
+wildcard : '*' ;
+----
+
+The `[{asterisk}]` syntax (referred to as an array wildcard expression) may be applied to arrays, and will return a <<Projections,projection>> with all
+the elements of the source array.  If an array
+wildcard expression is applied to any other JSON type, a value of `null` is
+returned.
+
+The `.{asterisk}` syntax (referred to as an object wildcard expression) may be applied to objects and will return an array
+of the values from the object key/value pairs.
+If an object wildcard expression is applied to any other JSON type, a value of
+`null` is returned.
+
+Note that JSON objects are explicitly defined as
+unordered.  Therefore an object wildcard expression can return the values
+associated with the object in any order.
+
+[discrete]
+==== Examples
+
+[source%unbreakable]
+----
+  eval([*].foo, [{"foo": 1}, {"foo": 2}, {"foo": 3}]) -> [1, 2, 3]
+  eval([*].foo, [{"foo": 1}, {"foo": 2}, {"bar": 3}]) -> [1, 2, null]
+  eval(*.foo, {"a": {"foo": 1}, "b": {"foo": 2}, "c": {"bar": 1}}) ->
+      [1, 2, null]
+----
+
+=== currentNode
+
+[source%unbreakable]
+----
+currentNode : '@' ;
+----
+
+The `currentNode` token represents the node being
+evaluated in the current context. The `currentNode` token is commonly used for:
+
+* Functions that require the current node as an argument
+* <<Filter Expressions>> that examine elements of an array
+* Access to the current context in <<Projections,projections>>.
+
+json-formula assumes that all expressions operate on the current node.  Because of this, an
+expression such as `@.name` would be equivalent to just `name`.
+
+==== currentNode state
+
+At the start of an expression, the value of the current node is the data
+being evaluated by the json-formula expression. As an expression is evaluated, `currentNode` must change to reflect the node
+being evaluated. When in a <<Projections, projection>>, the current node value must be changed
+to the node being evaluated by the projection.
+
+[discrete]
+==== Examples
+
+[source%unbreakable]
+----
+Given:
+{
+  "family": [
+    {"name": "frank", "age": 22},
+    {"name": "jane", "age": 23}
+  ]
+}
+
+eval(@.family[0].name, {...}) -> "frank"
+
+eval(family[].[left(@.name), age], {...}) ->
+   [["f", 22], ["j", 23]]
+
+eval(family[?@.age == 23], {...}) -> [{"name": "jane", "age": 23}]
+
+eval(family[?age == 23], {...}) -> [{"name": "jane", "age": 23}]
+
+eval(family[].name.proper(@), {...}) -> ["Frank", "Jane"]
+
+eval(family[].age | avg(@), {...}) -> 22.5
+----
+
+=== Filter Expressions
+
+[source%unbreakable]
+----
+bracketExpression
+  : '[' '*' ']'
+  | '[' slice ']'
+  | '[' ']'
+  | '[?' expression ']'
+  | '[' expression ']'
+  ;
+----
+
+A filter expression is defined by a `bracketExpression` where the bracket contents are prefixed with a question mark character (`?`).
+A filter expression provides a way to select array elements based on a
+comparison to another expression.  A filter expression is evaluated as follows:
+
+* For each element in an array evaluate the `expression` against the
+element.
+* If the expression evaluates to a truth-like value, the item (in its
+entirety) is added to the result array.
+* If the expression does not evaluate to a truth-like value it is excluded from the
+result array.
+
+A filter expression may be applied to arrays.  Attempting
+to evaluate a filter expression against any other type will return `null`.
+
+[discrete]
+==== Examples
+
+[source%unbreakable]
+----
+eval(
+  foo[?a < b],
+  {
+    "foo": [
+      {"a": "char", "b": "bar"},
+      {"a": 2, "b": 1},
+      {"a": 1, "b": 2},
+      {"a": false, "b": "1"},
+      {"a": 10, "b": "12"}
+    ]
+  })
+  ->
+  [ {"a": 1, "b": 2},
+    {"a": false, "b": "1"},
+    {"a": 10, "b": "12"} ]
+----
+
+The five elements in the foo array are evaluated against `a < b`:
+
+* The first element resolves to the comparison `"char" < "bar"`, and because these types are string, the comparison of code points returns `false`, and the first element is excluded from the result array.
+* The second element resolves to `2 < 1`,
+which is `false`, so the second element is excluded from the result array.
+* The third expression resolves to `1 < 2` which evaluates to `true`, so the third element is included in the result array.
+* The fourth expression resolves to `false < "1"`. Since the left hand operand is boolean, both operands are coerced to numbers and evaluated as: `0 < 1` and so the fourth element included in the result array.
+* The final expression resolves to `10 < "12"`.  Since we have mixed operands, the operands are coerced to numbers and evaluated as: `10 < 12` and the last element is included in the result array.
+
+[discrete]
+==== Examples
+
+[source%unbreakable]
+----
+  eval(foo[?bar==10], {"foo": [{"bar": 1}, {"bar": 10}]}) -> [{"bar": 10}]
+  eval([?bar==10], [{"bar": 1}, {"bar": 10}]}) -> [{"bar": 10}]
+  eval(foo[?a==b], {"foo": [{"a": 1, "b": 2}, {"a": 2, "b": 2}]})
+       -> [{"a": 2, "b": 2}]
+----
+=== Pipe Expressions
+
+[source%unbreakable]
+----
+    pipeExpression = expression '|' expression
+----
+
+A pipe expression combines two expressions, separated by the pipe (`|`) character.
+It is similar to a <<Chained Expressions,chained expression>> with two distinctions:
+
+1. Any expression can be used on the right hand side.  A chained expression
+   restricts the type of expression that can be used on the right hand side.
+2. A pipe expression **stops <<Projections,projections>> on the left hand side from
+   propagating to the right hand side**.  If the left expression creates a
+   projection, the right hand side will receive the array underlying the projection.
+
+For example, given the following data
+
+[source%unbreakable]
+----
+    {"foo": [{"bar": ["first1", "second1"]}, {"bar": ["first2", "second2"]}]}
+----
+
+The expression `foo[{asterisk}].bar` gives the result of
+
+[source%unbreakable]
+----
+    [
+        [
+            "first1",
+            "second1"
+        ],
+        [
+            "first2",
+            "second2"
+        ]
+    ]
+----
+
+The first part of the expression, `foo[{asterisk}]`, creates a projection.  At this
+point, the remaining expression, `bar` is projected onto each element of the
+array created from `foo[{asterisk}]`.  If you project the `[0]` expression, you will
+get the first element from each sub array.  The expression `foo[{asterisk}].bar[0]`
+will return
+
+[source%unbreakable]
+----
+    ["first1", "first2"]
+----
+
+If you instead wanted *only* the first sub array, `["first1", "second1"]`, you
+can use a pipe expression.
+
+[source%unbreakable]
+----
+    foo[*].bar[0] -> ["first1", "first2"]
+    foo[*].bar | [0] -> ["first1", "second1"]
+----
+
+[discrete]
+==== Examples
+
+[source%unbreakable]
+----
+   eval(foo | bar, {"foo": {"bar": "baz"}}) -> "baz"
+   eval(foo[*].bar | [0], {
+       "foo": [{"bar": ["first1", "second1"]},
+               {"bar": ["first2", "second2"]}]}) -> ["first1", "second1"]
+   eval(foo | [0], {"foo": [0, 1, 2]}) -> 0
+----
+
+== Functions
+
+[source%unbreakable]
+----
+functionExpression
+  : NAME '(' functionArg (',' functionArg)* ')'
+  | NAME '(' ')'
+  ;
+
+functionArg
+  : expression
+  | expressionType
+  ;
+
+expressionType : '&' expression ;
+----
+
+json-formula has a robust set of built-in <<Function Reference,functions>>. Each function has a signature
+that defines the expected types of the input and the type of the returned
+output.
+
+[source%unbreakable]
+----
+    return_type function_name(type $argname)
+    return_type function_name2(type1|type2 $argname)
+----
+
+Functions support the set of standard json-formula <<Data Types, data types>>. If the resolved arguments cannot be coerced to
+match the types specified in the signature, a `TypeError` error occurs.
+
+As a shorthand, the type `any` is used to indicate that the function argument can be
+of any of (`array|object|number|string|boolean|null`).
+
+The expression type, (denoted by `&expression`), is used to specify an
+expression that is not immediately evaluated.  Instead, a reference to that
+expression is provided to the function being called.  The function can then apply the expression reference as needed.  It is semantically similar
+to an https://en.wikipedia.org/wiki/Anonymous_function[anonymous function]. See the <<_sortBy, sortBy()>> function for an example of the expression type.
+
+The result of the `functionExpression` is the result returned by the
+function call.  If a `functionExpression` is evaluated for a function that
+does not exist, a `FunctionError` error is raised.
+
+Functions can either have a specific arity or be variadic with a minimum
+number of arguments.  If a `functionExpression` is encountered where the
+arity does not match, or the minimum number of arguments for a variadic function
+is not provided, or too many arguments are provided, then a
+`FunctionError` error is raised.
+
+Functions are evaluated in applicative order.  Each argument must be an
+expression, each argument expression must be evaluated before evaluating the
+function. The function is then called with the evaluated function arguments.
+The one exception to this rule is the `<<_if, if(expr, result1, result2)>>` function. In this case either the `result1` expression or the `result2` expression is evaluated, depending on the outcome of `expr`.
+
+Consider this example using the <<_abs, abs()>> function.  Given:
+
+[source%unbreakable]
+----
+    {"foo": -1, "bar": "2"}
+----
+
+Evaluating `abs(foo)` works as follows:
+
+1. Evaluate the input argument against the current data:
++
+[source%unbreakable]
+----
+     eval(foo, {"foo": -1, "bar": "2"}) -> -1
+----
+
+2. Coerce the type of the resolved argument if needed.  In this case `-1` is of type `number` so no coercion is needed.
+
+3. Validate the type of the coerced argument.  In this case `-1` is of type `number` so it passes the type check.
+
+4. Call the function with the resolved argument:
++
+[source%unbreakable]
+----
+     abs(-1) -> 1
+----
+
+Below is the same steps for evaluating `abs(bar)`:
+
+1. Evaluate the input argument against the current data:
++
+[source%unbreakable]
+----
+     eval(bar, {"foo": -1, "bar": "2"}) -> "2"
+----
+
+2. Attempt to coerce the result to the required number type.  In this case, coerce `"2"` to `2`.
+
+3. Validate the type of the coerced argument.  In this case `2` is of type `number` so it passes the type check.
+
+4. Call the function with the resolved and coerced argument:
++
+[source%unbreakable]
+----
+     abs(2) -> 2
+----
+
+Function expressions are allowed as the child element of a <<Chained Expressions,chained expression>>.
+The function is then evaluated in the context of the parent expression result.  For example: `[1,2,3].sum(@) -> 6`.
+
+When the parent expression is a <<Projections, projection>> a chained function expression
+will be applied to every element in the projection.  For example, given the input
+data of `["1", "2", "3", "notanumber", true]`, the following expression can
+be used to convert all elements to numbers:
+
+[source%unbreakable]
+----
+    eval([].toNumber(@), ["1", "2", "3", "notanumber", null, true]) -> [1,2,3,null,0,1]
+----
+
+=== Function Reference
+
+include::functions.adoc[leveloffset=2]
+
+== Integrations
+
+The json-formula API allows integrations to customize various json-formula behaviors.
+
+=== Globals
+By default, json-formula has one global symbol: `@`. A host may inject additional global identifiers.  These identifiers must be prefixed with the dollar (`$`) symbol.
+
+[discrete]
+==== Examples
+
+Given: a global symbol:
+
+[source%unbreakable]
+----
+  {
+    "$days": [
+       "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+    ]
+  }
+----
+
+[source%unbreakable]
+----
+    eval(value($days, weekday(datetime(date.year, date.month, date.day), 3)),
+    {
+      "date": {
+        "year": 2023,
+        "month": 9,
+        "day": 13
+      }
+    }) -> "Wednesday"
+----
+
+=== Specify locale
+
+The default locale for json-formula is `en-US`.  A host may specify an alternate locale.  Overall, the locale setting has little effect on processing.  One specific area that is affected is the behavior of the `casefold()` function.
+
+=== Custom toNumber
+
+In various contexts, json-formula converts values to numbers.
+A host may provide its own `toNumber()` function that json-formula will use in place of the default functionality.  For example, a custom `toNumber()` could make use of locale-specific date formats to attempt to convert a string to a date value, or could allow currency values e.g., "$123.45" to be converted to number.
+
+=== Additional Functions
+
+A host may provide its own set of functions to augment the base set provided by json-formula.
+
+=== Hidden Properties
+A host system may construct its source JSON data with complex properties that have nested structure that can be found through explicit navigation, but will not be found through normal tree searching.  Here is an example of how this can be configured in JavaScript:
+
+[source%unbreakable]
+----
+function createField(id, value) {
+  class Field {
+    valueOf() { return value; }
+
+    toString() { return value.toString(); }
+
+    toJSON() { return value; }
+  }
+  const f = new Field();
+  Object.defineProperty(f, '$id', { get: () -> id });
+  Object.defineProperty(f, '$value', { get: () -> value });
+
+  return f;
+}
+
+const json = {
+  "street": createField("abc123", "Maple Street"),
+  "city": createField("def456", "New York")
+}
+
+Given this configuration, these search results are possible:
+
+street -> "Maple Street"
+street.$value -> "Maple Street"
+street.$id -> "abc123"
+type(street) -> "string"
+keys(street) -> []
+----
+=== Tracking
+
+A host system may want to track which properties are accessed during the evaluation of an expression.  This can be done by providing a `track` function on the object being evaluated.  The `track` function will be called with the object being evaluated and the key being accessed.  Here is an example of how this can be configured in JavaScript:
+
+[source%unbreakable]
+----
+properties[Symbol.for('track')] = (obj, key) => trackDependent(obj, key);
+----

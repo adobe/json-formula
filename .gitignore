@@ -1,0 +1,23 @@
+node_modules
+antlr/.antlr
+.DS_Store
+antlr/*.java
+antlr/*.class
+antlr/*.interp
+antlr/*.tokens
+log/
+
+# Project files
+.idea
+*.iml
+.classpath
+.project
+target/
+.vscode
+
+build
+lib/
+
+doc/grammar.g4
+doc/functions.md
+doc/functions.adoc
