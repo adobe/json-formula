@@ -4,45 +4,52 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        {
-            "name": "antlr4-expression",
-            "type": "antlr-debug",
-            "request": "launch",
-            "input": "debug.txt",
-            "grammar": "${workspaceFolder}/antlr/FormExpression.g4",
-            "startRule": "formula",
-            "printParseTree": true,
-            "visualParseTree": true
+      {
+        "type": "chrome",
+        "name": "http://localhost:8085",
+        "request": "launch",
+        "url": "http://localhost:8085"
+      },
+      {
+        "name": "antlr4-expression",
+        "type": "antlr-debug",
+        "request": "launch",
+        "input": "debug.txt",
+        "grammar": "${workspaceFolder}/antlr/FormExpression.g4",
+        "startRule": "formula",
+        "printParseTree": true,
+        "visualParseTree": true
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch test",
+        "runtimeVersion": "14.15.5",
+        "program": "${workspaceFolder}/src/index.js",
+        "args": [
+          "${workspaceFolder}/src/test.exp"
+        ]
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Jest Current File",
+        "program": "${workspaceFolder}/node_modules/.bin/jest",
+        "args": [
+          "${fileBasename}",
+          "--runInBand",
+          "--no-cache"
+        ],
+        "sourceMaps": true,
+        "sourceMapPathOverrides": {
+          "webpack:///./*": "${workspaceFolder}/src/*"
         },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch test",
-            "runtimeVersion": "14.15.5",
-            "program": "${workspaceFolder}/src/index.js",
-            "args": ["${workspaceFolder}/src/test.exp"]
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Jest Current File",
-            "program": "${workspaceFolder}/node_modules/.bin/jest",
-            "args": [
-              "${fileBasename}",
-              "--runInBand",
-              "--no-cache"
-            ],
-            "sourceMaps": true,
-            "sourceMapPathOverrides": {
-                "webpack:///./*": "${workspaceFolder}/src/*"
-            },
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "disableOptimisticBPs": true,
-            "windows": {
-              "program": "${workspaceFolder}/node_modules/jest/bin/jest",
-            }
-          },
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen",
+        "windows": {
+          "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+        }
+      },
 
     ]
 }

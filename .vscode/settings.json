@@ -2,5 +2,33 @@
   "antlr4.generation": {
     "language": "JavaScript"
   },
-  "git.ignoreLimitWarning": true
+  "git.ignoreLimitWarning": true,
+  "cSpell.words": [
+    "ABNF",
+    "argname",
+    "arity",
+    "Brinkman",
+    "casefold",
+    "cssclass",
+    "dcba",
+    "docdate",
+    "eomonth",
+    "EXPREF",
+    "firstbar",
+    "foobarbaz",
+    "HEXDIG",
+    "javac",
+    "jmespath",
+    "keyval",
+    "mylist",
+    "mytype",
+    "notanumber",
+    "openformula",
+    "paren",
+    "prejsdocs",
+    "Saryerwinnie",
+    "trunc",
+    "undecorate"
+  ],
+  "asciidoc.antora.enableAntoraSupport": true
 }
