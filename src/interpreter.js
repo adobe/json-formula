@@ -44,7 +44,8 @@ import {
 const {
   TYPE_CLASS,
   TYPE_ANY,
-  TYPE_STRING,
+  TYPE_ARRAY,
+  TYPE_OBJECT,
 } = dataTypes;
 
 function getToNumber(stringToNumber, debug = []) {
@@ -63,11 +64,11 @@ function getToNumber(stringToNumber, debug = []) {
 }
 function toString(a) {
   if (a === null || a === undefined) return '';
-  if (getType(a) === TYPE_STRING) {
-    // use toString() in case it's a class object
-    return a.toString();
+  const type = getType(a);
+  if (type === TYPE_ARRAY || type === TYPE_OBJECT) {
+    return JSON.stringify(a);
   }
-  return JSON.stringify(a);
+  return a.toString();
 }
 
 const defaultStringToNumber = (str => {

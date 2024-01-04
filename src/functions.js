@@ -2061,11 +2061,12 @@ export default function functions(
      */
     toString: {
       _func: resolvedArgs => {
-        if (getType(resolvedArgs[0]) === TYPE_STRING) {
+        const value = valueOf(resolvedArgs[0]);
+        if (getType(value) === TYPE_STRING) {
           return resolvedArgs[0];
         }
         const indent = resolvedArgs.length > 1 ? resolvedArgs[1] : 0;
-        return JSON.stringify(resolvedArgs[0], null, indent);
+        return JSON.stringify(value, null, indent);
       },
 
       _signature: [{ types: [TYPE_ANY] }, { types: [TYPE_NUMBER], optional: true }],
