@@ -74,7 +74,7 @@ convertOne() {
 			-a data-uri \
 			-a revnumber="${VERSION}" \
 			-a USING_DOCKER \
-			-o "${OUTPUT_NAME}".html "${BASE_NAME}".adoc
+			-o "${OUTPUT_NAME}-${VERSION}".html "${BASE_NAME}".adoc
 
 	# Create the PDF version
 	echo "Converting "${BASE_NAME}".adoc to PDF"
@@ -89,7 +89,7 @@ convertOne() {
 			-a USING_DOCKER \
 			-a pdf-theme="${BASE_NAME}"-theme.yml \
 			-a pdf-fontsdir="fonts"  \
-			-o "${OUTPUT_NAME}".pdf "${BASE_NAME}".adoc
+			-o "${OUTPUT_NAME}-${VERSION}".pdf "${BASE_NAME}".adoc
 }
 
 rm -f functions.md functions.adoc

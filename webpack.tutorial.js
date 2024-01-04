@@ -11,8 +11,6 @@ governing permissions and limitations under the License.
 */
 import path from 'path';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import CopyPlugin from 'copy-webpack-plugin';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 const DIST = path.resolve('.', 'dist');
@@ -55,11 +53,6 @@ export default {
     library: 'jsonFormula',
   },
   plugins: [
-    new CopyPlugin({
-      patterns: [
-        { from: './doc/output', to: path.resolve(DIST, 'doc') },
-      ],
-    }),
     new HtmlWebpackPlugin({
       template: 'tutorial/index.html',
     }),
