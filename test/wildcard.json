@@ -85,17 +85,17 @@
         "foo": {
             "bar": "one"
         },
-        "other": {
-            "bar": "one"
-        },
         "nomatch": {
             "notbar": "three"
+        },
+        "other": {
+           "bar": "one"
         }
     },
     "cases": [
          {
             "expression": "*.bar",
-            "result": ["one", "one", null]
+            "result": ["one", null, "one"]
          }
     ]
 }, {
