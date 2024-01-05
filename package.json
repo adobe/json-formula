@@ -11,13 +11,14 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "prejsdocs": "mkdir -p build",
+    "prebuild": "rm -rf ./dist/",
     "eslint": "eslint src test",
     "test": "jest",
-    "build": "rm -rf ./dist/ && rm -rf ./lib && webpack --config webpack.tutorial.js",
+    "build": "webpack --config webpack.tutorial.js",
     "start": "webpack serve --config webpack-devserver.config.js",
     "spec": "cd doc && sh scripts/makeDocs.sh",
-    "docs": "jsdoc2md -f src/functions.js -g none > doc/functions.md"
+    "docs": "jsdoc2md -f src/functions.js -g none > doc/functions.md",
+    "jsdocs": "jsdoc2md -f src/json-formula.js -g none > doc/output/JSDOCS.md"
   },
   "repository": {
     "type": "git",

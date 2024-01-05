@@ -48,6 +48,6 @@ Visit the [Playground](https://opensource.adobe.com/json-formula/dist/index.html
 # Documentation
 Specification / Reference: [HTML](https://opensource.adobe.com/json-formula/doc/output/json-formula-specification-1.0.1.html) / [PDF](https://opensource.adobe.com/json-formula/doc/output/json-formula-specification-1.0.1.pdf)
 
-[JavaScript API](https://opensource.adobe.com/json-formula/dist/jsdocs/index.html)
+[JavaScript API](./doc/output/JSDOCS.md)
 
 [Developer Instructions](./DEVELOPMENT.md)

@@ -95,6 +95,8 @@ convertOne() {
 rm -f functions.md functions.adoc
 # process all the files
 npm run docs
+# Generate API docs
+npm run jsdocs
 # get a copy of the generated function markdown docs and
 # tweak the output so it is suitable for the spec
 node ./scripts/modFunctions.js
