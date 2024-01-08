@@ -221,12 +221,12 @@ The antlr grammar defines operator precedence by the order of expressions in the
 
 [source%unbreakable]
 ----
-    jsonLiteral = '`' jsonValue '`'
+  JSON_LITERAL: '`' ('\\`' | ~ [`])* '`' ;
 ----
 
 A JSON literal expression allows arbitrary JSON objects to be
-specified.  This is allowed anywhere an expression is permitted. Implementations should
-use an existing JSON parser to parse these literals.  Note that the backtick character
+specified anywhere an expression is permitted. Implementations should
+use a JSON parser to parse these literals.  Note that the backtick character
 (`` ` ``) character must now be escaped in a JSON literal which means
 implementations need to handle this case before passing the resulting string to
 a JSON parser.
