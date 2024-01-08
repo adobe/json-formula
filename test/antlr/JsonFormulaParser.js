@@ -82,7 +82,7 @@ export default class JsonFormulaParser extends antlr4.Parser {
     static symbolicNames = [ null, null, null, null, null, null, null, null, 
                              null, null, null, null, null, null, null, null, 
                              null, null, null, null, null, null, "COMPARATOR", 
-                             "NAME", "QUOTED_NAME", "JSON_FRAGMENT", "STRING", 
+                             "NAME", "QUOTED_NAME", "JSON_LITERAL", "STRING", 
                              "REAL_OR_EXPONENT_NUMBER", "INT", "WS" ];
     static ruleNames = [ "formula", "expression", "chainedExpression", "wildcard", 
                          "arrayExpression", "objectExpression", "keyvalExpr", 
@@ -254,7 +254,7 @@ export default class JsonFormulaParser extends antlr4.Parser {
 	            this._ctx = localctx;
 	            _prevctx = localctx;
 	            this.state = 47;
-	            this.match(JsonFormulaParser.JSON_FRAGMENT);
+	            this.match(JsonFormulaParser.JSON_LITERAL);
 	            break;
 
 	        case 10:
@@ -1037,7 +1037,7 @@ JsonFormulaParser.T__20 = 21;
 JsonFormulaParser.COMPARATOR = 22;
 JsonFormulaParser.NAME = 23;
 JsonFormulaParser.QUOTED_NAME = 24;
-JsonFormulaParser.JSON_FRAGMENT = 25;
+JsonFormulaParser.JSON_LITERAL = 25;
 JsonFormulaParser.STRING = 26;
 JsonFormulaParser.REAL_OR_EXPONENT_NUMBER = 27;
 JsonFormulaParser.INT = 28;
@@ -1802,8 +1802,8 @@ class LiteralExpressionContext extends ExpressionContext {
         super.copyFrom(ctx);
     }
 
-	JSON_FRAGMENT() {
-	    return this.getToken(JsonFormulaParser.JSON_FRAGMENT, 0);
+	JSON_LITERAL() {
+	    return this.getToken(JsonFormulaParser.JSON_LITERAL, 0);
 	};
 
 	enterRule(listener) {

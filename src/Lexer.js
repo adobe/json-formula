@@ -436,21 +436,12 @@ export default class Lexer {
     this._current += 1;
     const start = this._current;
     const maxLength = stream.length;
-    let inQuotes = false;
-    while ((inQuotes || stream[this._current] !== '`') && this._current < maxLength) {
+    while (stream[this._current] !== '`' && this._current < maxLength) {
       let current = this._current;
-      // bypass escaped double quotes when we're inside quotes
-      if (inQuotes && stream[current] === '\\' && stream[current + 1] === '"') current += 2;
-      else {
-        if (stream[current] === '"') inQuotes = !inQuotes;
-        if (inQuotes && stream[current + 1] === '`') current += 2;
-        else if (stream[current] === '\\' && (stream[current + 1] === '\\'
-          || stream[current + 1] === '`')) {
-          // You can escape a literal char or you can escape the escape.
-          current += 2;
-        } else {
-          current += 1;
-        }
+      if (stream[current] === '\\' && stream[current + 1] === '`') {
+        current += 2;
+      } else {
+        current += 1;
       }
       this._current = current;
     }

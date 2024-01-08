@@ -632,7 +632,7 @@
       {
         "comment": "Literal char inside quotes",
         "expression": "foo[?bar==`[\"foo`bar\"]`]",
-        "result": null
+        "error": "SyntaxError"
       },
       {
         "comment": "Literal char escaped",
@@ -641,7 +641,7 @@
       },
       {
         "comment": "Literal char escaped",
-        "expression": "foo[?bar==`[\"foo\\\"baz`bar\"]`]",
+        "expression": "foo[?bar==`[\"foo\\\"bar\"]`]",
         "result": null
       },
       {

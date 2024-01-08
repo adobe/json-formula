@@ -46,7 +46,7 @@ Given:
 Visit the [Playground](https://opensource.adobe.com/json-formula/dist/index.html)
 
 # Documentation
-Specification / Reference: [HTML](https://opensource.adobe.com/json-formula/doc/output/json-formula-specification-1.0.1.html) / [PDF](https://opensource.adobe.com/json-formula/doc/output/json-formula-specification-1.0.1.pdf)
+Specification / Reference: [HTML](https://opensource.adobe.com/json-formula/doc/output/json-formula-specification-1.0.2.html) / [PDF](https://opensource.adobe.com/json-formula/doc/output/json-formula-specification-1.0.2.pdf)
 
 [JavaScript API](./doc/output/JSDOCS.md)
 
