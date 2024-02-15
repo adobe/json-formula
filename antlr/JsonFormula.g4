@@ -121,7 +121,7 @@ NAME : [a-zA-Z_$] [a-zA-Z0-9_$]* ;
 QUOTED_NAME : '\'' (ESC | ~ ['\\])* '\'';
 
 JSON_LITERAL
-  : '`' (STRING | ~ [\\`"]+)* '`'
+  : '`' (ESC | ~ [\\`]+)* '`'
   ;
 
 STRING : '"' (ESC | ~["\\])* '"' ;
