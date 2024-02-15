@@ -930,17 +930,9 @@ export default function functions(
         if (array.length === 0 || first === undefined) return null;
         // use the first value to determine the comparison type
         const isNumber = getType(first, true) === TYPE_NUMBER;
-        const compare = isNumber
-          ? (prev, cur) => {
-            const current = toNumber(cur);
-            return prev <= current ? current : prev;
-          }
-          : (prev, cur) => {
-            const current = toString(cur);
-            return prev.localeCompare(current) === 1 ? prev : current;
-          };
-
-        return array.reduce(compare, isNumber ? toNumber(first) : toString(first));
+        return array.map(a => (isNumber ? toNumber(a) : toString(a)))
+          .sort((a, b) => (a > b ? 1 : -1))
+          .pop();
       },
       _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING], variadic: true }],
     },
@@ -1032,17 +1024,9 @@ export default function functions(
         if (array.length === 0 || first === undefined) return null;
         // use the first value to determine the comparison type
         const isNumber = getType(first, true) === TYPE_NUMBER;
-        const compare = isNumber
-          ? (prev, cur) => {
-            const current = toNumber(cur);
-            return prev <= current ? prev : current;
-          }
-          : (prev, cur) => {
-            const current = toString(cur);
-            return prev.localeCompare(current) === 1 ? current : prev;
-          };
-
-        return array.reduce(compare, isNumber ? toNumber(first) : toString(first));
+        return array.map(a => (isNumber ? toNumber(a) : toString(a)))
+          .sort((a, b) => (a < b ? 1 : -1))
+          .pop();
       },
       _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING], variadic: true }],
     },

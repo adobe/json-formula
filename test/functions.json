@@ -394,7 +394,7 @@
       },
       {
         "expression": "max(strings, [\"A\", \"B\", \"C\"])",
-        "result": "C"
+        "result": "c"
       },
       {
         "expression": "max([\"D\", \"E\", \"F\"], [\"A\", \"B\", \"C\"])",
@@ -476,7 +476,7 @@
       },
       {
         "expression": "min(strings, [\"A\", \"B\", \"C\"])",
-        "result": "a"
+        "result": "A"
       },
       {
         "expression": "min([\"D\", \"E\", \"F\"], [\"A\", \"B\", \"C\"])",
