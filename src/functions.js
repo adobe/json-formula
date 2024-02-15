@@ -448,10 +448,12 @@ export default function functions(
         const items = [];
         if (source === null) return items;
         function scan(node) {
-          Object.entries(node).forEach(([k, v]) => {
-            if (k === name) items.push(v);
-            if (typeof v === 'object') scan(v);
-          });
+          if (node !== null) {
+            Object.entries(node).forEach(([k, v]) => {
+              if (k === name) items.push(v);
+              if (typeof v === 'object') scan(v);
+            });
+          }
         }
         scan(source);
         return items;

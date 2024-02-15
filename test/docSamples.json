@@ -24,6 +24,13 @@
       "expected": [2, 3]
     }
   ],
+  [
+    "deepScan with null({a : {b1 : {c : 2, d: null}, b2 : {c : 3}}}, \"c\")",
+    {
+      "expression": "deepScan({a : {b1 : {c : 2, d: null}, b2 : {c : 3}}}, \"c\")",
+      "expected": [2, 3]
+    }
+  ],
 
   [
     "entries({a: 1, b: 2})",
