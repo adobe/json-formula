@@ -1945,6 +1945,12 @@ export default function functions(
           .replace(/T(\d\d)(\d\d)(\d\d)/, 'T$1:$2:$3');
         const dateparts = iso.split(/[\D,zZ]+/);
         let d;
+        if (dateparts.length <= 3) {
+          if (dateparts.length < 3 || dateparts.find(x => x === '') === '') {
+            debug.push(`Failed to convert "${resolvedArgs[0]}" to a date`);
+            return null;
+          }
+        }
         if (dateparts.length < 7) {
           // no timezone component, so assume local time
           // The date constructor always parses an ISO string as

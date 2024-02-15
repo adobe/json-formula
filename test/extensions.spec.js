@@ -149,7 +149,8 @@ test('debug output', () => {
     {m: {m: 2}[?true()]},
     {m: "aaa"[]},
     {a: 12} | [2],
-    toDate("2023111")
+    toDate("2023111"),
+    toDate("abcd")
   )`;
   const debug = [];
   new JsonFormula({}, stringToNumber, debug).search(expression, { $form: form1 }, form1);
@@ -174,6 +175,7 @@ test('debug output', () => {
     'Left side of index expression must be an array',
     'Did you intend a single-element array? if so, use a JSON literal: `[2]`',
     'Failed to convert "2023111" to a date',
+    'Failed to convert "abcd" to a date',
   ]);
   expect(debugTracking).toBe('Access p1 from {"p1":"property1"}');
 });

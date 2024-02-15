@@ -757,6 +757,10 @@
         "result": null
       },
       {
+        "expression": "toDate(\"abcd\")",
+        "result": null
+      },
+      {
         "expression": "toNumber(\"1.0\")",
         "result": 1.0
       },
