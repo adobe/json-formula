@@ -47,7 +47,7 @@ expression
   | identifier # identifierExpression
   | wildcard # wildcardExpression
   | arrayExpression # arrExpression
-  | JSON_FRAGMENT # literalExpression
+  | JSON_LITERAL # literalExpression
   | functionExpression # functionCallExpression
   | STRING # rawStringExpression
   | (REAL_OR_EXPONENT_NUMBER | INT) # numberLiteral
@@ -120,8 +120,8 @@ NAME : [a-zA-Z_$] [a-zA-Z0-9_$]* ;
 
 QUOTED_NAME : '\'' (ESC | ~ ['\\])* '\'';
 
-JSON_FRAGMENT
-  : '`' (STRING | ~ [\\`]+)* '`'
+JSON_LITERAL
+  : '`' (STRING | ~ [\\`"]+)* '`'
   ;
 
 STRING : '"' (ESC | ~["\\])* '"' ;

@@ -449,6 +449,10 @@ export default class Lexer {
     literalString = literalString.replaceAll('\\`', '`');
     // +1 gets us to the ending "`", +1 to move on to the next char.
     this._current += 1;
+    if (this._current > maxLength) {
+      throw syntaxError(`Unterminated JSON literal at ${start}: \`${literalString}`);
+    }
+
     return JSON.parse(literalString);
   }
 }
