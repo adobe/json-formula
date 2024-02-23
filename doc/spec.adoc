@@ -182,7 +182,7 @@ Errors may be raised during the json-formula evaluation process.
 The following errors are defined:
 
 * `EvaluationError` is raised when an unexpected runtime condition occurs. For example, divide by zero.
-* `FunctionError` is raised when an unknown function is encountered or when a function receives the wrong number of arguments.
+* `FunctionError` is raised when an unknown function is encountered or when a function receives invalid arguments.
 * `SyntaxError` is raised when the supplied expression does not conform to the json-formula grammar.
 * `TypeError` is raised when the provided type cannot be coerced to the correct type for the current evaluation context.
 
