@@ -302,7 +302,6 @@ export default function functions(
      * * `y` the number of whole years between `start_date` and `end_date`
      * * `m` the number of whole months between `start_date` and `end_date`.
      * * `d` the number of days between `start_date` and `end_date`
-     * * `md` the number of days between `start_date` and `end_date` after subtracting whole months.
      * * `ym` the number of whole months between `start_date` and `end_date`
      * after subtracting whole years.
      * * `yd` the number of days between `start_date` and `end_date`, assuming `start_date`
@@ -313,7 +312,7 @@ export default function functions(
      * and [time]{@link time} functions.
      * @param {number} end_date The end <<_date_and_time_values, date/time value>> -- must
      * be greater or equal to start_date.
-     * @param {string} unit
+     * @param {string} unit Case-insensitive string representing the unit of time to measure
      * @returns {integer} The number of days/months/years difference
      * @function datedif
      * @example
@@ -329,7 +328,8 @@ export default function functions(
         const date1 = getDateObj(args[0]);
         const date2 = getDateObj(args[1]);
         if (date2 === date1) return 0;
-        if (date2 < date1) return null;
+        if (date2 < date1) throw typeError('end_date must be >= start_date in datedif()');
+
         if (unit === 'd') return Math.floor(getDateNum(date2 - date1));
         const yearDiff = date2.getFullYear() - date1.getFullYear();
         let monthDiff = date2.getMonth() - date1.getMonth();
@@ -369,6 +369,9 @@ export default function functions(
      * If any of the units are greater than their normal range,
      * the overflow will be added to the next greater unit.
      * e.g. specifying 25 hours will increment the day value by 1.
+     * Similarly,
+     * negative values will decrement the next greater unit.
+     * e.g. datetime(year, month, day - 30) will return a date 30 days earlier.
      * @param {integer} year The year to use for date construction.
      * Values from 0 to 99 map to the years 1900 to 1999. All other values are the actual year
      * @param {integer} month The month: beginning with 1 for
@@ -705,13 +708,7 @@ export default function functions(
      * hour(time(12, 0, 0)) // returns 12
      */
     hour: {
-      _func: args => {
-        if (args[0] < 0) {
-          return null;
-        }
-
-        return getDateObj(args[0]).getHours();
-      },
+      _func: args => getDateObj(args[0]).getHours(),
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
       ],
@@ -1000,6 +997,24 @@ export default function functions(
     },
 
     /**
+     * Extract the milliseconds of the time value in a <<_date_and_time_values, date/time value>>.
+     * @param {number} date datetime/time for which the millisecond is to be returned.
+     * Date/time values can be generated using the
+     * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
+     * and [time]{@link time} functions.
+     * @return {integer} The number of milliseconds: 0 through 999
+     * @function millisecond
+     * @example
+     * millisecond(datetime(2008, 5, 23, 12, 10, 53, 42)) // returns 42
+     */
+    millisecond: {
+      _func: args => getDateObj(args[0]).getMilliseconds(),
+      _signature: [
+        { types: [dataTypes.TYPE_NUMBER] },
+      ],
+    },
+
+    /**
      * Calculates the smallest value in the input arguments.
      * If all arrays are empty `null` is returned.
      * min() can work on numbers or strings.
@@ -1044,12 +1059,7 @@ export default function functions(
      * minute(time(12, 10, 0)) // returns 10
      */
     minute: {
-      _func: args => {
-        if (args[0] < 0) {
-          return null;
-        }
-        return getDateObj(args[0]).getMinutes();
-      },
+      _func: args => getDateObj(args[0]).getMinutes(),
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
       ],
@@ -1523,7 +1533,7 @@ export default function functions(
      * second(time(12, 10, 53)) // returns 53
      */
     second: {
-      _func: args => (args[0] < 0 ? null : getDateObj(args[0]).getSeconds()),
+      _func: args => getDateObj(args[0]).getSeconds(),
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
       ],
@@ -1868,6 +1878,8 @@ export default function functions(
 
     /**
      * Construct and returns a <<_date_and_time_values, time value>>.
+     * If any of the units are greater or less than their normal range,
+     * the overflow/underflow will be added/subtracted from the next greater unit.
      * @param {integer} hours Zero-based integer value between 0 and 23 representing
      * the hour of the day.
      * @param {integer} [minutes=0] Zero-based integer value representing
@@ -1885,7 +1897,6 @@ export default function functions(
         const hours = args[0];
         const minutes = args.length > 1 ? args[1] : 0;
         const seconds = args.length > 2 ? args[2] : 0;
-        if (hours < 0 || minutes < 0 || seconds < 0) return null;
         // Since time values are interchangeable with date and datetime values, it"s consistent
         // to create them at the epoch
         const epochTime = new Date(1970, 0, 1, hours, minutes, seconds);
@@ -1926,6 +1937,7 @@ export default function functions(
      * Converts the provided string to a date/time value.
      *
      * @param {string} ISOString An [ISO8601 formatted string]{@link https://www.iso.org/iso-8601-date-and-time-format.html}.
+     * (limited to the [RFC 3339]{@link https://www.rfc-editor.org/rfc/rfc3339} profile)
      * If the string does not include a timezone offset (or trailing 'Z'),
      * it will be assumed to be local time
      * @return {number} The resulting <<_date_and_time_values, date/time number>>.
@@ -1933,7 +1945,7 @@ export default function functions(
      * @function toDate
      * @example
      * toDate("20231110T130000+04:00") // returns 19671.375
-     * toDate("toDate("2023-11-10T13:00:00+04:00")") // returns 19671.375
+     * toDate("2023-11-10T13:00:00+04:00") // returns 19671.375
      * toDate("20231110") | year(@) & "/" & month(@) // returns "2023/11"
      */
     toDate: {
@@ -2274,7 +2286,7 @@ export default function functions(
             // range = [0, 6] sunday = 6
             return (day + 6) % 7;
           default:
-            return null;
+            throw typeError(`Unsupported returnType: "${type}" for weekday()`);
         }
       },
       _signature: [

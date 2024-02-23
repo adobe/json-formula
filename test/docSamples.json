@@ -589,7 +589,6 @@
       "expected": 10
     }
   ],
-
   ["mod(3, 2)", { "expression": "mod(3, 2)", "expected": 1 }],
 
   ["mod(-3, 2)", { "expression": "mod(-3, 2)", "expected": -1 }],
@@ -754,7 +753,13 @@
       "expected": 53
     }
   ],
-
+  [
+    "millisecond(datetime(2008, 5, 23, 12, 10, 53, 42))",
+    {
+      "expression": "millisecond(datetime(2008, 5, 23, 12, 10, 53, 42))",
+      "expected": 42
+    }
+  ],
   [
     "split(\"abcdef\", \"\")",
     {
@@ -861,6 +866,34 @@
     {
       "expression": "datetime(2023,13,5) | year(@) & \"/\" & month(@)",
       "expected": "2024/1"
+    }
+  ],
+  [
+    "datetime(2023,13,5 - 30)| year(@) & \"/\" & month(@) & \"/\" & day(@) ",
+    {
+      "expression": "datetime(2023,13,5 - 30)| year(@) & \"/\" & month(@) & \"/\" & day(@) ",
+      "expected": "2023/12/6"
+    }
+  ],
+  [
+    "weekday(datetime(2006,5,21))",
+    {
+      "expression": "weekday(datetime(2006,5,21))",
+      "expected": 1
+    }
+  ],
+  [
+    "weekday(datetime(2006,5,21), 2)",
+    {
+      "expression": "weekday(datetime(2006,5,21), 2)",
+      "expected": 7
+    }
+  ],
+  [
+    "weekday(datetime(2006,5,21), 3)",
+    {
+      "expression": "weekday(datetime(2006,5,21), 3)",
+      "expected": 6
     }
   ]
 ]

@@ -2172,6 +2172,16 @@
     }
   ],
   [
+    "time(-10, 7, 61).[hour(@), minute(@), second(@)].map(@, &if(@ < 10, \"0\" & @, @)).join(@, \":\")",
+    {
+      "expression": "time(-10, 7, 61).[hour(@), minute(@), second(@)].map(@, &if(@ < 10, \"0\" & @, @)).join(@, \":\")",
+      "expected": "14:08:01"
+    }
+  ],
+
+
+
+  [
     "hour(time(6))",
     {
       "data": "`null`",
@@ -2243,14 +2253,6 @@
     }
   ],
   [
-    "minute(-0.1)",
-    {
-      "data": "`null`",
-      "expression": "minute(-0.1)",
-      "expected": null
-    }
-  ],
-  [
     "minute(datetime(1970, 1, 4, 0, 54))",
     {
       "data": "`null`",
@@ -2272,14 +2274,6 @@
       "data": "`null`",
       "expression": "second(0.000625)",
       "expected": 54
-    }
-  ],
-  [
-    "second(-0.1)",
-    {
-      "data": "`null`",
-      "expression": "second(-0.1)",
-      "expected": null
     }
   ],
   [
@@ -2375,7 +2369,7 @@
     {
       "data": "samples.datetime",
       "expression": "weekday(localDate(\"1970-01-01\"), 4)",
-      "expected": null
+      "error": "TypeError"
     }
   ],
   [
@@ -2383,7 +2377,7 @@
     {
       "data": "samples.datetime",
       "expression": "weekday(localDate(\"1970-01-01\"), -1)",
-      "expected": null
+      "error": "TypeError"
     }
   ],
   [
@@ -2706,7 +2700,7 @@
     {
       "data": "{d1: localDate(samples.datedif.'2022-06-21'), d2: localDate(samples.datedif.'2022-06-20')}",
       "expression": "datedif(d1, d2, \"d\")",
-      "expected": null
+      "error": "TypeError"
     }
   ],
   [
