@@ -75,6 +75,19 @@ export default function functions(
     TYPE_ARRAY_STRING,
   } = dataTypes;
 
+  function toInteger(num) {
+    let n = valueOf(num);
+    // functions that require an integer parameter will have declared
+    // the parameters as a number, so any strings will have already been
+    // converted to number before the function call.
+    // However, a few functions accept a string | integer. Attempt to convert
+    // to integer in these cases, but failure isn't an error.
+    if (typeof n === 'string') n = toNumber(n);
+    n = Math.trunc(num);
+    if (Number.isNaN(n)) return num;
+    return n;
+  }
+
   const functionMap = {
     // name: [function, <signature>]
     // The <signature> can be:
@@ -392,13 +405,13 @@ export default function functions(
      */
     datetime: {
       _func: args => {
-        const year = args[0];
-        const month = args[1] - 1; // javascript months start from 0
-        const day = args[2];
-        const hours = args.length > 3 ? args[3] : 0;
-        const minutes = args.length > 4 ? args[4] : 0;
-        const seconds = args.length > 5 ? args[5] : 0;
-        const ms = args.length > 6 ? args[6] : 0;
+        const year = toInteger(args[0]);
+        const month = toInteger(args[1]) - 1; // javascript months start from 0
+        const day = toInteger(args[2]);
+        const hours = args.length > 3 ? toInteger(args[3]) : 0;
+        const minutes = args.length > 4 ? toInteger(args[4]) : 0;
+        const seconds = args.length > 5 ? toInteger(args[5]) : 0;
+        const ms = args.length > 6 ? toInteger(args[6]) : 0;
 
         const baseDate = new Date(year, month, day, hours, minutes, seconds, ms);
 
@@ -516,13 +529,13 @@ export default function functions(
     },
 
     /**
-     * Finds the serial number of the end of a month, given `startDate` plus `monthAdd` months
+     * Finds the date value of the end of a month, given `startDate` plus `monthAdd` months
      * @param {number} startDate The base date to start from.
      * <<_date_and_time_values, Date/time values>> can be generated using the
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @param {integer} monthAdd Number of months to add to start date
-     * @return {integer} the number of days in the computed month
+     * @return {number} the date of the last day of the month
      * @function eomonth
      * @example
      * eomonth(datetime(2011, 1, 1), 1) | [month(@), day(@)] // returns [2, 28]
@@ -531,7 +544,7 @@ export default function functions(
     eomonth: {
       _func: args => {
         const jsDate = getDateObj(args[0]);
-        const months = args[1];
+        const months = toInteger(args[1]);
         // We can give the constructor a month value > 11 and it will increment the years
         // Since day is 1-based, giving zero will yield the last day of the previous month
         const newDate = new Date(jsDate.getFullYear(), jsDate.getMonth() + months + 1, 0);
@@ -587,7 +600,7 @@ export default function functions(
         const query = Array.from(toString(args[0]));
         const text = Array.from(toString(args[1]));
         if (query.length === 0) return 0;
-        const offset = args.length > 2 ? args[2] : 0;
+        const offset = args.length > 2 ? toInteger(args[2]) : 0;
         for (let i = offset; i < text.length; i += 1) {
           if (text.slice(i, i + query.length).every((c, j) => c === query[j])) {
             return i;
@@ -629,8 +642,7 @@ export default function functions(
      */
     fromCodePoint: {
       _func: args => {
-        const code = args[0];
-        if (!Number.isInteger(code)) throw typeError(`fromCodePoint() requires an integer parameter.  Received: "${code}"`);
+        const code = toInteger(args[0]);
         return String.fromCodePoint(code);
       },
       _signature: [
@@ -685,9 +697,10 @@ export default function functions(
      */
     hasProperty: {
       _func: args => {
-        if (args[0] === null) return false;
-        const key = valueOf(args[1]);
-        const result = getProperty(args[0], key);
+        const value = valueOf(args[0]);
+        if (value === null) return false;
+        const key = (value instanceof Array) ? toInteger(args[1]) : args[1];
+        const result = getProperty(value, key);
         return result !== undefined;
       },
       _signature: [
@@ -795,7 +808,7 @@ export default function functions(
      */
     left: {
       _func: args => {
-        const numEntries = args.length > 1 ? args[1] : 1;
+        const numEntries = args.length > 1 ? toInteger(args[1]) : 1;
         if (numEntries < 0) return null;
         if (args[0] instanceof Array) {
           return args[0].slice(0, numEntries);
@@ -980,8 +993,8 @@ export default function functions(
      */
     mid: {
       _func: args => {
-        const startPos = args[1];
-        const numEntries = args[2];
+        const startPos = toInteger(args[1]);
+        const numEntries = toInteger(args[2]);
         if (startPos < 0) return null;
         if (args[0] instanceof Array) {
           return args[0].slice(startPos, startPos + numEntries);
@@ -1094,7 +1107,7 @@ export default function functions(
      * Date/time values can be generated using the
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
-     * @return {number} The month number as an integer, ranging from 1 (January) to 12 (December).
+     * @return {integer} The month number value, ranging from 1 (January) to 12 (December).
      * @function month
      * @example
      * month(datetime(2008,5,23)) // returns 5
@@ -1346,8 +1359,8 @@ export default function functions(
      */
     replace: {
       _func: args => {
-        const startPos = args[1];
-        const numElements = args[2];
+        const startPos = toInteger(args[1]);
+        const numElements = toInteger(args[2]);
         if (startPos < 0) {
           return null;
         }
@@ -1385,7 +1398,7 @@ export default function functions(
     rept: {
       _func: args => {
         const text = toString(args[0]);
-        const count = args[1];
+        const count = toInteger(args[1]);
         if (count < 0) {
           return null;
         }
@@ -1433,7 +1446,7 @@ export default function functions(
      */
     right: {
       _func: args => {
-        const numEntries = args.length > 1 ? args[1] : 1;
+        const numEntries = args.length > 1 ? toInteger(args[1]) : 1;
         if (numEntries < 0) return null;
         if (args[0] instanceof Array) {
           if (numEntries === 0) return [];
@@ -1469,7 +1482,7 @@ export default function functions(
      * round(-1.5) // -1
      */
     round: {
-      _func: args => round(args[0], args.length > 1 ? args[1] : 0),
+      _func: args => round(args[0], args.length > 1 ? toInteger(args[1]) : 0),
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
         { types: [dataTypes.TYPE_NUMBER], optional: true },
@@ -1497,7 +1510,7 @@ export default function functions(
       _func: args => {
         const findText = toString(args[0]);
         const withinText = toString(args[1]);
-        const startPos = args.length > 2 ? args[2] : 0;
+        const startPos = args.length > 2 ? toInteger(args[2]) : 0;
         if (findText === null || withinText === null || withinText.length === 0) return [];
         // escape all characters that would otherwise create a regular expression
         const reString = findText.replace(/([[.\\^$()+{])/g, '\\$1')
@@ -1818,9 +1831,13 @@ export default function functions(
         const replacement = toString(args[2]);
 
         // no third parameter? replace all instances
-        const replaceAll = args.length <= 3;
-        const whch = args[3];
-        if (whch < 1) return src.join('');
+        let replaceAll = true;
+        let whch = -1;
+        if (args.length > 3) {
+          replaceAll = false;
+          whch = toInteger(args[3]);
+          if (whch < 1) return src.join('');
+        }
 
         let found = 0;
         // find the instances to replace
@@ -1894,9 +1911,9 @@ export default function functions(
      */
     time: {
       _func: args => {
-        const hours = args[0];
-        const minutes = args.length > 1 ? args[1] : 0;
-        const seconds = args.length > 2 ? args[2] : 0;
+        const hours = toInteger(args[0]);
+        const minutes = args.length > 1 ? toInteger(args[1]) : 0;
+        const seconds = args.length > 2 ? toInteger(args[2]) : 0;
         // Since time values are interchangeable with date and datetime values, it"s consistent
         // to create them at the epoch
         const epochTime = new Date(1970, 0, 1, hours, minutes, seconds);
@@ -2028,7 +2045,7 @@ export default function functions(
     toNumber: {
       _func: resolvedArgs => {
         const num = resolvedArgs[0];
-        const base = resolvedArgs.length > 1 ? resolvedArgs[1] : 10;
+        const base = resolvedArgs.length > 1 ? toInteger(resolvedArgs[1]) : 10;
         if (base !== 10) {
           if (![2, 8, 16].includes(base)) {
             debug.push(`Invalid base: "${base}" for toNumber(), using "10"`);
@@ -2069,7 +2086,7 @@ export default function functions(
         if (getType(value) === TYPE_STRING) {
           return resolvedArgs[0];
         }
-        const indent = resolvedArgs.length > 1 ? resolvedArgs[1] : 0;
+        const indent = resolvedArgs.length > 1 ? toInteger(resolvedArgs[1]) : 0;
         return JSON.stringify(value, null, indent);
       },
 
@@ -2122,7 +2139,7 @@ export default function functions(
     trunc: {
       _func: args => {
         const number = args[0];
-        const digits = args.length > 1 ? args[1] : 0;
+        const digits = args.length > 1 ? toInteger(args[1]) : 0;
         const method = number >= 0 ? Math.floor : Math.ceil;
         return method(number * 10 ** digits) / 10 ** digits;
       },
@@ -2210,8 +2227,8 @@ export default function functions(
      */
     value: {
       _func: args => {
-        const obj = args[0] || {};
-        const index = args[1];
+        const obj = valueOf(args[0]) || {};
+        const index = obj instanceof Array ? toInteger(args[1]) : args[1];
         const result = getProperty(obj, index);
 
         if (result === undefined) {
@@ -2271,7 +2288,7 @@ export default function functions(
     weekday: {
       _func: args => {
         const date = args[0];
-        const type = args.length > 1 ? args[1] : 1;
+        const type = args.length > 1 ? toInteger(args[1]) : 1;
         const jsDate = getDateObj(date);
         const day = jsDate.getDay();
         // day is in range [0-7) with 0 mapping to sunday
