@@ -164,7 +164,7 @@ Functions that operate on a date/time value will convert the date/time value bac
 ----
 
 === Integers
-Some functions accept numeric parameters that are expected to be integers.  In these contexts, if a non-numeric or non-integer value is provided, it will be coerced to a number and then truncated to produce an integer.
+Some functions accept numeric parameters that are expected to be integers.  In these contexts, if a non-numeric or non-integer value is provided, it will be coerced to a number and then truncated. The specific truncation behaviour rounds down and returns the largest integer less than or equal to the number.
 
 === Floating Point Precision
 Numbers are represented in https://en.wikipedia.org/wiki/Double-precision_floating-point_format[double-precision floating-point format].  As with any system that uses this level of precision, results of expressions may be off by a tiny fraction. e.g.
