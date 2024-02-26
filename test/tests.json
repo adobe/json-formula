@@ -3394,8 +3394,8 @@
     "Integers for time",
     {
       "data": "`{\"two\": 2.6}`",
-      "expression": "time(two, two, two)",
-      "expected": 0.2930787037037037
+      "expression": "time(two, two, two).[hour(@),minute(@),second(@)].join(@, \":\")",
+      "expected": "2:2:2"
     }
   ],
   [
