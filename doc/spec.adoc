@@ -75,7 +75,7 @@ If the supplied data is not correct for the execution context, json-formula will
 
 The equality and inequality operators (`=`, `==`, `!=`, `<>`) do **not** perform type coercion.  If operands are different types, the values are considered not equal.
 
-Coercion is not always possible, and if so, an `TypeError` <<Errors,error>> shall be emitted.
+If a comparison requires coercion, and the coercion is not possible (including the case where a non-numeric string is coerced to zero), the comparison will return false. e.g., `{a: 12} < 12` and `"12a" < 13` will each return `false`.
 
 [discrete]
 ==== Examples

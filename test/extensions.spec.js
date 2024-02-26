@@ -150,7 +150,8 @@ test('debug output', () => {
     {m: "aaa"[]},
     {a: 12} | [2],
     toDate("2023111"),
-    toDate("abcd")
+    toDate("abcd"),
+    {a: ["A",\`{}\`,\`[]\`][? @ < 2]}
   )`;
   const debug = [];
   new JsonFormula({}, stringToNumber, debug).search(expression, { $form: form1 }, form1);
@@ -176,6 +177,9 @@ test('debug output', () => {
     'Did you intend a single-element array? if so, use a JSON literal: `[2]`',
     'Failed to convert "2023111" to a date',
     'Failed to convert "abcd" to a date',
+    'Failed to convert "A" to number',
+    'Cannot use comparators with object',
+    'Cannot use comparators with array',
   ]);
   expect(debugTracking).toBe('Access p1 from {"p1":"property1"}');
 });

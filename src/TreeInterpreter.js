@@ -25,7 +25,9 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import { matchType, getTypeName, getTypes } from './matchType.js';
+import {
+  matchType, getTypeName, getTypes, getType,
+} from './matchType.js';
 import dataTypes from './dataTypes.js';
 import tokenDefinitions from './tokenDefinitions.js';
 import {
@@ -45,6 +47,7 @@ const {
   TYPE_STRING,
   TYPE_ARRAY_STRING,
   TYPE_ARRAY,
+  TYPE_NUMBER,
 } = dataTypes;
 
 function objValues(obj) {
@@ -201,8 +204,8 @@ export default class TreeInterpreter {
       },
 
       Comparator: (node, value) => {
-        const first = getValueOf(this.visit(node.children[0], value));
-        const second = getValueOf(this.visit(node.children[1], value));
+        let first = getValueOf(this.visit(node.children[0], value));
+        let second = getValueOf(this.visit(node.children[1], value));
 
         if (node.value === '==') return strictDeepEqual(first, second);
         if (node.value === '!=') return !strictDeepEqual(first, second);
@@ -213,6 +216,18 @@ export default class TreeInterpreter {
         if (isObject(second) || isArray(second)) {
           this.debug.push(`Cannot use comparators with ${getTypeName(second)}`);
           return false;
+        }
+        const type1 = getType(first);
+        const type2 = getType(second);
+        // if either parameter is a number, we need to do a numeric comparison
+        // javascript will compare this way automatically, but if we explicitly convert
+        // to numbers, we will get debug warnings for non-numeric strings
+        if (type1 === TYPE_NUMBER || type2 === TYPE_NUMBER) {
+          // if toNumber fails, it will populate the debug array
+          // with an appropriate warning
+          first = this.toNumber(first);
+          second = this.toNumber(second);
+          if (first === null || second === null) return false;
         }
         if (node.value === '>') return first > second;
         if (node.value === '>=') return first >= second;
