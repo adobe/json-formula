@@ -134,7 +134,7 @@ Coercion is not always possible, and if so, an `TypeError` <<Errors,error>> shal
     eval(avg("20"), {}) -> 20
 ----
 
-== Date and Time Values
+=== Date and Time Values
 In order to support date and time functions, json-formula needs to represent date and time values.  Date/time values are represented as a number where:
 
 * The integral portion of the number represents the number of days since the epoch: January 1, 1970, https://en.wikipedia.org/wiki/Coordinated_Universal_Time[UTC]
@@ -153,7 +153,7 @@ The preferred ways to create a date/time value are by using one of these functio
 Functions that operate on a date/time value will convert the date/time value back to the local time zone.
 
 [discrete]
-=== Examples
+==== Examples
 
 [source%unbreakable]
 ----
@@ -163,7 +163,10 @@ Functions that operate on a date/time value will convert the date/time value bac
         {"month": 1, "day": 21, "hour": 12}
 ----
 
-== Floating Point Precision
+=== Integers
+Some functions accept numeric parameters that are expected to be integers.  In these contexts, if a non-numeric or non-integer value is provided, it will be coerced to a number and then truncated. The specific truncation behaviour is to remove any fractional value without rounding.
+
+=== Floating Point Precision
 Numbers are represented in https://en.wikipedia.org/wiki/Double-precision_floating-point_format[double-precision floating-point format].  As with any system that uses this level of precision, results of expressions may be off by a tiny fraction. e.g.
 `10 * 1.44 -> 14.399999999999999`
 

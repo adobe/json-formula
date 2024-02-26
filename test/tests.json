@@ -1920,7 +1920,7 @@
     {
       "data": "`null`",
       "expression": "fromCodePoint(9.123)",
-      "error": "TypeError"
+      "expected": "\t"
     }
   ],
   [
@@ -3284,6 +3284,158 @@
       "data": "`{\"0\": \"zero\",\"1\": \"one\"}`",
       "expression": "[\"0\"]",
       "expected": ["0"]
+    }
+  ],
+  [
+    "Integers for datetime",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "datetime(1990.999, two, two, two, two, two, two) | [year(@), month(@), day(@), hour(@), minute(@), second(@), millisecond(@)].join(@, \":\")",
+      "expected": "1990:2:2:2:2:2:2"
+    }
+  ],
+  [
+    "Integers for eomonth",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "eomonth(datetime(2023, 12, two), two) | [month(@), day(@)]",
+      "expected": [2, 29]
+    }
+  ],
+  [
+    "Integers for find",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "find(\"M\", \"abMcdM\", two)",
+      "expected": 2
+    }
+  ],
+  [
+    "Integers for fromCodePoint",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "fromCodePoint(63 + two)",
+      "expected": "A"
+    }
+  ],
+  [
+    "Integers hasProperty",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "hasProperty([5,6,7], two)",
+      "expected": true
+    }
+  ],
+  [
+    "Integers for left",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "left(\"12345\", two)",
+      "expected": "12"
+    }
+  ],
+  [
+    "Integers for mid",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "mid(\"12345\", toString(two), toString(two))",
+      "expected": "34"
+    }
+  ],
+  [
+    "Integers for replace",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "replace(\"12345\", two, two, \"43\")",
+      "expected": "12435"
+    }
+  ],
+  [
+    "Integers for rept",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "rept(\"ab\", two)",
+      "expected": "abab"
+    }
+  ],
+  [
+    "Integers for right",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "right(\"12345\", two)",
+      "expected": "45"
+    }
+  ],
+  [
+    "Integers for round",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "round(45.6789, two)",
+      "expected": 45.68
+    }
+  ],
+  [
+    "Integers for search",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "search(\"a?a\", \"0a1a2a3a\", two)",
+      "expected": [3, "a2a"]
+    }
+  ],
+  [
+    "Integers for substitute",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "substitute(\"aaaaaa\", \"a\", \"b\", two)",
+      "expected": "abaaaa"
+    }
+  ],
+  [
+    "Integers for time",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "time(two, two, two).[hour(@),minute(@),second(@)].join(@, \":\")",
+      "expected": "2:2:2"
+    }
+  ],
+  [
+    "Integers for toNumber",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "toNumber(\"11\", two)",
+      "expected": 3
+    }
+  ],
+  [
+    "Integers for toString",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "toString(`{\"foo\":42}`, two)",
+      "expected": "{\n  \"foo\": 42\n}"
+    }
+  ],
+  [
+    "Integers for trunc",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "trunc(8.916, two)",
+      "expected": 8.91
+    }
+  ],
+  [
+    "Integers for value",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "value([1,2,3,4,5], two)",
+      "expected": 3
+    }
+  ],
+  [
+    "Integers for weekday",
+    {
+      "data": "`{\"two\": 2.6}`",
+      "expression": "weekday(datetime(2006,5,21), two)",
+      "expected": 7
     }
   ]
 ]
