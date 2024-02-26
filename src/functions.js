@@ -29,7 +29,7 @@ governing permissions and limitations under the License.
 /* eslint-disable no-underscore-dangle */
 import dataTypes from './dataTypes.js';
 import { getProperty, debugAvailable, toBoolean } from './utils.js';
-import { typeError } from './errors.js';
+import { functionError, typeError } from './errors.js';
 
 function round(num, digits) {
   const precision = 10 ** digits;
@@ -341,7 +341,7 @@ export default function functions(
         const date1 = getDateObj(args[0]);
         const date2 = getDateObj(args[1]);
         if (date2 === date1) return 0;
-        if (date2 < date1) throw typeError('end_date must be >= start_date in datedif()');
+        if (date2 < date1) throw functionError('end_date must be >= start_date in datedif()');
 
         if (unit === 'd') return Math.floor(getDateNum(date2 - date1));
         const yearDiff = date2.getFullYear() - date1.getFullYear();
@@ -368,7 +368,7 @@ export default function functions(
           else date2.setFullYear(date1.getFullYear());
           return Math.floor(getDateNum(date2 - date1));
         }
-        throw typeError(`Unrecognized unit parameter "${unit}" for datedif()`);
+        throw functionError(`Unrecognized unit parameter "${unit}" for datedif()`);
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -2303,7 +2303,7 @@ export default function functions(
             // range = [0, 6] sunday = 6
             return (day + 6) % 7;
           default:
-            throw typeError(`Unsupported returnType: "${type}" for weekday()`);
+            throw functionError(`Unsupported returnType: "${type}" for weekday()`);
         }
       },
       _signature: [

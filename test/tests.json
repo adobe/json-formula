@@ -2369,7 +2369,7 @@
     {
       "data": "samples.datetime",
       "expression": "weekday(localDate(\"1970-01-01\"), 4)",
-      "error": "TypeError"
+      "error": "FunctionError"
     }
   ],
   [
@@ -2377,7 +2377,7 @@
     {
       "data": "samples.datetime",
       "expression": "weekday(localDate(\"1970-01-01\"), -1)",
-      "error": "TypeError"
+      "error": "FunctionError"
     }
   ],
   [
@@ -2700,7 +2700,7 @@
     {
       "data": "{d1: localDate(samples.datedif.'2022-06-21'), d2: localDate(samples.datedif.'2022-06-20')}",
       "expression": "datedif(d1, d2, \"d\")",
-      "error": "TypeError"
+      "error": "FunctionError"
     }
   ],
   [
