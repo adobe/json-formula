@@ -274,6 +274,16 @@
           "comment": "fail on bad escape in name",
           "expression": "'\\D'",
           "error": "SyntaxError"
+        },
+        {
+          "comment": "greedy JSON literals",
+          "expression": "merge(`{\"a\": 1}`) | `{\"a\":2}`",
+          "result": {"a": 2}
+        },
+        {
+          "comment": "Unterminated JSON literal",
+          "expression": "`{\"a\":2}",
+          "error": "SyntaxError"
         }
       ]
     }

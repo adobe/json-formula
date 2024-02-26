@@ -54,6 +54,7 @@ const jsonFormula = new JsonFormula(functions, stringToNumber);
 function executeTest(desc, tst) {
   const grammarResult = testGrammar(tst.expression);
   if (grammarResult === 'SyntaxError') expect(tst.error).not.toBeUndefined();
+  if (tst.error === 'SyntaxError') expect(grammarResult).toBe('SyntaxError');
 
   let result;
   try {

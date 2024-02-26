@@ -221,7 +221,7 @@ The antlr grammar defines operator precedence by the order of expressions in the
 
 [source%unbreakable]
 ----
-  JSON_LITERAL: '`' ('\\`' | ~ [`])* '`' ;
+  JSON_LITERAL: '`' (ESC | ~ [\\`]+)* '`';
 ----
 
 A JSON literal expression allows arbitrary JSON objects to be
