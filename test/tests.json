@@ -3290,8 +3290,8 @@
     "Integers for datetime",
     {
       "data": "`{\"two\": 2.6}`",
-      "expression": "datetime(1990.999, two, two, two, two, two, two)",
-      "expected": 7337.2930787268515
+      "expression": "datetime(1990.999, two, two, two, two, two, two) | [year(@), month(@), day(@), hour(@), minute(@), second(@), millisecond(@)].join(@, \":\")",
+      "expected": "1990:2:2:2:2:2:2"
     }
   ],
   [
