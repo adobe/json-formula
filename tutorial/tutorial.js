@@ -47,13 +47,24 @@ window.addEventListener('load', () => {
     "tax": 1.13
   }`;
 
-  const d = window.localStorage.getItem('data');
-  if (d) dataElement.value = d;
-  else dataElement.value = defaultData;
-
-  const exp = window.localStorage.getItem('expression');
-  if (exp) expression.value = exp;
-  else expression.value = 'sum(items[*].price * items[*].quantity)';
+  const params = new URLSearchParams(document.location.search);
+  if (params.has('sample')) {
+    const sampleJSON = JSON.parse(atob(params.get('sample')));
+    if (sampleJSON.data) dataElement.innerText = JSON.stringify(sampleJSON.data, null, 2);
+    if (sampleJSON.expression) expression.innerText = sampleJSON.expression;
+    if (sampleJSON.description) {
+      document.getElementById('description-row').style.display = 'table-row';
+      document.getElementById('description').innerText = sampleJSON.description;
+    }
+    Array.from(document.getElementsByClassName('controls')).forEach(c => c.classList.add('hidden'));
+  } else {
+    const d = window.localStorage.getItem('data');
+    if (d) dataElement.value = d;
+    else dataElement.value = defaultData;
+    const exp = window.localStorage.getItem('expression');
+    if (exp) expression.value = exp;
+    else expression.value = 'sum(items[*].price * items[*].quantity)';
+  }
 
   function run() {
     // save for next time...

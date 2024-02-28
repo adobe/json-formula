@@ -43,6 +43,13 @@
       .debug {
         width: 25%;
       }
+      #description {
+        border: solid medium black;
+        color: black;
+      }
+      .hidden {
+        display:none;
+      }
     </style>
   </head>
   <body>
@@ -71,8 +78,9 @@
        <textarea id="debug" name="debug" readonly></textarea>
      </td>
      </tr>
+     <tr id="description-row" style="display:none;"><td id="description" colspan="4"></td></tr>
      <tr id="mimic-fields"><td colspan="4"><label>mimic fields<input type="checkbox" id="use-fields"></label></td></tr>
-     <tr><td colspan="4"><label for="canned">Select Expression</label>
+     <tr class="controls"><td colspan="4"><label for="canned">Select Expression</label>
      <select id="canned">
         <option label="&lt;none>"></option>
         <option>address.street</option>
@@ -89,12 +97,12 @@
         <option>round(sum(items[*].price * items[*].quantity) * tax, 2)</option>
         <option>address.phone | "(" & mid(@, 0, 3) & ")" & mid(@, 3, 3) & "-" & mid(@, 6, 4)</option>
      </select></td></tr>
-     <tr><td colspan="4"><button id="data-reset">Reset Data</button></td></tr>
+     <tr class="controls"><td colspan="4"><button id="data-reset">Reset Data</button></td></tr>
 </tbody>
   </table>
-  <a href="../doc/output/json-formula.rrd.html">Syntax Railroad Diagram</a>
-  <h3>Antlr4 Grammar</h3>
-  <pre id="grammar-out" style="border: thin solid black"></pre>
+  <a class="controls" href="../doc/output/json-formula.rrd.html">Syntax Railroad Diagram</a>
+  <h3 class="controls">Antlr4 Grammar</h3>
+  <pre class="controls" id="grammar-out" style="border: thin solid black"></pre>
   <script>document.getElementById("mimic-fields").style.display = location.host.startsWith("localhost:") ? "block" : "none" </script>
  </body>
 </html>
