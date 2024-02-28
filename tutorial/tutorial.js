@@ -50,8 +50,8 @@ window.addEventListener('load', () => {
   const params = new URLSearchParams(document.location.search);
   if (params.has('sample')) {
     const sampleJSON = JSON.parse(atob(params.get('sample')));
-    if (sampleJSON.data) dataElement.innerText = JSON.stringify(sampleJSON.data, null, 2);
-    if (sampleJSON.expression) expression.innerText = sampleJSON.expression;
+    if (sampleJSON.data) dataElement.value = JSON.stringify(sampleJSON.data, null, 2);
+    if (sampleJSON.expression) expression.value = sampleJSON.expression;
     if (sampleJSON.description) {
       document.getElementById('description-row').style.display = 'table-row';
       document.getElementById('description').innerText = sampleJSON.description;
