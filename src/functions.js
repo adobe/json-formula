@@ -2270,7 +2270,7 @@ export default function functions(
      *
      * * 1 : Sunday (1), Monday (2), ..., Saturday (7)
      * * 2 : Monday (1), Tuesday (2), ..., Sunday(7)
-     * * 3 : Monday (0), Tuesday (2), ...., Sunday(6)
+     * * 3 : Monday (0), Tuesday (1), ...., Sunday(6)
      * @param {number} date <<_date_and_time_values, date/time value>> for
      * which the day of the week is to be returned.
      * Date/time values can be generated using the
