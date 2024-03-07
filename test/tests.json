@@ -2648,6 +2648,14 @@
     }
   ],
   [
+    "modzero",
+    {
+      "data": {},
+      "expression": "mod(7, 0)",
+      "error": "FunctionError"
+    }
+  ],
+  [
     "union1",
     {
       "data": "samples.'purchase-order'.items[*]",

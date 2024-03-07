@@ -270,6 +270,7 @@ export default class TreeInterpreter {
         // which is a bit odd, but seems correct.
         const collected = {};
         node.children.forEach(child => {
+          if (collected[child.name] !== undefined) this.debug.push(`Duplicate key: '${child.name}'`);
           collected[child.name] = this.visit(child.value, value);
         });
         return collected;
