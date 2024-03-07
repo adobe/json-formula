@@ -882,9 +882,18 @@
         "expression": "notNull(all, expressions, are_null)",
         "result": null
       },
+
       {
         "expression": "notNull()",
         "error": "FunctionError"
+      },
+      {
+        "expression": "notNull(\"\", \"A\")",
+        "result": ""
+      },
+      {
+        "expression": "notNull(`false`, \"A\")",
+        "result": false
       },
       {
         "description": "function projection on single arg function",

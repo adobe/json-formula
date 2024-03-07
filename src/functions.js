@@ -1151,7 +1151,10 @@ export default function functions(
      * notNull(`null`, 2, 3, 4, `null`) // returns 2
      */
     notNull: {
-      _func: resolvedArgs => resolvedArgs.find(arg => getType(arg) !== TYPE_NULL) || null,
+      _func: resolvedArgs => {
+        const result = resolvedArgs.find(arg => getType(arg) !== TYPE_NULL);
+        return result === undefined ? null : result;
+      },
       _signature: [{ types: [TYPE_ANY], variadic: true }],
     },
     /**
