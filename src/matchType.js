@@ -109,6 +109,10 @@ export function getTypes(inputObj) {
 
 export function matchType(actuals, expectedList, argValue, context, toNumber, toString) {
   const actual = actuals[0];
+  if (argValue?.jmespathType === TOK_EXPREF && expectedList[0] !== TYPE_EXPREF) {
+    throw typeError(`${context} does not accept an expression reference argument.`);
+  }
+  if (expectedList.includes(TYPE_ANY)) return argValue;
   if (expectedList.findIndex(
     type => type === TYPE_ANY || actual === type,
   ) !== -1

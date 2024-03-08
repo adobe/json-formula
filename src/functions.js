@@ -746,6 +746,13 @@ export default function functions(
         const conditionNode = unresolvedArgs[0];
         const leftBranchNode = unresolvedArgs[1];
         const rightBranchNode = unresolvedArgs[2];
+        unresolvedArgs
+          .forEach(arg => {
+            if (arg.type === 'ExpressionReference') {
+              throw typeError('"if()" does not accept an expression reference argument.');
+            }
+          });
+
         const condition = interpreter.visit(conditionNode, data);
         if (toBoolean(valueOf(condition))) {
           return interpreter.visit(leftBranchNode, data);

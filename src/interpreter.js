@@ -43,7 +43,6 @@ import {
 // Type constants used to define functions.
 const {
   TYPE_CLASS,
-  TYPE_ANY,
   TYPE_ARRAY,
   TYPE_OBJECT,
 } = dataTypes;
@@ -150,7 +149,7 @@ class Runtime {
       currentSpec = i > signature.length - 1 ? signature[signature.length - 1].types
         : signature[i].types;
       // Try to avoid checks that will introspect the object and generate dependencies
-      if (!matchClass(args[i], currentSpec) && !currentSpec.includes(TYPE_ANY)) {
+      if (!matchClass(args[i], currentSpec)) {
         actualType = getTypes(args[i]);
         // eslint-disable-next-line no-param-reassign
         args[i] = matchType(actualType, currentSpec, args[i], argName, this.toNumber, toString);

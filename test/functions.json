@@ -1239,6 +1239,334 @@
       {
         "expression": "tan(1)",
         "result": 1.5574077246549023
+      },
+      {
+        "expression": "abs(&1)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "acos(&0)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "and(&true(), true())",
+        "error": "TypeError"
+      },
+      {
+        "expression": "asin(&0)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "avg(&[1,1])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "casefold(&\"abc\")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "ceil(&1.2)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "codePoint(&\"A\")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "contains(&[1,2,3], 2)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "cos(&0)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "datedif(&now(), now(), \"d\")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "datetime(&2000, 1, 1, 0, 0, 0) | year(@)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "datetime(2000, 1, 1, 0, 0, 0) | day(&@)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "deepScan(&[1,2,3], 1)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "endsWith(&123, 3)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "entries(&{a: 42})",
+        "error": "TypeError"
+      },
+      {
+        "expression": "eomonth(&datetime(2011, 1, 1), 1) | [month(@), day(@)]",
+        "error": "TypeError"
+      },
+      {
+        "expression": "exp(&0)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "find(&3, 123)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "floor(&1.2)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "fromCodePoint(&65)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "fromEntries(&[[\"a\", 42]])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "fround(&1)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "hasProperty(&{a: 42}, \"a\")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "datetime(2000, 1, 1, 1, 0, 0) | hour(&@)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "if(&true(), 1, 2)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "join(&[1,2], \",\")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "keys(&{a:42})",
+        "error": "TypeError"
+      },
+      {
+        "expression": "left(&123)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "length(&123)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "log(&10)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "lower(&\"ABC\")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "map(&[1,2,3], &@)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "max(&[1,2,3])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "merge(&{a: 1}, {b: 2})",
+        "error": "TypeError"
+      },
+      {
+        "expression": "mid(&123, 2, 1)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "datetime(2000, 1, 1, 1, 1, 1, 12) | millisecond(&@)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "min(&[1,2,3])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "datetime(2000, 1, 1, 1, 1, 1, 12) | minute(&@)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "mod(&4,2)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "datetime(2000, 1, 1, 1, 1, 1, 12) | month(&@)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "not(&true())",
+        "error": "TypeError"
+      },
+      {
+        "expression": "notNull(&3)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "or(&true(), true())",
+        "error": "TypeError"
+      },
+      {
+        "expression": "power(&10, 2)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "proper(&\"abc\")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "reduce(&[1,2,3], &42)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "register(&\"foo\", &42)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "replace(&\"abc\", 1, 1, \"d\")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "rept(&\"@\", 3)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "reverse(&[1,2,3])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "right(&123)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "round(&1.2)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "search(&\"a?c\", \"acabc\")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "datetime(2000, 1, 1, 1, 1, 1) | second(&@)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "sign(&1)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "sin(&1)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "sort(&[3,2,1])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "sortBy(&[3,2,1], &@)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "split(&\"1,2,3\", \",\")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "sqrt(&4)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "startsWith(&123, 1)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "stdev(&[1,1])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "stdevp(&[1,1])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "substitute(&\"abc\", \"b\", \"d\")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "sum(&[1,2,3])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "tan(&1)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "time(1, 1, 1) | hour(&@)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "toArray(&1)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "toDate(&\"2023-11-11\")|year(@)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "toNumber(&\"12\")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "toString(&12)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "trim(&\"  abc  \")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "trunc(&1.2)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "type(&123)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "unique(&[1,1])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "upper(&123)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "value(&[1,2,3], 2)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "values(&{a: 42})",
+        "error": "TypeError"
+      },
+      {
+        "expression": "datetime(2024, 3, 8) | weekday(&1)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "datetime(2024, 3, 8) | year(&@)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "zip(&[1,2,3], [4,5,6])",
+        "error": "TypeError"
       }
     ]
   }
