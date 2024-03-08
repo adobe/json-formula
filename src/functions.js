@@ -1134,7 +1134,7 @@ export default function functions(
      * @function not
      */
     not: {
-      _func: resolveArgs => !valueOf(resolveArgs[0]),
+      _func: resolveArgs => !toBoolean(valueOf(resolveArgs[0])),
       _signature: [{ types: [dataTypes.TYPE_ANY] }],
     },
 

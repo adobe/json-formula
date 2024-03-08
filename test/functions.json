@@ -896,6 +896,10 @@
         "result": false
       },
       {
+        "expression": "[not(`[]`), !`[]`, not(`{}`), !`{}`]",
+        "result":  [true, true, true, true]
+      },
+      {
         "description": "function projection on single arg function",
         "expression": "numbers[].toString(@)",
         "result": ["-1", "3", "4", "5"]
