@@ -31,7 +31,7 @@ import dataTypes from './dataTypes.js';
 import {
   getProperty, debugAvailable, toBoolean, strictDeepEqual,
 } from './utils.js';
-import { functionError, typeError } from './errors.js';
+import { evaluationError, functionError, typeError } from './errors.js';
 
 function round(num, digits) {
   const precision = 10 ** digits;
@@ -48,9 +48,10 @@ function getDateNum(dateObj) {
   return dateObj / MS_IN_DAY;
 }
 
-function validNumber(n) {
-  if (Number.isNaN(n)) return null;
-  if (!Number.isFinite(n)) return null;
+function validNumber(n, context) {
+  if (Number.isNaN(n) || !Number.isFinite(n)) {
+    throw evaluationError(`Call to "${context}()" resulted in an invalid number`);
+  }
   return n;
 }
 
@@ -126,7 +127,7 @@ export default function functions(
      * acos(0) => 1.5707963267948966
      */
     acos: {
-      _func: resolvedArgs => validNumber(Math.acos(resolvedArgs[0])),
+      _func: resolvedArgs => validNumber(Math.acos(resolvedArgs[0]), 'acos'),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -163,7 +164,7 @@ export default function functions(
      * Math.asin(0) => 0
      */
     asin: {
-      _func: resolvedArgs => validNumber(Math.asin(resolvedArgs[0])),
+      _func: resolvedArgs => validNumber(Math.asin(resolvedArgs[0]), 'asin'),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -179,7 +180,7 @@ export default function functions(
      * atan2(20,10) => 1.1071487177940904
      */
     atan2: {
-      _func: resolvedArgs => validNumber(Math.atan2(resolvedArgs[0], resolvedArgs[1])),
+      _func: resolvedArgs => Math.atan2(resolvedArgs[0], resolvedArgs[1]),
       _signature: [
         { types: [TYPE_NUMBER] },
         { types: [TYPE_NUMBER] },
@@ -306,7 +307,7 @@ export default function functions(
      * cos(1.0471975512) => 0.4999999999970535
      */
     cos: {
-      _func: resolvedArgs => validNumber(Math.cos(resolvedArgs[0])),
+      _func: resolvedArgs => Math.cos(resolvedArgs[0]),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -868,7 +869,7 @@ export default function functions(
      * log(10) // 2.302585092994046
      */
     log: {
-      _func: resolvedArgs => validNumber(Math.log(resolvedArgs[0])),
+      _func: resolvedArgs => validNumber(Math.log(resolvedArgs[0]), 'log'),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -881,7 +882,7 @@ export default function functions(
      * log10(100000) // 5
      */
     log10: {
-      _func: resolvedArgs => validNumber(Math.log10(resolvedArgs[0])),
+      _func: resolvedArgs => validNumber(Math.log10(resolvedArgs[0]), 'log10'),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -1226,7 +1227,7 @@ export default function functions(
               || type === dataTypes.TYPE_ARRAY_STRING || type === dataTypes.TYPE_ARRAY_NUMBER) {
           return args[0].map(a => toNumber(a) ** args[1]);
         }
-        return args[0] ** args[1];
+        return validNumber(args[0] ** args[1], 'power');
       },
       _signature: [
         {
@@ -1590,7 +1591,7 @@ export default function functions(
      * sin(1) // 0.8414709848078965
      */
     sin: {
-      _func: resolvedArgs => validNumber(Math.sin(resolvedArgs[0])),
+      _func: resolvedArgs => Math.sin(resolvedArgs[0]),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -1728,7 +1729,7 @@ export default function functions(
     sqrt: {
       _func: args => {
         const result = Math.sqrt(args[0]);
-        return Number.isNaN(result) ? null : result;
+        return validNumber(result, 'sqrt');
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -1778,11 +1779,7 @@ export default function functions(
         const mean = coercedValues.reduce((a, b) => a + b, 0) / values.length;
         const sumSquare = coercedValues.reduce((a, b) => a + b * b, 0);
         const result = Math.sqrt((sumSquare - values.length * mean * mean) / (values.length - 1));
-        if (Number.isNaN(result)) {
-          // this would never happen
-          return null;
-        }
-        return result;
+        return validNumber(result, 'stdev');
       },
       _signature: [
         { types: [dataTypes.TYPE_ARRAY_NUMBER] },
@@ -1811,7 +1808,7 @@ export default function functions(
         const mean = coercedValues.reduce((a, b) => a + b, 0) / values.length;
         const meanSumSquare = coercedValues.reduce((a, b) => a + b * b, 0) / values.length;
         const result = Math.sqrt(meanSumSquare - mean * mean);
-        return Number.isNaN(result) ? null : result;
+        return validNumber(result, 'stdevp');
       },
       _signature: [
         { types: [dataTypes.TYPE_ARRAY_NUMBER] },
@@ -1904,7 +1901,7 @@ export default function functions(
      * tan(1) // 1.5574077246549023
      */
     tan: {
-      _func: resolvedArgs => validNumber(Math.tan(resolvedArgs[0])),
+      _func: resolvedArgs => Math.tan(resolvedArgs[0]),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 

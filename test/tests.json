@@ -1679,7 +1679,7 @@
     {
       "data": "`null`",
       "expression": "sqrt(-3)",
-      "expected": null
+      "error": "EvaluationError"
     }
   ],
   [
@@ -1775,8 +1775,7 @@
     {
       "data": "samples.'purchase-order'",
       "expression": "stdevp(missing)",
-      "expected": 0,
-      "was": null
+      "expected": null
     }
   ],
   [

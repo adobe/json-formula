@@ -112,7 +112,7 @@ export function matchType(actuals, expectedList, argValue, context, toNumber, to
   if (argValue?.jmespathType === TOK_EXPREF && expectedList[0] !== TYPE_EXPREF) {
     throw typeError(`${context} does not accept an expression reference argument.`);
   }
-  if (expectedList.includes(TYPE_ANY)) return argValue;
+
   if (expectedList.findIndex(
     type => type === TYPE_ANY || actual === type,
   ) !== -1
@@ -183,6 +183,7 @@ export function matchType(actuals, expectedList, argValue, context, toNumber, to
       return returnArray;
     }
     if ([TYPE_NUMBER, TYPE_STRING, TYPE_NULL, TYPE_BOOLEAN].includes(subtype)) {
+      if (argValue === null) return [];
       return [matchType(actuals, [subtype], argValue, context, toNumber, toString)];
     }
   } else {
