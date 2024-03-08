@@ -380,7 +380,13 @@
       "expected": "true"
     }
   ],
-
+  [
+    "toString(\"hello\")",
+    {
+      "expression": "toString(\"hello\")",
+      "expected": "hello"
+    }
+  ],
   [
     "toNumber(\"10f\")",
     {

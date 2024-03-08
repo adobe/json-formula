@@ -2070,18 +2070,19 @@ export default function functions(
     },
 
     /**
-     * Converts the provided argument to a string
-     * as per the <<_type_coercion_rules,type coercion rules>>.
+     * Returns the argument converted to a string.
+     * If the argument is a string, it will be returned unchanged.
+     * Otherwise, returns the JSON encoded value of the argument.
      * @param {any} arg Value to be converted to a string
      * @param {integer} [indent=0] Indentation to use when converting
      * objects and arrays to a JSON string
-     * @return {string} The result string.  If the value to be converted to string is an
-     * array or object, a JSON string is returned.
+     * @return {string} The result string.
      * @function toString
      * @example
      * toString(1) // returns "1"
      * toString(true()) // returns "true"
      * toString({sum: 12 + 13}) // "{"sum":25}"
+     * toString("hello") // returns "hello"
      */
     toString: {
       _func: resolvedArgs => {

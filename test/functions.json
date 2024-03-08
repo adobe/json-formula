@@ -729,6 +729,10 @@
         "result": "{\n  \"foo\": \"bar\",\n  \"bar\": \"baz\"\n}"
       },
       {
+        "expression": "toString(null())",
+        "result": "null"
+      },
+      {
         "expression": "toDate(datestr)",
         "result": 19672.524268391204
       },
