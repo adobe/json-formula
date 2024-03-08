@@ -684,7 +684,7 @@ Given a `start`, `stop`, and `step` value, the sub elements in an array
 are extracted as follows:
 
 * The first element in the extracted array is the index denoted by `start`.
-* The last element in the extracted array is the index denoted by `end - 1`.
+* The last element in the extracted array is the index denoted by `stop - 1`.
 * The `step` value determines the amount by which the index increases or decreases.  The default step value is 1. For example, a step value of 2 will return every second value from the array.  If step is negative, slicing is performed in reverse -- from the last (stop) element to the start.
 
 Slice expressions adhere to the following rules:
