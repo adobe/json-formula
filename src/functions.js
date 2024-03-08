@@ -28,7 +28,9 @@ governing permissions and limitations under the License.
 
 /* eslint-disable no-underscore-dangle */
 import dataTypes from './dataTypes.js';
-import { getProperty, debugAvailable, toBoolean } from './utils.js';
+import {
+  getProperty, debugAvailable, toBoolean, strictDeepEqual,
+} from './utils.js';
 import { functionError, typeError } from './errors.js';
 
 function round(num, digits) {
@@ -2195,9 +2197,15 @@ export default function functions(
     unique: {
       _func: args => {
         // create an array of values for searching.  That way if the array elements are
-        // represented by objects with a valueOf(), then we"ll locate them in the valueArray
+        // represented by class objects with a valueOf(), we'll locate them in the valueArray
+        // but return the original class object.
         const valueArray = args[0].map(a => valueOf(a));
-        return args[0].filter((v, index) => valueArray.indexOf(valueOf(v)) === index);
+        return args[0]
+          .filter(
+            (v, index) => valueArray.findIndex(
+              lookup => strictDeepEqual(lookup, valueOf(v)),
+            ) === index,
+          );
       },
       _signature: [
         { types: [dataTypes.TYPE_ARRAY] },

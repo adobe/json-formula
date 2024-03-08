@@ -2974,6 +2974,14 @@
     }
   ],
   [
+    "unique objects, arrays",
+    {
+      "data": {},
+      "expression": "unique([`null`, `false`, `true`, 1, \"1\", [1, 2, 3], {a: 1}, `null`, `false`, `true`, 1, \"1\", [1, 2, 3], {a: 1}])",
+      "expected": [null, false, true, 1, "1", [1, 2, 3], {"a": 1}]
+    }
+  ],
+  [
     "deepScan(samples, 1)",
     {
       "data": "samples",
