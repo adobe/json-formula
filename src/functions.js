@@ -1832,8 +1832,8 @@ export default function functions(
     substitute: {
       _func: args => {
         const src = Array.from(toString(args[0]));
-        const old = toString(args[1]);
-        const replacement = toString(args[2]);
+        const old = Array.from(toString(args[1]));
+        const replacement = Array.from(toString(args[2]));
 
         // no third parameter? replace all instances
         let replaceAll = true;
@@ -1845,17 +1845,20 @@ export default function functions(
         }
 
         let found = 0;
+        const result = [];
         // find the instances to replace
-        for (let j = 0; j < src.length; j += 1) {
-          if (src.slice(j, j + old.length).join('') === old) {
-            found += 1;
-            if (replaceAll || found === whch) {
-              src.splice(j, old.length, replacement);
-              j += replacement.length;
-            }
+        for (let j = 0; j < src.length;) {
+          const match = old.every((c, i) => src[j + i] === c);
+          if (match) found += 1;
+          if (match && (replaceAll || found === whch)) {
+            result.push(...replacement);
+            j += old.length;
+          } else {
+            result.push(src[j]);
+            j += 1;
           }
         }
-        return src.join('');
+        return result.join('');
       },
       _signature: [
         { types: [dataTypes.TYPE_STRING] },

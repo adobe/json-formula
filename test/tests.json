@@ -605,6 +605,30 @@
     }
   ],
   [
+    "substitute(5)",
+    {
+      "data": {},
+      "expression": "substitute(\"deed\", \"d\", \"f\")",
+      "expected": "feef"
+    }
+  ],
+  [
+    "substitute(6)",
+    {
+      "data": {},
+      "expression": "substitute(\"deed\", \"e\", \"ee\")",
+      "expected": "deeeed"
+    }
+  ],
+  [
+    "substitute(7)",
+    {
+      "data": {},
+      "expression": "substitute(\"AAAAAAAAAA\", \"AA\", \"A\")",
+      "expected": "AAAAA"
+    }
+  ],
+  [
     "value(items, \"length\")",
     {
       "data": "samples.'purchase-order'",
