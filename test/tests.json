@@ -2962,7 +2962,7 @@
     "unique letters",
     {
       "data": "samples.'purchase-order'",
-      "expression": "unique(values(address.state))",
+      "expression": "unique(split(address.state, \"\"))",
       "expected": ["C","a","l","i","f","o","r","n"]
     }
   ],

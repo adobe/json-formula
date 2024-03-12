@@ -28,6 +28,7 @@ governing permissions and limitations under the License.
 import dataTypes from './dataTypes.js';
 import tokenDefinitions from './tokenDefinitions.js';
 import { typeError } from './errors.js';
+import { isClass } from './utils.js';
 
 const {
   TYPE_NUMBER,
@@ -69,9 +70,10 @@ export function getType(inputObj, useValueOf = true) {
   if (useValueOf) {
     // check for the case where there's a child named 'valueOf' that's not a function
     // if so, then it's an object...
-    if (typeof inputObj.valueOf === 'function') obj = inputObj.valueOf.call(inputObj);
+    if (typeof inputObj.valueOf === 'function') obj = inputObj.valueOf();
     else return TYPE_OBJECT;
   }
+  if (isClass(obj)) return TYPE_CLASS;
   switch (Object.prototype.toString.call(obj)) {
     case '[object String]':
       return TYPE_STRING;
@@ -201,6 +203,9 @@ export function matchType(actuals, expectedList, argValue, context, toNumber, to
     }
     if (expected === TYPE_OBJECT && actuals[1] === TYPE_OBJECT) {
       return argValue;
+    }
+    if (expected === TYPE_OBJECT && actual === TYPE_NULL) {
+      return {};
     }
   }
   throw typeError(`${context} expected argument to be type ${TYPE_NAME_TABLE[expectedList[0]]} but received type ${TYPE_NAME_TABLE[actual]} instead.`);

@@ -803,7 +803,7 @@ export default function functions(
         if (resolvedArgs[0] === null) return [];
         return Object.keys(resolvedArgs[0]);
       },
-      _signature: [{ types: [TYPE_ANY] }],
+      _signature: [{ types: [TYPE_OBJECT] }],
     },
     /**
      * Return a substring from the start of a string or the left-most elements of an array
@@ -2275,12 +2275,8 @@ export default function functions(
      * values({a : 3, b : 4}) // returns [3, 4]
      */
     values: {
-      _func: resolvedArgs => {
-        const arg = valueOf(resolvedArgs[0]);
-        if (arg === null) return [];
-        return Object.values(arg);
-      },
-      _signature: [{ types: [TYPE_ANY] }],
+      _func: resolvedArgs => Object.values(resolvedArgs[0]),
+      _signature: [{ types: [TYPE_OBJECT] }],
     },
 
     /**

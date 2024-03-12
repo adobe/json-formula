@@ -552,18 +552,15 @@
       },
       {
         "expression": "keys(foo)",
-        "result": [],
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "keys(strings)",
-        "result": ["0", "1", "2"],
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "keys(`false`)",
-        "result": [],
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "sort(values(objects))",
@@ -579,8 +576,7 @@
       },
       {
         "expression": "values(foo)",
-        "result": [],
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "values(null())",

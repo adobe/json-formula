@@ -34,7 +34,7 @@ import dataTypes from './dataTypes.js';
 import { matchType, getType, getTypes } from './matchType.js';
 import functions from './functions.js';
 import {
-  isArray, isObject, strictDeepEqual, getValueOf,
+  isArray, isObject, strictDeepEqual, getValueOf, isClass,
 } from './utils.js';
 import {
   evaluationError, typeError, functionError,
@@ -74,12 +74,6 @@ const defaultStringToNumber = (str => {
   const n = +str;
   return Number.isNaN(n) ? 0 : n;
 });
-
-function isClass(obj) {
-  if (obj === null) return false;
-  if (Array.isArray(obj)) return false;
-  return obj.constructor.name !== 'Object';
-}
 
 function matchClass(arg, expectedList) {
   // checking isClass() generates a dependency -- so call it only if necessary
