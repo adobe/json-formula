@@ -895,5 +895,19 @@
       "expression": "weekday(datetime(2006,5,21), 3)",
       "expected": 6
     }
+  ],
+  [
+    "avg(([1,2,3] * [2,3,4]).debug(@)).round(@,3)",
+    {
+      "expression": "avg(([1,2,3] * [2,3,4]).debug(@)).round(@,3)",
+      "expected": 6.667
+    }
+  ],
+  [
+    "avg(([1,2,3] * [2,3,4]).debug(\"average of: \" & toString(@), @)).round(@,3)",
+    {
+      "expression": "avg(([1,2,3] * [2,3,4]).debug(\"average of: \" & toString(@), @)).round(@,3)",
+      "expected": 6.667
+    }
   ]
 ]

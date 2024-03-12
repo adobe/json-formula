@@ -446,6 +446,34 @@ export default function functions(
     },
 
     /**
+     * Debug a json-formula expression.
+     * The `debug()` function allows users to inspect a sub-expression within a formula.
+     * The first argument can be any type (except for an expression reference). This value will be
+     * displayed to the user by the host application.
+     * The second (optional) argument is the value to be returned by the `debug()` function.
+     * @param {any} arg the expression to be debugged
+     * @param {any} [returnValue=arg] The return value of the debug() function.
+     * If not specified, return the value of the first argument
+     * @returns {any} The value of either the `returnValue` parameter or the `arg` parameter
+     * @function debug
+     * @example
+     * avg(([1,2,3] * [2,3,4]).debug(@)).round(@,3) // 6.667
+     * avg(([1,2,3] * [2,3,4]).debug("average of: " & toString(@), @)).round(@,3) // 6.667
+     */
+    debug: {
+      _func: resolvedArgs => {
+        const arg = resolvedArgs[0];
+        const returnValue = resolvedArgs.length > 1 ? resolvedArgs[1] : arg;
+        debug.push(toString(arg, 2));
+        return returnValue;
+      },
+      _signature: [
+        { types: [dataTypes.TYPE_ANY] },
+        { types: [dataTypes.TYPE_ANY], optional: true },
+      ],
+    },
+
+    /**
      * Performs a depth-first search of a nested hierarchy to
      * return an array of key values that match a `name`.
      * The name can be either a key into an object or an array index.
