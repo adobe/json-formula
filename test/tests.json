@@ -1939,6 +1939,14 @@
     }
   ],
   [
+    "fromCodePoint(123123123)",
+    {
+      "data": "`null`",
+      "expression": "fromCodePoint(123123123)",
+      "error": "EvaluationError"
+    }
+  ],
+  [
     "fromCodePoint(9.123)",
     {
       "data": "`null`",

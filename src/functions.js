@@ -646,7 +646,11 @@ export default function functions(
     fromCodePoint: {
       _func: args => {
         const code = toInteger(args[0]);
-        return String.fromCodePoint(code);
+        try {
+          return String.fromCodePoint(code);
+        } catch (e) {
+          throw evaluationError(`Invalid code point: "${code}"`);
+        }
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
