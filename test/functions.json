@@ -158,8 +158,7 @@
       },
       {
         "expression": "avg('abc')",
-        "result": null,
-        "was": "TypeError"
+        "error": "EvaluationError"
       },
       {
         "expression": "avg(foo)",
@@ -176,8 +175,16 @@
         "was": "TypeError"
       },
       {
+        "expression": "avg(`[]`)",
+        "error": "EvaluationError"
+      },
+      {
+        "expression": "avg(`[2,1,\"b\"]`)",
+        "result": 1
+      },
+      {
         "expression": "avg(`null`)",
-        "result": null
+        "error": "EvaluationError"
       },
       {
         "expression": "ceil(`1.2`)",
@@ -388,8 +395,7 @@
       },
       {
         "expression": "max(abc)",
-        "result": null,
-        "was": "TypeError"
+        "error": "EvaluationError"
       },
       {
         "expression": "max(array)",
@@ -402,7 +408,7 @@
       },
       {
         "expression": "max(empty_list)",
-        "result": null
+        "error": "EvaluationError"
       },
       {
         "expression": "max(strings, [\"A\", \"B\", \"C\"])",
@@ -427,6 +433,14 @@
       {
         "expression": "max([1, \"2\"])",
         "result": 2
+      },
+      {
+        "expression": "max([-4, \"foo\"])",
+        "result": 0
+      },
+      {
+        "expression": "max([null(), null()])",
+        "result": 0
       },
       {
         "expression": "merge(`{}`)",
@@ -466,8 +480,7 @@
       },
       {
         "expression": "min(abc)",
-        "result": null,
-        "was": "TypeError"
+        "error": "EvaluationError"
       },
       {
         "expression": "min(array)",
@@ -476,7 +489,11 @@
       },
       {
         "expression": "min(empty_list)",
-        "result": null
+        "error": "EvaluationError"
+      },
+      {
+        "expression": "min([4, \"foo\"])",
+        "result": 0
       },
       {
         "expression": "min(decimals)",
@@ -509,6 +526,10 @@
       {
         "expression": "min(`null`, 23, \"21\")",
         "result": 21
+      },
+      {
+        "expression": "min([null(), null()])",
+        "result": 0
       },
       {
         "expression": "type(\"abc\")",

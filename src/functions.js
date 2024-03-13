@@ -189,19 +189,18 @@ export default function functions(
 
     /**
      * Finds the average of the elements in an array.
-     * An empty array will return an average of `null`.
+     * If the array is empty, an evaluation error is thrown
      * @param {number[]} elements array of numeric values
      * @return {number} average value
      * @function avg
      * @example
-     * avg(`[]`) // returns null
      * avg([1, 2, 3]) // returns 2
      */
     avg: {
       _func: resolvedArgs => {
         let sum = 0;
         const inputArray = resolvedArgs[0];
-        if (inputArray.length === 0) return null;
+        if (inputArray.length === 0) throw evaluationError('avg() requires at least one argument');
         inputArray.forEach(a => {
           sum += a;
         });
@@ -929,17 +928,17 @@ export default function functions(
 
     /**
      * Calculates the largest value in the provided `collection` arguments.
-     * If all collections are empty `null` is returned.
+     * If all collections are empty, an evaluation error is thrown.
      * `max()` can work on numbers or strings.
      * If a mix of numbers and strings are provided, all values with be coerced to
      * the type of the first value.
+     * If all values are null, the result is 0.
      * @param {...(number[]|string[])} collection array(s) in which the maximum
      * element is to be calculated
-     * @return {number} the largest value found
+     * @return {number|string} the largest value found
      * @function max
      * @example
      * max([1, 2, 3], [4, 5, 6]) // returns 6
-     * max(`[]`) // returns null
      * max(["a", "a1", "b"]) // returns "b"
      */
     max: {
@@ -949,12 +948,16 @@ export default function functions(
           prev.push(...cur);
           return prev;
         }, []);
-
+        if (array.length === 0) throw evaluationError('max() requires at least one argument');
         const first = array.find(r => r !== null);
-        if (array.length === 0 || first === undefined) return null;
+        if (first === undefined) return 0;
         // use the first value to determine the comparison type
         const isNumber = getType(first, true) === TYPE_NUMBER;
-        return array.map(a => (isNumber ? toNumber(a) : toString(a)))
+        const makeNumber = n => {
+          const r = toNumber(n);
+          return r === null ? 0 : r;
+        };
+        return array.map(a => (isNumber ? makeNumber(a) : toString(a)))
           .sort((a, b) => (a > b ? 1 : -1))
           .pop();
       },
@@ -1043,15 +1046,15 @@ export default function functions(
 
     /**
      * Calculates the smallest value in the input arguments.
-     * If all arrays are empty `null` is returned.
+     * If all collections are empty, an evaluation error is thrown.
      * min() can work on numbers or strings.
      * If a mix of numbers and strings are provided, the type of the first value will be used.
+     * If all values are null, zero is returned.
      * @param {...(number[]|string[])} collection Arrays to search for the minimum value
-     * @return {number}
+     * @return {number|string} the smallest value found
      * @function min
      * @example
      * min([1, 2, 3], [4, 5, 6]) // returns 1
-     * min(`[]`) // returns null
      * min(["a", "a1", "b"]) // returns "a"
      */
     min: {
@@ -1061,12 +1064,17 @@ export default function functions(
           prev.push(...cur);
           return prev;
         }, []);
+        if (array.length === 0) throw evaluationError('min() requires at least one argument');
 
         const first = array.find(r => r !== null);
-        if (array.length === 0 || first === undefined) return null;
+        if (first === undefined) return 0;
         // use the first value to determine the comparison type
         const isNumber = getType(first, true) === TYPE_NUMBER;
-        return array.map(a => (isNumber ? toNumber(a) : toString(a)))
+        const makeNumber = n => {
+          const r = toNumber(n);
+          return r === null ? 0 : r;
+        };
+        return array.map(a => (isNumber ? makeNumber(a) : toString(a)))
           .sort((a, b) => (a < b ? 1 : -1))
           .pop();
       },
