@@ -243,8 +243,8 @@ export default function functions(
     },
     /**
      * Retrieve the first code point from a string
-     * @param {string} str source string
-     * @return {integer} unicode code point value
+     * @param {string} str source string.
+     * @return {integer} Unicode code point value. If the input string is empty, returns `null`.
      * @function codePoint
      * @example
      * codePoint("ABC") // 65
@@ -324,8 +324,9 @@ export default function functions(
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @param {number} end_date The end <<_date_and_time_values, date/time value>> -- must
-     * be greater or equal to start_date.
-     * @param {string} unit Case-insensitive string representing the unit of time to measure
+     * be greater or equal to start_date. If not, an error will be thrown.
+     * @param {string} unit Case-insensitive string representing the unit of time to measure.
+     * An unrecognized unit will result in an error.
      * @returns {integer} The number of days/months/years difference
      * @function datedif
      * @example
@@ -1084,6 +1085,7 @@ export default function functions(
      * @param {number} divisor The number by which to divide number.
      * @return {number} Computes the remainder of `dividend`/`divisor`.
      * If `dividend` is negative, the result will also be negative.
+     * If `dividend` is zero, an error is thrown.
      * @function mod
      * @example
      * mod(3, 2) // returns 1
@@ -1093,7 +1095,9 @@ export default function functions(
       _func: args => {
         const p1 = args[0];
         const p2 = args[1];
-        return p1 % p2;
+        const result = p1 % p2;
+        if (Number.isNaN(result)) throw functionError(`Bad parameter for mod: '${p1} % ${p2}'`);
+        return result;
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -1229,6 +1233,8 @@ export default function functions(
      * Apply proper casing to a string.  Proper casing is where the first letter of each
      * word is converted to an
      * uppercase letter and the rest of the letters in the word converted to lowercase.
+     * Words are demarcated by whitespace, punctuation, or numbers.
+     * Specifically, any character(s) matching the regular expression: `[\s\d\p{P}]+`.
      * @param {string} text source string
      * @returns {string} source string with proper casing applied.
      * @function proper
@@ -1390,7 +1396,8 @@ export default function functions(
      * Return text repeated `count` times.
      * @param {string} text text to repeat
      * @param {integer} count number of times to repeat the text
-     * @returns {string} Text generated from the repeated text
+     * @returns {string} Text generated from the repeated text.
+     * if `count` is zero, returns an empty string. If `count` is less than 0, returns null.
      * @function rept
      * @example
      * rept("x", 5) // returns "xxxxx"
@@ -1411,7 +1418,7 @@ export default function functions(
     },
 
     /**
-     * Reverses the order of an array or string
+     * Reverses the order of an array or the order of code points in a string
      * @param {string|array} subject the source to be reversed
      * @return {array} The resulting reversed array or string
      * @function reverse
@@ -1436,7 +1443,7 @@ export default function functions(
      * a subset of elements from the end of an array
      * @param {string|array} subject The text/array containing the code points/elements to extract
      * @param {integer} [elements=1] number of elements to pick
-     * @return {string|array} The extracted substring or array subset
+     * @return {string|array|null} The extracted substring or array subset
      * Returns null if the number of elements is less than 0
      * @function right
      * @example
@@ -1556,7 +1563,7 @@ export default function functions(
      * Computes the sign of a number passed as argument.
      * @param {number} num any number
      * @return {number} returns 1 or -1, indicating the sign of `num`.
-     * If the `num` is 0, it will be returned 0.
+     * If the `num` is 0, it will return 0.
      * @function sign
      * @example
      * sign(5) // 1
@@ -1615,7 +1622,7 @@ export default function functions(
      * in the array, the expression is applied and the resulting
      * value is used as the sort value. If the result of
      * evaluating the expression against the current array element results in type
-     * other than a number or a string, a <<_errors, TypeError>>  will occur.
+     * other than a number or a string, a <<_errors, TypeError>> will occur.
      * @param {array} elements Array to be sorted
      * @param {expression} expr The comparison expression
      * @return {array} The sorted array
@@ -2094,7 +2101,7 @@ export default function functions(
     },
 
     /**
-     * Remove leading and trailing spaces, and replace all internal multiple spaces
+     * Remove leading and trailing spaces (U+0020), and replace all internal multiple spaces
      * with a single space.  Note that other whitespace characters are left intact.
      * @param {string} text string to trim
      * @return {string} trimmed string
@@ -2127,6 +2134,7 @@ export default function functions(
 
     /**
          * Truncates a number to an integer by removing the fractional part of the number.
+         * i.e. it rounds towards zero.
          * @param {number} numA number to truncate
          * @param {integer} [numB=0] A number specifying the number of decimal digits to preserve.
          * @return {number} Truncated value
@@ -2277,7 +2285,8 @@ export default function functions(
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @param {integer} [returnType=1] Determines the
-     * representation of the result
+     * representation of the result.
+     * An unrecognized returnType will result in a error.
      * @returns {integer} day of the week
      * @function weekday
      * @example

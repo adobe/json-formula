@@ -696,6 +696,14 @@
       }
   ],
   [
+    "{foo: foo, foo: 42}",
+    {
+       "expression": "{foo: foo, foo: 42}",
+       "data": {"foo": "a", "bar": "b"},
+       "expected":  {"foo": 42}
+      }
+  ],
+  [
     "[*].foo",
     {
        "expression": "[*].foo",
@@ -1021,6 +1029,38 @@
        "expression": "family[].age | avg(@)",
        "data": {"family": [{"name": "frank", "age": 22},{"name": "jane", "age": 23}]},
        "expected": 22.5
+    }
+  ],
+  [
+    "function error",
+    {
+      "expression": "false() || if()",
+      "data": {},
+      "error": "FunctionError"
+    }
+  ],
+  [
+    "shortcut OR",
+    {
+      "expression": "true() || if()",
+      "data": {},
+      "expected": true
+    }
+  ],
+  [
+    "Function Error",
+    {
+      "expression": "true() && if()",
+      "data": {},
+      "error": "FunctionError"
+    }
+  ],
+  [
+    "shortcut AND",
+    {
+      "expression": "false() && if()",
+      "data": {},
+      "expected": false
     }
   ]
 ]
