@@ -28,8 +28,10 @@ governing permissions and limitations under the License.
 
 /* eslint-disable no-underscore-dangle */
 import dataTypes from './dataTypes.js';
-import { getProperty, debugAvailable, toBoolean } from './utils.js';
-import { functionError, typeError } from './errors.js';
+import {
+  getProperty, debugAvailable, toBoolean, strictDeepEqual,
+} from './utils.js';
+import { evaluationError, functionError, typeError } from './errors.js';
 
 function round(num, digits) {
   const precision = 10 ** digits;
@@ -46,9 +48,10 @@ function getDateNum(dateObj) {
   return dateObj / MS_IN_DAY;
 }
 
-function validNumber(n) {
-  if (Number.isNaN(n)) return null;
-  if (!Number.isFinite(n)) return null;
+function validNumber(n, context) {
+  if (Number.isNaN(n) || !Number.isFinite(n)) {
+    throw evaluationError(`Call to "${context}()" resulted in an invalid number`);
+  }
   return n;
 }
 
@@ -124,7 +127,7 @@ export default function functions(
      * acos(0) => 1.5707963267948966
      */
     acos: {
-      _func: resolvedArgs => validNumber(Math.acos(resolvedArgs[0])),
+      _func: resolvedArgs => validNumber(Math.acos(resolvedArgs[0]), 'acos'),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -161,7 +164,7 @@ export default function functions(
      * Math.asin(0) => 0
      */
     asin: {
-      _func: resolvedArgs => validNumber(Math.asin(resolvedArgs[0])),
+      _func: resolvedArgs => validNumber(Math.asin(resolvedArgs[0]), 'asin'),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -177,7 +180,7 @@ export default function functions(
      * atan2(20,10) => 1.1071487177940904
      */
     atan2: {
-      _func: resolvedArgs => validNumber(Math.atan2(resolvedArgs[0], resolvedArgs[1])),
+      _func: resolvedArgs => Math.atan2(resolvedArgs[0], resolvedArgs[1]),
       _signature: [
         { types: [TYPE_NUMBER] },
         { types: [TYPE_NUMBER] },
@@ -186,19 +189,18 @@ export default function functions(
 
     /**
      * Finds the average of the elements in an array.
-     * An empty array will return an average of `null`.
+     * If the array is empty, an evaluation error is thrown
      * @param {number[]} elements array of numeric values
      * @return {number} average value
      * @function avg
      * @example
-     * avg(`[]`) // returns null
      * avg([1, 2, 3]) // returns 2
      */
     avg: {
       _func: resolvedArgs => {
         let sum = 0;
         const inputArray = resolvedArgs[0];
-        if (inputArray.length === 0) return null;
+        if (inputArray.length === 0) throw evaluationError('avg() requires at least one argument');
         inputArray.forEach(a => {
           sum += a;
         });
@@ -304,7 +306,7 @@ export default function functions(
      * cos(1.0471975512) => 0.4999999999970535
      */
     cos: {
-      _func: resolvedArgs => validNumber(Math.cos(resolvedArgs[0])),
+      _func: resolvedArgs => Math.cos(resolvedArgs[0]),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -644,7 +646,11 @@ export default function functions(
     fromCodePoint: {
       _func: args => {
         const code = toInteger(args[0]);
-        return String.fromCodePoint(code);
+        try {
+          return String.fromCodePoint(code);
+        } catch (e) {
+          throw evaluationError(`Invalid code point: "${code}"`);
+        }
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -745,6 +751,13 @@ export default function functions(
         const conditionNode = unresolvedArgs[0];
         const leftBranchNode = unresolvedArgs[1];
         const rightBranchNode = unresolvedArgs[2];
+        unresolvedArgs
+          .forEach(arg => {
+            if (arg.type === 'ExpressionReference') {
+              throw typeError('"if()" does not accept an expression reference argument.');
+            }
+          });
+
         const condition = interpreter.visit(conditionNode, data);
         if (toBoolean(valueOf(condition))) {
           return interpreter.visit(leftBranchNode, data);
@@ -794,7 +807,7 @@ export default function functions(
         if (resolvedArgs[0] === null) return [];
         return Object.keys(resolvedArgs[0]);
       },
-      _signature: [{ types: [TYPE_ANY] }],
+      _signature: [{ types: [TYPE_OBJECT] }],
     },
     /**
      * Return a substring from the start of a string or the left-most elements of an array
@@ -860,7 +873,7 @@ export default function functions(
      * log(10) // 2.302585092994046
      */
     log: {
-      _func: resolvedArgs => validNumber(Math.log(resolvedArgs[0])),
+      _func: resolvedArgs => validNumber(Math.log(resolvedArgs[0]), 'log'),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -873,7 +886,7 @@ export default function functions(
      * log10(100000) // 5
      */
     log10: {
-      _func: resolvedArgs => validNumber(Math.log10(resolvedArgs[0])),
+      _func: resolvedArgs => validNumber(Math.log10(resolvedArgs[0]), 'log10'),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -916,17 +929,17 @@ export default function functions(
 
     /**
      * Calculates the largest value in the provided `collection` arguments.
-     * If all collections are empty `null` is returned.
+     * If all collections are empty, an evaluation error is thrown.
      * `max()` can work on numbers or strings.
      * If a mix of numbers and strings are provided, all values with be coerced to
      * the type of the first value.
+     * If all values are null, the result is 0.
      * @param {...(number[]|string[])} collection array(s) in which the maximum
      * element is to be calculated
-     * @return {number} the largest value found
+     * @return {number|string} the largest value found
      * @function max
      * @example
      * max([1, 2, 3], [4, 5, 6]) // returns 6
-     * max(`[]`) // returns null
      * max(["a", "a1", "b"]) // returns "b"
      */
     max: {
@@ -936,12 +949,16 @@ export default function functions(
           prev.push(...cur);
           return prev;
         }, []);
-
+        if (array.length === 0) throw evaluationError('max() requires at least one argument');
         const first = array.find(r => r !== null);
-        if (array.length === 0 || first === undefined) return null;
+        if (first === undefined) return 0;
         // use the first value to determine the comparison type
         const isNumber = getType(first, true) === TYPE_NUMBER;
-        return array.map(a => (isNumber ? toNumber(a) : toString(a)))
+        const makeNumber = n => {
+          const r = toNumber(n);
+          return r === null ? 0 : r;
+        };
+        return array.map(a => (isNumber ? makeNumber(a) : toString(a)))
           .sort((a, b) => (a > b ? 1 : -1))
           .pop();
       },
@@ -1030,15 +1047,15 @@ export default function functions(
 
     /**
      * Calculates the smallest value in the input arguments.
-     * If all arrays are empty `null` is returned.
+     * If all collections are empty, an evaluation error is thrown.
      * min() can work on numbers or strings.
      * If a mix of numbers and strings are provided, the type of the first value will be used.
+     * If all values are null, zero is returned.
      * @param {...(number[]|string[])} collection Arrays to search for the minimum value
-     * @return {number}
+     * @return {number|string} the smallest value found
      * @function min
      * @example
      * min([1, 2, 3], [4, 5, 6]) // returns 1
-     * min(`[]`) // returns null
      * min(["a", "a1", "b"]) // returns "a"
      */
     min: {
@@ -1048,12 +1065,17 @@ export default function functions(
           prev.push(...cur);
           return prev;
         }, []);
+        if (array.length === 0) throw evaluationError('min() requires at least one argument');
 
         const first = array.find(r => r !== null);
-        if (array.length === 0 || first === undefined) return null;
+        if (first === undefined) return 0;
         // use the first value to determine the comparison type
         const isNumber = getType(first, true) === TYPE_NUMBER;
-        return array.map(a => (isNumber ? toNumber(a) : toString(a)))
+        const makeNumber = n => {
+          const r = toNumber(n);
+          return r === null ? 0 : r;
+        };
+        return array.map(a => (isNumber ? makeNumber(a) : toString(a)))
           .sort((a, b) => (a < b ? 1 : -1))
           .pop();
       },
@@ -1138,7 +1160,7 @@ export default function functions(
      * @function not
      */
     not: {
-      _func: resolveArgs => !valueOf(resolveArgs[0]),
+      _func: resolveArgs => !toBoolean(valueOf(resolveArgs[0])),
       _signature: [{ types: [dataTypes.TYPE_ANY] }],
     },
 
@@ -1155,7 +1177,10 @@ export default function functions(
      * notNull(`null`, 2, 3, 4, `null`) // returns 2
      */
     notNull: {
-      _func: resolvedArgs => resolvedArgs.find(arg => getType(arg) !== TYPE_NULL) || null,
+      _func: resolvedArgs => {
+        const result = resolvedArgs.find(arg => getType(arg) !== TYPE_NULL);
+        return result === undefined ? null : result;
+      },
       _signature: [{ types: [TYPE_ANY], variadic: true }],
     },
     /**
@@ -1218,7 +1243,7 @@ export default function functions(
               || type === dataTypes.TYPE_ARRAY_STRING || type === dataTypes.TYPE_ARRAY_NUMBER) {
           return args[0].map(a => toNumber(a) ** args[1]);
         }
-        return args[0] ** args[1];
+        return validNumber(args[0] ** args[1], 'power');
       },
       _signature: [
         {
@@ -1585,7 +1610,7 @@ export default function functions(
      * sin(1) // 0.8414709848078965
      */
     sin: {
-      _func: resolvedArgs => validNumber(Math.sin(resolvedArgs[0])),
+      _func: resolvedArgs => Math.sin(resolvedArgs[0]),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -1723,7 +1748,7 @@ export default function functions(
     sqrt: {
       _func: args => {
         const result = Math.sqrt(args[0]);
-        return Number.isNaN(result) ? null : result;
+        return validNumber(result, 'sqrt');
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -1773,11 +1798,7 @@ export default function functions(
         const mean = coercedValues.reduce((a, b) => a + b, 0) / values.length;
         const sumSquare = coercedValues.reduce((a, b) => a + b * b, 0);
         const result = Math.sqrt((sumSquare - values.length * mean * mean) / (values.length - 1));
-        if (Number.isNaN(result)) {
-          // this would never happen
-          return null;
-        }
-        return result;
+        return validNumber(result, 'stdev');
       },
       _signature: [
         { types: [dataTypes.TYPE_ARRAY_NUMBER] },
@@ -1806,7 +1827,7 @@ export default function functions(
         const mean = coercedValues.reduce((a, b) => a + b, 0) / values.length;
         const meanSumSquare = coercedValues.reduce((a, b) => a + b * b, 0) / values.length;
         const result = Math.sqrt(meanSumSquare - mean * mean);
-        return Number.isNaN(result) ? null : result;
+        return validNumber(result, 'stdevp');
       },
       _signature: [
         { types: [dataTypes.TYPE_ARRAY_NUMBER] },
@@ -1834,8 +1855,8 @@ export default function functions(
     substitute: {
       _func: args => {
         const src = Array.from(toString(args[0]));
-        const old = toString(args[1]);
-        const replacement = toString(args[2]);
+        const old = Array.from(toString(args[1]));
+        const replacement = Array.from(toString(args[2]));
 
         // no third parameter? replace all instances
         let replaceAll = true;
@@ -1847,17 +1868,20 @@ export default function functions(
         }
 
         let found = 0;
+        const result = [];
         // find the instances to replace
-        for (let j = 0; j < src.length; j += 1) {
-          if (src.slice(j, j + old.length).join('') === old) {
-            found += 1;
-            if (replaceAll || found === whch) {
-              src.splice(j, old.length, replacement);
-              j += replacement.length;
-            }
+        for (let j = 0; j < src.length;) {
+          const match = old.every((c, i) => src[j + i] === c);
+          if (match) found += 1;
+          if (match && (replaceAll || found === whch)) {
+            result.push(...replacement);
+            j += old.length;
+          } else {
+            result.push(src[j]);
+            j += 1;
           }
         }
-        return src.join('');
+        return result.join('');
       },
       _signature: [
         { types: [dataTypes.TYPE_STRING] },
@@ -1896,7 +1920,7 @@ export default function functions(
      * tan(1) // 1.5574077246549023
      */
     tan: {
-      _func: resolvedArgs => validNumber(Math.tan(resolvedArgs[0])),
+      _func: resolvedArgs => Math.tan(resolvedArgs[0]),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -2074,18 +2098,19 @@ export default function functions(
     },
 
     /**
-     * Converts the provided argument to a string
-     * as per the <<_type_coercion_rules,type coercion rules>>.
+     * Returns the argument converted to a string.
+     * If the argument is a string, it will be returned unchanged.
+     * Otherwise, returns the JSON encoded value of the argument.
      * @param {any} arg Value to be converted to a string
      * @param {integer} [indent=0] Indentation to use when converting
      * objects and arrays to a JSON string
-     * @return {string} The result string.  If the value to be converted to string is an
-     * array or object, a JSON string is returned.
+     * @return {string} The result string.
      * @function toString
      * @example
      * toString(1) // returns "1"
      * toString(true()) // returns "true"
      * toString({sum: 12 + 13}) // "{"sum":25}"
+     * toString("hello") // returns "hello"
      */
     toString: {
       _func: resolvedArgs => {
@@ -2199,9 +2224,15 @@ export default function functions(
     unique: {
       _func: args => {
         // create an array of values for searching.  That way if the array elements are
-        // represented by objects with a valueOf(), then we"ll locate them in the valueArray
+        // represented by class objects with a valueOf(), we'll locate them in the valueArray
+        // but return the original class object.
         const valueArray = args[0].map(a => valueOf(a));
-        return args[0].filter((v, index) => valueArray.indexOf(valueOf(v)) === index);
+        return args[0]
+          .filter(
+            (v, index) => valueArray.findIndex(
+              lookup => strictDeepEqual(lookup, valueOf(v)),
+            ) === index,
+          );
       },
       _signature: [
         { types: [dataTypes.TYPE_ARRAY] },
@@ -2264,12 +2295,8 @@ export default function functions(
      * values({a : 3, b : 4}) // returns [3, 4]
      */
     values: {
-      _func: resolvedArgs => {
-        const arg = valueOf(resolvedArgs[0]);
-        if (arg === null) return [];
-        return Object.values(arg);
-      },
-      _signature: [{ types: [TYPE_ANY] }],
+      _func: resolvedArgs => Object.values(resolvedArgs[0]),
+      _signature: [{ types: [TYPE_OBJECT] }],
     },
 
     /**

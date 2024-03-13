@@ -83,8 +83,6 @@
 
   ["abs(-1)", { "expression": "abs(-1)", "expected": 1 }],
 
-  ["avg(`[]`)", { "expression": "avg(`[]`)", "expected": null }],
-
   ["avg([1, 2, 3])", { "expression": "avg([1, 2, 3])", "expected": 2 }],
 
   ["ceil(10)", { "expression": "ceil(10)", "expected": 10 }],
@@ -202,8 +200,6 @@
     }
   ],
 
-  ["max(`[]`)", { "expression": "max(`[]`)", "expected": null }],
-
   [
     "max([\"a\", \"a1\", \"b\"])",
     {
@@ -235,8 +231,6 @@
       "expected": 1
     }
   ],
-
-  ["min(`[]`)", { "expression": "min(`[]`)", "expected": null }],
 
   [
     "min([\"a\", \"a1\", \"b\"])",
@@ -380,7 +374,13 @@
       "expected": "true"
     }
   ],
-
+  [
+    "toString(\"hello\")",
+    {
+      "expression": "toString(\"hello\")",
+      "expected": "hello"
+    }
+  ],
   [
     "toNumber(\"10f\")",
     {

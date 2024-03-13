@@ -775,5 +775,39 @@
           "result": [null]
         }
     ]
+  },
+  {
+    "comment": "chained numbers",
+    "given": [],
+    "cases": [
+      {
+        "expression": "3e+",
+        "error": "SyntaxError"
+      },
+      {
+        "expression": "3e",
+        "error": "SyntaxError"
+      },
+      {
+        "expression": "3.",
+        "error": "SyntaxError"
+      },
+      {
+        "expression": "3.e2",
+        "result": null
+      },
+      {
+        "expression": "3.toString(@)",
+        "result": "3"
+      },
+      {
+        "expression": "3.2.toString(@)",
+        "result": "3.2"
+      },
+      {
+        "expression": ".3e4",
+        "result": 3000
+      }
+    ]
   }
 ]

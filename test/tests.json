@@ -605,6 +605,30 @@
     }
   ],
   [
+    "substitute(5)",
+    {
+      "data": {},
+      "expression": "substitute(\"deed\", \"d\", \"f\")",
+      "expected": "feef"
+    }
+  ],
+  [
+    "substitute(6)",
+    {
+      "data": {},
+      "expression": "substitute(\"deed\", \"e\", \"ee\")",
+      "expected": "deeeed"
+    }
+  ],
+  [
+    "substitute(7)",
+    {
+      "data": {},
+      "expression": "substitute(\"AAAAAAAAAA\", \"AA\", \"A\")",
+      "expected": "AAAAA"
+    }
+  ],
+  [
     "value(items, \"length\")",
     {
       "data": "samples.'purchase-order'",
@@ -1655,7 +1679,7 @@
     {
       "data": "`null`",
       "expression": "sqrt(-3)",
-      "expected": null
+      "error": "EvaluationError"
     }
   ],
   [
@@ -1751,8 +1775,7 @@
     {
       "data": "samples.'purchase-order'",
       "expression": "stdevp(missing)",
-      "expected": 0,
-      "was": null
+      "expected": null
     }
   ],
   [
@@ -1913,6 +1936,14 @@
       "data": "`null`",
       "expression": "fromCodePoint(9)",
       "expected": "\t"
+    }
+  ],
+  [
+    "fromCodePoint(123123123)",
+    {
+      "data": "`null`",
+      "expression": "fromCodePoint(123123123)",
+      "error": "EvaluationError"
     }
   ],
   [
@@ -2947,7 +2978,7 @@
     "unique letters",
     {
       "data": "samples.'purchase-order'",
-      "expression": "unique(values(address.state))",
+      "expression": "unique(split(address.state, \"\"))",
       "expected": ["C","a","l","i","f","o","r","n"]
     }
   ],
@@ -2979,6 +3010,14 @@
         "price",
         "subtotal"
       ]
+    }
+  ],
+  [
+    "unique objects, arrays",
+    {
+      "data": {},
+      "expression": "unique([`null`, `false`, `true`, 1, \"1\", [1, 2, 3], {a: 1}, `null`, `false`, `true`, 1, \"1\", [1, 2, 3], {a: 1}])",
+      "expected": [null, false, true, 1, "1", [1, 2, 3], {"a": 1}]
     }
   ],
   [

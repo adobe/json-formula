@@ -40,16 +40,27 @@ function createField(name, value, readonly = false, required = true) {
   return f;
 }
 
-function createFieldset(fsname, isObj, fields) {
+function createFieldset(fsname, isObj, fields, children) {
   class FieldsetObj {
-    _add(k, v) { this[k] = v; }
+    _add(k, v) {
+      this[k] = v;
+      children.push(v);
+    }
+
+    valueOf() { return Object.fromEntries(children.map(f => [f.$name, f.$value])); }
   }
   class FieldsetArray extends Array {
-    _add(k, v) { this[k] = v; }
+    _add(k, v) {
+      this[k] = v;
+      children.push(v);
+    }
+
+    valueOf() { return children; }
   }
   const fieldset = isObj ? new FieldsetObj() : new FieldsetArray();
   Object.defineProperty(fieldset, '$name', { get: () => fsname });
   Object.defineProperty(fieldset, '$fields', { get: () => fields });
+  Object.defineProperty(fieldset, '$value', { get: () => fieldset.valueOf() });
 
   return fieldset;
 }
@@ -58,21 +69,20 @@ function createFields(parent, childref, child) {
   const result = [];
   if (child instanceof Array) {
     // parent._add(childref, createFieldset(childref, false));
-    parent._add(childref, createFieldset(childref, false, result));
+    parent._add(childref, createFieldset(childref, false, result, []));
     child.forEach((item, index) => {
       const fields = createFields(parent[childref], index, item);
       result.push(...fields);
     });
   } else if (child !== null && typeof child === 'object') {
-    parent._add(childref, createFieldset(childref, true, result));
+    parent._add(childref, createFieldset(childref, true, result, []));
     Object.keys(child).forEach(k => {
       const fields = createFields(parent[childref], k, child[k]);
       result.push(...fields);
     });
   } else {
-    // eslint-disable-next-line no-param-reassign
     const field = createField(childref, child);
-    parent[childref] = field;
+    parent._add(childref, field);
     result.push(field);
   }
   return result;
@@ -83,7 +93,7 @@ export default function createForm(dataRoot) {
   if (dataRoot === null || typeof dataRoot !== 'object') return dataRoot;
 
   const allFields = [];
-  const form = createFieldset('', !Array.isArray(dataRoot), allFields);
+  const form = createFieldset('', !Array.isArray(dataRoot), allFields, []);
   Object.entries(dataRoot).forEach(([k, v]) => {
     allFields.push(...createFields(form, k, v));
   });

@@ -107,6 +107,13 @@ window.addEventListener('load', () => {
     'click',
     () => {
       dataElement.value = defaultData;
+      if (params.has('sample')) {
+        expression.value = 'sum(items[*].price * items[*].quantity)';
+        document.getElementById('description-row').style.display = 'none';
+        Array.from(document.getElementsByClassName('controls')).forEach(c => c.classList.remove('hidden'));
+        window.history.pushState({}, document.title, '/');
+        run();
+      }
     },
   );
   document.getElementById('canned').addEventListener('change', e => {

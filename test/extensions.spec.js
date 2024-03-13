@@ -137,10 +137,10 @@ test('debug output', () => {
   };
   const expression = `merge(
     $form.array1[10],
-    $form.array1.$value,
+    $form.array1.$values,
     $form.foo,
     $form.prop.$readOnly,
-    $form.prop.p1,
+    {p1: $form.prop.p1},
     length("a").{foo: bar},
     {m: -"s", n: 2*"b", o: toNumber(1,1)},
     {m: "abc"[0:2]},
@@ -159,12 +159,12 @@ test('debug output', () => {
 
   expect(debug).toEqual([
     'Index: 10 out of range for array size: 6',
-    'Failed to find: \'$value\'',
-    'Available fields: 0..5,\'$name\',\'$fields\'',
+    'Failed to find: \'$values\'',
+    'Available fields: 0..5,\'$name\',\'$fields\',\'$value\'',
     'Failed to find: \'foo\'',
     'Available fields: \'array1\',\'prop\'',
     'Failed to find: \'$readOnly\'',
-    'Available fields: \'$name\',\'$fields\',\'p1\'',
+    'Available fields: \'$name\',\'$fields\',\'$value\',\'p1\'',
     'Failed to find: \'bar\'',
     'Failed to convert "s" to number',
     'Failed to convert "b" to number',
