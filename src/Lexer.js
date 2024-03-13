@@ -97,10 +97,6 @@ const skipChars = {
   '\n': true,
 };
 
-function isNumChar(ch) {
-  return (ch >= '0' && ch <= '9') || (ch === '.');
-}
-
 function isAlphaNum(ch) {
   return (ch >= 'a' && ch <= 'z')
     || (ch >= 'A' && ch <= 'Z')
@@ -327,24 +323,11 @@ export default class Lexer {
 
   _consumeNumber(stream) {
     const start = this._current;
-    this._current += 1;
-    const maxLength = stream.length;
-    while (isNumChar(stream[this._current]) && this._current < maxLength) {
-      this._current += 1;
-    }
-    // check again for exponent character
-    if (stream[this._current] === 'e' || stream[this._current] === 'E') {
-      this._current += 1;
-      // check for + or - after exponent
-      if (stream[this._current] === '-' || stream[this._current] === '+') {
-        this._current += 1;
-      }
-      // consume digits after exponent
-      while (isNumChar(stream[this._current]) && this._current < maxLength) {
-        this._current += 1;
-      }
-    }
-    const n = stream.slice(start, this._current);
+    const num = stream.slice(start);
+    const match = num.match(/^[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?/);
+    if (!match) throw syntaxError(`Invalid number: ${num}`);
+    const n = match[0];
+    this._current += n.length;
     let value;
     if (n.includes('.') || n.toLowerCase().includes('e')) {
       value = parseFloat(n);
