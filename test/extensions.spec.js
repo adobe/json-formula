@@ -151,7 +151,8 @@ test('debug output', () => {
     {a: 12} | [2],
     toDate("2023111"),
     toDate("abcd"),
-    {a: ["A",\`{}\`,\`[]\`][? @ < 2]}
+    {a: ["A",\`{}\`,\`[]\`][? @ < 2]},
+    {foo: 12, foo: 13}
   )`;
   const debug = [];
   new JsonFormula({}, stringToNumber, debug).search(expression, { $form: form1 }, form1);
@@ -180,6 +181,7 @@ test('debug output', () => {
     'Failed to convert "A" to number',
     'Cannot use comparators with object',
     'Cannot use comparators with array',
+    'Duplicate key: \'foo\'',
   ]);
   expect(debugTracking).toBe('Access p1 from {"p1":"property1"}');
 });
