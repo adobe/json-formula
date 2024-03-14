@@ -1858,6 +1858,8 @@ export default function functions(
         const old = Array.from(toString(args[1]));
         const replacement = Array.from(toString(args[2]));
 
+        if (old.length === 0) return args[0];
+
         // no third parameter? replace all instances
         let replaceAll = true;
         let whch = -1;

@@ -382,6 +382,10 @@
         "result": "𝒜𝒞𝒟𝒢𝒥"
       },
       {
+        "expression": "substitute(\"AAAA\", \"\", \"A\")",
+        "result": "AAAA"
+      },
+      {
         "expression": "max(numbers)",
         "result": 5
       },
