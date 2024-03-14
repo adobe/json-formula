@@ -1,44 +1,45 @@
-[{
-  "comment": "Dot syntax",
-  "given": {"type": "object"},
-  "cases": [
-    {
-      "expression": "foo.bar",
-      "result": null
-    },
-    {
-      "expression": "foo.1",
-      "error": "SyntaxError"
-    },
-    {
-      "expression": "foo.-11",
-      "error": "SyntaxError"
-    },
-    {
-      "expression": "foo.",
-      "error": "SyntaxError"
-    },
-    {
-      "expression": ".foo",
-      "error": "SyntaxError"
-    },
-    {
-      "expression": "foo..bar",
-      "error": "SyntaxError"
-    },
-    {
-      "expression": "foo.bar.",
-      "error": "SyntaxError"
-    },
-    {
-      "expression": "foo[.]",
-      "error": "SyntaxError"
-    }
-  ]
-},
+[
+  {
+    "comment": "Dot syntax",
+    "given": { "type": "object" },
+    "cases": [
+      {
+        "expression": "foo.bar",
+        "result": null
+      },
+      {
+        "expression": "foo.1",
+        "error": "SyntaxError"
+      },
+      {
+        "expression": "foo.-11",
+        "error": "SyntaxError"
+      },
+      {
+        "expression": "foo.",
+        "error": "SyntaxError"
+      },
+      {
+        "expression": ".foo",
+        "error": "SyntaxError"
+      },
+      {
+        "expression": "foo..bar",
+        "error": "SyntaxError"
+      },
+      {
+        "expression": "foo.bar.",
+        "error": "SyntaxError"
+      },
+      {
+        "expression": "foo[.]",
+        "error": "SyntaxError"
+      }
+    ]
+  },
   {
     "comment": "Simple token errors",
-    "given": {"type": "object"},
+    "given": { "type": "object" },
     "cases": [
       {
         "expression": ".",
@@ -108,7 +109,7 @@
   },
   {
     "comment": "Boolean syntax errors",
-    "given": {"type": "object"},
+    "given": { "type": "object" },
     "cases": [
       {
         "expression": "![!(!",
@@ -145,7 +146,7 @@
   },
   {
     "comment": "Wildcard combinations",
-    "given": {"a": 3},
+    "given": { "a": 3 },
     "cases": [
       {
         "expression": "(@.*)",
@@ -181,7 +182,7 @@
       },
       {
         "expression": "a ~ *",
-        "result": [3,3]
+        "result": [3, 3]
       },
       {
         "expression": "a > *",
@@ -223,7 +224,7 @@
   },
   {
     "comment": "Wildcard syntax",
-    "given": {"type": "object"},
+    "given": { "type": "object" },
     "cases": [
       {
         "expression": "*",
@@ -265,7 +266,7 @@
   },
   {
     "comment": "Flatten syntax",
-    "given": {"type": "object"},
+    "given": { "type": "object" },
     "cases": [
       {
         "expression": "[]",
@@ -275,7 +276,7 @@
   },
   {
     "comment": "Simple bracket syntax",
-    "given": {"type": "object"},
+    "given": { "type": "object" },
     "cases": [
       {
         "expression": "[0]",
@@ -293,12 +294,12 @@
       {
         "expression": "*.[\"0\"]",
         "result": [["0"]],
-        "was" : [[null]]
+        "was": [[null]]
       },
       {
         "expression": "*.['0']",
         "result": [[null]],
-        "was" : "[['0']]"
+        "was": "[['0']]"
       },
 
       {
@@ -348,7 +349,7 @@
   },
   {
     "comment": "Array expression syntax",
-    "given": {"type": "object"},
+    "given": { "type": "object" },
     "cases": [
       {
         "expression": "foo[0]",
@@ -444,7 +445,7 @@
   },
   {
     "comment": "Object expression syntax",
-    "given": {"type": "object"},
+    "given": { "type": "object" },
     "cases": [
       {
         "comment": "No key or value",
@@ -503,12 +504,12 @@
       {
         "comment": "Valid object expression extraction",
         "expression": "a.{foo: bar}",
-        "result": {"foo": null}
+        "result": { "foo": null }
       },
       {
         "comment": "Valid object expression extraction",
         "expression": "a.{foo: bar, baz: bam}",
-        "result": {"baz": null, "foo": null}
+        "result": { "baz": null, "foo": null }
       },
       {
         "comment": "Trailing comma",
@@ -533,7 +534,7 @@
       {
         "comment": "Nested multi select",
         "expression": "{'\\\\':{' ':*}}",
-        "result": {"\\": {" ": ["object"]}}
+        "result": { "\\": { " ": ["object"] } }
       },
       {
         "comment": "Missing closing } after a valid nud",
@@ -544,7 +545,7 @@
   },
   {
     "comment": "Or expressions",
-    "given": {"type": "object"},
+    "given": { "type": "object" },
     "cases": [
       {
         "expression": "foo || bar",
@@ -579,7 +580,7 @@
         "error": "SyntaxError"
       },
       {
-        "comment" : "unterminated string literal",
+        "comment": "unterminated string literal",
         "expression": "\"foo",
         "error": "SyntaxError"
       }
@@ -587,7 +588,7 @@
   },
   {
     "comment": "Filter expressions",
-    "given": {"type": "object"},
+    "given": { "type": "object" },
     "cases": [
       {
         "expression": "foo[?bar==`\"baz\"`]",
@@ -647,7 +648,7 @@
       {
         "comment": "Unknown comparator",
         "expression": "foo[?bar<>baz]",
-        "result" : null,
+        "result": null,
         "was": "SyntaxError"
       },
       {
@@ -679,7 +680,7 @@
   },
   {
     "comment": "Filter expression errors",
-    "given": {"type": "object"},
+    "given": { "type": "object" },
     "cases": [
       {
         "expression": "bar.`\"anything\"`",
@@ -738,7 +739,7 @@
   },
   {
     "comment": "Identifiers",
-    "given": {"type": "object"},
+    "given": { "type": "object" },
     "cases": [
       {
         "expression": "foo",
@@ -762,18 +763,18 @@
     "comment": "Combined syntax",
     "given": [],
     "cases": [
-        {
-          "expression": "*||*|*|*",
-          "result": null
-        },
-        {
-          "expression": "*[]||[*]",
-          "result": []
-        },
-        {
-          "expression": "[*.*]",
-          "result": [null]
-        }
+      {
+        "expression": "*||*|*|*",
+        "result": null
+      },
+      {
+        "expression": "*[]||[*]",
+        "result": []
+      },
+      {
+        "expression": "[*.*]",
+        "result": [null]
+      }
     ]
   },
   {
