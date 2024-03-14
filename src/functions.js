@@ -1237,19 +1237,9 @@ export default function functions(
      * power(10, 2) // returns 100 (10 raised to power 2)
      */
     power: {
-      _func: args => {
-        const type = getType(args[0]);
-        if (type === dataTypes.TYPE_ARRAY
-              || type === dataTypes.TYPE_ARRAY_STRING || type === dataTypes.TYPE_ARRAY_NUMBER) {
-          return args[0].map(a => toNumber(a) ** args[1]);
-        }
-        return validNumber(args[0] ** args[1], 'power');
-      },
+      _func: args => validNumber(args[0] ** args[1], 'power'),
       _signature: [
-        {
-          types: [dataTypes.TYPE_NUMBER, dataTypes.TYPE_ARRAY_NUMBER,
-            dataTypes.TYPE_ARRAY_STRING],
-        },
+        { types: [dataTypes.TYPE_NUMBER] },
         { types: [dataTypes.TYPE_NUMBER] },
       ],
     },
@@ -1781,7 +1771,8 @@ export default function functions(
      * `stdev` assumes that its arguments are a sample of the entire population.
      * If your data represents a entire population,
      * then compute the standard deviation using [stdevp]{@link stdevp}.
-     * @param {number[]} numbers The array of numbers comprising the population
+     * @param {number[]} numbers The array of numbers comprising the population.
+     * Array size must be greater than 1.
      * @returns {number} [Standard deviation](https://en.wikipedia.org/wiki/Standard_deviation)
      * @function stdev
      * @example
@@ -1791,9 +1782,7 @@ export default function functions(
     stdev: {
       _func: args => {
         const values = args[0];
-        if (values.length <= 1) {
-          return null;
-        }
+        if (values.length <= 1) throw evaluationError('stdev() must have at least two values');
         const coercedValues = values.map(value => toNumber(value));
         const mean = coercedValues.reduce((a, b) => a + b, 0) / values.length;
         const sumSquare = coercedValues.reduce((a, b) => a + b * b, 0);
@@ -1810,7 +1799,8 @@ export default function functions(
      * `stdevp` assumes that its arguments are the entire population.
      * If your data represents a sample of the population,
      * then compute the standard deviation using [stdev]{@link stdev}.
-     * @param {number[]} numbers The array of numbers comprising the population
+     * @param {number[]} numbers The array of numbers comprising the population.
+     * An empty array is not allowed.
      * @returns {number} Calculated standard deviation
      * @function stdevp
      * @example
@@ -1820,9 +1810,8 @@ export default function functions(
     stdevp: {
       _func: args => {
         const values = args[0];
-        if (values.length === 0) {
-          return null;
-        }
+        if (values.length === 0) throw evaluationError('stdevp() must have at least one value');
+
         const coercedValues = values.map(value => toNumber(value));
         const mean = coercedValues.reduce((a, b) => a + b, 0) / values.length;
         const meanSumSquare = coercedValues.reduce((a, b) => a + b * b, 0) / values.length;
@@ -1857,6 +1846,8 @@ export default function functions(
         const src = Array.from(toString(args[0]));
         const old = Array.from(toString(args[1]));
         const replacement = Array.from(toString(args[2]));
+
+        if (old.length === 0) return args[0];
 
         // no third parameter? replace all instances
         let replaceAll = true;

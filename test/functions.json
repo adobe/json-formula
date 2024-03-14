@@ -58,7 +58,7 @@
         "result": 16
       },
       {
-        "expression": "power([1, 2, 4], 4)",
+        "expression": "map([1, 2, 4], &power(@, 4))",
         "result": [1, 16, 256]
       },
       {
@@ -380,6 +380,10 @@
       {
         "expression": "substitute(extended, \"\ud835\", \"A\", 1)",
         "result": "𝒜𝒞𝒟𝒢𝒥"
+      },
+      {
+        "expression": "substitute(\"AAAA\", \"\", \"A\")",
+        "result": "AAAA"
       },
       {
         "expression": "max(numbers)",

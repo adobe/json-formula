@@ -287,7 +287,6 @@
         "result": null
       },
       {
-        "data": "@",
         "expression": "value(value('purchase-order', \"address\"), \"street\")",
         "result": "123 Oak Street"
       },
@@ -297,17 +296,14 @@
         "result": "pens"
       },
       {
-        "data": "@",
         "expression": "value(value(value(@, \"purchase-order\"), \"address\"),\"city\")",
         "result": "San Jose"
       },
       {
-        "data": "@",
         "expression": "value(@, \"purchase-orders\")",
         "result": null
       },
       {
-        "data": "`null`",
         "expression": "value(@, \"purchase-orders\")",
         "result": null
       },
@@ -326,10 +322,10 @@
         "expression": "lower(address.street)",
         "result": "123 oak street"
       },
-      { "data": "`null`", "expression": "lower(\"\")", "result": "" },
-      { "data": "`null`", "expression": "lower(\"abc\")", "result": "abc" },
-      { "data": "`null`", "expression": "lower(\"aBc\")", "result": "abc" },
-      { "data": "`null`", "expression": "lower(42)", "result": "42" },
+      { "expression": "lower(\"\")", "result": "" },
+      { "expression": "lower(\"abc\")", "result": "abc" },
+      { "expression": "lower(\"aBc\")", "result": "abc" },
+      { "expression": "lower(42)", "result": "42" },
       {
         "data": "'purchase-order'",
         "expression": "upper(address.missing)",
@@ -340,10 +336,10 @@
         "expression": "upper(address.street)",
         "result": "123 OAK STREET"
       },
-      { "data": "`null`", "expression": "upper(\"\")", "result": "" },
-      { "data": "`null`", "expression": "upper(\"ABC\")", "result": "ABC" },
-      { "data": "`null`", "expression": "upper(\"aBc\")", "result": "ABC" },
-      { "data": "`null`", "expression": "upper(42)", "result": "42" },
+      { "expression": "upper(\"\")", "result": "" },
+      { "expression": "upper(\"ABC\")", "result": "ABC" },
+      { "expression": "upper(\"aBc\")", "result": "ABC" },
+      { "expression": "upper(42)", "result": "42" },
       {
         "data": "'purchase-order'",
         "expression": "exp(items[0].quantity)",
@@ -354,9 +350,9 @@
         "expression": "exp(missing)",
         "result": 1
       },
-      { "data": "`null`", "expression": "exp(0)", "result": 1 },
-      { "data": "`null`", "expression": "exp(\"0\")", "result": 1 },
-      { "data": "`null`", "expression": "exp(1)", "result": 2.718281828459045 },
+      { "expression": "exp(0)", "result": 1 },
+      { "expression": "exp(\"0\")", "result": 1 },
+      { "expression": "exp(1)", "result": 2.718281828459045 },
       {
         "data": "'purchase-order'",
         "expression": "power(10,items[0].quantity)",
@@ -367,48 +363,40 @@
         "expression": "power(missing, 1)",
         "result": 0
       },
-      { "data": "`null`", "expression": "power(1, 1)", "result": 1 },
-      { "data": "`null`", "expression": "power(2, 3)", "result": 8 },
-      { "data": "`null`", "expression": "power(2, -1)", "result": 0.5 },
-      { "data": "`null`", "expression": "power(-2, -1)", "result": -0.5 },
-      { "data": "`null`", "expression": "power(2)", "error": "FunctionError" },
+      { "expression": "power(1, 1)", "result": 1 },
+      { "expression": "power(2, 3)", "result": 8 },
+      { "expression": "power(2, -1)", "result": 0.5 },
+      { "expression": "power(-2, -1)", "result": -0.5 },
+      { "expression": "power(2)", "error": "FunctionError" },
       {
-        "data": "`null`",
         "expression": "find(\"a\", \"abcdabce\")",
         "result": 0
       },
       {
-        "data": "`null`",
         "expression": "find(\"b\", \"abcdabce\")",
         "result": 1
       },
       {
-        "data": "`null`",
         "expression": "find(\"abc\", \"abcdabce\")",
         "result": 0
       },
       {
-        "data": "`null`",
         "expression": "find(\"abce\", \"abcdabce\")",
         "result": 4
       },
       {
-        "data": "`null`",
         "expression": "find(\"ab\", \"abcdabce\",0)",
         "result": 0
       },
       {
-        "data": "`null`",
         "expression": "find(\"ab\", \"abcdabce\",100)",
         "result": null
       },
       {
-        "data": "`null`",
         "expression": "find(\"z\", \"abcdabce\",0)",
         "result": null
       },
       {
-        "data": "`null`",
         "expression": "find(\"abc\", \"abcdabce\",1)",
         "result": 4
       },
@@ -432,12 +420,12 @@
         "expression": "find(missing, missing)",
         "result": 0
       },
-      { "data": "`null`", "expression": "left(\"abc\")", "result": "a" },
-      { "data": "`null`", "expression": "left(\"abc\", 1)", "result": "a" },
-      { "data": "`null`", "expression": "left(\"abc\", 2)", "result": "ab" },
-      { "data": "`null`", "expression": "left(\"abc\", 100)", "result": "abc" },
-      { "data": "`null`", "expression": "left(\"abc\", 0)", "result": "" },
-      { "data": "`null`", "expression": "left(\"abc\", -1)", "result": null },
+      { "expression": "left(\"abc\")", "result": "a" },
+      { "expression": "left(\"abc\", 1)", "result": "a" },
+      { "expression": "left(\"abc\", 2)", "result": "ab" },
+      { "expression": "left(\"abc\", 100)", "result": "abc" },
+      { "expression": "left(\"abc\", 0)", "result": "" },
+      { "expression": "left(\"abc\", -1)", "result": null },
       {
         "data": "'purchase-order'",
         "expression": "left(address.street)",
@@ -448,16 +436,15 @@
         "expression": "left(missing)",
         "result": ""
       },
-      { "data": "`null`", "expression": "right(\"abc\")", "result": "c" },
-      { "data": "`null`", "expression": "right(\"abc\", 1)", "result": "c" },
-      { "data": "`null`", "expression": "right(\"abc\", 2)", "result": "bc" },
+      { "expression": "right(\"abc\")", "result": "c" },
+      { "expression": "right(\"abc\", 1)", "result": "c" },
+      { "expression": "right(\"abc\", 2)", "result": "bc" },
       {
-        "data": "`null`",
         "expression": "right(\"abc\", 100)",
         "result": "abc"
       },
-      { "data": "`null`", "expression": "right(\"abc\", 0)", "result": "" },
-      { "data": "`null`", "expression": "right(\"abc\", -1)", "result": null },
+      { "expression": "right(\"abc\", 0)", "result": "" },
+      { "expression": "right(\"abc\", -1)", "result": null },
       {
         "data": "'purchase-order'",
         "expression": "right(address.street)",
@@ -468,20 +455,17 @@
         "expression": "right(missing)",
         "result": ""
       },
-      { "data": "`null`", "expression": "mid(\"abc\", 0, 0)", "result": "" },
-      { "data": "`null`", "expression": "mid(\"abc\", 1, 1)", "result": "b" },
+      { "expression": "mid(\"abc\", 0, 0)", "result": "" },
+      { "expression": "mid(\"abc\", 1, 1)", "result": "b" },
       {
-        "data": "`null`",
         "expression": "mid(\"abc\", 1, 100)",
         "result": "bc"
       },
       {
-        "data": "`null`",
         "expression": "mid(\"abc\", -1, 100)",
         "result": null
       },
       {
-        "data": "`null`",
         "expression": "mid(\"abc\")",
         "error": "FunctionError"
       },
@@ -496,32 +480,26 @@
         "result": ""
       },
       {
-        "data": "`null`",
         "expression": "left(split(\"abc\", \"\"))",
         "result": ["a"]
       },
       {
-        "data": "`null`",
         "expression": "left(split(\"abc\", \"\"), 1)",
         "result": ["a"]
       },
       {
-        "data": "`null`",
         "expression": "left(split(\"abc\", \"\"), 2)",
         "result": ["a", "b"]
       },
       {
-        "data": "`null`",
         "expression": "left(split(\"abc\", \"\"), 100)",
         "result": ["a", "b", "c"]
       },
       {
-        "data": "`null`",
         "expression": "left(split(\"abc\", \"\"), 0)",
         "result": []
       },
       {
-        "data": "`null`",
         "expression": "left(split(\"abc\", \"\"), -1)",
         "result": null
       },
@@ -531,32 +509,26 @@
         "result": ["1"]
       },
       {
-        "data": "`null`",
         "expression": "right(split(\"abc\", \"\"))",
         "result": ["c"]
       },
       {
-        "data": "`null`",
         "expression": "right(split(\"abc\", \"\"), 1)",
         "result": ["c"]
       },
       {
-        "data": "`null`",
         "expression": "right(split(\"abc\", \"\"), 2)",
         "result": ["b", "c"]
       },
       {
-        "data": "`null`",
         "expression": "right(split(\"abc\", \"\"), 100)",
         "result": ["a", "b", "c"]
       },
       {
-        "data": "`null`",
         "expression": "right(split(\"abc\", \"\"), 0)",
         "result": []
       },
       {
-        "data": "`null`",
         "expression": "right(split(\"abc\", \"\"), -1)",
         "result": null
       },
@@ -566,27 +538,22 @@
         "result": ["t"]
       },
       {
-        "data": "`null`",
         "expression": "mid(split(\"abc\", \"\"), 0, 0)",
         "result": []
       },
       {
-        "data": "`null`",
         "expression": "mid(split(\"abc\", \"\"), 1, 1)",
         "result": ["b"]
       },
       {
-        "data": "`null`",
         "expression": "mid(split(\"abc\", \"\"), 1, 100)",
         "result": ["b", "c"]
       },
       {
-        "data": "`null`",
         "expression": "mid(split(\"abc\", \"\"), -1, 100)",
         "result": null
       },
       {
-        "data": "`null`",
         "expression": "mid(split(\"abc\", \"\"))",
         "error": "FunctionError"
       },
@@ -595,14 +562,12 @@
         "expression": "mid(split(address.street, \"\"), 0, 1)",
         "result": ["1"]
       },
-      { "data": "`null`", "expression": "proper(\"\")", "result": "" },
+      { "expression": "proper(\"\")", "result": "" },
       {
-        "data": "`null`",
         "expression": "proper(\"two words\")",
         "result": "Two Words"
       },
       {
-        "data": "`null`",
         "expression": "proper(\"TWO WORDS\")",
         "result": "Two Words"
       },
@@ -616,15 +581,14 @@
         "expression": "proper(missing)",
         "result": ""
       },
-      { "data": "`null`", "expression": "rept('', 10)", "result": "" },
-      { "data": "`null`", "expression": "rept(\"a\", 2)", "result": "aa" },
+      { "expression": "rept('', 10)", "result": "" },
+      { "expression": "rept(\"a\", 2)", "result": "aa" },
       {
-        "data": "`null`",
         "expression": "rept(\"abc\", 2)",
         "result": "abcabc"
       },
-      { "data": "`null`", "expression": "rept(\"a\", 0)", "result": "" },
-      { "data": "`null`", "expression": "rept(\"a\", -1)", "result": null },
+      { "expression": "rept(\"a\", 0)", "result": "" },
+      { "expression": "rept(\"a\", -1)", "result": null },
       {
         "data": "'purchase-order'",
         "expression": "rept(address.country, items[0].quantity)",
@@ -641,22 +605,18 @@
         "result": ""
       },
       {
-        "data": "`null`",
         "expression": "replace(\"abcdefg\", 2, 2, \"yz\")",
         "result": "abyzefg"
       },
       {
-        "data": "`null`",
         "expression": "replace(\"abcdefg\", 2, 0, \"yz\")",
         "result": "abyzcdefg"
       },
       {
-        "data": "`null`",
         "expression": "replace(\"abcdefg\", 2, 100, \"yz\")",
         "result": "abyz"
       },
       {
-        "data": "`null`",
         "expression": "replace(\"abcdefg\", -1, 100, \"yz\")",
         "result": null
       },
@@ -688,40 +648,34 @@
         ]
       },
       {
-        "data": "`null`",
         "expression": "replace(3, 1, 0, [4,5,6])",
         "result": "3[4,5,6]"
       },
       {
-        "data": "`null`",
         "expression": "replace(367, 1, 0, 45)",
         "result": "34567"
       },
-      { "data": "`null`", "expression": "round(123.456, 0)", "result": 123 },
-      { "data": "`null`", "expression": "round(123.456, 1)", "result": 123.5 },
-      { "data": "`null`", "expression": "round(123.456, 2)", "result": 123.46 },
+      { "expression": "round(123.456, 0)", "result": 123 },
+      { "expression": "round(123.456, 1)", "result": 123.5 },
+      { "expression": "round(123.456, 2)", "result": 123.46 },
       {
-        "data": "`null`",
         "expression": "round(123.456, 3)",
         "result": 123.456
       },
       {
-        "data": "`null`",
         "expression": "round(123.456, 4)",
         "result": 123.456
       },
-      { "data": "`null`", "expression": "round(123.56, -1)", "result": 120 },
-      { "data": "`null`", "expression": "round(123.56, -2)", "result": 100 },
-      { "data": "`null`", "expression": "round(123.56, -3)", "result": 0 },
-      { "data": "`null`", "expression": "round(501.56, -3)", "result": 1000 },
+      { "expression": "round(123.56, -1)", "result": 120 },
+      { "expression": "round(123.56, -2)", "result": 100 },
+      { "expression": "round(123.56, -3)", "result": 0 },
+      { "expression": "round(501.56, -3)", "result": 1000 },
       {
-        "data": "`null`",
         "expression": "round(-123.456, 2)",
         "result": -123.46
       },
-      { "data": "`null`", "expression": "round(-123.456, -1)", "result": -120 },
+      { "expression": "round(-123.456, -1)", "result": -120 },
       {
-        "data": "`null`",
         "expression": "round(1.24349E2, 2)",
         "result": 124.35
       },
@@ -742,14 +696,12 @@
       },
       { "expression": "round(1.5)", "result": 2 },
       { "expression": "round(-1.5)", "result": -1 },
-      { "data": "`null`", "expression": "sqrt(4)", "result": 2 },
+      { "expression": "sqrt(4)", "result": 2 },
       {
-        "data": "`null`",
         "expression": "sqrt(3)",
         "result": 1.7320508075688772
       },
       {
-        "data": "`null`",
         "expression": "sqrt(-3)",
         "error": "EvaluationError"
       },
@@ -763,9 +715,9 @@
         "expression": "sqrt(missing)",
         "result": 0
       },
-      { "data": "`null`", "expression": "stdev(`[1,\"2\",3]`)", "result": 1 },
-      { "data": "`null`", "expression": "stdev(`[1]`)", "result": null },
-      { "data": "`null`", "expression": "stdev(`[]`)", "result": null },
+      { "expression": "stdev(`[1,\"2\",3]`)", "result": 1 },
+      { "expression": "stdev(`[1]`)", "error": "EvaluationError" },
+      { "expression": "stdev(`[]`)", "error": "EvaluationError" },
       {
         "data": "'purchase-order'",
         "expression": "stdev(items[*].quantity)",
@@ -774,11 +726,11 @@
       {
         "data": "'purchase-order'",
         "expression": "stdev(missing)",
-        "result": null
+        "error": "EvaluationError"
       },
-      { "data": "`null`", "expression": "stdevp(`[2,3]`)", "result": 0.5 },
-      { "data": "`null`", "expression": "stdevp(`[2]`)", "result": 0 },
-      { "data": "`null`", "expression": "stdevp(`[]`)", "result": null },
+      { "expression": "stdevp(`[2,3]`)", "result": 0.5 },
+      { "expression": "stdevp(`[2]`)", "result": 0 },
+      { "expression": "stdevp(`[]`)", "error": "EvaluationError" },
       {
         "data": "'purchase-order'",
         "expression": "stdevp(items[*].quantity)",
@@ -787,15 +739,13 @@
       {
         "data": "'purchase-order'",
         "expression": "stdevp(missing)",
-        "result": null
+        "error": "EvaluationError"
       },
       {
-        "data": "`null`",
         "expression": "trim(\"  abc  def ghi   \")",
         "result": "abc def ghi"
       },
       {
-        "data": "`null`",
         "expression": "trim(\" \\tabc  def ghi   \")",
         "result": "\tabc def ghi"
       },
@@ -809,29 +759,26 @@
         "expression": "trim(missing)",
         "result": ""
       },
-      { "data": "`null`", "expression": "trunc(123.456)", "result": 123 },
-      { "data": "`null`", "expression": "trunc(123.456, 1)", "result": 123.4 },
-      { "data": "`null`", "expression": "trunc(123.456, 2)", "result": 123.45 },
+      { "expression": "trunc(123.456)", "result": 123 },
+      { "expression": "trunc(123.456, 1)", "result": 123.4 },
+      { "expression": "trunc(123.456, 2)", "result": 123.45 },
       {
-        "data": "`null`",
         "expression": "trunc(123.456, 3)",
         "result": 123.456
       },
       {
-        "data": "`null`",
         "expression": "trunc(123.456, 10)",
         "result": 123.456
       },
-      { "data": "`null`", "expression": "trunc(123.456, -1)", "result": 120 },
-      { "data": "`null`", "expression": "trunc(123.456, -2)", "result": 100 },
-      { "data": "`null`", "expression": "trunc(123.456, -3)", "result": 0 },
-      { "data": "`null`", "expression": "trunc(123.456, -100)", "result": 0 },
+      { "expression": "trunc(123.456, -1)", "result": 120 },
+      { "expression": "trunc(123.456, -2)", "result": 100 },
+      { "expression": "trunc(123.456, -3)", "result": 0 },
+      { "expression": "trunc(123.456, -100)", "result": 0 },
       {
-        "data": "`null`",
         "expression": "trunc(-123.456, 2)",
         "result": -123.45
       },
-      { "data": "`null`", "expression": "trunc(-123.456, -1)", "result": -120 },
+      { "expression": "trunc(-123.456, -1)", "result": -120 },
       {
         "data": "'purchase-order'",
         "expression": "trunc(items[0].price, 1)",
@@ -848,18 +795,15 @@
         "result": 0
       },
       {
-        "data": "`null`",
         "expression": "fromCodePoint(13055)",
         "result": "㋿"
       },
-      { "data": "`null`", "expression": "fromCodePoint(9)", "result": "\t" },
+      { "expression": "fromCodePoint(9)", "result": "\t" },
       {
-        "data": "`null`",
         "expression": "fromCodePoint(123123123)",
         "error": "EvaluationError"
       },
       {
-        "data": "`null`",
         "expression": "fromCodePoint(9.123)",
         "result": "\t"
       },
@@ -868,14 +812,13 @@
         "expression": "fromCodePoint(missing)",
         "result": "\u0000"
       },
-      { "data": "`null`", "expression": "codePoint(\"\\t\")", "result": 9 },
-      { "data": "`null`", "expression": "codePoint(\"㋿\")", "result": 13055 },
+      { "expression": "codePoint(\"\\t\")", "result": 9 },
+      { "expression": "codePoint(\"㋿\")", "result": 13055 },
       {
-        "data": "`null`",
         "expression": "codePoint(\"㋿abc\")",
         "result": 13055
       },
-      { "data": "`null`", "expression": "codePoint(\"\")", "result": null },
+      { "expression": "codePoint(\"\")", "result": null },
       {
         "data": "'purchase-order'",
         "expression": "codePoint(missing)",
@@ -887,27 +830,22 @@
         "result": 49
       },
       {
-        "data": "`null`",
         "expression": "datetime(1970,1,1) | [year(@), month(@), day(@)]",
         "result": [1970, 1, 1]
       },
       {
-        "data": "`null`",
         "expression": "datetime(\"1970\",1,1) | [year(@), month(@), day(@)]",
         "result": [1970, 1, 1]
       },
       {
-        "data": "`null`",
         "expression": "datetime(1969,12,31) | [year(@), month(@), day(@)]",
         "result": [1969, 12, 31]
       },
       {
-        "data": "`null`",
         "expression": "datetime(2020,2,29) | [year(@), month(@), day(@)]",
         "result": [2020, 2, 29]
       },
       {
-        "data": "`null`",
         "expression": "datetime(2020,3,1) | [year(@), month(@), day(@)]",
         "result": [2020, 3, 1]
       },
@@ -917,47 +855,38 @@
         "result": [1970, 1, 1]
       },
       {
-        "data": "`null`",
         "expression": "datetime(1970,1,1) | day(@)",
         "result": 1
       },
       {
-        "data": "`null`",
         "expression": "datetime(1970,1,1,13,12,11,0) | {h: hour(@), m: minute(@), s: second(@), ms: mod(@ * 24 * 60 * 60 * 100, 1000)}",
         "result": { "h": 13, "m": 12, "s": 11, "ms": 100 }
       },
       {
-        "data": "`null`",
         "expression": "datetime(1970,1)",
         "error": "FunctionError"
       },
       {
-        "data": "`null`",
         "expression": "day(datetime(1970, 1, 1))",
         "result": 1
       },
       {
-        "data": "`null`",
         "expression": "day(datetime(1970, 1, 2, 12))",
         "result": 2
       },
       {
-        "data": "null()",
         "expression": "day(localDate(\"1970-01-01\"))",
         "result": 1
       },
       {
-        "data": "`null`",
         "expression": "datetime(1970,1,1) | month(@)",
         "result": 1
       },
       {
-        "data": "`null`",
         "expression": "datetime(2020,2,29) | month(@)",
         "result": 2
       },
       {
-        "data": "`null`",
         "expression": "datetime(2020,2,30) | month(@)",
         "result": 3
       },
@@ -967,17 +896,14 @@
         "result": 1
       },
       {
-        "data": "`null`",
         "expression": "datetime(1970,1,1) | year(@)",
         "result": 1970
       },
       {
-        "data": "`null`",
         "expression": "datetime(1969,1,1) | year(@)",
         "result": 1969
       },
       {
-        "data": "`null`",
         "expression": "datetime(1969,1,1) | year(@)",
         "result": 1969
       },
@@ -987,17 +913,14 @@
         "result": 1970
       },
       {
-        "data": "`null`",
         "expression": "time(0, 0, 0) | [hour(@), minute(@),  second(@)]",
         "result": [0, 0, 0]
       },
       {
-        "data": "`null`",
         "expression": "time(6, 0, 0) | [hour(@), minute(@),  second(@)]",
         "result": [6, 0, 0]
       },
       {
-        "data": "`null`",
         "expression": "time(\"6\", \"13\", \"14\") | [hour(@), minute(@),  second(@)]",
         "result": [6, 13, 14]
       },
@@ -1010,22 +933,19 @@
         "expression": "time(-10, 7, 61).[hour(@), minute(@), second(@)].map(@, &if(@ < 10, \"0\" & @, @)).join(@, \":\")",
         "result": "14:08:01"
       },
-      { "data": "`null`", "expression": "hour(time(6))", "result": 6 },
-      { "data": "`null`", "expression": "hour(time(80, 0, 0))", "result": 8 },
-      { "data": "`null`", "expression": "hour(time(32, 0, 0))", "result": 8 },
+      { "expression": "hour(time(6))", "result": 6 },
+      { "expression": "hour(time(80, 0, 0))", "result": 8 },
+      { "expression": "hour(time(32, 0, 0))", "result": 8 },
       {
-        "data": "`null`",
         "expression": "hour(datetime(2008,5,23,12, 0, 0))",
         "result": 12
       },
-      { "data": "`null`", "expression": "hour(time(11, 0, 0))", "result": 11 },
+      { "expression": "hour(time(11, 0, 0))", "result": 11 },
       {
-        "data": "`null`",
         "expression": "minute(datetime(1970, 1, 1, 0, 4))",
         "result": 4
       },
       {
-        "data": "`null`",
         "expression": "second(datetime(1970, 1, 1, 0, 0, 3))",
         "result": 3
       },
@@ -1035,12 +955,10 @@
         "result": 12
       },
       {
-        "data": "`null`",
         "expression": "minute(datetime(1970, 1, 1, 0, 54))",
         "result": 54
       },
       {
-        "data": "`null`",
         "expression": "minute(datetime(1970, 1, 4, 0, 54))",
         "result": 54
       },
@@ -1049,15 +967,14 @@
         "expression": "minute(datetime(1970, 1, 1, 12))",
         "result": 0
       },
-      { "data": "`null`", "expression": "second(0.000625)", "result": 54 },
-      { "data": "`null`", "expression": "second(3.000625)", "result": 54 },
+      { "expression": "second(0.000625)", "result": 54 },
+      { "expression": "second(3.000625)", "result": 54 },
       {
         "data": "datetime",
         "expression": "second(datetime(1970, 1, 1, 12))",
         "result": 0
       },
       {
-        "data": "`null`",
         "expression": "weekday(datetime(1970, 1, 1))",
         "result": 5
       },
@@ -1151,7 +1068,6 @@
         "error": "SyntaxError"
       },
       {
-        "data": "`null`",
         "expression": "entries(`{\"a\": 1, \"b\": 2}`)",
         "result": [
           ["a", 1],
@@ -1165,7 +1081,7 @@
           ["1", 1]
         ]
       },
-      { "data": "`null`", "expression": "entries(`null`)", "result": [] },
+      { "expression": "entries(`null`)", "result": [] },
       {
         "data": "'purchase-order'",
         "expression": "entries(address.country)",
@@ -1242,7 +1158,6 @@
       },
       { "expression": "4/\"b\"", "error": "EvaluationError" },
       {
-        "data": "`null`",
         "expression": "12.222 | round(@ * 2, 2)",
         "result": 24.44
       },
@@ -1467,14 +1382,12 @@
         "result": [null, false, true, 1, "1", [1, 2, 3], { "a": 1 }]
       },
       {
-        "data": "@",
         "expression": "deepScan('purchase-order', 1)",
         "result": [
           { "desc": "pencils", "quantity": 3, "price": 1.34, "subtotal": 4.02 }
         ]
       },
       {
-        "data": "@",
         "expression": "deepScan(null(), \"desc\")",
         "result": []
       },
