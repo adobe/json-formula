@@ -1,1066 +1,537 @@
 [
-  [
-    "\"abc\" & 123",
-    {
-       "expression": "\"abc\" & 123",
-       "data": {},
-       "expected":  "abc123"
-      }
-  ],
-  [
-    "\"123\" * 2",
-    {
-       "expression": "\"123\" * 2",
-       "data": {},
-       "expected":  246
-      }
-  ],
-  [
-    "[1,2,3] ~ 4",
-    {
-       "expression": "[1,2,3] ~ 4",
-       "data": {},
-       "expected":  [1,2,3,4]
-      }
-  ],
-  [
-    "123 < \"124\"",
-    {
-       "expression": "123 < \"124\"",
-       "data": {},
-       "expected":  true
-      }
-  ],
-  [
-    "\"23\" > 111",
-    {
-       "expression": "\"23\" > 111",
-       "data": {},
-       "expected":  false
-      }
-  ],
-  [
-    "abs(\"-2\")",
-    {
-       "expression": "abs(\"-2\")",
-       "data": {},
-       "expected":  2
-      }
-  ],
-  [
-    "\"$100\" * 2",
-    {
-       "expression": "\"$100\" * 2",
-       "data": {},
-       "expected":  0
-      }
-  ],
-  [
-    "1 == \"1\"",
-    {
-       "expression": "1 == \"1\"",
-       "data": {},
-       "expected":  false
-      }
-  ],
-  [
-    "\"$123.00\" + 1",
-    {
-       "expression": "\"$123.00\" + 1",
-       "data": {},
-       "expected":  1
-      }
-  ],
-  [
-    "a ~ b",
-    {
-       "expression": "a ~ b",
-       "data": {"a": [0,1,2], "b": [3,4,5]},
-       "expected":  [0,1,2,3,4,5]
-      }
-  ],
-  [
-    "a ~ b",
-    {
-       "expression": "a ~ b",
-       "data": {"a": [[0,1,2]], "b": [[3,4,5]]},
-       "expected":  [[0,1,2],[3,4,5]]
-      }
-  ],
-  [
-    "a[] ~ b[]",
-    {
-       "expression": "a[] ~ b[]",
-       "data": {"a": [[0,1,2]], "b": [[3,4,5]]},
-       "expected":  [0,1,2,3,4,5]
-      }
-  ],
-  [
-    "a ~ 10",
-    {
-       "expression": "a ~ 10",
-       "data": {"a": [0,1,2]},
-       "expected":  [0,1,2,10]
-      }
-  ],
-  [
-    "a ~ `null`",
-    {
-       "expression": "a ~ `null`",
-       "data": {"a": [0,1,2]},
-       "expected":  [0,1,2]
-      }
-  ],
-  [
-    "\"truth is \" & `true`",
-    {
-       "expression": "\"truth is \" & `true`",
-       "data": {},
-       "expected":  "truth is true"
-      }
-  ],
-  [
-    "[1,2,3] + [2,3,4]",
-    {
-       "expression": "[1,2,3] + [2,3,4]",
-       "data": {},
-       "expected":  [3,5,7]
-      }
-  ],
-  [
-    "[1,2,3,4] * [1,2,3]",
-    {
-       "expression": "[1,2,3,4] * [1,2,3]",
-       "data": {},
-       "expected":  [1,4,9,0]
-      }
-  ],
-  [
-    "[1,2,3,4] & \"%\"",
-    {
-       "expression": "[1,2,3,4] & \"%\"",
-       "data": {},
-       "expected":  ["1%", "2%", "3%", "4%"]
-      }
-  ],
-  [
-    "datetime(1970,1,2,0,0,0) - datetime(1970,1,1,0,0,0)",
-    {
-       "expression": "datetime(1970,1,2,0,0,0) - datetime(1970,1,1,0,0,0)",
-       "data": {},
-       "expected":  1
-      }
-  ],
-  [
-    "datetime(2010,1,21,12,0,0) | {month: month(@), day: day(@), hour: hour(@)}",
-    {
-       "expression": "datetime(2010,1,21,12,0,0) | {month: month(@), day: day(@), hour: hour(@)}",
-       "data": {},
-       "expected":  {"month": 1, "day": 21, "hour": 12}
-      }
-  ],
-  [
-    "2 + `true`",
-    {
-       "expression": "2 + `true`",
-       "data": {},
-       "expected":  3
-      }
-  ],
-  [
-    "avg(\"20\")",
-    {
-       "expression": "avg(\"20\")",
-       "data": {},
-       "expected":  20
-      }
-  ],
-  [
-    "left + right",
-    {
-       "expression": "left + right",
-       "data": {"left": 8, "right": 12 },
-       "expected":  20
-      }
-  ],
-  [
-    "right - left - 10",
-    {
-       "expression": "right - left - 10",
-       "data": {"left": 8, "right": 12 },
-       "expected":  -6
-      }
-  ],
-  [
-    "4 + 2 * 4",
-    {
-       "expression": "4 + 2 * 4",
-       "data": {},
-       "expected":  12
-      }
-  ],
-  [
-    "10 / 2 * 3",
-    {
-       "expression": "10 / 2 * 3",
-       "data": {},
-       "expected":  15
-      }
-  ],
-  [
-    "left & value & right",
-    {
-       "expression": "left & value & right",
-       "data": {"left": "[", "right": "]", "value": "abc" },
-       "expected":  "[abc]"
-      }
-  ],
-  [
-    "map(values, &\"$\" & @)",
-    {
-       "expression": "map(values, &\"$\" & @)",
-       "data": {"values": [123.45, 44.32, 99.00] },
-       "expected":  ["$123.45", "$44.32", "$99"]
-      }
-  ],
-  [
-    "foo",
-    {
-       "expression": "foo",
-       "data": {"foo": "bar"},
-       "expected":  "bar"
-      }
-  ],
-  [
-    "foo",
-    {
-       "expression": "foo",
-       "data": {"foo": "value"},
-       "expected":  "value"
-      }
-  ],
-  [
-    "bar",
-    {
-       "expression": "bar",
-       "data": {"foo": "value"},
-       "expected":  null
-      }
-  ],
-  [
-    "foo",
-    {
-       "expression": "foo",
-       "data": {"foo": [0, 1, 2]},
-       "expected":  [0, 1, 2]
-      }
-  ],
-  [
-    "'with space'",
-    {
-       "expression": "'with space'",
-       "data": {"with space": "value"},
-       "expected":  "value"
-      }
-  ],
-  [
-    "'special chars: !@#'",
-    {
-       "expression": "'special chars: !@#'",
-       "data": {"special chars: !@#": "value"},
-       "expected":  "value"
-      }
-  ],
-  [
-    "'quote\\'char'",
-    {
-       "expression": "'quote\\'char'",
-       "data": {"quote'char": "value"},
-       "expected":  "value"
-      }
-  ],
-  [
-    "'\u2713'",
-    {
-       "expression": "'\u2713'",
-       "data": {"\u2713": "value"},
-       "expected":  "value"
-      }
-  ],
-  [
-    "bar",
-    {
-       "expression": "bar",
-       "data": {"bar": "baz"},
-       "expected":  "baz"
-      }
-  ],
-  [
-    "foo.bar",
-    {
-       "expression": "foo.bar",
-       "data": {"foo": {"bar": "value"}},
-       "expected":  "value"
-      }
-  ],
-  [
-    "foo.'bar'",
-    {
-       "expression": "foo.'bar'",
-       "data": {"foo": {"bar": "value"}},
-       "expected":  "value"
-      }
-  ],
-  [
-    "foo.bar",
-    {
-       "expression": "foo.bar",
-       "data": {"foo": {"baz": "value"}},
-       "expected":  null
-      }
-  ],
-  [
-    "foo.bar.baz",
-    {
-       "expression": "foo.bar.baz",
-       "data": {"foo": {"bar": {"baz": "value"}}},
-       "expected":  "value"
-      }
-  ],
-  [
-    "a[1]",
-    {
-       "expression": "a[1]",
-       "data": {"a": [5,6,7,8,9]},
-       "expected":  6
-      }
-  ],
-  [
-    "a[-2]",
-    {
-       "expression": "a[-2]",
-       "data": {"a": [5,6,7,8,9]},
-       "expected":  8
-      }
-  ],
-  [
-    "[0:4:1]",
-    {
-       "expression": "[0:4:1]",
-       "data": [0, 1, 2, 3],
-       "expected":  [0, 1, 2, 3]
-      }
-  ],
-  [
-    "[0:4]",
-    {
-       "expression": "[0:4]",
-       "data": [0, 1, 2, 3],
-       "expected":  [0, 1, 2, 3]
-      }
-  ],
-  [
-    "[0:3]",
-    {
-       "expression": "[0:3]",
-       "data": [0, 1, 2, 3],
-       "expected":  [0, 1, 2]
-      }
-  ],
-  [
-    "[:2]",
-    {
-       "expression": "[:2]",
-       "data": [0, 1, 2, 3],
-       "expected":  [0, 1]
-      }
-  ],
-  [
-    "[::2]",
-    {
-       "expression": "[::2]",
-       "data": [0, 1, 2, 3],
-       "expected":  [0, 2]
-      }
-  ],
-  [
-    "[::-1]",
-    {
-       "expression": "[::-1]",
-       "data": [0, 1, 2, 3],
-       "expected":  [3, 2, 1, 0]
-      }
-  ],
-  [
-    "[-2:]",
-    {
-       "expression": "[-2:]",
-       "data": [0, 1, 2, 3],
-       "expected":  [2, 3]
-      }
-  ],
-  [
-    "[0]",
-    {
-       "expression": "[0]",
-       "data": ["first", "second", "third"],
-       "expected":  "first"
-      }
-  ],
-  [
-    "[-1]",
-    {
-       "expression": "[-1]",
-       "data": ["first", "second", "third"],
-       "expected":  "third"
-      }
-  ],
-  [
-    "[100]",
-    {
-       "expression": "[100]",
-       "data": ["first", "second", "third"],
-       "expected":  null
-      }
-  ],
-  [
-    "foo[0]",
-    {
-       "expression": "foo[0]",
-       "data": {"foo": ["first", "second", "third"]},
-       "expected":  "first"
-      }
-  ],
-  [
-    "foo[100]",
-    {
-       "expression": "foo[100]",
-       "data": {"foo": ["first", "second", "third"]},
-       "expected":  null
-      }
-  ],
-  [
-    "foo[0][0]",
-    {
-       "expression": "foo[0][0]",
-       "data": {"foo": [[0, 1], [1, 2]]},
-       "expected":  0
-      }
-  ],
-  [
-    "foo[]",
-    {
-       "expression": "foo[]",
-       "data": {"foo": [[0, 1], [1, 2], 3]},
-       "expected":  [0,1,1,2,3]
-      }
-  ],
-  [
-    "foo[]",
-    {
-       "expression": "foo[]",
-       "data": {"foo": [[0, 1], [1, 2], [3,[4,5]]]},
-       "expected":  [0,1,1,2,3,[4,5]]
-      }
-  ],
-  [
-    "foo[][]",
-    {
-       "expression": "foo[][]",
-       "data": {"foo": [[0, 1], [1, 2], [3,[4,5]]]},
-       "expected":  [0,1,1,2,3,4,5]
-      }
-  ],
-  [
-    "foo || bar",
-    {
-       "expression": "foo || bar",
-       "data": {"foo": "foo-value"},
-       "expected":  "foo-value"
-      }
-  ],
-  [
-    "foo || bar",
-    {
-       "expression": "foo || bar",
-       "data": {"bar": "bar-value"},
-       "expected":  "bar-value"
-      }
-  ],
-  [
-    "foo || bar",
-    {
-       "expression": "foo || bar",
-       "data": {"foo": "foo-value", "bar": "bar-value"},
-       "expected":  "foo-value"
-      }
-  ],
-  [
-    "foo || bar",
-    {
-       "expression": "foo || bar",
-       "data": {"baz": "baz-value"},
-       "expected":  null
-      }
-  ],
-  [
-    "foo || bar || baz",
-    {
-       "expression": "foo || bar || baz",
-       "data": {"baz": "baz-value"},
-       "expected":  "baz-value"
-      }
-  ],
-  [
-    "[n, \"doubled\", n * 2]",
-    {
-       "expression": "[n, \"doubled\", n * 2]",
-       "data": {"n": 4},
-       "expected":  [4, "doubled", 8]
-      }
-  ],
-  [
-    "override || mylist[-1]",
-    {
-       "expression": "override || mylist[-1]",
-       "data": {"mylist": ["one", "two"]},
-       "expected":  "two"
-      }
-  ],
-  [
-    "override || mylist[-1]",
-    {
-       "expression": "override || mylist[-1]",
-       "data": {"mylist": ["one", "two"], "override": "yes"},
-       "expected":  "yes"
-      }
-  ],
-  [
-    "True && False",
-    {
-       "expression": "True && False",
-       "data": {"True": true, "False": false},
-       "expected":  false
-      }
-  ],
-  [
-    "Number && EmptyList",
-    {
-       "expression": "Number && EmptyList",
-       "data": {"Number": 5, "EmptyList": []},
-       "expected":  []
-      }
-  ],
-  [
-    "foo[?a == `1` && b == `2`]",
-    {
-       "expression": "foo[?a == `1` && b == `2`]",
-       "data": {"foo": [{"a": 1, "b": 2}, {"a": 1, "b": 3}]},
-       "expected": [{"a": 1, "b": 2}]
-    }
-  ],
-  [
-    "foo[?(a == 1 || b == 2) && c == 5]",
-    {
-       "expression": "foo[?(a == 1 || b == 2) && c == 5]",
-       "data": {"foo": [{"a": 1, "b": 2, "c": 3}, {"a": 3, "b": 4}]},
-       "expected":  []
-      }
-  ],
-  [
-    "!True",
-    {
-       "expression": "!True",
-       "data": {"True": true},
-       "expected":  false
-      }
-  ],
-  [
-    "!False",
-    {
-       "expression": "!False",
-       "data": {"False": false},
-       "expected":  true
-      }
-  ],
-  [
-    "!Number",
-    {
-       "expression": "!Number",
-       "data": {"Number": 5},
-       "expected":  false
-      }
-  ],
-  [
-    "!EmptyList",
-    {
-       "expression": "!EmptyList",
-       "data": {"EmptyList": []},
-       "expected":  true
-      }
-  ],
-  [
-    "-11",
-    {
-       "expression": "-11",
-       "data": {},
-       "expected":  -11
-      }
-  ],
-  [
-    "-n",
-    {
-       "expression": "-n",
-       "data": {"n": 5, "nn": -10},
-       "expected":  -5
-      }
-  ],
-  [
-    "-nn",
-    {
-       "expression": "-nn",
-       "data": {"n": 5, "nn": -10},
-       "expected":  10
-      }
-  ],
-  [
-    "--n",
-    {
-       "expression": "--n",
-       "data": {"n": 5, "nn": -10},
-       "expected":  5
-      }
-  ],
-  [
-    "[foo,bar]",
-    {
-       "expression": "[foo,bar]",
-       "data": {"foo": "a", "bar": "b", "baz": "c"},
-       "expected":  ["a", "b"]
-      }
-  ],
-  [
-    "[foo,bar[0]]",
-    {
-       "expression": "[foo,bar[0]]",
-       "data": {"foo": "a", "bar": ["b"], "baz": "c"},
-       "expected":  ["a", "b"]
-      }
-  ],
-  [
-    "[foo,bar.baz]",
-    {
-       "expression": "[foo,bar.baz]",
-       "data": {"foo": "a", "bar": {"baz": "b"}},
-       "expected":  ["a", "b"]
-      }
-  ],
-  [
-    "[foo,baz]",
-    {
-       "expression": "[foo,baz]",
-       "data": {"foo": "a", "bar": "b"},
-       "expected":  ["a", null]
-      }
-  ],
-  [
-    "{foo: foo, bar: bar}",
-    {
-       "expression": "{foo: foo, bar: bar}",
-       "data": {"foo": "a", "bar": "b", "baz": "c"},
-       "expected":  {"foo": "a", "bar": "b"}
-      }
-  ],
-  [
-    "{foo: foo, firstbar: bar[0]}",
-    {
-       "expression": "{foo: foo, firstbar: bar[0]}",
-       "data": {"foo": "a", "bar": ["b"]},
-       "expected":  {"foo": "a", "firstbar": "b"}
-      }
-  ],
-  [
-    "{foo: foo, 'bar.baz': bar.baz}",
-    {
-       "expression": "{foo: foo, 'bar.baz': bar.baz}",
-       "data": {"foo": "a", "bar": {"baz": "b"}},
-       "expected":  {"foo": "a", "bar.baz": "b"}
-      }
-  ],
-  [
-    "{foo: foo, baz: baz}",
-    {
-       "expression": "{foo: foo, baz: baz}",
-       "data": {"foo": "a", "bar": "b"},
-       "expected":  {"foo": "a", "baz": null}
-      }
-  ],
-  [
-    "{foo: foo, foo: 42}",
-    {
-       "expression": "{foo: foo, foo: 42}",
-       "data": {"foo": "a", "bar": "b"},
-       "expected":  {"foo": 42}
-      }
-  ],
-  [
-    "[*].foo",
-    {
-       "expression": "[*].foo",
-       "data": [{"foo": 1}, {"foo": 2}, {"foo": 3}],
-       "expected": [1, 2, 3]
-    }
-  ],
-  [
-    "[*].foo",
-    {
-       "expression": "[*].foo",
-       "data": [{"foo": 1}, {"foo": 2}, {"bar": 3}],
-       "expected": [1, 2, null]
-    }
-  ],
-  [
-    "*.foo",
-    {
-       "expression": "*.foo",
-       "data": {"a": {"foo": 1}, "b": {"foo": 2}, "c": {"bar": 1}},
-       "expected":  [1, 2,null]
-      }
-  ],
-  [
-    "`\"foo\"`",
-    {
-       "expression": "`\"foo\"`",
-       "data": {},
-       "expected":  "foo"
-      }
-  ],
-  [
-    "`\"foo\\`bar\"`",
-    {
-       "expression": "`\"foo\\`bar\"`",
-       "data": {},
-       "expected":  "foo`bar"
-      }
-  ],
-  [
-    "`[1, 2]`",
-    {
-       "expression": "`[1, 2]`",
-       "data": {},
-       "expected":  [1, 2]
-      }
-  ],
-  [
-    "`true`",
-    {
-       "expression": "`true`",
-       "data": {},
-       "expected":  true
-      }
-  ],
-  [
-    "`{\"a\": \"b\"}`.a",
-    {
-       "expression": "`{\"a\": \"b\"}`.a",
-       "data": {},
-       "expected":  "b"
-      }
-  ],
-  [
-    "{first: a, type: `\"mytype\"`}",
-    {
-       "expression": "{first: a, type: `\"mytype\"`}",
-       "data": {"a": "b", "c": "d"},
-       "expected":  {"first": "b", "type": "mytype"}
-      }
-  ],
-  [
-    "`\"foo\"`",
-    {
-       "expression": "`\"foo\"`",
-       "data": {},
-       "expected":  "foo"
-      }
-  ],
-  [
-    "\"foo\"",
-    {
-       "expression": "\"foo\"",
-       "data": {},
-       "expected":  "foo"
-      }
-  ],
-  [
-    "\" bar \"",
-    {
-       "expression": "\" bar \"",
-       "data": {},
-       "expected":  " bar "
-      }
-  ],
-  [
-    "\"[baz]\"",
-    {
-       "expression": "\"[baz]\"",
-       "data": {},
-       "expected":  "[baz]"
-      }
-  ],
-  [
-    "\"[baz]\"",
-    {
-       "expression": "\"[baz]\"",
-       "data": {},
-       "expected":  "[baz]"
-      }
-  ],
-  [
-    "\"\u03a6\"",
-    {
-       "expression": "\"\u03a6\"",
-       "data": {},
-       "expected":  "Φ"
-      }
-  ],
-  [
-    "\"\\\\\"",
-    {
-       "expression": "\"\\\\\"",
-       "data": {},
-       "expected":  "\\"
-      }
-  ],
-  [
-    "44",
-    {
-       "expression": "44",
-       "data": {},
-       "expected":  44
-      }
-  ],
-  [
-    "[12, 13]",
-    {
-       "expression": "[12, 13]",
-       "data": {},
-       "expected":  [12, 13]
-      }
-  ],
-  [
-    "{a: 12, b: 13}",
-    {
-       "expression": "{a: 12, b: 13}",
-       "data": {},
-       "expected":  {"a": 12, "b": 13}
-      }
-  ],
-  [
-    "foo | [1]",
-    {
-       "expression": "foo | [1]",
-       "data": {"foo": [3,4,5]},
-       "expected":  4
-      }
-  ],
-  [
-    "foo | @[-1]",
-    {
-       "expression": "foo | @[-1]",
-       "data": {"foo": [3,4,5]},
-       "expected":  5
-      }
-  ],
-  [
-    "foo | [1, 2]",
-    {
-       "expression": "foo | [1, 2]",
-       "data": {"foo": [3,4,5]},
-       "expected":  [1, 2]
-      }
-  ],
-  [
-    "6 / 3",
-    {
-       "expression": "6 / 3",
-       "data": {},
-       "expected":  2
-      }
-  ],
-  [
-    "1e2",
-    {
-       "expression": "1e2",
-       "data": {},
-       "expected":  100
-      }
-  ],
-  [
-    "foo[?a < b]",
-    {
-       "expression": "foo[?a < b]",
-       "data": {"foo": [{"a": "char", "b": "bar"}, {"a": 2, "b": 1}, {"a": 1, "b": 2}, {"a": false, "b": "1"}, {"a": 10, "b": "12"}]},
-       "expected": [ {"a": 1, "b": 2}, {"a": false, "b": "1"}, {"a": 10, "b": "12"} ]
-    }
-  ],
-  [
-    "foo[?a < b]",
-    {
-       "expression": "foo[?a < b]",
-       "data": {"foo": [{"a": "char", "b": "bar"}, {"a": 2, "b": 1}, {"a": 1, "b": 2}, {"a": false, "b": "1"}, {"a": 10, "b": "12"}]},
-       "expected": [ {"a": 1, "b": 2}, {"a": false, "b": "1"}, {"a": 10, "b": "12"} ]
-    }
-  ],
-  [
-    "[].toNumber(@)",
-    {
-       "expression": "[].toNumber(@)",
-       "data": ["1", "2", "3", "notanumber", null, true],
-       "expected":  [1,2,3,null,0,1]
-    }
-  ],
-  [
-    "foo",
-    {
-       "expression": "foo",
-       "data": {"foo": -1, "bar": "2"},
-       "expected":  -1
-      }
-  ],
-  [
-    "bar",
-    {
-       "expression": "bar",
-       "data": {"foo": -1, "bar": "2"},
-       "expected":  "2"
-      }
-  ],
-  [
-    "foo[*].bar[0]",
-    {
-       "expression": "foo[*].bar[0]",
-       "data": {"foo": [{"bar": ["first1", "second1"]},{"bar": ["first2", "second2"]}]},
-       "expected": ["first1", "first2"]
-      }
-  ],
-  [
-    "foo[*].bar | [0]",
-    {
-       "expression": "foo[*].bar | [0]",
-       "data": {"foo": [{"bar": ["first1", "second1"]}, {"bar": ["first2", "second2"]}]},
-       "expected":  ["first1", "second1"]
-      }
-  ],
-  [
-    "foo | bar",
-    {
-       "expression": "foo | bar",
-       "data": {"foo": {"bar": "baz"}},
-       "expected":  "baz"
-      }
-  ],
-  [
-    "foo[*].bar | [0]",
-    {
-       "expression": "foo[*].bar | [0]",
-       "data": {"foo": [{"bar": ["first1", "second1"]}, {"bar": ["first2", "second2"]}]},
-       "expected":  ["first1", "second1"]
-      }
-  ],
-  [
-    "foo | [0]",
-    {
-       "expression": "foo | [0]",
-       "data": {"foo": [0, 1, 2]},
-       "expected":  0
-      }
-  ],
-  [
-    "value($days, weekday(datetime(date.year, date.month, date.day), 3))",
-    {
-       "expression": "value($days, weekday(datetime(date.year, date.month, date.day), 3))",
-       "data": {"date": {"year": 2023,"month": 9,"day": 13}},
-       "expected":  "Wednesday"
-      }
-  ],
-  [
-    "@.family[0].name",
-    {
-       "expression": "@.family[0].name",
-       "data": {"family": [{"name": "frank", "age": 22},{"name": "jane", "age": 23}]},
-       "expected":  "frank"
-      }
-  ],
-  [
-    "family[].[left(@.name), age]",
-    {
-       "expression": "family[].[left(@.name), age]",
-       "data": {"family": [{"name": "frank", "age": 22},{"name": "jane", "age": 23}]},
-       "expected":  [["f",22],["j",23]]
-      }
-  ],
-  [
-    "family[?@.age == 23]",
-    {
-       "expression": "family[?@.age == 23]",
-       "data": {"family": [{"name": "frank", "age": 22},{"name": "jane", "age": 23}]},
-       "expected": [{"name": "jane", "age": 23}]
-    }
-  ],
-  [
-    "family[?age == 23]",
-    {
-       "expression": "family[?age == 23]",
-       "data": {"family": [{"name": "frank", "age": 22},{"name": "jane", "age": 23}]},
-       "expected": [{"name": "jane", "age": 23}]
-    }
-  ],
-  [
-    "family[].name.proper(@)",
-    {
-       "expression": "family[].name.proper(@)",
-       "data": {"family": [{"name": "frank", "age": 22},{"name": "jane", "age": 23}]},
-       "expected":  ["Frank", "Jane"]
-      }
-  ],
-  [
-    "family[].age | avg(@)",
-    {
-       "expression": "family[].age | avg(@)",
-       "data": {"family": [{"name": "frank", "age": 22},{"name": "jane", "age": 23}]},
-       "expected": 22.5
-    }
-  ],
-  [
-    "function error",
-    {
-      "expression": "false() || if()",
-      "data": {},
-      "error": "FunctionError"
-    }
-  ],
-  [
-    "shortcut OR",
-    {
-      "expression": "true() || if()",
-      "data": {},
-      "expected": true
-    }
-  ],
-  [
-    "Function Error",
-    {
-      "expression": "true() && if()",
-      "data": {},
-      "error": "FunctionError"
-    }
-  ],
-  [
-    "shortcut AND",
-    {
-      "expression": "false() && if()",
-      "data": {},
-      "expected": false
-    }
-  ]
+  {
+    "given": {
+      "family": [
+        { "name": "frank", "age": 22 },
+        { "name": "jane", "age": 23 }
+      ]
+    },
+    "cases": [
+      { "expression": "\"abc\" & 123", "result": "abc123" },
+      { "expression": "\"123\" * 2", "result": 246 },
+      { "expression": "[1,2,3] ~ 4", "result": [1, 2, 3, 4] },
+      { "expression": "123 < \"124\"", "result": true },
+      { "expression": "\"23\" > 111", "result": false },
+      { "expression": "abs(\"-2\")", "result": 2 },
+      { "expression": "\"$100\" * 2", "result": 0 },
+      { "expression": "1 == \"1\"", "result": false },
+      { "expression": "\"$123.00\" + 1", "result": 1 },
+      {
+        "expression": "a ~ b",
+        "data": { "a": [0, 1, 2], "b": [3, 4, 5] },
+        "result": [0, 1, 2, 3, 4, 5]
+      },
+      {
+        "expression": "a ~ b",
+        "data": { "a": [[0, 1, 2]], "b": [[3, 4, 5]] },
+        "result": [
+          [0, 1, 2],
+          [3, 4, 5]
+        ]
+      },
+      {
+        "expression": "a[] ~ b[]",
+        "data": { "a": [[0, 1, 2]], "b": [[3, 4, 5]] },
+        "result": [0, 1, 2, 3, 4, 5]
+      },
+      {
+        "expression": "a ~ 10",
+        "data": { "a": [0, 1, 2] },
+        "result": [0, 1, 2, 10]
+      },
+      {
+        "expression": "a ~ `null`",
+        "data": { "a": [0, 1, 2] },
+        "result": [0, 1, 2]
+      },
+      {
+        "expression": "\"truth is \" & `true`",
+        "result": "truth is true"
+      },
+      { "expression": "[1,2,3] + [2,3,4]", "result": [3, 5, 7] },
+      {
+        "expression": "[1,2,3,4] * [1,2,3]",
+        "result": [1, 4, 9, 0]
+      },
+      {
+        "expression": "[1,2,3,4] & \"%\"",
+        "result": ["1%", "2%", "3%", "4%"]
+      },
+      {
+        "expression": "datetime(1970,1,2,0,0,0) - datetime(1970,1,1,0,0,0)",
+        "result": 1
+      },
+      {
+        "expression": "datetime(2010,1,21,12,0,0) | {month: month(@), day: day(@), hour: hour(@)}",
+        "result": { "month": 1, "day": 21, "hour": 12 }
+      },
+      { "expression": "2 + `true`", "result": 3 },
+      { "expression": "avg(\"20\")", "result": 20 },
+      {
+        "expression": "left + right",
+        "data": { "left": 8, "right": 12 },
+        "result": 20
+      },
+      {
+        "expression": "right - left - 10",
+        "data": { "left": 8, "right": 12 },
+        "result": -6
+      },
+      { "expression": "4 + 2 * 4", "result": 12 },
+      { "expression": "10 / 2 * 3", "result": 15 },
+      {
+        "expression": "left & value & right",
+        "data": { "left": "[", "right": "]", "value": "abc" },
+        "result": "[abc]"
+      },
+      {
+        "expression": "map(values, &\"$\" & @)",
+        "data": { "values": [123.45, 44.32, 99] },
+        "result": ["$123.45", "$44.32", "$99"]
+      },
+      { "expression": "foo", "data": { "foo": "bar" }, "result": "bar" },
+      { "expression": "foo", "data": { "foo": "value" }, "result": "value" },
+      { "expression": "bar", "data": { "foo": "value" }, "result": null },
+      {
+        "expression": "foo",
+        "data": { "foo": [0, 1, 2] },
+        "result": [0, 1, 2]
+      },
+      {
+        "expression": "'with space'",
+        "data": { "with space": "value" },
+        "result": "value"
+      },
+      {
+        "expression": "'special chars: !@#'",
+        "data": { "special chars: !@#": "value" },
+        "result": "value"
+      },
+      {
+        "expression": "'quote\\'char'",
+        "data": { "quote'char": "value" },
+        "result": "value"
+      },
+      { "expression": "'✓'", "data": { "✓": "value" }, "result": "value" },
+      { "expression": "bar", "data": { "bar": "baz" }, "result": "baz" },
+      {
+        "expression": "foo.bar",
+        "data": { "foo": { "bar": "value" } },
+        "result": "value"
+      },
+      {
+        "expression": "foo.'bar'",
+        "data": { "foo": { "bar": "value" } },
+        "result": "value"
+      },
+      {
+        "expression": "foo.bar",
+        "data": { "foo": { "baz": "value" } },
+        "result": null
+      },
+      {
+        "expression": "foo.bar.baz",
+        "data": { "foo": { "bar": { "baz": "value" } } },
+        "result": "value"
+      },
+      { "expression": "a[1]", "data": { "a": [5, 6, 7, 8, 9] }, "result": 6 },
+      { "expression": "a[-2]", "data": { "a": [5, 6, 7, 8, 9] }, "result": 8 },
+      { "expression": "[0:4:1]", "data": [0, 1, 2, 3], "result": [0, 1, 2, 3] },
+      { "expression": "[0:4]", "data": [0, 1, 2, 3], "result": [0, 1, 2, 3] },
+      { "expression": "[0:3]", "data": [0, 1, 2, 3], "result": [0, 1, 2] },
+      { "expression": "[:2]", "data": [0, 1, 2, 3], "result": [0, 1] },
+      { "expression": "[::2]", "data": [0, 1, 2, 3], "result": [0, 2] },
+      { "expression": "[::-1]", "data": [0, 1, 2, 3], "result": [3, 2, 1, 0] },
+      { "expression": "[-2:]", "data": [0, 1, 2, 3], "result": [2, 3] },
+      {
+        "expression": "[0]",
+        "data": ["first", "second", "third"],
+        "result": "first"
+      },
+      {
+        "expression": "[-1]",
+        "data": ["first", "second", "third"],
+        "result": "third"
+      },
+      {
+        "expression": "[100]",
+        "data": ["first", "second", "third"],
+        "result": null
+      },
+      {
+        "expression": "foo[0]",
+        "data": { "foo": ["first", "second", "third"] },
+        "result": "first"
+      },
+      {
+        "expression": "foo[100]",
+        "data": { "foo": ["first", "second", "third"] },
+        "result": null
+      },
+      {
+        "expression": "foo[0][0]",
+        "data": {
+          "foo": [
+            [0, 1],
+            [1, 2]
+          ]
+        },
+        "result": 0
+      },
+      {
+        "expression": "foo[]",
+        "data": { "foo": [[0, 1], [1, 2], 3] },
+        "result": [0, 1, 1, 2, 3]
+      },
+      {
+        "expression": "foo[]",
+        "data": {
+          "foo": [
+            [0, 1],
+            [1, 2],
+            [3, [4, 5]]
+          ]
+        },
+        "result": [0, 1, 1, 2, 3, [4, 5]]
+      },
+      {
+        "expression": "foo[][]",
+        "data": {
+          "foo": [
+            [0, 1],
+            [1, 2],
+            [3, [4, 5]]
+          ]
+        },
+        "result": [0, 1, 1, 2, 3, 4, 5]
+      },
+      {
+        "expression": "foo || bar",
+        "data": { "foo": "foo-value" },
+        "result": "foo-value"
+      },
+      {
+        "expression": "foo || bar",
+        "data": { "bar": "bar-value" },
+        "result": "bar-value"
+      },
+      {
+        "expression": "foo || bar",
+        "data": { "foo": "foo-value", "bar": "bar-value" },
+        "result": "foo-value"
+      },
+      {
+        "expression": "foo || bar",
+        "data": { "baz": "baz-value" },
+        "result": null
+      },
+      {
+        "expression": "foo || bar || baz",
+        "data": { "baz": "baz-value" },
+        "result": "baz-value"
+      },
+      {
+        "expression": "[n, \"doubled\", n * 2]",
+        "data": { "n": 4 },
+        "result": [4, "doubled", 8]
+      },
+      {
+        "expression": "override || mylist[-1]",
+        "data": { "mylist": ["one", "two"] },
+        "result": "two"
+      },
+      {
+        "expression": "override || mylist[-1]",
+        "data": { "mylist": ["one", "two"], "override": "yes" },
+        "result": "yes"
+      },
+      {
+        "expression": "True && False",
+        "data": { "True": true, "False": false },
+        "result": false
+      },
+      {
+        "expression": "Number && EmptyList",
+        "data": { "Number": 5, "EmptyList": [] },
+        "result": []
+      },
+      {
+        "expression": "foo[?a == `1` && b == `2`]",
+        "data": {
+          "foo": [
+            { "a": 1, "b": 2 },
+            { "a": 1, "b": 3 }
+          ]
+        },
+        "result": [{ "a": 1, "b": 2 }]
+      },
+      {
+        "expression": "foo[?(a == 1 || b == 2) && c == 5]",
+        "data": {
+          "foo": [
+            { "a": 1, "b": 2, "c": 3 },
+            { "a": 3, "b": 4 }
+          ]
+        },
+        "result": []
+      },
+      { "expression": "!True", "data": { "True": true }, "result": false },
+      { "expression": "!False", "data": { "False": false }, "result": true },
+      { "expression": "!Number", "data": { "Number": 5 }, "result": false },
+      {
+        "expression": "!EmptyList",
+        "data": { "EmptyList": [] },
+        "result": true
+      },
+      { "expression": "-11", "result": -11 },
+      { "expression": "-n", "data": { "n": 5, "nn": -10 }, "result": -5 },
+      { "expression": "-nn", "data": { "n": 5, "nn": -10 }, "result": 10 },
+      { "expression": "--n", "data": { "n": 5, "nn": -10 }, "result": 5 },
+      {
+        "expression": "[foo,bar]",
+        "data": { "foo": "a", "bar": "b", "baz": "c" },
+        "result": ["a", "b"]
+      },
+      {
+        "expression": "[foo,bar[0]]",
+        "data": { "foo": "a", "bar": ["b"], "baz": "c" },
+        "result": ["a", "b"]
+      },
+      {
+        "expression": "[foo,bar.baz]",
+        "data": { "foo": "a", "bar": { "baz": "b" } },
+        "result": ["a", "b"]
+      },
+      {
+        "expression": "[foo,baz]",
+        "data": { "foo": "a", "bar": "b" },
+        "result": ["a", null]
+      },
+      {
+        "expression": "{foo: foo, bar: bar}",
+        "data": { "foo": "a", "bar": "b", "baz": "c" },
+        "result": { "foo": "a", "bar": "b" }
+      },
+      {
+        "expression": "{foo: foo, firstbar: bar[0]}",
+        "data": { "foo": "a", "bar": ["b"] },
+        "result": { "foo": "a", "firstbar": "b" }
+      },
+      {
+        "expression": "{foo: foo, 'bar.baz': bar.baz}",
+        "data": { "foo": "a", "bar": { "baz": "b" } },
+        "result": { "foo": "a", "bar.baz": "b" }
+      },
+      {
+        "expression": "{foo: foo, baz: baz}",
+        "data": { "foo": "a", "bar": "b" },
+        "result": { "foo": "a", "baz": null }
+      },
+      {
+        "expression": "{foo: foo, foo: 42}",
+        "data": { "foo": "a", "bar": "b" },
+        "result": { "foo": 42 }
+      },
+      {
+        "expression": "[*].foo",
+        "data": [{ "foo": 1 }, { "foo": 2 }, { "foo": 3 }],
+        "result": [1, 2, 3]
+      },
+      {
+        "expression": "[*].foo",
+        "data": [{ "foo": 1 }, { "foo": 2 }, { "bar": 3 }],
+        "result": [1, 2, null]
+      },
+      {
+        "expression": "*.foo",
+        "data": { "a": { "foo": 1 }, "b": { "foo": 2 }, "c": { "bar": 1 } },
+        "result": [1, 2, null]
+      },
+      { "expression": "`\"foo\"`", "result": "foo" },
+      { "expression": "`\"foo\\`bar\"`", "result": "foo`bar" },
+      { "expression": "`[1, 2]`", "result": [1, 2] },
+      { "expression": "`true`", "result": true },
+      { "expression": "`{\"a\": \"b\"}`.a", "result": "b" },
+      {
+        "expression": "{first: a, type: `\"mytype\"`}",
+        "data": { "a": "b", "c": "d" },
+        "result": { "first": "b", "type": "mytype" }
+      },
+      { "expression": "`\"foo\"`", "result": "foo" },
+      { "expression": "\"foo\"", "result": "foo" },
+      { "expression": "\" bar \"", "result": " bar " },
+      { "expression": "\"[baz]\"", "result": "[baz]" },
+      { "expression": "\"[baz]\"", "result": "[baz]" },
+      { "expression": "\"Φ\"", "result": "Φ" },
+      { "expression": "\"\\\\\"", "result": "\\" },
+      { "expression": "44", "result": 44 },
+      { "expression": "[12, 13]", "result": [12, 13] },
+      {
+        "expression": "{a: 12, b: 13}",
+        "result": { "a": 12, "b": 13 }
+      },
+      { "expression": "foo | [1]", "data": { "foo": [3, 4, 5] }, "result": 4 },
+      {
+        "expression": "foo | @[-1]",
+        "data": { "foo": [3, 4, 5] },
+        "result": 5
+      },
+      {
+        "expression": "foo | [1, 2]",
+        "data": { "foo": [3, 4, 5] },
+        "result": [1, 2]
+      },
+      { "expression": "6 / 3", "result": 2 },
+      { "expression": "1e2", "result": 100 },
+      {
+        "expression": "foo[?a < b]",
+        "data": {
+          "foo": [
+            { "a": "char", "b": "bar" },
+            { "a": 2, "b": 1 },
+            { "a": 1, "b": 2 },
+            { "a": false, "b": "1" },
+            { "a": 10, "b": "12" }
+          ]
+        },
+        "result": [
+          { "a": 1, "b": 2 },
+          { "a": false, "b": "1" },
+          { "a": 10, "b": "12" }
+        ]
+      },
+      {
+        "expression": "foo[?a < b]",
+        "data": {
+          "foo": [
+            { "a": "char", "b": "bar" },
+            { "a": 2, "b": 1 },
+            { "a": 1, "b": 2 },
+            { "a": false, "b": "1" },
+            { "a": 10, "b": "12" }
+          ]
+        },
+        "result": [
+          { "a": 1, "b": 2 },
+          { "a": false, "b": "1" },
+          { "a": 10, "b": "12" }
+        ]
+      },
+      {
+        "expression": "[].toNumber(@)",
+        "data": ["1", "2", "3", "notanumber", null, true],
+        "result": [1, 2, 3, null, 0, 1]
+      },
+      { "expression": "foo", "data": { "foo": -1, "bar": "2" }, "result": -1 },
+      { "expression": "bar", "data": { "foo": -1, "bar": "2" }, "result": "2" },
+      {
+        "expression": "foo[*].bar[0]",
+        "data": {
+          "foo": [
+            { "bar": ["first1", "second1"] },
+            { "bar": ["first2", "second2"] }
+          ]
+        },
+        "result": ["first1", "first2"]
+      },
+      {
+        "expression": "foo[*].bar | [0]",
+        "data": {
+          "foo": [
+            { "bar": ["first1", "second1"] },
+            { "bar": ["first2", "second2"] }
+          ]
+        },
+        "result": ["first1", "second1"]
+      },
+      {
+        "expression": "foo | bar",
+        "data": { "foo": { "bar": "baz" } },
+        "result": "baz"
+      },
+      {
+        "expression": "foo[*].bar | [0]",
+        "data": {
+          "foo": [
+            { "bar": ["first1", "second1"] },
+            { "bar": ["first2", "second2"] }
+          ]
+        },
+        "result": ["first1", "second1"]
+      },
+      { "expression": "foo | [0]", "data": { "foo": [0, 1, 2] }, "result": 0 },
+      {
+        "expression": "value($days, weekday(datetime(date.year, date.month, date.day), 3))",
+        "data": { "date": { "year": 2023, "month": 9, "day": 13 } },
+        "result": "Wednesday"
+      },
+      {
+        "expression": "@.family[0].name",
+        "data": {
+          "family": [
+            { "name": "frank", "age": 22 },
+            { "name": "jane", "age": 23 }
+          ]
+        },
+        "result": "frank"
+      },
+      {
+        "expression": "family[].[left(@.name), age]",
+        "data": {
+          "family": [
+            { "name": "frank", "age": 22 },
+            { "name": "jane", "age": 23 }
+          ]
+        },
+        "result": [
+          ["f", 22],
+          ["j", 23]
+        ]
+      },
+      {
+        "expression": "family[?@.age == 23]",
+        "data": {
+          "family": [
+            { "name": "frank", "age": 22 },
+            { "name": "jane", "age": 23 }
+          ]
+        },
+        "result": [{ "name": "jane", "age": 23 }]
+      },
+      {
+        "expression": "family[?age == 23]",
+        "data": {
+          "family": [
+            { "name": "frank", "age": 22 },
+            { "name": "jane", "age": 23 }
+          ]
+        },
+        "result": [{ "name": "jane", "age": 23 }]
+      },
+      {
+        "expression": "family[].name.proper(@)",
+        "data": {
+          "family": [
+            { "name": "frank", "age": 22 },
+            { "name": "jane", "age": 23 }
+          ]
+        },
+        "result": ["Frank", "Jane"]
+      },
+      {
+        "expression": "family[].age | avg(@)",
+        "data": {
+          "family": [
+            { "name": "frank", "age": 22 },
+            { "name": "jane", "age": 23 }
+          ]
+        },
+        "result": 22.5
+      },
+      { "expression": "false() || if()", "error": "FunctionError" },
+      { "expression": "true() || if()", "result": true },
+      { "expression": "true() && if()", "error": "FunctionError" },
+      { "expression": "false() && if()", "result": false }
+    ]
+  }
 ]

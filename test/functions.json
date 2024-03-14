@@ -14,7 +14,7 @@
       "objects": { "foo": "bar", "bar": "baz" },
       "null_key": null,
       "datestr": "2023-11-11T12:34:56.789Z",
-      "extended":  "𝒜𝒞𝒟𝒢𝒥"
+      "extended": "𝒜𝒞𝒟𝒢𝒥"
     },
     "cases": [
       {
@@ -930,7 +930,7 @@
       },
       {
         "expression": "[not(`[]`), !`[]`, not(`{}`), !`{}`]",
-        "result":  [true, true, true, true]
+        "result": [true, true, true, true]
       },
       {
         "description": "function projection on single arg function",
