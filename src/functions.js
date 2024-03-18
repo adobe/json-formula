@@ -2053,7 +2053,8 @@ export default function functions(
      * the <<_type_coercion_rules,type coercion rules>>.
      *
      * @param {string|number|boolean|null} arg to convert to number
-     * @param {integer} [base=10] The base to use.  One of: 2, 8, 10, 16. Defaults to 10.
+     * @param {integer} [base=10] If the input `arg` is a string, the use base to convert to number.
+     * One of: 2, 8, 10, 16. Defaults to 10.
      * @return {number} The resulting number.  If conversion to number fails, return null.
      * @function toNumber
      * @example
@@ -2066,17 +2067,24 @@ export default function functions(
      */
     toNumber: {
       _func: resolvedArgs => {
-        const num = resolvedArgs[0];
+        const num = valueOf(resolvedArgs[0]);
         const base = resolvedArgs.length > 1 ? toInteger(resolvedArgs[1]) : 10;
-        if (base !== 10) {
-          if (![2, 8, 16].includes(base)) {
-            debug.push(`Invalid base: "${base}" for toNumber(), using "10"`);
-            return toNumber(num);
+        if (typeof num === 'string' && base !== 10) {
+          let digitCheck;
+          if (base === 2) digitCheck = /^[01.]+$/;
+          else if (base === 8) digitCheck = /^[0-7.]+$/;
+          else if (base === 16) digitCheck = /^[0-9A-Fa-f.]+$/;
+          else throw evaluationError(`Invalid base: "${base}" for toNumber()`);
+
+          if (!digitCheck.test(num)) {
+            debug.push(`Failed to convert "${num}" base "${base}" to number`);
+            return null;
           }
+
           const result = parseInt(num, base);
           if (Number.isNaN(result)) {
             debug.push(`Failed to convert "${num}" base "${base}" to number`);
-            return 0;
+            return null;
           }
           return result;
         }

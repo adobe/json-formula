@@ -14,7 +14,15 @@
       "objects": { "foo": "bar", "bar": "baz" },
       "null_key": null,
       "datestr": "2023-11-11T12:34:56.789Z",
-      "extended": "𝒜𝒞𝒟𝒢𝒥"
+      "extended": "𝒜𝒞𝒟𝒢𝒥",
+      "toNum": {
+        "true": 1,
+        "false": 0,
+        "null": 0,
+        "s11": "11",
+        "n11": 11,
+        "empty": ""
+      }
     },
     "cases": [
       {
@@ -293,7 +301,7 @@
       },
       {
         "expression": "length(@)",
-        "result": 14
+        "result": 15
       },
       {
         "expression": "length(strings[0])",
@@ -814,6 +822,14 @@
         "result": null
       },
       {
+        "expression": "toNumber(toNum.false)",
+        "result": 0
+      },
+      {
+        "expression": "toNumber(toNum.true)",
+        "result": 1
+      },
+      {
         "expression": "toNumber(`false`)",
         "result": 0
       },
@@ -822,15 +838,11 @@
         "result": 1
       },
       {
-        "expression": "toNumber(false())",
+        "expression": "toNumber(`null`)",
         "result": 0
       },
       {
-        "expression": "toNumber(true())",
-        "result": 1
-      },
-      {
-        "expression": "toNumber(`null`)",
+        "expression": "toNumber(toNum.null)",
         "result": 0
       },
       {
@@ -850,23 +862,79 @@
         "result": 255
       },
       {
+        "expression": "toNumber(\"ff\", 16)",
+        "result": 255
+      },
+      {
         "expression": "toNumber(\"FF.EE\", 16)",
         "result": 255
       },
       {
-        "expression": "toNumber(10, 16)",
-        "result": 16
+        "expression": "toNumber(toNum.n11, 16)",
+        "result": 11
       },
       {
-        "expression": "toNumber(11, 8)",
+        "expression": "toNumber(toNum.s11, 16)",
+        "result": 17
+      },
+      {
+        "expression": "toNumber(toNum.n11, 8)",
+        "result": 11
+      },
+      {
+        "expression": "toNumber(toNum.s11, 8)",
         "result": 9
       },
       {
-        "expression": "toNumber(11, 2)",
+        "expression": "toNumber(toNum.n11, 2)",
+        "result": 11
+      },
+      {
+        "expression": "toNumber(toNum.s11, 2)",
         "result": 3
       },
       {
-        "expression": "toNumber(\"11\", 12)",
+        "expression": "toNumber(toNum.s11, 12)",
+        "error": "EvaluationError"
+      },
+      {
+        "expression": "toNumber(toNum.n11, 12)",
+        "result": 11
+      },
+      {
+        "expression": "toNumber(toNum.empty)",
+        "result": null
+      },
+      {
+        "expression": "toNumber(\"AXX\", 16)",
+        "result": null
+      },
+      {
+        "expression": "toNumber(\"78\", 8)",
+        "result": null
+      },
+      {
+        "expression": "toNumber(\"112\", 2)",
+        "result": null
+      },
+      {
+        "expression": "toNumber(toNum.empty, 16)",
+        "result": null
+      },
+      {
+        "expression": "toNumber(\"not hex\", 16)",
+        "result": null
+      },
+      {
+        "expression": "toNumber(toNum.null, 16)",
+        "result": 0
+      },
+      {
+        "expression": "toNumber(toNum.true, 16)",
+        "result": 1
+      },
+      {
+        "expression": "toNumber(toNum.n11, 16)",
         "result": 11
       },
       {
