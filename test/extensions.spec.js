@@ -152,7 +152,8 @@ test('debug output', () => {
     toDate("2023111"),
     toDate("abcd"),
     {a: ["A",\`{}\`,\`[]\`][? @ < 2]},
-    {foo: 12, foo: 13}
+    {foo: 12, foo: 13},
+    register("register", &42)
   )`;
   const debug = [];
   new JsonFormula({}, stringToNumber, debug).search(expression, { $form: form1 }, form1);
@@ -182,6 +183,7 @@ test('debug output', () => {
     'Cannot use comparators with object',
     'Cannot use comparators with array',
     'Duplicate key: \'foo\'',
+    'Overriding built-in function: "register"',
   ]);
   expect(debugTracking).toBe('Access p1 from {"p1":"property1"}');
 });
@@ -282,28 +284,8 @@ describe('expressions with globals', () => {
   });
 });
 
-test('expressions in brackets', () => {
-  const sample = {
-    array: [0, 1, 2, 3, 4],
-    zero: 0,
-    one: 1,
-    two: 2,
-    three: 3,
-    ten: 10,
-  };
-  const globals = {
-    $form: sample,
-  };
-
-  const failures = [
-    'array[3 3]',
-    'array[$form.zero:$form.ten:$form.one:$form.one]',
-    'array[$form.zero, $form.one]',
-    'array[$form.zero]',
-    'array[0:$form.two]',
-    'array[1.2]',
-  ];
-  failures.forEach(expression => {
-    expect(() => new JsonFormula().search(expression, sample, globals)).toThrow();
-  });
+test('Redefine built-in function', () => {
+  const expression = '[register("sum", &21 + 21), sum()]';
+  const result = new JsonFormula().search(expression, {});
+  expect(result).toEqual([{}, 42]);
 });

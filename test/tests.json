@@ -1458,14 +1458,13 @@
       { "expression": "search(\"\", null)", "result": [] },
       { "expression": "search(\"\", null)", "result": [] },
       {
-        "data": "`{\"array\": [\"a\", \"b\", \"c\", \"d\", \"a\", \"b\"]}`",
+        "data": {"array": ["a", "b", "c", "d", "a", "b"]},
         "expression": "summarize(array)",
         "result": { "a": 2, "b": 2, "c": 1, "d": 1 }
       },
       {
-        "data": "`{\"array\": [\"a\", \"b\", \"c\", \"d\", \"a\", \"b\"]}`",
-        "expression": "merge(register(\"summarize\", &42), summarize(array))",
-        "result": { "a": 2, "b": 2, "c": 1, "d": 1 }
+        "expression": "register(\"summarize\", &42)",
+        "error": "FunctionError"
       },
       {
         "expression": "product([3, 4]) + product([4, 5])",
@@ -1474,6 +1473,14 @@
       {
         "expression": "merge(register(\"p1\", &42), register(\"p2\", &43), {r: p1() + p2()})",
         "result": { "r": 85 }
+      },
+      {
+        "expression": "register(\"\", &42)",
+        "error": "FunctionError"
+      },
+      {
+        "expression": "register(\"do-it\", &42)",
+        "error": "FunctionError"
       },
       { "expression": "floor(random())", "result": 0 },
       { "expression": "ceil(random())", "result": 1 },

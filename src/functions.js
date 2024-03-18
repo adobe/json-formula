@@ -1329,7 +1329,8 @@ export default function functions(
      * Register a function.  The registered function may take one parameter.
      * If more parameters are needed, combine them in an array or object.
      * Note that implementations are not required to provide `register()` in order to be conformant.
-     * @param {string} functionName Name of the function to register
+     * @param {string} functionName Name of the function to register.
+     * `functionName` must follow the regular expression pattern: `^[_a-zA-Z][_a-zA-Z0-9$]*$`
      * @param {expression} expr Expression to execute with this function call
      * @return {{}} returns an empty object
      * @function register
@@ -1343,15 +1344,23 @@ export default function functions(
         const functionName = resolvedArgs[0];
         const exprefNode = resolvedArgs[1];
 
-        if (functionMap[functionName] && !functionMap[functionName].custom) {
-          // custom functions can be re-registered
-          // but not any other functions
-          debug.push(`Cannot override function: "${functionName}"`);
-          return {};
+        if (!/^[_a-zA-Z][_a-zA-Z0-9$]*$/.test(functionName)) {
+          throw functionError(`Invalid function name: "${functionName}"`);
+        }
+        if (functionMap[functionName]) {
+          if (!functionMap[functionName]._custom) {
+            // backward-compatibility will work better if we allow
+            // built-in functions to be overridden
+            debug.push(`Overriding built-in function: "${functionName}"`);
+          } else if (functionMap[functionName]._exprefNode.value !== exprefNode.value) {
+            // custom functions can be re-registered as long as the expression is the same
+            throw functionError(`Cannot override function: "${functionName}" with a different definition`);
+          }
         }
         functionMap[functionName] = {
           _func: args => runtime.interpreter.visit(exprefNode, ...args),
           _signature: [{ types: [TYPE_ANY], optional: true }],
+          _exprefNode: exprefNode,
           _custom: true,
         };
         return {};
