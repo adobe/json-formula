@@ -1457,6 +1457,8 @@
       },
       { "expression": "search(\"\", null)", "result": [] },
       { "expression": "search(\"\", null)", "result": [] },
+      { "expression": "search(\"a**a\", \"pada\")", "result": [1, "ada"]},
+      { "expression": "search(\"a*?a\", \"pada\")", "result": [1, "ada"]},
       {
         "data": {"array": ["a", "b", "c", "d", "a", "b"]},
         "expression": "_summarize(array)",
@@ -1563,6 +1565,18 @@
         "data": "`{\"two\": 2.6}`",
         "expression": "search(\"a?a\", \"0a1a2a3a\", two)",
         "result": [3, "a2a"]
+      },
+      {
+        "expression": "search(\"a?a\", \"0a1a2a3a\", -2)",
+        "error": "FunctionError"
+      },
+      {
+        "expression": "search(\"A\", \"🙂A🙃\")",
+        "result": [1, "A"]
+      },
+      {
+        "expression": "search(\"??🙃C\", \"A🙂B🙃C\")",
+        "result": [1, "🙂B🙃C"]
       },
       {
         "data": "`{\"two\": 2.6}`",

@@ -1006,7 +1006,7 @@ export default function functions(
      * @example
      * mid("Fluid Flow", 0, 5) // returns "Fluid"
      * mid("Fluid Flow", 6, 20) // returns "Flow"
-     * mid("Fluid Flow, 20, 5) // returns ""
+     * mid("Fluid Flow", 20, 5) // returns ""
      * mid([0,1,2,3,4,5,6,7,8,9], 2, 3) // returns [2,3,4]
      */
     mid: {
@@ -1517,13 +1517,15 @@ export default function functions(
 
     /**
      * Perform a wildcard search.  The search is case-sensitive and supports two forms of wildcards:
-     * `*` finds a sequence of code points and `?` finds a single code point.
-     * To use `*` or `?` as text values, precede them with an escape (`{backslash}`) character.
+     * `{asterisk}` finds a sequence of code points and `?` finds a single code point.
+     * To use `{asterisk}` or `?` or `{backslash}` as text values,
+     * precede them with an escape (`{backslash}`) character.
      * Note that the wildcard search is not greedy.
      * e.g. `search("a{asterisk}b", "abb")` will return `[0, "ab"]` Not `[0, "abb"]`
      * @param {string} findText the search string -- which may include wild cards.
      * @param {string} withinText The string to search.
      * @param {integer} [startPos=0] The zero-based position of withinText to start searching.
+     * A negative value is not allowed.
      * @returns {array} returns an array with two values:
      *
      * * The start position of the found text and the text string that was found.
@@ -1537,19 +1539,52 @@ export default function functions(
         const findText = toString(args[0]);
         const withinText = toString(args[1]);
         const startPos = args.length > 2 ? toInteger(args[2]) : 0;
+        if (startPos < 0) throw functionError('search() startPos must be greater than or equal to 0');
         if (findText === null || withinText === null || withinText.length === 0) return [];
-        // escape all characters that would otherwise create a regular expression
-        const reString = findText.replace(/([[.\\^$()+{])/g, '\\$1')
-          // add the single character wildcard
-          .replace(/\\?\?/g, match => (match === '\\?' ? '\\?' : '.'))
-          // add the multi-character wildcard
-          .replace(/\\?\*/g, match => (match === '\\*' ? '\\*' : '.*?'))
-          // get rid of the escape characters
-          .replace(/\\\\/g, '\\');
-        const re = new RegExp(reString);
-        const result = withinText.substring(startPos).match(re);
-        if (result === null) return [];
-        return [result.index + startPos, result[0]];
+
+        // Process as an array of code points
+        // Find escapes and wildcards
+        const globString = Array.from(findText).reduce((acc, cur) => {
+          if (acc.escape) return { escape: false, result: acc.result.concat(cur) };
+          if (cur === '\\') return { escape: true, result: acc.result };
+          if (cur === '?') return { escape: false, result: acc.result.concat('dot') };
+          if (cur === '*') {
+            // consecutive * are treated as a single *
+            if (acc.result.slice(-1).pop() === 'star') return acc;
+            return { escape: false, result: acc.result.concat('star') };
+          }
+          return { escape: false, result: acc.result.concat(cur) };
+        }, { escape: false, result: [] }).result;
+
+        const testMatch = (array, glob, match) => {
+          // we've consumed the entire glob, so we're done
+          if (glob.length === 0) return match;
+          // we've consumed the entire array, but there's still glob left -- no match
+          if (array.length === 0) return null;
+          const testChar = array[0];
+          let [globChar, ...nextGlob] = glob;
+          const isStar = globChar === 'star';
+          if (isStar) {
+            // '*' is at the end of the match -- so we're done matching
+            if (glob.length === 1) return match;
+            // we'll check for a match past the * and if not found, we'll process the *
+            [globChar, ...nextGlob] = glob.slice(1);
+          }
+          if (testChar === globChar || globChar === 'dot') {
+            return testMatch(array.slice(1), nextGlob, match.concat(testChar));
+          }
+          // no match, so consume wildcard *
+          if (isStar) return testMatch(array.slice(1), glob, match.concat(testChar));
+
+          return null;
+        };
+        // process code points
+        const within = Array.from(withinText);
+        for (let i = startPos; i < within.length; i += 1) {
+          const result = testMatch(within.slice(i), globString, []);
+          if (result !== null) return [i, result.join('')];
+        }
+        return [];
       },
       _signature: [
         { types: [dataTypes.TYPE_STRING] },
@@ -1611,7 +1646,7 @@ export default function functions(
     /**
      * This function accepts an array of strings or numbers and returns an
      * array with the elements in sorted order.
-     * String sorting is based on code points. Sort is not locale-sensitive.
+     * String sorting is based on code points and is not locale-sensitive.
      * @param {number[]|string[]} list to be sorted
      * @return {number[]|string[]} The ordered result
      * @function sort
