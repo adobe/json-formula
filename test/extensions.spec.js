@@ -181,7 +181,7 @@ test('debug output', () => {
     'Failed to convert "A" to number',
     'Cannot use comparators with object',
     'Cannot use comparators with array',
-    'Duplicate key: \'foo\''
+    'Duplicate key: \'foo\'',
   ]);
   expect(debugTracking).toBe('Access p1 from {"p1":"property1"}');
 });
