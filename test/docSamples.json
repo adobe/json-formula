@@ -189,8 +189,8 @@
         "result": 27
       },
       {
-        "data": "register(\"product\", &@[0] * @[1])",
-        "expression": "register(\"product\", &@[0] * @[1]) | product([2,21])",
+        "data": "register(\"_product\", &@[0] * @[1])",
+        "expression": "register(\"_product\", &@[0] * @[1]) | _product([2,21])",
         "result": 42
       },
       {

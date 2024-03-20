@@ -79,10 +79,10 @@ const globals = {
 };
 
 /*
-Register the 'summarize' function.  Given:
+Register the '_summarize' function.  Given:
 {"array": ["a", "b", "c", "d", "a", "b"]}
 The expression:
-summarize(array)
+_summarize(array)
 returns:
 {
   "a": 2,
@@ -92,7 +92,7 @@ returns:
 }
 */
 jsonFormula.search(
-  `register("summarize",
+  `register("_summarize",
     &reduce(
       @,
       &merge(accumulated, fromEntries([[current, 1 + value(accumulated, current)]])),
@@ -103,22 +103,22 @@ jsonFormula.search(
 );
 
 /*
-Register the 'localDate' function.  Given:
+Register the '_localDate' function.  Given:
 "yyyy-mm-dd" return a date value.
 */
 jsonFormula.search(
   `register(
-    "localDate",
+    "_localDate",
     &split(@, "-") | datetime(@[0], @[1], @[2]))`,
   {},
 );
 
 /*
-Register the 'product' function to multiply two parameters.
-product([4,5]) // 20
+Register the '_product' function to multiply two parameters.
+_product([4,5]) // 20
 */
 jsonFormula.search(
-  'register("product", &@[0] * [1])',
+  'register("_product", &@[0] * [1])',
   {},
 );
 

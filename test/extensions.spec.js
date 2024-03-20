@@ -152,8 +152,7 @@ test('debug output', () => {
     toDate("2023111"),
     toDate("abcd"),
     {a: ["A",\`{}\`,\`[]\`][? @ < 2]},
-    {foo: 12, foo: 13},
-    register("register", &42)
+    {foo: 12, foo: 13}
   )`;
   const debug = [];
   new JsonFormula({}, stringToNumber, debug).search(expression, { $form: form1 }, form1);
@@ -182,8 +181,7 @@ test('debug output', () => {
     'Failed to convert "A" to number',
     'Cannot use comparators with object',
     'Cannot use comparators with array',
-    'Duplicate key: \'foo\'',
-    'Overriding built-in function: "register"',
+    'Duplicate key: \'foo\''
   ]);
   expect(debugTracking).toBe('Access p1 from {"p1":"property1"}');
 });
@@ -282,10 +280,4 @@ describe('expressions with globals', () => {
     const result = new JsonFormula(customFunctions).search(expression, {}, globals);
     expect(result).toEqual(globals.element);
   });
-});
-
-test('Redefine built-in function', () => {
-  const expression = '[register("sum", &21 + 21), sum()]';
-  const result = new JsonFormula().search(expression, {});
-  expect(result).toEqual([{}, 42]);
 });

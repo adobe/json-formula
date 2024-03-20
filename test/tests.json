@@ -875,7 +875,7 @@
         "result": 2
       },
       {
-        "expression": "day(localDate(\"1970-01-01\"))",
+        "expression": "day(_localDate(\"1970-01-01\"))",
         "result": 1
       },
       {
@@ -892,7 +892,7 @@
       },
       {
         "data": "datetime",
-        "expression": "month(localDate(\"1970-01-01\"))",
+        "expression": "month(_localDate(\"1970-01-01\"))",
         "result": 1
       },
       {
@@ -909,7 +909,7 @@
       },
       {
         "data": "datetime",
-        "expression": "year(localDate(\"1970-01-01\"))",
+        "expression": "year(_localDate(\"1970-01-01\"))",
         "result": 1970
       },
       {
@@ -980,52 +980,52 @@
       },
       {
         "data": "datetime",
-        "expression": "weekday(localDate(\"1970-01-01\"))",
+        "expression": "weekday(_localDate(\"1970-01-01\"))",
         "result": 5
       },
       {
         "data": "datetime",
-        "expression": "weekday(localDate(\"1970-01-03\"))",
+        "expression": "weekday(_localDate(\"1970-01-03\"))",
         "result": 7
       },
       {
         "data": "datetime",
-        "expression": "weekday(localDate(\"1969-12-27\"))",
+        "expression": "weekday(_localDate(\"1969-12-27\"))",
         "result": 7
       },
       {
         "data": "datetime",
-        "expression": "weekday(localDate(\"1970-01-04\"))",
+        "expression": "weekday(_localDate(\"1970-01-04\"))",
         "result": 1
       },
       {
         "data": "datetime",
-        "expression": "weekday(localDate(\"1970-01-04\"), 1)",
+        "expression": "weekday(_localDate(\"1970-01-04\"), 1)",
         "result": 1
       },
       {
         "data": "datetime",
-        "expression": "weekday(localDate(\"1970-01-04\"), 2)",
+        "expression": "weekday(_localDate(\"1970-01-04\"), 2)",
         "result": 7
       },
       {
         "data": "datetime",
-        "expression": "weekday(localDate(\"1970-01-05\"), 2)",
+        "expression": "weekday(_localDate(\"1970-01-05\"), 2)",
         "result": 1
       },
       {
         "data": "datetime",
-        "expression": "weekday(localDate(\"1970-01-04\"), 3)",
+        "expression": "weekday(_localDate(\"1970-01-04\"), 3)",
         "result": 6
       },
       {
         "data": "datetime",
-        "expression": "weekday(localDate(\"1970-01-01\"), 4)",
+        "expression": "weekday(_localDate(\"1970-01-01\"), 4)",
         "error": "FunctionError"
       },
       {
         "data": "datetime",
-        "expression": "weekday(localDate(\"1970-01-01\"), -1)",
+        "expression": "weekday(_localDate(\"1970-01-01\"), -1)",
         "error": "FunctionError"
       },
       {
@@ -1213,127 +1213,127 @@
         "result": "object"
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-20'), d2: localDate(datedif.'2022-06-21')}",
+        "data": "{d1: _localDate(datedif.'2022-06-20'), d2: _localDate(datedif.'2022-06-21')}",
         "expression": "datedif(d1, d2, \"d\")",
         "result": 1
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-21'), d2: localDate(datedif.'2022-06-20')}",
+        "data": "{d1: _localDate(datedif.'2022-06-21'), d2: _localDate(datedif.'2022-06-20')}",
         "expression": "datedif(d1, d2, \"d\")",
         "error": "FunctionError"
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-21'), d2: localDate(datedif.'2022-07-21')}",
+        "data": "{d1: _localDate(datedif.'2022-06-21'), d2: _localDate(datedif.'2022-07-21')}",
         "expression": "datedif(d1, d2, \"d\")",
         "result": 30
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-21'), d2: localDate(datedif.'2023-06-20')}",
+        "data": "{d1: _localDate(datedif.'2022-06-21'), d2: _localDate(datedif.'2023-06-20')}",
         "expression": "datedif(d1, d2, \"d\")",
         "result": 364
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-21'), d2: localDate(datedif.'2030-08-01')}",
+        "data": "{d1: _localDate(datedif.'2022-06-21'), d2: _localDate(datedif.'2030-08-01')}",
         "expression": "datedif(d1, d2, \"d\")",
         "result": 2963
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-20'), d2: localDate(datedif.'2022-06-21')}",
+        "data": "{d1: _localDate(datedif.'2022-06-20'), d2: _localDate(datedif.'2022-06-21')}",
         "expression": "datedif(d1, d2, \"y\")",
         "result": 0
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-21'), d2: localDate(datedif.'2022-07-21')}",
+        "data": "{d1: _localDate(datedif.'2022-06-21'), d2: _localDate(datedif.'2022-07-21')}",
         "expression": "datedif(d1, d2, \"y\")",
         "result": 0
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-21'), d2: localDate(datedif.'2023-06-20')}",
+        "data": "{d1: _localDate(datedif.'2022-06-21'), d2: _localDate(datedif.'2023-06-20')}",
         "expression": "datedif(d1, d2, \"y\")",
         "result": 0
       },
       {
-        "data": "{d1: localDate(datedif.'2023-06-21'), d2: localDate(datedif.'2030-08-01')}",
+        "data": "{d1: _localDate(datedif.'2023-06-21'), d2: _localDate(datedif.'2030-08-01')}",
         "expression": "datedif(d1, d2, \"y\")",
         "result": 7
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-20'), d2: localDate(datedif.'2022-06-21')}",
+        "data": "{d1: _localDate(datedif.'2022-06-20'), d2: _localDate(datedif.'2022-06-21')}",
         "expression": "datedif(d1, d2, \"m\")",
         "result": 0
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-21'), d2: localDate(datedif.'2022-07-21')}",
+        "data": "{d1: _localDate(datedif.'2022-06-21'), d2: _localDate(datedif.'2022-07-21')}",
         "expression": "datedif(d1, d2, \"m\")",
         "result": 1
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-21'), d2: localDate(datedif.'2023-06-20')}",
+        "data": "{d1: _localDate(datedif.'2022-06-21'), d2: _localDate(datedif.'2023-06-20')}",
         "expression": "datedif(d1, d2, \"m\")",
         "result": 11
       },
       {
-        "data": "{d1: localDate(datedif.'2023-06-21'), d2: localDate(datedif.'2030-08-01')}",
+        "data": "{d1: _localDate(datedif.'2023-06-21'), d2: _localDate(datedif.'2030-08-01')}",
         "expression": "datedif(d1, d2, \"m\")",
         "result": 85
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-20'), d2: localDate(datedif.'2022-06-21')}",
+        "data": "{d1: _localDate(datedif.'2022-06-20'), d2: _localDate(datedif.'2022-06-21')}",
         "expression": "datedif(d1, d2, \"ym\")",
         "result": 0
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-21'), d2: localDate(datedif.'2022-07-21')}",
+        "data": "{d1: _localDate(datedif.'2022-06-21'), d2: _localDate(datedif.'2022-07-21')}",
         "expression": "datedif(d1, d2, \"ym\")",
         "result": 1
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-21'), d2: localDate(datedif.'2023-06-20')}",
+        "data": "{d1: _localDate(datedif.'2022-06-21'), d2: _localDate(datedif.'2023-06-20')}",
         "expression": "datedif(d1, d2, \"ym\")",
         "result": 11
       },
       {
-        "data": "{d1: localDate(datedif.'2023-06-21'), d2: localDate(datedif.'2030-08-01')}",
+        "data": "{d1: _localDate(datedif.'2023-06-21'), d2: _localDate(datedif.'2030-08-01')}",
         "expression": "datedif(d1, d2, \"ym\")",
         "result": 1
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-20'), d2: localDate(datedif.'2022-06-21')}",
+        "data": "{d1: _localDate(datedif.'2022-06-20'), d2: _localDate(datedif.'2022-06-21')}",
         "expression": "datedif(d1, d2, \"yd\")",
         "result": 1
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-21'), d2: localDate(datedif.'2022-07-21')}",
+        "data": "{d1: _localDate(datedif.'2022-06-21'), d2: _localDate(datedif.'2022-07-21')}",
         "expression": "datedif(d1, d2, \"yd\")",
         "result": 30
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-21'), d2: localDate(datedif.'2023-06-20')}",
+        "data": "{d1: _localDate(datedif.'2022-06-21'), d2: _localDate(datedif.'2023-06-20')}",
         "expression": "datedif(d1, d2, \"yd\")",
         "result": 364
       },
       {
-        "data": "{d1: localDate(datedif.'2023-06-21'), d2: localDate(datedif.'2030-08-01')}",
+        "data": "{d1: _localDate(datedif.'2023-06-21'), d2: _localDate(datedif.'2030-08-01')}",
         "expression": "datedif(d1, d2, \"yd\")",
         "result": 41
       },
       {
-        "data": "{d1: localDate(datedif.'2022-06-21')}",
+        "data": "{d1: _localDate(datedif.'2022-06-21')}",
         "expression": "eomonth(d1, 0) | year(@) & \"-\" & month(@) & \"-\" & day(@)",
         "result": "2022-6-30"
       },
       {
-        "data": "{d1: localDate(datedif.'2022-07-21')}",
+        "data": "{d1: _localDate(datedif.'2022-07-21')}",
         "expression": "eomonth(d1, -2) | year(@) & \"-\" & month(@) & \"-\" & day(@)",
         "result": "2022-5-31"
       },
       {
-        "data": "{d1: localDate(datedif.'2023-06-20')}",
+        "data": "{d1: _localDate(datedif.'2023-06-20')}",
         "expression": "eomonth(d1, 13) | year(@) & \"-\" & month(@) & \"-\" & day(@)",
         "result": "2024-7-31"
       },
       {
-        "data": "{d1: localDate(datedif.'2030-08-01')}",
+        "data": "{d1: _localDate(datedif.'2030-08-01')}",
         "expression": "eomonth(d1, 18) | year(@) & \"-\" & month(@) & \"-\" & day(@)",
         "result": "2032-2-29"
       },
@@ -1459,19 +1459,19 @@
       { "expression": "search(\"\", null)", "result": [] },
       {
         "data": {"array": ["a", "b", "c", "d", "a", "b"]},
-        "expression": "summarize(array)",
+        "expression": "_summarize(array)",
         "result": { "a": 2, "b": 2, "c": 1, "d": 1 }
       },
       {
-        "expression": "register(\"summarize\", &42)",
+        "expression": "register(\"_summarize\", &42)",
         "error": "FunctionError"
       },
       {
-        "expression": "product([3, 4]) + product([4, 5])",
+        "expression": "_product([3, 4]) + _product([4, 5])",
         "result": 32
       },
       {
-        "expression": "merge(register(\"p1\", &42), register(\"p2\", &43), {r: p1() + p2()})",
+        "expression": "merge(register(\"_p1\", &42), register(\"_p2\", &43), {r: _p1() + _p2()})",
         "result": { "r": 85 }
       },
       {
@@ -1480,6 +1480,10 @@
       },
       {
         "expression": "register(\"do-it\", &42)",
+        "error": "FunctionError"
+      },
+      {
+        "expression": "[register(\"sum\", &21 + 21), sum()]",
         "error": "FunctionError"
       },
       { "expression": "floor(random())", "result": 0 },
