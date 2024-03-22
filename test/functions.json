@@ -877,8 +877,20 @@
         "result": 255
       },
       {
-        "expression": "toNumber(\"FF.EE\", 16)",
-        "result": 255
+        "expression": "toNumber(\"FF.1\", 16)",
+        "result": 255.0625
+      },
+      {
+        "expression": "toNumber(\"1.1\", 2)",
+        "result": 1.5
+      },
+      {
+        "expression": "toNumber(\"1.2\", 8)",
+        "result": 1.25
+      },
+      {
+        "expression": "toNumber(\"FF.EE.AA\", 16)",
+        "result": null
       },
       {
         "expression": "toNumber(toNum.n11, 16)",

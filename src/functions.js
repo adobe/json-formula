@@ -2115,9 +2115,15 @@ export default function functions(
             debug.push(`Failed to convert "${num}" base "${base}" to number`);
             return null;
           }
+          const parts = num.split('.');
 
-          const result = parseInt(num, base);
-          if (Number.isNaN(result)) {
+          let decimal = 0;
+          if (parts.length > 1) {
+            decimal = parseInt(parts[1], base) * base ** -parts[1].length;
+          }
+
+          const result = parseInt(parts[0], base) + decimal;
+          if (parts.length > 2 || Number.isNaN(result)) {
             debug.push(`Failed to convert "${num}" base "${base}" to number`);
             return null;
           }
