@@ -106,7 +106,7 @@
         "result": 2.75
       },
       {
-        "expression": "reduce([{age: 10, name: 'Joe'},{age: 20, name: 'John'}], &max(@.accumulated.age, @.current.age), @[0].age)",
+        "expression": "[{age: 10, name: \"Joe\"},{age: 20, name: \"John\"}].reduce(@, &max(accumulated, current.age),@[0].age)",
         "result": 20
       },
       {
@@ -225,8 +225,7 @@
       },
       {
         "expression": "contains(`false`, \"d\")",
-        "result": false,
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "contains(strings, \"a\")",
@@ -321,13 +320,11 @@
       },
       {
         "expression": "length(`false`)",
-        "result": 5,
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "length(foo)",
-        "result": 2,
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "length(strings[0])",
@@ -407,12 +404,11 @@
       },
       {
         "expression": "max(abc)",
-        "error": "EvaluationError"
+        "error": "TypeError"
       },
       {
         "expression": "max(array)",
-        "result": 100,
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "max(decimals)",
@@ -439,20 +435,32 @@
         "result": 1.2
       },
       {
-        "expression": "max(`null`, empty_list, decimals, 0, [null(), 2])",
+        "expression": "[`null`, empty_list, decimals, 0, [null(), 2]][]|[?notNull(@)]|map(@, &toNumber(@)).max(@)",
         "result": 2
       },
       {
-        "expression": "max([1, \"2\"])",
+        "expression": "max([1, toNumber(\"2\")])",
         "result": 2
       },
       {
         "expression": "max([-4, \"foo\"])",
-        "result": 0
+        "error": "TypeError"
       },
       {
         "expression": "max([null(), null()])",
-        "result": 0
+        "error": "TypeError"
+      },
+      {
+        "expression": "max(2,\"3\")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "max([2,[4,5]])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "min(2,\"3\")",
+        "error": "TypeError"
       },
       {
         "expression": "merge(`{}`)",
@@ -492,12 +500,11 @@
       },
       {
         "expression": "min(abc)",
-        "error": "EvaluationError"
+        "error": "TypeError"
       },
       {
         "expression": "min(array)",
-        "result": -1,
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "min(empty_list)",
@@ -505,7 +512,7 @@
       },
       {
         "expression": "min([4, \"foo\"])",
-        "result": 0
+        "error": "TypeError"
       },
       {
         "expression": "min(decimals)",
@@ -532,16 +539,16 @@
         "result": -1.5
       },
       {
-        "expression": "min(`null`, empty_list, decimals, 0, [-2, null()])",
+        "expression": "min(empty_list, decimals, 0, [-2, 0])",
         "result": -2
       },
       {
         "expression": "min(`null`, 23, \"21\")",
-        "result": 21
+        "error": "TypeError"
       },
       {
         "expression": "min([null(), null()])",
-        "result": 0
+        "error": "TypeError"
       },
       {
         "expression": "type(\"abc\")",
@@ -605,7 +612,7 @@
       },
       {
         "expression": "keys(`null`)",
-        "result": []
+        "error": "TypeError"
       },
       {
         "expression": "values(foo)",
@@ -613,7 +620,7 @@
       },
       {
         "expression": "values(null())",
-        "result": []
+        "error": "TypeError"
       },
       {
         "expression": "join(strings, \", \")",
@@ -654,6 +661,10 @@
       {
         "expression": "join(empty_list, \"|\")",
         "result": ""
+      },
+      {
+        "expression": "{a:1}.[@, entries(@)].join(@, \" == \")",
+        "result": "{\"a\":1} == [[\"a\",1]]"
       },
       {
         "expression": "reverse(numbers)",
@@ -955,13 +966,11 @@
       },
       {
         "expression": "sort(array)",
-        "result": [-1, "a", 3, 4, 5, "100"],
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "sort(abc)",
-        "result": [],
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "sort(empty_list)",

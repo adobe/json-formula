@@ -434,7 +434,7 @@
       {
         "data": "'purchase-order'",
         "expression": "left(missing)",
-        "result": ""
+        "error": "TypeError"
       },
       { "expression": "right(\"abc\")", "result": "c" },
       { "expression": "right(\"abc\", 1)", "result": "c" },
@@ -453,7 +453,7 @@
       {
         "data": "'purchase-order'",
         "expression": "right(missing)",
-        "result": ""
+        "error": "TypeError"
       },
       { "expression": "mid(\"abc\", 0, 0)", "result": "" },
       { "expression": "mid(\"abc\", 1, 1)", "result": "b" },
@@ -477,7 +477,7 @@
       {
         "data": "'purchase-order'",
         "expression": "mid(missing, 0, 1)",
-        "result": ""
+        "error": "TypeError"
       },
       {
         "expression": "left(split(\"abc\", \"\"))",
@@ -633,7 +633,7 @@
       {
         "data": "'purchase-order'",
         "expression": "replace(missing,0, 1, address.country)",
-        "result": "USA"
+        "error": "TypeError"
       },
       {
         "expression": "replace([\"blue\",\"black\",\"white\",\"red\"], 1, 0, \"green\")",
@@ -649,11 +649,11 @@
       },
       {
         "expression": "replace(3, 1, 0, [4,5,6])",
-        "result": "3[4,5,6]"
+        "error": "TypeError"
       },
       {
         "expression": "replace(367, 1, 0, 45)",
-        "result": "34567"
+        "error": "TypeError"
       },
       { "expression": "round(123.456, 0)", "result": 123 },
       { "expression": "round(123.456, 1)", "result": 123.5 },
@@ -1081,15 +1081,15 @@
           ["1", 1]
         ]
       },
-      { "expression": "entries(`null`)", "result": [] },
+      { "expression": "entries(`null`)", "error": "TypeError" },
       {
         "data": "'purchase-order'",
         "expression": "entries(address.country)",
-        "result": [["0", "USA"]]
+        "error": "TypeError"
       },
       {
         "expression": "fromEntries([[\"a\", 1], [\"b\", 2, 4], [\"a\", 3]])",
-        "result": { "a": 3, "b": 2 }
+        "error": "TypeError"
       },
       {
         "data": "'purchase-order'",
@@ -1316,6 +1316,11 @@
         "data": "{d1: _localDate(datedif.'2023-06-21'), d2: _localDate(datedif.'2030-08-01')}",
         "expression": "datedif(d1, d2, \"yd\")",
         "result": 41
+      },
+      {
+        "data": "{d1: _localDate(datedif.'2023-06-21'), d2: _localDate(datedif.'2030-08-01')}",
+        "expression": "datedif(d1, d2, \"yy\")",
+        "error": "FunctionError"
       },
       {
         "data": "{d1: _localDate(datedif.'2022-06-21')}",

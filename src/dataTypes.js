@@ -27,7 +27,7 @@ governing permissions and limitations under the License.
 */
 
 // Type constants used to define functions.
-export default {
+const dataTypes = {
   TYPE_NUMBER: 0,
   TYPE_ANY: 1,
   TYPE_STRING: 2,
@@ -40,4 +40,23 @@ export default {
   TYPE_ARRAY_STRING: 9,
   TYPE_CLASS: 10,
   TYPE_ARRAY_ARRAY: 11,
+  TYPE_EMPTY_ARRAY: 12,
 };
+
+const typeNameTable = {
+  [dataTypes.TYPE_NUMBER]: 'number',
+  [dataTypes.TYPE_ANY]: 'any',
+  [dataTypes.TYPE_STRING]: 'string',
+  [dataTypes.TYPE_ARRAY]: 'array',
+  [dataTypes.TYPE_OBJECT]: 'object',
+  [dataTypes.TYPE_BOOLEAN]: 'boolean',
+  [dataTypes.TYPE_EXPREF]: 'expression',
+  [dataTypes.TYPE_NULL]: 'null',
+  [dataTypes.TYPE_ARRAY_NUMBER]: 'Array<number>',
+  [dataTypes.TYPE_ARRAY_STRING]: 'Array<string>',
+  [dataTypes.TYPE_CLASS]: 'class',
+  [dataTypes.TYPE_ARRAY_ARRAY]: 'Array<array>',
+  [dataTypes.TYPE_EMPTY_ARRAY]: 'array',
+};
+
+export { dataTypes, typeNameTable };

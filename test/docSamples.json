@@ -104,6 +104,10 @@
         "result": "a,b,c"
       },
       {
+        "expression": "join([1, 2, 3, null], \"|\")",
+        "result": "1|2|3|null"
+      },
+      {
         "expression": "keys({a : 3, b : 4})",
         "result": ["a", "b"]
       },
@@ -148,6 +152,10 @@
         "result": "b"
       },
       {
+        "expression": "max(8, 10, 12)",
+        "result": 12
+      },
+      {
         "expression": "merge({a: 1, b: 2}, {c : 3, d: 4})",
         "result": {
           "a": 1,
@@ -171,6 +179,10 @@
       {
         "expression": "min([\"a\", \"a1\", \"b\"])",
         "result": "a"
+      },
+      {
+        "expression": "min(8, 10, 12)",
+        "result": 8
       },
       {
         "expression": "notNull(1, 2, 3, 4, `null`)",
@@ -462,10 +474,6 @@
       {
         "expression": "replace(\"123456\",0,3,\"@\")",
         "result": "@456"
-      },
-      {
-        "expression": "replace([\"blue\",\"black\",\"white\",\"red\"], 1, 2, [\"green\"])",
-        "result": ["blue", "green", "red"]
       },
       {
         "expression": "replace([\"blue\",\"black\",\"white\",\"red\"], 1, 2, \"green\")",

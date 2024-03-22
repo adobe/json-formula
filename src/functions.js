@@ -27,7 +27,7 @@ governing permissions and limitations under the License.
 */
 
 /* eslint-disable no-underscore-dangle */
-import dataTypes from './dataTypes.js';
+import { dataTypes, typeNameTable } from './dataTypes.js';
 import {
   getProperty, debugAvailable, toBoolean, strictDeepEqual,
 } from './utils.js';
@@ -61,6 +61,7 @@ export default function functions(
   isArray,
   toNumber,
   getType,
+  isArrayType,
   valueOf,
   toString,
   debug,
@@ -76,6 +77,7 @@ export default function functions(
     TYPE_NULL,
     TYPE_ARRAY_NUMBER,
     TYPE_ARRAY_STRING,
+    TYPE_ARRAY_ARRAY,
   } = dataTypes;
 
   function toInteger(num) {
@@ -89,6 +91,15 @@ export default function functions(
     n = Math.trunc(num);
     if (Number.isNaN(n)) return num;
     return n;
+  }
+
+  function toJSON(arg, indent) {
+    const value = valueOf(arg);
+    if (getType(value) === TYPE_STRING) {
+      return arg;
+    }
+    const offset = indent ? toInteger(indent) : 0;
+    return JSON.stringify(value, null, offset);
   }
 
   const functionMap = {
@@ -284,7 +295,7 @@ export default function functions(
       _func: resolvedArgs => {
         const subject = valueOf(resolvedArgs[0]);
         const search = valueOf(resolvedArgs[1]);
-        if (getType(valueOf(resolvedArgs[0])) === TYPE_ARRAY) {
+        if (isArrayType(resolvedArgs[0])) {
           return subject.indexOf(search) >= 0;
         }
         const source = Array.from(subject);
@@ -660,6 +671,8 @@ export default function functions(
     /**
      * Returns an object by transforming a list of key-value `pairs` into an object.
      * `fromEntries()` is the inverse operation of `entries()`.
+     * If the nested arrays are not of the form: `[key, value]`
+     * (where key is a string), an error will be thrown.
      * @param {any[]} pairs A nested array of key-value pairs to create the object from
      * @returns {object} An object constructed from the provided key-value pairs
      * @function fromEntries
@@ -669,6 +682,14 @@ export default function functions(
     fromEntries: {
       _func: args => {
         const array = args[0];
+        // validate beyond the TYPE_ARRAY_ARRAY check
+        if (!array.every(a => {
+          if (a.length !== 2) return false;
+          if (getType(a[0]) !== TYPE_STRING) return false;
+          return true;
+        })) {
+          throw typeError('fromEntries() requires an array of key value pairs');
+        }
         return Object.fromEntries(array);
       },
       _signature: [
@@ -773,22 +794,23 @@ export default function functions(
     /**
      * Combines all the elements from the provided
      * array, joined together using the `glue` argument as a separator between each array element.
-     * @param {string[]} stringsarray array of strings or values that can be coerced to strings
+     * @param {any[]} array array of values that will be converted to strings using `toString()`
      * @param {string} glue
      * @return {string} String representation of the array
      * @function join
      * @example
      * join(["a", "b", "c"], ",") // returns "a,b,c"
      * join(["apples", "bananas"], " and ") // returns "apples and bananas"
+     * join([1, 2, 3, null], "|") // returns "1|2|3|null"
      */
     join: {
       _func: resolvedArgs => {
         const listJoin = resolvedArgs[0];
         const joinChar = resolvedArgs[1];
-        return listJoin.join(joinChar);
+        return listJoin.map(a => toJSON(a)).join(joinChar);
       },
       _signature: [
-        { types: [TYPE_ARRAY_STRING] },
+        { types: [TYPE_ARRAY] },
         { types: [TYPE_STRING] },
       ],
     },
@@ -934,35 +956,33 @@ export default function functions(
      * If a mix of numbers and strings are provided, all values with be coerced to
      * the type of the first value.
      * If all values are null, the result is 0.
-     * @param {...(number[]|string[])} collection array(s) in which the maximum
+     * @param {...(number[]|string[]|number|string)} collection values/array(s) in which the maximum
      * element is to be calculated
      * @return {number|string} the largest value found
      * @function max
      * @example
      * max([1, 2, 3], [4, 5, 6]) // returns 6
      * max(["a", "a1", "b"]) // returns "b"
+     * max(8, 10, 12) // returns 12
      */
     max: {
       _func: args => {
         // flatten the args into a single array
-        const array = args.reduce((prev, cur) => {
-          prev.push(...cur);
-          return prev;
-        }, []);
+        const array = args.reduce((prev, cur) => prev.concat(cur), []);
         if (array.length === 0) throw evaluationError('max() requires at least one argument');
-        const first = array.find(r => r !== null);
-        if (first === undefined) return 0;
-        // use the first value to determine the comparison type
-        const isNumber = getType(first, true) === TYPE_NUMBER;
-        const makeNumber = n => {
-          const r = toNumber(n);
-          return r === null ? 0 : r;
-        };
-        return array.map(a => (isNumber ? makeNumber(a) : toString(a)))
+        const isNumber = a => getType(a) === TYPE_NUMBER;
+        const isString = a => getType(a) === TYPE_STRING;
+        if (!(array.every(isNumber) || array.every(isString))) {
+          throw typeError('max() requires all arguments to be of the same type');
+        }
+        return array
           .sort((a, b) => (a > b ? 1 : -1))
           .pop();
       },
-      _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING], variadic: true }],
+      _signature: [{
+        types: [TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING, TYPE_NUMBER, TYPE_STRING],
+        variadic: true,
+      }],
     },
 
     /**
@@ -1047,39 +1067,38 @@ export default function functions(
 
     /**
      * Calculates the smallest value in the input arguments.
-     * If all collections are empty, an evaluation error is thrown.
+     * If all collections/values are empty, an evaluation error is thrown.
      * min() can work on numbers or strings.
      * If a mix of numbers and strings are provided, the type of the first value will be used.
      * If all values are null, zero is returned.
-     * @param {...(number[]|string[])} collection Arrays to search for the minimum value
+     * @param {...(number[]|string[]|number|string)} collection
+     * Values/arrays to search for the minimum value
      * @return {number|string} the smallest value found
      * @function min
      * @example
      * min([1, 2, 3], [4, 5, 6]) // returns 1
      * min(["a", "a1", "b"]) // returns "a"
+      * min(8, 10, 12) // returns 8
      */
     min: {
       _func: args => {
         // flatten the args into a single array
-        const array = args.reduce((prev, cur) => {
-          prev.push(...cur);
-          return prev;
-        }, []);
+        const array = args.reduce((prev, cur) => prev.concat(cur), []);
         if (array.length === 0) throw evaluationError('min() requires at least one argument');
 
-        const first = array.find(r => r !== null);
-        if (first === undefined) return 0;
-        // use the first value to determine the comparison type
-        const isNumber = getType(first, true) === TYPE_NUMBER;
-        const makeNumber = n => {
-          const r = toNumber(n);
-          return r === null ? 0 : r;
-        };
-        return array.map(a => (isNumber ? makeNumber(a) : toString(a)))
+        const isNumber = a => getType(a) === TYPE_NUMBER;
+        const isString = a => getType(a) === TYPE_STRING;
+        if (!(array.every(isNumber) || array.every(isString))) {
+          throw typeError('max() requires all arguments to be of the same type');
+        }
+        return array
           .sort((a, b) => (a < b ? 1 : -1))
           .pop();
       },
-      _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING], variadic: true }],
+      _signature: [{
+        types: [TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING, TYPE_NUMBER, TYPE_STRING],
+        variadic: true,
+      }],
     },
 
     /**
@@ -1389,10 +1408,10 @@ export default function functions(
         if (startPos < 0) {
           return null;
         }
-        if (getType(args[0]) === TYPE_ARRAY) {
-          const sourceArray = getType(args[0]) === TYPE_ARRAY
+        if (isArrayType(args[0])) {
+          const sourceArray = isArrayType(args[0])
             ? valueOf(args[0]) : [valueOf(args[0])];
-          const replacement = getType(args[3]) === TYPE_ARRAY
+          const replacement = isArrayType(args[3])
             ? valueOf(args[3]) : [valueOf(args[3])];
           sourceArray.splice(startPos, numElements, ...replacement);
           return sourceArray;
@@ -1654,21 +1673,8 @@ export default function functions(
      * sort([1, 2, 4, 3, 1]) // returns [1, 1, 2, 3, 4]
      */
     sort: {
-      _func: resolvedArgs => {
-        const sortedArray = resolvedArgs[0].slice(0);
-        if (sortedArray.length > 0) {
-          const normalize = getType(resolvedArgs[0][0]) === TYPE_NUMBER ? toNumber : toString;
-          sortedArray.sort((a, b) => {
-            const va = normalize(a);
-            const vb = normalize(b);
-            if (va < vb) return -1;
-            if (va > vb) return 1;
-            return 0;
-          });
-        }
-        return sortedArray;
-      },
-      _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] }],
+      _func: resolvedArgs => resolvedArgs[0].slice(0).sort(),
+      _signature: [{ types: [TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] }],
     },
 
     /**
@@ -1701,7 +1707,7 @@ export default function functions(
         const requiredType = getType(
           runtime.interpreter.visit(exprefNode, sortedArray[0]),
         );
-        if ([TYPE_NUMBER, TYPE_STRING].indexOf(requiredType) < 0) {
+        if (![TYPE_NUMBER, TYPE_STRING].includes(requiredType)) {
           throw typeError('Bad data type for sortBy()');
         }
         // In order to get a stable sort out of an unstable
@@ -1717,18 +1723,16 @@ export default function functions(
         }
         decorated.sort((a, b) => {
           const exprA = runtime.interpreter.visit(exprefNode, a[1]);
+          const typeA = getType(exprA);
           const exprB = runtime.interpreter.visit(exprefNode, b[1]);
-          if (getType(exprA) !== requiredType) {
-            throw typeError(`sortBy expected ${requiredType}, received ${getType(exprA)}`);
-          } else if (getType(exprB) !== requiredType) {
-            throw typeError(`sortyBy expected ${requiredType}, received ${getType(exprB)}`);
+          const typeB = getType(exprB);
+          if (typeA !== requiredType) {
+            throw typeError(`sortBy expected ${typeNameTable[requiredType]}, received ${typeNameTable[typeA]}`);
+          } else if (typeB !== requiredType) {
+            throw typeError(`sortyBy expected ${typeNameTable[requiredType]}, received ${typeNameTable[typeB]}`);
           }
-          if (exprA > exprB) {
-            return 1;
-          }
-          if (exprA < exprB) {
-            return -1;
-          }
+          if (exprA > exprB) return 1;
+          if (exprA < exprB) return -1;
           // If they"re equal compare the items by their
           // order to maintain relative order of equal keys
           // (i.e. to get a stable sort).
@@ -1822,9 +1826,8 @@ export default function functions(
       _func: args => {
         const values = args[0];
         if (values.length <= 1) throw evaluationError('stdev() must have at least two values');
-        const coercedValues = values.map(value => toNumber(value));
-        const mean = coercedValues.reduce((a, b) => a + b, 0) / values.length;
-        const sumSquare = coercedValues.reduce((a, b) => a + b * b, 0);
+        const mean = values.reduce((a, b) => a + b, 0) / values.length;
+        const sumSquare = values.reduce((a, b) => a + b * b, 0);
         const result = Math.sqrt((sumSquare - values.length * mean * mean) / (values.length - 1));
         return validNumber(result, 'stdev');
       },
@@ -1851,9 +1854,8 @@ export default function functions(
         const values = args[0];
         if (values.length === 0) throw evaluationError('stdevp() must have at least one value');
 
-        const coercedValues = values.map(value => toNumber(value));
-        const mean = coercedValues.reduce((a, b) => a + b, 0) / values.length;
-        const meanSumSquare = coercedValues.reduce((a, b) => a + b * b, 0) / values.length;
+        const mean = values.reduce((a, b) => a + b, 0) / values.length;
+        const meanSumSquare = values.reduce((a, b) => a + b * b, 0) / values.length;
         const result = Math.sqrt(meanSumSquare - mean * mean);
         return validNumber(result, 'stdevp');
       },
@@ -2001,13 +2003,7 @@ export default function functions(
      * toArray(null()) // returns [`null`]
      */
     toArray: {
-      _func: resolvedArgs => {
-        if (getType(resolvedArgs[0]) === TYPE_ARRAY) {
-          return resolvedArgs[0];
-        }
-        return [resolvedArgs[0]];
-      },
-
+      _func: resolvedArgs => (isArrayType(resolvedArgs[0]) ? resolvedArgs[0] : [resolvedArgs[0]]),
       _signature: [{ types: [TYPE_ANY] }],
     },
 
@@ -2151,15 +2147,7 @@ export default function functions(
      * toString("hello") // returns "hello"
      */
     toString: {
-      _func: resolvedArgs => {
-        const value = valueOf(resolvedArgs[0]);
-        if (getType(value) === TYPE_STRING) {
-          return resolvedArgs[0];
-        }
-        const indent = resolvedArgs.length > 1 ? toInteger(resolvedArgs[1]) : 0;
-        return JSON.stringify(value, null, indent);
-      },
-
+      _func: resolvedArgs => toJSON(resolvedArgs[0], resolvedArgs.length > 1 ? resolvedArgs[1] : 0),
       _signature: [{ types: [TYPE_ANY] }, { types: [TYPE_NUMBER], optional: true }],
     },
 
@@ -2243,6 +2231,9 @@ export default function functions(
         [TYPE_NUMBER]: 'number',
         [TYPE_STRING]: 'string',
         [TYPE_ARRAY]: 'array',
+        [TYPE_ARRAY_NUMBER]: 'array',
+        [TYPE_ARRAY_STRING]: 'array',
+        [TYPE_ARRAY_ARRAY]: 'array',
         [TYPE_OBJECT]: 'object',
         [TYPE_BOOLEAN]: 'boolean',
         [TYPE_EXPREF]: 'expref',
