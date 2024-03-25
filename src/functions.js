@@ -640,7 +640,8 @@ export default function functions(
      * Finds and returns the index of query in text from a start position
      * @param {string} findText string to search
      * @param {string} withinText text to be searched
-     * @param {integer} [start=0] zero-based position to start searching
+     * @param {integer} [start=0] zero-based position to start searching.
+     * If specified, `start` must be greater than or equal to 0
      * @returns {integer|null} The position of the found string, null if not found.
      * @function find
      * @example
@@ -653,8 +654,13 @@ export default function functions(
       _func: args => {
         const query = Array.from(toString(args[0]));
         const text = Array.from(toString(args[1]));
-        if (query.length === 0) return 0;
         const offset = args.length > 2 ? toInteger(args[2]) : 0;
+        if (offset < 0) throw evaluationError('find() start position must be >= 0');
+        if (query.length === 0) {
+          // allow an empty string to be found at any position -- including the end
+          if (offset > text.length) return null;
+          return offset;
+        }
         for (let i = offset; i < text.length; i += 1) {
           if (text.slice(i, i + query.length).every((c, j) => c === query[j])) {
             return i;
@@ -1076,6 +1082,7 @@ export default function functions(
         const startPos = toInteger(args[1]);
         const numEntries = toInteger(args[2]);
         if (startPos < 0) throw evaluationError('mid() requires a non-negative start position');
+        if (numEntries < 0) throw evaluationError('mid() requires a non-negative length parameter');
         if (isArrayType(args[0])) {
           return args[0].slice(startPos, startPos + numEntries);
         }
@@ -1433,7 +1440,9 @@ export default function functions(
      * @param {string|array} subject original text or array
      * @param {integer} start zero-based index in the original text
      * from where to begin the replacement.  Must be greater than or equal to 0.
-     * @param {integer} length number of code points to be replaced
+     * @param {integer} length number of code points to be replaced.
+     * If `start` + `length` is greater than the length of `subject`,
+     * all text past `start` will be replaced.
      * @param {any} replacement Replacement to insert at the start index.
      * If `subject` is an array, and `replacement` is an array, the `replacement` array
      * elements will be inserted into the `subject` array.
@@ -1453,6 +1462,7 @@ export default function functions(
         const startPos = toInteger(args[1]);
         const numElements = toInteger(args[2]);
         if (startPos < 0) throw evaluationError('replace() start position must be greater than or equal to 0');
+        if (numElements < 0) throw evaluationError('replace() length must be greater than or equal to 0');
         if (isArrayType(args[0])) {
           const sourceArray = valueOf(args[0]);
           let replacement = valueOf(args[3]);
@@ -1915,7 +1925,7 @@ export default function functions(
      * @param {string} old The text to replace.
      * @param {string} new The text to replace `old` with.  If `new` is an empty string, then
      * occurrences of `old` are removed from `text`.
-     * @param {integer} [which] The one-based occurrence of `old` text to replace with `new` text.
+     * @param {integer} [which] The zero-based occurrence of `old` text to replace with `new` text.
      * If `which` parameter is omitted, every occurrence of `old` is replaced with `new`.
      * @returns {string} replaced string
      * @function substitute
@@ -1934,11 +1944,12 @@ export default function functions(
 
         // no third parameter? replace all instances
         let replaceAll = true;
-        let whch = -1;
+        let whch = 0;
         if (args.length > 3) {
           replaceAll = false;
           whch = toInteger(args[3]);
-          if (whch < 1) return src.join('');
+          if (whch < 0) throw evaluationError('substitute() which parameter must be greater than or equal to 0');
+          whch += 1;
         }
 
         let found = 0;
