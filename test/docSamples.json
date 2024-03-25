@@ -618,6 +618,14 @@
       {
         "expression": "weekday(datetime(2006,5,21), 3)",
         "result": 6
+      },
+      {
+        "expression": "avg(([1,2,3] * [2,3,4]).debug(@)).round(@,3)",
+        "result": 6.667
+      },
+      {
+        "expression": "avg(debug([1,2,3] * [2,3,4],&\"average of: \" &toString(@))).round(@,3)",
+        "result": 6.667
       }
     ]
   }

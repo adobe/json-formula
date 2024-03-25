@@ -153,7 +153,9 @@ test('debug output', () => {
     toDate("abcd"),
     {a: ["A",\`{}\`,\`[]\`][? @ < 2]},
     {avg: avg(([1,2,3] * [2,3,4]).debug(@)).round(@,3)},
-    {avg: avg(([1,2,3] * [2,3,4]).debug("average of: " & toString(@), @)).round(@,3)}
+    {avg: avg(debug([1,2,3] * [2,3,4],&"average of: " &toString(@))).round(@,3)},
+    {foo: debug(42, "debugFoo")},
+    merge({foo: 1, foo: 2})
   )`;
   const debug = [];
   new JsonFormula({}, stringToNumber, debug).search(expression, { $form: form1 }, form1);
@@ -184,6 +186,7 @@ test('debug output', () => {
     'Cannot use comparators with array',
     '[2,6,12]',
     'average of: [2,6,12]',
+    'debugFoo',
     'Duplicate key: \'foo\'',
   ]);
   expect(debugTracking).toBe('Access p1 from {"p1":"property1"}');

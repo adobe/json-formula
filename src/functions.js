@@ -468,25 +468,34 @@ export default function functions(
      * The first argument can be any type (except for an expression reference). This value will be
      * displayed to the user by the host application.
      * The second (optional) argument is the value to be returned by the `debug()` function.
-     * @param {any} arg the expression to be debugged
-     * @param {any} [returnValue=arg] The return value of the debug() function.
-     * If not specified, return the value of the first argument
-     * @returns {any} The value of either the `returnValue` parameter or the `arg` parameter
+     * @param {any} arg The expression to return from `debug()`
+     * and the default expression to be debugged.
+     * @param {any} [displayValue=arg] Optionally override the value to be debugged.
+     * `displayValue` may be a value or may be an expression to
+     * be evaluated with the context of `arg`.
+     * @returns {any} The value of the `arg` parameter
      * @function debug
      * @example
      * avg(([1,2,3] * [2,3,4]).debug(@)).round(@,3) // 6.667
-     * avg(([1,2,3] * [2,3,4]).debug("average of: " & toString(@), @)).round(@,3) // 6.667
+     * avg(debug([1,2,3] * [2,3,4],&"average of: " &toString(@))).round(@,3) // 6.667
      */
     debug: {
       _func: resolvedArgs => {
         const arg = resolvedArgs[0];
-        const returnValue = resolvedArgs.length > 1 ? resolvedArgs[1] : arg;
-        debug.push(toString(arg, 2));
-        return returnValue;
+        if (resolvedArgs.length > 1) {
+          if (getType(resolvedArgs[1]) === TYPE_EXPREF) {
+            debug.push(runtime.interpreter.visit(resolvedArgs[1], arg));
+          } else {
+            debug.push(resolvedArgs[1]);
+          }
+        } else {
+          debug.push(toJSON(resolvedArgs[0]));
+        }
+        return arg;
       },
       _signature: [
         { types: [dataTypes.TYPE_ANY] },
-        { types: [dataTypes.TYPE_ANY], optional: true },
+        { types: [dataTypes.TYPE_ANY, dataTypes.TYPE_EXPREF], optional: true },
       ],
     },
 
