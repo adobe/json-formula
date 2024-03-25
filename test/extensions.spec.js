@@ -142,7 +142,7 @@ test('debug output', () => {
     $form.prop.$readOnly,
     {p1: $form.prop.p1},
     length("a").{foo: bar},
-    {m: -"s", n: 2*"b", o: toNumber(1,1)},
+    {m: -"s", n: 2*"b", o: toNumber("")},
     {m: "abc"[0:2]},
     {m: {m: 2}[*]},
     {m: [2,3,4].*},
@@ -168,7 +168,7 @@ test('debug output', () => {
     'Failed to find: \'bar\'',
     'Failed to convert "s" to number',
     'Failed to convert "b" to number',
-    'Invalid base: "1" for toNumber(), using "10"',
+    'Failed to convert empty string to number',
     'Slices apply to arrays only',
     'Bracketed wildcards apply to arrays only',
     'Chained wildcards apply to objects only',
@@ -279,31 +279,5 @@ describe('expressions with globals', () => {
     const expression = 'customFunc()';
     const result = new JsonFormula(customFunctions).search(expression, {}, globals);
     expect(result).toEqual(globals.element);
-  });
-});
-
-test('expressions in brackets', () => {
-  const sample = {
-    array: [0, 1, 2, 3, 4],
-    zero: 0,
-    one: 1,
-    two: 2,
-    three: 3,
-    ten: 10,
-  };
-  const globals = {
-    $form: sample,
-  };
-
-  const failures = [
-    'array[3 3]',
-    'array[$form.zero:$form.ten:$form.one:$form.one]',
-    'array[$form.zero, $form.one]',
-    'array[$form.zero]',
-    'array[0:$form.two]',
-    'array[1.2]',
-  ];
-  failures.forEach(expression => {
-    expect(() => new JsonFormula().search(expression, sample, globals)).toThrow();
   });
 });

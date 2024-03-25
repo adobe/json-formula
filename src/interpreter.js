@@ -30,11 +30,11 @@ governing permissions and limitations under the License.
 /* eslint-disable no-underscore-dangle */
 import TreeInterpreter from './TreeInterpreter.js';
 import Parser from './Parser.js';
-import dataTypes from './dataTypes.js';
-import { matchType, getType, getTypes } from './matchType.js';
+import { dataTypes } from './dataTypes.js';
+import { matchType, getType, isArrayType } from './matchType.js';
 import functions from './functions.js';
 import {
-  isArray, isObject, strictDeepEqual, getValueOf, isClass,
+  isObject, strictDeepEqual, getValueOf, isClass,
 } from './utils.js';
 import {
   evaluationError, typeError, functionError,
@@ -43,7 +43,6 @@ import {
 // Type constants used to define functions.
 const {
   TYPE_CLASS,
-  TYPE_ARRAY,
   TYPE_OBJECT,
 } = dataTypes;
 
@@ -64,8 +63,11 @@ function getToNumber(stringToNumber, debug = []) {
 function toString(a) {
   if (a === null || a === undefined) return '';
   const type = getType(a);
-  if (type === TYPE_ARRAY || type === TYPE_OBJECT) {
-    return JSON.stringify(a);
+  if (isArrayType(type)) {
+    throw typeError('Failed to convert array to string');
+  }
+  if (type === TYPE_OBJECT) {
+    throw typeError('Failed to convert object to string');
   }
   return a.toString();
 }
@@ -87,9 +89,9 @@ class Runtime {
     this.functionTable = functions(
       this,
       isObject,
-      isArray,
       toNumber,
       getType,
+      isArrayType,
       getValueOf,
       toString,
       debug,
@@ -135,7 +137,6 @@ class Runtime {
     // if the arguments are unresolved, there's no point in validating types
     if (!bResolved) return;
     let currentSpec;
-    let actualType;
     const limit = signature[signature.length - 1].variadic ? args.length
       : Math.min(signature.length, args.length);
 
@@ -144,9 +145,8 @@ class Runtime {
         : signature[i].types;
       // Try to avoid checks that will introspect the object and generate dependencies
       if (!matchClass(args[i], currentSpec)) {
-        actualType = getTypes(args[i]);
         // eslint-disable-next-line no-param-reassign
-        args[i] = matchType(actualType, currentSpec, args[i], argName, this.toNumber, toString);
+        args[i] = matchType(currentSpec, args[i], argName, this.toNumber, toString);
       }
     }
   }
