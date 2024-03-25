@@ -47,7 +47,7 @@
       },
       {
         "expression": "hasProperty(null_key, 4)",
-        "result": false
+        "error": "TypeError"
       },
       {
         "expression": "hasProperty(@, \"null_key\")",
@@ -349,6 +349,18 @@
       {
         "expression": "contains(extended, \"\ud835\")",
         "result": false
+      },
+      {
+        "expression": "contains(extended, \"\")",
+        "result": true
+      },
+      {
+        "expression": "contains(\"\", \"\")",
+        "result": true
+      },
+      {
+        "expression": "contains(\"123\", 1)",
+        "error": "TypeError"
       },
       {
         "expression": "endsWith(extended, \"\uDCA5\")",

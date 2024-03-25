@@ -58,7 +58,6 @@ function validNumber(n, context) {
 export default function functions(
   runtime,
   isObject,
-  isArray,
   toNumber,
   getType,
   isArrayType,
@@ -281,7 +280,7 @@ export default function functions(
      * @param {array|string} subject The element to be searched
      * @param {string|boolean|number|null} search element to find.
      * If `subject` is an array, search for an exact match for `search` in the array.
-     * If `subject` is a string, `search` will be <<_type_coercion_rules,coerced to a string>>.
+     * If `subject` is a string, `search` must also be a string.
      * @return {boolean} true if found
      * @function contains
      * @example
@@ -296,9 +295,13 @@ export default function functions(
         const subject = valueOf(resolvedArgs[0]);
         const search = valueOf(resolvedArgs[1]);
         if (isArrayType(resolvedArgs[0])) {
-          return subject.indexOf(search) >= 0;
+          return subject.includes(search);
         }
         const source = Array.from(subject);
+        if (getType(search) !== TYPE_STRING) {
+          throw typeError('contains() requires a string search value for string subjects');
+        }
+        if (search === '') return true;
         const searchLen = Array.from(search).length;
         for (let i = 0; i < source.length; i += 1) {
           if (source.slice(i, i + searchLen).join('') === search) return true;
@@ -715,7 +718,8 @@ export default function functions(
      * Determine if an object has a property or if an array index is in range.
      * @param {object|array} obj source object or array.
      * May also be a scalar, but then the result is always false.
-     * @param {string|integer} name The name (or index position) of the element to find
+     * @param {string|integer} name The name (or index position) of the element to find.
+     * if `obj` is an array, name must be an integer; if `obj` is an object, name must be a string.
      * @returns {boolean} true if the element exists
      * @function hasProperty
      * @example
@@ -725,10 +729,13 @@ export default function functions(
      */
     hasProperty: {
       _func: args => {
-        const value = valueOf(args[0]);
-        if (value === null) return false;
-        const key = (value instanceof Array) ? toInteger(args[1]) : args[1];
-        const result = getProperty(value, key);
+        let key = args[1];
+        const keyType = getType(key);
+        if (isArrayType(args[0])) {
+          if (keyType !== TYPE_NUMBER) throw TypeError('hasProperty(): Array index must be an integer');
+          key = toInteger(key);
+        } else if (keyType !== TYPE_STRING) throw TypeError('hasProperty(): Object key must be a string');
+        const result = getProperty(args[0], key);
         return result !== undefined;
       },
       _signature: [
@@ -845,10 +852,8 @@ export default function functions(
     left: {
       _func: args => {
         const numEntries = args.length > 1 ? toInteger(args[1]) : 1;
-        if (numEntries < 0) return null;
-        if (args[0] instanceof Array) {
-          return args[0].slice(0, numEntries);
-        }
+        if (numEntries < 0) throw evaluationError('left() requires a non-negative number of elements');
+        if (isArrayType(args[0])) return args[0].slice(0, numEntries);
         const text = Array.from(toString(args[0]));
         return text.slice(0, numEntries).join('');
       },
@@ -881,7 +886,7 @@ export default function functions(
         if (isObject(arg)) return Object.keys(arg).length;
         // Array.from splits a string into code points
         // If we didn't do this, then String.length would return the number of UTF-16 code units
-        return isArray(arg) ? arg.length : Array.from(toString(arg)).length;
+        return isArrayType(arg) ? arg.length : Array.from(toString(arg)).length;
       },
       _signature: [{ types: [TYPE_STRING, TYPE_ARRAY, TYPE_OBJECT] }],
     },
@@ -1033,8 +1038,8 @@ export default function functions(
       _func: args => {
         const startPos = toInteger(args[1]);
         const numEntries = toInteger(args[2]);
-        if (startPos < 0) return null;
-        if (args[0] instanceof Array) {
+        if (startPos < 0) throw evaluationError('mid() requires a non-negative start position');
+        if (isArrayType(args[0])) {
           return args[0].slice(startPos, startPos + numEntries);
         }
         const text = Array.from(toString(args[0]));
@@ -1390,9 +1395,14 @@ export default function functions(
      * length, with new text (or array elements).
      * @param {string|array} subject original text or array
      * @param {integer} start zero-based index in the original text
-     * from where to begin the replacement.
+     * from where to begin the replacement.  Must be greater than or equal to 0.
      * @param {integer} length number of code points to be replaced
-     * @param {string|array} replacement string (or array) to insert at the start index
+     * @param {any} replacement Replacement to insert at the start index.
+     * If `subject` is an array, and `replacement` is an array, the `replacement` array
+     * elements will be inserted into the `subject` array.
+     * If `subject` is an array and replacement is not an array, the `replacement` will be
+     * inserted as a single element in `subject`
+     * If `subject` is a string, the `replacement` will be coerced to a string.
      * @returns {string|array} the resulting text or array
      * @function replace
      * @example
@@ -1405,14 +1415,11 @@ export default function functions(
       _func: args => {
         const startPos = toInteger(args[1]);
         const numElements = toInteger(args[2]);
-        if (startPos < 0) {
-          return null;
-        }
+        if (startPos < 0) throw evaluationError('replace() start position must be greater than or equal to 0');
         if (isArrayType(args[0])) {
-          const sourceArray = isArrayType(args[0])
-            ? valueOf(args[0]) : [valueOf(args[0])];
-          const replacement = isArrayType(args[3])
-            ? valueOf(args[3]) : [valueOf(args[3])];
+          const sourceArray = valueOf(args[0]);
+          let replacement = valueOf(args[3]);
+          if (!isArrayType(replacement)) replacement = [replacement];
           sourceArray.splice(startPos, numElements, ...replacement);
           return sourceArray;
         }
@@ -1444,9 +1451,7 @@ export default function functions(
       _func: args => {
         const text = toString(args[0]);
         const count = toInteger(args[1]);
-        if (count < 0) {
-          return null;
-        }
+        if (count < 0) throw evaluationError('rept() count must be greater than or equal to 0');
         return text.repeat(count);
       },
       _signature: [
@@ -1492,7 +1497,7 @@ export default function functions(
     right: {
       _func: args => {
         const numEntries = args.length > 1 ? toInteger(args[1]) : 1;
-        if (numEntries < 0) return null;
+        if (numEntries < 0) throw evaluationError('right() count must be greater than or equal to 0');
         if (args[0] instanceof Array) {
           if (numEntries === 0) return [];
           return args[0].slice(numEntries * -1);
@@ -2291,8 +2296,10 @@ export default function functions(
 
     /**
      * Perform an indexed lookup on an object or array
-     * @param {object | array} object on which to perform the lookup
-     * @param {string | integer} index a named child for an object or an integer offset for an array
+     * @param {object | array} subject on which to perform the lookup
+     * @param {string | integer} index if `subject` is an object, `index` must be a string
+     * indicating the key name to search for.
+     * If `subject` is an array, then index must be an integer indicating the offset into the array
      * @returns {any} the result of the lookup -- or `null` if not found.
      * @function value
      * @example
@@ -2301,13 +2308,26 @@ export default function functions(
      */
     value: {
       _func: args => {
-        const obj = valueOf(args[0]) || {};
-        const index = obj instanceof Array ? toInteger(args[1]) : args[1];
+        const indexType = getType(args[1]);
+        let index = args[1];
+        const subjectArray = isArrayType(args[0]);
+        if (subjectArray) {
+          if (indexType !== TYPE_NUMBER) {
+            throw typeError('value() requires an integer index for arrays');
+          }
+          index = toInteger(index);
+        } else if (indexType !== TYPE_STRING) {
+          throw typeError('value() requires a string index for objects');
+        }
+        const obj = valueOf(args[0]);
         const result = getProperty(obj, index);
 
         if (result === undefined) {
-          if (isArray(obj)) debug.push(`Index: ${index} out of range for array size: ${obj.length}`);
-          else debugAvailable(debug, obj, index);
+          if (subjectArray) {
+            debug.push(
+              `Index: ${index} out of range for array size: ${obj.length}`,
+            );
+          } else debugAvailable(debug, obj, index);
           return null;
         }
         return result;

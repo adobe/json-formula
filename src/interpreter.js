@@ -34,7 +34,7 @@ import { dataTypes } from './dataTypes.js';
 import { matchType, getType, isArrayType } from './matchType.js';
 import functions from './functions.js';
 import {
-  isArray, isObject, strictDeepEqual, getValueOf, isClass,
+  isObject, strictDeepEqual, getValueOf, isClass,
 } from './utils.js';
 import {
   evaluationError, typeError, functionError,
@@ -63,8 +63,11 @@ function getToNumber(stringToNumber, debug = []) {
 function toString(a) {
   if (a === null || a === undefined) return '';
   const type = getType(a);
-  if (isArrayType(type) || type === TYPE_OBJECT) {
-    return JSON.stringify(a);
+  if (isArrayType(type)) {
+    throw typeError('Failed to convert array to string');
+  }
+  if (type === TYPE_OBJECT) {
+    throw typeError('Failed to convert object to string');
   }
   return a.toString();
 }
@@ -86,7 +89,6 @@ class Runtime {
     this.functionTable = functions(
       this,
       isObject,
-      isArray,
       toNumber,
       getType,
       isArrayType,

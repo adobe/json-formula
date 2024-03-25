@@ -284,7 +284,7 @@
       {
         "data": "'purchase-order'",
         "expression": "value(items, \"length\")",
-        "result": null
+        "error": "TypeError"
       },
       {
         "expression": "value(value('purchase-order', \"address\"), \"street\")",
@@ -425,7 +425,7 @@
       { "expression": "left(\"abc\", 2)", "result": "ab" },
       { "expression": "left(\"abc\", 100)", "result": "abc" },
       { "expression": "left(\"abc\", 0)", "result": "" },
-      { "expression": "left(\"abc\", -1)", "result": null },
+      { "expression": "left(\"abc\", -1)", "error": "EvaluationError" },
       {
         "data": "'purchase-order'",
         "expression": "left(address.street)",
@@ -444,7 +444,7 @@
         "result": "abc"
       },
       { "expression": "right(\"abc\", 0)", "result": "" },
-      { "expression": "right(\"abc\", -1)", "result": null },
+      { "expression": "right(\"abc\", -1)", "error": "EvaluationError" },
       {
         "data": "'purchase-order'",
         "expression": "right(address.street)",
@@ -463,7 +463,7 @@
       },
       {
         "expression": "mid(\"abc\", -1, 100)",
-        "result": null
+        "error": "EvaluationError"
       },
       {
         "expression": "mid(\"abc\")",
@@ -501,7 +501,7 @@
       },
       {
         "expression": "left(split(\"abc\", \"\"), -1)",
-        "result": null
+        "error": "EvaluationError"
       },
       {
         "data": "'purchase-order'",
@@ -530,7 +530,7 @@
       },
       {
         "expression": "right(split(\"abc\", \"\"), -1)",
-        "result": null
+        "error": "EvaluationError"
       },
       {
         "data": "'purchase-order'",
@@ -551,7 +551,7 @@
       },
       {
         "expression": "mid(split(\"abc\", \"\"), -1, 100)",
-        "result": null
+        "error": "EvaluationError"
       },
       {
         "expression": "mid(split(\"abc\", \"\"))",
@@ -588,7 +588,7 @@
         "result": "abcabc"
       },
       { "expression": "rept(\"a\", 0)", "result": "" },
-      { "expression": "rept(\"a\", -1)", "result": null },
+      { "expression": "rept(\"a\", -1)", "error": "EvaluationError" },
       {
         "data": "'purchase-order'",
         "expression": "rept(address.country, items[0].quantity)",
@@ -618,7 +618,11 @@
       },
       {
         "expression": "replace(\"abcdefg\", -1, 100, \"yz\")",
-        "result": null
+        "error": "EvaluationError"
+      },
+      {
+        "expression": "replace(\"abcdefg\", -1, 100, [\"yz\"])",
+        "error": "EvaluationError"
       },
       {
         "data": "'purchase-order'",
@@ -644,6 +648,14 @@
         "expression": "replace(items, 0, 1, {desc: \"pens\", quantity: 5, price: 1.1, subtotal: 5.50})",
         "result": [
           { "desc": "pens", "quantity": 5, "price": 1.1, "subtotal": 5.5 },
+          { "desc": "pencils", "quantity": 3, "price": 1.34, "subtotal": 4.02 }
+        ]
+      },
+      {
+        "data": "'purchase-order'",
+        "expression": "replace(items, 0, 1,  null())",
+        "result": [
+          null,
           { "desc": "pencils", "quantity": 3, "price": 1.34, "subtotal": 4.02 }
         ]
       },
@@ -1535,6 +1547,11 @@
         "data": "`{\"two\": 2.6}`",
         "expression": "hasProperty([5,6,7], two)",
         "result": true
+      },
+      {
+        "data": "`{\"two\": 2}`",
+        "expression": "hasProperty({two: 2}, two)",
+        "error": "TypeError"
       },
       {
         "data": "`{\"two\": 2.6}`",
