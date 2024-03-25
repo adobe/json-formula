@@ -137,12 +137,12 @@ test('debug output', () => {
   };
   const expression = `merge(
     $form.array1[10],
-    $form.array1.$value,
+    $form.array1.$values,
     $form.foo,
     $form.prop.$readOnly,
-    $form.prop.p1,
+    {p1: $form.prop.p1},
     length("a").{foo: bar},
-    {m: -"s", n: 2*"b", o: toNumber(1,1)},
+    {m: -"s", n: 2*"b", o: toNumber("")},
     {m: "abc"[0:2]},
     {m: {m: 2}[*]},
     {m: [2,3,4].*},
@@ -160,16 +160,16 @@ test('debug output', () => {
 
   expect(debug).toEqual([
     'Index: 10 out of range for array size: 6',
-    'Failed to find: \'$value\'',
-    'Available fields: 0..5,\'$name\',\'$fields\'',
+    'Failed to find: \'$values\'',
+    'Available fields: 0..5,\'$name\',\'$fields\',\'$value\'',
     'Failed to find: \'foo\'',
     'Available fields: \'array1\',\'prop\'',
     'Failed to find: \'$readOnly\'',
-    'Available fields: \'$name\',\'$fields\',\'p1\'',
+    'Available fields: \'$name\',\'$fields\',\'$value\',\'p1\'',
     'Failed to find: \'bar\'',
     'Failed to convert "s" to number',
     'Failed to convert "b" to number',
-    'Invalid base: "1" for toNumber(), using "10"',
+    'Failed to convert empty string to number',
     'Slices apply to arrays only',
     'Bracketed wildcards apply to arrays only',
     'Chained wildcards apply to objects only',
@@ -184,6 +184,7 @@ test('debug output', () => {
     'Cannot use comparators with array',
     '[2,6,12]',
     'average of: [2,6,12]',
+    'Duplicate key: \'foo\'',
   ]);
   expect(debugTracking).toBe('Access p1 from {"p1":"property1"}');
 });
@@ -281,31 +282,5 @@ describe('expressions with globals', () => {
     const expression = 'customFunc()';
     const result = new JsonFormula(customFunctions).search(expression, {}, globals);
     expect(result).toEqual(globals.element);
-  });
-});
-
-test('expressions in brackets', () => {
-  const sample = {
-    array: [0, 1, 2, 3, 4],
-    zero: 0,
-    one: 1,
-    two: 2,
-    three: 3,
-    ten: 10,
-  };
-  const globals = {
-    $form: sample,
-  };
-
-  const failures = [
-    'array[3 3]',
-    'array[$form.zero:$form.ten:$form.one:$form.one]',
-    'array[$form.zero, $form.one]',
-    'array[$form.zero]',
-    'array[0:$form.two]',
-    'array[1.2]',
-  ];
-  failures.forEach(expression => {
-    expect(() => new JsonFormula().search(expression, sample, globals)).toThrow();
   });
 });

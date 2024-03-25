@@ -144,3 +144,9 @@ export function debugAvailable(debug, obj, key) {
   // eslint-disable-next-line no-empty
   } catch (e) {}
 }
+
+export function isClass(obj) {
+  if (obj === null) return false;
+  if (Array.isArray(obj)) return false;
+  return !['Object', 'Boolean', 'Number', 'String'].includes(obj.constructor.name);
+}

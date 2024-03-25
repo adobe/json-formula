@@ -27,9 +27,11 @@ governing permissions and limitations under the License.
 */
 
 /* eslint-disable no-underscore-dangle */
-import dataTypes from './dataTypes.js';
-import { getProperty, debugAvailable, toBoolean } from './utils.js';
-import { functionError, typeError } from './errors.js';
+import { dataTypes, typeNameTable } from './dataTypes.js';
+import {
+  getProperty, debugAvailable, toBoolean, strictDeepEqual,
+} from './utils.js';
+import { evaluationError, functionError, typeError } from './errors.js';
 
 function round(num, digits) {
   const precision = 10 ** digits;
@@ -46,18 +48,19 @@ function getDateNum(dateObj) {
   return dateObj / MS_IN_DAY;
 }
 
-function validNumber(n) {
-  if (Number.isNaN(n)) return null;
-  if (!Number.isFinite(n)) return null;
+function validNumber(n, context) {
+  if (Number.isNaN(n) || !Number.isFinite(n)) {
+    throw evaluationError(`Call to "${context}()" resulted in an invalid number`);
+  }
   return n;
 }
 
 export default function functions(
   runtime,
   isObject,
-  isArray,
   toNumber,
   getType,
+  isArrayType,
   valueOf,
   toString,
   debug,
@@ -73,6 +76,7 @@ export default function functions(
     TYPE_NULL,
     TYPE_ARRAY_NUMBER,
     TYPE_ARRAY_STRING,
+    TYPE_ARRAY_ARRAY,
   } = dataTypes;
 
   function toInteger(num) {
@@ -86,6 +90,15 @@ export default function functions(
     n = Math.trunc(num);
     if (Number.isNaN(n)) return num;
     return n;
+  }
+
+  function toJSON(arg, indent) {
+    const value = valueOf(arg);
+    if (getType(value) === TYPE_STRING) {
+      return arg;
+    }
+    const offset = indent ? toInteger(indent) : 0;
+    return JSON.stringify(value, null, offset);
   }
 
   const functionMap = {
@@ -124,7 +137,7 @@ export default function functions(
      * acos(0) => 1.5707963267948966
      */
     acos: {
-      _func: resolvedArgs => validNumber(Math.acos(resolvedArgs[0])),
+      _func: resolvedArgs => validNumber(Math.acos(resolvedArgs[0]), 'acos'),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -161,7 +174,7 @@ export default function functions(
      * Math.asin(0) => 0
      */
     asin: {
-      _func: resolvedArgs => validNumber(Math.asin(resolvedArgs[0])),
+      _func: resolvedArgs => validNumber(Math.asin(resolvedArgs[0]), 'asin'),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -177,7 +190,7 @@ export default function functions(
      * atan2(20,10) => 1.1071487177940904
      */
     atan2: {
-      _func: resolvedArgs => validNumber(Math.atan2(resolvedArgs[0], resolvedArgs[1])),
+      _func: resolvedArgs => Math.atan2(resolvedArgs[0], resolvedArgs[1]),
       _signature: [
         { types: [TYPE_NUMBER] },
         { types: [TYPE_NUMBER] },
@@ -186,19 +199,18 @@ export default function functions(
 
     /**
      * Finds the average of the elements in an array.
-     * An empty array will return an average of `null`.
+     * If the array is empty, an evaluation error is thrown
      * @param {number[]} elements array of numeric values
      * @return {number} average value
      * @function avg
      * @example
-     * avg(`[]`) // returns null
      * avg([1, 2, 3]) // returns 2
      */
     avg: {
       _func: resolvedArgs => {
         let sum = 0;
         const inputArray = resolvedArgs[0];
-        if (inputArray.length === 0) return null;
+        if (inputArray.length === 0) throw evaluationError('avg() requires at least one argument');
         inputArray.forEach(a => {
           sum += a;
         });
@@ -243,8 +255,8 @@ export default function functions(
     },
     /**
      * Retrieve the first code point from a string
-     * @param {string} str source string
-     * @return {integer} unicode code point value
+     * @param {string} str source string.
+     * @return {integer} Unicode code point value. If the input string is empty, returns `null`.
      * @function codePoint
      * @example
      * codePoint("ABC") // 65
@@ -268,7 +280,7 @@ export default function functions(
      * @param {array|string} subject The element to be searched
      * @param {string|boolean|number|null} search element to find.
      * If `subject` is an array, search for an exact match for `search` in the array.
-     * If `subject` is a string, `search` will be <<_type_coercion_rules,coerced to a string>>.
+     * If `subject` is a string, `search` must also be a string.
      * @return {boolean} true if found
      * @function contains
      * @example
@@ -282,10 +294,14 @@ export default function functions(
       _func: resolvedArgs => {
         const subject = valueOf(resolvedArgs[0]);
         const search = valueOf(resolvedArgs[1]);
-        if (getType(valueOf(resolvedArgs[0])) === TYPE_ARRAY) {
-          return subject.indexOf(search) >= 0;
+        if (isArrayType(resolvedArgs[0])) {
+          return subject.includes(search);
         }
         const source = Array.from(subject);
+        if (getType(search) !== TYPE_STRING) {
+          throw typeError('contains() requires a string search value for string subjects');
+        }
+        if (search === '') return true;
         const searchLen = Array.from(search).length;
         for (let i = 0; i < source.length; i += 1) {
           if (source.slice(i, i + searchLen).join('') === search) return true;
@@ -304,7 +320,7 @@ export default function functions(
      * cos(1.0471975512) => 0.4999999999970535
      */
     cos: {
-      _func: resolvedArgs => validNumber(Math.cos(resolvedArgs[0])),
+      _func: resolvedArgs => Math.cos(resolvedArgs[0]),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -324,8 +340,9 @@ export default function functions(
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @param {number} end_date The end <<_date_and_time_values, date/time value>> -- must
-     * be greater or equal to start_date.
-     * @param {string} unit Case-insensitive string representing the unit of time to measure
+     * be greater or equal to start_date. If not, an error will be thrown.
+     * @param {string} unit Case-insensitive string representing the unit of time to measure.
+     * An unrecognized unit will result in an error.
      * @returns {integer} The number of days/months/years difference
      * @function datedif
      * @example
@@ -671,7 +688,11 @@ export default function functions(
     fromCodePoint: {
       _func: args => {
         const code = toInteger(args[0]);
-        return String.fromCodePoint(code);
+        try {
+          return String.fromCodePoint(code);
+        } catch (e) {
+          throw evaluationError(`Invalid code point: "${code}"`);
+        }
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -681,6 +702,8 @@ export default function functions(
     /**
      * Returns an object by transforming a list of key-value `pairs` into an object.
      * `fromEntries()` is the inverse operation of `entries()`.
+     * If the nested arrays are not of the form: `[key, value]`
+     * (where key is a string), an error will be thrown.
      * @param {any[]} pairs A nested array of key-value pairs to create the object from
      * @returns {object} An object constructed from the provided key-value pairs
      * @function fromEntries
@@ -690,6 +713,14 @@ export default function functions(
     fromEntries: {
       _func: args => {
         const array = args[0];
+        // validate beyond the TYPE_ARRAY_ARRAY check
+        if (!array.every(a => {
+          if (a.length !== 2) return false;
+          if (getType(a[0]) !== TYPE_STRING) return false;
+          return true;
+        })) {
+          throw typeError('fromEntries() requires an array of key value pairs');
+        }
         return Object.fromEntries(array);
       },
       _signature: [
@@ -715,7 +746,8 @@ export default function functions(
      * Determine if an object has a property or if an array index is in range.
      * @param {object|array} obj source object or array.
      * May also be a scalar, but then the result is always false.
-     * @param {string|integer} name The name (or index position) of the element to find
+     * @param {string|integer} name The name (or index position) of the element to find.
+     * if `obj` is an array, name must be an integer; if `obj` is an object, name must be a string.
      * @returns {boolean} true if the element exists
      * @function hasProperty
      * @example
@@ -725,10 +757,13 @@ export default function functions(
      */
     hasProperty: {
       _func: args => {
-        const value = valueOf(args[0]);
-        if (value === null) return false;
-        const key = (value instanceof Array) ? toInteger(args[1]) : args[1];
-        const result = getProperty(value, key);
+        let key = args[1];
+        const keyType = getType(key);
+        if (isArrayType(args[0])) {
+          if (keyType !== TYPE_NUMBER) throw TypeError('hasProperty(): Array index must be an integer');
+          key = toInteger(key);
+        } else if (keyType !== TYPE_STRING) throw TypeError('hasProperty(): Object key must be a string');
+        const result = getProperty(args[0], key);
         return result !== undefined;
       },
       _signature: [
@@ -772,6 +807,13 @@ export default function functions(
         const conditionNode = unresolvedArgs[0];
         const leftBranchNode = unresolvedArgs[1];
         const rightBranchNode = unresolvedArgs[2];
+        unresolvedArgs
+          .forEach(arg => {
+            if (arg.type === 'ExpressionReference') {
+              throw typeError('"if()" does not accept an expression reference argument.');
+            }
+          });
+
         const condition = interpreter.visit(conditionNode, data);
         if (toBoolean(valueOf(condition))) {
           return interpreter.visit(leftBranchNode, data);
@@ -787,22 +829,23 @@ export default function functions(
     /**
      * Combines all the elements from the provided
      * array, joined together using the `glue` argument as a separator between each array element.
-     * @param {string[]} stringsarray array of strings or values that can be coerced to strings
+     * @param {any[]} array array of values that will be converted to strings using `toString()`
      * @param {string} glue
      * @return {string} String representation of the array
      * @function join
      * @example
      * join(["a", "b", "c"], ",") // returns "a,b,c"
      * join(["apples", "bananas"], " and ") // returns "apples and bananas"
+     * join([1, 2, 3, null()], "|") // returns "1|2|3|null"
      */
     join: {
       _func: resolvedArgs => {
         const listJoin = resolvedArgs[0];
         const joinChar = resolvedArgs[1];
-        return listJoin.join(joinChar);
+        return listJoin.map(a => toJSON(a)).join(joinChar);
       },
       _signature: [
-        { types: [TYPE_ARRAY_STRING] },
+        { types: [TYPE_ARRAY] },
         { types: [TYPE_STRING] },
       ],
     },
@@ -821,7 +864,7 @@ export default function functions(
         if (resolvedArgs[0] === null) return [];
         return Object.keys(resolvedArgs[0]);
       },
-      _signature: [{ types: [TYPE_ANY] }],
+      _signature: [{ types: [TYPE_OBJECT] }],
     },
     /**
      * Return a substring from the start of a string or the left-most elements of an array
@@ -837,10 +880,8 @@ export default function functions(
     left: {
       _func: args => {
         const numEntries = args.length > 1 ? toInteger(args[1]) : 1;
-        if (numEntries < 0) return null;
-        if (args[0] instanceof Array) {
-          return args[0].slice(0, numEntries);
-        }
+        if (numEntries < 0) throw evaluationError('left() requires a non-negative number of elements');
+        if (isArrayType(args[0])) return args[0].slice(0, numEntries);
         const text = Array.from(toString(args[0]));
         return text.slice(0, numEntries).join('');
       },
@@ -873,7 +914,7 @@ export default function functions(
         if (isObject(arg)) return Object.keys(arg).length;
         // Array.from splits a string into code points
         // If we didn't do this, then String.length would return the number of UTF-16 code units
-        return isArray(arg) ? arg.length : Array.from(toString(arg)).length;
+        return isArrayType(arg) ? arg.length : Array.from(toString(arg)).length;
       },
       _signature: [{ types: [TYPE_STRING, TYPE_ARRAY, TYPE_OBJECT] }],
     },
@@ -887,7 +928,7 @@ export default function functions(
      * log(10) // 2.302585092994046
      */
     log: {
-      _func: resolvedArgs => validNumber(Math.log(resolvedArgs[0])),
+      _func: resolvedArgs => validNumber(Math.log(resolvedArgs[0]), 'log'),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -900,7 +941,7 @@ export default function functions(
      * log10(100000) // 5
      */
     log10: {
-      _func: resolvedArgs => validNumber(Math.log10(resolvedArgs[0])),
+      _func: resolvedArgs => validNumber(Math.log10(resolvedArgs[0]), 'log10'),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -943,36 +984,38 @@ export default function functions(
 
     /**
      * Calculates the largest value in the provided `collection` arguments.
-     * If all collections are empty `null` is returned.
+     * If all collections are empty, an evaluation error is thrown.
      * `max()` can work on numbers or strings.
      * If a mix of numbers and strings are provided, all values with be coerced to
      * the type of the first value.
-     * @param {...(number[]|string[])} collection array(s) in which the maximum
+     * If all values are null, the result is 0.
+     * @param {...(number[]|string[]|number|string)} collection values/array(s) in which the maximum
      * element is to be calculated
-     * @return {number} the largest value found
+     * @return {number|string} the largest value found
      * @function max
      * @example
      * max([1, 2, 3], [4, 5, 6]) // returns 6
-     * max(`[]`) // returns null
      * max(["a", "a1", "b"]) // returns "b"
+     * max(8, 10, 12) // returns 12
      */
     max: {
       _func: args => {
         // flatten the args into a single array
-        const array = args.reduce((prev, cur) => {
-          prev.push(...cur);
-          return prev;
-        }, []);
-
-        const first = array.find(r => r !== null);
-        if (array.length === 0 || first === undefined) return null;
-        // use the first value to determine the comparison type
-        const isNumber = getType(first, true) === TYPE_NUMBER;
-        return array.map(a => (isNumber ? toNumber(a) : toString(a)))
+        const array = args.reduce((prev, cur) => prev.concat(cur), []);
+        if (array.length === 0) throw evaluationError('max() requires at least one argument');
+        const isNumber = a => getType(a) === TYPE_NUMBER;
+        const isString = a => getType(a) === TYPE_STRING;
+        if (!(array.every(isNumber) || array.every(isString))) {
+          throw typeError('max() requires all arguments to be of the same type');
+        }
+        return array
           .sort((a, b) => (a > b ? 1 : -1))
           .pop();
       },
-      _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING], variadic: true }],
+      _signature: [{
+        types: [TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING, TYPE_NUMBER, TYPE_STRING],
+        variadic: true,
+      }],
     },
 
     /**
@@ -1016,15 +1059,15 @@ export default function functions(
      * @example
      * mid("Fluid Flow", 0, 5) // returns "Fluid"
      * mid("Fluid Flow", 6, 20) // returns "Flow"
-     * mid("Fluid Flow, 20, 5) // returns ""
+     * mid("Fluid Flow", 20, 5) // returns ""
      * mid([0,1,2,3,4,5,6,7,8,9], 2, 3) // returns [2,3,4]
      */
     mid: {
       _func: args => {
         const startPos = toInteger(args[1]);
         const numEntries = toInteger(args[2]);
-        if (startPos < 0) return null;
-        if (args[0] instanceof Array) {
+        if (startPos < 0) throw evaluationError('mid() requires a non-negative start position');
+        if (isArrayType(args[0])) {
           return args[0].slice(startPos, startPos + numEntries);
         }
         const text = Array.from(toString(args[0]));
@@ -1057,34 +1100,38 @@ export default function functions(
 
     /**
      * Calculates the smallest value in the input arguments.
-     * If all arrays are empty `null` is returned.
+     * If all collections/values are empty, an evaluation error is thrown.
      * min() can work on numbers or strings.
      * If a mix of numbers and strings are provided, the type of the first value will be used.
-     * @param {...(number[]|string[])} collection Arrays to search for the minimum value
-     * @return {number}
+     * If all values are null, zero is returned.
+     * @param {...(number[]|string[]|number|string)} collection
+     * Values/arrays to search for the minimum value
+     * @return {number|string} the smallest value found
      * @function min
      * @example
      * min([1, 2, 3], [4, 5, 6]) // returns 1
-     * min(`[]`) // returns null
      * min(["a", "a1", "b"]) // returns "a"
+      * min(8, 10, 12) // returns 8
      */
     min: {
       _func: args => {
         // flatten the args into a single array
-        const array = args.reduce((prev, cur) => {
-          prev.push(...cur);
-          return prev;
-        }, []);
+        const array = args.reduce((prev, cur) => prev.concat(cur), []);
+        if (array.length === 0) throw evaluationError('min() requires at least one argument');
 
-        const first = array.find(r => r !== null);
-        if (array.length === 0 || first === undefined) return null;
-        // use the first value to determine the comparison type
-        const isNumber = getType(first, true) === TYPE_NUMBER;
-        return array.map(a => (isNumber ? toNumber(a) : toString(a)))
+        const isNumber = a => getType(a) === TYPE_NUMBER;
+        const isString = a => getType(a) === TYPE_STRING;
+        if (!(array.every(isNumber) || array.every(isString))) {
+          throw typeError('max() requires all arguments to be of the same type');
+        }
+        return array
           .sort((a, b) => (a < b ? 1 : -1))
           .pop();
       },
-      _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING], variadic: true }],
+      _signature: [{
+        types: [TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING, TYPE_NUMBER, TYPE_STRING],
+        variadic: true,
+      }],
     },
 
     /**
@@ -1112,6 +1159,7 @@ export default function functions(
      * @param {number} divisor The number by which to divide number.
      * @return {number} Computes the remainder of `dividend`/`divisor`.
      * If `dividend` is negative, the result will also be negative.
+     * If `dividend` is zero, an error is thrown.
      * @function mod
      * @example
      * mod(3, 2) // returns 1
@@ -1121,7 +1169,9 @@ export default function functions(
       _func: args => {
         const p1 = args[0];
         const p2 = args[1];
-        return p1 % p2;
+        const result = p1 % p2;
+        if (Number.isNaN(result)) throw functionError(`Bad parameter for mod: '${p1} % ${p2}'`);
+        return result;
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -1162,7 +1212,7 @@ export default function functions(
      * @function not
      */
     not: {
-      _func: resolveArgs => !valueOf(resolveArgs[0]),
+      _func: resolveArgs => !toBoolean(valueOf(resolveArgs[0])),
       _signature: [{ types: [dataTypes.TYPE_ANY] }],
     },
 
@@ -1179,7 +1229,10 @@ export default function functions(
      * notNull(`null`, 2, 3, 4, `null`) // returns 2
      */
     notNull: {
-      _func: resolvedArgs => resolvedArgs.find(arg => getType(arg) !== TYPE_NULL) || null,
+      _func: resolvedArgs => {
+        const result = resolvedArgs.find(arg => getType(arg) !== TYPE_NULL);
+        return result === undefined ? null : result;
+      },
       _signature: [{ types: [TYPE_ANY], variadic: true }],
     },
     /**
@@ -1236,19 +1289,9 @@ export default function functions(
      * power(10, 2) // returns 100 (10 raised to power 2)
      */
     power: {
-      _func: args => {
-        const type = getType(args[0]);
-        if (type === dataTypes.TYPE_ARRAY
-              || type === dataTypes.TYPE_ARRAY_STRING || type === dataTypes.TYPE_ARRAY_NUMBER) {
-          return args[0].map(a => toNumber(a) ** args[1]);
-        }
-        return args[0] ** args[1];
-      },
+      _func: args => validNumber(args[0] ** args[1], 'power'),
       _signature: [
-        {
-          types: [dataTypes.TYPE_NUMBER, dataTypes.TYPE_ARRAY_NUMBER,
-            dataTypes.TYPE_ARRAY_STRING],
-        },
+        { types: [dataTypes.TYPE_NUMBER] },
         { types: [dataTypes.TYPE_NUMBER] },
       ],
     },
@@ -1257,6 +1300,8 @@ export default function functions(
      * Apply proper casing to a string.  Proper casing is where the first letter of each
      * word is converted to an
      * uppercase letter and the rest of the letters in the word converted to lowercase.
+     * Words are demarcated by whitespace, punctuation, or numbers.
+     * Specifically, any character(s) matching the regular expression: `[\s\d\p{P}]+`.
      * @param {string} text source string
      * @returns {string} source string with proper casing applied.
      * @function proper
@@ -1336,30 +1381,34 @@ export default function functions(
      * Register a function.  The registered function may take one parameter.
      * If more parameters are needed, combine them in an array or object.
      * Note that implementations are not required to provide `register()` in order to be conformant.
-     * @param {string} functionName Name of the function to register
+     * Built-in functions may not be overridden.
+     * A function may not be re-registered with a different definition.
+     * @param {string} functionName Name of the function to register.
+     * `functionName` must begin with an underscore (`_`) and follow the regular
+     * expression pattern: `^_[_a-zA-Z0-9$]*$`
      * @param {expression} expr Expression to execute with this function call
      * @return {{}} returns an empty object
      * @function register
      * @example
-     * register("product", &@[0] * @[1]) // can now call: product([2,21]) => returns 42
-     * register("ltrim", &split(@,"").reduce(@, &accumulated & current | if(@ = " ", "", @), ""))
-     * // ltrim("  abc  ") => returns "abc  "
+     * register("_product", &@[0] * @[1]) // can now call: _product([2,21]) => returns 42
+     * register("_ltrim", &split(@,"").reduce(@, &accumulated & current | if(@ = " ", "", @), ""))
+     * // _ltrim("  abc  ") => returns "abc  "
      */
     register: {
       _func: resolvedArgs => {
         const functionName = resolvedArgs[0];
         const exprefNode = resolvedArgs[1];
 
-        if (functionMap[functionName] && !functionMap[functionName].custom) {
-          // custom functions can be re-registered
-          // but not any other functions
-          debug.push(`Cannot override function: "${functionName}"`);
-          return {};
+        if (!/^_[_a-zA-Z0-9$]*$/.test(functionName)) throw functionError(`Invalid function name: "${functionName}"`);
+        if (functionMap[functionName]
+          && functionMap[functionName]._exprefNode.value !== exprefNode.value) {
+          // custom functions can be re-registered as long as the expression is the same
+          throw functionError(`Cannot override function: "${functionName}" with a different definition`);
         }
         functionMap[functionName] = {
           _func: args => runtime.interpreter.visit(exprefNode, ...args),
           _signature: [{ types: [TYPE_ANY], optional: true }],
-          _custom: true,
+          _exprefNode: exprefNode,
         };
         return {};
       },
@@ -1374,9 +1423,14 @@ export default function functions(
      * length, with new text (or array elements).
      * @param {string|array} subject original text or array
      * @param {integer} start zero-based index in the original text
-     * from where to begin the replacement.
+     * from where to begin the replacement.  Must be greater than or equal to 0.
      * @param {integer} length number of code points to be replaced
-     * @param {string|array} replacement string (or array) to insert at the start index
+     * @param {any} replacement Replacement to insert at the start index.
+     * If `subject` is an array, and `replacement` is an array, the `replacement` array
+     * elements will be inserted into the `subject` array.
+     * If `subject` is an array and replacement is not an array, the `replacement` will be
+     * inserted as a single element in `subject`
+     * If `subject` is a string, the `replacement` will be coerced to a string.
      * @returns {string|array} the resulting text or array
      * @function replace
      * @example
@@ -1389,14 +1443,11 @@ export default function functions(
       _func: args => {
         const startPos = toInteger(args[1]);
         const numElements = toInteger(args[2]);
-        if (startPos < 0) {
-          return null;
-        }
-        if (getType(args[0]) === TYPE_ARRAY) {
-          const sourceArray = getType(args[0]) === TYPE_ARRAY
-            ? valueOf(args[0]) : [valueOf(args[0])];
-          const replacement = getType(args[3]) === TYPE_ARRAY
-            ? valueOf(args[3]) : [valueOf(args[3])];
+        if (startPos < 0) throw evaluationError('replace() start position must be greater than or equal to 0');
+        if (isArrayType(args[0])) {
+          const sourceArray = valueOf(args[0]);
+          let replacement = valueOf(args[3]);
+          if (!isArrayType(replacement)) replacement = [replacement];
           sourceArray.splice(startPos, numElements, ...replacement);
           return sourceArray;
         }
@@ -1418,7 +1469,8 @@ export default function functions(
      * Return text repeated `count` times.
      * @param {string} text text to repeat
      * @param {integer} count number of times to repeat the text
-     * @returns {string} Text generated from the repeated text
+     * @returns {string} Text generated from the repeated text.
+     * if `count` is zero, returns an empty string. If `count` is less than 0, returns null.
      * @function rept
      * @example
      * rept("x", 5) // returns "xxxxx"
@@ -1427,9 +1479,7 @@ export default function functions(
       _func: args => {
         const text = toString(args[0]);
         const count = toInteger(args[1]);
-        if (count < 0) {
-          return null;
-        }
+        if (count < 0) throw evaluationError('rept() count must be greater than or equal to 0');
         return text.repeat(count);
       },
       _signature: [
@@ -1439,7 +1489,7 @@ export default function functions(
     },
 
     /**
-     * Reverses the order of an array or string
+     * Reverses the order of an array or the order of code points in a string
      * @param {string|array} subject the source to be reversed
      * @return {array} The resulting reversed array or string
      * @function reverse
@@ -1464,7 +1514,7 @@ export default function functions(
      * a subset of elements from the end of an array
      * @param {string|array} subject The text/array containing the code points/elements to extract
      * @param {integer} [elements=1] number of elements to pick
-     * @return {string|array} The extracted substring or array subset
+     * @return {string|array|null} The extracted substring or array subset
      * Returns null if the number of elements is less than 0
      * @function right
      * @example
@@ -1475,7 +1525,7 @@ export default function functions(
     right: {
       _func: args => {
         const numEntries = args.length > 1 ? toInteger(args[1]) : 1;
-        if (numEntries < 0) return null;
+        if (numEntries < 0) throw evaluationError('right() count must be greater than or equal to 0');
         if (args[0] instanceof Array) {
           if (numEntries === 0) return [];
           return args[0].slice(numEntries * -1);
@@ -1519,13 +1569,15 @@ export default function functions(
 
     /**
      * Perform a wildcard search.  The search is case-sensitive and supports two forms of wildcards:
-     * `*` finds a sequence of code points and `?` finds a single code point.
-     * To use `*` or `?` as text values, precede them with an escape (`{backslash}`) character.
+     * `{asterisk}` finds a sequence of code points and `?` finds a single code point.
+     * To use `{asterisk}` or `?` or `{backslash}` as text values,
+     * precede them with an escape (`{backslash}`) character.
      * Note that the wildcard search is not greedy.
      * e.g. `search("a{asterisk}b", "abb")` will return `[0, "ab"]` Not `[0, "abb"]`
      * @param {string} findText the search string -- which may include wild cards.
      * @param {string} withinText The string to search.
      * @param {integer} [startPos=0] The zero-based position of withinText to start searching.
+     * A negative value is not allowed.
      * @returns {array} returns an array with two values:
      *
      * * The start position of the found text and the text string that was found.
@@ -1539,19 +1591,52 @@ export default function functions(
         const findText = toString(args[0]);
         const withinText = toString(args[1]);
         const startPos = args.length > 2 ? toInteger(args[2]) : 0;
+        if (startPos < 0) throw functionError('search() startPos must be greater than or equal to 0');
         if (findText === null || withinText === null || withinText.length === 0) return [];
-        // escape all characters that would otherwise create a regular expression
-        const reString = findText.replace(/([[.\\^$()+{])/g, '\\$1')
-          // add the single character wildcard
-          .replace(/\\?\?/g, match => (match === '\\?' ? '\\?' : '.'))
-          // add the multi-character wildcard
-          .replace(/\\?\*/g, match => (match === '\\*' ? '\\*' : '.*?'))
-          // get rid of the escape characters
-          .replace(/\\\\/g, '\\');
-        const re = new RegExp(reString);
-        const result = withinText.substring(startPos).match(re);
-        if (result === null) return [];
-        return [result.index + startPos, result[0]];
+
+        // Process as an array of code points
+        // Find escapes and wildcards
+        const globString = Array.from(findText).reduce((acc, cur) => {
+          if (acc.escape) return { escape: false, result: acc.result.concat(cur) };
+          if (cur === '\\') return { escape: true, result: acc.result };
+          if (cur === '?') return { escape: false, result: acc.result.concat('dot') };
+          if (cur === '*') {
+            // consecutive * are treated as a single *
+            if (acc.result.slice(-1).pop() === 'star') return acc;
+            return { escape: false, result: acc.result.concat('star') };
+          }
+          return { escape: false, result: acc.result.concat(cur) };
+        }, { escape: false, result: [] }).result;
+
+        const testMatch = (array, glob, match) => {
+          // we've consumed the entire glob, so we're done
+          if (glob.length === 0) return match;
+          // we've consumed the entire array, but there's still glob left -- no match
+          if (array.length === 0) return null;
+          const testChar = array[0];
+          let [globChar, ...nextGlob] = glob;
+          const isStar = globChar === 'star';
+          if (isStar) {
+            // '*' is at the end of the match -- so we're done matching
+            if (glob.length === 1) return match;
+            // we'll check for a match past the * and if not found, we'll process the *
+            [globChar, ...nextGlob] = glob.slice(1);
+          }
+          if (testChar === globChar || globChar === 'dot') {
+            return testMatch(array.slice(1), nextGlob, match.concat(testChar));
+          }
+          // no match, so consume wildcard *
+          if (isStar) return testMatch(array.slice(1), glob, match.concat(testChar));
+
+          return null;
+        };
+        // process code points
+        const within = Array.from(withinText);
+        for (let i = startPos; i < within.length; i += 1) {
+          const result = testMatch(within.slice(i), globString, []);
+          if (result !== null) return [i, result.join('')];
+        }
+        return [];
       },
       _signature: [
         { types: [dataTypes.TYPE_STRING] },
@@ -1584,7 +1669,7 @@ export default function functions(
      * Computes the sign of a number passed as argument.
      * @param {number} num any number
      * @return {number} returns 1 or -1, indicating the sign of `num`.
-     * If the `num` is 0, it will be returned 0.
+     * If the `num` is 0, it will return 0.
      * @function sign
      * @example
      * sign(5) // 1
@@ -1606,14 +1691,14 @@ export default function functions(
      * sin(1) // 0.8414709848078965
      */
     sin: {
-      _func: resolvedArgs => validNumber(Math.sin(resolvedArgs[0])),
+      _func: resolvedArgs => Math.sin(resolvedArgs[0]),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
     /**
      * This function accepts an array of strings or numbers and returns an
      * array with the elements in sorted order.
-     * String sorting is based on code points. Sort is not locale-sensitive.
+     * String sorting is based on code points and is not locale-sensitive.
      * @param {number[]|string[]} list to be sorted
      * @return {number[]|string[]} The ordered result
      * @function sort
@@ -1621,21 +1706,8 @@ export default function functions(
      * sort([1, 2, 4, 3, 1]) // returns [1, 1, 2, 3, 4]
      */
     sort: {
-      _func: resolvedArgs => {
-        const sortedArray = resolvedArgs[0].slice(0);
-        if (sortedArray.length > 0) {
-          const normalize = getType(resolvedArgs[0][0]) === TYPE_NUMBER ? toNumber : toString;
-          sortedArray.sort((a, b) => {
-            const va = normalize(a);
-            const vb = normalize(b);
-            if (va < vb) return -1;
-            if (va > vb) return 1;
-            return 0;
-          });
-        }
-        return sortedArray;
-      },
-      _signature: [{ types: [TYPE_ARRAY, TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] }],
+      _func: resolvedArgs => resolvedArgs[0].slice(0).sort(),
+      _signature: [{ types: [TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] }],
     },
 
     /**
@@ -1643,7 +1715,7 @@ export default function functions(
      * in the array, the expression is applied and the resulting
      * value is used as the sort value. If the result of
      * evaluating the expression against the current array element results in type
-     * other than a number or a string, a <<_errors, TypeError>>  will occur.
+     * other than a number or a string, a <<_errors, TypeError>> will occur.
      * @param {array} elements Array to be sorted
      * @param {expression} expr The comparison expression
      * @return {array} The sorted array
@@ -1668,7 +1740,7 @@ export default function functions(
         const requiredType = getType(
           runtime.interpreter.visit(exprefNode, sortedArray[0]),
         );
-        if ([TYPE_NUMBER, TYPE_STRING].indexOf(requiredType) < 0) {
+        if (![TYPE_NUMBER, TYPE_STRING].includes(requiredType)) {
           throw typeError('Bad data type for sortBy()');
         }
         // In order to get a stable sort out of an unstable
@@ -1684,18 +1756,16 @@ export default function functions(
         }
         decorated.sort((a, b) => {
           const exprA = runtime.interpreter.visit(exprefNode, a[1]);
+          const typeA = getType(exprA);
           const exprB = runtime.interpreter.visit(exprefNode, b[1]);
-          if (getType(exprA) !== requiredType) {
-            throw typeError(`sortBy expected ${requiredType}, received ${getType(exprA)}`);
-          } else if (getType(exprB) !== requiredType) {
-            throw typeError(`sortyBy expected ${requiredType}, received ${getType(exprB)}`);
+          const typeB = getType(exprB);
+          if (typeA !== requiredType) {
+            throw typeError(`sortBy expected ${typeNameTable[requiredType]}, received ${typeNameTable[typeA]}`);
+          } else if (typeB !== requiredType) {
+            throw typeError(`sortyBy expected ${typeNameTable[requiredType]}, received ${typeNameTable[typeB]}`);
           }
-          if (exprA > exprB) {
-            return 1;
-          }
-          if (exprA < exprB) {
-            return -1;
-          }
+          if (exprA > exprB) return 1;
+          if (exprA < exprB) return -1;
           // If they"re equal compare the items by their
           // order to maintain relative order of equal keys
           // (i.e. to get a stable sort).
@@ -1744,7 +1814,7 @@ export default function functions(
     sqrt: {
       _func: args => {
         const result = Math.sqrt(args[0]);
-        return Number.isNaN(result) ? null : result;
+        return validNumber(result, 'sqrt');
       },
       _signature: [
         { types: [dataTypes.TYPE_NUMBER] },
@@ -1777,7 +1847,8 @@ export default function functions(
      * `stdev` assumes that its arguments are a sample of the entire population.
      * If your data represents a entire population,
      * then compute the standard deviation using [stdevp]{@link stdevp}.
-     * @param {number[]} numbers The array of numbers comprising the population
+     * @param {number[]} numbers The array of numbers comprising the population.
+     * Array size must be greater than 1.
      * @returns {number} [Standard deviation](https://en.wikipedia.org/wiki/Standard_deviation)
      * @function stdev
      * @example
@@ -1787,18 +1858,11 @@ export default function functions(
     stdev: {
       _func: args => {
         const values = args[0];
-        if (values.length <= 1) {
-          return null;
-        }
-        const coercedValues = values.map(value => toNumber(value));
-        const mean = coercedValues.reduce((a, b) => a + b, 0) / values.length;
-        const sumSquare = coercedValues.reduce((a, b) => a + b * b, 0);
+        if (values.length <= 1) throw evaluationError('stdev() must have at least two values');
+        const mean = values.reduce((a, b) => a + b, 0) / values.length;
+        const sumSquare = values.reduce((a, b) => a + b * b, 0);
         const result = Math.sqrt((sumSquare - values.length * mean * mean) / (values.length - 1));
-        if (Number.isNaN(result)) {
-          // this would never happen
-          return null;
-        }
-        return result;
+        return validNumber(result, 'stdev');
       },
       _signature: [
         { types: [dataTypes.TYPE_ARRAY_NUMBER] },
@@ -1810,7 +1874,8 @@ export default function functions(
      * `stdevp` assumes that its arguments are the entire population.
      * If your data represents a sample of the population,
      * then compute the standard deviation using [stdev]{@link stdev}.
-     * @param {number[]} numbers The array of numbers comprising the population
+     * @param {number[]} numbers The array of numbers comprising the population.
+     * An empty array is not allowed.
      * @returns {number} Calculated standard deviation
      * @function stdevp
      * @example
@@ -1820,14 +1885,12 @@ export default function functions(
     stdevp: {
       _func: args => {
         const values = args[0];
-        if (values.length === 0) {
-          return null;
-        }
-        const coercedValues = values.map(value => toNumber(value));
-        const mean = coercedValues.reduce((a, b) => a + b, 0) / values.length;
-        const meanSumSquare = coercedValues.reduce((a, b) => a + b * b, 0) / values.length;
+        if (values.length === 0) throw evaluationError('stdevp() must have at least one value');
+
+        const mean = values.reduce((a, b) => a + b, 0) / values.length;
+        const meanSumSquare = values.reduce((a, b) => a + b * b, 0) / values.length;
         const result = Math.sqrt(meanSumSquare - mean * mean);
-        return Number.isNaN(result) ? null : result;
+        return validNumber(result, 'stdevp');
       },
       _signature: [
         { types: [dataTypes.TYPE_ARRAY_NUMBER] },
@@ -1855,8 +1918,10 @@ export default function functions(
     substitute: {
       _func: args => {
         const src = Array.from(toString(args[0]));
-        const old = toString(args[1]);
-        const replacement = toString(args[2]);
+        const old = Array.from(toString(args[1]));
+        const replacement = Array.from(toString(args[2]));
+
+        if (old.length === 0) return args[0];
 
         // no third parameter? replace all instances
         let replaceAll = true;
@@ -1868,17 +1933,20 @@ export default function functions(
         }
 
         let found = 0;
+        const result = [];
         // find the instances to replace
-        for (let j = 0; j < src.length; j += 1) {
-          if (src.slice(j, j + old.length).join('') === old) {
-            found += 1;
-            if (replaceAll || found === whch) {
-              src.splice(j, old.length, replacement);
-              j += replacement.length;
-            }
+        for (let j = 0; j < src.length;) {
+          const match = old.every((c, i) => src[j + i] === c);
+          if (match) found += 1;
+          if (match && (replaceAll || found === whch)) {
+            result.push(...replacement);
+            j += old.length;
+          } else {
+            result.push(src[j]);
+            j += 1;
           }
         }
-        return src.join('');
+        return result.join('');
       },
       _signature: [
         { types: [dataTypes.TYPE_STRING] },
@@ -1917,7 +1985,7 @@ export default function functions(
      * tan(1) // 1.5574077246549023
      */
     tan: {
-      _func: resolvedArgs => validNumber(Math.tan(resolvedArgs[0])),
+      _func: resolvedArgs => Math.tan(resolvedArgs[0]),
       _signature: [{ types: [TYPE_NUMBER] }],
     },
 
@@ -1968,13 +2036,7 @@ export default function functions(
      * toArray(null()) // returns [`null`]
      */
     toArray: {
-      _func: resolvedArgs => {
-        if (getType(resolvedArgs[0]) === TYPE_ARRAY) {
-          return resolvedArgs[0];
-        }
-        return [resolvedArgs[0]];
-      },
-
+      _func: resolvedArgs => (isArrayType(resolvedArgs[0]) ? resolvedArgs[0] : [resolvedArgs[0]]),
       _signature: [{ types: [TYPE_ANY] }],
     },
 
@@ -2059,7 +2121,8 @@ export default function functions(
      * the <<_type_coercion_rules,type coercion rules>>.
      *
      * @param {string|number|boolean|null} arg to convert to number
-     * @param {integer} [base=10] The base to use.  One of: 2, 8, 10, 16. Defaults to 10.
+     * @param {integer} [base=10] If the input `arg` is a string, the use base to convert to number.
+     * One of: 2, 8, 10, 16. Defaults to 10.
      * @return {number} The resulting number.  If conversion to number fails, return null.
      * @function toNumber
      * @example
@@ -2072,17 +2135,30 @@ export default function functions(
      */
     toNumber: {
       _func: resolvedArgs => {
-        const num = resolvedArgs[0];
+        const num = valueOf(resolvedArgs[0]);
         const base = resolvedArgs.length > 1 ? toInteger(resolvedArgs[1]) : 10;
-        if (base !== 10) {
-          if (![2, 8, 16].includes(base)) {
-            debug.push(`Invalid base: "${base}" for toNumber(), using "10"`);
-            return toNumber(num);
-          }
-          const result = parseInt(num, base);
-          if (Number.isNaN(result)) {
+        if (typeof num === 'string' && base !== 10) {
+          let digitCheck;
+          if (base === 2) digitCheck = /^[01.]+$/;
+          else if (base === 8) digitCheck = /^[0-7.]+$/;
+          else if (base === 16) digitCheck = /^[0-9A-Fa-f.]+$/;
+          else throw evaluationError(`Invalid base: "${base}" for toNumber()`);
+
+          if (!digitCheck.test(num)) {
             debug.push(`Failed to convert "${num}" base "${base}" to number`);
-            return 0;
+            return null;
+          }
+          const parts = num.split('.');
+
+          let decimal = 0;
+          if (parts.length > 1) {
+            decimal = parseInt(parts[1], base) * base ** -parts[1].length;
+          }
+
+          const result = parseInt(parts[0], base) + decimal;
+          if (parts.length > 2 || Number.isNaN(result)) {
+            debug.push(`Failed to convert "${num}" base "${base}" to number`);
+            return null;
           }
           return result;
         }
@@ -2095,34 +2171,27 @@ export default function functions(
     },
 
     /**
-     * Converts the provided argument to a string
-     * as per the <<_type_coercion_rules,type coercion rules>>.
+     * Returns the argument converted to a string.
+     * If the argument is a string, it will be returned unchanged.
+     * Otherwise, returns the JSON encoded value of the argument.
      * @param {any} arg Value to be converted to a string
      * @param {integer} [indent=0] Indentation to use when converting
      * objects and arrays to a JSON string
-     * @return {string} The result string.  If the value to be converted to string is an
-     * array or object, a JSON string is returned.
+     * @return {string} The result string.
      * @function toString
      * @example
      * toString(1) // returns "1"
      * toString(true()) // returns "true"
      * toString({sum: 12 + 13}) // "{"sum":25}"
+     * toString("hello") // returns "hello"
      */
     toString: {
-      _func: resolvedArgs => {
-        const value = valueOf(resolvedArgs[0]);
-        if (getType(value) === TYPE_STRING) {
-          return resolvedArgs[0];
-        }
-        const indent = resolvedArgs.length > 1 ? toInteger(resolvedArgs[1]) : 0;
-        return JSON.stringify(value, null, indent);
-      },
-
+      _func: resolvedArgs => toJSON(resolvedArgs[0], resolvedArgs.length > 1 ? resolvedArgs[1] : 0),
       _signature: [{ types: [TYPE_ANY] }, { types: [TYPE_NUMBER], optional: true }],
     },
 
     /**
-     * Remove leading and trailing spaces, and replace all internal multiple spaces
+     * Remove leading and trailing spaces (U+0020), and replace all internal multiple spaces
      * with a single space.  Note that other whitespace characters are left intact.
      * @param {string} text string to trim
      * @return {string} trimmed string
@@ -2155,6 +2224,7 @@ export default function functions(
 
     /**
          * Truncates a number to an integer by removing the fractional part of the number.
+         * i.e. it rounds towards zero.
          * @param {number} numA number to truncate
          * @param {integer} [numB=0] A number specifying the number of decimal digits to preserve.
          * @return {number} Truncated value
@@ -2200,6 +2270,9 @@ export default function functions(
         [TYPE_NUMBER]: 'number',
         [TYPE_STRING]: 'string',
         [TYPE_ARRAY]: 'array',
+        [TYPE_ARRAY_NUMBER]: 'array',
+        [TYPE_ARRAY_STRING]: 'array',
+        [TYPE_ARRAY_ARRAY]: 'array',
         [TYPE_OBJECT]: 'object',
         [TYPE_BOOLEAN]: 'boolean',
         [TYPE_EXPREF]: 'expref',
@@ -2219,9 +2292,15 @@ export default function functions(
     unique: {
       _func: args => {
         // create an array of values for searching.  That way if the array elements are
-        // represented by objects with a valueOf(), then we"ll locate them in the valueArray
+        // represented by class objects with a valueOf(), we'll locate them in the valueArray
+        // but return the original class object.
         const valueArray = args[0].map(a => valueOf(a));
-        return args[0].filter((v, index) => valueArray.indexOf(valueOf(v)) === index);
+        return args[0]
+          .filter(
+            (v, index) => valueArray.findIndex(
+              lookup => strictDeepEqual(lookup, valueOf(v)),
+            ) === index,
+          );
       },
       _signature: [
         { types: [dataTypes.TYPE_ARRAY] },
@@ -2245,8 +2324,10 @@ export default function functions(
 
     /**
      * Perform an indexed lookup on an object or array
-     * @param {object | array} object on which to perform the lookup
-     * @param {string | integer} index a named child for an object or an integer offset for an array
+     * @param {object | array} subject on which to perform the lookup
+     * @param {string | integer} index if `subject` is an object, `index` must be a string
+     * indicating the key name to search for.
+     * If `subject` is an array, then index must be an integer indicating the offset into the array
      * @returns {any} the result of the lookup -- or `null` if not found.
      * @function value
      * @example
@@ -2255,13 +2336,26 @@ export default function functions(
      */
     value: {
       _func: args => {
-        const obj = valueOf(args[0]) || {};
-        const index = obj instanceof Array ? toInteger(args[1]) : args[1];
+        const indexType = getType(args[1]);
+        let index = args[1];
+        const subjectArray = isArrayType(args[0]);
+        if (subjectArray) {
+          if (indexType !== TYPE_NUMBER) {
+            throw typeError('value() requires an integer index for arrays');
+          }
+          index = toInteger(index);
+        } else if (indexType !== TYPE_STRING) {
+          throw typeError('value() requires a string index for objects');
+        }
+        const obj = valueOf(args[0]);
         const result = getProperty(obj, index);
 
         if (result === undefined) {
-          if (isArray(obj)) debug.push(`Index: ${index} out of range for array size: ${obj.length}`);
-          else debugAvailable(debug, obj, index);
+          if (subjectArray) {
+            debug.push(
+              `Index: ${index} out of range for array size: ${obj.length}`,
+            );
+          } else debugAvailable(debug, obj, index);
           return null;
         }
         return result;
@@ -2284,12 +2378,8 @@ export default function functions(
      * values({a : 3, b : 4}) // returns [3, 4]
      */
     values: {
-      _func: resolvedArgs => {
-        const arg = valueOf(resolvedArgs[0]);
-        if (arg === null) return [];
-        return Object.values(arg);
-      },
-      _signature: [{ types: [TYPE_ANY] }],
+      _func: resolvedArgs => Object.values(resolvedArgs[0]),
+      _signature: [{ types: [TYPE_OBJECT] }],
     },
 
     /**
@@ -2305,7 +2395,8 @@ export default function functions(
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
      * @param {integer} [returnType=1] Determines the
-     * representation of the result
+     * representation of the result.
+     * An unrecognized returnType will result in a error.
      * @returns {integer} day of the week
      * @function weekday
      * @example

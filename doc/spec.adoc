@@ -17,14 +17,16 @@ toc::[]
 // page break
 <<<
 
-// [abstract]
-== Abstract
+== Scope
 
-This document is the specification for json-formula, an expression grammar that operates on JSON documents.
+This document is the specification for json-formula, an expression grammar that operates on JSON (JavaScript Object Notation) documents.  The referenced JSON documents and JSON literals must conform to https://www.rfc-editor.org/rfc/rfc8259.html[RFC 8259].
+
 The grammar borrows from
 
 * https://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part2.html[OpenFormula] for spreadsheet operators and function
 * https://jmespath.org/[JMESPath] for JSON query semantics
+
+The intended audience are both end-users of json-formula as well as implementors; the contents are then both a user guide and a specification.
 
 // start numbering the sections from here...
 :sectnums:
@@ -50,12 +52,12 @@ The result of applying a json-formula expression against a JSON document will re
 
 json-formula supports all the JSON types:
 
-* number: All numbers are represented as double-precision floating-point
+* number: All numbers are internally represented as double-precision floating-point
 * string
 * boolean: `true` or `false`
 * array: an ordered, sequence of values
 * object: an unordered collection of key value pairs
-* null
+* `null`
 
 There is an additional type that is not a JSON type that's used in
 json-formula functions:
@@ -96,7 +98,7 @@ If a comparison requires coercion, and the coercion is not possible (including t
 [%header,cols="1,1,1"]
 |===
 | Provided Type | Expected Type | Result
-| number | string | number converted to a string. Similar to JavaScript `toString()`
+| number | string | number converted to a string, following the JavaScript https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number.prototype.tostring[`toString()` rules].
 | boolean | string | "true" or "false"
 | array | string | Not supported
 | object | string | Not supported
@@ -111,7 +113,7 @@ If a comparison requires coercion, and the coercion is not possible (including t
 | boolean | array | create a single-element array with the boolean
 | object | array | Not supported
 | null | array | Empty array
-| number | object | No supported
+| number | object | Not supported
 | string | object | Not supported
 | boolean | object | Not supported
 | array | object | Not supported. Use: `fromEntries(entries(array))`
@@ -135,7 +137,7 @@ If a comparison requires coercion, and the coercion is not possible (including t
 ----
 
 === Date and Time Values
-In order to support date and time functions, json-formula needs to represent date and time values.  Date/time values are represented as a number where:
+In order to support date and time functions, json-formula represents date and time values as numbers where:
 
 * The integral portion of the number represents the number of days since the epoch: January 1, 1970, https://en.wikipedia.org/wiki/Coordinated_Universal_Time[UTC]
 * The fractional portion of the number represents the fractional portion of the day
@@ -164,7 +166,7 @@ Functions that operate on a date/time value will convert the date/time value bac
 ----
 
 === Integers
-Some functions accept numeric parameters that are expected to be integers.  In these contexts, if a non-numeric or non-integer value is provided, it will be coerced to a number and then truncated. The specific truncation behaviour is to remove any fractional value without rounding.
+Some functions and operators accept numeric parameters that are expected to be integers.  In these contexts, if a non-numeric or non-integer value is provided, it will be coerced to a number and then truncated. The specific truncation behaviour is to remove any fractional value without rounding.
 
 === Floating Point Precision
 Numbers are represented in https://en.wikipedia.org/wiki/Double-precision_floating-point_format[double-precision floating-point format].  As with any system that uses this level of precision, results of expressions may be off by a tiny fraction. e.g.
@@ -187,11 +189,11 @@ The following errors are defined:
 * `EvaluationError` is raised when an unexpected runtime condition occurs. For example, divide by zero.
 * `FunctionError` is raised when an unknown function is encountered or when a function receives invalid arguments.
 * `SyntaxError` is raised when the supplied expression does not conform to the json-formula grammar.
-* `TypeError` is raised when the provided type cannot be coerced to the correct type for the current evaluation context.
+* `TypeError` is raised when coercion is required for the current evaluation context, but the coercion is not possible.
 
 == Grammar
 
-The grammar is specified using https://www.antlr.org/[Antlr].
+The grammar is specified using https://www.antlr.org/[Antlr]. For a machine-readable version of the grammar, see the `grammar.g4` file in the source repository.
 
 [source%unbreakable]
 ----
@@ -230,7 +232,7 @@ The antlr grammar defines operator precedence by the order of expressions in the
 A JSON literal expression allows arbitrary JSON objects to be
 specified anywhere an expression is permitted. Implementations should
 use a JSON parser to parse these literals.  Note that the backtick character
-(`` ` ``) character must now be escaped in a JSON literal which means
+(`` ` ``) character must be escaped in a JSON literal which means
 implementations need to handle this case before passing the resulting string to
 a JSON parser.
 
@@ -265,7 +267,7 @@ fragment HEX
   ;
 ----
 
-A `STRING` literal is a value enclosed in double quotes and supports the same character escape sequences as strings in JSON.
+A `STRING` literal is a value enclosed in double quotes and supports the same character escape sequences as strings in https://www.rfc-editor.org/rfc/rfc8259.html#section-7[JSON], as encoded by the `ESC` fragment.
 e.g., a character 'A' could be specified as the unicode sequence: `\u0041`.
 
 A string literal can also be expressed as a JSON literal. For example, the following expressions both
@@ -340,10 +342,8 @@ Using the `NAME` token grammar rule, identifiers can be one or more characters,
 and must start with a character in the range: `A-Za-z_$`.
 
 When an identifier has a
-character sequence that does not match a `NAME` token, an identifier may the `QUOTED_NAME` token rule where an identifier is specified with a single quote (`'`), followed by
-any number of characters, followed by another
-single quote.  Any valid string can be used between single quotes, include JSON
-supported escape sequences.
+character sequence that does not match a `NAME` token, an identifier shall follow the `QUOTED_NAME` token rule where an identifier is specified with a single quote (`'`), followed by
+any number of characters, followed by another single quote.  Any valid string can be placed between single quotes, including https://www.rfc-editor.org/rfc/rfc8259.html#section-7[JSON] escape sequences.
 
 [discrete]
 === Examples
@@ -458,6 +458,7 @@ The union operator (`~`) returns an array formed by concatenating the contents o
 The OR operator (`||`) will evaluate to either the left operand or the right
 operand.  If the left operand can be coerced to a true value, it is used
 as the return value.  If the left operand cannot be coerced to a true value, then the right operand is used as the return value.
+If the left operand is a truth-like value, then the right operand is not evaluated. For example, the expression: `if()` will result in a `FunctionError` (missing arguments), but the expression `true() || if()` will not result in a FunctionError because the right operand is not evaluated.
 
 The following conditions cannot be coerced to true:
 
@@ -501,6 +502,8 @@ expected truth table:
 
 This is the standard truth table for a
 https://en.wikipedia.org/wiki/Truth_table#Logical_conjunction_.28AND.29[logical conjunction].
+
+If the left operand is not a truth-like value, then the right operand is not evaluated. For example, the expression: `true() && if()` will result in a `FunctionError` (missing arguments), but the expression `false() && if()` will not result in an error because the right operand is not evaluated.
 
 [discrete]
 ===== Examples
@@ -681,7 +684,7 @@ Given a `start`, `stop`, and `step` value, the sub elements in an array
 are extracted as follows:
 
 * The first element in the extracted array is the index denoted by `start`.
-* The last element in the extracted array is the index denoted by `end - 1`.
+* The last element in the extracted array is the index denoted by `stop - 1`.
 * The `step` value determines the amount by which the index increases or decreases.  The default step value is 1. For example, a step value of 2 will return every second value from the array.  If step is negative, slicing is performed in reverse -- from the last (stop) element to the start.
 
 Slice expressions adhere to the following rules:
@@ -692,8 +695,8 @@ Slice expressions adhere to the following rules:
   greater than 0 or the end of the array if the given step is less than 0.
 * If a negative stop position is given, it is calculated as the total length
   of the array plus the given stop position.
-* If no stop position is given, it is assumed to be the length of the array if
-  the given step is greater than 0 or 0 if the given step is less than 0.
+* If no stop position is given and the given step is greater than 0 then the stop is assumed to be the length of the array.
+* If no stop position is given and the given step is less than 0, then the stop is assumed to be negative (length+1).
 * If the given step is omitted, it is assumed to be 1.
 * If the given step is 0, an `EvaluationError` error must be raised.
 * If the element being sliced is not an array, the result is `null`.
@@ -879,8 +882,8 @@ The `identifier` is used as the key name and the result of evaluating the
 `expression` is the value associated with the `identifier` key.
 
 Each `keyvalExpr` within the `objectExpression` will correspond to a
-single key value pair in the created object.
-Unlike the `arrayExpression`, an `objectExpression` may be empty.
+single key value pair in the created object.  If a key is specified more than once, the last value will be used.
+Consistent with an `arrayExpression`, an `objectExpression` may not be empty.  To create an empty object, use a JSON literal: `` `{}` ``.
 
 [discrete]
 ==== Examples
@@ -893,7 +896,7 @@ evaluated as follows:
 2. A key `foo` is created whose value is the result of evaluating `one.two`
    against the provided JSON document: `{"foo": evaluate(one.two, <data>)}`
 3. A key `bar` is created whose value is the result of evaluating the
-   expression `bar` against the provided JSON document.
+   expression `bar` against the provided JSON document. If key `bar` already exists, it is replaced.
 
 The final result will be: `{"foo": "one-two", "bar": "bar"}`.
 
@@ -909,6 +912,8 @@ Additional examples:
                 -> {"foo": "a", "bar.baz": "b"}
   eval({foo: foo, baz: baz}, {"foo": "a", "bar": "b"})
                 -> {"foo": "a", "baz": null}
+  eval({foo: foo, foo: 42}, {"foo": "a", "bar": "b"})
+                -> {"foo": 42}
 ----
 
 === Wildcard Expressions
@@ -1207,9 +1212,14 @@ arity does not match, or the minimum number of arguments for a variadic function
 is not provided, or too many arguments are provided, then a
 `FunctionError` error is raised.
 
-Functions are evaluated in applicative order.  Each argument must be an
-expression, each argument expression must be evaluated before evaluating the
-function. The function is then called with the evaluated function arguments.
+Functions are evaluated in applicative order:
+- Each argument must be an expression
+- Each argument expression must be evaluated before evaluating the
+function
+- Each argument expression result must be coerced to the expected type
+- If coercion is not possible, a `TypeError` error is raised
+- The function is then called with the evaluated function arguments.
+
 The one exception to this rule is the `<<_if, if(expr, result1, result2)>>` function. In this case either the `result1` expression or the `result2` expression is evaluated, depending on the outcome of `expr`.
 
 Consider this example using the <<_abs, abs()>> function.  Given:
@@ -1311,7 +1321,7 @@ Given: a global symbol:
 
 === Specify locale
 
-The default locale for json-formula is `en-US`.  A host may specify an alternate locale.  Overall, the locale setting has little effect on processing.  One specific area that is affected is the behavior of the `casefold()` function.
+The default locale for json-formula is `en-US`.  A host may specify an alternate locale. The locale setting affects only the behavior of the `casefold()` function.
 
 === Custom toNumber
 

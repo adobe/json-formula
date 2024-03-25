@@ -25,9 +25,10 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-import dataTypes from './dataTypes.js';
+import { dataTypes, typeNameTable } from './dataTypes.js';
 import tokenDefinitions from './tokenDefinitions.js';
 import { typeError } from './errors.js';
+import { isClass } from './utils.js';
 
 const {
   TYPE_NUMBER,
@@ -42,26 +43,18 @@ const {
   TYPE_ARRAY_STRING,
   TYPE_CLASS,
   TYPE_ARRAY_ARRAY,
+  TYPE_EMPTY_ARRAY,
 } = dataTypes;
 
 const {
   TOK_EXPREF,
 } = tokenDefinitions;
 
-const TYPE_NAME_TABLE = {
-  [TYPE_NUMBER]: 'number',
-  [TYPE_ANY]: 'any',
-  [TYPE_STRING]: 'string',
-  [TYPE_ARRAY]: 'array',
-  [TYPE_OBJECT]: 'object',
-  [TYPE_BOOLEAN]: 'boolean',
-  [TYPE_EXPREF]: 'expression',
-  [TYPE_NULL]: 'null',
-  [TYPE_ARRAY_NUMBER]: 'Array<number>',
-  [TYPE_ARRAY_STRING]: 'Array<string>',
-  [TYPE_CLASS]: 'class',
-  [TYPE_ARRAY_ARRAY]: 'Array<array>',
-};
+function isArray(t) {
+  return [
+    TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING, TYPE_ARRAY_ARRAY, TYPE_EMPTY_ARRAY,
+  ].includes(t);
+}
 
 export function getType(inputObj, useValueOf = true) {
   if (inputObj === null) return TYPE_NULL;
@@ -69,134 +62,100 @@ export function getType(inputObj, useValueOf = true) {
   if (useValueOf) {
     // check for the case where there's a child named 'valueOf' that's not a function
     // if so, then it's an object...
-    if (typeof inputObj.valueOf === 'function') obj = inputObj.valueOf.call(inputObj);
+    if (typeof inputObj.valueOf === 'function') obj = inputObj.valueOf();
     else return TYPE_OBJECT;
   }
+  if (isClass(obj)) return TYPE_CLASS;
   switch (Object.prototype.toString.call(obj)) {
     case '[object String]':
       return TYPE_STRING;
     case '[object Number]':
       return TYPE_NUMBER;
     case '[object Array]':
+      if (obj.length === 0) return TYPE_EMPTY_ARRAY;
+      if (obj.every(a => isArray(getType(a)))) return TYPE_ARRAY_ARRAY;
+      if (obj.every(a => getType(a) === TYPE_NUMBER)) return TYPE_ARRAY_NUMBER;
+      if (obj.every(a => getType(a) === TYPE_STRING)) return TYPE_ARRAY_STRING;
       return TYPE_ARRAY;
     case '[object Boolean]':
       return TYPE_BOOLEAN;
     case '[object Null]':
       return TYPE_NULL;
-    case '[object Object]':
+    default: // '[object Object]':
       // Check if it's an expref.  If it has, it's been
       // tagged with a jmespathType attr of 'Expref';
       if (obj.jmespathType === TOK_EXPREF) {
         return TYPE_EXPREF;
       }
       return TYPE_OBJECT;
-    default:
-      return TYPE_OBJECT;
   }
+}
+
+export function isArrayType(t) {
+  return [
+    TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING, TYPE_ARRAY_ARRAY, TYPE_EMPTY_ARRAY,
+  ].includes(getType(t));
 }
 
 export function getTypeName(arg) {
-  return TYPE_NAME_TABLE[getType(arg)];
+  return typeNameTable[getType(arg)];
 }
 
-export function getTypes(inputObj) {
-  // return the types with and without using valueOf
-  // needed for the cases where we really need an object passed to a function -- not it's value
-  const type1 = getType(inputObj);
-  const type2 = getType(inputObj, false);
-  return [type1, type2];
-}
+export function matchType(expectedList, argValue, context, toNumber, toString) {
+  const actual = getType(argValue);
+  if (argValue?.jmespathType === TOK_EXPREF && expectedList[0] !== TYPE_EXPREF) {
+    throw typeError(`${context} does not accept an expression reference argument.`);
+  }
+  const isObject = t => t === TYPE_OBJECT;
+  const match = (expect, found) => expect === found
+    || expect === TYPE_ANY
+    || (expect === TYPE_ARRAY && isArray(found))
+    || (isArray(expect) && found === TYPE_EMPTY_ARRAY);
 
-export function matchType(actuals, expectedList, argValue, context, toNumber, toString) {
-  const actual = actuals[0];
-  if (expectedList.findIndex(
-    type => type === TYPE_ANY || actual === type,
-  ) !== -1
-  ) return argValue;
-  // Can't coerce Objects to any other type,
-  // and cannot coerce anything to a Class
+  if (expectedList.some(type => match(type, actual))) return argValue;
+
+  // if the function allows multiple types, we can't coerce the type and we need an exact match
+  const exactMatch = expectedList.length > 1;
+  const expected = expectedList[0];
   let wrongType = false;
-  if (actual === TYPE_OBJECT || (expectedList.length === 1 && expectedList[0] === TYPE_CLASS)) {
-    wrongType = true;
-  }
-  if (actual === TYPE_ARRAY && (expectedList.length === 1 && expectedList[0] === TYPE_OBJECT)) {
-    wrongType = true;
-  }
-  if (expectedList.includes(TYPE_ARRAY_ARRAY)) {
-    if (actual === TYPE_ARRAY) {
-      argValue.forEach(a => {
-        if (!(a instanceof Array)) wrongType = true;
-      });
-      if (!wrongType) return argValue;
-    }
-    wrongType = true;
-  }
-  if (wrongType) {
-    throw typeError(`${context} expected argument to be type ${TYPE_NAME_TABLE[expectedList[0]]} but received type ${TYPE_NAME_TABLE[actual]} instead.`);
-  }
-  // no exact match in the list of possible types, see if we can coerce an array type
-  let expected = -1;
-  if (actual === TYPE_ARRAY) {
-    if (expectedList.includes(TYPE_ARRAY_STRING) && expectedList.includes(TYPE_ARRAY_NUMBER)) {
-      // choose the array type based on the first element
-      if (argValue.length > 0 && typeof argValue[0] === 'string') expected = TYPE_ARRAY_STRING;
-      else expected = TYPE_ARRAY_NUMBER;
+
+  // Can't coerce objects and arrays to any other type
+  if (isArray(actual)) {
+    if ([TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING].includes(expected)) {
+      if (argValue.some(a => {
+        const t = getType(a);
+        // can't coerce arrays or objects to numbers or strings
+        return isArray(t) || isObject(t);
+      })) wrongType = true;
     }
   }
-  if (expected === -1 && [TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER, TYPE_ARRAY].includes(actual)) {
-    expected = expectedList.find(
-      e => [TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER, TYPE_ARRAY].includes(e),
-    );
+  // nothing coerces to a class or object
+  if (exactMatch && [TYPE_CLASS, TYPE_OBJECT].includes(expected)) wrongType = true;
+
+  if (wrongType || exactMatch) {
+    throw typeError(`${context} cannot process type: ${typeNameTable[actual]}`);
   }
-  // no match, just take the first type
-  if (expected === -1) [expected] = expectedList;
-  if (expected === TYPE_ANY) return argValue;
-  if (expected === TYPE_ARRAY_STRING
-      || expected === TYPE_ARRAY_NUMBER
-      || expected === TYPE_ARRAY) {
-    if (expected === TYPE_ARRAY) {
-      if (actual === TYPE_ARRAY_NUMBER || actual === TYPE_ARRAY_STRING) return argValue;
-      return argValue === null ? [] : [argValue];
-    }
-    // The expected type can either just be array,
-    // or it can require a specific subtype (array of numbers).
-    const subtype = expected === TYPE_ARRAY_NUMBER ? TYPE_NUMBER : TYPE_STRING;
-    if (actual === TYPE_ARRAY) {
-      // Otherwise we need to check subtypes.
-      // We're going to modify the array, so take a copy
-      const returnArray = argValue.slice();
-      for (let i = 0; i < returnArray.length; i += 1) {
-        const indexType = getTypes(returnArray[i]);
-        returnArray[i] = matchType(
-          indexType,
-          [subtype],
-          returnArray[i],
-          context,
-          toNumber,
-          toString,
-        );
-      }
-      return returnArray;
-    }
-    if ([TYPE_NUMBER, TYPE_STRING, TYPE_NULL, TYPE_BOOLEAN].includes(subtype)) {
-      return [matchType(actuals, [subtype], argValue, context, toNumber, toString)];
-    }
-  } else {
-    if (expected === TYPE_NUMBER) {
-      if ([TYPE_STRING, TYPE_BOOLEAN, TYPE_NULL].includes(actual)) return toNumber(argValue);
-      /* TYPE_ARRAY, TYPE_EXPREF, TYPE_OBJECT, TYPE_ARRAY, TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING */
-      return 0;
-    }
-    if (expected === TYPE_STRING) {
-      if (actual === TYPE_NULL || actual === TYPE_OBJECT) return '';
-      return toString(argValue);
-    }
-    if (expected === TYPE_BOOLEAN) {
-      return !!argValue;
-    }
-    if (expected === TYPE_OBJECT && actuals[1] === TYPE_OBJECT) {
-      return argValue;
-    }
+  // Can't coerce Objects and arrays to anything other than boolean
+  if (isObject(actual) && expected === TYPE_BOOLEAN) {
+    return Object.keys(argValue).length === 0;
   }
-  throw typeError(`${context} expected argument to be type ${TYPE_NAME_TABLE[expectedList[0]]} but received type ${TYPE_NAME_TABLE[actual]} instead.`);
+  // no exact match, see if we can coerce an array type
+  if (isArray(actual)) {
+    const toArray = a => (Array.isArray(a) ? a : [a]);
+    if (expected === TYPE_BOOLEAN) return argValue.length > 0;
+    if (expected === TYPE_ARRAY_STRING) return argValue.map(toString);
+    if (expected === TYPE_ARRAY_NUMBER) return argValue.map(toNumber);
+    if (expected === TYPE_ARRAY_ARRAY) return argValue.map(toArray);
+  }
+
+  if (!isArray(actual) && !isObject(actual)) {
+    if (expected === TYPE_ARRAY_STRING) return actual === TYPE_NULL ? [] : [toString(argValue)];
+    if (expected === TYPE_ARRAY_NUMBER) return actual === TYPE_NULL ? [] : [toNumber(argValue)];
+    if (expected === TYPE_ARRAY) return actual === TYPE_NULL ? [] : [argValue];
+    if (expected === TYPE_NUMBER) return toNumber(argValue);
+    if (expected === TYPE_STRING) return toString(argValue);
+    if (expected === TYPE_BOOLEAN) return !!argValue;
+  }
+
+  throw typeError(`${context} expected argument to be type ${typeNameTable[expected]} but received type ${typeNameTable[actual]} instead.`);
 }

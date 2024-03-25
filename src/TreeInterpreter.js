@@ -26,9 +26,9 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 import {
-  matchType, getTypeName, getTypes, getType,
+  matchType, getTypeName, getType, isArrayType,
 } from './matchType.js';
-import dataTypes from './dataTypes.js';
+import { dataTypes } from './dataTypes.js';
 import tokenDefinitions from './tokenDefinitions.js';
 import {
   isArray, isObject, strictDeepEqual, getValueOf, getProperty, debugAvailable, toBoolean,
@@ -270,6 +270,7 @@ export default class TreeInterpreter {
         // which is a bit odd, but seems correct.
         const collected = {};
         node.children.forEach(child => {
+          if (collected[child.name] !== undefined) this.debug.push(`Duplicate key: '${child.name}'`);
           collected[child.name] = this.visit(child.value, value);
         });
         return collected;
@@ -299,16 +300,24 @@ export default class TreeInterpreter {
         let first = this.visit(node.children[0], value);
         let second = this.visit(node.children[1], value);
         balanceArrayOperands(first, second);
-        first = matchType(getTypes(first), [TYPE_STRING, TYPE_ARRAY_STRING], first, 'concatenate', this.toNumber, this.toString);
-        second = matchType(getTypes(second), [TYPE_STRING, TYPE_ARRAY_STRING], second, 'concatenate', this.toNumber, this.toString);
+        if (isArrayType(first)) {
+          first = matchType([TYPE_ARRAY_STRING], first, 'concatenate', this.toNumber, this.toString);
+        } else {
+          first = matchType([TYPE_STRING], first, 'concatenate', this.toNumber, this.toString);
+        }
+        if (isArrayType(second)) {
+          second = matchType([TYPE_ARRAY_STRING], second, 'concatenate', this.toNumber, this.toString);
+        } else {
+          second = matchType([TYPE_STRING], second, 'concatenate', this.toNumber, this.toString);
+        }
         return this.applyOperator(first, second, '&');
       },
 
       UnionExpression: (node, value) => {
         let first = this.visit(node.children[0], value);
         let second = this.visit(node.children[1], value);
-        first = matchType(getTypes(first), [TYPE_ARRAY], first, 'union', this.toNumber, this.toString);
-        second = matchType(getTypes(second), [TYPE_ARRAY], second, 'union', this.toNumber, this.toString);
+        first = matchType([TYPE_ARRAY], first, 'union', this.toNumber, this.toString);
+        second = matchType([TYPE_ARRAY], second, 'union', this.toNumber, this.toString);
         return first.concat(second);
       },
 
