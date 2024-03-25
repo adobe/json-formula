@@ -808,7 +808,7 @@ export default function functions(
      * @example
      * join(["a", "b", "c"], ",") // returns "a,b,c"
      * join(["apples", "bananas"], " and ") // returns "apples and bananas"
-     * join([1, 2, 3, null], "|") // returns "1|2|3|null"
+     * join([1, 2, 3, null()], "|") // returns "1|2|3|null"
      */
     join: {
       _func: resolvedArgs => {

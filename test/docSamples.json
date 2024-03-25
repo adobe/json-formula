@@ -104,7 +104,7 @@
         "result": "a,b,c"
       },
       {
-        "expression": "join([1, 2, 3, null], \"|\")",
+        "expression": "join([1, 2, 3, null()], \"|\")",
         "result": "1|2|3|null"
       },
       {
