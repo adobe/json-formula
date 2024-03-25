@@ -103,7 +103,7 @@ export function getTypeName(arg) {
 
 export function matchType(expectedList, argValue, context, toNumber, toString) {
   const actual = getType(argValue);
-  if (argValue?.jmespathType === TOK_EXPREF && expectedList[0] !== TYPE_EXPREF) {
+  if (argValue?.jmespathType === TOK_EXPREF && !expectedList.includes(TYPE_EXPREF)) {
     throw typeError(`${context} does not accept an expression reference argument.`);
   }
   const isObject = t => t === TYPE_OBJECT;
