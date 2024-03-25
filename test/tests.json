@@ -1125,6 +1125,10 @@
         "error": "TypeError"
       },
       {
+        "expression": "fromEntries([[\"a\", 1], [\"b\", 2], [\"a\", 3]])",
+        "result": {"a": 3, "b": 2}
+      },
+      {
         "data": "'purchase-order'",
         "expression": "entries(address)",
         "result": [

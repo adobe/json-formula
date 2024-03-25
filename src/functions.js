@@ -720,6 +720,8 @@ export default function functions(
      * If the nested arrays are not of the form: `[key, value]`
      * (where key is a string), an error will be thrown.
      * @param {any[]} pairs A nested array of key-value pairs to create the object from
+     * The nested arrays must have exactly two values, where the first value is a string.
+     * If a key is specified more than once, the last occurrence will override any previous value.
      * @returns {object} An object constructed from the provided key-value pairs
      * @function fromEntries
      * @example
