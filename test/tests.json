@@ -1224,7 +1224,7 @@
         "result": 0
       },
       { "expression": "mod(7, 4)", "result": 3 },
-      { "expression": "mod(7, 0)", "error": "FunctionError" },
+      { "expression": "mod(7, 0)", "error": "EvaluationError" },
       {
         "data": "'purchase-order'.items[*]",
         "expression": "[].price ~ [].quantity ~ [].desc",

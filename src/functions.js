@@ -1188,7 +1188,7 @@ export default function functions(
         const p1 = args[0];
         const p2 = args[1];
         const result = p1 % p2;
-        if (Number.isNaN(result)) throw functionError(`Bad parameter for mod: '${p1} % ${p2}'`);
+        if (Number.isNaN(result)) throw evaluationError(`Bad parameter for mod: '${p1} % ${p2}'`);
         return result;
       },
       _signature: [
