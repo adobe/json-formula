@@ -1404,6 +1404,14 @@
         "result": ["C", "a", "l", "i", "f", "o", "r", "n"]
       },
       {
+        "expression": "unique([[1,2,3],[1,2,3,4]])",
+        "result": [[1,2,3],[1,2,3,4]]
+      },
+      {
+        "expression": "unique([{a: 12}, {a: 12, b:13}])",
+        "result": [{"a": 12}, {"a": 12, "b":13}]
+      },
+      {
         "data": "'purchase-order'",
         "expression": "unique([address.country,address.country])",
         "result": ["USA"]
@@ -1654,6 +1662,11 @@
         "data": "`{\"two\": 2.6}`",
         "expression": "value([1,2,3,4,5], two)",
         "result": 3
+      },
+      {
+        "data": "`{\"two\": 2.6}`",
+        "expression": "value({a: 42}, two)",
+        "error": "TypeError"
       },
       {
         "data": "`{\"two\": 2.6}`",

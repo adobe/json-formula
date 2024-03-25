@@ -77,36 +77,16 @@ export function strictDeepEqual(lhs, rhs) {
   // first type from now on.
   if (isArray(first) === true) {
     // Short circuit if they're not the same length;
-    if (first.length !== second.length) {
-      return false;
-    }
-    for (let i = 0; i < first.length; i += 1) {
-      if (strictDeepEqual(first[i], second[i]) === false) {
-        return false;
-      }
-    }
-    return true;
+    if (first.length !== second.length) return false;
+    return first.every((f, i) => strictDeepEqual(f, second[i]));
   }
   if (isObject(first) === true) {
+    if (Object.keys(first).length !== Object.keys(second).length) return false;
     // An object is equal if it has the same key/value pairs.
-    const keysSeen = {};
     // eslint-disable-next-line no-restricted-syntax
     for (const key in first) {
       if (hasOwnProperty.call(first, key)) {
-        if (strictDeepEqual(first[key], second[key]) === false) {
-          return false;
-        }
-        keysSeen[key] = true;
-      }
-    }
-    // Now check that there aren't any keys in second that weren't
-    // in first.
-    // eslint-disable-next-line no-restricted-syntax
-    for (const key2 in second) {
-      if (hasOwnProperty.call(second, key2)) {
-        if (keysSeen[key2] !== true) {
-          return false;
-        }
+        if (strictDeepEqual(first[key], second[key]) === false) return false;
       }
     }
     return true;
