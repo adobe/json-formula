@@ -1452,6 +1452,14 @@
         "result": ["123 Oak Street", "123 Oak Street"]
       },
       {
+        "expression": "deepScan({'1.1': [{'1.1': 22}, 33, {'1.1': 55}]}, 1.1)",
+        "result": [33]
+      },
+      {
+        "expression": "deepScan({'1.1': [{'1.1': 22}, 33, {'1.1': 55}]}, \"1.1\")",
+        "result": [[{"1.1": 22},33,{"1.1": 55}],22,55]
+      },
+      {
         "data": "'purchase-order'",
         "expression": "search(\"?Oak?\", address.street)",
         "result": [3, " Oak "]

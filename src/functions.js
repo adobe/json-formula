@@ -505,7 +505,9 @@ export default function functions(
      * The name can be either a key into an object or an array index.
      * This is similar to the Descendant Accessor operator (`..`) from [E4X](https://ecma-international.org/publications-and-standards/standards/ecma-357/).
      * @param {object|array} object The starting object or array where we start the search
-     * @param {string|integer} name The name (or index position) of the elements to find
+     * @param {string|integer} name The name (or index position) of the elements to find.
+     * If `name` is a string, search for nested objects with a matching key.
+     * If `name` is an integer, search for nested arrays with a matching index.
      * @returns {any[]} The array of matched elements
      * @function deepScan
      * @example
@@ -514,14 +516,18 @@ export default function functions(
     deepScan: {
       _func: resolvedArgs => {
         const [source, n] = resolvedArgs;
-        const name = toString(n);
+        const [name, checkArrays] = getType(n) === TYPE_NUMBER
+          ? [toInteger(n), true] : [toString(n), false];
         const items = [];
-        if (source === null) return items;
         function scan(node) {
-          if (node !== null) {
+          if (node === null) return;
+          if (isArrayType(node)) {
+            if (checkArrays && node[name] !== undefined) items.push(node[name]);
+            node.forEach(scan);
+          } else if (isObject(node)) {
             Object.entries(node).forEach(([k, v]) => {
-              if (k === name) items.push(v);
-              if (typeof v === 'object') scan(v);
+              if (!checkArrays && k === name) items.push(v);
+              scan(v);
             });
           }
         }
