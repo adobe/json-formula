@@ -256,9 +256,14 @@
         "result": "abba"
       },
       {
-        "data": "`{\"a\": \"abbabba\", \"b\": \"abba\", \"c\": \"a\"}`",
+        "data": "`{\"a\": \"abbabbabba\", \"b\": \"abba\", \"c\": \"a\"}`",
         "expression": "substitute(a, b, c, 2)",
-        "result": "abba"
+        "result": "abbabba"
+      },
+      {
+        "data": "`{\"a\": \"abbabbabba\", \"b\": \"abba\", \"c\": \"a\"}`",
+        "expression": "substitute(a, b, c, 3)",
+        "result": "abbabbabba"
       },
       {
         "data": "`{\"a\": \"abbabba\", \"b\": \"abba\", \"c\": \"a\"}`",
@@ -266,8 +271,12 @@
         "result": "abbabba"
       },
       {
+        "expression": "substitute(\"deed\", \"d\", \"f\", -1)",
+        "error": "EvaluationError"
+      },
+      {
         "expression": "substitute(\"deed\", \"d\", \"f\", 0)",
-        "result": "deed"
+        "result": "feed"
       },
       {
         "expression": "substitute(\"deed\", \"d\", \"f\")",
@@ -369,6 +378,14 @@
       { "expression": "power(-2, -1)", "result": -0.5 },
       { "expression": "power(2)", "error": "FunctionError" },
       {
+        "expression": "find(\"a\", \"abcdabce\", -1)",
+        "error": "EvaluationError"
+      },
+      {
+        "expression": "[0,1,2,3,4].map(@, &find(\"\", \"abc\", @))",
+        "result": [0,1,2,3,null]
+      },
+      {
         "expression": "find(\"a\", \"abcdabce\")",
         "result": 0
       },
@@ -463,6 +480,10 @@
       },
       {
         "expression": "mid(\"abc\", -1, 100)",
+        "error": "EvaluationError"
+      },
+      {
+        "expression": "mid(\"abc\", 1, -1)",
         "error": "EvaluationError"
       },
       {
@@ -621,7 +642,7 @@
         "error": "EvaluationError"
       },
       {
-        "expression": "replace(\"abcdefg\", -1, 100, [\"yz\"])",
+        "expression": "replace(\"abcdefg\", 1, -1, \"yz\")",
         "error": "EvaluationError"
       },
       {
@@ -1104,6 +1125,10 @@
         "error": "TypeError"
       },
       {
+        "expression": "fromEntries([[\"a\", 1], [\"b\", 2], [\"a\", 3]])",
+        "result": {"a": 3, "b": 2}
+      },
+      {
         "data": "'purchase-order'",
         "expression": "entries(address)",
         "result": [
@@ -1199,7 +1224,7 @@
         "result": 0
       },
       { "expression": "mod(7, 4)", "result": 3 },
-      { "expression": "mod(7, 0)", "error": "FunctionError" },
+      { "expression": "mod(7, 0)", "error": "EvaluationError" },
       {
         "data": "'purchase-order'.items[*]",
         "expression": "[].price ~ [].quantity ~ [].desc",
@@ -1379,6 +1404,14 @@
         "result": ["C", "a", "l", "i", "f", "o", "r", "n"]
       },
       {
+        "expression": "unique([[1,2,3],[1,2,3,4]])",
+        "result": [[1,2,3],[1,2,3,4]]
+      },
+      {
+        "expression": "unique([{a: 12}, {a: 12, b:13}])",
+        "result": [{"a": 12}, {"a": 12, "b":13}]
+      },
+      {
         "data": "'purchase-order'",
         "expression": "unique([address.country,address.country])",
         "result": ["USA"]
@@ -1417,6 +1450,14 @@
         "data": "'purchase-order'",
         "expression": "deepScan([{a1: [address]}, {a2: [address]}], \"street\")",
         "result": ["123 Oak Street", "123 Oak Street"]
+      },
+      {
+        "expression": "deepScan({'1.1': [{'1.1': 22}, 33, {'1.1': 55}]}, 1.1)",
+        "result": [33]
+      },
+      {
+        "expression": "deepScan({'1.1': [{'1.1': 22}, 33, {'1.1': 55}]}, \"1.1\")",
+        "result": [[{"1.1": 22},33,{"1.1": 55}],22,55]
       },
       {
         "data": "'purchase-order'",
@@ -1603,7 +1644,7 @@
       {
         "data": "`{\"two\": 2.6}`",
         "expression": "substitute(\"aaaaaa\", \"a\", \"b\", two)",
-        "result": "abaaaa"
+        "result": "aabaaa"
       },
       {
         "data": "`{\"two\": 2.6}`",
@@ -1629,6 +1670,11 @@
         "data": "`{\"two\": 2.6}`",
         "expression": "value([1,2,3,4,5], two)",
         "result": 3
+      },
+      {
+        "data": "`{\"two\": 2.6}`",
+        "expression": "value({a: 42}, two)",
+        "error": "TypeError"
       },
       {
         "data": "`{\"two\": 2.6}`",

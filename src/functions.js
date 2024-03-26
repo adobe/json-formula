@@ -505,7 +505,9 @@ export default function functions(
      * The name can be either a key into an object or an array index.
      * This is similar to the Descendant Accessor operator (`..`) from [E4X](https://ecma-international.org/publications-and-standards/standards/ecma-357/).
      * @param {object|array} object The starting object or array where we start the search
-     * @param {string|integer} name The name (or index position) of the elements to find
+     * @param {string|integer} name The name (or index position) of the elements to find.
+     * If `name` is a string, search for nested objects with a matching key.
+     * If `name` is an integer, search for nested arrays with a matching index.
      * @returns {any[]} The array of matched elements
      * @function deepScan
      * @example
@@ -514,14 +516,18 @@ export default function functions(
     deepScan: {
       _func: resolvedArgs => {
         const [source, n] = resolvedArgs;
-        const name = toString(n);
+        const [name, checkArrays] = getType(n) === TYPE_NUMBER
+          ? [toInteger(n), true] : [toString(n), false];
         const items = [];
-        if (source === null) return items;
         function scan(node) {
-          if (node !== null) {
+          if (node === null) return;
+          if (isArrayType(node)) {
+            if (checkArrays && node[name] !== undefined) items.push(node[name]);
+            node.forEach(scan);
+          } else if (isObject(node)) {
             Object.entries(node).forEach(([k, v]) => {
-              if (k === name) items.push(v);
-              if (typeof v === 'object') scan(v);
+              if (!checkArrays && k === name) items.push(v);
+              scan(v);
             });
           }
         }
@@ -640,7 +646,8 @@ export default function functions(
      * Finds and returns the index of query in text from a start position
      * @param {string} findText string to search
      * @param {string} withinText text to be searched
-     * @param {integer} [start=0] zero-based position to start searching
+     * @param {integer} [start=0] zero-based position to start searching.
+     * If specified, `start` must be greater than or equal to 0
      * @returns {integer|null} The position of the found string, null if not found.
      * @function find
      * @example
@@ -653,8 +660,13 @@ export default function functions(
       _func: args => {
         const query = Array.from(toString(args[0]));
         const text = Array.from(toString(args[1]));
-        if (query.length === 0) return 0;
         const offset = args.length > 2 ? toInteger(args[2]) : 0;
+        if (offset < 0) throw evaluationError('find() start position must be >= 0');
+        if (query.length === 0) {
+          // allow an empty string to be found at any position -- including the end
+          if (offset > text.length) return null;
+          return offset;
+        }
         for (let i = offset; i < text.length; i += 1) {
           if (text.slice(i, i + query.length).every((c, j) => c === query[j])) {
             return i;
@@ -714,6 +726,8 @@ export default function functions(
      * If the nested arrays are not of the form: `[key, value]`
      * (where key is a string), an error will be thrown.
      * @param {any[]} pairs A nested array of key-value pairs to create the object from
+     * The nested arrays must have exactly two values, where the first value is a string.
+     * If a key is specified more than once, the last occurrence will override any previous value.
      * @returns {object} An object constructed from the provided key-value pairs
      * @function fromEntries
      * @example
@@ -1076,6 +1090,7 @@ export default function functions(
         const startPos = toInteger(args[1]);
         const numEntries = toInteger(args[2]);
         if (startPos < 0) throw evaluationError('mid() requires a non-negative start position');
+        if (numEntries < 0) throw evaluationError('mid() requires a non-negative length parameter');
         if (isArrayType(args[0])) {
           return args[0].slice(startPos, startPos + numEntries);
         }
@@ -1179,7 +1194,7 @@ export default function functions(
         const p1 = args[0];
         const p2 = args[1];
         const result = p1 % p2;
-        if (Number.isNaN(result)) throw functionError(`Bad parameter for mod: '${p1} % ${p2}'`);
+        if (Number.isNaN(result)) throw evaluationError(`Bad parameter for mod: '${p1} % ${p2}'`);
         return result;
       },
       _signature: [
@@ -1433,7 +1448,9 @@ export default function functions(
      * @param {string|array} subject original text or array
      * @param {integer} start zero-based index in the original text
      * from where to begin the replacement.  Must be greater than or equal to 0.
-     * @param {integer} length number of code points to be replaced
+     * @param {integer} length number of code points to be replaced.
+     * If `start` + `length` is greater than the length of `subject`,
+     * all text past `start` will be replaced.
      * @param {any} replacement Replacement to insert at the start index.
      * If `subject` is an array, and `replacement` is an array, the `replacement` array
      * elements will be inserted into the `subject` array.
@@ -1453,6 +1470,7 @@ export default function functions(
         const startPos = toInteger(args[1]);
         const numElements = toInteger(args[2]);
         if (startPos < 0) throw evaluationError('replace() start position must be greater than or equal to 0');
+        if (numElements < 0) throw evaluationError('replace() length must be greater than or equal to 0');
         if (isArrayType(args[0])) {
           const sourceArray = valueOf(args[0]);
           let replacement = valueOf(args[3]);
@@ -1915,7 +1933,7 @@ export default function functions(
      * @param {string} old The text to replace.
      * @param {string} new The text to replace `old` with.  If `new` is an empty string, then
      * occurrences of `old` are removed from `text`.
-     * @param {integer} [which] The one-based occurrence of `old` text to replace with `new` text.
+     * @param {integer} [which] The zero-based occurrence of `old` text to replace with `new` text.
      * If `which` parameter is omitted, every occurrence of `old` is replaced with `new`.
      * @returns {string} replaced string
      * @function substitute
@@ -1934,11 +1952,12 @@ export default function functions(
 
         // no third parameter? replace all instances
         let replaceAll = true;
-        let whch = -1;
+        let whch = 0;
         if (args.length > 3) {
           replaceAll = false;
           whch = toInteger(args[3]);
-          if (whch < 1) return src.join('');
+          if (whch < 0) throw evaluationError('substitute() which parameter must be greater than or equal to 0');
+          whch += 1;
         }
 
         let found = 0;
