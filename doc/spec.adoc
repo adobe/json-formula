@@ -73,11 +73,13 @@ If the supplied data is not correct for the execution context, json-formula will
 * Operands of the union operator (`~`) shall be coerced to an array
 * The left-hand operand of ordering comparison operators (`>`, `>=`, `<`, `\<=`) must be a string or number.  Any other type shall be coerced to a number.
 * If the operands of an ordering comparison are different, they shall both be coerced to a number
-* Parameters to functions shall be coerced to the expected type as defined by the function signature
+* Parameters to functions shall be coerced to the expected type as long as the expected type is a single choice. If the function signature allows multiple types for a parameter e.g. either string or array, then coercion will not occur.
 
 The equality and inequality operators (`=`, `==`, `!=`, `<>`) do **not** perform type coercion.  If operands are different types, the values are considered not equal.
 
-If a comparison requires coercion, and the coercion is not possible (including the case where a non-numeric string is coerced to zero), the comparison will return false. e.g., `{a: 12} < 12` and `"12a" < 13` will each return `false`.
+If an ordering comparison requires coercion, and the coercion is not possible (including the case where a string cannot be coerced to a number), the comparison will return false. e.g., `{a: 12} < 12` and `"12a" < 13` will each return `false`.
+
+In all cases except ordering comparison, if the coercion is not possible, a `TypeError` error shall be raised.
 
 [discrete]
 ==== Examples
@@ -103,7 +105,7 @@ If a comparison requires coercion, and the coercion is not possible (including t
 | array | string | Not supported
 | object | string | Not supported
 | null | string | "" (empty string)
-| string | number | Parse string to a number.  If the string is not a well-formed number, will return 0
+| string | number | Parse the string to a number.  An empty string converts to zero. If the string is not a well-formed number, the coercion will fail.
 | boolean | number | true -> 1 false -> 0
 | array | number | Not supported
 | object | number | Not supported
@@ -130,7 +132,7 @@ If a comparison requires coercion, and the coercion is not possible (including t
 
 [source%unbreakable]
 ----
-    eval("\"$123.00\" + 1", {}) -> 1"
+    eval("\"$123.00\" + 1", {}) -> TypeError
     eval("truth is " & `true`, {}) -> "truth is true"
     eval(2 + `true`, {}) -> 3
     eval(avg("20"), {}) -> 20
@@ -393,7 +395,7 @@ Ordering comparisons follow these rules:
 
 * If both operands are numbers, a numeric comparison is performed
 * If both operands are strings, they are compared as strings, based on the values of the Unicode code points they contain
-* If operands are mixed types, <<Type Coercion,type coercion>> is applied before performing the comparison
+* If operands are mixed types, <<Type Coercion,type coercion>> to number is applied before performing the comparison
 
 === Numeric Operators
 

@@ -13,9 +13,8 @@
       { "expression": "123 < \"124\"", "result": true },
       { "expression": "\"23\" > 111", "result": false },
       { "expression": "abs(\"-2\")", "result": 2 },
-      { "expression": "\"$100\" * 2", "result": 0 },
       { "expression": "1 == \"1\"", "result": false },
-      { "expression": "\"$123.00\" + 1", "result": 1 },
+      { "expression": "\"$123.00\" + 1", "error": "TypeError" },
       {
         "expression": "a ~ b",
         "data": { "a": [0, 1, 2], "b": [3, 4, 5] },

@@ -46,7 +46,7 @@ const {
   TYPE_OBJECT,
 } = dataTypes;
 
-function getToNumber(stringToNumber, debug = []) {
+function getToNumber(stringToNumber) {
   return value => {
     const n = getValueOf(value); // in case it's an object that implements valueOf()
     if (n === null) return 0;
@@ -55,7 +55,7 @@ function getToNumber(stringToNumber, debug = []) {
     }
     const type = typeof n;
     if (type === 'number') return n;
-    if (type === 'string') return stringToNumber(n, debug);
+    if (type === 'string') return stringToNumber(n);
     if (type === 'boolean') return n ? 1 : 0;
     throw typeError('Failed to convert object to number');
   };
@@ -166,7 +166,7 @@ class Runtime {
 export default class Formula {
   constructor(debug, customFunctions, stringToNumberFn) {
     this.debug = debug;
-    this.toNumber = getToNumber(stringToNumberFn || defaultStringToNumber, debug);
+    this.toNumber = getToNumber(stringToNumberFn || defaultStringToNumber);
     this.runtime = new Runtime(debug, this.toNumber, customFunctions);
   }
 

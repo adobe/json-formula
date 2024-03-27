@@ -144,7 +144,7 @@
       { "expression": "sum(`[2,4,6]`)", "result": 12 },
       { "expression": "sum([2,\"4\",6,`true`])", "result": 13 },
       { "expression": "(3 + 2) * 10 / 2 - 5", "result": 20 },
-      { "expression": "2 * \"$2\" + `null`", "result": 0 },
+      { "expression": "2 * \"$2\" + `null`", "error": "TypeError" },
       { "expression": "1 < 2", "result": true },
       { "expression": "1 > 2", "result": false },
       { "expression": "12 >= 12", "result": true },
@@ -1193,7 +1193,7 @@
         "was": null,
         "error": "EvaluationError"
       },
-      { "expression": "4/\"b\"", "error": "EvaluationError" },
+      { "expression": "4/\"b\"", "error": "TypeError" },
       {
         "expression": "12.222 | round(@ * 2, 2)",
         "result": 24.44

@@ -2148,7 +2148,7 @@ export default function functions(
      * Converts the provided arg to a number as per
      * the <<_type_coercion_rules,type coercion rules>>.
      *
-     * @param {string|number|boolean|null} arg to convert to number
+     * @param {any} arg to convert to number
      * @param {integer} [base=10] If the input `arg` is a string, the use base to convert to number.
      * One of: 2, 8, 10, 16. Defaults to 10.
      * @return {number} The resulting number.  If conversion to number fails, return null.
@@ -2156,7 +2156,7 @@ export default function functions(
      * @example
      * toNumber(1) // returns 1
      * toNumber("10") // returns 10
-     * toNumber({a: 1}) // fails
+     * toNumber({a: 1}) // returns null
      * toNumber(true()) // returns 1
      * toNumber("10f") // returns null
      * toNumber("FF", 16) // returns 255
@@ -2190,10 +2190,15 @@ export default function functions(
           }
           return result;
         }
-        return toNumber(num);
+        try {
+          return toNumber(num);
+        } catch (e) {
+          debug.push(`Failed to convert "${num}" to number`);
+          return null;
+        }
       },
       _signature: [
-        { types: [TYPE_STRING, TYPE_NUMBER, TYPE_BOOLEAN, TYPE_NULL] },
+        { types: [TYPE_ANY] },
         { types: [dataTypes.TYPE_NUMBER], optional: true },
       ],
     },
