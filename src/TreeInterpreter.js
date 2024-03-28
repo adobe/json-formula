@@ -225,9 +225,15 @@ export default class TreeInterpreter {
         if (type1 === TYPE_NUMBER || type2 === TYPE_NUMBER) {
           // if toNumber fails, it will populate the debug array
           // with an appropriate warning
-          first = this.toNumber(first);
-          second = this.toNumber(second);
-          if (first === null || second === null) return false;
+          try {
+            first = this.toNumber(first);
+            second = this.toNumber(second);
+            if (first === null || second === null) return false;
+          } catch (_e) {
+            // failing to convert to a number for comparison is not an error
+            // we just return false
+            return false;
+          }
         }
         if (node.value === '>') return first > second;
         if (node.value === '>=') return first >= second;

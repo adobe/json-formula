@@ -10,15 +10,12 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-export default function stringToNumber(n, debug) {
-  if (n === '') {
-    if (debug) debug.push('Failed to convert empty string to number');
-    return null;
-  }
+import { typeError } from './errors.js';
+
+export default function stringToNumber(n) {
   const ret = +n;
   if (Number.isNaN(ret)) {
-    if (debug) debug.push(`Failed to convert "${n}" to number`);
-    return null;
+    throw typeError(`Failed to convert "${n}" to number`);
   }
   return ret;
 }

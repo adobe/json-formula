@@ -119,8 +119,7 @@
       },
       {
         "expression": "abs(str)",
-        "result": 0,
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "abs(array[1])",
@@ -161,8 +160,7 @@
       },
       {
         "expression": "avg(array)",
-        "result": 18.5,
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "avg('abc')",
@@ -179,8 +177,7 @@
       },
       {
         "expression": "avg(strings)",
-        "result": 0,
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "avg(`[]`)",
@@ -188,7 +185,7 @@
       },
       {
         "expression": "avg(`[2,1,\"b\"]`)",
-        "result": 1
+        "error": "TypeError"
       },
       {
         "expression": "avg(`null`)",
@@ -212,8 +209,7 @@
       },
       {
         "expression": "ceil(\"string\")",
-        "result": 0,
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "contains(\"abc\", \"a\")",
@@ -270,8 +266,7 @@
       },
       {
         "expression": "floor(\"string\")",
-        "result": 0,
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "floor(decimals[0])",
@@ -283,8 +278,7 @@
       },
       {
         "expression": "floor(str)",
-        "result": 0,
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "length(\"abc\")",
@@ -733,8 +727,7 @@
       },
       {
         "expression": "sum(array)",
-        "result": 111,
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "sum(array[].toNumber(@))",
@@ -874,11 +867,11 @@
       },
       {
         "expression": "toNumber(`[0]`)",
-        "error": "TypeError"
+        "result": null
       },
       {
         "expression": "toNumber(`{\"foo\": 0}`)",
-        "error": "TypeError"
+        "result": null
       },
       {
         "expression": "toNumber(\"FF\", 16)",
@@ -938,7 +931,7 @@
       },
       {
         "expression": "toNumber(toNum.empty)",
-        "result": null
+        "result": 0
       },
       {
         "expression": "toNumber(\"AXX\", 16)",

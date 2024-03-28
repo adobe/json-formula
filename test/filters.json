@@ -1,11 +1,21 @@
 [
   {
-    "given": { "foo": [{ "name": "a" }, { "name": "b" }] },
+    "given": { "foo": [{ "name": "a", "n": 12 }, { "name": "b", "n": "13a" }] },
     "cases": [
       {
         "comment": "Matching a literal",
         "expression": "foo[?name == \"a\"]",
-        "result": [{ "name": "a" }]
+        "result": [{ "name": "a", "n": 12 }]
+      },
+      {
+        "comment": "bad number comparison",
+        "expression": "foo[?n > 10]",
+        "result": [{ "name": "a", "n": 12 }]
+      },
+      {
+        "comment": "bad number comparison",
+        "expression": "foo[?10 < n]",
+        "result": [{ "name": "a", "n": 12 }]
       }
     ]
   },

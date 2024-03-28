@@ -268,8 +268,24 @@
         "result": 1
       },
       {
-        "expression": "toNumber(\"10\")",
-        "result": 10
+        "expression": "toNumber(1)",
+        "result": 1
+      },
+      {
+        "expression": "toNumber({a: 1})",
+        "result": null
+      },
+      {
+        "expression": "toNumber(true())",
+        "result": 1
+      },
+      {
+        "expression": "toNumber(\"10f\")",
+        "result": null
+      },
+      {
+        "expression": "toNumber(\"FF\", 16)",
+        "result": 255
       },
       {
         "expression": "toNumber(true())",
