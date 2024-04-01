@@ -241,8 +241,8 @@
         "expression": "4 + -items[0].quantity",
         "result": 2
       },
-      { "expression": "-\"string\"", "result": 0 },
-      { "data": "`{\"s\": \"string\"}`", "expression": "-s", "result": 0 },
+      { "expression": "-\"string\"", "error": "TypeError" },
+      { "data": "`{\"s\": \"string\"}`", "expression": "-s", "error": "TypeError" },
       {
         "data": "'purchase-order'",
         "expression": "items[0].quantity - 2",
