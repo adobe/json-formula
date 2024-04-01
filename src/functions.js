@@ -504,7 +504,7 @@ export default function functions(
      * return an array of key values that match a `name`.
      * The name can be either a key into an object or an array index.
      * This is similar to the Descendant Accessor operator (`..`) from [E4X](https://ecma-international.org/publications-and-standards/standards/ecma-357/).
-     * @param {object|array} object The starting object or array where we start the search
+     * @param {object|array|null} object The starting object or array where we start the search
      * @param {string|integer} name The name (or index position) of the elements to find.
      * If `name` is a string, search for nested objects with a matching key.
      * If `name` is an integer, search for nested arrays with a matching index.
