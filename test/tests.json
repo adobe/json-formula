@@ -685,6 +685,14 @@
         "error": "TypeError"
       },
       {
+        "expression": "replace(\"3\", 1, 0, [4,5,6])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "replace(\"3\", 1, 0, {a: 4})",
+        "error": "TypeError"
+      },
+      {
         "expression": "replace(367, 1, 0, 45)",
         "error": "TypeError"
       },

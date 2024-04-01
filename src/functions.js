@@ -1472,6 +1472,7 @@ export default function functions(
           return sourceArray;
         }
         const subject = Array.from(toString(args[0]));
+        if (isArrayType(args[3]) || getType(args[3]) === TYPE_OBJECT) throw typeError('replace() replacement must not be an array or object');
         const newText = toString(args[3]);
 
         subject.splice(startPos, numElements, newText);
