@@ -152,6 +152,7 @@ export function matchType(expectedList, argValue, context, toNumber, toString) {
     if (expected === TYPE_ARRAY_STRING) return actual === TYPE_NULL ? [] : [toString(argValue)];
     if (expected === TYPE_ARRAY_NUMBER) return actual === TYPE_NULL ? [] : [toNumber(argValue)];
     if (expected === TYPE_ARRAY) return actual === TYPE_NULL ? [] : [argValue];
+    if ([TYPE_ARRAY_ARRAY, TYPE_EMPTY_ARRAY].includes(expected) && actual === TYPE_NULL) return [];
     if (expected === TYPE_NUMBER) return toNumber(argValue);
     if (expected === TYPE_STRING) return toString(argValue);
     if (expected === TYPE_BOOLEAN) return !!argValue;

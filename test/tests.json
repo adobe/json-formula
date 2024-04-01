@@ -1129,6 +1129,18 @@
         "result": {"a": 3, "b": 2}
       },
       {
+        "expression": "fromEntries(`null`)",
+        "result": {}
+      },
+      {
+        "expression": "fromEntries(`[]`)",
+        "result": {}
+      },
+      {
+        "expression": "fromEntries(`[\"a\", 1]`)",
+        "error": "TypeError"
+      },
+      {
         "data": "'purchase-order'",
         "expression": "entries(address)",
         "result": [
