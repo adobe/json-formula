@@ -241,8 +241,8 @@
         "expression": "4 + -items[0].quantity",
         "result": 2
       },
-      { "expression": "-\"string\"", "result": 0 },
-      { "data": "`{\"s\": \"string\"}`", "expression": "-s", "result": 0 },
+      { "expression": "-\"string\"", "error": "TypeError" },
+      { "data": "`{\"s\": \"string\"}`", "expression": "-s", "error": "TypeError" },
       {
         "data": "'purchase-order'",
         "expression": "items[0].quantity - 2",
@@ -682,6 +682,14 @@
       },
       {
         "expression": "replace(3, 1, 0, [4,5,6])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "replace(\"3\", 1, 0, [4,5,6])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "replace(\"3\", 1, 0, {a: 4})",
         "error": "TypeError"
       },
       {
@@ -1127,6 +1135,18 @@
       {
         "expression": "fromEntries([[\"a\", 1], [\"b\", 2], [\"a\", 3]])",
         "result": {"a": 3, "b": 2}
+      },
+      {
+        "expression": "fromEntries(`null`)",
+        "result": {}
+      },
+      {
+        "expression": "fromEntries(`[]`)",
+        "result": {}
+      },
+      {
+        "expression": "fromEntries(`[\"a\", 1]`)",
+        "error": "TypeError"
       },
       {
         "data": "'purchase-order'",

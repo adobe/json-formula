@@ -33,7 +33,7 @@ import tokenDefinitions from './tokenDefinitions.js';
 import {
   isArray, isObject, strictDeepEqual, getValueOf, getProperty, debugAvailable, toBoolean,
 } from './utils.js';
-import { evaluationError } from './errors.js';
+import { evaluationError, typeError } from './errors.js';
 
 const {
   TOK_CURRENT,
@@ -356,10 +356,7 @@ export default class TreeInterpreter {
       UnaryMinusExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
         const minus = first * -1;
-        if (Number.isNaN(minus)) {
-          this.debug.push(`Failed to convert "${first}" to number`);
-          return 0;
-        }
+        if (Number.isNaN(minus)) throw typeError(`Failed to convert "${first}" to number`);
         return minus;
       },
 

@@ -86,7 +86,7 @@ export default function functions(
     // converted to number before the function call.
     // However, a few functions accept a string | integer. Attempt to convert
     // to integer in these cases, but failure isn't an error.
-    if (typeof n === 'string') n = toNumber(n);
+    if (getType(n) === TYPE_STRING) n = toNumber(n);
     n = Math.trunc(num);
     if (Number.isNaN(n)) return num;
     return n;
@@ -278,7 +278,7 @@ export default function functions(
      * is a string, return true if the string contains the
      * `search` value.
      * @param {array|string} subject The element to be searched
-     * @param {string|boolean|number|null} search element to find.
+     * @param {any} search element to find.
      * If `subject` is an array, search for an exact match for `search` in the array.
      * If `subject` is a string, `search` must also be a string.
      * @return {boolean} true if found
@@ -295,7 +295,7 @@ export default function functions(
         const subject = valueOf(resolvedArgs[0]);
         const search = valueOf(resolvedArgs[1]);
         if (isArrayType(resolvedArgs[0])) {
-          return subject.includes(search);
+          return subject.some(s => strictDeepEqual(s, search));
         }
         const source = Array.from(subject);
         if (getType(search) !== TYPE_STRING) {
@@ -470,7 +470,7 @@ export default function functions(
      * The second (optional) argument is the value to be returned by the `debug()` function.
      * @param {any} arg The expression to return from `debug()`
      * and the default expression to be debugged.
-     * @param {any} [displayValue=arg] Optionally override the value to be debugged.
+     * @param {any|expression} [displayValue=arg] Optionally override the value to be debugged.
      * `displayValue` may be a value or may be an expression to
      * be evaluated with the context of `arg`.
      * @returns {any} The value of the `arg` parameter
@@ -504,7 +504,7 @@ export default function functions(
      * return an array of key values that match a `name`.
      * The name can be either a key into an object or an array index.
      * This is similar to the Descendant Accessor operator (`..`) from [E4X](https://ecma-international.org/publications-and-standards/standards/ecma-357/).
-     * @param {object|array} object The starting object or array where we start the search
+     * @param {object|array|null} object The starting object or array where we start the search
      * @param {string|integer} name The name (or index position) of the elements to find.
      * If `name` is a string, search for nested objects with a matching key.
      * If `name` is an integer, search for nested arrays with a matching index.
@@ -768,7 +768,6 @@ export default function functions(
     /**
      * Determine if an object has a property or if an array index is in range.
      * @param {object|array} obj source object or array.
-     * May also be a scalar, but then the result is always false.
      * @param {string|integer} name The name (or index position) of the element to find.
      * if `obj` is an array, name must be an integer; if `obj` is an object, name must be a string.
      * @returns {boolean} true if the element exists
@@ -790,7 +789,7 @@ export default function functions(
         return result !== undefined;
       },
       _signature: [
-        { types: [dataTypes.TYPE_ANY] },
+        { types: [dataTypes.TYPE_ARRAY, TYPE_OBJECT] },
         { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_NUMBER] },
       ],
     },
@@ -883,10 +882,7 @@ export default function functions(
      * keys({a : 3, b : 4}) // returns ["a", "b"]
      */
     keys: {
-      _func: resolvedArgs => {
-        if (resolvedArgs[0] === null) return [];
-        return Object.keys(resolvedArgs[0]);
-      },
+      _func: resolvedArgs => Object.keys(resolvedArgs[0]),
       _signature: [{ types: [TYPE_OBJECT] }],
     },
     /**
@@ -1008,9 +1004,7 @@ export default function functions(
     /**
      * Calculates the largest value in the provided `collection` arguments.
      * If all collections are empty, an evaluation error is thrown.
-     * `max()` can work on numbers or strings.
-     * If a mix of numbers and strings are provided, all values with be coerced to
-     * the type of the first value.
+     * `max()` can work on numbers or strings, but not a combination of numbers and strings.
      * If all values are null, the result is 0.
      * @param {...(number[]|string[]|number|string)} collection values/array(s) in which the maximum
      * element is to be calculated
@@ -1125,8 +1119,7 @@ export default function functions(
     /**
      * Calculates the smallest value in the input arguments.
      * If all collections/values are empty, an evaluation error is thrown.
-     * min() can work on numbers or strings.
-     * If a mix of numbers and strings are provided, the type of the first value will be used.
+     * `min()` can work on numbers or strings, but not a combination of numbers and strings.
      * If all values are null, zero is returned.
      * @param {...(number[]|string[]|number|string)} collection
      * Values/arrays to search for the minimum value
@@ -1479,6 +1472,7 @@ export default function functions(
           return sourceArray;
         }
         const subject = Array.from(toString(args[0]));
+        if (isArrayType(args[3]) || getType(args[3]) === TYPE_OBJECT) throw typeError('replace() replacement must not be an array or object');
         const newText = toString(args[3]);
 
         subject.splice(startPos, numElements, newText);
@@ -1495,9 +1489,10 @@ export default function functions(
     /**
      * Return text repeated `count` times.
      * @param {string} text text to repeat
-     * @param {integer} count number of times to repeat the text
+     * @param {integer} count number of times to repeat the text.
+     * Must be greater than or equal to 0.
      * @returns {string} Text generated from the repeated text.
-     * if `count` is zero, returns an empty string. If `count` is less than 0, returns null.
+     * if `count` is zero, returns an empty string.
      * @function rept
      * @example
      * rept("x", 5) // returns "xxxxx"
@@ -1541,7 +1536,7 @@ export default function functions(
      * a subset of elements from the end of an array
      * @param {string|array} subject The text/array containing the code points/elements to extract
      * @param {integer} [elements=1] number of elements to pick
-     * @return {string|array|null} The extracted substring or array subset
+     * @return {string|array} The extracted substring or array subset
      * Returns null if the number of elements is less than 0
      * @function right
      * @example
@@ -1733,7 +1728,18 @@ export default function functions(
      * sort([1, 2, 4, 3, 1]) // returns [1, 1, 2, 3, 4]
      */
     sort: {
-      _func: resolvedArgs => resolvedArgs[0].slice(0).sort(),
+      _func: resolvedArgs => {
+        const array = resolvedArgs[0].slice();
+        if (array.length === 0) return [];
+        // JavaScript default sort converts numbers to strings
+        if (getType(array[0]) === TYPE_STRING) return array.sort();
+
+        return array.sort((a, b) => {
+          if (a < b) return -1;
+          if (a > b) return 1;
+          return 0;
+        });
+      },
       _signature: [{ types: [TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] }],
     },
 
@@ -1928,7 +1934,7 @@ export default function functions(
      * Generates a string from the input `text`,
      * with text `old` replaced by text `new` (when searching from the left).
      * If there is no match, or if `old` has length 0, `text` is returned unchanged.
-     * Note that `old` and `new` may have different lengths. If `which` < 1, return `text` unchanged
+     * Note that `old` and `new` may have different lengths.
      * @param {string} text The text for which to substitute code points.
      * @param {string} old The text to replace.
      * @param {string} new The text to replace `old` with.  If `new` is an empty string, then
@@ -1939,8 +1945,8 @@ export default function functions(
      * @function substitute
      * @example
      * substitute("Sales Data", "Sales", "Cost") // returns "Cost Data"
-     * substitute("Quarter 1, 2008", "1", "2", 1) // returns "Quarter 2, 2008"
-     * substitute("Quarter 1, 1008", "1", "2", 2) // returns "Quarter 1, 2008"
+     * substitute("Quarter 1, 2001", "1", "2", 1)" // returns "Quarter 1, 2002"
+     * substitute("Quarter 1, 2011", "1", "2", 2)" // returns "Quarter 1, 2012"
      */
     substitute: {
       _func: args => {
@@ -2165,13 +2171,14 @@ export default function functions(
       _func: resolvedArgs => {
         const num = valueOf(resolvedArgs[0]);
         const base = resolvedArgs.length > 1 ? toInteger(resolvedArgs[1]) : 10;
-        if (typeof num === 'string' && base !== 10) {
+        if (getType(num) === TYPE_STRING && base !== 10) {
           let digitCheck;
           if (base === 2) digitCheck = /^[01.]+$/;
           else if (base === 8) digitCheck = /^[0-7.]+$/;
           else if (base === 16) digitCheck = /^[0-9A-Fa-f.]+$/;
           else throw evaluationError(`Invalid base: "${base}" for toNumber()`);
 
+          if (num === '') return 0;
           if (!digitCheck.test(num)) {
             debug.push(`Failed to convert "${num}" base "${base}" to number`);
             return null;
