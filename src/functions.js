@@ -278,7 +278,7 @@ export default function functions(
      * is a string, return true if the string contains the
      * `search` value.
      * @param {array|string} subject The element to be searched
-     * @param {string|boolean|number|null} search element to find.
+     * @param {any} search element to find.
      * If `subject` is an array, search for an exact match for `search` in the array.
      * If `subject` is a string, `search` must also be a string.
      * @return {boolean} true if found
@@ -295,7 +295,7 @@ export default function functions(
         const subject = valueOf(resolvedArgs[0]);
         const search = valueOf(resolvedArgs[1]);
         if (isArrayType(resolvedArgs[0])) {
-          return subject.includes(search);
+          return subject.some(s => strictDeepEqual(s, search));
         }
         const source = Array.from(subject);
         if (getType(search) !== TYPE_STRING) {

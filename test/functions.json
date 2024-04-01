@@ -357,6 +357,18 @@
         "error": "TypeError"
       },
       {
+        "expression": "contains([1, {a: 1}, 3], {a: 1})",
+        "result": true
+      },
+      {
+        "expression": "contains([1, `[{\"a\": 10}]`, 3], [{a: 10}])",
+        "result": true
+      },
+      {
+        "expression": "contains([1, {a: 1}, 3], {a: 2})",
+        "result": false
+      },
+      {
         "expression": "endsWith(extended, \"\uDCA5\")",
         "result": false
       },
