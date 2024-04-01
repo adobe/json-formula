@@ -86,7 +86,7 @@ export default function functions(
     // converted to number before the function call.
     // However, a few functions accept a string | integer. Attempt to convert
     // to integer in these cases, but failure isn't an error.
-    if (typeof n === 'string') n = toNumber(n);
+    if (getType(n) === TYPE_STRING) n = toNumber(n);
     n = Math.trunc(num);
     if (Number.isNaN(n)) return num;
     return n;
@@ -2171,13 +2171,14 @@ export default function functions(
       _func: resolvedArgs => {
         const num = valueOf(resolvedArgs[0]);
         const base = resolvedArgs.length > 1 ? toInteger(resolvedArgs[1]) : 10;
-        if (typeof num === 'string' && base !== 10) {
+        if (getType(num) === TYPE_STRING && base !== 10) {
           let digitCheck;
           if (base === 2) digitCheck = /^[01.]+$/;
           else if (base === 8) digitCheck = /^[0-7.]+$/;
           else if (base === 16) digitCheck = /^[0-9A-Fa-f.]+$/;
           else throw evaluationError(`Invalid base: "${base}" for toNumber()`);
 
+          if (num === '') return 0;
           if (!digitCheck.test(num)) {
             debug.push(`Failed to convert "${num}" base "${base}" to number`);
             return null;

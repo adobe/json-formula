@@ -962,7 +962,7 @@
       },
       {
         "expression": "toNumber(toNum.empty, 16)",
-        "result": null
+        "result": 0
       },
       {
         "expression": "toNumber(\"not hex\", 16)",
