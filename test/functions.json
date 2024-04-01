@@ -633,7 +633,7 @@
       },
       {
         "expression": "keys(`null`)",
-        "error": "TypeError"
+        "result": []
       },
       {
         "expression": "values(foo)",
@@ -641,7 +641,7 @@
       },
       {
         "expression": "values(null())",
-        "error": "TypeError"
+        "result": []
       },
       {
         "expression": "join(strings, \", \")",

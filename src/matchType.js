@@ -156,6 +156,7 @@ export function matchType(expectedList, argValue, context, toNumber, toString) {
     if (expected === TYPE_NUMBER) return toNumber(argValue);
     if (expected === TYPE_STRING) return toString(argValue);
     if (expected === TYPE_BOOLEAN) return !!argValue;
+    if (expected === TYPE_OBJECT && actual === TYPE_NULL) return {};
   }
 
   throw typeError(`${context} expected argument to be type ${typeNameTable[expected]} but received type ${typeNameTable[actual]} instead.`);

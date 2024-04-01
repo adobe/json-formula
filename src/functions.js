@@ -882,10 +882,7 @@ export default function functions(
      * keys({a : 3, b : 4}) // returns ["a", "b"]
      */
     keys: {
-      _func: resolvedArgs => {
-        if (resolvedArgs[0] === null) return [];
-        return Object.keys(resolvedArgs[0]);
-      },
+      _func: resolvedArgs => Object.keys(resolvedArgs[0]),
       _signature: [{ types: [TYPE_OBJECT] }],
     },
     /**
