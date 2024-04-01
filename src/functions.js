@@ -1927,7 +1927,7 @@ export default function functions(
      * Generates a string from the input `text`,
      * with text `old` replaced by text `new` (when searching from the left).
      * If there is no match, or if `old` has length 0, `text` is returned unchanged.
-     * Note that `old` and `new` may have different lengths. If `which` < 1, return `text` unchanged
+     * Note that `old` and `new` may have different lengths.
      * @param {string} text The text for which to substitute code points.
      * @param {string} old The text to replace.
      * @param {string} new The text to replace `old` with.  If `new` is an empty string, then
@@ -1938,8 +1938,8 @@ export default function functions(
      * @function substitute
      * @example
      * substitute("Sales Data", "Sales", "Cost") // returns "Cost Data"
-     * substitute("Quarter 1, 2008", "1", "2", 1) // returns "Quarter 2, 2008"
-     * substitute("Quarter 1, 1008", "1", "2", 2) // returns "Quarter 1, 2008"
+     * substitute("Quarter 1, 2001", "1", "2", 1)" // returns "Quarter 1, 2002"
+     * substitute("Quarter 1, 2011", "1", "2", 2)" // returns "Quarter 1, 2012"
      */
     substitute: {
       _func: args => {
