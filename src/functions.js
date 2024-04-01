@@ -768,7 +768,6 @@ export default function functions(
     /**
      * Determine if an object has a property or if an array index is in range.
      * @param {object|array} obj source object or array.
-     * May also be a scalar, but then the result is always false.
      * @param {string|integer} name The name (or index position) of the element to find.
      * if `obj` is an array, name must be an integer; if `obj` is an object, name must be a string.
      * @returns {boolean} true if the element exists
@@ -790,7 +789,7 @@ export default function functions(
         return result !== undefined;
       },
       _signature: [
-        { types: [dataTypes.TYPE_ANY] },
+        { types: [dataTypes.TYPE_ARRAY, TYPE_OBJECT] },
         { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_NUMBER] },
       ],
     },

@@ -27,7 +27,7 @@
     "cases": [
       {
         "expression": "hasProperty(foo, \"bar\")",
-        "result": false
+        "error": "TypeError"
       },
       {
         "expression": "hasProperty(objects, \"foo\")",
@@ -53,6 +53,9 @@
         "expression": "hasProperty(@, \"null_key\")",
         "result": true
       },
+      { "expression": "hasProperty(`false`, \"key\")", "error": "TypeError"},
+      { "expression": "hasProperty(42, \"key\")", "error": "TypeError"},
+      { "expression": "hasProperty(\"abc\", \"key\")", "error": "TypeError"},
       {
         "expression": "and(true() true())",
         "error": "SyntaxError"
