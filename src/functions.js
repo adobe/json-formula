@@ -470,7 +470,7 @@ export default function functions(
      * The second (optional) argument is the value to be returned by the `debug()` function.
      * @param {any} arg The expression to return from `debug()`
      * and the default expression to be debugged.
-     * @param {any} [displayValue=arg] Optionally override the value to be debugged.
+     * @param {any|expression} [displayValue=arg] Optionally override the value to be debugged.
      * `displayValue` may be a value or may be an expression to
      * be evaluated with the context of `arg`.
      * @returns {any} The value of the `arg` parameter
