@@ -989,6 +989,10 @@
         "result": [-1, 3, 4, 5]
       },
       {
+        "expression": "sort([100, 1, 10, 11])",
+        "result": [1, 10, 11, 100]
+      },
+      {
         "expression": "sort(strings)",
         "result": ["a", "b", "c"]
       },

@@ -1727,7 +1727,18 @@ export default function functions(
      * sort([1, 2, 4, 3, 1]) // returns [1, 1, 2, 3, 4]
      */
     sort: {
-      _func: resolvedArgs => resolvedArgs[0].slice(0).sort(),
+      _func: resolvedArgs => {
+        const array = resolvedArgs[0].slice();
+        if (array.length === 0) return [];
+        // JavaScript default sort converts numbers to strings
+        if (getType(array[0]) === TYPE_STRING) return array.sort();
+
+        return array.sort((a, b) => {
+          if (a < b) return -1;
+          if (a > b) return 1;
+          return 0;
+        });
+      },
       _signature: [{ types: [TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] }],
     },
 
