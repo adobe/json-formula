@@ -1537,7 +1537,7 @@ export default function functions(
      * a subset of elements from the end of an array
      * @param {string|array} subject The text/array containing the code points/elements to extract
      * @param {integer} [elements=1] number of elements to pick
-     * @return {string|array|null} The extracted substring or array subset
+     * @return {string|array} The extracted substring or array subset
      * Returns null if the number of elements is less than 0
      * @function right
      * @example
