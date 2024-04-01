@@ -1491,9 +1491,10 @@ export default function functions(
     /**
      * Return text repeated `count` times.
      * @param {string} text text to repeat
-     * @param {integer} count number of times to repeat the text
+     * @param {integer} count number of times to repeat the text.
+     * Must be greater than or equal to 0.
      * @returns {string} Text generated from the repeated text.
-     * if `count` is zero, returns an empty string. If `count` is less than 0, returns null.
+     * if `count` is zero, returns an empty string.
      * @function rept
      * @example
      * rept("x", 5) // returns "xxxxx"
