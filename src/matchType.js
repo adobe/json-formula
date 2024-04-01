@@ -132,8 +132,11 @@ export function matchType(expectedList, argValue, context, toNumber, toString) {
   // nothing coerces to a class or object
   if (exactMatch && [TYPE_CLASS, TYPE_OBJECT].includes(expected)) wrongType = true;
 
-  if (wrongType || exactMatch) {
-    throw typeError(`${context} cannot process type: ${typeNameTable[actual]}`);
+  if (exactMatch) {
+    throw typeError(`${context} cannot process type: ${typeNameTable[actual]}. Must be one of: ${expectedList.map(t => typeNameTable[t]).join(', ')}.`);
+  }
+  if (wrongType) {
+    throw typeError(`${context} expected argument to be type ${typeNameTable[expected]} but received type ${typeNameTable[actual]} instead.`);
   }
   // Can't coerce Objects and arrays to anything other than boolean
   if (isObject(actual) && expected === TYPE_BOOLEAN) {

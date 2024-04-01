@@ -1004,9 +1004,7 @@ export default function functions(
     /**
      * Calculates the largest value in the provided `collection` arguments.
      * If all collections are empty, an evaluation error is thrown.
-     * `max()` can work on numbers or strings.
-     * If a mix of numbers and strings are provided, all values with be coerced to
-     * the type of the first value.
+     * `max()` can work on numbers or strings, but not a combination of numbers and strings.
      * If all values are null, the result is 0.
      * @param {...(number[]|string[]|number|string)} collection values/array(s) in which the maximum
      * element is to be calculated
@@ -1121,8 +1119,7 @@ export default function functions(
     /**
      * Calculates the smallest value in the input arguments.
      * If all collections/values are empty, an evaluation error is thrown.
-     * min() can work on numbers or strings.
-     * If a mix of numbers and strings are provided, the type of the first value will be used.
+     * `min()` can work on numbers or strings, but not a combination of numbers and strings.
      * If all values are null, zero is returned.
      * @param {...(number[]|string[]|number|string)} collection
      * Values/arrays to search for the minimum value
