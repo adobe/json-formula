@@ -465,13 +465,10 @@ export default function functions(
     /**
      * Debug a json-formula expression.
      * The `debug()` function allows users to inspect a sub-expression within a formula.
-     * The first argument can be any type (except for an expression reference). This value will be
-     * displayed to the user by the host application.
-     * The second (optional) argument is the value to be returned by the `debug()` function.
-     * @param {any} arg The expression to return from `debug()`
-     * and the default expression to be debugged.
+     * @param {any} arg The expression to return from `debug()` function,
+     * and the default expression to be debugged. May be any type except an expression.
      * @param {any|expression} [displayValue=arg] Optionally override the value to be debugged.
-     * `displayValue` may be a value or may be an expression to
+     * `displayValue` may be an expression to
      * be evaluated with the context of `arg`.
      * @returns {any} The value of the `arg` parameter
      * @function debug
@@ -1397,12 +1394,13 @@ export default function functions(
     /**
      * Register a function.  The registered function may take one parameter.
      * If more parameters are needed, combine them in an array or object.
+     * A function may not be re-registered with a different definition.
      * Note that implementations are not required to provide `register()` in order to be conformant.
      * Built-in functions may not be overridden.
-     * A function may not be re-registered with a different definition.
      * @param {string} functionName Name of the function to register.
-     * `functionName` must begin with an underscore (`_`) and follow the regular
-     * expression pattern: `^_[_a-zA-Z0-9$]*$`
+     * `functionName` must begin with an underscore and follow the regular
+     * expression pattern:
+     * `{caret}_{startsb}_a-zA-Z0-9${endsb}{asterisk}$`
      * @param {expression} expr Expression to execute with this function call
      * @return {{}} returns an empty object
      * @function register
