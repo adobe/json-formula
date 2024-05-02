@@ -47,7 +47,11 @@
       },
       {
         "expression": "hasProperty(null_key, 4)",
-        "error": "TypeError"
+        "result": false
+      },
+      {
+        "expression": "hasProperty(null_key, \"p\")",
+        "result": false
       },
       {
         "expression": "hasProperty(@, \"null_key\")",

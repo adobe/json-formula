@@ -22,9 +22,11 @@ governing permissions and limitations under the License.
 
     Should allow us to eliminate getFieldProperty()
   */
+class ArrayClass extends Array {}
+class ObjectClass {}
 
 function createField(name, value, readonly = false, required = true) {
-  class Field {
+  class Field extends ObjectClass {
     valueOf() { return value; }
 
     toString() { return value.toString(); }
@@ -41,21 +43,17 @@ function createField(name, value, readonly = false, required = true) {
 }
 
 function createFieldset(fsname, isObj, fields, children) {
-  class FieldsetObj {
+  class FieldsetObj extends ObjectClass {
     _add(k, v) {
       this[k] = v;
       children.push(v);
     }
-
-    valueOf() { return Object.fromEntries(children.map(f => [f.$name, f.$value])); }
   }
-  class FieldsetArray extends Array {
+  class FieldsetArray extends ArrayClass {
     _add(k, v) {
       this[k] = v;
       children.push(v);
     }
-
-    valueOf() { return children; }
   }
   const fieldset = isObj ? new FieldsetObj() : new FieldsetArray();
   Object.defineProperty(fieldset, '$name', { get: () => fsname });

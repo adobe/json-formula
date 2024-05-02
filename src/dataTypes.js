@@ -38,9 +38,8 @@ const dataTypes = {
   TYPE_NULL: 7,
   TYPE_ARRAY_NUMBER: 8,
   TYPE_ARRAY_STRING: 9,
-  TYPE_CLASS: 10,
-  TYPE_ARRAY_ARRAY: 11,
-  TYPE_EMPTY_ARRAY: 12,
+  TYPE_ARRAY_ARRAY: 10,
+  TYPE_EMPTY_ARRAY: 11,
 };
 
 const typeNameTable = {
@@ -54,7 +53,6 @@ const typeNameTable = {
   [dataTypes.TYPE_NULL]: 'null',
   [dataTypes.TYPE_ARRAY_NUMBER]: 'Array<number>',
   [dataTypes.TYPE_ARRAY_STRING]: 'Array<string>',
-  [dataTypes.TYPE_CLASS]: 'class',
   [dataTypes.TYPE_ARRAY_ARRAY]: 'Array<array>',
   [dataTypes.TYPE_EMPTY_ARRAY]: 'array',
 };

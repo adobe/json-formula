@@ -63,27 +63,6 @@ test('handle function that throws', () => {
   expect(debug[0]).toEqual('big mistake');
 });
 
-test('can pass a class as a function argument', () => {
-  // i.e. make sure it does not resolve to the scalar value of a field
-  const TYPE_CLASS = 10;
-
-  const getNameFunc = 'getName(address.street)';
-
-  const customFunctions = {
-    getName: {
-      _func: ([fld]) => fld.$name,
-      _signature: [{ types: [TYPE_CLASS] }],
-    },
-  };
-  const root = createForm({ address: { street: 'Oak' } });
-  const jsonFormula = new JsonFormula(customFunctions);
-  const result = jsonFormula.search(
-    getNameFunc,
-    root,
-  );
-  expect(result).toEqual('street');
-});
-
 test('custom function with a lambda parameter', () => {
   const TYPE_STRING = 2;
   const TYPE_EXPREF = 6;

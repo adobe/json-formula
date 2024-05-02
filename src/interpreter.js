@@ -34,17 +34,14 @@ import { dataTypes } from './dataTypes.js';
 import { matchType, getType, isArrayType } from './matchType.js';
 import functions from './functions.js';
 import {
-  isObject, strictDeepEqual, getValueOf, isClass,
+  isObject, strictDeepEqual, getValueOf,
 } from './utils.js';
 import {
   evaluationError, typeError, functionError,
 } from './errors.js';
 
 // Type constants used to define functions.
-const {
-  TYPE_CLASS,
-  TYPE_OBJECT,
-} = dataTypes;
+const { TYPE_OBJECT } = dataTypes;
 
 function getToNumber(stringToNumber) {
   return value => {
@@ -76,11 +73,6 @@ const defaultStringToNumber = (str => {
   const n = +str;
   return Number.isNaN(n) ? 0 : n;
 });
-
-function matchClass(arg, expectedList) {
-  // checking isClass() generates a dependency -- so call it only if necessary
-  return expectedList.includes(TYPE_CLASS) && isClass(arg);
-}
 
 class Runtime {
   constructor(debug, toNumber, customFunctions = {}) {
@@ -143,11 +135,8 @@ class Runtime {
     for (let i = 0; i < limit; i += 1) {
       currentSpec = i > signature.length - 1 ? signature[signature.length - 1].types
         : signature[i].types;
-      // Try to avoid checks that will introspect the object and generate dependencies
-      if (!matchClass(args[i], currentSpec)) {
-        // eslint-disable-next-line no-param-reassign
-        args[i] = matchType(currentSpec, args[i], argName, this.toNumber, toString);
-      }
+      // eslint-disable-next-line no-param-reassign
+      args[i] = matchType(currentSpec, args[i], argName, this.toNumber, toString);
     }
   }
 

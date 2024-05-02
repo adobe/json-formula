@@ -28,7 +28,7 @@ governing permissions and limitations under the License.
 import { dataTypes, typeNameTable } from './dataTypes.js';
 import tokenDefinitions from './tokenDefinitions.js';
 import { typeError } from './errors.js';
-import { isClass } from './utils.js';
+// import { isClass } from './utils.js';
 
 const {
   TYPE_NUMBER,
@@ -41,7 +41,6 @@ const {
   TYPE_NULL,
   TYPE_ARRAY_NUMBER,
   TYPE_ARRAY_STRING,
-  TYPE_CLASS,
   TYPE_ARRAY_ARRAY,
   TYPE_EMPTY_ARRAY,
 } = dataTypes;
@@ -56,16 +55,10 @@ function isArray(t) {
   ].includes(t);
 }
 
-export function getType(inputObj, useValueOf = true) {
+export function getType(inputObj) {
   if (inputObj === null) return TYPE_NULL;
-  let obj = inputObj;
-  if (useValueOf) {
-    // check for the case where there's a child named 'valueOf' that's not a function
-    // if so, then it's an object...
-    if (typeof inputObj.valueOf === 'function') obj = inputObj.valueOf();
-    else return TYPE_OBJECT;
-  }
-  if (isClass(obj)) return TYPE_CLASS;
+  // if inputObj is a class, then convert it to its base type via JSON
+  const obj = JSON.parse(JSON.stringify(inputObj));
   switch (Object.prototype.toString.call(obj)) {
     case '[object String]':
       return TYPE_STRING;
@@ -129,8 +122,8 @@ export function matchType(expectedList, argValue, context, toNumber, toString) {
       })) wrongType = true;
     }
   }
-  // nothing coerces to a class or object
-  if (exactMatch && [TYPE_CLASS, TYPE_OBJECT].includes(expected)) wrongType = true;
+  // nothing coerces to an object
+  if (exactMatch && expected === TYPE_OBJECT) wrongType = true;
 
   if (exactMatch) {
     throw typeError(`${context} cannot process type: ${typeNameTable[actual]}. Must be one of: ${expectedList.map(t => typeNameTable[t]).join(', ')}.`);
