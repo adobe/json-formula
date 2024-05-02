@@ -764,7 +764,7 @@ export default function functions(
 
     /**
      * Determine if an object has a property or if an array index is in range.
-     * @param {object|array} obj source object or array.
+     * @param {object|array|null} obj source object or array.
      * @param {string|integer} name The name (or index position) of the element to find.
      * if `obj` is an array, name must be an integer; if `obj` is an object, name must be a string.
      * @returns {boolean} true if the element exists
@@ -778,15 +778,25 @@ export default function functions(
       _func: args => {
         let key = args[1];
         const keyType = getType(key);
-        if (isArrayType(args[0])) {
+
+        // if the object/array has a getter for this property then don't validate types
+        if (args[0] !== null && Object.getOwnPropertyDescriptor(args[0], key)?.get) return true;
+        const obj = valueOf(args[0]);
+        if (obj === null) return false;
+        const isArray = isArrayType(obj);
+        if (!(isArray || getType(obj) === dataTypes.TYPE_OBJECT)) {
+          throw typeError('First parameter to hasProperty() must be either an object or array.');
+        }
+
+        if (isArray) {
           if (keyType !== TYPE_NUMBER) throw TypeError('hasProperty(): Array index must be an integer');
           key = toInteger(key);
         } else if (keyType !== TYPE_STRING) throw TypeError('hasProperty(): Object key must be a string');
-        const result = getProperty(args[0], key);
+        const result = getProperty(obj, key);
         return result !== undefined;
       },
       _signature: [
-        { types: [dataTypes.TYPE_ARRAY, TYPE_OBJECT] },
+        { types: [dataTypes.TYPE_ANY] },
         { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_NUMBER] },
       ],
     },
@@ -2362,7 +2372,7 @@ export default function functions(
 
     /**
      * Perform an indexed lookup on an object or array
-     * @param {object | array} subject on which to perform the lookup
+     * @param {object | array | null} subject on which to perform the lookup
      * @param {string | integer} index if `subject` is an object, `index` must be a string
      * indicating the key name to search for.
      * If `subject` is an array, then index must be an integer indicating the offset into the array
@@ -2377,17 +2387,23 @@ export default function functions(
         const indexType = getType(args[1]);
         let index = args[1];
         const subjectArray = isArrayType(args[0]);
+        // if the object/array has a getter for this property then don't validate types
+        // just return the value.
+        if (args[0] !== null && Object.getOwnPropertyDescriptor(args[0], index)?.get) {
+          return getProperty(args[0], index);
+        }
+        const obj = valueOf(args[0]);
+        if (obj === null) return null;
+        if (!(getType(obj) === dataTypes.TYPE_OBJECT || subjectArray)) {
+          throw typeError('First parameter to value() must be one of: object, array, null.');
+        }
         if (subjectArray) {
-          if (indexType !== TYPE_NUMBER) {
-            throw typeError('value() requires an integer index for arrays');
-          }
+          if (indexType !== TYPE_NUMBER) throw typeError('value() requires an integer index for arrays');
           index = toInteger(index);
         } else if (indexType !== TYPE_STRING) {
           throw typeError('value() requires a string index for objects');
         }
-        const obj = valueOf(args[0]);
-        const result = getProperty(obj, index);
-
+        const result = getProperty(args[0], index);
         if (result === undefined) {
           if (subjectArray) {
             debug.push(
@@ -2399,7 +2415,7 @@ export default function functions(
         return result;
       },
       _signature: [
-        { types: [dataTypes.TYPE_OBJECT, dataTypes.TYPE_ARRAY, dataTypes.TYPE_NULL] },
+        { types: [dataTypes.TYPE_ANY] },
         { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_NUMBER] },
       ],
     },

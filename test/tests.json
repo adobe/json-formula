@@ -49,7 +49,8 @@
         "2023-06-20": "2023-06-20",
         "2023-06-21": "2023-06-21",
         "2030-08-01": "2030-08-01"
-      }
+      },
+      "nullvalue": null
     },
     "cases": [
       {
@@ -320,6 +321,24 @@
         "data": "'purchase-order'",
         "expression": "value(items, 4)",
         "result": null
+      },
+      {
+        "data": "'purchase-order'",
+        "expression": "value(items, \"$name\")",
+        "result": "items",
+        "fieldsOnly": true
+      },
+      {
+        "data": "'purchase-order'",
+        "expression": "value(address.street, \"$name\")",
+        "result": "street",
+        "fieldsOnly": true
+      },
+      {
+        "data": "'purchase-order'",
+        "expression": "hasProperty(address.street, \"$name\")",
+        "result": true,
+        "fieldsOnly": true
       },
       {
         "data": "'purchase-order'",
@@ -1690,6 +1709,14 @@
         "data": "`{\"two\": 2.6}`",
         "expression": "value([1,2,3,4,5], two)",
         "result": 3
+      },
+      {
+        "expression": "value(nullvalue, 2)",
+        "result": null
+      },
+      {
+        "expression": "value(nullvalue, \"n\")",
+        "result": null
       },
       {
         "data": "`{\"two\": 2.6}`",
