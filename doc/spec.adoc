@@ -301,10 +301,11 @@ fragment EXP
   ;
 ----
 
-Number literals follow the same syntax rules as numeric values in JSON with two exceptions:
+Number literals follow the same syntax rules as numeric values in JSON with three exceptions:
 
 1. Number literals may omit a leading zero.  For example, `.123` is not valid JSON, but is allowed as a number literal.
-2. The grammar construction for a number literal does not include a minus sign.  Literal expressions are made negative by prefixing them with a unary minus.
+2. Number literals may include a leading zero.  For example, `0123` is not valid JSON, but is allowed as a number literal.
+3. The grammar construction for a number literal does not include a minus sign.  Literal expressions are made negative by prefixing them with a unary minus.
 
 Note that number literals (and JSON numbers) allow scientific notation.
 
