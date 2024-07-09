@@ -1574,6 +1574,10 @@
         "result": { "r": 85 }
       },
       {
+        "expression": "register(\"_identity\", &@) || _identity()",
+        "result": null
+      },
+      {
         "expression": "register(\"\", &42)",
         "error": "FunctionError"
       },

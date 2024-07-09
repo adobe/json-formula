@@ -93,7 +93,7 @@ export default class TreeInterpreter {
     return null;
   }
 
-  visit(n, v) {
+  visit(n, v = null) {
     const visitFunctions = {
       Identifier: this.field.bind(this),
       QuotedIdentifier: this.field.bind(this),
