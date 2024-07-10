@@ -985,6 +985,28 @@
         "result": 11
       },
       {
+        "expression": "toNumber(\"0x11\")",
+        "result": null
+      },
+      {
+        "expression": "toNumber(\"0o11\")",
+        "result": null
+      },
+      {
+        "expression": "toNumber(\"0b11\")",
+        "result": null
+      },
+      { "expression": "toNumber(\" 01e01\\n\")", "result": 10},
+      { "expression": "toNumber(\" 011\\n\", 2)", "result": 3},
+      { "expression": "toNumber(\" -011\\n\", 2)", "result": -3},
+      { "expression": "toNumber(\" +011\\n\", 2)", "result": 3},
+      { "expression": "toNumber(\" 011\\n\", 16)", "result": 17},
+      { "expression": "toNumber(\" -011\\n\", 16)", "result": -17},
+      { "expression": "toNumber(\" +011\\n\", 16)", "result": 17},
+      { "expression": "toNumber(\" 011\\n\", 8)", "result": 9},
+      { "expression": "toNumber(\" -011\\n\", 8)", "result": -9},
+      { "expression": "toNumber(\" +011\\n\", 8)", "result": 9},
+      {
         "expression": "'toString'(`1.0`)",
         "error": "SyntaxError"
       },

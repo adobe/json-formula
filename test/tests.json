@@ -146,6 +146,12 @@
       { "expression": "sum([2,\"4\",6,`true`])", "result": 13 },
       { "expression": "(3 + 2) * 10 / 2 - 5", "result": 20 },
       { "expression": "2 * \"$2\" + `null`", "error": "TypeError" },
+      { "expression": "\"0x11\" * 1", "error": "TypeError"},
+      { "expression": "\"0b11\" * 1", "error": "TypeError"},
+      { "expression": "\"0o11\" * 1", "error": "TypeError"},
+      { "expression": "1+\"01e01\"", "result": 11},
+      { "expression": "1*\" +011e+01\\n\"", "result": 110},
+      { "expression": "1*\" -011e-01\\n\"", "result": -1.1},
       { "expression": "1 < 2", "result": true },
       { "expression": "1 > 2", "result": false },
       { "expression": "12 >= 12", "result": true },
@@ -1572,6 +1578,10 @@
       {
         "expression": "merge(register(\"_p1\", &42), register(\"_p2\", &43), {r: _p1() + _p2()})",
         "result": { "r": 85 }
+      },
+      {
+        "expression": "register(\"_identity\", &@) || _identity()",
+        "result": null
       },
       {
         "expression": "register(\"\", &42)",

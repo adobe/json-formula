@@ -13,6 +13,7 @@ governing permissions and limitations under the License.
 import { typeError } from './errors.js';
 
 export default function stringToNumber(n) {
+  if (!/^\s*(-|\+)?(\d*)(\.\d+)?(e(\+|-)?\d+)?\s*$/i.test(n)) throw typeError(`Failed to convert "${n}" to number`);
   const ret = +n;
   if (Number.isNaN(ret)) {
     throw typeError(`Failed to convert "${n}" to number`);

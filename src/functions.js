@@ -2181,9 +2181,9 @@ export default function functions(
         const base = resolvedArgs.length > 1 ? toInteger(resolvedArgs[1]) : 10;
         if (getType(num) === TYPE_STRING && base !== 10) {
           let digitCheck;
-          if (base === 2) digitCheck = /^[01.]+$/;
-          else if (base === 8) digitCheck = /^[0-7.]+$/;
-          else if (base === 16) digitCheck = /^[0-9A-Fa-f.]+$/;
+          if (base === 2) digitCheck = /^\s*(\+|-)?[01.]+\s*$/;
+          else if (base === 8) digitCheck = /^\s*(\+|-)?[0-7.]+\s*$/;
+          else if (base === 16) digitCheck = /^\s*(\+|-)?[0-9A-Fa-f.]+\s*$/;
           else throw evaluationError(`Invalid base: "${base}" for toNumber()`);
 
           if (num === '') return 0;
