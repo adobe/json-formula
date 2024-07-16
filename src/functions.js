@@ -764,9 +764,11 @@ export default function functions(
 
     /**
      * Determine if an object has a property or if an array index is in range.
-     * @param {object|array|null} obj source object or array.
+     * @param {object|array|null} subject source object or array.
+     * When querying for <<_hidden_properties,hidden properties>>, `subject` may be any data type.
      * @param {string|integer} name The name (or index position) of the element to find.
-     * if `obj` is an array, name must be an integer; if `obj` is an object, name must be a string.
+     * if `subject` is an array, `name` must be an integer;
+     * if `subject` is an object, `name` must be a string.
      * @returns {boolean} true if the element exists
      * @function hasProperty
      * @example
@@ -2372,7 +2374,8 @@ export default function functions(
 
     /**
      * Perform an indexed lookup on an object or array
-     * @param {object | array | null} subject on which to perform the lookup
+     * @param {object | array | null} subject on which to perform the lookup.
+     * When querying for <<_hidden_properties,hidden properties>>, `subject` may be any data type.
      * @param {string | integer} index if `subject` is an object, `index` must be a string
      * indicating the key name to search for.
      * If `subject` is an array, then index must be an integer indicating the offset into the array
