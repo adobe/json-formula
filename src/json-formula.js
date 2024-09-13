@@ -11,6 +11,8 @@ governing permissions and limitations under the License.
 */
 import Formula from './interpreter.js';
 
+export { dataTypes } from './dataTypes.js';
+
 /**
  * Class represents an instance of a JsonFormula Expression that can be executed later on with
  * multiple instances of JSON Data. The instance of the class has a search
