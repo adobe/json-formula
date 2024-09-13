@@ -56,32 +56,30 @@ function isArray(t) {
 }
 
 export function getType(inputObj) {
-  if (inputObj === null) return TYPE_NULL;
-  // if inputObj is a class, then convert it to its base type via JSON
-  const obj = JSON.parse(JSON.stringify(inputObj));
-  switch (Object.prototype.toString.call(obj)) {
-    case '[object String]':
-      return TYPE_STRING;
-    case '[object Number]':
-      return TYPE_NUMBER;
-    case '[object Array]':
+  function simpleType(obj) {
+    if (obj === null) return TYPE_NULL;
+    const t = typeof obj;
+    if (t === 'string') return TYPE_STRING;
+    if (t === 'number') return TYPE_NUMBER;
+    if (t === 'boolean') return TYPE_BOOLEAN;
+    if (Array.isArray(obj)) {
       if (obj.length === 0) return TYPE_EMPTY_ARRAY;
       if (obj.every(a => isArray(getType(a)))) return TYPE_ARRAY_ARRAY;
       if (obj.every(a => getType(a) === TYPE_NUMBER)) return TYPE_ARRAY_NUMBER;
       if (obj.every(a => getType(a) === TYPE_STRING)) return TYPE_ARRAY_STRING;
       return TYPE_ARRAY;
-    case '[object Boolean]':
-      return TYPE_BOOLEAN;
-    case '[object Null]':
-      return TYPE_NULL;
-    default: // '[object Object]':
-      // Check if it's an expref.  If it has, it's been
-      // tagged with a jmespathType attr of 'Expref';
-      if (obj.jmespathType === TOK_EXPREF) {
-        return TYPE_EXPREF;
-      }
-      return TYPE_OBJECT;
+    }
+    // Check if it's an expref.  If it has, it's been
+    // tagged with a jmespathType attr of 'Expref';
+    if (obj.jmespathType === TOK_EXPREF) return TYPE_EXPREF;
+    return TYPE_OBJECT;
   }
+  let type = simpleType(inputObj);
+  if (type !== TYPE_OBJECT) return type;
+  // if inputObj is a class, then convert it to its base type via JSON
+  const obj = JSON.parse(JSON.stringify(inputObj));
+  type = simpleType(obj);
+  return type;
 }
 
 export function isArrayType(t) {

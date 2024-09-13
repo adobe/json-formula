@@ -72,6 +72,7 @@ export default class TreeInterpreter {
     this.toString = toString;
     this.debug = debug;
     this.language = language;
+    this.visitFunctions = this.initVisitFunctions();
   }
 
   search(node, value) {
@@ -93,8 +94,8 @@ export default class TreeInterpreter {
     return null;
   }
 
-  visit(n, v = null) {
-    const visitFunctions = {
+  initVisitFunctions() {
+    return {
       Identifier: this.field.bind(this),
       QuotedIdentifier: this.field.bind(this),
 
@@ -399,7 +400,10 @@ export default class TreeInterpreter {
         return refNode;
       },
     };
-    const fn = n && visitFunctions[n.type];
+  }
+
+  visit(n, v = null) {
+    const fn = n && this.visitFunctions[n.type];
     return fn(n, v);
   }
 
