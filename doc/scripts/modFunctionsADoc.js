@@ -14,6 +14,9 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// This script modifies the functions.adoc file after it's been converted
+// from markdown
+
 const docDir = path.dirname(fileURLToPath(import.meta.url));
 const adocFile = path.join(docDir, '..', 'functions.adoc');
 
@@ -21,7 +24,7 @@ const version = process.argv[1] || '1.0';
 
 const functions = fs.readFileSync(adocFile).toString();
 
-const updatedFunctions = functions
+let updatedFunctions = functions
   // The asciidoc has lines that look like:
   // link:#datetime[datetime]
   // transform to:
@@ -39,4 +42,16 @@ const updatedFunctions = functions
   .replace(/^(\[.*cols.*\])$/gm, 'Parameters::\n+\n$1')
   .replace(/``([^']+)''/g, '"$1"');
 
+// Now generate a list of links functions
+// sort of like a mini TOC
+
+const fnlist = updatedFunctions.match(/^== .*$/gm);
+
+if (fnlist !== null) {
+  const links = fnlist.map(f => {
+    const name = f.replace(/^==\s+/, '');
+    return `<<_${name.toLowerCase()}, ${name}>>`;
+  });
+  updatedFunctions = `${links.join(' ')}\n\n${updatedFunctions}`;
+}
 fs.writeFileSync(adocFile, updatedFunctions);

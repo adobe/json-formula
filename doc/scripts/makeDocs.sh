@@ -53,6 +53,7 @@ convertOne() {
 	filename=$(basename -- "$1")
 	extension="${filename##*.}"
 	filename="${filename%.*}"
+	DOCDATE="$(date +%F)"
 	BASE_NAME=$filename
 	echo "BaseName = $BASE_NAME"
 
@@ -74,6 +75,7 @@ convertOne() {
 			-a data-uri \
 			-a revnumber="${VERSION}" \
 			-a USING_DOCKER \
+			-a docdate="${DOCDATE}" \
 			-o "${OUTPUT_NAME}-${VERSION}".html "${BASE_NAME}".adoc
 
 	# Create the PDF version
@@ -89,6 +91,7 @@ convertOne() {
 			-a USING_DOCKER \
 			-a pdf-theme="${BASE_NAME}"-theme.yml \
 			-a pdf-fontsdir="fonts"  \
+			-a docdate="${DOCDATE}" \
 			-o "${OUTPUT_NAME}-${VERSION}".pdf "${BASE_NAME}".adoc
 }
 
