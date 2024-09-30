@@ -141,11 +141,11 @@ test('debug output', () => {
   expect(debug).toEqual([
     'Index: 10 out of range for array size: 6',
     'Failed to find: \'$values\'',
-    'Available fields: 0..5,\'$name\',\'$fields\',\'$value\'',
+    'Available fields: \'$name\',\'$value\'',
     'Failed to find: \'foo\'',
     'Available fields: \'array1\',\'prop\'',
     'Failed to find: \'$readOnly\'',
-    'Available fields: \'$name\',\'$fields\',\'$value\',\'p1\'',
+    'Available fields: \'$name\',\'$fields\',\'p1\'',
     'Failed to find: \'bar\'',
     'Slices apply to arrays only',
     'Bracketed wildcards apply to arrays only',

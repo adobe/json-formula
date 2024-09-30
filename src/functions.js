@@ -209,7 +209,7 @@ export default function functions(
     avg: {
       _func: resolvedArgs => {
         let sum = 0;
-        const inputArray = resolvedArgs[0];
+        const inputArray = valueOf(resolvedArgs[0]);
         if (inputArray.length === 0) throw evaluationError('avg() requires at least one argument');
         inputArray.forEach(a => {
           sum += a;
@@ -871,7 +871,7 @@ export default function functions(
      */
     join: {
       _func: resolvedArgs => {
-        const listJoin = resolvedArgs[0];
+        const listJoin = valueOf(resolvedArgs[0]);
         const joinChar = resolvedArgs[1];
         return listJoin.map(a => toJSON(a)).join(joinChar);
       },
@@ -942,7 +942,7 @@ export default function functions(
         if (isObject(arg)) return Object.keys(arg).length;
         // Array.from splits a string into code points
         // If we didn't do this, then String.length would return the number of UTF-16 code units
-        return isArrayType(arg) ? arg.length : Array.from(toString(arg)).length;
+        return isArrayType(arg) ? valueOf(arg).length : Array.from(toString(arg)).length;
       },
       _signature: [{ types: [TYPE_STRING, TYPE_ARRAY, TYPE_OBJECT] }],
     },
@@ -1005,7 +1005,8 @@ export default function functions(
     map: {
       _func: resolvedArgs => {
         const exprefNode = resolvedArgs[1];
-        return resolvedArgs[0].map(arg => runtime.interpreter.visit(exprefNode, arg));
+        const array = valueOf(resolvedArgs[0]);
+        return array.map(arg => runtime.interpreter.visit(exprefNode, arg));
       },
       _signature: [{ types: [TYPE_ARRAY] }, { types: [TYPE_EXPREF] }],
     },
@@ -1027,7 +1028,7 @@ export default function functions(
     max: {
       _func: args => {
         // flatten the args into a single array
-        const array = args.reduce((prev, cur) => prev.concat(cur), []);
+        const array = args.reduce((prev, cur) => prev.concat(valueOf(cur)), []);
         if (array.length === 0) throw evaluationError('max() requires at least one argument');
         const isNumber = a => getType(a) === TYPE_NUMBER;
         const isString = a => getType(a) === TYPE_STRING;
@@ -1142,7 +1143,7 @@ export default function functions(
     min: {
       _func: args => {
         // flatten the args into a single array
-        const array = args.reduce((prev, cur) => prev.concat(cur), []);
+        const array = args.reduce((prev, cur) => prev.concat(valueOf(cur)), []);
         if (array.length === 0) throw evaluationError('min() requires at least one argument');
 
         const isNumber = a => getType(a) === TYPE_NUMBER;
@@ -1389,7 +1390,7 @@ export default function functions(
     reduce: {
       _func: resolvedArgs => {
         const exprefNode = resolvedArgs[1];
-        return resolvedArgs[0].reduce(
+        return valueOf(resolvedArgs[0]).reduce(
           (accumulated, current, index, array) => runtime.interpreter.visit(exprefNode, {
             accumulated, current, index, array,
           }),
@@ -1535,7 +1536,7 @@ export default function functions(
         if (typeName === TYPE_STRING) {
           return Array.from(originalStr).reverse().join('');
         }
-        const reversedArray = resolvedArgs[0].slice(0);
+        const reversedArray = valueOf(resolvedArgs[0]).slice(0);
         return reversedArray.reverse();
       },
       _signature: [{ types: [TYPE_STRING, TYPE_ARRAY] }],
@@ -1739,7 +1740,7 @@ export default function functions(
      */
     sort: {
       _func: resolvedArgs => {
-        const array = resolvedArgs[0].slice();
+        const array = valueOf(resolvedArgs[0]).slice();
         if (array.length === 0) return [];
         // JavaScript default sort converts numbers to strings
         if (getType(array[0]) === TYPE_STRING) return array.sort();
@@ -2012,7 +2013,7 @@ export default function functions(
     sum: {
       _func: resolvedArgs => {
         let sum = 0;
-        resolvedArgs[0].forEach(arg => {
+        valueOf(resolvedArgs[0]).forEach(arg => {
           sum += arg * 1;
         });
         return sum;

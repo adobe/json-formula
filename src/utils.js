@@ -40,7 +40,7 @@ export function isObject(obj) {
 export function getValueOf(a) {
   if (a === null || a === undefined) return a;
   if (isArray(a)) {
-    return a.map(i => getValueOf(i));
+    return a.valueOf().map(i => getValueOf(i));
   }
   // if we have a child named 'valueOf' then we're an object,
   // and just return the object.

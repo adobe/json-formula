@@ -55,13 +55,16 @@ function objValues(obj) {
 }
 
 function balanceArrayOperands(opLeft, opRight) {
-  if (isArray(opLeft) && isArray(opRight)) {
+  const left = isArray(opLeft) ? opLeft.valueOf() : opLeft;
+  const right = isArray(opRight) ? opRight.valueOf() : opRight;
+  if (isArray(left) && isArray(right)) {
     // balance the size of the arrays by padding with nulls
-    const shorter = opLeft.length < opRight.length ? opLeft : opRight;
-    const diff = Math.abs(opLeft.length - opRight.length);
+    const shorter = left.length < right.length ? left : right;
+    const diff = Math.abs(left.length - right.length);
     shorter.length += diff;
     shorter.fill(null, shorter.length - diff);
   }
+  return [left, right];
 }
 
 export default class TreeInterpreter {
@@ -116,12 +119,13 @@ export default class TreeInterpreter {
       Index: (node, value) => {
         if (isArray(value)) {
           let index = node.value.value;
+          const array = value.valueOf();
           if (index < 0) {
-            index = value.length + index;
+            index = array.length + index;
           }
-          const result = value[index];
+          const result = array[index];
           if (result === undefined) {
-            this.debug.push(`Index: ${index} out of range for array size: ${value.length}`);
+            this.debug.push(`Index: ${index} out of range for array size: ${array.length}`);
             return null;
           }
           return result;
@@ -137,15 +141,16 @@ export default class TreeInterpreter {
           return null;
         }
         const sliceParams = node.children.map(param => (param === null ? null : param.value));
-        const [start, stop, step] = this.computeSliceParams(value.length, sliceParams);
+        const array = value.valueOf();
+        const [start, stop, step] = this.computeSliceParams(array.length, sliceParams);
         const result = [];
         if (step > 0) {
           for (let i = start; i < stop; i += step) {
-            result.push(value[i]);
+            result.push(array[i]);
           }
         } else {
           for (let i = start; i > stop; i += step) {
-            result.push(value[i]);
+            result.push(array[i]);
           }
         }
         return result;
@@ -191,7 +196,7 @@ export default class TreeInterpreter {
           this.debug.push('Filter expressions apply to arrays only');
           return null;
         }
-        const filtered = base.filter(b => {
+        const filtered = base.valueOf().filter(b => {
           const matched = this.visit(node.children[2], b);
           return toBoolean(matched);
         });
@@ -250,10 +255,11 @@ export default class TreeInterpreter {
           this.debug.push('Flatten expressions apply to arrays only. If you want an empty array, use a JSON literal: `[]`');
           return null;
         }
+        const array = original.valueOf();
         const merged = [];
-        original.forEach(current => {
+        array.forEach(current => {
           if (isArray(current)) {
-            merged.push(...current);
+            merged.push(...current.valueOf());
           } else {
             merged.push(current);
           }
@@ -299,23 +305,23 @@ export default class TreeInterpreter {
       AddExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
         const second = this.visit(node.children[1], value);
-        balanceArrayOperands(first, second);
-        return this.applyOperator(first, second, '+');
+        const [left, right] = balanceArrayOperands(first, second);
+        return this.applyOperator(left, right, '+');
       },
 
       ConcatenateExpression: (node, value) => {
         let first = this.visit(node.children[0], value);
         let second = this.visit(node.children[1], value);
-        balanceArrayOperands(first, second);
-        if (isArrayType(first)) {
-          first = matchType([TYPE_ARRAY_STRING], first, 'concatenate', this.toNumber, this.toString);
+        const [left, right] = balanceArrayOperands(first, second);
+        if (isArrayType(left)) {
+          first = matchType([TYPE_ARRAY_STRING], left, 'concatenate', this.toNumber, this.toString);
         } else {
-          first = matchType([TYPE_STRING], first, 'concatenate', this.toNumber, this.toString);
+          first = matchType([TYPE_STRING], left, 'concatenate', this.toNumber, this.toString);
         }
         if (isArrayType(second)) {
-          second = matchType([TYPE_ARRAY_STRING], second, 'concatenate', this.toNumber, this.toString);
+          second = matchType([TYPE_ARRAY_STRING], right, 'concatenate', this.toNumber, this.toString);
         } else {
-          second = matchType([TYPE_STRING], second, 'concatenate', this.toNumber, this.toString);
+          second = matchType([TYPE_STRING], right, 'concatenate', this.toNumber, this.toString);
         }
         return this.applyOperator(first, second, '&');
       },
@@ -325,28 +331,28 @@ export default class TreeInterpreter {
         let second = this.visit(node.children[1], value);
         first = matchType([TYPE_ARRAY], first, 'union', this.toNumber, this.toString);
         second = matchType([TYPE_ARRAY], second, 'union', this.toNumber, this.toString);
-        return first.concat(second);
+        return first.valueOf().concat(second.valueOf());
       },
 
       SubtractExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
         const second = this.visit(node.children[1], value);
-        balanceArrayOperands(first, second);
-        return this.applyOperator(first, second, '-');
+        const [left, right] = balanceArrayOperands(first, second);
+        return this.applyOperator(left, right, '-');
       },
 
       MultiplyExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
         const second = this.visit(node.children[1], value);
-        balanceArrayOperands(first, second);
-        return this.applyOperator(first, second, '*');
+        const [left, right] = balanceArrayOperands(first, second);
+        return this.applyOperator(left, right, '*');
       },
 
       DivideExpression: (node, value) => {
         const first = this.visit(node.children[0], value);
         const second = this.visit(node.children[1], value);
-        balanceArrayOperands(first, second);
-        return this.applyOperator(first, second, '/');
+        const [left, right] = balanceArrayOperands(first, second);
+        return this.applyOperator(left, right, '/');
       },
 
       NotExpression: (node, value) => {

@@ -42,6 +42,21 @@ function createField(name, value, readonly = false, required = true) {
   return f;
 }
 
+function createFieldGroup(name, value) {
+  class FieldGroup extends ArrayClass {
+    valueOf() { return value; }
+
+    toString() { return value.toString(); }
+
+    toJSON() { return value; }
+  }
+  const f = new FieldGroup();
+  Object.defineProperty(f, '$name', { get: () => name });
+  Object.defineProperty(f, '$value', { get: () => value });
+
+  return f;
+}
+
 function createFieldset(fsname, isObj, fields, children) {
   class FieldsetObj extends ObjectClass {
     _add(k, v) {
@@ -55,23 +70,33 @@ function createFieldset(fsname, isObj, fields, children) {
       children.push(v);
     }
   }
-  const fieldset = isObj ? new FieldsetObj() : new FieldsetArray();
+  // const fieldset = isObj ? new FieldsetObj() : new FieldsetArray();
+  let fieldset;
+  if (isObj) {
+    fieldset = new FieldsetObj();
+  } else {
+    fieldset = new FieldsetArray();
+    Object.defineProperty(fieldset, '$value', { get: () => fieldset.valueOf() });
+  }
   Object.defineProperty(fieldset, '$name', { get: () => fsname });
   Object.defineProperty(fieldset, '$fields', { get: () => fields });
-  Object.defineProperty(fieldset, '$value', { get: () => fieldset.valueOf() });
 
   return fieldset;
 }
 
 function createFields(parent, childref, child) {
   const result = [];
-  if (child instanceof Array) {
-    // parent._add(childref, createFieldset(childref, false));
-    parent._add(childref, createFieldset(childref, false, result, []));
-    child.forEach((item, index) => {
-      const fields = createFields(parent[childref], index, item);
-      result.push(...fields);
-    });
+  if (Array.isArray(child)) {
+    if (child.length > 0 && typeof child[0] !== 'object') {
+      parent._add(childref, createFieldGroup(childref, child));
+    } else {
+      // parent._add(childref, createFieldset(childref, false));
+      parent._add(childref, createFieldset(childref, false, result, []));
+      child.forEach((item, index) => {
+        const fields = createFields(parent[childref], index, item);
+        result.push(...fields);
+      });
+    }
   } else if (child !== null && typeof child === 'object') {
     parent._add(childref, createFieldset(childref, true, result, []));
     Object.keys(child).forEach(k => {
