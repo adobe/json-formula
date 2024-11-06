@@ -12,7 +12,7 @@
       { "expression": "[1,2,3] ~ 4", "result": [1, 2, 3, 4] },
       { "expression": "123 < \"124\"", "result": true },
       { "expression": "\"23\" > 111", "result": false },
-      { "expression": "abs(\"-2\")", "result": 2 },
+      { "expression": "avg([\"2\", \"3\", \"4\"])", "result": 3 },
       { "expression": "1 == \"1\"", "result": false },
       { "expression": "\"$123.00\" + 1", "error": "TypeError" },
       {

@@ -101,6 +101,247 @@ export default function functions(
     return JSON.stringify(value, null, offset);
   }
 
+  function balanceArrays(listOfArrays) {
+    const maxLen = Math.max(...listOfArrays.map(a => (Array.isArray(a) ? a.length : 0)));
+    const allArrays = listOfArrays.map(a => {
+      if (Array.isArray(a)) {
+        return a.concat(Array(maxLen - a.length).fill(null));
+      }
+      return Array(maxLen).fill(a);
+    });
+    // convolve allArrays
+    const arrays = [];
+    for (let i = 0; i < maxLen; i += 1) {
+      const row = [];
+      for (let j = 0; j < allArrays.length; j += 1) {
+        row.push(allArrays[j][i]);
+      }
+      arrays.push(row);
+    }
+    return arrays;
+  }
+
+  function evaluate(args, fn) {
+    if (args.some(Array.isArray)) {
+      return balanceArrays(args).map(a => fn(...a));
+    }
+    return fn(...args);
+  }
+
+  function datedifFn(date1Arg, date2Arg, unitArg) {
+    const unit = toString(unitArg).toLowerCase();
+    const date1 = getDateObj(date1Arg);
+    const date2 = getDateObj(date2Arg);
+    if (date2 === date1) return 0;
+    if (date2 < date1) throw functionError('end_date must be >= start_date in datedif()');
+
+    if (unit === 'd') return Math.floor(getDateNum(date2 - date1));
+    const yearDiff = date2.getFullYear() - date1.getFullYear();
+    let monthDiff = date2.getMonth() - date1.getMonth();
+    const dayDiff = date2.getDate() - date1.getDate();
+
+    if (unit === 'y') {
+      let y = yearDiff;
+      if (monthDiff < 0) y -= 1;
+      if (monthDiff === 0 && dayDiff < 0) y -= 1;
+      return y;
+    }
+    if (unit === 'm') {
+      return yearDiff * 12 + monthDiff + (dayDiff < 0 ? -1 : 0);
+    }
+    if (unit === 'ym') {
+      if (dayDiff < 0) monthDiff -= 1;
+      if (monthDiff <= 0 && yearDiff > 0) return 12 + monthDiff;
+      return monthDiff;
+    }
+    if (unit === 'yd') {
+      if (dayDiff < 0) monthDiff -= 1;
+      if (monthDiff < 0) date2.setFullYear(date1.getFullYear() + 1);
+      else date2.setFullYear(date1.getFullYear());
+      return Math.floor(getDateNum(date2 - date1));
+    }
+    throw functionError(`Unrecognized unit parameter "${unit}" for datedif()`);
+  }
+
+  function endsWithFn(searchArg, suffixArg) {
+    const searchStr = valueOf(searchArg);
+    const suffix = valueOf(suffixArg);
+    // make sure the comparison is based on code points
+    const search = Array.from(searchStr).reverse();
+    const ending = Array.from(suffix).reverse();
+    return ending.every((c, i) => c === search[i]);
+  }
+
+  function eomonthFn(dateArg, monthsArg) {
+    const jsDate = getDateObj(dateArg);
+    const months = toInteger(monthsArg);
+    // We can give the constructor a month value > 11 and it will increment the years
+    // Since day is 1-based, giving zero will yield the last day of the previous month
+    const newDate = new Date(jsDate.getFullYear(), jsDate.getMonth() + months + 1, 0);
+    return getDateNum(newDate);
+  }
+
+  function findFn(queryArg, textArg, offsetArg) {
+    const query = Array.from(toString(queryArg));
+    const text = Array.from(toString(textArg));
+    const offset = toInteger(offsetArg);
+    if (offset < 0) throw evaluationError('find() start position must be >= 0');
+    if (query.length === 0) {
+      // allow an empty string to be found at any position -- including the end
+      if (offset > text.length) return null;
+      return offset;
+    }
+    for (let i = offset; i < text.length; i += 1) {
+      if (text.slice(i, i + query.length).every((c, j) => c === query[j])) {
+        return i;
+      }
+    }
+    return null;
+  }
+
+  function properFn(arg) {
+    const capitalize = word => `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`;
+    const original = toString(arg);
+    // split the string by whitespace, punctuation, and numbers
+    const wordParts = original.match(/[\s\d\p{P}]+|[^\s\d\p{P}]+/gu);
+    if (wordParts !== null) return wordParts.map(w => capitalize(w)).join('');
+    return capitalize(original);
+  }
+
+  function reptFn(textArg, countArg) {
+    const text = toString(textArg);
+    const count = toInteger(countArg);
+    if (count < 0) throw evaluationError('rept() count must be greater than or equal to 0');
+    return text.repeat(count);
+  }
+
+  function searchFn(findTextString, withinTextString, startPosInt = 0) {
+    const findText = toString(findTextString);
+    const withinText = toString(withinTextString);
+    const startPos = toInteger(startPosInt);
+    if (startPos < 0) throw functionError('search() startPos must be greater than or equal to 0');
+    if (findText === null || withinText === null || withinText.length === 0) return [];
+
+    // Process as an array of code points
+    // Find escapes and wildcards
+    const globString = Array.from(findText).reduce((acc, cur) => {
+      if (acc.escape) return { escape: false, result: acc.result.concat(cur) };
+      if (cur === '\\') return { escape: true, result: acc.result };
+      if (cur === '?') return { escape: false, result: acc.result.concat('dot') };
+      if (cur === '*') {
+        // consecutive * are treated as a single *
+        if (acc.result.slice(-1).pop() === 'star') return acc;
+        return { escape: false, result: acc.result.concat('star') };
+      }
+      return { escape: false, result: acc.result.concat(cur) };
+    }, { escape: false, result: [] }).result;
+
+    const testMatch = (array, glob, match) => {
+      // we've consumed the entire glob, so we're done
+      if (glob.length === 0) return match;
+      // we've consumed the entire array, but there's still glob left -- no match
+      if (array.length === 0) return null;
+      const testChar = array[0];
+      let [globChar, ...nextGlob] = glob;
+      const isStar = globChar === 'star';
+      if (isStar) {
+        // '*' is at the end of the match -- so we're done matching
+        if (glob.length === 1) return match;
+        // we'll check for a match past the * and if not found, we'll process the *
+        [globChar, ...nextGlob] = glob.slice(1);
+      }
+      if (testChar === globChar || globChar === 'dot') {
+        return testMatch(array.slice(1), nextGlob, match.concat(testChar));
+      }
+      // no match, so consume wildcard *
+      if (isStar) return testMatch(array.slice(1), glob, match.concat(testChar));
+
+      return null;
+    };
+    // process code points
+    const within = Array.from(withinText);
+    for (let i = startPos; i < within.length; i += 1) {
+      const result = testMatch(within.slice(i), globString, []);
+      if (result !== null) return [i, result.join('')];
+    }
+    return [];
+  }
+
+  function splitFn(strArg, separatorArg) {
+    const str = toString(strArg);
+    const separator = toString(separatorArg);
+    // for empty separator, return an array of code points
+    return separator.length === 0 ? Array.from(str) : str.split(separator);
+  }
+
+  function startsWithFn(subjectString, prefixString) {
+    const subject = Array.from(toString(subjectString));
+    const prefix = Array.from(toString(prefixString));
+    if (prefix.length > subject.length) return false;
+    for (let i = 0; i < prefix.length; i += 1) {
+      if (prefix[i] !== subject[i]) return false;
+    }
+    return true;
+  }
+
+  function substituteFn(source, oldString, replacementString, nearest) {
+    const src = Array.from(toString(source));
+    const old = Array.from(toString(oldString));
+    const replacement = Array.from(toString(replacementString));
+
+    if (old.length === 0) return source;
+
+    // no third parameter? replace all instances
+    let replaceAll = true;
+    let whch = 0;
+    if (nearest > -1) {
+      replaceAll = false;
+      whch = nearest + 1;
+    }
+
+    let found = 0;
+    const result = [];
+    // find the instances to replace
+    for (let j = 0; j < src.length;) {
+      const match = old.every((c, i) => src[j + i] === c);
+      if (match) found += 1;
+      if (match && (replaceAll || found === whch)) {
+        result.push(...replacement);
+        j += old.length;
+      } else {
+        result.push(src[j]);
+        j += 1;
+      }
+    }
+    return result.join('');
+  }
+
+  function truncFn(number, d) {
+    const digits = toInteger(d);
+
+    const method = number >= 0 ? Math.floor : Math.ceil;
+    return method(number * 10 ** digits) / 10 ** digits;
+  }
+
+  function weekdayFn(date, type) {
+    const jsDate = getDateObj(date);
+    const day = jsDate.getDay();
+    // day is in range [0-7) with 0 mapping to sunday
+    switch (toInteger(type)) {
+      case 1:
+        // range = [1, 7], sunday = 1
+        return day + 1;
+      case 2:
+        // range = [1, 7] sunday = 7
+        return ((day + 6) % 7) + 1;
+      case 3:
+        // range = [0, 6] sunday = 6
+        return (day + 6) % 7;
+      default:
+        throw functionError(`Unsupported returnType: "${type}" for weekday()`);
+    }
+  }
+
   const functionMap = {
     // name: [function, <signature>]
     // The <signature> can be:
@@ -124,8 +365,8 @@ export default function functions(
      * abs(-1) // returns 1
      */
     abs: {
-      _func: resolvedArgs => Math.abs(resolvedArgs[0]),
-      _signature: [{ types: [TYPE_NUMBER] }],
+      _func: args => evaluate(args, Math.abs),
+      _signature: [{ types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] }],
     },
     /**
      * Compute the inverse cosine (in radians) of a number.
@@ -137,8 +378,8 @@ export default function functions(
      * acos(0) => 1.5707963267948966
      */
     acos: {
-      _func: resolvedArgs => validNumber(Math.acos(resolvedArgs[0]), 'acos'),
-      _signature: [{ types: [TYPE_NUMBER] }],
+      _func: args => evaluate(args, n => validNumber(Math.acos(n), 'acos')),
+      _signature: [{ types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] }],
     },
 
     /**
@@ -161,7 +402,7 @@ export default function functions(
         });
         return result;
       },
-      _signature: [{ types: [dataTypes.TYPE_ANY], variadic: true }],
+      _signature: [{ types: [TYPE_ANY], variadic: true }],
     },
 
     /**
@@ -174,8 +415,8 @@ export default function functions(
      * Math.asin(0) => 0
      */
     asin: {
-      _func: resolvedArgs => validNumber(Math.asin(resolvedArgs[0]), 'asin'),
-      _signature: [{ types: [TYPE_NUMBER] }],
+      _func: args => evaluate(args, n => validNumber(Math.asin(n), 'asin')),
+      _signature: [{ types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] }],
     },
 
     /**
@@ -190,10 +431,10 @@ export default function functions(
      * atan2(20,10) => 1.1071487177940904
      */
     atan2: {
-      _func: resolvedArgs => Math.atan2(resolvedArgs[0], resolvedArgs[1]),
+      _func: args => evaluate(args, Math.atan2),
       _signature: [
-        { types: [TYPE_NUMBER] },
-        { types: [TYPE_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -229,12 +470,11 @@ export default function functions(
      * casefold("AbC") // returns "abc"
      */
     casefold: {
-      _func: (args, _data, interpreter) => {
-        const str = toString(args[0]);
-        return str.toLocaleUpperCase(interpreter.language).toLocaleLowerCase(interpreter.language);
-      },
+      _func: (args, _data, interpreter) => evaluate(args, s => toString(s)
+        .toLocaleUpperCase(interpreter.language)
+        .toLocaleLowerCase(interpreter.language)),
       _signature: [
-        { types: [dataTypes.TYPE_STRING] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
       ],
     },
 
@@ -250,8 +490,8 @@ export default function functions(
 
      */
     ceil: {
-      _func: resolvedArgs => Math.ceil(resolvedArgs[0]),
-      _signature: [{ types: [TYPE_NUMBER] }],
+      _func: args => evaluate(args, Math.ceil),
+      _signature: [{ types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] }],
     },
     /**
      * Retrieve the first code point from a string
@@ -262,12 +502,12 @@ export default function functions(
      * codePoint("ABC") // 65
      */
     codePoint: {
-      _func: args => {
-        const text = toString(args[0]);
+      _func: args => evaluate(args, arg => {
+        const text = toString(arg);
         return text.length === 0 ? null : text.codePointAt(0);
-      },
+      }),
       _signature: [
-        { types: [dataTypes.TYPE_STRING] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
       ],
     },
 
@@ -320,8 +560,8 @@ export default function functions(
      * cos(1.0471975512) => 0.4999999999970535
      */
     cos: {
-      _func: resolvedArgs => Math.cos(resolvedArgs[0]),
-      _signature: [{ types: [TYPE_NUMBER] }],
+      _func: args => evaluate(args, Math.cos),
+      _signature: [{ types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] }],
     },
 
     /**
@@ -353,44 +593,11 @@ export default function functions(
      * // 75 days between June 1 and August 15, ignoring the years of the dates (75)
      */
     datedif: {
-      _func: args => {
-        const unit = toString(args[2]).toLowerCase();
-        const date1 = getDateObj(args[0]);
-        const date2 = getDateObj(args[1]);
-        if (date2 === date1) return 0;
-        if (date2 < date1) throw functionError('end_date must be >= start_date in datedif()');
-
-        if (unit === 'd') return Math.floor(getDateNum(date2 - date1));
-        const yearDiff = date2.getFullYear() - date1.getFullYear();
-        let monthDiff = date2.getMonth() - date1.getMonth();
-        const dayDiff = date2.getDate() - date1.getDate();
-
-        if (unit === 'y') {
-          let y = yearDiff;
-          if (monthDiff < 0) y -= 1;
-          if (monthDiff === 0 && dayDiff < 0) y -= 1;
-          return y;
-        }
-        if (unit === 'm') {
-          return yearDiff * 12 + monthDiff + (dayDiff < 0 ? -1 : 0);
-        }
-        if (unit === 'ym') {
-          if (dayDiff < 0) monthDiff -= 1;
-          if (monthDiff <= 0 && yearDiff > 0) return 12 + monthDiff;
-          return monthDiff;
-        }
-        if (unit === 'yd') {
-          if (dayDiff < 0) monthDiff -= 1;
-          if (monthDiff < 0) date2.setFullYear(date1.getFullYear() + 1);
-          else date2.setFullYear(date1.getFullYear());
-          return Math.floor(getDateNum(date2 - date1));
-        }
-        throw functionError(`Unrecognized unit parameter "${unit}" for datedif()`);
-      },
+      _func: args => evaluate(args, datedifFn),
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_STRING] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
       ],
     },
 
@@ -435,13 +642,13 @@ export default function functions(
         return getDateNum(baseDate);
       },
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_NUMBER], optional: true },
-        { types: [dataTypes.TYPE_NUMBER], optional: true },
-        { types: [dataTypes.TYPE_NUMBER], optional: true },
-        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [TYPE_NUMBER] },
+        { types: [TYPE_NUMBER] },
+        { types: [TYPE_NUMBER] },
+        { types: [TYPE_NUMBER], optional: true },
+        { types: [TYPE_NUMBER], optional: true },
+        { types: [TYPE_NUMBER], optional: true },
+        { types: [TYPE_NUMBER], optional: true },
       ],
     },
 
@@ -456,9 +663,9 @@ export default function functions(
      * day(datetime(2008,5,23)) // returns 23
      */
     day: {
-      _func: args => getDateObj(args[0]).getDate(),
+      _func: args => evaluate(args, a => getDateObj(a).getDate()),
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -491,8 +698,8 @@ export default function functions(
         return arg;
       },
       _signature: [
-        { types: [dataTypes.TYPE_ANY] },
-        { types: [dataTypes.TYPE_ANY, dataTypes.TYPE_EXPREF], optional: true },
+        { types: [TYPE_ANY] },
+        { types: [TYPE_ANY, TYPE_EXPREF], optional: true },
       ],
     },
 
@@ -532,8 +739,8 @@ export default function functions(
         return items;
       },
       _signature: [
-        { types: [dataTypes.TYPE_OBJECT, dataTypes.TYPE_ARRAY, dataTypes.TYPE_NULL] },
-        { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_OBJECT, TYPE_ARRAY, TYPE_NULL] },
+        { types: [TYPE_STRING, TYPE_NUMBER] },
       ],
     },
 
@@ -548,15 +755,11 @@ export default function functions(
      * endsWith("Abcd", "A") // returns false
      */
     endsWith: {
-      _func: resolvedArgs => {
-        const searchStr = valueOf(resolvedArgs[0]);
-        const suffix = valueOf(resolvedArgs[1]);
-        // make sure the comparison is based on code points
-        const search = Array.from(searchStr).reverse();
-        const ending = Array.from(suffix).reverse();
-        return ending.every((c, i) => c === search[i]);
-      },
-      _signature: [{ types: [TYPE_STRING] }, { types: [TYPE_STRING] }],
+      _func: args => evaluate(args, endsWithFn),
+      _signature: [
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
+      ],
     },
 
     /**
@@ -578,8 +781,8 @@ export default function functions(
       _signature: [
         {
           types: [
-            dataTypes.TYPE_ARRAY,
-            dataTypes.TYPE_OBJECT,
+            TYPE_ARRAY,
+            TYPE_OBJECT,
           ],
         },
       ],
@@ -599,17 +802,10 @@ export default function functions(
      * eomonth(datetime(2011, 1, 1), -3) | [month(@), day(@)] // returns [10, 31]
      */
     eomonth: {
-      _func: args => {
-        const jsDate = getDateObj(args[0]);
-        const months = toInteger(args[1]);
-        // We can give the constructor a month value > 11 and it will increment the years
-        // Since day is 1-based, giving zero will yield the last day of the previous month
-        const newDate = new Date(jsDate.getFullYear(), jsDate.getMonth() + months + 1, 0);
-        return getDateNum(newDate);
-      },
+      _func: args => evaluate(args, eomonthFn),
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -622,9 +818,9 @@ export default function functions(
      * exp(10) // returns 22026.465794806718
      */
     exp: {
-      _func: args => Math.exp(args[0]),
+      _func: args => evaluate(args, Math.exp),
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -654,27 +850,15 @@ export default function functions(
      * find("M", "abMcdM", 2) // returns 2
      */
     find: {
-      _func: args => {
-        const query = Array.from(toString(args[0]));
-        const text = Array.from(toString(args[1]));
-        const offset = args.length > 2 ? toInteger(args[2]) : 0;
-        if (offset < 0) throw evaluationError('find() start position must be >= 0');
-        if (query.length === 0) {
-          // allow an empty string to be found at any position -- including the end
-          if (offset > text.length) return null;
-          return offset;
-        }
-        for (let i = offset; i < text.length; i += 1) {
-          if (text.slice(i, i + query.length).every((c, j) => c === query[j])) {
-            return i;
-          }
-        }
-        return null;
+      _func: resolvedArgs => {
+        const args = resolvedArgs.slice();
+        if (args.length < 3) args.push(0);
+        return evaluate(args, findFn);
       },
       _signature: [
-        { types: [dataTypes.TYPE_STRING] },
-        { types: [dataTypes.TYPE_STRING] },
-        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER], optional: true },
       ],
     },
 
@@ -689,8 +873,8 @@ export default function functions(
      * floor(10) // returns 10
      */
     floor: {
-      _func: resolvedArgs => Math.floor(resolvedArgs[0]),
-      _signature: [{ types: [TYPE_NUMBER] }],
+      _func: args => evaluate(args, Math.floor),
+      _signature: [{ types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] }],
     },
 
     /**
@@ -705,15 +889,15 @@ export default function functions(
      */
     fromCodePoint: {
       _func: args => {
-        const code = toInteger(args[0]);
         try {
-          return String.fromCodePoint(code);
+          const points = Array.isArray(args[0]) ? args[0] : [args[0]];
+          return String.fromCodePoint(...points.map(toInteger));
         } catch (e) {
-          throw evaluationError(`Invalid code point: "${code}"`);
+          throw evaluationError(`Invalid code point: "${args[0]}"`);
         }
       },
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -744,7 +928,7 @@ export default function functions(
         return Object.fromEntries(array);
       },
       _signature: [
-        { types: [dataTypes.TYPE_ARRAY_ARRAY] },
+        { types: [TYPE_ARRAY_ARRAY] },
       ],
     },
 
@@ -758,8 +942,8 @@ export default function functions(
      * fround(100.44444444444444444444) => 100.44444274902344
      */
     fround: {
-      _func: resolvedArgs => Math.fround(resolvedArgs[0]),
-      _signature: [{ types: [TYPE_NUMBER] }],
+      _func: args => evaluate(args, Math.fround),
+      _signature: [{ types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] }],
     },
 
     /**
@@ -786,7 +970,7 @@ export default function functions(
         const obj = valueOf(args[0]);
         if (obj === null) return false;
         const isArray = isArrayType(obj);
-        if (!(isArray || getType(obj) === dataTypes.TYPE_OBJECT)) {
+        if (!(isArray || getType(obj) === TYPE_OBJECT)) {
           throw typeError('First parameter to hasProperty() must be either an object or array.');
         }
 
@@ -798,8 +982,8 @@ export default function functions(
         return result !== undefined;
       },
       _signature: [
-        { types: [dataTypes.TYPE_ANY] },
-        { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_ANY] },
+        { types: [TYPE_STRING, TYPE_NUMBER] },
       ],
     },
     /**
@@ -815,9 +999,9 @@ export default function functions(
      * hour(time(12, 0, 0)) // returns 12
      */
     hour: {
-      _func: args => getDateObj(args[0]).getHours(),
+      _func: args => evaluate(args, a => getDateObj(a).getHours()),
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -852,9 +1036,9 @@ export default function functions(
         return interpreter.visit(rightBranchNode, data);
       },
       _signature: [
-        { types: [dataTypes.TYPE_ANY] },
-        { types: [dataTypes.TYPE_ANY] },
-        { types: [dataTypes.TYPE_ANY] }],
+        { types: [TYPE_ANY] },
+        { types: [TYPE_ANY] },
+        { types: [TYPE_ANY] }],
     },
 
     /**
@@ -914,8 +1098,8 @@ export default function functions(
         return text.slice(0, numEntries).join('');
       },
       _signature: [
-        { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_ARRAY] },
-        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [TYPE_STRING, TYPE_ARRAY] },
+        { types: [TYPE_NUMBER], optional: true },
       ],
     },
 
@@ -956,8 +1140,8 @@ export default function functions(
      * log(10) // 2.302585092994046
      */
     log: {
-      _func: resolvedArgs => validNumber(Math.log(resolvedArgs[0]), 'log'),
-      _signature: [{ types: [TYPE_NUMBER] }],
+      _func: args => evaluate(args, a => validNumber(Math.log(a), 'log')),
+      _signature: [{ types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] }],
     },
 
     /**
@@ -969,8 +1153,8 @@ export default function functions(
      * log10(100000) // 5
      */
     log10: {
-      _func: resolvedArgs => validNumber(Math.log10(resolvedArgs[0]), 'log10'),
-      _signature: [{ types: [TYPE_NUMBER] }],
+      _func: args => evaluate(args, a => validNumber(Math.log10(a), 'log10')),
+      _signature: [{ types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] }],
     },
 
     /**
@@ -982,12 +1166,9 @@ export default function functions(
      * lower("E. E. Cummings") // returns e. e. cummings
      */
     lower: {
-      _func: args => {
-        const value = toString(args[0]);
-        return value.toLowerCase();
-      },
+      _func: args => evaluate(args, a => toString(a).toLowerCase()),
       _signature: [
-        { types: [dataTypes.TYPE_STRING] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
       ],
     },
 
@@ -1101,9 +1282,9 @@ export default function functions(
         return text.slice(startPos, startPos + numEntries).join('');
       },
       _signature: [
-        { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_ARRAY] },
-        { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_STRING, TYPE_ARRAY] },
+        { types: [TYPE_NUMBER] },
+        { types: [TYPE_NUMBER] },
       ],
     },
 
@@ -1119,9 +1300,9 @@ export default function functions(
      * millisecond(datetime(2008, 5, 23, 12, 10, 53, 42)) // returns 42
      */
     millisecond: {
-      _func: args => getDateObj(args[0]).getMilliseconds(),
+      _func: args => evaluate(args, a => getDateObj(a).getMilliseconds()),
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -1173,9 +1354,9 @@ export default function functions(
      * minute(time(12, 10, 0)) // returns 10
      */
     minute: {
-      _func: args => getDateObj(args[0]).getMinutes(),
+      _func: args => evaluate(args, a => getDateObj(a).getMinutes()),
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -1192,16 +1373,14 @@ export default function functions(
      * mod(-3, 2) // returns -1
      */
     mod: {
-      _func: args => {
-        const p1 = args[0];
-        const p2 = args[1];
-        const result = p1 % p2;
-        if (Number.isNaN(result)) throw evaluationError(`Bad parameter for mod: '${p1} % ${p2}'`);
+      _func: args => evaluate(args, (a, b) => {
+        const result = a % b;
+        if (Number.isNaN(result)) throw evaluationError(`Bad parameter for mod: '${a} % ${b}'`);
         return result;
-      },
+      }),
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -1218,9 +1397,9 @@ export default function functions(
      */
     month: {
       // javascript months start from 0
-      _func: args => getDateObj(args[0]).getMonth() + 1,
+      _func: args => evaluate(args, a => getDateObj(a).getMonth() + 1),
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -1239,7 +1418,7 @@ export default function functions(
      */
     not: {
       _func: resolveArgs => !toBoolean(valueOf(resolveArgs[0])),
-      _signature: [{ types: [dataTypes.TYPE_ANY] }],
+      _signature: [{ types: [TYPE_ANY] }],
     },
 
     /**
@@ -1302,7 +1481,7 @@ export default function functions(
         });
         return result;
       },
-      _signature: [{ types: [dataTypes.TYPE_ANY], variadic: true }],
+      _signature: [{ types: [TYPE_ANY], variadic: true }],
     },
 
     /**
@@ -1315,10 +1494,10 @@ export default function functions(
      * power(10, 2) // returns 100 (10 raised to power 2)
      */
     power: {
-      _func: args => validNumber(args[0] ** args[1], 'power'),
+      _func: args => evaluate(args, (a, b) => validNumber(a ** b, 'power')),
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -1337,16 +1516,9 @@ export default function functions(
      * proper("76BudGet") // returns "76Budget"
      */
     proper: {
-      _func: args => {
-        const capitalize = word => `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`;
-        const original = toString(args[0]);
-        // split the string by whitespace, punctuation, and numbers
-        const wordParts = original.match(/[\s\d\p{P}]+|[^\s\d\p{P}]+/gu);
-        if (wordParts !== null) return wordParts.map(w => capitalize(w)).join('');
-        return capitalize(original);
-      },
+      _func: args => evaluate(args, properFn),
       _signature: [
-        { types: [dataTypes.TYPE_STRING] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
       ],
     },
 
@@ -1489,10 +1661,10 @@ export default function functions(
         return subject.join('');
       },
       _signature: [
-        { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_ARRAY] },
-        { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_ANY] },
+        { types: [TYPE_STRING, TYPE_ARRAY] },
+        { types: [TYPE_NUMBER] },
+        { types: [TYPE_NUMBER] },
+        { types: [TYPE_ANY] },
       ],
     },
 
@@ -1508,15 +1680,10 @@ export default function functions(
      * rept("x", 5) // returns "xxxxx"
      */
     rept: {
-      _func: args => {
-        const text = toString(args[0]);
-        const count = toInteger(args[1]);
-        if (count < 0) throw evaluationError('rept() count must be greater than or equal to 0');
-        return text.repeat(count);
-      },
+      _func: args => evaluate(args, reptFn),
       _signature: [
-        { types: [dataTypes.TYPE_STRING] },
-        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -1567,8 +1734,8 @@ export default function functions(
         return text.slice(numEntries * -1).join('');
       },
       _signature: [
-        { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_ARRAY] },
-        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [TYPE_STRING, TYPE_ARRAY] },
+        { types: [TYPE_NUMBER], optional: true },
       ],
     },
 
@@ -1592,10 +1759,17 @@ export default function functions(
      * round(-1.5) // -1
      */
     round: {
-      _func: args => round(args[0], args.length > 1 ? toInteger(args[1]) : 0),
+      _func: resolvedArgs => {
+        const args = resolvedArgs.slice();
+        if (args.length < 2)args.push(0);
+        return evaluate(args, (a, n) => {
+          const digits = toInteger(n);
+          return round(a, digits);
+        });
+      },
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER], optional: true },
       ],
     },
 
@@ -1619,61 +1793,15 @@ export default function functions(
      * search("a?c", "acabc") // returns [2, "abc"]
      */
     search: {
-      _func: args => {
-        const findText = toString(args[0]);
-        const withinText = toString(args[1]);
-        const startPos = args.length > 2 ? toInteger(args[2]) : 0;
-        if (startPos < 0) throw functionError('search() startPos must be greater than or equal to 0');
-        if (findText === null || withinText === null || withinText.length === 0) return [];
-
-        // Process as an array of code points
-        // Find escapes and wildcards
-        const globString = Array.from(findText).reduce((acc, cur) => {
-          if (acc.escape) return { escape: false, result: acc.result.concat(cur) };
-          if (cur === '\\') return { escape: true, result: acc.result };
-          if (cur === '?') return { escape: false, result: acc.result.concat('dot') };
-          if (cur === '*') {
-            // consecutive * are treated as a single *
-            if (acc.result.slice(-1).pop() === 'star') return acc;
-            return { escape: false, result: acc.result.concat('star') };
-          }
-          return { escape: false, result: acc.result.concat(cur) };
-        }, { escape: false, result: [] }).result;
-
-        const testMatch = (array, glob, match) => {
-          // we've consumed the entire glob, so we're done
-          if (glob.length === 0) return match;
-          // we've consumed the entire array, but there's still glob left -- no match
-          if (array.length === 0) return null;
-          const testChar = array[0];
-          let [globChar, ...nextGlob] = glob;
-          const isStar = globChar === 'star';
-          if (isStar) {
-            // '*' is at the end of the match -- so we're done matching
-            if (glob.length === 1) return match;
-            // we'll check for a match past the * and if not found, we'll process the *
-            [globChar, ...nextGlob] = glob.slice(1);
-          }
-          if (testChar === globChar || globChar === 'dot') {
-            return testMatch(array.slice(1), nextGlob, match.concat(testChar));
-          }
-          // no match, so consume wildcard *
-          if (isStar) return testMatch(array.slice(1), glob, match.concat(testChar));
-
-          return null;
-        };
-        // process code points
-        const within = Array.from(withinText);
-        for (let i = startPos; i < within.length; i += 1) {
-          const result = testMatch(within.slice(i), globString, []);
-          if (result !== null) return [i, result.join('')];
-        }
-        return [];
+      _func: resolvedArgs => {
+        const args = resolvedArgs.slice();
+        if (args.length < 2) args.push(0);
+        return evaluate(args, searchFn);
       },
       _signature: [
-        { types: [dataTypes.TYPE_STRING] },
-        { types: [dataTypes.TYPE_STRING] },
-        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER], optional: true },
       ],
 
     },
@@ -1691,9 +1819,9 @@ export default function functions(
      * second(time(12, 10, 53)) // returns 53
      */
     second: {
-      _func: args => getDateObj(args[0]).getSeconds(),
+      _func: args => evaluate(args, a => getDateObj(a).getSeconds()),
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -1709,8 +1837,8 @@ export default function functions(
      * sign(0) // 0
      */
     sign: {
-      _func: resolvedArgs => Math.sign(resolvedArgs[0]),
-      _signature: [{ types: [TYPE_NUMBER] }],
+      _func: args => evaluate(args, Math.sign),
+      _signature: [{ types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] }],
     },
 
     /**
@@ -1723,8 +1851,8 @@ export default function functions(
      * sin(1) // 0.8414709848078965
      */
     sin: {
-      _func: resolvedArgs => Math.sin(resolvedArgs[0]),
-      _signature: [{ types: [TYPE_NUMBER] }],
+      _func: args => evaluate(args, Math.sin),
+      _signature: [{ types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] }],
     },
 
     /**
@@ -1834,15 +1962,10 @@ export default function functions(
      * split("abcdef", "e") // returns ["abcd", "f"]
      */
     split: {
-      _func: args => {
-        const str = toString(args[0]);
-        const separator = toString(args[1]);
-        // for empty separator, return an array of code points
-        return separator.length === 0 ? Array.from(str) : str.split(separator);
-      },
+      _func: args => evaluate(args, splitFn),
       _signature: [
-        { types: [dataTypes.TYPE_STRING] },
-        { types: [dataTypes.TYPE_STRING] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
       ],
     },
 
@@ -1855,12 +1978,9 @@ export default function functions(
          * sqrt(4) // returns 2
          */
     sqrt: {
-      _func: args => {
-        const result = Math.sqrt(args[0]);
-        return validNumber(result, 'sqrt');
-      },
+      _func: args => evaluate(args, arg => validNumber(Math.sqrt(arg), 'sqrt')),
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -1874,16 +1994,11 @@ export default function functions(
      * startsWith("jack is at home", "jack") // returns true
      */
     startsWith: {
-      _func: resolvedArgs => {
-        const subject = Array.from(toString(resolvedArgs[0]));
-        const prefix = Array.from(toString(resolvedArgs[1]));
-        if (prefix.length > subject.length) return false;
-        for (let i = 0; i < prefix.length; i += 1) {
-          if (prefix[i] !== subject[i]) return false;
-        }
-        return true;
-      },
-      _signature: [{ types: [TYPE_STRING] }, { types: [TYPE_STRING] }],
+      _func: args => evaluate(args, startsWithFn),
+      _signature: [
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
+      ],
     },
     /**
      * Estimates standard deviation based on a sample.
@@ -1908,7 +2023,7 @@ export default function functions(
         return validNumber(result, 'stdev');
       },
       _signature: [
-        { types: [dataTypes.TYPE_ARRAY_NUMBER] },
+        { types: [TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -1936,7 +2051,7 @@ export default function functions(
         return validNumber(result, 'stdevp');
       },
       _signature: [
-        { types: [dataTypes.TYPE_ARRAY_NUMBER] },
+        { types: [TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -1959,44 +2074,26 @@ export default function functions(
      * substitute("Quarter 1, 2011", "1", "2", 2)" // returns "Quarter 1, 2012"
      */
     substitute: {
-      _func: args => {
-        const src = Array.from(toString(args[0]));
-        const old = Array.from(toString(args[1]));
-        const replacement = Array.from(toString(args[2]));
-
-        if (old.length === 0) return args[0];
-
-        // no third parameter? replace all instances
-        let replaceAll = true;
-        let whch = 0;
+      _func: resolvedArgs => {
+        const args = resolvedArgs.slice();
+        let n;
         if (args.length > 3) {
-          replaceAll = false;
-          whch = toInteger(args[3]);
-          if (whch < 0) throw evaluationError('substitute() which parameter must be greater than or equal to 0');
-          whch += 1;
-        }
-
-        let found = 0;
-        const result = [];
-        // find the instances to replace
-        for (let j = 0; j < src.length;) {
-          const match = old.every((c, i) => src[j + i] === c);
-          if (match) found += 1;
-          if (match && (replaceAll || found === whch)) {
-            result.push(...replacement);
-            j += old.length;
+          if (Array.isArray(args[3])) {
+            n = args[3].map(toInteger);
+            if (n.find(o => o < 0) !== undefined) throw evaluationError('substitute() which parameter must be greater than or equal to 0');
           } else {
-            result.push(src[j]);
-            j += 1;
+            n = toInteger(args[3]);
+            if (n < 0) throw evaluationError('substitute() which parameter must be greater than or equal to 0');
           }
+          args[3] = n;
         }
-        return result.join('');
+        return evaluate(args, substituteFn);
       },
       _signature: [
-        { types: [dataTypes.TYPE_STRING] },
-        { types: [dataTypes.TYPE_STRING] },
-        { types: [dataTypes.TYPE_STRING] },
-        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER], optional: true },
       ],
     },
 
@@ -2029,8 +2126,8 @@ export default function functions(
      * tan(1) // 1.5574077246549023
      */
     tan: {
-      _func: resolvedArgs => Math.tan(resolvedArgs[0]),
-      _signature: [{ types: [TYPE_NUMBER] }],
+      _func: args => evaluate(args, Math.tan),
+      _signature: [{ types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] }],
     },
 
     /**
@@ -2060,9 +2157,9 @@ export default function functions(
         return getDateNum(epochTime);
       },
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_NUMBER], optional: true },
-        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [TYPE_NUMBER] },
+        { types: [TYPE_NUMBER], optional: true },
+        { types: [TYPE_NUMBER], optional: true },
       ],
     },
 
@@ -2216,7 +2313,7 @@ export default function functions(
       },
       _signature: [
         { types: [TYPE_ANY] },
-        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [TYPE_NUMBER], optional: true },
       ],
     },
 
@@ -2250,14 +2347,9 @@ export default function functions(
      * trim("   ab    c   ") // returns "ab c"
      */
     trim: {
-      _func: args => {
-        const text = toString(args[0]);
-        // only removes the space character
-        // other whitespace characters like \t \n left intact
-        return text.split(' ').filter(x => x).join(' ');
-      },
+      _func: args => evaluate(args, s => toString(s).split(' ').filter(x => x).join(' ')),
       _signature: [
-        { types: [dataTypes.TYPE_STRING] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
       ],
     },
 
@@ -2273,27 +2365,26 @@ export default function functions(
     },
 
     /**
-         * Truncates a number to an integer by removing the fractional part of the number.
-         * i.e. it rounds towards zero.
-         * @param {number} numA number to truncate
-         * @param {integer} [numB=0] A number specifying the number of decimal digits to preserve.
-         * @return {number} Truncated value
-         * @function trunc
-         * @example
-         * trunc(8.9) // returns 8
-         * trunc(-8.9) // returns -8
-         * trunc(8.912, 2) // returns 8.91
-         */
+     * Truncates a number to an integer by removing the fractional part of the number.
+     * i.e. it rounds towards zero.
+     * @param {number} numA number to truncate
+     * @param {integer} [numB=0] A number specifying the number of decimal digits to preserve.
+     * @return {number} Truncated value
+     * @function trunc
+     * @example
+     * trunc(8.9) // returns 8
+     * trunc(-8.9) // returns -8
+     * trunc(8.912, 2) // returns 8.91
+     */
     trunc: {
-      _func: args => {
-        const number = args[0];
-        const digits = args.length > 1 ? toInteger(args[1]) : 0;
-        const method = number >= 0 ? Math.floor : Math.ceil;
-        return method(number * 10 ** digits) / 10 ** digits;
+      _func: resolvedArgs => {
+        const args = resolvedArgs.slice();
+        if (args.length < 2) args.push(0);
+        return evaluate(args, truncFn);
       },
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER], optional: true },
       ],
     },
 
@@ -2353,7 +2444,7 @@ export default function functions(
           );
       },
       _signature: [
-        { types: [dataTypes.TYPE_ARRAY] },
+        { types: [TYPE_ARRAY] },
       ],
     },
 
@@ -2366,9 +2457,9 @@ export default function functions(
      * upper("abcd") // returns "ABCD"
      */
     upper: {
-      _func: args => toString(args[0]).toUpperCase(),
+      _func: args => evaluate(args, a => toString(a).toUpperCase()),
       _signature: [
-        { types: [dataTypes.TYPE_STRING] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
       ],
     },
 
@@ -2397,7 +2488,7 @@ export default function functions(
         }
         const obj = valueOf(args[0]);
         if (obj === null) return null;
-        if (!(getType(obj) === dataTypes.TYPE_OBJECT || subjectArray)) {
+        if (!(getType(obj) === TYPE_OBJECT || subjectArray)) {
           throw typeError('First parameter to value() must be one of: object, array, null.');
         }
         if (subjectArray) {
@@ -2418,8 +2509,8 @@ export default function functions(
         return result;
       },
       _signature: [
-        { types: [dataTypes.TYPE_ANY] },
-        { types: [dataTypes.TYPE_STRING, dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_ANY] },
+        { types: [TYPE_STRING, TYPE_NUMBER] },
       ],
     },
 
@@ -2462,29 +2553,14 @@ export default function functions(
      * weekday(datetime(2006,5,21), 3) // 6
      */
     weekday: {
-      _func: args => {
-        const date = args[0];
-        const type = args.length > 1 ? toInteger(args[1]) : 1;
-        const jsDate = getDateObj(date);
-        const day = jsDate.getDay();
-        // day is in range [0-7) with 0 mapping to sunday
-        switch (type) {
-          case 1:
-            // range = [1, 7], sunday = 1
-            return day + 1;
-          case 2:
-            // range = [1, 7] sunday = 7
-            return ((day + 6) % 7) + 1;
-          case 3:
-            // range = [0, 6] sunday = 6
-            return (day + 6) % 7;
-          default:
-            throw functionError(`Unsupported returnType: "${type}" for weekday()`);
-        }
+      _func: resolvedArgs => {
+        const args = resolvedArgs.slice();
+        if (args.length < 2) args.push(1);
+        return evaluate(args, weekdayFn);
       },
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
-        { types: [dataTypes.TYPE_NUMBER], optional: true },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
+        { types: [TYPE_NUMBER], optional: true },
       ],
     },
 
@@ -2500,9 +2576,9 @@ export default function functions(
      * year(datetime(2008,5,23)) // returns 2008
      */
     year: {
-      _func: args => getDateObj(args[0]).getFullYear(),
+      _func: args => evaluate(args, a => getDateObj(a).getFullYear()),
       _signature: [
-        { types: [dataTypes.TYPE_NUMBER] },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
       ],
     },
 

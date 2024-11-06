@@ -91,7 +91,7 @@ In all cases except ordering comparison, if the coercion is not possible, a `Typ
     eval([1,2,3] ~ 4, {}) -> [1,2,3,4]
     eval(123 < "124", {}) -> true
     eval("23" > 111, {}) -> false
-    eval(abs("-2"), {}) -> 2
+    eval(avg(["2", "3", "4"]), {}) -> 3
     eval(1 == "1", {}) -> false
 ----
 
