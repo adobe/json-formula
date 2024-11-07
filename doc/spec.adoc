@@ -433,7 +433,7 @@ The numeric and concatenation operators (`+`, `-`, `{asterisk}`, `/`, `&`) have 
 
 * When both operands are arrays, a new array is returned where the elements are populated by applying the operator on each element of the left operand array with the corresponding element from the right operand array
 * If both operands are arrays and they do not have the same size, the shorter array is padded with null values
-* If one operand is an array and one is a scalar value, a new array is returned where the operator is applied with the scalar against each element in the array
+* If one operand is an array and one is a scalar value, the scalar operand will be converted to an array by repeating the value to the same size array as the other operand
 
 [source%unbreakable]
 ----
@@ -1194,26 +1194,42 @@ output.
     return_type function_name2(type1|type2 $argname)
 ----
 
+=== Function parameters
+
 Functions support the set of standard json-formula <<Data Types, data types>>. If the resolved arguments cannot be coerced to
 match the types specified in the signature, a `TypeError` error occurs.
 
 As a shorthand, the type `any` is used to indicate that the function argument can be
-of any of (`array|object|number|string|boolean|null`).
+any of (`array|object|number|string|boolean|null`).
 
 The expression type, (denoted by `&expression`), is used to specify an
 expression that is not immediately evaluated.  Instead, a reference to that
 expression is provided to the function being called.  The function can then apply the expression reference as needed.  It is semantically similar
 to an https://en.wikipedia.org/wiki/Anonymous_function[anonymous function]. See the <<_sortBy, sortBy()>> function for an example of the expression type.
 
-The result of the `functionExpression` is the result returned by the
-function call.  If a `functionExpression` is evaluated for a function that
-does not exist, a `FunctionError` error is raised.
-
-Functions can either have a specific arity or be variadic with a minimum
+Function parameters can either have a specific arity or be variadic with a minimum
 number of arguments.  If a `functionExpression` is encountered where the
 arity does not match, or the minimum number of arguments for a variadic function
 is not provided, or too many arguments are provided, then a
 `FunctionError` error is raised.
+
+The result of the `functionExpression` is the result returned by the
+function call.  If a `functionExpression` is evaluated for a function that
+does not exist, a `FunctionError` error is raised.
+
+Many functions that process scalar values also allow for the processing of arrays of values.  For example, the `round()` function may be called to process a single value: `round(1.2345, 2)` or to process an array of values: `round([1.2345, 2.3456], 2)`.  The first call will return a single value, the second call will return an array of values.
+When processing arrays of values, and where there is more than one parameter, each parameter is converted to an array so that the function processes each value in the set of arrays.  From our example above, the call to `round([1.2345, 2.3456], 2)` would be processed as if it were `round([1.2345, 2.3456], [2, 2])`, and the result would be the same as: `[round(1.2345, 2), round(2.3456, 2)]`.
+
+The rules for the treatment of parameters with arrays of values:
+
+When any parameter is an array then:
+
+* All parameters will be treated as arrays
+* Any scalar parameters will be converted to an array by repeating the scalar value to the length of the longest array
+* All array parameters will be padded to the length of the longest array by adding null values
+* The function will return an array which is the result of iterating over the elements of the arrays and applying the function logic on the values at the same index.
+
+=== Function evaluation
 
 Functions are evaluated in applicative order:
 - Each argument must be an expression
