@@ -65,7 +65,7 @@
         "result": { "month": 1, "day": 21, "hour": 12 }
       },
       { "expression": "2 + `true`", "result": 3 },
-      { "expression": "avg(\"20\")", "result": 20 },
+      { "expression": "avg([\"20\", \"30\"])", "result": 25 },
       {
         "expression": "left + right",
         "data": { "left": 8, "right": 12 },

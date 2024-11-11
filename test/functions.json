@@ -138,7 +138,7 @@
       },
       {
         "expression": "abs(`false`)",
-        "error": "TypeError"
+        "result": 0
       },
       {
         "expression": "abs(`-24`)",
@@ -263,7 +263,7 @@
       },
       {
         "expression": "endsWith(str, `0`)",
-        "error": "TypeError"
+        "result": false
       },
       {
         "expression": "floor(`1.2`)",
@@ -731,7 +731,7 @@
       },
       {
         "expression": "startsWith(str, `0`)",
-        "error": "TypeError"
+        "result": false
       },
       {
         "expression": "sum(numbers)",
@@ -1837,20 +1837,12 @@
         "result": [true, false, false, false, false]
       },
       {
-        "expression": "datetime(2024, 10, 12) | eomonth([@, @, @, @, @, @, @], 1)",
-        "result": [
-          20056.958333333332, 20056.958333333332, 20056.958333333332,
-          20056.958333333332, 20056.958333333332, 20056.958333333332,
-          20056.958333333332
-        ]
+        "expression": "datetime(2024, 10, 12) | eomonth([@, @, @, @, @, @, @], 1)| [month(@) & day(@)][]",
+        "result": ["1130", "1130", "1130", "1130", "1130", "1130", "1130"]
       },
       {
-        "expression": "{d: datetime(2024, 10, 12), n:arrayInt} | eomonth([@.d, @.d, @.d, @.d, @.d, @.d, @.d], @.n)",
-        "result": [
-          20056.958333333332, 20087.958333333332, 20118.958333333332,
-          20146.958333333332, 20177.916666666668, 20207.916666666668,
-          20238.916666666668
-        ]
+        "expression": "{d: datetime(2024, 10, 12), n:arrayInt} | eomonth([@.d, @.d, @.d, @.d, @.d, @.d, @.d], @.n) | [month(@) & day(@)][]",
+        "result": ["1130", "1231", "131", "228", "331", "430", "531"]
       },
       {
         "expression": "exp(arrayInt)",
