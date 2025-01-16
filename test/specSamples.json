@@ -41,7 +41,7 @@
       {
         "expression": "a ~ `null`",
         "data": { "a": [0, 1, 2] },
-        "result": [0, 1, 2]
+        "result": [0, 1, 2, null]
       },
       {
         "expression": "\"truth is \" & `true`",

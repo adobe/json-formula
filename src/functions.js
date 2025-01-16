@@ -2310,7 +2310,12 @@ export default function functions(
         try {
           return toNumber(num);
         } catch (e) {
-          debug.push(`Failed to convert "${num}" to number`);
+          const errorString = arg => {
+            const v = toJSON(arg);
+            return v.length > 50 ? `${v.substring(0, 20)} ...` : v;
+          };
+
+          debug.push(`Failed to convert "${errorString(num)}" to number`);
           return null;
         }
       },

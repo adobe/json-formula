@@ -170,7 +170,7 @@
       },
       {
         "expression": "avg('abc')",
-        "error": "EvaluationError"
+        "error": "TypeError"
       },
       {
         "expression": "avg(foo)",
@@ -195,7 +195,7 @@
       },
       {
         "expression": "avg(`null`)",
-        "error": "EvaluationError"
+        "error": "TypeError"
       },
       {
         "expression": "ceil(`1.2`)",
@@ -635,7 +635,7 @@
       },
       {
         "expression": "keys(`null`)",
-        "result": []
+        "error": "TypeError"
       },
       {
         "expression": "values(foo)",
@@ -643,7 +643,7 @@
       },
       {
         "expression": "values(null())",
-        "result": []
+        "error": "TypeError"
       },
       {
         "expression": "join(strings, \", \")",
@@ -1287,8 +1287,7 @@
       },
       {
         "expression": "map(badkey, &a)",
-        "result": [],
-        "was": "TypeError"
+        "error": "TypeError"
       },
       {
         "expression": "map(empty, &foo)",
