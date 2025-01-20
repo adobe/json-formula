@@ -359,7 +359,7 @@
       { "expression": "lower(\"\")", "result": "" },
       { "expression": "lower(\"abc\")", "result": "abc" },
       { "expression": "lower(\"aBc\")", "result": "abc" },
-      { "expression": "lower(42)", "error": "TypeError" },
+      { "expression": "lower(42)", "result": "42" },
       {
         "data": "'purchase-order'",
         "expression": "upper(address.missing)",
@@ -373,7 +373,7 @@
       { "expression": "upper(\"\")", "result": "" },
       { "expression": "upper(\"ABC\")", "result": "ABC" },
       { "expression": "upper(\"aBc\")", "result": "ABC" },
-      { "expression": "upper(42)", "error": "TypeError" },
+      { "expression": "upper(42)", "result": "42" },
       {
         "data": "'purchase-order'",
         "expression": "exp(items[0].quantity)",
@@ -385,7 +385,7 @@
         "error": "TypeError"
       },
       { "expression": "exp(0)", "result": 1 },
-      { "expression": "exp(\"0\")", "error": "TypeError" },
+      { "expression": "exp(\"0\")", "result": 1 },
       { "expression": "exp(1)", "result": 2.718281828459045 },
       {
         "data": "'purchase-order'",
@@ -1151,7 +1151,7 @@
       {
         "data": "'purchase-order'",
         "expression": "entries(address.country)",
-        "error": "TypeError"
+        "result": [["0", "USA"]]
       },
       {
         "expression": "fromEntries([[\"a\", 1], [\"b\", 2, 4], [\"a\", 3]])",
@@ -1440,7 +1440,7 @@
         ]
       },
       { "expression": "zip([1,2,3])", "result": [[1], [2], [3]] },
-      { "expression": "zip([])", "result": [] },
+      { "expression": "zip(`[]`)", "result": [] },
       { "expression": "null() == `null`", "result": true },
       { "expression": "null() == notfound", "result": true },
       {

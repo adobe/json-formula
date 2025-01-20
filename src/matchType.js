@@ -92,6 +92,46 @@ export function getTypeName(arg) {
   return typeNameTable[getType(arg)];
 }
 
+function supportedConversion(from, to) {
+  const pairs = {
+    [TYPE_NUMBER]: [
+      TYPE_STRING,
+      TYPE_ARRAY,
+      TYPE_ARRAY_NUMBER,
+      TYPE_BOOLEAN,
+    ],
+    [TYPE_BOOLEAN]: [
+      TYPE_STRING,
+      TYPE_NUMBER,
+      TYPE_ARRAY,
+    ],
+    [TYPE_ARRAY]: [TYPE_BOOLEAN, TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER],
+    [TYPE_ARRAY_NUMBER]: [TYPE_BOOLEAN, TYPE_ARRAY_STRING, TYPE_ARRAY],
+    [TYPE_ARRAY_STRING]: [TYPE_BOOLEAN, TYPE_ARRAY_NUMBER, TYPE_ARRAY],
+    [TYPE_ARRAY_ARRAY]: [TYPE_BOOLEAN],
+    [TYPE_EMPTY_ARRAY]: [TYPE_BOOLEAN],
+
+    [TYPE_OBJECT]: [TYPE_BOOLEAN],
+    [TYPE_NULL]: [
+      TYPE_STRING,
+      TYPE_NUMBER,
+      TYPE_EMPTY_ARRAY,
+      TYPE_ARRAY_STRING,
+      TYPE_ARRAY_NUMBER,
+      TYPE_ARRAY_ARRAY,
+      TYPE_ARRAY,
+      TYPE_OBJECT,
+      TYPE_BOOLEAN,
+    ],
+    [TYPE_STRING]: [
+      TYPE_NUMBER,
+      TYPE_ARRAY_STRING,
+      TYPE_ARRAY,
+      TYPE_BOOLEAN],
+  };
+  return pairs[from].includes(to);
+}
+
 export function matchType(expectedList, argValue, context, toNumber, toString) {
   const actual = getType(argValue);
   if (argValue?.jmespathType === TOK_EXPREF && !expectedList.includes(TYPE_EXPREF)) {
@@ -106,8 +146,13 @@ export function matchType(expectedList, argValue, context, toNumber, toString) {
   if (expectedList.some(type => match(type, actual))) return argValue;
 
   // if the function allows multiple types, we can't coerce the type and we need an exact match
-  const exactMatch = expectedList.length > 1;
-  const expected = expectedList[0];
+  // Of the set of expected types, filter out the ones that can be coerced from the actual type
+  const filteredList = expectedList.filter(t => supportedConversion(actual, t));
+  if (filteredList.length === 0) {
+    throw typeError(`${context} expected argument to be type ${typeNameTable[expectedList[0]]} but received type ${typeNameTable[actual]} instead.`);
+  }
+  const exactMatch = filteredList.length > 1;
+  const expected = filteredList[0];
   let wrongType = false;
 
   // Can't coerce objects and arrays to any other type
