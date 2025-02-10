@@ -12,7 +12,7 @@
       { "expression": "[1,2,3] ~ 4", "result": [1, 2, 3, 4] },
       { "expression": "123 < \"124\"", "result": true },
       { "expression": "\"23\" > 111", "result": false },
-      { "expression": "avg([\"2\", \"3\", \"4\"])", "result": 3 },
+      { "expression": "avg([\"2\", \"3\", \"4\"])", "error": "EvaluationError" },
       { "expression": "1 == \"1\"", "result": false },
       { "expression": "\"$123.00\" + 1", "error": "TypeError" },
       {
@@ -65,7 +65,7 @@
         "result": { "month": 1, "day": 21, "hour": 12 }
       },
       { "expression": "2 + `true`", "result": 3 },
-      { "expression": "avg([\"20\", \"30\"])", "result": 25 },
+      { "expression": "avg([\"20\", \"30\"])", "error": "EvaluationError" },
       {
         "expression": "left + right",
         "data": { "left": 8, "right": 12 },

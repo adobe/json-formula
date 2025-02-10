@@ -172,6 +172,7 @@ export function matchType(expectedList, argValue, context, toNumber, toString) {
   if (isObject(actual) && expected === TYPE_BOOLEAN) {
     return Object.keys(argValue).length === 0;
   }
+
   // no exact match, see if we can coerce an array type
   if (isArray(actual)) {
     const toArray = a => (Array.isArray(a) ? a : [a]);

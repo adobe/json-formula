@@ -781,9 +781,19 @@
         "expression": "sqrt(missing)",
         "result": 0
       },
-      { "expression": "stdev(`[1,\"2\",3]`)", "result": 1 },
+      { "expression": "stdev(`[1,\"2\",2,3]`)", "result": 1 },
+      { "expression": "stdev(`[1,[\"2\",[2,3]]]`)", "result": 1 },
       { "expression": "stdev(`[1]`)", "error": "EvaluationError" },
       { "expression": "stdev(`[]`)", "error": "EvaluationError" },
+      {
+        "data": "'purchase-order'",
+        "expression": "stdev(items[*].quantity)",
+        "result": 0.7071067811865476
+      },
+      { "expression": "stdevA(`[\"1\",2,3]`)", "result": 1 },
+      { "expression": "stdevA(`[1,[[\"2\",3]]]`)", "result": 1 },
+      { "expression": "stdevA(`[1]`)", "error": "EvaluationError" },
+      { "expression": "stdevA(`[]`)", "error": "EvaluationError" },
       {
         "data": "'purchase-order'",
         "expression": "stdev(items[*].quantity)",
@@ -795,6 +805,7 @@
         "error": "TypeError"
       },
       { "expression": "stdevp(`[2,3]`)", "result": 0.5 },
+      { "expression": "stdevp(`[2,[3]]`)", "result": 0.5 },
       { "expression": "stdevp(`[2]`)", "result": 0 },
       { "expression": "stdevp(`[]`)", "error": "EvaluationError" },
       {

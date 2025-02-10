@@ -166,7 +166,7 @@
       },
       {
         "expression": "avg(array)",
-        "error": "TypeError"
+        "result": 2.75
       },
       {
         "expression": "avg('abc')",
@@ -183,7 +183,7 @@
       },
       {
         "expression": "avg(strings)",
-        "error": "TypeError"
+        "error": "EvaluationError"
       },
       {
         "expression": "avg(`[]`)",
@@ -191,11 +191,52 @@
       },
       {
         "expression": "avg(`[2,1,\"b\"]`)",
-        "error": "TypeError"
+        "result": 1.5
       },
       {
         "expression": "avg(`null`)",
         "error": "TypeError"
+      },
+      {
+        "expression": "avgA(numbers)",
+        "result": 2.75
+      },
+      {
+        "expression": "avgA(array)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "avgA('abc')",
+        "error": "TypeError"
+      },
+      {
+        "expression": "avgA(foo)",
+        "result": -1,
+        "was": "TypeError"
+      },
+      {
+        "expression": "avgA(@)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "avgA(strings)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "avgA(`[]`)",
+        "error": "EvaluationError"
+      },
+      {
+        "expression": "avgA(`[2,1,\"b\"]`)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "avgA(`null`)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "avgA([1,[2,[3,[4,5]],6]])",
+        "result": 3.5
       },
       {
         "expression": "ceil(`1.2`)",
@@ -423,15 +464,15 @@
       },
       {
         "expression": "max(strings)",
-        "result": "c"
+        "result": 0
       },
       {
         "expression": "max(abc)",
-        "error": "TypeError"
+        "result": 0
       },
       {
         "expression": "max(array)",
-        "error": "TypeError"
+        "result": 5
       },
       {
         "expression": "max(decimals)",
@@ -439,19 +480,19 @@
       },
       {
         "expression": "max(empty_list)",
-        "error": "EvaluationError"
+        "result": 0
       },
       {
         "expression": "max(strings, [\"A\", \"B\", \"C\"])",
-        "result": "c"
+        "result": 0
       },
       {
         "expression": "max([\"D\", \"E\", \"F\"], [\"A\", \"B\", \"C\"])",
-        "result": "F"
+        "result": 0
       },
       {
         "expression": "max(empty_list, \"a\")",
-        "result": "a"
+        "result": 0
       },
       {
         "expression": "max(empty_list, decimals, 0)",
@@ -467,23 +508,79 @@
       },
       {
         "expression": "max([-4, \"foo\"])",
-        "error": "TypeError"
+        "result": -4
       },
       {
         "expression": "max([null(), null()])",
-        "error": "TypeError"
+        "result": 0
       },
       {
         "expression": "max(2,\"3\")",
-        "error": "TypeError"
+        "result": 2
       },
       {
         "expression": "max([2,[4,5]])",
+        "result": 5
+      },
+      {
+        "expression": "maxA(numbers)",
+        "result": 5
+      },
+      {
+        "expression": "maxA(decimals)",
+        "result": 1.2
+      },
+      {
+        "expression": "maxA(strings)",
         "error": "TypeError"
       },
       {
-        "expression": "min(2,\"3\")",
+        "expression": "maxA(abc)",
+        "result": 0
+      },
+      {
+        "expression": "maxA(array)",
         "error": "TypeError"
+      },
+      {
+        "expression": "maxA(decimals)",
+        "result": 1.2
+      },
+      {
+        "expression": "maxA(empty_list)",
+        "result": 0
+      },
+      {
+        "expression": "maxA(strings, [\"A\", \"B\", \"C\"])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "maxA(empty_list, decimals, 0)",
+        "result": 1.2
+      },
+      {
+        "expression": "maxA([1, toNumber(\"2\")])",
+        "result": 2
+      },
+      {
+        "expression": "maxA([-4, \"foo\"])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "maxA([null(), null()])",
+        "result": 0
+      },
+      {
+        "expression": "maxA(2,\"3\")",
+        "result": 3
+      },
+      {
+        "expression": "maxA([2,[4,5]])",
+        "result": 5
+      },
+      {
+        "expression": "min(2,\"3\")",
+        "result": 2
       },
       {
         "expression": "merge(`{}`)",
@@ -523,19 +620,19 @@
       },
       {
         "expression": "min(abc)",
-        "error": "TypeError"
+        "result": 0
       },
       {
         "expression": "min(array)",
-        "error": "TypeError"
+        "result": -1
       },
       {
         "expression": "min(empty_list)",
-        "error": "EvaluationError"
+        "result": 0
       },
       {
         "expression": "min([4, \"foo\"])",
-        "error": "TypeError"
+        "result": 4
       },
       {
         "expression": "min(decimals)",
@@ -543,19 +640,19 @@
       },
       {
         "expression": "min(strings)",
-        "result": "a"
+        "result": 0
       },
       {
         "expression": "min(strings, [\"A\", \"B\", \"C\"])",
-        "result": "A"
+        "result": 0
       },
       {
         "expression": "min([\"D\", \"E\", \"F\"], [\"A\", \"B\", \"C\"])",
-        "result": "A"
+        "result": 0
       },
       {
         "expression": "min(empty_list, \"a\")",
-        "result": "a"
+        "result": 0
       },
       {
         "expression": "min(empty_list, decimals, 0)",
@@ -567,11 +664,63 @@
       },
       {
         "expression": "min(`null`, 23, \"21\")",
-        "error": "TypeError"
+        "result": 23
       },
       {
         "expression": "min([null(), null()])",
+        "result": 0
+      },
+      {
+        "expression": "minA(numbers)",
+        "result": -1
+      },
+      {
+        "expression": "minA(decimals)",
+        "result": -1.5
+      },
+      {
+        "expression": "minA(abc)",
+        "result": 0
+      },
+      {
+        "expression": "minA(array)",
         "error": "TypeError"
+      },
+      {
+        "expression": "minA(empty_list)",
+        "result": 0
+      },
+      {
+        "expression": "minA([4, \"foo\"])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "minA(decimals)",
+        "result": -1.5
+      },
+      {
+        "expression": "minA(strings)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "minA(strings, [\"A\", \"B\", \"C\"])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "minA(empty_list, decimals, 0)",
+        "result": -1.5
+      },
+      {
+        "expression": "minA(empty_list, decimals, 0, [-2, 0])",
+        "result": -2
+      },
+      {
+        "expression": "minA(`null`, 23, \"21\")",
+        "result": 21
+      },
+      {
+        "expression": "minA([null(), null()])",
+        "result": 0
       },
       {
         "expression": "type(\"abc\")",
@@ -612,6 +761,14 @@
       {
         "expression": "sort(keys(objects))",
         "result": ["bar", "foo"]
+      },
+      {
+        "expression": "sort([1,2,[3,4]])",
+        "error": "EvaluationError"
+      },
+      {
+        "expression": "sort([1,2,{a:[3,4]}])",
+        "error": "EvaluationError"
       },
       {
         "expression": "keys(foo)",
@@ -1025,7 +1182,7 @@
       },
       {
         "expression": "sort(array)",
-        "error": "TypeError"
+        "result": [-1, 3, 4, 5, "100", "a"]
       },
       {
         "expression": "sort(abc)",
@@ -1441,6 +1598,10 @@
         "error": "TypeError"
       },
       {
+        "expression": "avgA(&[1,1])",
+        "error": "TypeError"
+      },
+      {
         "expression": "casefold(&\"abc\")",
         "error": "TypeError"
       },
@@ -1557,6 +1718,10 @@
         "error": "TypeError"
       },
       {
+        "expression": "maxA(&[1,2,3])",
+        "error": "TypeError"
+      },
+      {
         "expression": "merge(&{a: 1}, {b: 2})",
         "error": "TypeError"
       },
@@ -1570,6 +1735,10 @@
       },
       {
         "expression": "min(&[1,2,3])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "minA(&[1,2,3])",
         "error": "TypeError"
       },
       {
@@ -1674,6 +1843,14 @@
       },
       {
         "expression": "stdevp(&[1,1])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "stdevA(&[1,1])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "stdevpA(&[1,1])",
         "error": "TypeError"
       },
       {

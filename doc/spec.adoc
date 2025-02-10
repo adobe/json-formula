@@ -76,6 +76,7 @@ If the supplied data is not correct for the execution context, json-formula will
 * The left-hand operand of ordering comparison operators (`>`, `>=`, `<`, `\<=`) must be a string or number.  Any other type shall be coerced to a number.
 * If the operands of an ordering comparison are different, they shall both be coerced to a number
 * Parameters to functions shall be coerced when there is a single viable coercion available.  For example, if a null value is provided to a function that accepts a number or string, then coercion shall not happen, since a null value can be coerced to both types.  Conversely if a string is provided to a function that accepts a number or array of numbers, then the string shall be coerced to a number, since there is no supported coercion to convert it to an array of numbers.
+* When functions accept a typed array, any provided array will have each of its members coerced to the expected type. e.g., if the input array is `[2,3,"6"]` and an array of numbers is expected, the array will be coerced to `[2,3,6]`.
 
 The equality and inequality operators (`=`, `==`, `!=`, `<>`) do **not** perform type coercion.  If operands are different types, the values are considered not equal.
 

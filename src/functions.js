@@ -123,7 +123,7 @@ export default function functions(
 
   function evaluate(args, fn) {
     if (args.some(Array.isArray)) {
-      return balanceArrays(args).map(a => fn(...a));
+      return balanceArrays(args).map(a => evaluate(a, fn));
     }
     return fn(...args);
   }
@@ -440,6 +440,8 @@ export default function functions(
 
     /**
      * Finds the average of the elements in an array.
+     * Non-numeric values (text, boolean, null etc) are ignored.
+     * If there are nested arrays, they are flattened.
      * If the array is empty, an evaluation error is thrown
      * @param {number[]} elements array of numeric values
      * @return {number} average value
@@ -450,14 +452,49 @@ export default function functions(
     avg: {
       _func: resolvedArgs => {
         let sum = 0;
-        const inputArray = resolvedArgs[0];
-        if (inputArray.length === 0) throw evaluationError('avg() requires at least one argument');
-        inputArray.forEach(a => {
+        const filtered = resolvedArgs
+          .flat(Infinity)
+          .filter(a => getType(a) === TYPE_NUMBER);
+
+        if (filtered.length === 0) throw evaluationError('avg() requires at least one argument');
+        filtered.forEach(a => {
           sum += a;
         });
-        return sum / inputArray.length;
+        return sum / filtered.length;
       },
-      _signature: [{ types: [TYPE_ARRAY_NUMBER] }],
+      _signature: [{ types: [TYPE_ARRAY] }],
+    },
+
+    /**
+     * Finds the average of the elements in an array, converting strings and booleans to number.
+     * If any conversions to number fail, an type error is thrown.
+     * If there are nested arrays, they are flattened.
+     * If the array is empty, an evaluation error is thrown
+     * @param {number[]} elements array of numeric values
+     * @return {number} average value
+     * @function avgA
+     * @example
+     * avgA([1, 2, "3", null()]) // returns 2
+     */
+    avgA: {
+      _func: resolvedArgs => {
+        let sum = 0;
+        let filtered;
+        try {
+          filtered = resolvedArgs
+            .flat(Infinity)
+            .filter(a => getType(a) !== TYPE_NULL)
+            .map(toNumber);
+        } catch (_e) {
+          throw typeError('avgA() received non-numeric parameters');
+        }
+        if (filtered.length === 0) throw evaluationError('avg() requires at least one argument');
+        filtered.forEach(a => {
+          sum += a;
+        });
+        return sum / filtered.length;
+      },
+      _signature: [{ types: [TYPE_ARRAY] }],
     },
 
     /**
@@ -758,8 +795,8 @@ export default function functions(
     endsWith: {
       _func: args => evaluate(args, endsWithFn),
       _signature: [
-        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
-        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
+        { types: [TYPE_STRING, TYPE_ARRAY] },
+        { types: [TYPE_STRING, TYPE_ARRAY] },
       ],
     },
 
@@ -1193,35 +1230,69 @@ export default function functions(
     },
 
     /**
-     * Calculates the largest value in the provided `collection` arguments.
-     * If all collections are empty, an evaluation error is thrown.
-     * `max()` can work on numbers or strings, but not a combination of numbers and strings.
-     * If all values are null, the result is 0.
-     * @param {...(number[]|string[]|number|string)} collection values/array(s) in which the maximum
+     * Calculates the largest value in the input numbers.
+     * Any values that are not numbers (e.g. null, boolean, strings, objects) will be ignored.
+     * If any parameters are arrays, the arrays will be flattened.
+     * If no numbers are provided, the function will return zero.
+     * @param {...(number[]|number)} collection values/array(s) in which the maximum
      * element is to be calculated
-     * @return {number|string} the largest value found
+     * @return {number} the largest value found
      * @function max
      * @example
      * max([1, 2, 3], [4, 5, 6]) // returns 6
-     * max(["a", "a1", "b"]) // returns "b"
-     * max(8, 10, 12) // returns 12
+     * max([\"a\", \"a1\", \"b\"], null(), true())) // returns 0
+     * max(8, 10, 12, "14") // returns 12
      */
     max: {
       _func: args => {
         // flatten the args into a single array
-        const array = args.reduce((prev, cur) => prev.concat(cur), []);
-        if (array.length === 0) throw evaluationError('max() requires at least one argument');
-        const isNumber = a => getType(a) === TYPE_NUMBER;
-        const isString = a => getType(a) === TYPE_STRING;
-        if (!(array.every(isNumber) || array.every(isString))) {
-          throw typeError('max() requires all arguments to be of the same type');
-        }
-        return array
-          .sort((a, b) => (a > b ? 1 : -1))
-          .pop();
+        const array = args
+          .flat(Infinity)
+          .filter(a => typeof valueOf(a) === 'number');
+
+        if (array.length === 0) return 0;
+
+        return Math.max(...array);
       },
       _signature: [{
-        types: [TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING, TYPE_NUMBER, TYPE_STRING],
+        types: [TYPE_ARRAY, TYPE_ANY],
+        variadic: true,
+      }],
+    },
+
+    /**
+     * Calculates the largest value in the input values, coercing parameters to numbers.
+     * Null values are ignored.
+     * If any parameters cannot be converted to a number,
+     * the function will fail with an type error.
+     * If any parameters are arrays, the arrays will be flattened.
+     * If no numbers are provided, the function will return zero.
+     * @param {...(any)} collection values/array(s) in which the maximum
+     * element is to be calculated
+     * @return {number} the largest value found
+     * @function maxA
+     * @example
+     * maxA([1, 2, 3], [4, 5, 6]) // returns 6
+     * maxA(["a", "a1", "b", null()]) // error
+     * maxA(8, 10, 12, "14") // returns 14
+     */
+    maxA: {
+      _func: args => {
+        // flatten the args into a single array
+        const array = args
+          .flat(Infinity)
+          .filter(a => valueOf(a) !== null)
+          .map(toNumber);
+
+        if (array.find(a => a === null)) {
+          throw evaluationError('maxA() received non-numeric parameters');
+        }
+        if (array.length === 0) return 0;
+
+        return Math.max(...array);
+      },
+      _signature: [{
+        types: [TYPE_ARRAY, TYPE_ANY],
         variadic: true,
       }],
     },
@@ -1308,36 +1379,66 @@ export default function functions(
     },
 
     /**
-     * Calculates the smallest value in the input arguments.
-     * If all collections/values are empty, an evaluation error is thrown.
-     * `min()` can work on numbers or strings, but not a combination of numbers and strings.
-     * If all values are null, zero is returned.
-     * @param {...(number[]|string[]|number|string)} collection
+     * Calculates the smallest value in the input numbers.
+     * Any values that are not numbers (e.g. null, boolean, strings, objects) will be ignored.
+     * If any parameters are arrays, the arrays will be flattened.
+     * If no numbers are provided, the function will return zero.
+     * @param {...(number[]|number)} collection
      * Values/arrays to search for the minimum value
-     * @return {number|string} the smallest value found
+     * @return {number} the smallest value found
      * @function min
      * @example
      * min([1, 2, 3], [4, 5, 6]) // returns 1
-     * min(["a", "a1", "b"]) // returns "a"
-      * min(8, 10, 12) // returns 8
+     * min("4", 8, 10, 12, null()) // returns 8
      */
     min: {
       _func: args => {
         // flatten the args into a single array
-        const array = args.reduce((prev, cur) => prev.concat(cur), []);
-        if (array.length === 0) throw evaluationError('min() requires at least one argument');
+        const array = args
+          .flat(Infinity)
+          .filter(a => typeof valueOf(a) === 'number');
+        if (array.length === 0) return 0;
 
-        const isNumber = a => getType(a) === TYPE_NUMBER;
-        const isString = a => getType(a) === TYPE_STRING;
-        if (!(array.every(isNumber) || array.every(isString))) {
-          throw typeError('max() requires all arguments to be of the same type');
-        }
-        return array
-          .sort((a, b) => (a < b ? 1 : -1))
-          .pop();
+        return Math.min(...array);
       },
       _signature: [{
-        types: [TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING, TYPE_NUMBER, TYPE_STRING],
+        types: [TYPE_ARRAY, TYPE_ANY],
+        variadic: true,
+      }],
+    },
+
+    /**
+     * Calculates the smallest value in the input values, coercing parameters to numbers.
+     * Null values are ignored.
+     * If any parameters cannot be converted to a number,
+     * the function will fail with an type error.
+     * If any parameters are arrays, the arrays will be flattened.
+     * If no numbers are provided, the function will return zero.
+     * @param {...(any)} collection values/array(s) in which the maximum
+     * element is to be calculated
+     * @return {number} the largest value found
+     * @function minA
+     * @example
+     * minA([1, 2, 3], [4, 5, 6]) // returns 1
+     * minA("4", 8, 10, 12, null()) // returns 4
+     */
+    minA: {
+      _func: args => {
+        // flatten the args into a single array
+        const array = args
+          .flat(Infinity)
+          .filter(a => valueOf(a) !== null)
+          .map(toNumber);
+
+        if (array.find(a => a === null)) {
+          throw evaluationError('minA() received non-numeric parameters');
+        }
+        if (array.length === 0) return 0;
+
+        return Math.min(...array);
+      },
+      _signature: [{
+        types: [TYPE_ARRAY, TYPE_ANY],
         variadic: true,
       }],
     },
@@ -1858,29 +1959,58 @@ export default function functions(
     },
 
     /**
-     * This function accepts an array of strings or numbers and returns an
+     * This function accepts an array values and returns an
      * array with the elements in sorted order.
+     * If there are mixed data types, the values will be grouped in order:
+     * numbers, strings, booleans, nulls
      * String sorting is based on code points and is not locale-sensitive.
-     * @param {number[]|string[]} list to be sorted
-     * @return {number[]|string[]} The ordered result
+     * If the sort encounters any objects or arrays, it will throw an evaluation error.
+     * @param {any[]} list to be sorted
+     * @return {any[]} The ordered result
      * @function sort
      * @example
      * sort([1, 2, 4, 3, 1]) // returns [1, 1, 2, 3, 4]
+     * sort(["20", 20, true(), "100", null(), 100]) // returns [20, 100, "100", "20", true, null]
      */
     sort: {
       _func: resolvedArgs => {
-        const array = resolvedArgs[0].slice();
-        if (array.length === 0) return [];
-        // JavaScript default sort converts numbers to strings
-        if (getType(array[0]) === TYPE_STRING) return array.sort();
+        /*
+        numbers sort first
+        strings sort second
+        Booleans sort third
+        nulls sort last
+        */
+        const typeVals = resolvedArgs[0].map(value => {
+          const type = getType(value);
+          if (![TYPE_NUMBER, TYPE_STRING, TYPE_BOOLEAN, TYPE_NULL].includes(type)) {
+            throw evaluationError('Bad datatype for sort');
+          }
+          return { type, value };
+        });
 
-        return array.sort((a, b) => {
+        const sortFunction = (a, b) => {
           if (a < b) return -1;
           if (a > b) return 1;
           return 0;
-        });
+        };
+
+        const sorted = typeVals
+          .filter(v => v.type === TYPE_NUMBER)
+          .map(v => v.value)
+          .sort(sortFunction);
+
+        sorted.push(
+          ...typeVals
+            .filter(v => v.type === TYPE_STRING)
+            .map(v => v.value)
+            .sort(),
+        );
+
+        sorted.push(...typeVals.filter(v => v.type === TYPE_BOOLEAN).map(v => v.value));
+        sorted.push(...typeVals.filter(v => v.type === TYPE_NULL).map(v => v.value));
+        return sorted;
       },
-      _signature: [{ types: [TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] }],
+      _signature: [{ types: [TYPE_ARRAY] }],
     },
 
     /**
@@ -2007,6 +2137,8 @@ export default function functions(
      * `stdev` assumes that its arguments are a sample of the entire population.
      * If your data represents a entire population,
      * then compute the standard deviation using [stdevp]{@link stdevp}.
+     * Non-numeric values (text, boolean, null etc) are ignored.
+     * If there are nested arrays, they are flattened.
      * @param {number[]} numbers The array of numbers comprising the population.
      * Array size must be greater than 1.
      * @returns {number} [Standard deviation](https://en.wikipedia.org/wiki/Standard_deviation)
@@ -2017,7 +2149,9 @@ export default function functions(
      */
     stdev: {
       _func: args => {
-        const values = args[0];
+        const values = args.flat(Infinity)
+          .filter(a => getType(a) === TYPE_NUMBER);
+
         if (values.length <= 1) throw evaluationError('stdev() must have at least two values');
         const mean = values.reduce((a, b) => a + b, 0) / values.length;
         const sumSquare = values.reduce((a, b) => a + b * b, 0);
@@ -2025,7 +2159,45 @@ export default function functions(
         return validNumber(result, 'stdev');
       },
       _signature: [
-        { types: [TYPE_ARRAY_NUMBER] },
+        { types: [TYPE_ARRAY] },
+      ],
+    },
+
+    /**
+     * Estimates standard deviation based on a sample.
+     * `stdev` assumes that its arguments are a sample of the entire population.
+     * If your data represents a entire population,
+     * then compute the standard deviation using [stdevpA]{@link stdevpA}.
+     * Nested arrays are flattened.
+     * Null values are ignored. All other parameters are converted to number.
+     * If conversion to number fails, a type error is thrown.
+     * @param {number[]} numbers The array of numbers comprising the population.
+     * Array size must be greater than 1.
+     * @returns {number} [Standard deviation](https://en.wikipedia.org/wiki/Standard_deviation)
+     * @function stdevA
+     * @example
+     * stdevA([1345, "1301", 1368]) // returns 34.044089061098404
+     * stdevpA([1345, 1301, "1368"]) // returns 27.797
+     */
+    stdevA: {
+      _func: args => {
+        let values;
+        try {
+          values = args.flat(Infinity)
+            .filter(a => getType(a) !== TYPE_NULL)
+            .map(toNumber);
+        } catch (_e) {
+          throw evaluationError('stdevA() received non-numeric parameters');
+        }
+
+        if (values.length <= 1) throw evaluationError('stdevA() must have at least two values');
+        const mean = values.reduce((a, b) => a + b, 0) / values.length;
+        const sumSquare = values.reduce((a, b) => a + b * b, 0);
+        const result = Math.sqrt((sumSquare - values.length * mean * mean) / (values.length - 1));
+        return validNumber(result, 'stdevA');
+      },
+      _signature: [
+        { types: [TYPE_ARRAY] },
       ],
     },
 
@@ -2044,7 +2216,10 @@ export default function functions(
      */
     stdevp: {
       _func: args => {
-        const values = args[0];
+        const values = args[0]
+          .flat(Infinity)
+          .filter(a => getType(a) === TYPE_NUMBER);
+
         if (values.length === 0) throw evaluationError('stdevp() must have at least one value');
 
         const mean = values.reduce((a, b) => a + b, 0) / values.length;
@@ -2053,7 +2228,42 @@ export default function functions(
         return validNumber(result, 'stdevp');
       },
       _signature: [
-        { types: [TYPE_ARRAY_NUMBER] },
+        { types: [TYPE_ARRAY] },
+      ],
+    },
+
+    /**
+     * Calculates standard deviation based on the entire population given as arguments.
+     * `stdevpA` assumes that its arguments are the entire population.
+     * If your data represents a sample of the population,
+     * then compute the standard deviation using [stdevA]{@link stdevA}.
+     * Nested arrays are flattened.
+     * Null values are ignored. All other parameters are converted to number.
+     * If conversion to number fails, a type error is thrown.
+     * @param {number[]} numbers The array of numbers comprising the population.
+     * An empty array is not allowed.
+     * @returns {number} Calculated standard deviation
+     * @function stdevp
+     * @example
+     * stdevpA([1345, "1301", 1368]) // returns 27.797
+     * stdevA([1345, 1301, "1368"]) // returns 34.044
+     */
+    stdevpA: {
+      _func: args => {
+        const values = args[0]
+          .flat(Infinity)
+          .filter(a => getType(a) !== TYPE_NULL)
+          .map(toNumber);
+
+        if (values.length === 0) throw evaluationError('stdevp() must have at least one value');
+
+        const mean = values.reduce((a, b) => a + b, 0) / values.length;
+        const meanSumSquare = values.reduce((a, b) => a + b * b, 0) / values.length;
+        const result = Math.sqrt(meanSumSquare - mean * mean);
+        return validNumber(result, 'stdevp');
+      },
+      _signature: [
+        { types: [TYPE_ARRAY] },
       ],
     },
 
