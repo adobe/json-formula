@@ -130,16 +130,8 @@
         "result": 1
       },
       {
-        "expression": "abs(foo)",
-        "result": 1
-      },
-      {
         "expression": "abs(str)",
         "error": "TypeError"
-      },
-      {
-        "expression": "abs(array[1])",
-        "result": 3
       },
       {
         "expression": "abs(array[1])",
@@ -152,10 +144,6 @@
       {
         "expression": "abs(`false`)",
         "result": 0
-      },
-      {
-        "expression": "abs(`-24`)",
-        "result": 24
       },
       {
         "expression": "abs(`-24`)",
@@ -560,10 +548,6 @@
         "error": "TypeError"
       },
       {
-        "expression": "maxA(decimals)",
-        "result": 1.2
-      },
-      {
         "expression": "maxA(empty_list)",
         "result": 0
       },
@@ -650,10 +634,6 @@
       {
         "expression": "min([4, \"foo\"])",
         "result": 4
-      },
-      {
-        "expression": "min(decimals)",
-        "result": -1.5
       },
       {
         "expression": "min(strings)",
@@ -1978,10 +1958,6 @@
         ]
       },
       {
-        "expression": "asin([1, [0, 0.19866933079506123]])",
-        "result": [1.5707963267948966, [0, 0.2]]
-      },
-      {
         "expression": "atan2(arrayNum, 10)",
         "result": [
           -0.32172055409664824, -0.21845717120535865, -0.10955952677394436, 0,
@@ -2006,10 +1982,6 @@
       {
         "expression": "codePoint([\"A\", [\"B\", \"C\"]])",
         "result": [65, [66, 67]]
-      },
-      {
-        "expression": "cos([1, [2, 3]])",
-        "result": [0.5403023058681398, [-0.4161468365471424, -0.9899924966004454]]
       },
       {
         "expression": "now() | datedif([@, [@, @]], [@ + 1, [@ + 2, @ + 3]], \"d\")",
@@ -2184,48 +2156,26 @@
          "result": 3
        },
        {
-         "expression": "acos([0, [0, 0]])",
-         "result": [1.5707963267948966, [1.5707963267948966, 1.5707963267948966]]
-       },
-       {
          "expression": "asin([1, [0, 0.19866933079506123]])",
          "result": [1.5707963267948966, [0, 0.2]]
         },
         {
-
-         "expression": "atan2(1, [1, [2, 3]])",
-         "result": [0.7853981633974483, [0.4636476090008061, 0.3217505543966422]]
-        },
-        {
-
          "expression": "casefold(arrayStr)",
          "result": ["abc", "bcd", "cde", "def", "efg"]
-        },
-        {
-         "expression": "ceil([1.1, [2.2, 3.3]])",
-         "result": [2, [3, 4]]
         },
         {
           "expression": "ceil(arrayNum)",
          "result": [-3, -2, -1, 0, 2, 3, 4]
         },
         {
-
-         "expression": "codePoint([\"A\", [\"B\", \"C\"]])",
-         "result": [65, [66, 67]]
-        },
-        {
-
          "expression": "codePoint(arrayStr)",
          "result": [97, 98, 99, 100, 101]
         },
         {
-
          "expression": "cos([1, [2, 3]])",
          "result": [0.5403023058681398, [-0.4161468365471424, -0.9899924966004454]]
         },
         {
-
          "expression": "cos(arrayNum)",
          "result": [
            -0.9817374728267503, -0.6045522710579296, 0.4535961214255773, 1,
@@ -2233,22 +2183,18 @@
          ]
         },
         {
-
          "expression": "now() | datedif([@, [@, @]], [@ + 1, [@ + 2, @ + 3]], \"d\")",
          "result": [1, [2, 3]]
         },
         {
-
          "expression": "now() | datedif(@, @ + 1, [\"y\",\"m\",\"d\",\"ym\",\"yd\"])",
          "result": [0, 0, 1, 0, 1]
         },
         {
-
          "expression": "datetime(2024, 3, 8) | day([[@, @], [@, @]])",
          "result": [[8, 8], [8, 8]]
         },
         {
-
          "expression": "now() | datedif([@, @], [@ + 1, @ + 2], \"d\")",
          "result": [1, 2]
         },
