@@ -349,7 +349,7 @@
       {
         "data": "'purchase-order'",
         "expression": "lower(address.missing)",
-        "error": "TypeError"
+        "result": ""
       },
       {
         "data": "'purchase-order'",
@@ -359,11 +359,11 @@
       { "expression": "lower(\"\")", "result": "" },
       { "expression": "lower(\"abc\")", "result": "abc" },
       { "expression": "lower(\"aBc\")", "result": "abc" },
-      { "expression": "lower(42)", "error": "TypeError" },
+      { "expression": "lower(42)", "result": "42" },
       {
         "data": "'purchase-order'",
         "expression": "upper(address.missing)",
-        "error": "TypeError"
+        "result": ""
       },
       {
         "data": "'purchase-order'",
@@ -373,7 +373,7 @@
       { "expression": "upper(\"\")", "result": "" },
       { "expression": "upper(\"ABC\")", "result": "ABC" },
       { "expression": "upper(\"aBc\")", "result": "ABC" },
-      { "expression": "upper(42)", "error": "TypeError" },
+      { "expression": "upper(42)", "result": "42" },
       {
         "data": "'purchase-order'",
         "expression": "exp(items[0].quantity)",
@@ -382,10 +382,10 @@
       {
         "data": "'purchase-order'",
         "expression": "exp(missing)",
-        "error": "TypeError"
+        "result": 1
       },
       { "expression": "exp(0)", "result": 1 },
-      { "expression": "exp(\"0\")", "error": "TypeError" },
+      { "expression": "exp(\"0\")", "result": 1 },
       { "expression": "exp(1)", "result": 2.718281828459045 },
       {
         "data": "'purchase-order'",
@@ -395,7 +395,7 @@
       {
         "data": "'purchase-order'",
         "expression": "power(missing, 1)",
-        "error": "TypeError"
+        "result": 0
       },
       { "expression": "power(1, 1)", "result": 1 },
       { "expression": "power(2, 3)", "result": 8 },
@@ -450,17 +450,17 @@
       {
         "data": "'purchase-order'",
         "expression": "find(\"Oak\", missing)",
-        "error": "TypeError"
+        "result": null
       },
       {
         "data": "'purchase-order'",
         "expression": "find(missing, address.street)",
-        "error": "TypeError"
+        "result": 0
       },
       {
         "data": "'purchase-order'",
         "expression": "find(missing, missing)",
-        "error": "TypeError"
+        "result": 0
       },
       { "expression": "left(\"abc\")", "result": "a" },
       { "expression": "left(\"abc\", 1)", "result": "a" },
@@ -476,7 +476,7 @@
       {
         "data": "'purchase-order'",
         "expression": "left(missing)",
-        "error": "TypeError"
+        "result": ""
       },
       { "expression": "right(\"abc\")", "result": "c" },
       { "expression": "right(\"abc\", 1)", "result": "c" },
@@ -495,7 +495,7 @@
       {
         "data": "'purchase-order'",
         "expression": "right(missing)",
-        "error": "TypeError"
+        "result": ""
       },
       { "expression": "mid(\"abc\", 0, 0)", "result": "" },
       { "expression": "mid(\"abc\", 1, 1)", "result": "b" },
@@ -523,7 +523,7 @@
       {
         "data": "'purchase-order'",
         "expression": "mid(missing, 0, 1)",
-        "error": "TypeError"
+        "result": ""
       },
       {
         "expression": "left(split(\"abc\", \"\"))",
@@ -625,7 +625,7 @@
       {
         "data": "'purchase-order'",
         "expression": "proper(missing)",
-        "error": "TypeError"
+        "result": ""
       },
       { "expression": "rept(\"\", 10)", "result": "" },
       { "expression": "rept(\"a\", 2)", "result": "aa" },
@@ -643,12 +643,12 @@
       {
         "data": "'purchase-order'",
         "expression": "rept(address.country,missing)",
-        "error": "TypeError"
+        "result": ""
       },
       {
         "data": "'purchase-order'",
         "expression": "rept(missing,3)",
-        "error": "TypeError"
+        "result": ""
       },
       {
         "expression": "replace(\"abcdefg\", 2, 2, \"yz\")",
@@ -683,7 +683,7 @@
       {
         "data": "'purchase-order'",
         "expression": "replace(missing,0, 1, address.country)",
-        "error": "TypeError"
+        "result": "USA"
       },
       {
         "expression": "replace([\"blue\",\"black\",\"white\",\"red\"], 1, 0, \"green\")",
@@ -753,12 +753,12 @@
       {
         "data": "'purchase-order'",
         "expression": "round(items[0].price, missing)",
-        "error": "TypeError"
+        "result": 3
       },
       {
         "data": "'purchase-order'",
         "expression": "round(missing, 1)",
-        "error": "TypeError"
+        "result": 0
       },
       { "expression": "round(1.5)", "result": 2 },
       { "expression": "round(-1.5)", "result": -1 },
@@ -779,11 +779,21 @@
       {
         "data": "'purchase-order'",
         "expression": "sqrt(missing)",
-        "error": "TypeError"
+        "result": 0
       },
-      { "expression": "stdev(`[1,\"2\",3]`)", "result": 1 },
+      { "expression": "stdev(`[1,\"2\",2,3]`)", "result": 1 },
+      { "expression": "stdev(`[1,[\"2\",[2,3]]]`)", "result": 1 },
       { "expression": "stdev(`[1]`)", "error": "EvaluationError" },
       { "expression": "stdev(`[]`)", "error": "EvaluationError" },
+      {
+        "data": "'purchase-order'",
+        "expression": "stdev(items[*].quantity)",
+        "result": 0.7071067811865476
+      },
+      { "expression": "stdevA(`[\"1\",2,3]`)", "result": 1 },
+      { "expression": "stdevA(`[1,[[\"2\",3]]]`)", "result": 1 },
+      { "expression": "stdevA(`[1]`)", "error": "EvaluationError" },
+      { "expression": "stdevA(`[]`)", "error": "EvaluationError" },
       {
         "data": "'purchase-order'",
         "expression": "stdev(items[*].quantity)",
@@ -792,9 +802,10 @@
       {
         "data": "'purchase-order'",
         "expression": "stdev(missing)",
-        "error": "EvaluationError"
+        "error": "TypeError"
       },
       { "expression": "stdevp(`[2,3]`)", "result": 0.5 },
+      { "expression": "stdevp(`[2,[3]]`)", "result": 0.5 },
       { "expression": "stdevp(`[2]`)", "result": 0 },
       { "expression": "stdevp(`[]`)", "error": "EvaluationError" },
       {
@@ -805,7 +816,7 @@
       {
         "data": "'purchase-order'",
         "expression": "stdevp(missing)",
-        "error": "EvaluationError"
+        "error": "TypeError"
       },
       {
         "expression": "trim(\"  abc  def ghi   \")",
@@ -823,7 +834,7 @@
       {
         "data": "'purchase-order'",
         "expression": "trim(missing)",
-        "error": "TypeError"
+        "result": ""
       },
       { "expression": "trunc(123.456)", "result": 123 },
       { "expression": "trunc(123.456, 1)", "result": 123.4 },
@@ -853,12 +864,12 @@
       {
         "data": "'purchase-order'",
         "expression": "trunc(items[0].price, missing)",
-        "error": "TypeError"
+        "result": 3
       },
       {
         "data": "'purchase-order'",
         "expression": "trunc(missing, 1)",
-        "error": "TypeError"
+        "result": 0
       },
       {
         "expression": "fromCodePoint(13055)",
@@ -876,7 +887,7 @@
       {
         "data": "'purchase-order'",
         "expression": "fromCodePoint(missing)",
-        "error": "TypeError"
+        "result": "\u0000"
       },
       { "expression": "codePoint(\"\\t\")", "result": 9 },
       { "expression": "codePoint(\"㋿\")", "result": 13055 },
@@ -888,7 +899,7 @@
       {
         "data": "'purchase-order'",
         "expression": "codePoint(missing)",
-        "error": "TypeError"
+        "result": null
       },
       {
         "data": "'purchase-order'",
@@ -1097,7 +1108,7 @@
       {
         "data": "casefold",
         "expression": "casefold(notfound)",
-        "error": "TypeError"
+        "result": ""
       },
       {
         "data": "casefold.test1",
@@ -1151,7 +1162,7 @@
       {
         "data": "'purchase-order'",
         "expression": "entries(address.country)",
-        "error": "TypeError"
+        "result": [["0", "USA"]]
       },
       {
         "expression": "fromEntries([[\"a\", 1], [\"b\", 2, 4], [\"a\", 3]])",
@@ -1163,7 +1174,7 @@
       },
       {
         "expression": "fromEntries(`null`)",
-        "result": {}
+        "error": "TypeError"
       },
       {
         "expression": "fromEntries(`[]`)",
@@ -1216,12 +1227,12 @@
       {
         "data": "'purchase-order'",
         "expression": "split(address.country, `null`)",
-        "error": "TypeError"
+        "result": ["U","S","A"]
       },
       {
         "data": "'purchase-order'",
         "expression": "split(no, where)",
-        "error": "TypeError"
+        "result": []
       },
       {
         "data": "'purchase-order'",
@@ -1440,7 +1451,7 @@
         ]
       },
       { "expression": "zip([1,2,3])", "result": [[1], [2], [3]] },
-      { "expression": "zip([])", "result": [] },
+      { "expression": "zip(`[]`)", "result": [] },
       { "expression": "null() == `null`", "result": true },
       { "expression": "null() == notfound", "result": true },
       {
@@ -1558,7 +1569,7 @@
         "expression": "search(\".\\\\\\\\^$(+{]\", \"pada.\\\\^$(+{]b\")",
         "result": [4, ".\\^$(+{]"]
       },
-      { "expression": "search(\"\", null)", "error": "TypeError" },
+      { "expression": "search(\"\", null)", "result": [] },
       { "expression": "search(\"a**a\", \"pada\")", "result": [1, "ada"]},
       { "expression": "search(\"a*?a\", \"pada\")", "result": [1, "ada"]},
       {
@@ -1571,15 +1582,15 @@
         "error": "FunctionError"
       },
       {
-        "expression": "_product([3, 4]) + _product([4, 5])",
-        "result": 32
-      },
-      {
         "expression": "merge(register(\"_p1\", &42), register(\"_p2\", &43), {r: _p1() + _p2()})",
         "result": { "r": 85 }
       },
       {
         "expression": "register(\"_identity\", &@) || _identity()",
+        "result": null
+      },
+      {
+        "expression": "registerWithParams(\"Identity\", &if (length(@) = 0, null(), @)) || Identity()",
         "result": null
       },
       {

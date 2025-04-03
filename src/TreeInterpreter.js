@@ -73,6 +73,9 @@ export default class TreeInterpreter {
     this.debug = debug;
     this.language = language;
     this.visitFunctions = this.initVisitFunctions();
+    // track the identifier name that started the chain
+    // so that we can use it in debug hints
+    this.debugChainStart = null;
   }
 
   search(node, value) {
@@ -85,12 +88,12 @@ export default class TreeInterpreter {
     if (value !== null && (isObject(value) || isArray(value))) {
       const field = getProperty(value, node.name);
       if (field === undefined) {
-        debugAvailable(this.debug, value, node.name);
+        debugAvailable(this.debug, value, node.name, this.debugChainStart);
         return null;
       }
       return field;
     }
-    debugAvailable(this.debug, value, node.name);
+    debugAvailable(this.debug, value, node.name, this.debugChainStart);
     return null;
   }
 
@@ -98,9 +101,9 @@ export default class TreeInterpreter {
     return {
       Identifier: this.field.bind(this),
       QuotedIdentifier: this.field.bind(this),
-
       ChainedExpression: (node, value) => {
         let result = this.visit(node.children[0], value);
+        this.debugChainStart = node.children[0].name;
         for (let i = 1; i < node.children.length; i += 1) {
           result = this.visit(node.children[1], result);
           if (result === null) return null;
@@ -322,7 +325,9 @@ export default class TreeInterpreter {
 
       UnionExpression: (node, value) => {
         let first = this.visit(node.children[0], value);
+        if (first === null) first = [null];
         let second = this.visit(node.children[1], value);
+        if (second === null) second = [null];
         first = matchType([TYPE_ARRAY], first, 'union', this.toNumber, this.toString);
         second = matchType([TYPE_ARRAY], second, 'union', this.toNumber, this.toString);
         return first.concat(second);

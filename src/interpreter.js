@@ -116,7 +116,7 @@ class Runtime {
     const argsNeeded = signature.filter(arg => !arg.optional).length;
     const lastArg = signature[signature.length - 1];
     if (lastArg.variadic) {
-      if (args.length < signature.length) {
+      if (args.length < signature.length && !lastArg.optional) {
         pluralized = signature.length === 1 ? ' argument' : ' arguments';
         throw functionError(`${argName}() takes at least ${signature.length}${pluralized
         } but received ${args.length}`);

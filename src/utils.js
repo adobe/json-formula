@@ -108,13 +108,15 @@ export function getProperty(obj, key) {
   return undefined;
 }
 
-export function debugAvailable(debug, obj, key) {
+export function debugAvailable(debug, obj, key, chainStart = null) {
   try {
-    debug.push(`Failed to find: '${key}'`);
     let available = [];
     if (isArray(obj) && obj.length > 0) {
-      available.push(`${0}..${obj.length - 1}`);
+      debug.push(`Failed to find: '${key}' on an array object.`);
+      debug.push(`Did you mean to use a projection? e.g. ${chainStart || 'array'}[*].${key}`);
+      return;
     }
+    debug.push(`Failed to find: '${key}'`);
     if (obj !== null) {
       available = [...available, ...Object.entries(Object.getOwnPropertyDescriptors(obj, key))
         .filter(([k, desc]) => (desc?.enumerable || !!desc?.get) && !/^[0-9]+$/.test(k) && (!k.startsWith('$') || key.startsWith('$')))

@@ -64,6 +64,8 @@ json-formula functions:
 
 * expression: A string prefixed with an ampersand (`&`) character
 
+This specification uses the term "scalar" to refer to any value that is not an array, object or expression. Scalars include numbers, strings, booleans, and null values.
+
 === Type Coercion
 
 If the supplied data is not correct for the execution context, json-formula will attempt to coerce the data to the correct type. Coercion will occur in these contexts:
@@ -73,7 +75,8 @@ If the supplied data is not correct for the execution context, json-formula will
 * Operands of the union operator (`~`) shall be coerced to an array
 * The left-hand operand of ordering comparison operators (`>`, `>=`, `<`, `\<=`) must be a string or number.  Any other type shall be coerced to a number.
 * If the operands of an ordering comparison are different, they shall both be coerced to a number
-* Parameters to functions shall be coerced to the expected type as long as the expected type is a single choice. If the function signature allows multiple types for a parameter e.g. either string or array, then coercion will not occur.
+* Parameters to functions shall be coerced when there is a single viable coercion available.  For example, if a null value is provided to a function that accepts a number or string, then coercion shall not happen, since a null value can be coerced to both types.  Conversely if a string is provided to a function that accepts a number or array of numbers, then the string shall be coerced to a number, since there is no supported coercion to convert it to an array of numbers.
+* When functions accept a typed array, the function rules determine whether coercion may occur.  Some functions (e.g. `avg()`) ignore array members of the wrong type.  Other functions (e.g. `abs()`) coerce array members.  If coercion may occur, then any provided array will have each of its members coerced to the expected type. e.g., if the input array is `[2,3,"6"]` and an array of numbers is expected, the array will be coerced to `[2,3,6]`.
 
 The equality and inequality operators (`=`, `==`, `!=`, `<>`) do **not** perform type coercion.  If operands are different types, the values are considered not equal.
 
@@ -114,18 +117,22 @@ In all cases except ordering comparison, if the coercion is not possible, a `Typ
 | string | array | create a single-element array with the string
 | boolean | array | create a single-element array with the boolean
 | object | array | Not supported
-| null | array | Empty array
+| null | array | Not supported
 | number | object | Not supported
 | string | object | Not supported
 | boolean | object | Not supported
 | array | object | Not supported. Use: `fromEntries(entries(array))`
-| null | object | Empty object
+| null | object | Not supported
 | number | boolean | zero is false, all other numbers are true
 | string | boolean | Empty string is false, populated strings are true
 | array | boolean | Empty array is false, populated arrays are true
 | object | boolean | Empty object is false, populated objects are true
 | null | boolean | false
 |===
+
+An array may be coerced to another type of array as long as there is a supported coercion for the array content. For examples, just as a string can be coerced to a number, an array of strings may be coerced to an array of numbers.
+
+Note that while strings, numbers and booleans may be coerced to arrays, they may not be coerced to a different type within that array. For example, a number cannot be coerced to an array of strings -- even though a number can be coerced to a string, and a string can be coerced to an array of strings.
 
 [discrete]
 ==== Examples
@@ -135,7 +142,7 @@ In all cases except ordering comparison, if the coercion is not possible, a `Typ
     eval("\"$123.00\" + 1", {}) -> TypeError
     eval("truth is " & `true`, {}) -> "truth is true"
     eval(2 + `true`, {}) -> 3
-    eval(avg("20"), {}) -> 20
+    eval(avg(["20", "30"]), {}) -> 25
 ----
 
 === Date and Time Values
@@ -433,7 +440,7 @@ The numeric and concatenation operators (`+`, `-`, `{asterisk}`, `/`, `&`) have 
 
 * When both operands are arrays, a new array is returned where the elements are populated by applying the operator on each element of the left operand array with the corresponding element from the right operand array
 * If both operands are arrays and they do not have the same size, the shorter array is padded with null values
-* If one operand is an array and one is a scalar value, a new array is returned where the operator is applied with the scalar against each element in the array
+* If one operand is an array and one is a scalar value, the scalar operand will be converted to an array by repeating the value to the same size array as the other operand
 
 [source%unbreakable]
 ----
@@ -452,7 +459,7 @@ The union operator (`~`) returns an array formed by concatenating the contents o
   eval(a ~ b, {"a": [[0,1,2]], "b": [[3,4,5]]}) -> [[0,1,2],[3,4,5]]
   eval(a[] ~ b[], {"a": [[0,1,2]], "b": [[3,4,5]]}) -> [0,1,2,3,4,5]
   eval(a ~ 10, {"a": [0,1,2]}) -> [0,1,2,10]
-  eval(a ~ `null`, {"a": [0,1,2]}) -> [0,1,2]
+  eval(a ~ `null`, {"a": [0,1,2]}) -> [0,1,2,null]
 ----
 
 === Boolean Operators
@@ -735,8 +742,9 @@ operator follows these processing steps:
 * The result array is returned as a <<Projections,projection>>
 
 Once the flattening operation has been performed, subsequent operations
-are projected onto the flattened array.  The difference between a bracketed wildcard (`[{asterisk}]`) and flatten (`[]`) is that
-flatten will first merge sub-arrays.
+are projected onto the flattened array.
+
+A bracketed wildcard (`[{asterisk}]`) and flatten (`[]`) behave similarly in that they produce a projection from an array. The only difference is that a bracketed wildcard preserves the original array structure while flatten collapses one level of array structure.
 
 [discrete]
 ==== Examples
@@ -1194,26 +1202,54 @@ output.
     return_type function_name2(type1|type2 $argname)
 ----
 
+=== Function parameters
+
 Functions support the set of standard json-formula <<Data Types, data types>>. If the resolved arguments cannot be coerced to
 match the types specified in the signature, a `TypeError` error occurs.
 
 As a shorthand, the type `any` is used to indicate that the function argument can be
-of any of (`array|object|number|string|boolean|null`).
+any of (`array|object|number|string|boolean|null`).
 
 The expression type, (denoted by `&expression`), is used to specify an
 expression that is not immediately evaluated.  Instead, a reference to that
-expression is provided to the function being called.  The function can then apply the expression reference as needed.  It is semantically similar
+expression is provided to the function.  The function can then apply the expression reference as needed.  It is semantically similar
 to an https://en.wikipedia.org/wiki/Anonymous_function[anonymous function]. See the <<_sortBy, sortBy()>> function for an example of the expression type.
+
+Function parameters can either have a specific arity or be variadic with a minimum
+number of arguments.  If a `functionExpression` is encountered where the
+arity does not match, or the minimum number of arguments for a variadic function
+is not provided, or too many arguments are provided, then a
+`FunctionError` error is raised.
 
 The result of the `functionExpression` is the result returned by the
 function call.  If a `functionExpression` is evaluated for a function that
 does not exist, a `FunctionError` error is raised.
 
-Functions can either have a specific arity or be variadic with a minimum
-number of arguments.  If a `functionExpression` is encountered where the
-arity does not match, or the minimum number of arguments for a variadic function
-is not provided, or too many arguments are provided, then a
-`FunctionError` error is raised.
+==== Array Parameters
+Many functions that process scalar values also allow for the processing of arrays of values.  For example, the `round()` function may be called to process a single value: `round(1.2345, 2)` or to process an array of values: `round([1.2345, 2.3456], 2)`.  The first call will return a single value, the second call will return an array of values.
+When processing arrays of values, and where there is more than one parameter, each parameter is converted to an array so that the function processes each value in the set of arrays.  From our example above, the call to `round([1.2345, 2.3456], 2)` would be processed as if it were `round([1.2345, 2.3456], [2, 2])`, and the result would be the same as: `[round(1.2345, 2), round(2.3456, 2)]`.
+
+Functions that accept array parameters will also accept nested arrays.  With nested arrays, aggregating functions (min(), max(), avg(), sum() etc.) will flatten the arrays. e.g.
+
+`avg([2.1, 3.1, [4.1, 5.1]])` will be processed as `avg([2.1, 3.1, 4.1, 5.1])` and return `3.6`.
+
+Non-aggregating functions will return the same array hierarchy. e.g.
+
+`upper("a", ["b"]]) => ["A", ["B"]]`
+`round([2.12, 3.12, [4.12, 5.12]], 1)` will be processed as `round([2.12, 3.12, [4.12, 5.12]], [1, 1, [1, 1]])` and return `[2.1, 3.1, [4.1, 5.1]] `
+
+These array balancing rules apply when any parameter is an array:
+
+* All parameters will be treated as arrays
+* Any scalar parameters will be converted to an array by repeating the scalar value to the length of the longest array
+* All array parameters will be padded to the length of the longest array by adding null values
+* The function will return an array which is the result of iterating over the elements of the arrays and applying the function logic on the values at the same index.
+
+With nested arrays:
+* Nested arrays will be flattened for aggregating functions
+* Non-aggregating functions will preserve the array hierarchy and will apply the balancing rules to each element of the nested arrays
+
+=== Function evaluation
 
 Functions are evaluated in applicative order:
 - Each argument must be an expression

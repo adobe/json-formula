@@ -148,12 +148,36 @@
         "result": 7
       },
       {
-        "expression": "max([\"a\", \"a1\", \"b\"])",
-        "result": "b"
+        "expression": "max([\"a\", \"a1\", \"b\"], null(), true())",
+        "result": 0
       },
       {
         "expression": "max(8, 10, 12)",
         "result": 12
+      },
+      {
+        "expression": "maxA([1, 2, 3], [4, 5, 6])",
+        "result": 6
+      },
+      {
+        "expression": "maxA([\"a\", \"a1\", \"b\", null()])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "maxA(8, 10, 12, \"14\")",
+        "result": 14
+      },
+      {
+        "expression": "minA([1, 2, 3], [4, 5, 6])",
+        "result": 1
+      },
+      {
+        "expression": "minA(\"4\", 8, 10, 12, null())",
+        "result": 4
+      },
+      {
+        "expression": "avgA([1, 2, \"3\", null()])",
+        "result": 2
       },
       {
         "expression": "merge({a: 1, b: 2}, {c : 3, d: 4})",
@@ -173,12 +197,12 @@
         }
       },
       {
-        "expression": "min([1, 2, 3], [4, 5, 6], 7)",
+        "expression": "min([1, 2, 3], [4, 5, 6], 7, false())",
         "result": 1
       },
       {
         "expression": "min([\"a\", \"a1\", \"b\"])",
-        "result": "a"
+        "result": 0
       },
       {
         "expression": "min(8, 10, 12)",
@@ -206,12 +230,36 @@
         "result": 42
       },
       {
+        "data": "registerWithParams(\"Product\", &@[0] * @[1])",
+        "expression": "registerWithParams(\"Product\", &@[0] * @[1]) | Product(2, 21)",
+        "result": 42
+      },
+      {
+        "data": "register(\"_ltrim\", &split(@,\"\").reduce(@, &accumulated & current | if(@ = \" \", \"\", @), \"\")) | _ltrim(\"  abc  \")",
+        "expression": "register(\"_ltrim\", &split(@,\"\").reduce(@, &accumulated & current | if(@ = \" \", \"\", @), \"\")) | _ltrim(\"  abc  \")",
+        "result": "abc  "
+      },
+      {
+        "data": "registerWithParams(\"Product\", &@[0] * @[1])",
+        "expression": "registerWithParams(\"Product\", &@[0] * @[1]) | Product(2, 21)",
+        "result": 42
+      },
+      {
+        "data": "registerWithParams(\"Ltrim\", &split(@[0],\"\").reduce(@, &accumulated & current | if(@ = \" \", \"\", @), \"\")) | Ltrim(\"  abc  \")",
+        "expression": "registerWithParams(\"Ltrim\", &split(@[0],\"\").reduce(@, &accumulated & current | if(@ = \" \", \"\", @), \"\")) | Ltrim(\"  abc  \")",
+        "result": "abc  "
+      },
+      {
         "expression": "reverse([\"a\", \"b\", \"c\"])",
         "result": ["c", "b", "a"]
       },
       {
         "expression": "sort([1, 2, 4, 3, 1])",
         "result": [1, 1, 2, 3, 4]
+      },
+      {
+        "expression": "sort([\"20\", 20, true(), \"100\", null(), 100])",
+        "result": [20, 100, "100", "20", true, null]
       },
       {
         "expression": "sortBy([\"abcd\", \"e\", \"def\"], &length(@))",
@@ -572,7 +620,15 @@
         "result": 27.79688231918724
       },
       {
-        "expression": "stdev([1345, 1301, 1368])",
+        "expression": "stdevA([1345, 1301, 1368])",
+        "result": 34.044089061098404
+      },
+      {
+        "expression": "stdevpA([1345, \"1301\", 1368])",
+        "result": 27.79688231918724
+      },
+      {
+        "expression": "stdevA([1345, 1301, \"1368\"])",
         "result": 34.044089061098404
       },
       {

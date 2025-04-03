@@ -123,7 +123,7 @@ export default function functions(
 
   function evaluate(args, fn) {
     if (args.some(Array.isArray)) {
-      return balanceArrays(args).map(a => fn(...a));
+      return balanceArrays(args).map(a => evaluate(a, fn));
     }
     return fn(...args);
   }
@@ -358,8 +358,8 @@ export default function functions(
     // and if not provided is assumed to be false.
     /**
      * Find the absolute (non-negative) value of the provided argument `value`.
-     * @param {number} value a numeric value
-     * @return {number} If `value < 0`, returns `-value`, otherwise returns `value`
+     * @param {number|number[]} value A numeric value
+     * @return {number|number[]} If `value < 0`, returns `-value`, otherwise returns `value`
      * @function abs
      * @example
      * abs(-1) // returns 1
@@ -370,9 +370,9 @@ export default function functions(
     },
     /**
      * Compute the inverse cosine (in radians) of a number.
-     * @param {number} cosine A number between -1 and 1, inclusive,
+     * @param {number|number[]} cosine A number between -1 and 1, inclusive,
      * representing the angle's cosine value.
-     * @return {number} The inverse cosine angle in radians between 0 and PI
+     * @return {number|number[]} The inverse cosine angle in radians between 0 and PI
      * @function acos
      * @example
      * acos(0) => 1.5707963267948966
@@ -407,9 +407,9 @@ export default function functions(
 
     /**
      * Compute the inverse sine (in radians) of a number.
-     * @param {number} sine A number between -1 and 1, inclusive,
+     * @param {number|number[]} sine A number between -1 and 1, inclusive,
      * representing the angle's sine value.
-     * @return {number} The inverse sine angle in radians between -PI/2 and PI/2
+     * @return {number|number[]} The inverse sine angle in radians between -PI/2 and PI/2
      * @function asin
      * @example
      * Math.asin(0) => 0
@@ -422,9 +422,9 @@ export default function functions(
     /**
      * Compute the angle in the plane (in radians) between the positive
      * x-axis and the ray from (0, 0) to the point (x, y)
-     * @param {number} y The y coordinate of the point
-     * @param {number} x The x coordinate of the point
-     * @return {number} The angle in radians (between -PI and PI),
+     * @param {number|number[]} y The y coordinate of the point
+     * @param {number|number[]} x The x coordinate of the point
+     * @return {number|number[]} The angle in radians (between -PI and PI),
      * between the positive x-axis and the ray from (0, 0) to the point (x, y).
      * @function atan2
      * @example
@@ -440,6 +440,8 @@ export default function functions(
 
     /**
      * Finds the average of the elements in an array.
+     * Non-numeric values (text, boolean, null etc) are ignored.
+     * If there are nested arrays, they are flattened.
      * If the array is empty, an evaluation error is thrown
      * @param {number[]} elements array of numeric values
      * @return {number} average value
@@ -450,21 +452,56 @@ export default function functions(
     avg: {
       _func: resolvedArgs => {
         let sum = 0;
-        const inputArray = resolvedArgs[0];
-        if (inputArray.length === 0) throw evaluationError('avg() requires at least one argument');
-        inputArray.forEach(a => {
+        const filtered = resolvedArgs
+          .flat(Infinity)
+          .filter(a => getType(a) === TYPE_NUMBER);
+
+        if (filtered.length === 0) throw evaluationError('avg() requires at least one argument');
+        filtered.forEach(a => {
           sum += a;
         });
-        return sum / inputArray.length;
+        return sum / filtered.length;
       },
-      _signature: [{ types: [TYPE_ARRAY_NUMBER] }],
+      _signature: [{ types: [TYPE_ARRAY] }],
+    },
+
+    /**
+     * Finds the average of the elements in an array, converting strings and booleans to number.
+     * If any conversions to number fail, an type error is thrown.
+     * If there are nested arrays, they are flattened.
+     * If the array is empty, an evaluation error is thrown
+     * @param {number[]} elements array of numeric values
+     * @return {number} average value
+     * @function avgA
+     * @example
+     * avgA([1, 2, "3", null()]) // returns 2
+     */
+    avgA: {
+      _func: resolvedArgs => {
+        let sum = 0;
+        let filtered;
+        try {
+          filtered = resolvedArgs
+            .flat(Infinity)
+            .filter(a => getType(a) !== TYPE_NULL)
+            .map(toNumber);
+        } catch (_e) {
+          throw typeError('avgA() received non-numeric parameters');
+        }
+        if (filtered.length === 0) throw evaluationError('avg() requires at least one argument');
+        filtered.forEach(a => {
+          sum += a;
+        });
+        return sum / filtered.length;
+      },
+      _signature: [{ types: [TYPE_ARRAY] }],
     },
 
     /**
      * Generates a lower-case string of the `input` string using locale-specific mappings.
      * e.g. Strings with German letter <span>&#223;</span> (eszett) can be compared to "ss"
-     * @param {string} input string to casefold
-     * @returns {string} A new string converted to lower case
+     * @param {string|string[]} input string to casefold
+     * @returns {string|string[]} A new string converted to lower case
      * @function casefold
      * @example
      * casefold("AbC") // returns "abc"
@@ -481,8 +518,8 @@ export default function functions(
     /**
      * Finds the next highest integer value of the argument `num` by rounding up if necessary.
      * i.e. ceil() rounds toward positive infinity.
-     * @param {number} num numeric value
-     * @return {integer} The smallest integer greater than or equal to num
+     * @param {number|number[]} num numeric value
+     * @return {integer|integer[]} The smallest integer greater than or equal to num
      * @function ceil
      * @example
      * ceil(10) // returns 10
@@ -495,8 +532,9 @@ export default function functions(
     },
     /**
      * Retrieve the first code point from a string
-     * @param {string} str source string.
-     * @return {integer} Unicode code point value. If the input string is empty, returns `null`.
+     * @param {string|string[]} str source string.
+     * @return {integer|integer[]} Unicode code point value.
+     * If the input string is empty, returns `null`.
      * @function codePoint
      * @example
      * codePoint("ABC") // 65
@@ -553,8 +591,8 @@ export default function functions(
     },
     /**
      * Compute the cosine (in radians) of a number.
-     * @param {number} angle A number representing an angle in radians
-     * @return {number} The cosine of the angle, between -1 and 1, inclusive.
+     * @param {number|number[]} angle A number representing an angle in radians
+     * @return {number|number[]} The cosine of the angle, between -1 and 1, inclusive.
      * @function cos
      * @example
      * cos(1.0471975512) => 0.4999999999970535
@@ -575,15 +613,15 @@ export default function functions(
      * after subtracting whole years.
      * * `yd` the number of days between `start_date` and `end_date`, assuming `start_date`
      * and `end_date` were no more than one year apart
-     * @param {number} start_date The starting <<_date_and_time_values, date/time value>>.
+     * @param {number|number[]} start_date The starting <<_date_and_time_values, date/time value>>.
      * Date/time values can be generated using the
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
-     * @param {number} end_date The end <<_date_and_time_values, date/time value>> -- must
+     * @param {number|number[]} end_date The end <<_date_and_time_values, date/time value>> -- must
      * be greater or equal to start_date. If not, an error will be thrown.
-     * @param {string} unit Case-insensitive string representing the unit of time to measure.
-     * An unrecognized unit will result in an error.
-     * @returns {integer} The number of days/months/years difference
+     * @param {string|string[]} unit Case-insensitive string representing the unit of
+     * time to measure.  An unrecognized unit will result in an error.
+     * @returns {integer|integer[]} The number of days/months/years difference
      * @function datedif
      * @example
      * datedif(datetime(2001, 1, 1), datetime(2003, 1, 1), "y") // returns 2
@@ -654,10 +692,10 @@ export default function functions(
 
     /**
      * Finds the day of the month for a date value
-     * @param {number} date <<_date_and_time_values, date/time value>> generated using the
+     * @param {number|number[]} date <<_date_and_time_values, date/time value>> generated using the
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
-     * @return {integer} The day of the month ranging from 1 to 31.
+     * @return {integer|integer[]} The day of the month ranging from 1 to 31.
      * @function day
      * @example
      * day(datetime(2008,5,23)) // returns 23
@@ -746,9 +784,9 @@ export default function functions(
 
     /**
      * Determines if the `subject` string ends with a specific `suffix`
-     * @param {string} subject source string in which to search
-     * @param {string} suffix search string
-     * @return {boolean} true if the `suffix` value is at the end of the `subject`
+     * @param {string|string[]} subject source string in which to search
+     * @param {string|string[]} suffix search string
+     * @return {boolean|boolean[]} true if the `suffix` value is at the end of the `subject`
      * @function endsWith
      * @example
      * endsWith("Abcd", "d") // returns true
@@ -790,12 +828,12 @@ export default function functions(
 
     /**
      * Finds the date value of the end of a month, given `startDate` plus `monthAdd` months
-     * @param {number} startDate The base date to start from.
+     * @param {number|number[]} startDate The base date to start from.
      * <<_date_and_time_values, Date/time values>> can be generated using the
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
-     * @param {integer} monthAdd Number of months to add to start date
-     * @return {number} the date of the last day of the month
+     * @param {integer|integer[]} monthAdd Number of months to add to start date
+     * @return {number|number[]} the date of the last day of the month
      * @function eomonth
      * @example
      * eomonth(datetime(2011, 1, 1), 1) | [month(@), day(@)] // returns [2, 28]
@@ -811,8 +849,8 @@ export default function functions(
 
     /**
      * Finds e (the base of natural logarithms) raised to a power. (i.e. e^x)
-     * @param {number} x A numeric expression representing the power of e.
-     * @returns {number} e (the base of natural logarithms) raised to power x
+     * @param {number|number[]} x A numeric expression representing the power of e.
+     * @returns {number|number[]} e (the base of natural logarithms) raised to power x
      * @function exp
      * @example
      * exp(10) // returns 22026.465794806718
@@ -837,11 +875,11 @@ export default function functions(
 
     /**
      * Finds and returns the index of query in text from a start position
-     * @param {string} findText string to search
-     * @param {string} withinText text to be searched
-     * @param {integer} [start=0] zero-based position to start searching.
+     * @param {string|string[]} findText string to search
+     * @param {string|string[]} withinText text to be searched
+     * @param {integer|integer[]} [start=0] zero-based position to start searching.
      * If specified, `start` must be greater than or equal to 0
-     * @returns {integer|null} The position of the found string, null if not found.
+     * @returns {integer|null|integer[]} The position of the found string, null if not found.
      * @function find
      * @example
      * find("m", "abm") // returns 2
@@ -865,8 +903,8 @@ export default function functions(
     /**
      * Calculates the next lowest integer value of the argument `num` by rounding down if necessary.
      * i.e. floor() rounds toward negative infinity.
-     * @param {number} num numeric value
-     * @return {integer} The largest integer smaller than or equal to num
+     * @param {number|number[]} num numeric value
+     * @return {integer|integer[]} The largest integer smaller than or equal to num
      * @function floor
      * @example
      * floor(10.4) // returns 10
@@ -879,9 +917,9 @@ export default function functions(
 
     /**
      * Create a string from a code point.
-     * @param {integer} codePoint An integer between 0 and 0x10FFFF (inclusive)
-     * representing a Unicode code point.
-     * @return {string} A string from a given code point
+     * @param {integer|integer[]} codePoint An integer or array of integers
+     * between 0 and 0x10FFFF (inclusive) representing Unicode code point(s).
+     * @return {string} A string from the given code point(s)
      * @function fromCodePoint
      * @example
      * fromCodePoint(65) // "A"
@@ -919,6 +957,7 @@ export default function functions(
         const array = args[0];
         // validate beyond the TYPE_ARRAY_ARRAY check
         if (!array.every(a => {
+          if (!Array.isArray(a)) return false;
           if (a.length !== 2) return false;
           if (getType(a[0]) !== TYPE_STRING) return false;
           return true;
@@ -928,14 +967,14 @@ export default function functions(
         return Object.fromEntries(array);
       },
       _signature: [
-        { types: [TYPE_ARRAY_ARRAY] },
+        { types: [TYPE_ARRAY_ARRAY, TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] },
       ],
     },
 
     /**
      * Compute the nearest 32-bit single precision float representation of a number
-     * @param {number} num input to be rounded
-     * @return {number} The rounded representation of `num`
+     * @param {number|number[]} num input to be rounded
+     * @return {number|number[]} The rounded representation of `num`
      * @function fround
      * @example
      * fround(2147483650.987) => 2147483648
@@ -988,11 +1027,11 @@ export default function functions(
     },
     /**
      * Extract the hour from a <<_date_and_time_values, date/time value>>
-     * @param {number} date The datetime/time for which the hour is to be returned.
+     * @param {number|number[]} date The datetime/time for which the hour is to be returned.
      * Date/time values can be generated using the
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
-     * @return {integer} value between 0 and 23
+     * @return {integer|integer[]} value between 0 and 23
      * @function hour
      * @example
      * hour(datetime(2008,5,23,12, 0, 0)) // returns 12
@@ -1000,9 +1039,7 @@ export default function functions(
      */
     hour: {
       _func: args => evaluate(args, a => getDateObj(a).getHours()),
-      _signature: [
-        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
-      ],
+      _signature: [{ types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] }],
     },
 
     /**
@@ -1133,8 +1170,8 @@ export default function functions(
 
     /**
      * Compute the natural logarithm (base e) of a number
-     * @param {number} num A number greater than zero
-     * @return {number} The natural log value
+     * @param {number|number[]} num A number greater than zero
+     * @return {number|number[]} The natural log value
      * @function log
      * @example
      * log(10) // 2.302585092994046
@@ -1146,8 +1183,8 @@ export default function functions(
 
     /**
      * Compute the base 10 logarithm of a number.
-     * @param {number} num A number greater than or equal to zero
-     * @return {number} The base 10 log result
+     * @param {number|number[]} num A number greater than or equal to zero
+     * @return {number|number[]} The base 10 log result
      * @function log10
      * @example
      * log10(100000) // 5
@@ -1159,8 +1196,8 @@ export default function functions(
 
     /**
      * Converts all the alphabetic code points in a string to lowercase.
-     * @param {string} input input string
-     * @returns {string} the lower case value of the input string
+     * @param {string|string[]} input input string
+     * @returns {string|string[]} the lower case value of the input string
      * @function lower
      * @example
      * lower("E. E. Cummings") // returns e. e. cummings
@@ -1192,35 +1229,69 @@ export default function functions(
     },
 
     /**
-     * Calculates the largest value in the provided `collection` arguments.
-     * If all collections are empty, an evaluation error is thrown.
-     * `max()` can work on numbers or strings, but not a combination of numbers and strings.
-     * If all values are null, the result is 0.
-     * @param {...(number[]|string[]|number|string)} collection values/array(s) in which the maximum
+     * Calculates the largest value in the input numbers.
+     * Any values that are not numbers (e.g. null, boolean, strings, objects) will be ignored.
+     * If any parameters are arrays, the arrays will be flattened.
+     * If no numbers are provided, the function will return zero.
+     * @param {...(number[]|number)} collection values/array(s) in which the maximum
      * element is to be calculated
-     * @return {number|string} the largest value found
+     * @return {number} the largest value found
      * @function max
      * @example
      * max([1, 2, 3], [4, 5, 6]) // returns 6
-     * max(["a", "a1", "b"]) // returns "b"
-     * max(8, 10, 12) // returns 12
+     * max([\"a\", \"a1\", \"b\"], null(), true())) // returns 0
+     * max(8, 10, 12, "14") // returns 12
      */
     max: {
       _func: args => {
         // flatten the args into a single array
-        const array = args.reduce((prev, cur) => prev.concat(cur), []);
-        if (array.length === 0) throw evaluationError('max() requires at least one argument');
-        const isNumber = a => getType(a) === TYPE_NUMBER;
-        const isString = a => getType(a) === TYPE_STRING;
-        if (!(array.every(isNumber) || array.every(isString))) {
-          throw typeError('max() requires all arguments to be of the same type');
-        }
-        return array
-          .sort((a, b) => (a > b ? 1 : -1))
-          .pop();
+        const array = args
+          .flat(Infinity)
+          .filter(a => typeof valueOf(a) === 'number');
+
+        if (array.length === 0) return 0;
+
+        return Math.max(...array);
       },
       _signature: [{
-        types: [TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING, TYPE_NUMBER, TYPE_STRING],
+        types: [TYPE_ARRAY, TYPE_ANY],
+        variadic: true,
+      }],
+    },
+
+    /**
+     * Calculates the largest value in the input values, coercing parameters to numbers.
+     * Null values are ignored.
+     * If any parameters cannot be converted to a number,
+     * the function will fail with an type error.
+     * If any parameters are arrays, the arrays will be flattened.
+     * If no numbers are provided, the function will return zero.
+     * @param {...(any)} collection values/array(s) in which the maximum
+     * element is to be calculated
+     * @return {number} the largest value found
+     * @function maxA
+     * @example
+     * maxA([1, 2, 3], [4, 5, 6]) // returns 6
+     * maxA(["a", "a1", "b", null()]) // error
+     * maxA(8, 10, 12, "14") // returns 14
+     */
+    maxA: {
+      _func: args => {
+        // flatten the args into a single array
+        const array = args
+          .flat(Infinity)
+          .filter(a => valueOf(a) !== null)
+          .map(toNumber);
+
+        if (array.find(a => a === null)) {
+          throw evaluationError('maxA() received non-numeric parameters');
+        }
+        if (array.length === 0) return 0;
+
+        return Math.max(...array);
+      },
+      _signature: [{
+        types: [TYPE_ARRAY, TYPE_ANY],
         variadic: true,
       }],
     },
@@ -1290,11 +1361,11 @@ export default function functions(
 
     /**
      * Extract the milliseconds of the time value in a <<_date_and_time_values, date/time value>>.
-     * @param {number} date datetime/time for which the millisecond is to be returned.
+     * @param {number|number[]} date datetime/time for which the millisecond is to be returned.
      * Date/time values can be generated using the
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
-     * @return {integer} The number of milliseconds: 0 through 999
+     * @return {integer|integer[]} The number of milliseconds: 0 through 999
      * @function millisecond
      * @example
      * millisecond(datetime(2008, 5, 23, 12, 10, 53, 42)) // returns 42
@@ -1307,47 +1378,77 @@ export default function functions(
     },
 
     /**
-     * Calculates the smallest value in the input arguments.
-     * If all collections/values are empty, an evaluation error is thrown.
-     * `min()` can work on numbers or strings, but not a combination of numbers and strings.
-     * If all values are null, zero is returned.
-     * @param {...(number[]|string[]|number|string)} collection
+     * Calculates the smallest value in the input numbers.
+     * Any values that are not numbers (e.g. null, boolean, strings, objects) will be ignored.
+     * If any parameters are arrays, the arrays will be flattened.
+     * If no numbers are provided, the function will return zero.
+     * @param {...(number[]|number)} collection
      * Values/arrays to search for the minimum value
-     * @return {number|string} the smallest value found
+     * @return {number} the smallest value found
      * @function min
      * @example
      * min([1, 2, 3], [4, 5, 6]) // returns 1
-     * min(["a", "a1", "b"]) // returns "a"
-      * min(8, 10, 12) // returns 8
+     * min("4", 8, 10, 12, null()) // returns 8
      */
     min: {
       _func: args => {
         // flatten the args into a single array
-        const array = args.reduce((prev, cur) => prev.concat(cur), []);
-        if (array.length === 0) throw evaluationError('min() requires at least one argument');
+        const array = args
+          .flat(Infinity)
+          .filter(a => typeof valueOf(a) === 'number');
+        if (array.length === 0) return 0;
 
-        const isNumber = a => getType(a) === TYPE_NUMBER;
-        const isString = a => getType(a) === TYPE_STRING;
-        if (!(array.every(isNumber) || array.every(isString))) {
-          throw typeError('max() requires all arguments to be of the same type');
-        }
-        return array
-          .sort((a, b) => (a < b ? 1 : -1))
-          .pop();
+        return Math.min(...array);
       },
       _signature: [{
-        types: [TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING, TYPE_NUMBER, TYPE_STRING],
+        types: [TYPE_ARRAY, TYPE_ANY],
+        variadic: true,
+      }],
+    },
+
+    /**
+     * Calculates the smallest value in the input values, coercing parameters to numbers.
+     * Null values are ignored.
+     * If any parameters cannot be converted to a number,
+     * the function will fail with an type error.
+     * If any parameters are arrays, the arrays will be flattened.
+     * If no numbers are provided, the function will return zero.
+     * @param {...(any)} collection values/array(s) in which the maximum
+     * element is to be calculated
+     * @return {number} the largest value found
+     * @function minA
+     * @example
+     * minA([1, 2, 3], [4, 5, 6]) // returns 1
+     * minA("4", 8, 10, 12, null()) // returns 4
+     */
+    minA: {
+      _func: args => {
+        // flatten the args into a single array
+        const array = args
+          .flat(Infinity)
+          .filter(a => valueOf(a) !== null)
+          .map(toNumber);
+
+        if (array.find(a => a === null)) {
+          throw evaluationError('minA() received non-numeric parameters');
+        }
+        if (array.length === 0) return 0;
+
+        return Math.min(...array);
+      },
+      _signature: [{
+        types: [TYPE_ARRAY, TYPE_ANY],
         variadic: true,
       }],
     },
 
     /**
      * Extract the minute (0 through 59) from a <<_date_and_time_values, date/time value>>
-     * @param {number} date A datetime/time value.
+     * @param {number|number[]} date A datetime/time value.
      * Date/time values can be generated using the
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
-     * @return {integer} Number of minutes in the time portion of the date/time value
+     * @return {integer|integer[]} Number of minutes in the time portion of the date/time value
      * @function minute
      * @example
      * minute(datetime(2008,5,23,12, 10, 0)) // returns 10
@@ -1362,9 +1463,9 @@ export default function functions(
 
     /**
      * Return the remainder when one number is divided by another number.
-     * @param {number} dividend The number for which to find the remainder.
-     * @param {number} divisor The number by which to divide number.
-     * @return {number} Computes the remainder of `dividend`/`divisor`.
+     * @param {number|number[]} dividend The number for which to find the remainder.
+     * @param {number|number[]} divisor The number by which to divide number.
+     * @return {number|number[]} Computes the remainder of `dividend`/`divisor`.
      * If `dividend` is negative, the result will also be negative.
      * If `dividend` is zero, an error is thrown.
      * @function mod
@@ -1386,11 +1487,11 @@ export default function functions(
 
     /**
      * Finds the month of a date.
-     * @param {number} date source <<_date_and_time_values, date/time value>>.
+     * @param {number|number[]} date source <<_date_and_time_values, date/time value>>.
      * Date/time values can be generated using the
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
-     * @return {integer} The month number value, ranging from 1 (January) to 12 (December).
+     * @return {integer|integer[]} The month number value, ranging from 1 (January) to 12 (December)
      * @function month
      * @example
      * month(datetime(2008,5,23)) // returns 5
@@ -1486,9 +1587,9 @@ export default function functions(
 
     /**
      * Computes `a` raised to a power `x`. (a^x)
-     * @param {number} a The base number -- can be any real number.
-     * @param {number} x The exponent to which the base number is raised.
-     * @return {number}
+     * @param {number|number[]} a The base number -- can be any real number.
+     * @param {number|number[]} x The exponent to which the base number is raised.
+     * @return {number|number[]}
      * @function power
      * @example
      * power(10, 2) // returns 100 (10 raised to power 2)
@@ -1507,8 +1608,8 @@ export default function functions(
      * uppercase letter and the rest of the letters in the word converted to lowercase.
      * Words are demarcated by whitespace, punctuation, or numbers.
      * Specifically, any character(s) matching the regular expression: `[\s\d\p{P}]+`.
-     * @param {string} text source string
-     * @returns {string} source string with proper casing applied.
+     * @param {string|string[]} text source string
+     * @returns {string|string[]} source string with proper casing applied.
      * @function proper
      * @example
      * proper("this is a TITLE") // returns "This Is A Title"
@@ -1582,9 +1683,9 @@ export default function functions(
      * Note that implementations are not required to provide `register()` in order to be conformant.
      * Built-in functions may not be overridden.
      * @param {string} functionName Name of the function to register.
-     * `functionName` must begin with an underscore and follow the regular
+     * `functionName` must begin with an underscore or uppercase letter and follow the regular
      * expression pattern:
-     * `{caret}_{startsb}_a-zA-Z0-9${endsb}{asterisk}$`
+     * `{caret}{startsb}_A-Z{endsb}{startsb}_a-zA-Z0-9${endsb}{asterisk}$`
      * @param {expression} expr Expression to execute with this function call
      * @return {{}} returns an empty object
      * @function register
@@ -1598,7 +1699,7 @@ export default function functions(
         const functionName = resolvedArgs[0];
         const exprefNode = resolvedArgs[1];
 
-        if (!/^_[_a-zA-Z0-9$]*$/.test(functionName)) throw functionError(`Invalid function name: "${functionName}"`);
+        if (!/^[_A-Z][_a-zA-Z0-9$]*$/.test(functionName)) throw functionError(`Invalid function name: "${functionName}"`);
         if (functionMap[functionName]
           && functionMap[functionName]._exprefNode.value !== exprefNode.value) {
           // custom functions can be re-registered as long as the expression is the same
@@ -1607,6 +1708,53 @@ export default function functions(
         functionMap[functionName] = {
           _func: args => runtime.interpreter.visit(exprefNode, ...args),
           _signature: [{ types: [TYPE_ANY], optional: true }],
+          _exprefNode: exprefNode,
+        };
+        return {};
+      },
+      _signature: [
+        { types: [TYPE_STRING] },
+        { types: [TYPE_EXPREF] },
+      ],
+    },
+
+    /**
+     * Register a function that accepts multiple parameters.
+     * A function may not be re-registered with a different definition.
+     * Note that implementations are not required to provide `registerWithParams()`
+     * in order to be conformant.
+     * Built-in functions may not be overridden.
+     * @param {string} functionName Name of the function to register.
+     * `functionName` must begin with an underscore or uppercase letter and follow the regular
+     * expression pattern:
+     * `{caret}{startsb}_A-Z{endsb}{startsb}_a-zA-Z0-9${endsb}{asterisk}$`
+     * @param {expression} expr Expression to execute with this function call.
+     * Parameters are passed as an array.
+     * @return {{}} returns an empty object
+     * @function registerWithParams
+     * @example
+     * registerWithParams("Product", &@[0] * @[1])
+     * // can now call: Product(2,21) => returns 42
+     * registerWithParams(
+     *   "Ltrim",
+     *   &split(@[0],"").reduce(@, &accumulated & current | if(@ = " ", "", @), "")
+     *  )
+     * // Ltrim("  abc  ") => returns "abc  "
+     */
+    registerWithParams: {
+      _func: resolvedArgs => {
+        const functionName = resolvedArgs[0];
+        const exprefNode = resolvedArgs[1];
+
+        if (!/^[_A-Z][_a-zA-Z0-9$]*$/.test(functionName)) throw functionError(`Invalid function name: "${functionName}"`);
+        if (functionMap[functionName]
+          && functionMap[functionName]._exprefNode.value !== exprefNode.value) {
+          // custom functions can be re-registered as long as the expression is the same
+          throw functionError(`Cannot override function: "${functionName}" with a different definition`);
+        }
+        functionMap[functionName] = {
+          _func: args => runtime.interpreter.visit(exprefNode, args),
+          _signature: [{ types: [TYPE_ANY], optional: true, variadic: true }],
           _exprefNode: exprefNode,
         };
         return {};
@@ -1670,10 +1818,10 @@ export default function functions(
 
     /**
      * Return text repeated `count` times.
-     * @param {string} text text to repeat
-     * @param {integer} count number of times to repeat the text.
+     * @param {string|string[]} text text to repeat
+     * @param {integer|integer[]} count number of times to repeat the text.
      * Must be greater than or equal to 0.
-     * @returns {string} Text generated from the repeated text.
+     * @returns {string|string[]} Text generated from the repeated text.
      * if `count` is zero, returns an empty string.
      * @function rept
      * @example
@@ -1745,9 +1893,9 @@ export default function functions(
      * * If `precision` is greater than zero, round to the specified number of decimal places.
      * * If `precision` is 0, round to the nearest integer.
      * * If `precision` is less than 0, round to the left of the decimal point.
-     * @param {number} num number to round
-     * @param {integer} [precision=0] precision to use for the rounding operation.
-     * @returns {number} rounded value. Rounding a half value will round up.
+     * @param {number|number[]} num number to round
+     * @param {integer|integer[]} [precision=0] precision to use for the rounding operation.
+     * @returns {number|number[]} rounded value. Rounding a half value will round up.
      * @function round
      * @example
      * round(2.15, 1) // returns 2.2
@@ -1780,9 +1928,10 @@ export default function functions(
      * precede them with an escape (`{backslash}`) character.
      * Note that the wildcard search is not greedy.
      * e.g. `search("a{asterisk}b", "abb")` will return `[0, "ab"]` Not `[0, "abb"]`
-     * @param {string} findText the search string -- which may include wild cards.
-     * @param {string} withinText The string to search.
-     * @param {integer} [startPos=0] The zero-based position of withinText to start searching.
+     * @param {string|string[]} findText the search string -- which may include wild cards.
+     * @param {string|string[]} withinText The string to search.
+     * @param {integer|integer[]} [startPos=0] The zero-based position of withinText
+     * to start searching.
      * A negative value is not allowed.
      * @returns {array} returns an array with two values:
      *
@@ -1808,11 +1957,11 @@ export default function functions(
 
     /**
      * Extract the seconds of the time value in a <<_date_and_time_values, date/time value>>.
-     * @param {number} date datetime/time for which the second is to be returned.
+     * @param {number|number[]} date datetime/time for which the second is to be returned.
      * Date/time values can be generated using the
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
-     * @return {integer} The number of seconds: 0 through 59
+     * @return {integer|integer[]} The number of seconds: 0 through 59
      * @function second
      * @example
      * second(datetime(2008,5,23,12, 10, 53)) // returns 53
@@ -1827,8 +1976,8 @@ export default function functions(
 
     /**
      * Computes the sign of a number passed as argument.
-     * @param {number} num any number
-     * @return {number} returns 1 or -1, indicating the sign of `num`.
+     * @param {number|number[]} num any number
+     * @return {number|number[]} returns 1 or -1, indicating the sign of `num`.
      * If the `num` is 0, it will return 0.
      * @function sign
      * @example
@@ -1843,8 +1992,8 @@ export default function functions(
 
     /**
      * Computes the sine of a number in radians
-     * @param {number} angle A number representing an angle in radians.
-     * @return {number} The sine of `angle`, between -1 and 1, inclusive
+     * @param {number|number[]} angle A number representing an angle in radians.
+     * @return {number|number[]} The sine of `angle`, between -1 and 1, inclusive
      * @function sin
      * @example
      * sin(0) // 0
@@ -1856,29 +2005,58 @@ export default function functions(
     },
 
     /**
-     * This function accepts an array of strings or numbers and returns an
+     * This function accepts an array values and returns an
      * array with the elements in sorted order.
+     * If there are mixed data types, the values will be grouped in order:
+     * numbers, strings, booleans, nulls
      * String sorting is based on code points and is not locale-sensitive.
-     * @param {number[]|string[]} list to be sorted
-     * @return {number[]|string[]} The ordered result
+     * If the sort encounters any objects or arrays, it will throw an evaluation error.
+     * @param {any[]} list to be sorted
+     * @return {any[]} The ordered result
      * @function sort
      * @example
      * sort([1, 2, 4, 3, 1]) // returns [1, 1, 2, 3, 4]
+     * sort(["20", 20, true(), "100", null(), 100]) // returns [20, 100, "100", "20", true, null]
      */
     sort: {
       _func: resolvedArgs => {
-        const array = resolvedArgs[0].slice();
-        if (array.length === 0) return [];
-        // JavaScript default sort converts numbers to strings
-        if (getType(array[0]) === TYPE_STRING) return array.sort();
+        /*
+        numbers sort first
+        strings sort second
+        Booleans sort third
+        nulls sort last
+        */
+        const typeVals = resolvedArgs[0].map(value => {
+          const type = getType(value);
+          if (![TYPE_NUMBER, TYPE_STRING, TYPE_BOOLEAN, TYPE_NULL].includes(type)) {
+            throw evaluationError('Bad datatype for sort');
+          }
+          return { type, value };
+        });
 
-        return array.sort((a, b) => {
+        const sortFunction = (a, b) => {
           if (a < b) return -1;
           if (a > b) return 1;
           return 0;
-        });
+        };
+
+        const sorted = typeVals
+          .filter(v => v.type === TYPE_NUMBER)
+          .map(v => v.value)
+          .sort(sortFunction);
+
+        sorted.push(
+          ...typeVals
+            .filter(v => v.type === TYPE_STRING)
+            .map(v => v.value)
+            .sort(),
+        );
+
+        sorted.push(...typeVals.filter(v => v.type === TYPE_BOOLEAN).map(v => v.value));
+        sorted.push(...typeVals.filter(v => v.type === TYPE_NULL).map(v => v.value));
+        return sorted;
       },
-      _signature: [{ types: [TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] }],
+      _signature: [{ types: [TYPE_ARRAY] }],
     },
 
     /**
@@ -1953,9 +2131,9 @@ export default function functions(
 
     /**
      * Split a string into an array, given a separator
-     * @param {string} string string to split
-     * @param {string} separator separator where the split(s) should occur
-     * @return {string[]} The array of separated strings
+     * @param {string|string[]} string string to split
+     * @param {string|string[]} separator separator where the split(s) should occur
+     * @return {string[]|string[][]} The array of separated strings
      * @function split
      * @example
      * split("abcdef", "") // returns ["a", "b", "c", "d", "e", "f"]
@@ -1971,8 +2149,8 @@ export default function functions(
 
     /**
          * Find the square root of a number
-         * @param {number} num source number
-         * @return {number} The calculated square root value
+         * @param {number|number[]} num source number
+         * @return {number|number[]} The calculated square root value
          * @function sqrt
          * @example
          * sqrt(4) // returns 2
@@ -1986,9 +2164,9 @@ export default function functions(
 
     /**
      * Determine if a string starts with a prefix.
-     * @param {string} subject string to search
-     * @param {string} prefix prefix to search for
-     * @return {boolean} true if `prefix` matches the start of `subject`
+     * @param {string|string[]} subject string to search
+     * @param {string|string[]} prefix prefix to search for
+     * @return {boolean|boolean[]} true if `prefix` matches the start of `subject`
      * @function startsWith
      * @example
      * startsWith("jack is at home", "jack") // returns true
@@ -2005,6 +2183,8 @@ export default function functions(
      * `stdev` assumes that its arguments are a sample of the entire population.
      * If your data represents a entire population,
      * then compute the standard deviation using [stdevp]{@link stdevp}.
+     * Non-numeric values (text, boolean, null etc) are ignored.
+     * If there are nested arrays, they are flattened.
      * @param {number[]} numbers The array of numbers comprising the population.
      * Array size must be greater than 1.
      * @returns {number} [Standard deviation](https://en.wikipedia.org/wiki/Standard_deviation)
@@ -2015,7 +2195,9 @@ export default function functions(
      */
     stdev: {
       _func: args => {
-        const values = args[0];
+        const values = args.flat(Infinity)
+          .filter(a => getType(a) === TYPE_NUMBER);
+
         if (values.length <= 1) throw evaluationError('stdev() must have at least two values');
         const mean = values.reduce((a, b) => a + b, 0) / values.length;
         const sumSquare = values.reduce((a, b) => a + b * b, 0);
@@ -2023,7 +2205,45 @@ export default function functions(
         return validNumber(result, 'stdev');
       },
       _signature: [
-        { types: [TYPE_ARRAY_NUMBER] },
+        { types: [TYPE_ARRAY] },
+      ],
+    },
+
+    /**
+     * Estimates standard deviation based on a sample.
+     * `stdev` assumes that its arguments are a sample of the entire population.
+     * If your data represents a entire population,
+     * then compute the standard deviation using [stdevpA]{@link stdevpA}.
+     * Nested arrays are flattened.
+     * Null values are ignored. All other parameters are converted to number.
+     * If conversion to number fails, a type error is thrown.
+     * @param {number[]} numbers The array of numbers comprising the population.
+     * Array size must be greater than 1.
+     * @returns {number} [Standard deviation](https://en.wikipedia.org/wiki/Standard_deviation)
+     * @function stdevA
+     * @example
+     * stdevA([1345, "1301", 1368]) // returns 34.044089061098404
+     * stdevpA([1345, 1301, "1368"]) // returns 27.797
+     */
+    stdevA: {
+      _func: args => {
+        let values;
+        try {
+          values = args.flat(Infinity)
+            .filter(a => getType(a) !== TYPE_NULL)
+            .map(toNumber);
+        } catch (_e) {
+          throw evaluationError('stdevA() received non-numeric parameters');
+        }
+
+        if (values.length <= 1) throw evaluationError('stdevA() must have at least two values');
+        const mean = values.reduce((a, b) => a + b, 0) / values.length;
+        const sumSquare = values.reduce((a, b) => a + b * b, 0);
+        const result = Math.sqrt((sumSquare - values.length * mean * mean) / (values.length - 1));
+        return validNumber(result, 'stdevA');
+      },
+      _signature: [
+        { types: [TYPE_ARRAY] },
       ],
     },
 
@@ -2042,7 +2262,10 @@ export default function functions(
      */
     stdevp: {
       _func: args => {
-        const values = args[0];
+        const values = args[0]
+          .flat(Infinity)
+          .filter(a => getType(a) === TYPE_NUMBER);
+
         if (values.length === 0) throw evaluationError('stdevp() must have at least one value');
 
         const mean = values.reduce((a, b) => a + b, 0) / values.length;
@@ -2051,7 +2274,42 @@ export default function functions(
         return validNumber(result, 'stdevp');
       },
       _signature: [
-        { types: [TYPE_ARRAY_NUMBER] },
+        { types: [TYPE_ARRAY] },
+      ],
+    },
+
+    /**
+     * Calculates standard deviation based on the entire population given as arguments.
+     * `stdevpA` assumes that its arguments are the entire population.
+     * If your data represents a sample of the population,
+     * then compute the standard deviation using [stdevA]{@link stdevA}.
+     * Nested arrays are flattened.
+     * Null values are ignored. All other parameters are converted to number.
+     * If conversion to number fails, a type error is thrown.
+     * @param {number[]} numbers The array of numbers comprising the population.
+     * An empty array is not allowed.
+     * @returns {number} Calculated standard deviation
+     * @function stdevp
+     * @example
+     * stdevpA([1345, "1301", 1368]) // returns 27.797
+     * stdevA([1345, 1301, "1368"]) // returns 34.044
+     */
+    stdevpA: {
+      _func: args => {
+        const values = args[0]
+          .flat(Infinity)
+          .filter(a => getType(a) !== TYPE_NULL)
+          .map(toNumber);
+
+        if (values.length === 0) throw evaluationError('stdevp() must have at least one value');
+
+        const mean = values.reduce((a, b) => a + b, 0) / values.length;
+        const meanSumSquare = values.reduce((a, b) => a + b * b, 0) / values.length;
+        const result = Math.sqrt(meanSumSquare - mean * mean);
+        return validNumber(result, 'stdevp');
+      },
+      _signature: [
+        { types: [TYPE_ARRAY] },
       ],
     },
 
@@ -2060,13 +2318,14 @@ export default function functions(
      * with text `old` replaced by text `new` (when searching from the left).
      * If there is no match, or if `old` has length 0, `text` is returned unchanged.
      * Note that `old` and `new` may have different lengths.
-     * @param {string} text The text for which to substitute code points.
-     * @param {string} old The text to replace.
-     * @param {string} new The text to replace `old` with.  If `new` is an empty string, then
-     * occurrences of `old` are removed from `text`.
-     * @param {integer} [which] The zero-based occurrence of `old` text to replace with `new` text.
+     * @param {string|string[]} text The text for which to substitute code points.
+     * @param {string|string[]} old The text to replace.
+     * @param {string|string[]} new The text to replace `old` with.
+     * If `new` is an empty string, then occurrences of `old` are removed from `text`.
+     * @param {integer|integer[]} [which]
+     * The zero-based occurrence of `old` text to replace with `new` text.
      * If `which` parameter is omitted, every occurrence of `old` is replaced with `new`.
-     * @returns {string} replaced string
+     * @returns {string|string[]} replaced string
      * @function substitute
      * @example
      * substitute("Sales Data", "Sales", "Cost") // returns "Cost Data"
@@ -2109,7 +2368,7 @@ export default function functions(
     sum: {
       _func: resolvedArgs => {
         let sum = 0;
-        resolvedArgs[0].forEach(arg => {
+        resolvedArgs[0].flat(Infinity).forEach(arg => {
           sum += arg * 1;
         });
         return sum;
@@ -2118,8 +2377,8 @@ export default function functions(
     },
     /**
      * Computes the tangent of a number in radians
-     * @param {number} angle A number representing an angle in radians.
-     * @return {number} The tangent of `angle`
+     * @param {number|number[]} angle A number representing an angle in radians.
+     * @return {number|number[]} The tangent of `angle`
      * @function tan
      * @example
      * tan(0) // 0
@@ -2307,7 +2566,12 @@ export default function functions(
         try {
           return toNumber(num);
         } catch (e) {
-          debug.push(`Failed to convert "${num}" to number`);
+          const errorString = arg => {
+            const v = toJSON(arg);
+            return v.length > 50 ? `${v.substring(0, 20)} ...` : v;
+          };
+
+          debug.push(`Failed to convert "${errorString(num)}" to number`);
           return null;
         }
       },
@@ -2340,8 +2604,8 @@ export default function functions(
     /**
      * Remove leading and trailing spaces (U+0020), and replace all internal multiple spaces
      * with a single space.  Note that other whitespace characters are left intact.
-     * @param {string} text string to trim
-     * @return {string} trimmed string
+     * @param {string|string[]} text string to trim
+     * @return {string|string[]} trimmed string
      * @function trim
      * @example
      * trim("   ab    c   ") // returns "ab c"
@@ -2367,9 +2631,10 @@ export default function functions(
     /**
      * Truncates a number to an integer by removing the fractional part of the number.
      * i.e. it rounds towards zero.
-     * @param {number} numA number to truncate
-     * @param {integer} [numB=0] A number specifying the number of decimal digits to preserve.
-     * @return {number} Truncated value
+     * @param {number|number[]} numA number to truncate
+     * @param {integer|integer[]} [numB=0]
+     * A number specifying the number of decimal digits to preserve.
+     * @return {number|number[]} Truncated value
      * @function trunc
      * @example
      * trunc(8.9) // returns 8
@@ -2450,8 +2715,8 @@ export default function functions(
 
     /**
      * Converts all the alphabetic code points in a string to uppercase.
-     * @param {string} input input string
-     * @returns {string} the upper case value of the input string
+     * @param {string|string[]} input input string
+     * @returns {string|string[]} the upper case value of the input string
      * @function upper
      * @example
      * upper("abcd") // returns "ABCD"
@@ -2537,15 +2802,15 @@ export default function functions(
      * * 1 : Sunday (1), Monday (2), ..., Saturday (7)
      * * 2 : Monday (1), Tuesday (2), ..., Sunday(7)
      * * 3 : Monday (0), Tuesday (1), ...., Sunday(6)
-     * @param {number} date <<_date_and_time_values, date/time value>> for
+     * @param {number|number[]} date <<_date_and_time_values, date/time value>> for
      * which the day of the week is to be returned.
      * Date/time values can be generated using the
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
-     * @param {integer} [returnType=1] Determines the
+     * @param {integer|integer[]} [returnType=1] Determines the
      * representation of the result.
      * An unrecognized returnType will result in a error.
-     * @returns {integer} day of the week
+     * @returns {integer|integer[]} day of the week
      * @function weekday
      * @example
      * weekday(datetime(2006,5,21)) // 1
@@ -2566,11 +2831,11 @@ export default function functions(
 
     /**
      * Finds the year of a datetime value
-     * @param {number} date input <<_date_and_time_values, date/time value>>
+     * @param {number|number[]} date input <<_date_and_time_values, date/time value>>
      * Date/time values can be generated using the
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
      * and [time]{@link time} functions.
-     * @return {integer} The year value
+     * @return {integer|integer[]} The year value
      * @function year
      * @example
      * year(datetime(2008,5,23)) // returns 2008

@@ -64,9 +64,9 @@ export function getType(inputObj) {
     if (t === 'boolean') return TYPE_BOOLEAN;
     if (Array.isArray(obj)) {
       if (obj.length === 0) return TYPE_EMPTY_ARRAY;
+      if (obj.flat(Infinity).every(a => getType(a) === TYPE_NUMBER)) return TYPE_ARRAY_NUMBER;
+      if (obj.flat(Infinity).every(a => getType(a) === TYPE_STRING)) return TYPE_ARRAY_STRING;
       if (obj.every(a => isArray(getType(a)))) return TYPE_ARRAY_ARRAY;
-      if (obj.every(a => getType(a) === TYPE_NUMBER)) return TYPE_ARRAY_NUMBER;
-      if (obj.every(a => getType(a) === TYPE_STRING)) return TYPE_ARRAY_STRING;
       return TYPE_ARRAY;
     }
     // Check if it's an expref.  If it has, it's been
@@ -92,6 +92,40 @@ export function getTypeName(arg) {
   return typeNameTable[getType(arg)];
 }
 
+function supportedConversion(from, to) {
+  const pairs = {
+    [TYPE_NUMBER]: [
+      TYPE_STRING,
+      TYPE_ARRAY,
+      TYPE_ARRAY_NUMBER,
+      TYPE_BOOLEAN,
+    ],
+    [TYPE_BOOLEAN]: [
+      TYPE_STRING,
+      TYPE_NUMBER,
+      TYPE_ARRAY,
+    ],
+    [TYPE_ARRAY]: [TYPE_BOOLEAN, TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER],
+    [TYPE_ARRAY_NUMBER]: [TYPE_BOOLEAN, TYPE_ARRAY_STRING, TYPE_ARRAY],
+    [TYPE_ARRAY_STRING]: [TYPE_BOOLEAN, TYPE_ARRAY_NUMBER, TYPE_ARRAY],
+    [TYPE_ARRAY_ARRAY]: [TYPE_BOOLEAN],
+    [TYPE_EMPTY_ARRAY]: [TYPE_BOOLEAN],
+
+    [TYPE_OBJECT]: [TYPE_BOOLEAN],
+    [TYPE_NULL]: [
+      TYPE_STRING,
+      TYPE_NUMBER,
+      TYPE_BOOLEAN,
+    ],
+    [TYPE_STRING]: [
+      TYPE_NUMBER,
+      TYPE_ARRAY_STRING,
+      TYPE_ARRAY,
+      TYPE_BOOLEAN],
+  };
+  return pairs[from].includes(to);
+}
+
 export function matchType(expectedList, argValue, context, toNumber, toString) {
   const actual = getType(argValue);
   if (argValue?.jmespathType === TOK_EXPREF && !expectedList.includes(TYPE_EXPREF)) {
@@ -106,14 +140,19 @@ export function matchType(expectedList, argValue, context, toNumber, toString) {
   if (expectedList.some(type => match(type, actual))) return argValue;
 
   // if the function allows multiple types, we can't coerce the type and we need an exact match
-  const exactMatch = expectedList.length > 1;
-  const expected = expectedList[0];
+  // Of the set of expected types, filter out the ones that can be coerced from the actual type
+  const filteredList = expectedList.filter(t => supportedConversion(actual, t));
+  if (filteredList.length === 0) {
+    throw typeError(`${context} expected argument to be type ${typeNameTable[expectedList[0]]} but received type ${typeNameTable[actual]} instead.`);
+  }
+  const exactMatch = filteredList.length > 1;
+  const expected = filteredList[0];
   let wrongType = false;
 
   // Can't coerce objects and arrays to any other type
   if (isArray(actual)) {
     if ([TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING].includes(expected)) {
-      if (argValue.some(a => {
+      if (argValue.flat(Infinity).some(a => {
         const t = getType(a);
         // can't coerce arrays or objects to numbers or strings
         return isArray(t) || isObject(t);
@@ -133,24 +172,26 @@ export function matchType(expectedList, argValue, context, toNumber, toString) {
   if (isObject(actual) && expected === TYPE_BOOLEAN) {
     return Object.keys(argValue).length === 0;
   }
+
   // no exact match, see if we can coerce an array type
   if (isArray(actual)) {
     const toArray = a => (Array.isArray(a) ? a : [a]);
+    const coerceString = a => (Array.isArray(a) ? a.map(coerceString) : toString(a));
+    const coerceNumber = a => (Array.isArray(a) ? a.map(coerceNumber) : toNumber(a));
+
     if (expected === TYPE_BOOLEAN) return argValue.length > 0;
-    if (expected === TYPE_ARRAY_STRING) return argValue.map(toString);
-    if (expected === TYPE_ARRAY_NUMBER) return argValue.map(toNumber);
+    if (expected === TYPE_ARRAY_STRING) return argValue.map(coerceString);
+    if (expected === TYPE_ARRAY_NUMBER) return argValue.map(coerceNumber);
     if (expected === TYPE_ARRAY_ARRAY) return argValue.map(toArray);
   }
 
   if (!isArray(actual) && !isObject(actual)) {
-    if (expected === TYPE_ARRAY_STRING) return actual === TYPE_NULL ? [] : [toString(argValue)];
-    if (expected === TYPE_ARRAY_NUMBER) return actual === TYPE_NULL ? [] : [toNumber(argValue)];
-    if (expected === TYPE_ARRAY) return actual === TYPE_NULL ? [] : [argValue];
-    if ([TYPE_ARRAY_ARRAY, TYPE_EMPTY_ARRAY].includes(expected) && actual === TYPE_NULL) return [];
+    if (expected === TYPE_ARRAY_STRING) return [toString(argValue)];
+    if (expected === TYPE_ARRAY_NUMBER) return [toNumber(argValue)];
+    if (expected === TYPE_ARRAY) return [argValue];
     if (expected === TYPE_NUMBER) return toNumber(argValue);
     if (expected === TYPE_STRING) return toString(argValue);
     if (expected === TYPE_BOOLEAN) return !!argValue;
-    if (expected === TYPE_OBJECT && actual === TYPE_NULL) return {};
   }
 
   throw typeError(`${context} expected argument to be type ${typeNameTable[expected]} but received type ${typeNameTable[actual]} instead.`);
