@@ -64,9 +64,9 @@ export function getType(inputObj) {
     if (t === 'boolean') return TYPE_BOOLEAN;
     if (Array.isArray(obj)) {
       if (obj.length === 0) return TYPE_EMPTY_ARRAY;
+      if (obj.flat(Infinity).every(a => getType(a) === TYPE_NUMBER)) return TYPE_ARRAY_NUMBER;
+      if (obj.flat(Infinity).every(a => getType(a) === TYPE_STRING)) return TYPE_ARRAY_STRING;
       if (obj.every(a => isArray(getType(a)))) return TYPE_ARRAY_ARRAY;
-      if (obj.every(a => getType(a) === TYPE_NUMBER)) return TYPE_ARRAY_NUMBER;
-      if (obj.every(a => getType(a) === TYPE_STRING)) return TYPE_ARRAY_STRING;
       return TYPE_ARRAY;
     }
     // Check if it's an expref.  If it has, it's been
@@ -152,7 +152,7 @@ export function matchType(expectedList, argValue, context, toNumber, toString) {
   // Can't coerce objects and arrays to any other type
   if (isArray(actual)) {
     if ([TYPE_ARRAY_NUMBER, TYPE_ARRAY_STRING].includes(expected)) {
-      if (argValue.some(a => {
+      if (argValue.flat(Infinity).some(a => {
         const t = getType(a);
         // can't coerce arrays or objects to numbers or strings
         return isArray(t) || isObject(t);
@@ -176,9 +176,12 @@ export function matchType(expectedList, argValue, context, toNumber, toString) {
   // no exact match, see if we can coerce an array type
   if (isArray(actual)) {
     const toArray = a => (Array.isArray(a) ? a : [a]);
+    const coerceString = a => (Array.isArray(a) ? a.map(coerceString) : toString(a));
+    const coerceNumber = a => (Array.isArray(a) ? a.map(coerceNumber) : toNumber(a));
+
     if (expected === TYPE_BOOLEAN) return argValue.length > 0;
-    if (expected === TYPE_ARRAY_STRING) return argValue.map(toString);
-    if (expected === TYPE_ARRAY_NUMBER) return argValue.map(toNumber);
+    if (expected === TYPE_ARRAY_STRING) return argValue.map(coerceString);
+    if (expected === TYPE_ARRAY_NUMBER) return argValue.map(coerceNumber);
     if (expected === TYPE_ARRAY_ARRAY) return argValue.map(toArray);
   }
 

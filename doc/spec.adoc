@@ -76,7 +76,7 @@ If the supplied data is not correct for the execution context, json-formula will
 * The left-hand operand of ordering comparison operators (`>`, `>=`, `<`, `\<=`) must be a string or number.  Any other type shall be coerced to a number.
 * If the operands of an ordering comparison are different, they shall both be coerced to a number
 * Parameters to functions shall be coerced when there is a single viable coercion available.  For example, if a null value is provided to a function that accepts a number or string, then coercion shall not happen, since a null value can be coerced to both types.  Conversely if a string is provided to a function that accepts a number or array of numbers, then the string shall be coerced to a number, since there is no supported coercion to convert it to an array of numbers.
-* When functions accept a typed array, any provided array will have each of its members coerced to the expected type. e.g., if the input array is `[2,3,"6"]` and an array of numbers is expected, the array will be coerced to `[2,3,6]`.
+* When functions accept a typed array, the function rules determine whether coercion may occur.  Some functions (e.g. avg()) ignore array members of the wrong type.  Other functions (e.g. abs()) coerce array members.  If coercion may occur, then any provided array will have each of its members coerced to the expected type. e.g., if the input array is `[2,3,"6"]` and an array of numbers is expected, the array will be coerced to `[2,3,6]`.
 
 The equality and inequality operators (`=`, `==`, `!=`, `<>`) do **not** perform type coercion.  If operands are different types, the values are considered not equal.
 
@@ -742,8 +742,9 @@ operator follows these processing steps:
 * The result array is returned as a <<Projections,projection>>
 
 Once the flattening operation has been performed, subsequent operations
-are projected onto the flattened array.  The difference between a bracketed wildcard (`[{asterisk}]`) and flatten (`[]`) is that
-flatten will first merge sub-arrays.
+are projected onto the flattened array.
+
+A bracketed wildcard (`[{asterisk}]`) and flatten (`[]`) behave similarly in that they produce a projection from an array. The only difference is that a bracketed wildcard preserves the original array structure while flatten collapses one level of array structure.
 
 [discrete]
 ==== Examples
@@ -1211,7 +1212,7 @@ any of (`array|object|number|string|boolean|null`).
 
 The expression type, (denoted by `&expression`), is used to specify an
 expression that is not immediately evaluated.  Instead, a reference to that
-expression is provided to the function being called.  The function can then apply the expression reference as needed.  It is semantically similar
+expression is provided to the function.  The function can then apply the expression reference as needed.  It is semantically similar
 to an https://en.wikipedia.org/wiki/Anonymous_function[anonymous function]. See the <<_sortBy, sortBy()>> function for an example of the expression type.
 
 Function parameters can either have a specific arity or be variadic with a minimum
@@ -1224,17 +1225,29 @@ The result of the `functionExpression` is the result returned by the
 function call.  If a `functionExpression` is evaluated for a function that
 does not exist, a `FunctionError` error is raised.
 
+==== Array Parameters
 Many functions that process scalar values also allow for the processing of arrays of values.  For example, the `round()` function may be called to process a single value: `round(1.2345, 2)` or to process an array of values: `round([1.2345, 2.3456], 2)`.  The first call will return a single value, the second call will return an array of values.
 When processing arrays of values, and where there is more than one parameter, each parameter is converted to an array so that the function processes each value in the set of arrays.  From our example above, the call to `round([1.2345, 2.3456], 2)` would be processed as if it were `round([1.2345, 2.3456], [2, 2])`, and the result would be the same as: `[round(1.2345, 2), round(2.3456, 2)]`.
 
-The rules for the treatment of parameters with arrays of values:
+Functions that accept array parameters will also accept nested arrays.  With nested arrays, aggregating functions (min(), max(), avg(), sum() etc.) will flatten the arrays. e.g.
 
-When any parameter is an array then:
+`avg([2.1, 3.1, [4.1, 5.1]])` will be processed as `avg([2.1, 3.1, 4.1, 5.1])` and return `3.6`.
+
+Non-aggregating functions will return the same array hierarchy. e.g.
+
+`upper("a", ["b"]]) => ["A", ["B"]]`
+`round([2.12, 3.12, [4.12, 5.12]], 1)` will be processed as `round([2.12, 3.12, [4.12, 5.12]], [1, 1, [1, 1]])` and return `[2.1, 3.1, [4.1, 5.1]] `
+
+These array balancing rules apply when any parameter is an array:
 
 * All parameters will be treated as arrays
 * Any scalar parameters will be converted to an array by repeating the scalar value to the length of the longest array
 * All array parameters will be padded to the length of the longest array by adding null values
 * The function will return an array which is the result of iterating over the elements of the arrays and applying the function logic on the values at the same index.
+
+With nested arrays:
+* Nested arrays will be flattened for aggregating functions
+* Non-aggregating functions will preserve the array hierarchy and will apply the balancing rules to each element of the nested arrays
 
 === Function evaluation
 

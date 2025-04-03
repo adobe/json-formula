@@ -57,9 +57,18 @@
         "expression": "hasProperty(@, \"null_key\")",
         "result": true
       },
-      { "expression": "hasProperty(`false`, \"key\")", "error": "TypeError"},
-      { "expression": "hasProperty(42, \"key\")", "error": "TypeError"},
-      { "expression": "hasProperty(\"abc\", \"key\")", "error": "TypeError"},
+      {
+        "expression": "hasProperty(`false`, \"key\")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "hasProperty(42, \"key\")",
+        "error": "TypeError"
+      },
+      {
+        "expression": "hasProperty(\"abc\", \"key\")",
+        "error": "TypeError"
+      },
       {
         "expression": "and(true() true())",
         "error": "SyntaxError"
@@ -137,6 +146,10 @@
         "result": 3
       },
       {
+        "expression": "abs([-1, 3, [-4, 5]])",
+        "result": [1, 3, [4, 5]]
+      },
+      {
         "expression": "abs(`false`)",
         "result": 0
       },
@@ -192,6 +205,10 @@
       {
         "expression": "avg(`[2,1,\"b\"]`)",
         "result": 1.5
+      },
+      {
+        "expression": "avg([1, 2, [3, 4, `[5]`]])",
+        "result": 3
       },
       {
         "expression": "avg(`null`)",
@@ -1506,6 +1523,10 @@
         "result": 1.5707963267948966
       },
       {
+        "expression": "acos([0, [0, 0]])",
+        "result": [1.5707963267948966, [1.5707963267948966, 1.5707963267948966]]
+      },
+      {
         "expression": "acos(1.01)",
         "error": "EvaluationError"
       },
@@ -1957,6 +1978,10 @@
         ]
       },
       {
+        "expression": "asin([1, [0, 0.19866933079506123]])",
+        "result": [1.5707963267948966, [0, 0.2]]
+      },
+      {
         "expression": "atan2(arrayNum, 10)",
         "result": [
           -0.32172055409664824, -0.21845717120535865, -0.10955952677394436, 0,
@@ -1971,327 +1996,782 @@
         ]
       },
       {
-        "expression": "casefold(arrayStr)",
-        "result": ["abc", "bcd", "cde", "def", "efg"]
+        "expression": "atan2(1, [1, [2, 3]])",
+        "result": [0.7853981633974483, [0.4636476090008061, 0.3217505543966422]]
       },
       {
-        "expression": "ceil(arrayNum)",
-        "result": [-3, -2, -1, 0, 2, 3, 4]
+        "expression": "ceil([1.1, [2.2, 3.3]])",
+        "result": [2, [3, 4]]
       },
       {
-        "expression": "codePoint(arrayStr)",
-        "result": [97, 98, 99, 100, 101]
+        "expression": "codePoint([\"A\", [\"B\", \"C\"]])",
+        "result": [65, [66, 67]]
       },
       {
-        "expression": "cos(arrayNum)",
-        "result": [
-          -0.9817374728267503, -0.6045522710579296, 0.4535961214255773, 1,
-          0.4535961214255773, -0.6045522710579296, -0.9817374728267503
-        ]
+        "expression": "cos([1, [2, 3]])",
+        "result": [0.5403023058681398, [-0.4161468365471424, -0.9899924966004454]]
       },
       {
-        "expression": "now() | datedif(@, @ + 1, [\"y\",\"m\",\"d\",\"ym\",\"yd\"])",
-        "result": [0, 0, 1, 0, 1]
+        "expression": "now() | datedif([@, [@, @]], [@ + 1, [@ + 2, @ + 3]], \"d\")",
+        "result": [1, [2, 3]]
       },
       {
-        "expression": "now() | datedif([@, @], [@ + 1, @ + 2], \"d\")",
-        "result": [1, 2]
+        "expression": "datetime(2024, 3, 8) | day([[@, @], [@, @]])",
+        "result": [[8, 8], [8, 8]]
       },
+      {
+        "expression": "endsWith([\"abc\", [\"def\", \"ghi\"]], \"c\")",
+        "result": [true, [false, false]]
+      },
+      {
+        "expression": "datetime(2024, 3, 8) | eomonth([[@, @], [@, @]], 1)",
+        "result": [[19843.166666666668, 19843.166666666668], [19843.166666666668, 19843.166666666668]]
+      },
+      {
+        "expression": "exp([1, [2, 3]])",
+        "result": [2.718281828459045, [7.38905609893065, 20.085536923187668]]
+      },
+      {
+        "expression": "find(\"a\", [\"abc\", [\"def\", \"ghi\"]], [0, [1, 2]])",
+        "result": [0, [null, null]]
+      },
+      {
+        "expression": "floor([1.1, [2.2, 3.3]])",
+        "result": [1, [2, 3]]
+      },
+      {
+        "expression": "fround([1.1, [2.2, 3.3]])",
+        "result": [1.100000023841858, [2.200000047683716, 3.299999952316284]]
+      },
+      {
+        "expression": "datetime(2024, 3, 8, 13, 45) | hour([[@, @], [@, @]])",
+        "result": [[13, 13], [13, 13]]
+      },
+      {
+        "expression": "log([1, [2, 3]])",
+        "result": [0, [0.6931471805599453, 1.0986122886681096]]
+      },
+      {
+        "expression": "log10([1, [2, 3]])",
+        "result": [0, [0.3010299956639812, 0.47712125471966244]]
+      },
+      {
+        "expression": "lower([\"ABC\", [\"DEF\", \"GHI\"]])",
+        "result": ["abc", ["def", "ghi"]]
+      },
+      {
+        "expression": "max([1, [2, 3]])",
+        "result": 3
+      },
+      {
+        "expression": "datetime(2024, 3, 8, 13, 45, 30, 500) | millisecond([[@, @], [@, @]])",
+        "result": [[500, 500], [500, 500]]
+      },
+      {
+        "expression": "min([2, [1, 3]])",
+        "result": 1
+      },
+      {
+        "expression": "datetime(2024, 3, 8, 13, 45) | minute([[@, @], [@, @]])",
+        "result": [[45, 45], [45, 45]]
+      },
+      {
+        "expression": "mod([2, [4, 6]], [1, [2, 3]])",
+        "result": [0, [0, 0]]
+      },
+      {
+        "expression": "datetime(2024, 3, 8) | month([[@, @], [@, @]])",
+        "result": [[3, 3], [3, 3]]
+      },
+      {
+        "expression": "power([2, [3, 4]], [2, [2, 2]])",
+        "result": [4, [9, 16]]
+      },
+      {
+        "expression": "proper([\"abc\", [\"def\", \"ghi\"]])",
+        "result": ["Abc", ["Def", "Ghi"]]
+      },
+      {
+        "expression": "rept([\"a\", [\"b\", \"c\"]], [2, [2, 2]])",
+        "result": ["aa", ["bb", "cc"]]
+      },
+      {
+        "expression": "round([1.5, [2.5, 3.5]])",
+        "result": [2, [3, 4]]
+      },
+      {
+        "expression": "search(\"a\", [\"abc\", [\"def\", \"ghi\"]], [0, [0, 0]])",
+        "result": [[0, "a"], [[], []]]
+      },
+      {
+        "expression": "datetime(2024, 3, 8, 13, 45, 30) | second([[@, @], [@, @]])",
+        "result": [[30, 30], [30, 30]]
+      },
+      {
+        "expression": "sign([1.1, [-2.2, 3.3]])",
+        "result": [1, [-1, 1]]
+      },
+      {
+        "expression": "sin([1, [2, 3]])",
+        "result": [0.8414709848078965, [0.9092974268256817, 0.1411200080598672]]
+      },
+      {
+        "expression": "split([\"a,b\", [\"c,d\", \"e,f\"]], \",\")",
+        "result": [["a", "b"], [["c", "d"], ["e", "f"]]]
+      },
+      {
+        "expression": "sqrt([4, [9, 16]])",
+        "result": [2, [3, 4]]
+      },
+      {
+        "expression": "startsWith([\"abc\", [\"def\", \"ghi\"]], \"a\")",
+        "result": [true, [false, false]]
+      },
+      {
+        "expression": "stdev([1, [2, 3]])",
+        "result": 1
+      },
+      {
+        "expression": "stdevA([1, [2, 3]])",
+        "result": 1
+      },
+      {
+        "expression": "stdevp([1, [2, 3]])",
+        "result": 0.8164965809277263
+      },
+      {
+        "expression": "stdevpA([1, [2, 3]])",
+        "result": 0.8164965809277263
+      },
+      {
+        "expression": "substitute([\"abc\", [\"aab\", \"ghi\"]], \"a\", \"A\", [0, [1, 0]])",
+        "result": ["Abc", ["aAb", "ghi"]]
+      },
+      {
+        "expression": "sum([1, [2, 3]])",
+        "result": 6
+      },
+      {
+        "expression": "tan([1, [2, 3]])",
+        "result": [1.5574077246549023, [-2.185039863261519, -0.1425465430742778]]
+      },
+      {
+        "expression": "trim([\" abc \", [\" def \", \" ghi \"]])",
+        "result": ["abc", ["def", "ghi"]]
+      },
+      {
+        "expression": "trunc([1.5, [2.5, 3.5]])",
+        "result": [1, [2, 3]]
+      },
+      {
+        "expression": "upper([\"abc\", [\"def\", \"ghi\"]])",
+        "result": ["ABC", ["DEF", "GHI"]]
+      },
+      {
+        "expression": "datetime(2024, 3, 8) | weekday([[@, @], [@, @]], 1)",
+        "result": [[6, 6], [6, 6]]
+      },
+      {
+        "expression": "datetime(2024, 3, 8) | year([[@, @], [@, @]])",
+        "result": [[2024, 2024], [2024, 2024]]
+      },
+      {
+          "expression": "abs([-1, 3, [-4, 5]])",
+         "result": [1, 3, [4, 5]]
+       },
+       {
+         "expression": "avg([1, 2, [3, 4, `[5]`]])",
+         "result": 3
+       },
+       {
+         "expression": "acos([0, [0, 0]])",
+         "result": [1.5707963267948966, [1.5707963267948966, 1.5707963267948966]]
+       },
+       {
+         "expression": "asin([1, [0, 0.19866933079506123]])",
+         "result": [1.5707963267948966, [0, 0.2]]
+        },
+        {
 
+         "expression": "atan2(1, [1, [2, 3]])",
+         "result": [0.7853981633974483, [0.4636476090008061, 0.3217505543966422]]
+        },
+        {
 
+         "expression": "casefold(arrayStr)",
+         "result": ["abc", "bcd", "cde", "def", "efg"]
+        },
+        {
+         "expression": "ceil([1.1, [2.2, 3.3]])",
+         "result": [2, [3, 4]]
+        },
+        {
+          "expression": "ceil(arrayNum)",
+         "result": [-3, -2, -1, 0, 2, 3, 4]
+        },
+        {
 
-      {
-        "expression": "datetime(2024, 10, 12) | day([@, @ + 1])",
-        "result": [12, 13]
-      },
-      {
-        "expression": "endsWith(arrayStr, arrayStr)",
-        "result": [true, true, true, true, true]
-      },
-      {
-        "expression": "endsWith(arrayStr, \"c\")",
-        "result": [true, false, false, false, false]
-      },
-      {
-        "expression": "datetime(2024, 10, 12) | eomonth([@, @, @, @, @, @, @], 1)| [month(@) & day(@)][]",
-        "result": ["1130", "1130", "1130", "1130", "1130", "1130", "1130"]
-      },
-      {
-        "expression": "{d: datetime(2024, 10, 12), n:arrayInt} | eomonth([@.d, @.d, @.d, @.d, @.d, @.d, @.d], @.n) | [month(@) & day(@)][]",
-        "result": ["1130", "1231", "131", "228", "331", "430", "531"]
-      },
-      {
-        "expression": "exp(arrayInt)",
-        "result": [
-          2.718281828459045, 7.38905609893065, 20.085536923187668,
-          54.598150033144236, 148.4131591025766, 403.4287934927351,
-          1096.6331584284585
-        ]
-      },
-      {
-        "expression": "find(arrayStr, arrayStr, [0,0,0,0,0,0])",
-        "result": [0, 0, 0, 0, 0, 0]
-      },
-      {
-        "expression": "find(\"c\", [\"cc\",\"ccc\",\"cccc\",\"ccccc\",\"cccccc\",\"ccccccc\",\"cccccccc\"], arrayInt)",
-        "result": [1, 2, 3, 4, 5, 6, 7]
-      },
-      {
-        "expression": "find(arrayStr, arrayStr, 0)",
-        "result": [0, 0, 0, 0, 0]
-      },
-      {
-        "expression": "find(\"c\", \"abcdefg\", arrayInt)",
-        "result": [2, 2, null, null, null, null, null]
-      },
-      {
-        "expression": "floor(arrayNum)",
-        "result": [-4, -3, -2, 0, 1, 2, 3]
-      },
-      {
-        "expression": "fromCodePoint(64 + arrayInt)",
-        "result": "ABCDEFG"
-      },
-      {
-        "expression": "fround(arrayNum)",
-        "result": [
-          -3.3329999446868896, -2.2200000286102295, -1.100000023841858, 0,
-          1.100000023841858, 2.2200000286102295, 3.3329999446868896
-        ]
-      },
-      {
-        "expression": "datetime(2024, 10, 12, 13) | hour([@, @])",
-        "result": [13, 13]
-      },
-      {
-        "expression": "log(arrayInt)",
-        "result": [
-          0, 0.6931471805599453, 1.0986122886681096, 1.3862943611198906,
-          1.6094379124341003, 1.791759469228055, 1.9459101490553132
-        ]
-      },
-      {
-        "expression": "log10(arrayInt)",
-        "result": [
-          0, 0.3010299956639812, 0.47712125471966244, 0.6020599913279624,
-          0.6989700043360189, 0.7781512503836436, 0.8450980400142568
-        ]
-      },
-      {
-        "expression": "lower(arrayStr)",
-        "result": ["abc", "bcd", "cde", "def", "efg"]
-      },
-      {
-        "expression": "datetime(2024, 10, 12, 13, 14, 15, 16) | millisecond([@, @ + 1])",
-        "result": [16, 16]
-      },
-      {
-        "expression": "datetime(2024, 10, 12, 13, 14, 15, 16) | minute([@, @ + 1])",
-        "result": [14, 14]
-      },
-      {
-        "expression": "mod(arrayInt, 2)",
-        "result": [1, 0, 1, 0, 1, 0, 1]
-      },
-      {
-        "expression": "mod(arrayInt, arrayInt + 1)",
-        "result": [1, 2, 3, 4, 5, 6, 7]
-      },
-      {
-        "expression": "datetime(2024, 10, 12, 13, 14, 15, 16) | month([@, @])",
-        "result": [10, 10]
-      },
-      {
-        "expression": "power(arrayInt, arrayInt)",
-        "result": [1, 4, 27, 256, 3125, 46656, 823543]
-      },
-      {
-        "expression": "power(arrayInt, 2)",
-        "result": [1, 4, 9, 16, 25, 36, 49]
-      },
-      {
-        "expression": "power(2, arrayInt)",
-        "result": [2, 4, 8, 16, 32, 64, 128]
-      },
-      {
-        "expression": "proper(arrayStr)",
-        "result": ["Abc", "Bcd", "Cde", "Def", "Efg"]
-      },
-      {
-        "expression": "rept(arrayStr, arrayInt)",
-        "result": [
-          "abc",
-          "bcdbcd",
-          "cdecdecde",
-          "defdefdefdef",
-          "efgefgefgefgefg",
-          "",
-          ""
-        ]
-      },
-      {
-        "expression": "rept(arrayStr, 2)",
-        "result": ["abcabc", "bcdbcd", "cdecde", "defdef", "efgefg"]
-      },
-      {
-        "expression": "rept(\"a\", arrayInt)",
-        "result": ["a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa"]
-      },
-      {
-        "expression": "round(arrayNum)",
-        "result": [-3, -2, -1, 0, 1, 2, 3]
-      },
-      {
-        "expression": "search(arrayStr, arrayStr, [0,0,0,0,0])",
-        "result": [
-          [0, "abc"],
-          [0, "bcd"],
-          [0, "cde"],
-          [0, "def"],
-          [0, "efg"]
-        ]
-      },
-      {
-        "expression": "search(\"c\", arrayStr, [0,1,2,3,4,5])",
-        "result": [[2, "c"], [1, "c"], [], [], [], []]
-      },
-      {
-        "expression": "search(arrayStr, arrayStr, 0)",
-        "result": [
-          [0, "abc"],
-          [0, "bcd"],
-          [0, "cde"],
-          [0, "def"],
-          [0, "efg"]
-        ]
-      },
-      {
-        "expression": "search(arrayStr, \"abcdefg\", [0,1,2,3])",
-        "result": [
-          [0, "abc"],
-          [1, "bcd"],
-          [2, "cde"],
-          [3, "def"],
-          [4, "efg"]
-        ]
-      },
-      {
-        "expression": "search(\"b\", \"abcbebg\", [0,1,2,3])",
-        "result": [
-          [1, "b"],
-          [1, "b"],
-          [3, "b"],
-          [3, "b"]
-        ]
-      },
-      {
-        "expression": "datetime(2024, 10, 12, 13, 14, 15, 16) | second([@, @])",
-        "result": [15, 15]
-      },
-      {
-        "expression": "sign(arrayInt)",
-        "result": [1, 1, 1, 1, 1, 1, 1]
-      },
-      {
-        "expression": "sin(arrayNum)",
-        "result": [
-          0.19024072762619915, -0.7965654722360865, -0.8912073600614354, 0,
-          0.8912073600614354, 0.7965654722360865, -0.19024072762619915
-        ]
-      },
-      {
-        "expression": "split(arrayStr, \"\")",
-        "result": [
-          ["a", "b", "c"],
-          ["b", "c", "d"],
-          ["c", "d", "e"],
-          ["d", "e", "f"],
-          ["e", "f", "g"]
-        ]
-      },
-      {
-        "expression": "split(\"abcdefg\", [\"b\", \"c\"])",
-        "result": [
-          ["a", "cdefg"],
-          ["ab", "defg"]
-        ]
-      },
-      {
-        "expression": "split(arrayStr, [\"a\", \"b\"])",
-        "result": [
-          ["", "bc"],
-          ["", "cd"],
-          ["c", "d", "e"],
-          ["d", "e", "f"],
-          ["e", "f", "g"]
-        ]
-      },
-      {
-        "expression": "sqrt(arrayNum[?@ > 0])",
-        "result": [
-          1.0488088481701516,
-          1.489966442575134,
-          1.8256505689753448
-        ]
-      },
-      {
-        "expression": "startsWith(arrayStr, arrayStr)",
-        "result": [true,
-        true,
-        true,
-        true,
-        true]
-      },
-      {
-        "expression": "startsWith(arrayStr, \"b\")",
-        "result": [
-          false,
-          true,
-          false,
-          false,
-          false
-        ]
-      },
-      {
-        "expression": "startsWith(\"abcdefg\", [\"a\", \"b\", \"c\"])",
-        "result": [
-          true,
-          false,
-          false
-        ]
-      },
-      {
-        "expression": "substitute(arrayStr, \"c\", \"C\", [0,0,0,0,0])",
-        "result": ["abC","bCd","Cde","def","efg"]
-      },
-      {
-        "expression": "tan(arrayNum)",
-        "result": [-0.1937796334476594, 1.3176122402817965, -1.9647596572486523, 0, 1.9647596572486523, -1.3176122402817965, 0.1937796334476594]
-      },
-      {
-        "expression": "trim(arrayStr)",
-        "result": ["abc", "bcd", "cde", "def", "efg"]
-      },
-      {
-        "expression": "trunc(arrayNum, [1,1,0,0,0,1,1])",
-        "result": [-3.3, -2.2, -1, 0, 1, 2.2, 3.3]
-      },
-      {
-        "expression": "trunc(arrayNum)",
-        "result": [-3, -2, -1, 0, 1, 2, 3]
-      },
-      {
-        "expression": "upper(arrayStr)",
-        "result": ["ABC", "BCD", "CDE", "DEF", "EFG"]
-      },
-      {
-        "expression": "datetime(2024, 10, 12, 13, 14, 15, 16) | weekday([@, @ + 1], 1)",
-        "result": [7, 1]
-      },
-      {
-        "expression": "datetime(2024, 10, 12, 13, 14, 15, 16) | year([@, @ + 1])",
-        "result": [2024, 2024]
-      }
+         "expression": "codePoint([\"A\", [\"B\", \"C\"]])",
+         "result": [65, [66, 67]]
+        },
+        {
+
+         "expression": "codePoint(arrayStr)",
+         "result": [97, 98, 99, 100, 101]
+        },
+        {
+
+         "expression": "cos([1, [2, 3]])",
+         "result": [0.5403023058681398, [-0.4161468365471424, -0.9899924966004454]]
+        },
+        {
+
+         "expression": "cos(arrayNum)",
+         "result": [
+           -0.9817374728267503, -0.6045522710579296, 0.4535961214255773, 1,
+           0.4535961214255773, -0.6045522710579296, -0.9817374728267503
+         ]
+        },
+        {
+
+         "expression": "now() | datedif([@, [@, @]], [@ + 1, [@ + 2, @ + 3]], \"d\")",
+         "result": [1, [2, 3]]
+        },
+        {
+
+         "expression": "now() | datedif(@, @ + 1, [\"y\",\"m\",\"d\",\"ym\",\"yd\"])",
+         "result": [0, 0, 1, 0, 1]
+        },
+        {
+
+         "expression": "datetime(2024, 3, 8) | day([[@, @], [@, @]])",
+         "result": [[8, 8], [8, 8]]
+        },
+        {
+
+         "expression": "now() | datedif([@, @], [@ + 1, @ + 2], \"d\")",
+         "result": [1, 2]
+        },
+        {
+         "expression": "endsWith([\"abc\", [\"def\", \"ghi\"]], \"c\")",
+         "result": [true, [false, false]]
+        },
+        {
+          "expression": "datetime(2024, 10, 12) | day([@, @ + 1])",
+         "result": [12, 13]
+        },
+        {
+
+         "expression": "datetime(2024, 3, 8) | eomonth([[@, @], [@, @]], 1)",
+         "result": [[19843.166666666668, 19843.166666666668], [19843.166666666668, 19843.166666666668]]
+        },
+        {
+
+         "expression": "endsWith(arrayStr, arrayStr)",
+         "result": [true, true, true, true, true]
+        },
+        {
+
+         "expression": "exp([1, [2, 3]])",
+         "result": [2.718281828459045, [7.38905609893065, 20.085536923187668]]
+        },
+        {
+
+         "expression": "endsWith(arrayStr, \"c\")",
+         "result": [true, false, false, false, false]
+        },
+        {
+
+         "expression": "find(\"a\", [\"abc\", [\"def\", \"ghi\"]], [0, [1, 2]])",
+         "result": [0, [null, null]]
+        },
+        {
+
+         "expression": "datetime(2024, 10, 12) | eomonth([@, @, @, @, @, @, @], 1)| [month(@) & day(@)][]",
+         "result": ["1130", "1130", "1130", "1130", "1130", "1130", "1130"]
+        },
+        {
+
+         "expression": "floor([1.1, [2.2, 3.3]])",
+         "result": [1, [2, 3]]
+       },
+       {
+
+         "expression": "{d: datetime(2024, 10, 12), n:arrayInt} | eomonth([@.d, @.d, @.d, @.d, @.d, @.d, @.d], @.n) | [month(@) & day(@)][]",
+         "result": ["1130", "1231", "131", "228", "331", "430", "531"]
+        },
+        {
+
+         "expression": "fround([1.1, [2.2, 3.3]])",
+         "result": [1.100000023841858, [2.200000047683716, 3.299999952316284]]
+        },
+        {
+
+         "expression": "exp(arrayInt)",
+         "result": [
+           2.718281828459045, 7.38905609893065, 20.085536923187668,
+           54.598150033144236, 148.4131591025766, 403.4287934927351,
+           1096.6331584284585
+         ]
+        },
+        {
+
+         "expression": "datetime(2024, 3, 8, 13, 45) | hour([[@, @], [@, @]])",
+         "result": [[13, 13], [13, 13]]
+        },
+        {
+
+         "expression": "find(arrayStr, arrayStr, [0,0,0,0,0,0])",
+         "result": [0, 0, 0, 0, 0, 0]
+        },
+        {
+
+         "expression": "log([1, [2, 3]])",
+         "result": [0, [0.6931471805599453, 1.0986122886681096]]
+        },
+        {
+
+         "expression": "find(\"c\", [\"cc\",\"ccc\",\"cccc\",\"ccccc\",\"cccccc\",\"ccccccc\",\"cccccccc\"], arrayInt)",
+         "result": [1, 2, 3, 4, 5, 6, 7]
+        },
+        {
+
+         "expression": "log10([1, [2, 3]])",
+         "result": [0, [0.3010299956639812, 0.47712125471966244]]
+        },
+        {
+
+         "expression": "find(arrayStr, arrayStr, 0)",
+         "result": [0, 0, 0, 0, 0]
+        },
+        {
+
+         "expression": "lower([\"ABC\", [\"DEF\", \"GHI\"]])",
+         "result": ["abc", ["def", "ghi"]]
+        },
+        {
+
+         "expression": "find(\"c\", \"abcdefg\", arrayInt)",
+         "result": [2, 2, null, null, null, null, null]
+        },
+        {
+         "expression": "max([1, [2, 3]])",
+         "result": 3
+        },
+        {
+         "expression": "floor(arrayNum)",
+         "result": [-4, -3, -2, 0, 1, 2, 3]
+        },
+        {
+         "expression": "datetime(2024, 3, 8, 13, 45, 30, 500) | millisecond([[@, @], [@, @]])",
+         "result": [[500, 500], [500, 500]]
+        },
+        {
+         "expression": "fromCodePoint(64 + arrayInt)",
+         "result": "ABCDEFG"
+        },
+        {
+
+         "expression": "min([2, [1, 3]])",
+         "result": 1
+        },
+        {
+
+         "expression": "fround(arrayNum)",
+         "result": [
+           -3.3329999446868896, -2.2200000286102295, -1.100000023841858, 0,
+           1.100000023841858, 2.2200000286102295, 3.3329999446868896
+         ]
+        },
+        {
+
+         "expression": "datetime(2024, 3, 8, 13, 45) | minute([[@, @], [@, @]])",
+         "result": [[45, 45], [45, 45]]
+        },
+        {
+
+         "expression": "datetime(2024, 10, 12, 13) | hour([@, @])",
+         "result": [13, 13]
+        },
+        {
+
+         "expression": "mod([2, [4, 6]], [1, [2, 3]])",
+         "result": [0, [0, 0]]
+        },
+        {
+
+         "expression": "log(arrayInt)",
+         "result": [
+           0, 0.6931471805599453, 1.0986122886681096, 1.3862943611198906,
+           1.6094379124341003, 1.791759469228055, 1.9459101490553132
+         ]
+        },
+        {
+
+         "expression": "datetime(2024, 3, 8) | month([[@, @], [@, @]])",
+         "result": [[3, 3], [3, 3]]
+        },
+        {
+
+         "expression": "log10(arrayInt)",
+         "result": [
+           0, 0.3010299956639812, 0.47712125471966244, 0.6020599913279624,
+           0.6989700043360189, 0.7781512503836436, 0.8450980400142568
+         ]
+        },
+        {
+
+         "expression": "power([2, [3, 4]], [2, [2, 2]])",
+         "result": [4, [9, 16]]
+        },
+        {
+
+         "expression": "lower(arrayStr)",
+         "result": ["abc", "bcd", "cde", "def", "efg"]
+        },
+        {
+
+         "expression": "proper([\"abc\", [\"def\", \"ghi\"]])",
+         "result": ["Abc", ["Def", "Ghi"]]
+        },
+        {
+
+         "expression": "datetime(2024, 10, 12, 13, 14, 15, 16) | millisecond([@, @ + 1])",
+         "result": [16, 16]
+        },
+        {
+
+         "expression": "rept([\"a\", [\"b\", \"c\"]], [2, [2, 2]])",
+         "result": ["aa", ["bb", "cc"]]
+        },
+        {
+
+         "expression": "datetime(2024, 10, 12, 13, 14, 15, 16) | minute([@, @ + 1])",
+         "result": [14, 14]
+        },
+        {
+
+         "expression": "round([1.5, [2.5, 3.5]])",
+         "result": [2, [3, 4]]
+        },
+        {
+
+         "expression": "mod(arrayInt, 2)",
+         "result": [1, 0, 1, 0, 1, 0, 1]
+        },
+        {
+
+         "expression": "search(\"a\", [\"abc\", [\"def\", \"ghi\"]], [0, [0, 0]])",
+         "result": [[0, "a"], [[], []]]
+        },
+        {
+
+         "expression": "mod(arrayInt, arrayInt + 1)",
+         "result": [1, 2, 3, 4, 5, 6, 7]
+        },
+        {
+
+         "expression": "datetime(2024, 3, 8, 13, 45, 30) | second([[@, @], [@, @]])",
+         "result": [[30, 30], [30, 30]]
+        },
+        {
+
+         "expression": "datetime(2024, 10, 12, 13, 14, 15, 16) | month([@, @])",
+         "result": [10, 10]
+        },
+        {
+
+         "expression": "sign([1.1, [-2.2, 3.3]])",
+         "result": [1, [-1, 1]]
+        },
+        {
+
+         "expression": "power(arrayInt, arrayInt)",
+         "result": [1, 4, 27, 256, 3125, 46656, 823543]
+        },
+        {
+
+         "expression": "sin([1, [2, 3]])",
+         "result": [0.8414709848078965, [0.9092974268256817, 0.1411200080598672]]
+        },
+        {
+
+         "expression": "power(arrayInt, 2)",
+         "result": [1, 4, 9, 16, 25, 36, 49]
+        },
+        {
+
+         "expression": "split([\"a,b\", [\"c,d\", \"e,f\"]], \",\")",
+         "result": [["a", "b"], [["c", "d"], ["e", "f"]]]
+        },
+        {
+
+         "expression": "power(2, arrayInt)",
+         "result": [2, 4, 8, 16, 32, 64, 128]
+        },
+        {
+
+         "expression": "sqrt([4, [9, 16]])",
+         "result": [2, [3, 4]]
+        },
+        {
+
+         "expression": "proper(arrayStr)",
+         "result": ["Abc", "Bcd", "Cde", "Def", "Efg"]
+        },
+        {
+
+         "expression": "startsWith([\"abc\", [\"def\", \"ghi\"]], \"a\")",
+         "result": [true, [false, false]]
+        },
+        {
+
+         "expression": "rept(arrayStr, arrayInt)",
+         "result": [
+           "abc",
+           "bcdbcd",
+           "cdecdecde",
+           "defdefdefdef",
+           "efgefgefgefgefg",
+           "",
+           ""
+         ]
+        },
+        {
+
+         "expression": "stdev([1, [2, 3]])",
+         "result": 1
+        },
+        {
+
+         "expression": "rept(arrayStr, 2)",
+         "result": ["abcabc", "bcdbcd", "cdecde", "defdef", "efgefg"]
+        },
+        {
+
+         "expression": "stdevA([1, [2, 3]])",
+         "result": 1
+        },
+        {
+
+         "expression": "rept(\"a\", arrayInt)",
+         "result": ["a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa"]
+        },
+        {
+
+         "expression": "stdevp([1, [2, 3]])",
+         "result": 0.8164965809277263
+        },
+        {
+
+         "expression": "round(arrayNum)",
+         "result": [-3, -2, -1, 0, 1, 2, 3]
+        },
+        {
+
+         "expression": "stdevpA([1, [2, 3]])",
+         "result": 0.8164965809277263
+        },
+        {
+
+         "expression": "search(arrayStr, arrayStr, [0,0,0,0,0])",
+         "result": [
+           [0, "abc"],
+           [0, "bcd"],
+           [0, "cde"],
+           [0, "def"],
+           [0, "efg"]
+         ]
+        },
+        {
+
+         "expression": "substitute([\"abc\", [\"aab\", \"ghi\"]], \"a\", \"A\", [0, [1, 0]])",
+         "result": ["Abc", ["aAb", "ghi"]]
+        },
+        {
+
+         "expression": "search(\"c\", arrayStr, [0,1,2,3,4,5])",
+         "result": [[2, "c"], [1, "c"], [], [], [], []]
+        },
+        {
+
+         "expression": "sum([1, [2, 3]])",
+         "result": 6
+        },
+        {
+
+         "expression": "search(arrayStr, arrayStr, 0)",
+         "result": [
+           [0, "abc"],
+           [0, "bcd"],
+           [0, "cde"],
+           [0, "def"],
+           [0, "efg"]
+         ]
+        },
+        {
+
+         "expression": "tan([1, [2, 3]])",
+         "result": [1.5574077246549023, [-2.185039863261519, -0.1425465430742778]]
+        },
+        {
+
+         "expression": "search(arrayStr, \"abcdefg\", [0,1,2,3])",
+         "result": [
+           [0, "abc"],
+           [1, "bcd"],
+           [2, "cde"],
+           [3, "def"],
+           [4, "efg"]
+         ]
+        },
+        {
+
+         "expression": "trim([\" abc \", [\" def \", \" ghi \"]])",
+         "result": ["abc", ["def", "ghi"]]
+        },
+        {
+
+         "expression": "search(\"b\", \"abcbebg\", [0,1,2,3])",
+         "result": [
+           [1, "b"],
+           [1, "b"],
+           [3, "b"],
+           [3, "b"]
+         ]
+        },
+        {
+
+         "expression": "trunc([1.5, [2.5, 3.5]])",
+         "result": [1, [2, 3]]
+        },
+        {
+
+         "expression": "datetime(2024, 10, 12, 13, 14, 15, 16) | second([@, @])",
+         "result": [15, 15]
+        },
+        {
+
+         "expression": "upper([\"abc\", [\"def\", \"ghi\"]])",
+         "result": ["ABC", ["DEF", "GHI"]]
+        },
+        {
+
+         "expression": "sign(arrayInt)",
+         "result": [1, 1, 1, 1, 1, 1, 1]
+        },
+        {
+
+         "expression": "datetime(2024, 3, 8) | weekday([[@, @], [@, @]], 1)",
+         "result": [[6, 6], [6, 6]]
+        },
+        {
+
+         "expression": "sin(arrayNum)",
+         "result": [
+           0.19024072762619915, -0.7965654722360865, -0.8912073600614354, 0,
+           0.8912073600614354, 0.7965654722360865, -0.19024072762619915
+         ]
+        },
+        {
+
+         "expression": "datetime(2024, 3, 8) | year([[@, @], [@, @]])",
+         "result": [[2024, 2024], [2024, 2024]]
+        },
+        {
+
+         "expression": "split(arrayStr, \"\")",
+         "result": [
+           ["a", "b", "c"],
+           ["b", "c", "d"],
+           ["c", "d", "e"],
+           ["d", "e", "f"],
+           ["e", "f", "g"]
+         ]
+       },
+       {
+         "expression": "split(\"abcdefg\", [\"b\", \"c\"])",
+         "result": [
+           ["a", "cdefg"],
+           ["ab", "defg"]
+         ]
+       },
+       {
+         "expression": "split(arrayStr, [\"a\", \"b\"])",
+         "result": [
+           ["", "bc"],
+           ["", "cd"],
+           ["c", "d", "e"],
+           ["d", "e", "f"],
+           ["e", "f", "g"]
+         ]
+       },
+       {
+         "expression": "sqrt(arrayNum[?@ > 0])",
+         "result": [
+           1.0488088481701516,
+           1.489966442575134,
+           1.8256505689753448
+         ]
+       },
+       {
+         "expression": "startsWith(arrayStr, arrayStr)",
+         "result": [true,
+         true,
+         true,
+         true,
+         true]
+       },
+       {
+         "expression": "startsWith(arrayStr, \"b\")",
+         "result": [
+           false,
+           true,
+           false,
+           false,
+           false
+         ]
+       },
+       {
+         "expression": "startsWith(\"abcdefg\", [\"a\", \"b\", \"c\"])",
+         "result": [
+           true,
+           false,
+           false
+         ]
+       },
+       {
+         "expression": "substitute(arrayStr, \"c\", \"C\", [0,0,0,0,0])",
+         "result": ["abC","bCd","Cde","def","efg"]
+       },
+       {
+         "expression": "tan(arrayNum)",
+         "result": [-0.1937796334476594, 1.3176122402817965, -1.9647596572486523, 0, 1.9647596572486523, -1.3176122402817965, 0.1937796334476594]
+       },
+       {
+         "expression": "trim(arrayStr)",
+         "result": ["abc", "bcd", "cde", "def", "efg"]
+       },
+       {
+         "expression": "trunc(arrayNum, [1,1,0,0,0,1,1])",
+         "result": [-3.3, -2.2, -1, 0, 1, 2.2, 3.3]
+       },
+       {
+         "expression": "trunc(arrayNum)",
+         "result": [-3, -2, -1, 0, 1, 2, 3]
+       },
+       {
+         "expression": "upper(arrayStr)",
+         "result": ["ABC", "BCD", "CDE", "DEF", "EFG"]
+       },
+       {
+         "expression": "datetime(2024, 10, 12, 13, 14, 15, 16) | weekday([@, @ + 1], 1)",
+         "result": [7, 1]
+       },
+       {
+         "expression": "datetime(2024, 10, 12, 13, 14, 15, 16) | year([@, @ + 1])",
+         "result": [2024, 2024]
+       }
     ]
   }
 ]

@@ -795,8 +795,8 @@ export default function functions(
     endsWith: {
       _func: args => evaluate(args, endsWithFn),
       _signature: [
-        { types: [TYPE_STRING, TYPE_ARRAY] },
-        { types: [TYPE_STRING, TYPE_ARRAY] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
+        { types: [TYPE_STRING, TYPE_ARRAY_STRING] },
       ],
     },
 
@@ -957,6 +957,7 @@ export default function functions(
         const array = args[0];
         // validate beyond the TYPE_ARRAY_ARRAY check
         if (!array.every(a => {
+          if (!Array.isArray(a)) return false;
           if (a.length !== 2) return false;
           if (getType(a[0]) !== TYPE_STRING) return false;
           return true;
@@ -966,7 +967,7 @@ export default function functions(
         return Object.fromEntries(array);
       },
       _signature: [
-        { types: [TYPE_ARRAY_ARRAY] },
+        { types: [TYPE_ARRAY_ARRAY, TYPE_ARRAY_STRING, TYPE_ARRAY_NUMBER] },
       ],
     },
 
@@ -1038,9 +1039,7 @@ export default function functions(
      */
     hour: {
       _func: args => evaluate(args, a => getDateObj(a).getHours()),
-      _signature: [
-        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
-      ],
+      _signature: [{ types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] }],
     },
 
     /**
@@ -2322,7 +2321,7 @@ export default function functions(
     sum: {
       _func: resolvedArgs => {
         let sum = 0;
-        resolvedArgs[0].forEach(arg => {
+        resolvedArgs[0].flat(Infinity).forEach(arg => {
           sum += arg * 1;
         });
         return sum;
