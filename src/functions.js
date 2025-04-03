@@ -1683,9 +1683,9 @@ export default function functions(
      * Note that implementations are not required to provide `register()` in order to be conformant.
      * Built-in functions may not be overridden.
      * @param {string} functionName Name of the function to register.
-     * `functionName` must begin with an underscore and follow the regular
+     * `functionName` must begin with an underscore or uppercase letter and follow the regular
      * expression pattern:
-     * `{caret}_{startsb}_a-zA-Z0-9${endsb}{asterisk}$`
+     * `{caret}{startsb}_A-Z{endsb}{startsb}_a-zA-Z0-9${endsb}{asterisk}$`
      * @param {expression} expr Expression to execute with this function call
      * @return {{}} returns an empty object
      * @function register
@@ -1699,7 +1699,7 @@ export default function functions(
         const functionName = resolvedArgs[0];
         const exprefNode = resolvedArgs[1];
 
-        if (!/^_[_a-zA-Z0-9$]*$/.test(functionName)) throw functionError(`Invalid function name: "${functionName}"`);
+        if (!/^[_A-Z][_a-zA-Z0-9$]*$/.test(functionName)) throw functionError(`Invalid function name: "${functionName}"`);
         if (functionMap[functionName]
           && functionMap[functionName]._exprefNode.value !== exprefNode.value) {
           // custom functions can be re-registered as long as the expression is the same
@@ -1708,6 +1708,53 @@ export default function functions(
         functionMap[functionName] = {
           _func: args => runtime.interpreter.visit(exprefNode, ...args),
           _signature: [{ types: [TYPE_ANY], optional: true }],
+          _exprefNode: exprefNode,
+        };
+        return {};
+      },
+      _signature: [
+        { types: [TYPE_STRING] },
+        { types: [TYPE_EXPREF] },
+      ],
+    },
+
+    /**
+     * Register a function that accepts multiple parameters.
+     * A function may not be re-registered with a different definition.
+     * Note that implementations are not required to provide `registerWithParams()`
+     * in order to be conformant.
+     * Built-in functions may not be overridden.
+     * @param {string} functionName Name of the function to register.
+     * `functionName` must begin with an underscore or uppercase letter and follow the regular
+     * expression pattern:
+     * `{caret}{startsb}_A-Z{endsb}{startsb}_a-zA-Z0-9${endsb}{asterisk}$`
+     * @param {expression} expr Expression to execute with this function call.
+     * Parameters are passed as an array.
+     * @return {{}} returns an empty object
+     * @function registerWithParams
+     * @example
+     * registerWithParams("Product", &@[0] * @[1])
+     * // can now call: Product(2,21) => returns 42
+     * registerWithParams(
+     *   "Ltrim",
+     *   &split(@[0],"").reduce(@, &accumulated & current | if(@ = " ", "", @), "")
+     *  )
+     * // Ltrim("  abc  ") => returns "abc  "
+     */
+    registerWithParams: {
+      _func: resolvedArgs => {
+        const functionName = resolvedArgs[0];
+        const exprefNode = resolvedArgs[1];
+
+        if (!/^[_A-Z][_a-zA-Z0-9$]*$/.test(functionName)) throw functionError(`Invalid function name: "${functionName}"`);
+        if (functionMap[functionName]
+          && functionMap[functionName]._exprefNode.value !== exprefNode.value) {
+          // custom functions can be re-registered as long as the expression is the same
+          throw functionError(`Cannot override function: "${functionName}" with a different definition`);
+        }
+        functionMap[functionName] = {
+          _func: args => runtime.interpreter.visit(exprefNode, args),
+          _signature: [{ types: [TYPE_ANY], optional: true, variadic: true }],
           _exprefNode: exprefNode,
         };
         return {};

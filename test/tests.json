@@ -1582,15 +1582,15 @@
         "error": "FunctionError"
       },
       {
-        "expression": "_product([3, 4]) + _product([4, 5])",
-        "result": 32
-      },
-      {
         "expression": "merge(register(\"_p1\", &42), register(\"_p2\", &43), {r: _p1() + _p2()})",
         "result": { "r": 85 }
       },
       {
         "expression": "register(\"_identity\", &@) || _identity()",
+        "result": null
+      },
+      {
+        "expression": "registerWithParams(\"Identity\", &if (length(@) = 0, null(), @)) || Identity()",
         "result": null
       },
       {

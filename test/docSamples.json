@@ -230,6 +230,26 @@
         "result": 42
       },
       {
+        "data": "registerWithParams(\"Product\", &@[0] * @[1])",
+        "expression": "registerWithParams(\"Product\", &@[0] * @[1]) | Product(2, 21)",
+        "result": 42
+      },
+      {
+        "data": "register(\"_ltrim\", &split(@,\"\").reduce(@, &accumulated & current | if(@ = \" \", \"\", @), \"\")) | _ltrim(\"  abc  \")",
+        "expression": "register(\"_ltrim\", &split(@,\"\").reduce(@, &accumulated & current | if(@ = \" \", \"\", @), \"\")) | _ltrim(\"  abc  \")",
+        "result": "abc  "
+      },
+      {
+        "data": "registerWithParams(\"Product\", &@[0] * @[1])",
+        "expression": "registerWithParams(\"Product\", &@[0] * @[1]) | Product(2, 21)",
+        "result": 42
+      },
+      {
+        "data": "registerWithParams(\"Ltrim\", &split(@[0],\"\").reduce(@, &accumulated & current | if(@ = \" \", \"\", @), \"\")) | Ltrim(\"  abc  \")",
+        "expression": "registerWithParams(\"Ltrim\", &split(@[0],\"\").reduce(@, &accumulated & current | if(@ = \" \", \"\", @), \"\")) | Ltrim(\"  abc  \")",
+        "result": "abc  "
+      },
+      {
         "expression": "reverse([\"a\", \"b\", \"c\"])",
         "result": ["c", "b", "a"]
       },
