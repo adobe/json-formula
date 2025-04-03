@@ -1157,6 +1157,8 @@
       { "expression": "toNumber(\" 011\\n\", 8)", "result": 9},
       { "expression": "toNumber(\" -011\\n\", 8)", "result": -9},
       { "expression": "toNumber(\" +011\\n\", 8)", "result": 9},
+      { "expression": "toNumber(\" 070.070 \", 8)", "result": 56.109375},
+      { "expression": "toNumber(\" 0F0.0F0 \", 16)", "result": 240.05859375},
       {
         "expression": "'toString'(`1.0`)",
         "error": "SyntaxError"

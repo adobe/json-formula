@@ -2549,7 +2549,7 @@ export default function functions(
             debug.push(`Failed to convert "${num}" base "${base}" to number`);
             return null;
           }
-          const parts = num.split('.');
+          const parts = num.split('.').map(p => p.trim());
 
           let decimal = 0;
           if (parts.length > 1) {
