@@ -440,10 +440,10 @@ export default function functions(
 
     /**
      * Finds the average of the elements in an array.
-     * Non-numeric values (text, boolean, null etc) are ignored.
+     * Non-numeric values (text, boolean, null, object) are ignored.
      * If there are nested arrays, they are flattened.
      * If the array is empty, an evaluation error is thrown
-     * @param {number[]} elements array of numeric values
+     * @param {any[]} elements array of values
      * @return {number} average value
      * @function avg
      * @example
@@ -467,7 +467,7 @@ export default function functions(
 
     /**
      * Finds the average of the elements in an array, converting strings and booleans to number.
-     * If any conversions to number fail, an type error is thrown.
+     * If any conversions to number fail, a type error is thrown.
      * If there are nested arrays, they are flattened.
      * If the array is empty, an evaluation error is thrown
      * @param {number[]} elements array of numeric values
@@ -1200,7 +1200,7 @@ export default function functions(
      * @returns {string|string[]} the lower case value of the input string
      * @function lower
      * @example
-     * lower("E. E. Cummings") // returns e. e. cummings
+     * lower("E. E. Cummings") // returns "e. e. cummings"
      */
     lower: {
       _func: args => evaluate(args, a => toString(a).toLowerCase()),
@@ -1230,10 +1230,10 @@ export default function functions(
 
     /**
      * Calculates the largest value in the input numbers.
-     * Any values that are not numbers (e.g. null, boolean, strings, objects) will be ignored.
+     * Any values that are not numbers (null, boolean, strings, objects) will be ignored.
      * If any parameters are arrays, the arrays will be flattened.
      * If no numbers are provided, the function will return zero.
-     * @param {...(number[]|number)} collection values/array(s) in which the maximum
+     * @param {...(array|any)} collection values/array(s) in which the maximum
      * element is to be calculated
      * @return {number} the largest value found
      * @function max
@@ -1263,7 +1263,7 @@ export default function functions(
      * Calculates the largest value in the input values, coercing parameters to numbers.
      * Null values are ignored.
      * If any parameters cannot be converted to a number,
-     * the function will fail with an type error.
+     * the function will fail with a type error.
      * If any parameters are arrays, the arrays will be flattened.
      * If no numbers are provided, the function will return zero.
      * @param {...(any)} collection values/array(s) in which the maximum
@@ -1379,10 +1379,10 @@ export default function functions(
 
     /**
      * Calculates the smallest value in the input numbers.
-     * Any values that are not numbers (e.g. null, boolean, strings, objects) will be ignored.
+     * Any values that are not numbers (null, boolean, string, object) will be ignored.
      * If any parameters are arrays, the arrays will be flattened.
      * If no numbers are provided, the function will return zero.
-     * @param {...(number[]|number)} collection
+     * @param {...(any[]|any)} collection
      * Values/arrays to search for the minimum value
      * @return {number} the smallest value found
      * @function min
@@ -1410,10 +1410,10 @@ export default function functions(
      * Calculates the smallest value in the input values, coercing parameters to numbers.
      * Null values are ignored.
      * If any parameters cannot be converted to a number,
-     * the function will fail with an type error.
+     * the function will fail with a type error.
      * If any parameters are arrays, the arrays will be flattened.
      * If no numbers are provided, the function will return zero.
-     * @param {...(any)} collection values/array(s) in which the maximum
+     * @param {...(any[]|any)} collection values/array(s) in which the maximum
      * element is to be calculated
      * @return {number} the largest value found
      * @function minA
@@ -2148,13 +2148,13 @@ export default function functions(
     },
 
     /**
-         * Find the square root of a number
-         * @param {number|number[]} num source number
-         * @return {number|number[]} The calculated square root value
-         * @function sqrt
-         * @example
-         * sqrt(4) // returns 2
-         */
+     * Find the square root of a number
+     * @param {number|number[]} num source number
+     * @return {number|number[]} The calculated square root value
+     * @function sqrt
+     * @example
+     * sqrt(4) // returns 2
+     */
     sqrt: {
       _func: args => evaluate(args, arg => validNumber(Math.sqrt(arg), 'sqrt')),
       _signature: [
@@ -2185,7 +2185,7 @@ export default function functions(
      * then compute the standard deviation using [stdevp]{@link stdevp}.
      * Non-numeric values (text, boolean, null etc) are ignored.
      * If there are nested arrays, they are flattened.
-     * @param {number[]} numbers The array of numbers comprising the population.
+     * @param {any[]} values The array containing numbers comprising the population.
      * Array size must be greater than 1.
      * @returns {number} [Standard deviation](https://en.wikipedia.org/wiki/Standard_deviation)
      * @function stdev
@@ -2252,7 +2252,9 @@ export default function functions(
      * `stdevp` assumes that its arguments are the entire population.
      * If your data represents a sample of the population,
      * then compute the standard deviation using [stdev]{@link stdev}.
-     * @param {number[]} numbers The array of numbers comprising the population.
+     * Non-numeric values (text, boolean, null etc) are ignored.
+     * If there are nested arrays, they are flattened.
+     * @param {any[]} values The array containing numbers comprising the population.
      * An empty array is not allowed.
      * @returns {number} Calculated standard deviation
      * @function stdevp
@@ -2359,7 +2361,9 @@ export default function functions(
     /**
      * Calculates the sum of the provided array.
      * An empty array will produce a return value of 0.
-     * @param {number[]} collection array of numbers
+     * Any values that are not numbers (null, boolean, strings, objects) will be ignored.
+     * If any parameters are arrays, the arrays will be flattened.
+     * @param {any[]} collection array of values
      * @return {number} The computed sum
      * @function sum
      * @example
@@ -2368,13 +2372,18 @@ export default function functions(
     sum: {
       _func: resolvedArgs => {
         let sum = 0;
-        resolvedArgs[0].flat(Infinity).forEach(arg => {
-          sum += arg * 1;
-        });
+        resolvedArgs[0]
+          .flat(Infinity)
+          .filter(a => getType(a) === TYPE_NUMBER)
+          .forEach(arg => {
+            sum += arg * 1;
+          });
+
         return sum;
       },
-      _signature: [{ types: [TYPE_ARRAY_NUMBER] }],
+      _signature: [{ types: [TYPE_ARRAY] }],
     },
+
     /**
      * Computes the tangent of a number in radians
      * @param {number|number[]} angle A number representing an angle in radians.
@@ -2517,11 +2526,14 @@ export default function functions(
     },
 
     /**
-     * Converts the provided arg to a number as per
-     * the <<_type_coercion_rules,type coercion rules>>.
+     * Converts the provided arg to a number.
+     * The conversions follow the <<_type_coercion_rules,type coercion rules>> but will also:
+     * * Convert non-numeric strings to zero
+     * * Convert arrays to arrays of numbers
      *
-     * @param {any} arg to convert to number
-     * @param {integer} [base=10] If the input `arg` is a string, the use base to convert to number.
+     * @param {any|any[]} value to convert to number
+     * @param {integer|integer[]} [base=10] If the input `arg` is a string,
+     * the base to use to convert to number.
      * One of: 2, 8, 10, 16. Defaults to 10.
      * @return {number} The resulting number.  If conversion to number fails, return null.
      * @function toNumber
@@ -2535,49 +2547,57 @@ export default function functions(
      */
     toNumber: {
       _func: resolvedArgs => {
-        const num = valueOf(resolvedArgs[0]);
-        const base = resolvedArgs.length > 1 ? toInteger(resolvedArgs[1]) : 10;
-        if (getType(num) === TYPE_STRING && base !== 10) {
-          let digitCheck;
-          if (base === 2) digitCheck = /^\s*(\+|-)?[01.]+\s*$/;
-          else if (base === 8) digitCheck = /^\s*(\+|-)?[0-7.]+\s*$/;
-          else if (base === 16) digitCheck = /^\s*(\+|-)?[0-9A-Fa-f.]+\s*$/;
-          else throw evaluationError(`Invalid base: "${base}" for toNumber()`);
+        const toNumberFn = (value, base) => {
+          const num = valueOf(value);
+          if (getType(num) === TYPE_STRING && base !== 10) {
+            let digitCheck;
+            if (base === 2) digitCheck = /^\s*(\+|-)?[01.]+\s*$/;
+            else if (base === 8) digitCheck = /^\s*(\+|-)?[0-7.]+\s*$/;
+            else if (base === 16) digitCheck = /^\s*(\+|-)?[0-9A-Fa-f.]+\s*$/;
+            else throw evaluationError(`Invalid base: "${base}" for toNumber()`);
 
-          if (num === '') return 0;
-          if (!digitCheck.test(num)) {
-            debug.push(`Failed to convert "${num}" base "${base}" to number`);
+            if (num === '') return 0;
+            if (!digitCheck.test(num)) {
+              debug.push(`Failed to convert "${num}" base "${base}" to number`);
+              return null;
+            }
+            const parts = num.split('.').map(p => p.trim());
+
+            let decimal = 0;
+            if (parts.length > 1) {
+              decimal = parseInt(parts[1], base) * base ** -parts[1].length;
+            }
+
+            const result = parseInt(parts[0], base) + decimal;
+            if (parts.length > 2 || Number.isNaN(result)) {
+              debug.push(`Failed to convert "${num}" base "${base}" to number`);
+              return null;
+            }
+            return result;
+          }
+          try {
+            return toNumber(num);
+          } catch (e) {
+            const errorString = arg => {
+              const v = toJSON(arg);
+              return v.length > 50 ? `${v.substring(0, 20)} ...` : v;
+            };
+
+            debug.push(`Failed to convert "${errorString(num)}" to number`);
             return null;
           }
-          const parts = num.split('.').map(p => p.trim());
-
-          let decimal = 0;
-          if (parts.length > 1) {
-            decimal = parseInt(parts[1], base) * base ** -parts[1].length;
-          }
-
-          const result = parseInt(parts[0], base) + decimal;
-          if (parts.length > 2 || Number.isNaN(result)) {
-            debug.push(`Failed to convert "${num}" base "${base}" to number`);
-            return null;
-          }
-          return result;
+        };
+        let base = 10;
+        if (resolvedArgs.length > 1) {
+          base = Array.isArray(resolvedArgs[1])
+            ? resolvedArgs.map(toInteger)
+            : toInteger(resolvedArgs[1]);
         }
-        try {
-          return toNumber(num);
-        } catch (e) {
-          const errorString = arg => {
-            const v = toJSON(arg);
-            return v.length > 50 ? `${v.substring(0, 20)} ...` : v;
-          };
-
-          debug.push(`Failed to convert "${errorString(num)}" to number`);
-          return null;
-        }
+        return evaluate([resolvedArgs[0], base], toNumberFn);
       },
       _signature: [
         { types: [TYPE_ANY] },
-        { types: [TYPE_NUMBER], optional: true },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER], optional: true },
       ],
     },
 
