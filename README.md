@@ -51,3 +51,8 @@ Specification / Reference: [HTML](https://opensource.adobe.com/json-formula/doc/
 [JavaScript API](./doc/output/JSDOCS.md)
 
 [Developer Instructions](./DEVELOPMENT.md)
+
+# Beta 2.0.0 Documentation
+[HTML](https://opensource.adobe.com/json-formula/doc/output/json-formula-specification-2.0.0-beta.1.html)
+[PDF](https://opensource.adobe.com/json-formula/doc/output/json-formula-specification-2.0.0-beta.1.pdf)
+

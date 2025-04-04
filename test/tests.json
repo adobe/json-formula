@@ -143,7 +143,7 @@
         "result": 10.48
       },
       { "expression": "sum(`[2,4,6]`)", "result": 12 },
-      { "expression": "sum([2,\"4\",6,`true`])", "result": 13 },
+      { "expression": "sum([2,\"4\",6,`true`])", "result": 8 },
       { "expression": "(3 + 2) * 10 / 2 - 5", "result": 20 },
       { "expression": "2 * \"$2\" + `null`", "error": "TypeError" },
       { "expression": "\"0x11\" * 1", "error": "TypeError"},
