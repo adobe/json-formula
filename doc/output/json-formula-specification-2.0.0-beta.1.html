@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.18">
+<meta name="generator" content="Asciidoctor 2.0.26">
 <meta name="author" content="PDF Association Forms Technical Working Group">
 <title>json-formula Specification</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
@@ -117,7 +117,6 @@ h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title str
 :not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
 pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
 pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
-pre>code{display:block}
 pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
 em em{font-style:normal}
 strong strong{font-weight:400}
@@ -141,7 +140,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -163,6 +162,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -209,19 +209,17 @@ table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
 .admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
 .admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
 .exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
-.exampleblock>.content>:first-child{margin-top:0}
-.exampleblock>.content>:last-child{margin-bottom:0}
 .sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
-.sidebarblock>:first-child{margin-top:0}
-.sidebarblock>:last-child{margin-bottom:0}
 .sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
-.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content>:first-child,.sidebarblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child,.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
 .literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
 @media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
 @media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
 .literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class=highlight],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
 .literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
 .listingblock>.content{position:relative}
+.listingblock pre>code{display:block}
 .listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
 .listingblock:hover code[data-lang]::before{display:block}
 .listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
@@ -331,7 +329,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -394,7 +392,7 @@ b.conum *{color:inherit!important}
 dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
 h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
 p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
-p,blockquote,dt,td.content,span.alt,summary{font-size:1.0625rem}
+p,blockquote,dt,td.content,td.hdlist1,span.alt,summary{font-size:1.0625rem}
 p{margin-bottom:1.25rem}
 .sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
 .exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
@@ -443,7 +441,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="details">
 <span id="author" class="author">PDF Association Forms Technical Working Group</span><br>
 <span id="revnumber">version 2.0.0-beta.1,</span>
-<span id="revdate">2025-04-04</span>
+<span id="revdate">2025-11-11</span>
 <br><span id="revremark"></span>
 </div>
 </div>
@@ -544,7 +542,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 <div class="paragraph">
-<p>The intended audience are both end-users of json-formula as well as implementors; the contents are then both a user guide and a specification.</p>
+<p>The intended audience are both end-users of json-formula as well as implementers; the contents are then both a user guide and a specification.</p>
 </div>
 </div>
 </div>
@@ -552,7 +550,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_notation">1. Notation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the specification, examples are shown through the use of a <code>search</code> function.  The syntax for this function is:</p>
+<p>In the specification, examples are shown through the use of a <code>search</code> function called <code>eval</code>.  The syntax for this function is:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -601,8 +599,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 <div class="paragraph">
-<p>There is an additional type that is not a JSON type that&#8217;s used in
-json-formula functions:</p>
+<p>There is an additional type that is not a JSON type that&#8217;s used in json-formula functions:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2516,8 +2513,7 @@ When processing arrays of values, and where there is more than one parameter, ea
 <div class="paragraph">
 <p>Functions are evaluated in applicative order:
 - Each argument must be an expression
-- Each argument expression must be evaluated before evaluating the
-function
+- Each argument expression must be evaluated before evaluating the function
 - Each argument expression result must be coerced to the expected type
 - If coercion is not possible, a <code>TypeError</code> error is raised
 - The function is then called with the evaluated function arguments.</p>
@@ -3000,9 +2996,9 @@ the array is empty, an evaluation error is thrown</p>
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p> Generates a lower-case string of the <code>input</code> string using
-locale-specific mappings. e.g. Strings with German letter ß (eszett) can
-be compared to "ss"</p>
+<p> Generates a lower-case string of the <code>input</code> string
+using locale-specific mappings. e.g. Strings with German letter ß
+(eszett) can be compared to &#8220;ss&#8221;</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -3053,8 +3049,8 @@ lower case</p>
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p> Finds the next highest integer value of the argument <code>num</code>
-by rounding up if necessary. i.e. ceil() rounds toward positive
+<p> Finds the next highest integer value of the argument
+<code>num</code> by rounding up if necessary. i.e. ceil() rounds toward positive
 infinity.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
@@ -3158,10 +3154,10 @@ If the input string is empty, returns <code>null</code>.</p>
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p> Determines if the given <code>subject</code> contains <code>search</code>. If
-<code>subject</code> is an array, this function returns true if one of the elements
-in the array is equal to the <code>search</code> value. If <code>subject</code> is a string,
-return true if the string contains the <code>search</code> value.</p>
+<p> Determines if the given <code>subject</code> contains <code>search</code>.
+If <code>subject</code> is an array, this function returns true if one of the
+elements in the array is equal to the <code>search</code> value. If <code>subject</code>
+is a string, return true if the string contains the <code>search</code> value.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -3278,21 +3274,24 @@ of the difference is determined by the <code>unit</code> parameter. One of:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>y</code> the number of whole years between <code>start_date</code> and <code>end_date</code></p>
+<p><code>y</code> the number of whole years between <code>start_date</code> and
+<code>end_date</code></p>
 </li>
 <li>
-<p><code>m</code> the number of whole months between <code>start_date</code> and <code>end_date</code>.</p>
+<p><code>m</code> the number of whole months between <code>start_date</code> and
+<code>end_date</code>.</p>
 </li>
 <li>
 <p><code>d</code> the number of days between <code>start_date</code> and <code>end_date</code></p>
 </li>
 <li>
-<p><code>ym</code> the number of whole months between <code>start_date</code> and <code>end_date</code>
-after subtracting whole years.</p>
+<p><code>ym</code> the number of whole months between <code>start_date</code> and
+<code>end_date</code> after subtracting whole years.</p>
 </li>
 <li>
-<p><code>yd</code> the number of days between <code>start_date</code> and <code>end_date</code>, assuming
-<code>start_date</code> and <code>end_date</code> were no more than one year apart</p>
+<p><code>yd</code> the number of days between <code>start_date</code> and <code>end_date</code>,
+assuming <code>start_date</code> and <code>end_date</code> were no more than one year
+apart</p>
 </li>
 </ul>
 </div>
@@ -3626,9 +3625,9 @@ where we start the search</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string | integer</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The name (or index position) of the
-elements to find. If <code>name</code> is a string, search for nested objects with
-a matching key. If <code>name</code> is an integer, search for nested arrays with a
-matching index.</p></td>
+elements to find. If <code>name</code> is a string, search for nested objects
+with a matching key. If <code>name</code> is an integer, search for nested arrays
+with a matching index.</p></td>
 </tr>
 </tbody>
 </table>
@@ -3658,8 +3657,8 @@ matching index.</p></td>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
-<p> boolean | Array.&lt;boolean&gt; - true if the <code>suffix</code> value
-is at the end of the <code>subject</code></p>
+<p> boolean | Array.&lt;boolean&gt; - true if the <code>suffix</code>
+value is at the end of the <code>subject</code></p>
 </dd>
 <dt class="hdlist1">Parameters</dt>
 <dd>
@@ -3712,9 +3711,9 @@ endsWith("Abcd", "A") // returns false</code></pre>
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p> Returns an array of <code>[key, value]</code> pairs from an object or
-array. The <code>fromEntries()</code> function may be used to convert an array to
-an object.</p>
+<p> Returns an array of <code>[key, value]</code> pairs from an object
+or array. The <code>fromEntries()</code> function may be used to convert an array
+to an object.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -3882,7 +3881,7 @@ power of e.</p></td>
 <dt class="hdlist1">Description</dt>
 <dd>
 <p> Return constant boolean false value. Expressions may also
-use the JSON literal: <code>`false`</code></p>
+use the JSON literal: <code>\'false\'</code></p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -3944,8 +3943,8 @@ of the found string, null if not found.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">integer | Array.&lt;integer&gt;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">zero-based position to
-start searching. If specified, <code>start</code> must be greater than or equal to
-0</p></td>
+start searching. If specified, <code>start</code> must be greater than or equal
+to 0</p></td>
 </tr>
 </tbody>
 </table>
@@ -3974,8 +3973,8 @@ find("M", "abMcdM", 2) // returns 2</code></pre>
 <dt class="hdlist1">Description</dt>
 <dd>
 <p> Calculates the next lowest integer value of the argument
-<code>num</code> by rounding down if necessary. i.e. floor() rounds toward negative
-infinity.</p>
+<code>num</code> by rounding down if necessary. i.e. floor() rounds toward
+negative infinity.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -4082,8 +4081,8 @@ fromCodePoint(65) == "\u0041" // true</code></pre>
 <dd>
 <p> Returns an object by transforming a list of key-value
 <code>pairs</code> into an object. <code>fromEntries()</code> is the inverse operation of
-<code>entries()</code>. If the nested arrays are not of the form: <code>[key, value]</code>
-(where key is a string), an error will be thrown.</p>
+<code>entries()</code>. If the nested arrays are not of the form:
+<code>[key, value]</code> (where key is a string), an error will be thrown.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -4224,8 +4223,8 @@ may be any data type.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string | integer</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The name (or index position) of the
-element to find. if <code>subject</code> is an array, <code>name</code> must be an integer; if
-<code>subject</code> is an object, <code>name</code> must be a string.</p></td>
+element to find. if <code>subject</code> is an array, <code>name</code> must be an
+integer; if <code>subject</code> is an object, <code>name</code> must be a string.</p></td>
 </tr>
 </tbody>
 </table>
@@ -4307,8 +4306,8 @@ hour(time(12, 0, 0)) // returns 12</code></pre>
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p> Return one of two values <code>result1</code> or <code>result2</code>, depending
-on the <code>condition</code></p>
+<p> Return one of two values <code>result1</code> or <code>result2</code>,
+depending on the <code>condition</code></p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -5024,8 +5023,8 @@ element to extract.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">length</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">integer</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The number of code points or elements to return from
-the string or array. If greater then the length of <code>subject</code> the length
-of the subject is used.</p></td>
+the string or array. If greater then the length of <code>subject</code> the
+length of the subject is used.</p></td>
 </tr>
 </tbody>
 </table>
@@ -5281,8 +5280,8 @@ number.</p>
 <dt class="hdlist1">Returns</dt>
 <dd>
 <p> number | Array.&lt;number&gt; - Computes the remainder of
-<code>dividend</code>/<code>divisor</code>. If <code>dividend</code> is negative, the result will also be
-negative. If <code>dividend</code> is zero, an error is thrown.</p>
+<code>dividend</code>/<code>divisor</code>. If <code>dividend</code> is negative, the result will
+also be negative. If <code>dividend</code> is zero, an error is thrown.</p>
 </dd>
 <dt class="hdlist1">Parameters</dt>
 <dd>
@@ -5444,10 +5443,10 @@ not("") // returns true</code></pre>
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p> Finds the first argument that does not resolve to <code>null</code>.
-This function accepts one or more arguments, and will evaluate them in
-order until a non-null argument is encountered. If all arguments values
-resolve to null, then return a null value.</p>
+<p> Finds the first argument that does not resolve to
+<code>null</code>. This function accepts one or more arguments, and will evaluate
+them in order until a non-null argument is encountered. If all arguments
+values resolve to null, then return a null value.</p>
 </dd>
 <dt class="hdlist1">Parameters</dt>
 <dd>
@@ -5510,7 +5509,7 @@ notNull(`null`, 2, 3, 4, `null`) // returns 2</code></pre>
 <dt class="hdlist1">Description</dt>
 <dd>
 <p> Return constant null value. Expressions may also use the
-JSON literal: <code>`null`</code></p>
+JSON literal: <code>\'null\'</code></p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -5835,10 +5834,10 @@ order to be conformant. Built-in functions may not be overridden.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">functionName</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the function to register. <code>functionName</code>
-must begin with an underscore or uppercase letter and follow the regular
-expression pattern:
-<code>^[_A-Z][_a-zA-Z0-9$]*$</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the function to register.
+<code>functionName</code> must begin with an underscore or uppercase letter and
+follow the regular expression pattern:
+<code>{caret}{startsb}_A-Z{endsb}{startsb}_a-zA-Z0-9${endsb}{asterisk}$</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">expr</p></td>
@@ -5898,10 +5897,10 @@ order to be conformant. Built-in functions may not be overridden.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">functionName</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the function to register. <code>functionName</code>
-must begin with an underscore or uppercase letter and follow the regular
-expression pattern:
-<code>^[_A-Z][_a-zA-Z0-9$]*$</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the function to register.
+<code>functionName</code> must begin with an underscore or uppercase letter and
+follow the regular expression pattern:
+<code>{caret}{startsb}_A-Z{endsb}{startsb}_a-zA-Z0-9${endsb}{asterisk}$</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">expr</p></td>
@@ -5976,18 +5975,19 @@ begin the replacement. Must be greater than or equal to 0.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">length</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">integer</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number of code points to be replaced. If <code>start</code><br>
-<code>length</code> is greater than the length of <code>subject</code>, all text past <code>start</code>
-will be replaced.</p></td>
+<code>length</code> is greater than the length of <code>subject</code>, all text past
+<code>start</code> will be replaced.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">replacement</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">any</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Replacement to insert at the start index. If
-<code>subject</code> is an array, and <code>replacement</code> is an array, the <code>replacement</code>
-array elements will be inserted into the <code>subject</code> array. If <code>subject</code>
-is an array and replacement is not an array, the <code>replacement</code> will be
-inserted as a single element in <code>subject</code> If <code>subject</code> is a string, the
-<code>replacement</code> will be coerced to a string.</p></td>
+<code>subject</code> is an array, and <code>replacement</code> is an array, the
+<code>replacement</code> array elements will be inserted into the <code>subject</code>
+array. If <code>subject</code> is an array and replacement is not an array, the
+<code>replacement</code> will be inserted as a single element in <code>subject</code> If
+<code>subject</code> is a string, the <code>replacement</code> will be coerced to a
+string.</p></td>
 </tr>
 </tbody>
 </table>
@@ -6191,14 +6191,15 @@ right([4, 5, 6], 2) // returns [5, 6]</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>If <code>precision</code> is greater than zero, round to the specified number of
-decimal places.</p>
+<p>If <code>precision</code> is greater than zero, round to the specified number
+of decimal places.</p>
 </li>
 <li>
 <p>If <code>precision</code> is 0, round to the nearest integer.</p>
 </li>
 <li>
-<p>If <code>precision</code> is less than 0, round to the left of the decimal point.</p>
+<p>If <code>precision</code> is less than 0, round to the left of the decimal
+point.</p>
 </li>
 </ul>
 </div>
@@ -6269,12 +6270,12 @@ round(-1.5) // -1</code></pre>
 <dt class="hdlist1">Description</dt>
 <dd>
 <p> Perform a wildcard search. The search is case-sensitive
-and supports two forms of wildcards: <code>*</code> finds a sequence of
-code points and <code>?</code> finds a single code point. To use <code>*</code> or
-<code>?</code> or <code>\</code> as text values, precede them with an escape
-(<code>\</code>) character. Note that the wildcard search is not greedy.
-e.g. <code>search("a*b", "abb")</code> will return <code>[0, "ab"]</code> Not
-<code>[0, "abb"]</code></p>
+and supports two forms of wildcards: <code>{asterisk}</code> finds a sequence of
+code points and <code>?</code> finds a single code point. To use <code>{asterisk}</code>
+or <code>?</code> or <code>{backslash}</code> as text values, precede them with an escape
+(<code>{backslash}</code>) character. Note that the wildcard search is not
+greedy. e.g. <code>search("a{asterisk}b", "abb")</code> will return <code>[0, "ab"]</code>
+Not <code>[0, "abb"]</code></p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -6465,8 +6466,8 @@ sign(0) // 0</code></pre>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
-<p> number | Array.&lt;number&gt; - The sine of <code>angle</code>, between
--1 and 1, inclusive</p>
+<p> number | Array.&lt;number&gt; - The sine of <code>angle</code>,
+between -1 and 1, inclusive</p>
 </dd>
 <dt class="hdlist1">Parameters</dt>
 <dd>
@@ -6975,8 +6976,8 @@ stdev([1345, 1301, 1368]) // returns 34.044</code></pre>
 <dt class="hdlist1">Description</dt>
 <dd>
 <p> Calculates standard deviation based on the entire
-population given as arguments. <code>stdevpA</code> assumes that its arguments are
-the entire population. If your data represents a sample of the
+population given as arguments. <code>stdevpA</code> assumes that its arguments
+are the entire population. If your data represents a sample of the
 population, then compute the standard deviation using
 <a href="#_stdevA">[_stdevA]</a>. Nested arrays are flattened. Null values are
 ignored. All other parameters are converted to number. If conversion to
@@ -7032,10 +7033,10 @@ stdevA([1345, 1301, "1368"]) // returns 34.044</code></pre>
 <dl>
 <dt class="hdlist1">Description</dt>
 <dd>
-<p> Generates a string from the input <code>text</code>, with text <code>old</code>
-replaced by text <code>new</code> (when searching from the left). If there is no
-match, or if <code>old</code> has length 0, <code>text</code> is returned unchanged. Note that
-<code>old</code> and <code>new</code> may have different lengths.</p>
+<p> Generates a string from the input <code>text</code>, with text
+<code>old</code> replaced by text <code>new</code> (when searching from the left). If
+there is no match, or if <code>old</code> has length 0, <code>text</code> is returned
+unchanged. Note that <code>old</code> and <code>new</code> may have different lengths.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -7071,16 +7072,16 @@ code points.</p></td>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">new</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string | Array.&lt;string&gt;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The text to replace <code>old</code> with. If
-<code>new</code> is an empty string, then occurrences of <code>old</code> are removed from
-<code>text</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The text to replace <code>old</code> with.
+If <code>new</code> is an empty string, then occurrences of <code>old</code> are removed
+from <code>text</code>.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">[which]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">integer | Array.&lt;integer&gt;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The zero-based occurrence of
-<code>old</code> text to replace with <code>new</code> text. If <code>which</code> parameter is omitted,
-every occurrence of <code>old</code> is replaced with <code>new</code>.</p></td>
+<code>old</code> text to replace with <code>new</code> text. If <code>which</code> parameter is
+omitted, every occurrence of <code>old</code> is replaced with <code>new</code>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -7377,7 +7378,7 @@ number</a>. If conversion fails, return null.</p>
 <a href="https://www.iso.org/iso-8601-date-and-time-format.html">ISO8601 formatted
 string</a>. (limited to the <a href="https://www.rfc-editor.org/rfc/rfc3339">RFC
 3339</a> profile) If the string does not include a timezone offset (or
-trailing `Z'), it will be assumed to be local time</p></td>
+trailing &#8216;Z&#8217;), it will be assumed to be local time</p></td>
 </tr>
 </tbody>
 </table>
@@ -7611,7 +7612,7 @@ whitespace characters are left intact.</p>
 <dt class="hdlist1">Description</dt>
 <dd>
 <p> Return constant boolean true value. Expressions may also
-use the JSON literal: <code>`true`</code></p>
+use the JSON literal: <code>\'true\'</code></p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -7900,10 +7901,10 @@ lookup. When querying for <a href="#_hidden_properties">hidden properties</a>,
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">index</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string | integer</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">if <code>subject</code> is an object, <code>index</code> must
-be a string indicating the key name to search for. If <code>subject</code> is an
-array, then index must be an integer indicating the offset into the
-array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">if <code>subject</code> is an object, <code>index</code>
+must be a string indicating the key name to search for. If <code>subject</code>
+is an array, then index must be an integer indicating the offset into
+the array</p></td>
 </tr>
 </tbody>
 </table>
@@ -8271,7 +8272,7 @@ keys(street) -&gt; []</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 2.0.0-beta.1<br>
-Last updated 2025-04-04 01:43:15 UTC
+Last updated 2025-11-11 19:20:25 UTC
 </div>
 </div>
 </body>

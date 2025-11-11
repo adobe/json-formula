@@ -1,6 +1,6 @@
 = json-formula Specification
 PDF Association Forms Technical Working Group
-0.2.0, {docdate}:
+2.0.0, {docdate}:
 :toc: macro
 :outlinelevels: 3
 :appendix-caption: Appendix
@@ -26,13 +26,13 @@ The grammar borrows from
 * https://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part2.html[OpenFormula] for spreadsheet operators and function
 * https://jmespath.org/[JMESPath] for JSON query semantics
 
-The intended audience are both end-users of json-formula as well as implementors; the contents are then both a user guide and a specification.
+The intended audience are both end-users of json-formula as well as implementers; the contents are then both a user guide and a specification.
 
 // start numbering the sections from here...
 :sectnums:
 
 == Notation
-In the specification, examples are shown through the use of a `search` function.  The syntax for this function is:
+In the specification, examples are shown through the use of a `search` function called `eval`.  The syntax for this function is:
 
 [source%unbreakable]
 ----
@@ -59,8 +59,7 @@ json-formula supports all the JSON types:
 * object: an unordered collection of key value pairs
 * `null`
 
-There is an additional type that is not a JSON type that's used in
-json-formula functions:
+There is an additional type that is not a JSON type that's used in json-formula functions:
 
 * expression: A string prefixed with an ampersand (`&`) character
 
@@ -1250,8 +1249,7 @@ With nested arrays:
 
 Functions are evaluated in applicative order:
 - Each argument must be an expression
-- Each argument expression must be evaluated before evaluating the
-function
+- Each argument expression must be evaluated before evaluating the function
 - Each argument expression result must be coerced to the expected type
 - If coercion is not possible, a `TypeError` error is raised
 - The function is then called with the evaluated function arguments.
