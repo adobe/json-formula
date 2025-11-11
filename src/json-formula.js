@@ -14,6 +14,59 @@ import Formula from './interpreter.js';
 export { dataTypes } from './dataTypes.js';
 
 /**
+// data type constants re-exported from dataTypes.js
+// which represent the various data types supported by json-formula function params
+@enum {Number}
+  // Type constants used to define functions.
+  const dataTypes = {
+    TYPE_NUMBER: 0,
+    TYPE_ANY: 1,
+    TYPE_STRING: 2,
+    TYPE_ARRAY: 3,
+    TYPE_OBJECT: 4,
+    TYPE_BOOLEAN: 5,
+    TYPE_EXPREF: 6,
+    TYPE_NULL: 7,
+    TYPE_ARRAY_NUMBER: 8,
+    TYPE_ARRAY_STRING: 9,
+    TYPE_ARRAY_ARRAY: 10,
+    TYPE_EMPTY_ARRAY: 11,
+  };
+ */
+
+/**
+ * @typedef {object} CustomFunctionDefinition
+ * @property {Function} _func - The function implementation
+ * @property {array} [_signature] - Function signature metadata
+ * @example
+  // simple custom functions definition
+  const customFunctions = {
+    true_fn: {
+      _func: () => true,
+      _signature: [],
+    },
+    false_fn: {
+      _func: () => false,
+      _signature: [],
+    },
+  };
+
+  @example
+  // complex custom function with a signature (for its parameters)
+  customEval: {
+    // eslint-disable-next-line no-underscore-dangle
+    _func: ([str, fn]) => customFunctions.customEval._runtime.interpreter.visit(fn, str),
+    _signature: [{ types: [TYPE_STRING] }, { types: [TYPE_EXPREF] }],
+  },
+
+  **NOTE:** Another way to register custom functions is via the `register` method
+  given two strings - name and code - register the function with that name using that code
+  const regFormula = 'register("' + name + '", &' + code + ')';
+  this.search(regFormula, {}, globals); // Run the registration formula with empty data and globals
+
+ */
+
+/**
  * Class represents an instance of a JsonFormula Expression that can be executed later on with
  * multiple instances of JSON Data. The instance of the class has a search
  * function that can be used to evaluate the expression on a json payload.
@@ -23,7 +76,6 @@ class JsonFormula {
    * @param {object} [customFunctions={}] custom functions needed by a hosting application.
    * @param {function} [stringToNumber='null'] A function that converts string values to numbers.
    * Can be used to convert currencies/dates to numbers
-   * @param {string} [language=en-US]
    * @param {array} [debug=[]]  will be populated with any errors/warnings
    */
   constructor(
@@ -38,9 +90,22 @@ class JsonFormula {
   }
 
   /**
+   * @typedef {object} globals
+   * An object where each key **MUST** begin with a `$` character, representing global variables
+   * that can be accessed inside a json-formula expression.
+   * The value of each key can be of any data type supported by json.
+   *
+   * @example
+   * $foo: true, $bar: 42, $baz: 'hello', $arr: [1, 2, 3], '$days': [
+      'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+  */
+
+  /**
    * Evaluates the JsonFormula on a particular json payload and return the result
+   * @param {string} expression the json-formula expression to evaluate
    * @param {object|array} json the json data on which the expression needs to be evaluated
    * @param {object} [globals={}] global objects that can be accessed via custom functions.
+   * @param {string} [language=en-US] BCP-47 language tag
    * @returns {*} the result of the expression being evaluated
    */
   search(expression, json, globals = {}, language = 'en-US') {
@@ -50,6 +115,8 @@ class JsonFormula {
 
   /**
    * Execute a previously compiled expression against a json object and return the result
+   *
+   * @deprecated since version 2.0.0. Use search() method instead.
    * @param {object} ast The abstract syntax tree returned from compile()
    * @param {object|array} json the json data on which the expression needs to be evaluated
    * @param globals {*} set of objects available in global scope
@@ -66,7 +133,9 @@ class JsonFormula {
 
   /**
    * Creates a compiled expression that can be executed later on with some data.
-   * @param {string} expression the expression to evaluate
+   *
+   * @deprecated since version 2.0.0, since it is just used with `run()`
+   * @param {string} expression the json-formula expression to evaluate
    * @param {string[]} [allowedGlobalNames=[]] A list of names of the global variables
    * being used in the expression.
    * @param {array} [debug=[]] will be populated with any errors/warnings
@@ -83,12 +152,12 @@ class JsonFormula {
  * class instance of {JsonFormula} and call the search method multiple times.
 * @param {object|array} json the json data on which the expression needs to be evaluated
 * @param {object} globals  global objects that can be accessed via custom functions.
-* @param {string} expression the expression to evaluate
+* @param {string} expression the json-formula expression to evaluate
 * @param {object} [customFunctions={}] custom functions needed by a hosting application.
 * @param {function} [stringToNumber='null'] A function that converts string values to numbers.
 * Can be used to convert currencies/dates to numbers
-* @param {string} [language=en-US]
 * @param  {array} [debug=[]] will be populated with any errors/warnings
+* @param {string} [language=en-US] BCP-47 language tag
 * @returns {*} the result of the expression being evaluated
  */
 
