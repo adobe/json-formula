@@ -443,7 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="details">
 <span id="author" class="author">PDF Association Forms Technical Working Group</span><br>
 <span id="revnumber">version 2.0.0,</span>
-<span id="revdate">2025-11-10</span>
+<span id="revdate">2025-11-12</span>
 <br><span id="revremark"></span>
 </div>
 </div>
@@ -544,7 +544,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 <div class="paragraph">
-<p>The intended audience are both end-users of json-formula as well as implementors; the contents are then both a user guide and a specification.</p>
+<p>The intended audience are both end-users of json-formula as well as implementers; the contents are then both a user guide and a specification.</p>
 </div>
 </div>
 </div>
@@ -552,7 +552,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_notation">1. Notation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the specification, examples are shown through the use of a <code>search</code> function.  The syntax for this function is:</p>
+<p>In the specification, examples are shown through the use of a <code>search</code> function called <code>eval</code>.  The syntax for this function is:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -601,8 +601,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 <div class="paragraph">
-<p>There is an additional type that is not a JSON type that&#8217;s used in
-json-formula functions:</p>
+<p>There is an additional type that is not a JSON type that&#8217;s used in json-formula functions:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2516,8 +2515,7 @@ When processing arrays of values, and where there is more than one parameter, ea
 <div class="paragraph">
 <p>Functions are evaluated in applicative order:
 - Each argument must be an expression
-- Each argument expression must be evaluated before evaluating the
-function
+- Each argument expression must be evaluated before evaluating the function
 - Each argument expression result must be coerced to the expected type
 - If coercion is not possible, a <code>TypeError</code> error is raised
 - The function is then called with the evaluated function arguments.</p>
@@ -8271,7 +8269,7 @@ keys(street) -&gt; []</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 2.0.0<br>
-Last updated 2025-11-10 13:40:00 UTC
+Last updated 2025-11-12 22:23:59 UTC
 </div>
 </div>
 </body>
