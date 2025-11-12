@@ -179,8 +179,8 @@ class JsonFormula {
 * @param {object} [customFunctions={}] custom functions needed by a hosting application.
 * @param {function} [stringToNumber='null'] A function that converts string values to numbers.
 * Can be used to convert currencies/dates to numbers
-* @param {string} [language=en-US]
 * @param  {array} [debug=[]] will be populated with any errors/warnings
+* @param {string} [language=en-US] BCP-47 language tag
 * @returns {*} the result of the expression being evaluated
  */
 

@@ -85,7 +85,7 @@ Creates a compiled expression that can be executed later on with some data.
 
 <a name="jsonFormula"></a>
 
-## jsonFormula(json, globals, expression, [customFunctions], [stringToNumber], [language], [debug]) ⇒ <code>\*</code>
+## jsonFormula(json, globals, expression, [customFunctions], [stringToNumber], [debug], [language]) ⇒ <code>\*</code>
 Compile and execute a json-formula expression.
 If executing the same expression multiple times, it is more efficient to create a
 class instance of JsonFormula and call the search() method or the compile()/run() methods
@@ -101,8 +101,8 @@ multiple times.
 | expression | <code>string</code> |  | the expression to evaluate |
 | [customFunctions] | <code>object</code> | <code>{}</code> | custom functions needed by a hosting application. |
 | [stringToNumber] | <code>function</code> | <code>&#x27;null&#x27;</code> | A function that converts string values to numbers. Can be used to convert currencies/dates to numbers |
-| [language] | <code>string</code> | <code>&quot;en-US&quot;</code> |  |
 | [debug] | <code>array</code> | <code>[]</code> | will be populated with any errors/warnings |
+| [language] | <code>string</code> | <code>&quot;en-US&quot;</code> | BCP-47 language tag |
 
 <a name="CustomFunctionDefinition"></a>
 
