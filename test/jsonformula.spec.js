@@ -144,6 +144,10 @@ function executeTest(desc, tst) {
     expect(result).toBeCloseTo(tst.result, 5);
   } else {
     expect(result).toEqual(tst.result);
+    // if the results are objects, and are equal, also check that the order of keys is the same
+    if (!Array.isArray(result) && result !== null && typeof result === 'object') {
+      expect(Object.entries(result)).toEqual(Object.entries(tst.result));
+    }
   }
 }
 

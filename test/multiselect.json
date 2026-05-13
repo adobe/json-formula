@@ -70,7 +70,7 @@
       },
       {
         "expression": "foo.badkey.{nokey: nokey, alsonokey: alsonokey}",
-        "result": { "alsonokey": null, "nokey": null }
+        "result": { "nokey": null, "alsonokey": null }
       },
       {
         "expression": "foo.nested.*.{a: a,b: b}",
