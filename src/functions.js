@@ -2760,6 +2760,7 @@ export default function functions(
      * @example
      * value({a: 1, b:2, c:3}, "a") // returns 1
      * value([1, 2, 3, 4], 2) // returns 3
+     * value(42, 0) // returns 42
      */
     value: {
       _func: args => {
@@ -2773,20 +2774,27 @@ export default function functions(
         }
         const obj = valueOf(args[0]);
         if (obj === null) return null;
-        if (!(getType(obj) === TYPE_OBJECT || subjectArray)) {
+        let subject = args[0];
+        let asArray = subjectArray;
+        // Per the 2.0 coercion rules, a boolean, number or string subject is treated
+        // as a single-element array -- these types can only be coerced to an array.
+        if (!asArray && [TYPE_NUMBER, TYPE_STRING, TYPE_BOOLEAN].includes(getType(obj))) {
+          subject = [args[0]];
+          asArray = true;
+        } else if (!asArray && getType(obj) !== TYPE_OBJECT) {
           throw typeError('First parameter to value() must be one of: object, array, null.');
         }
-        if (subjectArray) {
+        if (asArray) {
           if (indexType !== TYPE_NUMBER) throw typeError('value() requires an integer index for arrays');
           index = toInteger(index);
         } else if (indexType !== TYPE_STRING) {
           throw typeError('value() requires a string index for objects');
         }
-        const result = getProperty(args[0], index);
+        const result = getProperty(subject, index);
         if (result === undefined) {
-          if (subjectArray) {
+          if (asArray) {
             debug.push(
-              `Index: ${index} out of range for array size: ${obj.length}`,
+              `Index: ${index} out of range for array size: ${subject.length}`,
             );
           } else debugAvailable(debug, obj, index);
           return null;

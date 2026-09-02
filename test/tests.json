@@ -1739,6 +1739,26 @@
         "result": null
       },
       {
+        "expression": "value(\"abc\", 0)",
+        "result": "abc"
+      },
+      {
+        "expression": "value(`false`, 0)",
+        "result": false
+      },
+      {
+        "expression": "value(42, 0)",
+        "result": 42
+      },
+      {
+        "expression": "value(42, 5)",
+        "result": null
+      },
+      {
+        "expression": "value(42, \"x\")",
+        "error": "TypeError"
+      },
+      {
         "data": "`{\"two\": 2.6}`",
         "expression": "value({a: 42}, two)",
         "error": "TypeError"
