@@ -46,7 +46,6 @@ const {
 const {
   TYPE_STRING,
   TYPE_ARRAY_STRING,
-  TYPE_ARRAY,
   TYPE_NUMBER,
 } = dataTypes;
 
@@ -324,12 +323,10 @@ export default class TreeInterpreter {
       },
 
       UnionExpression: (node, value) => {
-        let first = this.visit(node.children[0], value);
-        if (first === null) first = [null];
-        let second = this.visit(node.children[1], value);
-        if (second === null) second = [null];
-        first = matchType([TYPE_ARRAY], first, 'union', this.toNumber, this.toString);
-        second = matchType([TYPE_ARRAY], second, 'union', this.toNumber, this.toString);
+        // Non-array operands are treated as single-element arrays.
+        const toArray = v => (isArray(v) ? v : [v]);
+        const first = toArray(this.visit(node.children[0], value));
+        const second = toArray(this.visit(node.children[1], value));
         return first.concat(second);
       },
 

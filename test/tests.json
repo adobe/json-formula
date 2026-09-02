@@ -1298,7 +1298,7 @@
       {
         "data": "'purchase-order'.items[*]",
         "expression": "[].quantity ~ {a: 4}",
-        "error": "TypeError"
+        "result": [2, 3, { "a": 4 }]
       },
       {
         "data": "`{\"root\": {\"valueOf\": 42}}`",
