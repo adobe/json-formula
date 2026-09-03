@@ -2227,14 +2227,12 @@ export default function functions(
      */
     stdevA: {
       _func: args => {
-        let values;
-        try {
-          values = args.flat(Infinity)
-            .filter(a => getType(a) !== TYPE_NULL)
-            .map(toNumber);
-        } catch (_e) {
-          throw evaluationError('stdevA() received non-numeric parameters');
-        }
+        // Null values are ignored; all other values are converted to number.
+        // A non-numeric value (e.g. an object) fails conversion and throws a TypeError,
+        // consistent with stdevpA().
+        const values = args.flat(Infinity)
+          .filter(a => getType(a) !== TYPE_NULL)
+          .map(toNumber);
 
         if (values.length <= 1) throw evaluationError('stdevA() must have at least two values');
         const mean = values.reduce((a, b) => a + b, 0) / values.length;

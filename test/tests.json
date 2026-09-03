@@ -794,6 +794,8 @@
       { "expression": "stdevA(`[1,[[\"2\",3]]]`)", "result": 1 },
       { "expression": "stdevA(`[1]`)", "error": "EvaluationError" },
       { "expression": "stdevA(`[]`)", "error": "EvaluationError" },
+      { "expression": "stdevA(`[1, 2, 3, {\"a\": 1}]`)", "error": "TypeError" },
+      { "expression": "stdevpA(`[1, 2, 3, {\"a\": 1}]`)", "error": "TypeError" },
       {
         "data": "'purchase-order'",
         "expression": "stdev(items[*].quantity)",
