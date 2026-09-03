@@ -997,6 +997,8 @@ export default function functions(
     /**
      * Determine if an object has a property or if an array index is in range.
      * @param {object|array|null} subject source object or array.
+     * `subject` must be a container type: scalar values (boolean, number, string) are not
+     * coerced to a single-element array and will result in a TypeError.
      * When querying for <<_hidden_properties,hidden properties>>, `subject` may be any data type.
      * @param {string|integer} name The name (or index position) of the element to find.
      * if `subject` is an array, `name` must be an integer;
@@ -2776,6 +2778,8 @@ export default function functions(
     /**
      * Perform an indexed lookup on an object or array
      * @param {object | array | null} subject on which to perform the lookup.
+     * `subject` must be a container type: scalar values (boolean, number, string) are not
+     * coerced to a single-element array and will result in a TypeError.
      * When querying for <<_hidden_properties,hidden properties>>, `subject` may be any data type.
      * @param {string | integer} index if `subject` is an object, `index` must be a string
      * indicating the key name to search for.
