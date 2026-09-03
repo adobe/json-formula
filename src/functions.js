@@ -923,6 +923,8 @@ export default function functions(
 
     /**
      * Create a string from a code point.
+     * The code points are collapsed into a single string, so -- like the aggregating
+     * functions -- any nested arrays are flattened.
      * @param {integer|integer[]} codePoint An integer or array of integers
      * between 0 and 0x10FFFF (inclusive) representing Unicode code point(s).
      * @return {string} A string from the given code point(s)
@@ -934,7 +936,7 @@ export default function functions(
     fromCodePoint: {
       _func: args => {
         try {
-          const points = Array.isArray(args[0]) ? args[0] : [args[0]];
+          const points = Array.isArray(args[0]) ? args[0].flat(Infinity) : [args[0]];
           return String.fromCodePoint(...points.map(toInteger));
         } catch (e) {
           throw evaluationError(`Invalid code point: "${args[0]}"`);
