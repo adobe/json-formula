@@ -412,7 +412,7 @@ export default function functions(
      * @return {number|number[]} The inverse sine angle in radians between -PI/2 and PI/2
      * @function asin
      * @example
-     * Math.asin(0) => 0
+     * asin(0) => 0
      */
     asin: {
       _func: args => evaluate(args, n => validNumber(Math.asin(n), 'asin')),
@@ -467,9 +467,10 @@ export default function functions(
 
     /**
      * Finds the average of the elements in an array, converting strings and booleans to number.
-     * If any conversions to number fail, a type error is thrown.
+     * Null values are ignored. All other values are converted to number;
+     * if any conversion to number fails, a type error is thrown.
      * If there are nested arrays, they are flattened.
-     * If the array is empty, an evaluation error is thrown
+     * If there are no non-null values, an evaluation error is thrown.
      * @param {number[]} elements array of numeric values
      * @return {number} average value
      * @function avgA
@@ -1126,7 +1127,7 @@ export default function functions(
      * Return a substring from the start of a string or the left-most elements of an array
      * @param {string|array} subject The source text/array of code points/elements
      * @param {integer} [elements=1] number of elements to pick
-     * @return {string|array}
+     * @return {string|array} The extracted substring or left-most array elements
      * @function left
      * @example
      * left("Sale Price", 4) // returns "Sale"
@@ -1190,7 +1191,7 @@ export default function functions(
 
     /**
      * Compute the base 10 logarithm of a number.
-     * @param {number|number[]} num A number greater than or equal to zero
+     * @param {number|number[]} num A number greater than zero
      * @return {number|number[]} The base 10 log result
      * @function log10
      * @example
@@ -1240,13 +1241,13 @@ export default function functions(
      * Any values that are not numbers (null, boolean, strings, objects) will be ignored.
      * If any parameters are arrays, the arrays will be flattened.
      * If no numbers are provided, the function will return zero.
-     * @param {...(array|any)} collection values/array(s) in which the maximum
+     * @param {...any} collection values/array(s) in which the maximum
      * element is to be calculated
      * @return {number} the largest value found
      * @function max
      * @example
      * max([1, 2, 3], [4, 5, 6]) // returns 6
-     * max([\"a\", \"a1\", \"b\"], null(), true())) // returns 0
+     * max(["a", "a1", "b"], null(), true()) // returns 0
      * max(8, 10, 12, "14") // returns 12
      */
     max: {
@@ -1340,7 +1341,7 @@ export default function functions(
      * or element to extract.
      * @param {integer} length The number of code points or elements to return from the
      * string or array.
-     * If greater then the length of `subject` the length of the subject is used.
+     * If greater than the length of `subject` the length of the subject is used.
      * @return {string|array} The resulting substring or array subset of elements
      * @function mid
      * @example
@@ -1391,7 +1392,7 @@ export default function functions(
      * Any values that are not numbers (null, boolean, string, object) will be ignored.
      * If any parameters are arrays, the arrays will be flattened.
      * If no numbers are provided, the function will return zero.
-     * @param {...(any[]|any)} collection
+     * @param {...any} collection
      * Values/arrays to search for the minimum value
      * @return {number} the smallest value found
      * @function min
@@ -1422,9 +1423,9 @@ export default function functions(
      * the function will fail with a type error.
      * If any parameters are arrays, the arrays will be flattened.
      * If no numbers are provided, the function will return zero.
-     * @param {...(any[]|any)} collection values/array(s) in which the maximum
+     * @param {...any} collection values/array(s) in which the minimum
      * element is to be calculated
-     * @return {number} the largest value found
+     * @return {number} the smallest value found
      * @function minA
      * @example
      * minA([1, 2, 3], [4, 5, 6]) // returns 1
@@ -1476,7 +1477,7 @@ export default function functions(
      * @param {number|number[]} divisor The number by which to divide number.
      * @return {number|number[]} Computes the remainder of `dividend`/`divisor`.
      * If `dividend` is negative, the result will also be negative.
-     * If `dividend` is zero, an error is thrown.
+     * If `divisor` is zero, an error is thrown.
      * @function mod
      * @example
      * mod(3, 2) // returns 1
@@ -1563,7 +1564,7 @@ export default function functions(
     /**
      * Return constant null value.
      * Expressions may also use the JSON literal: `` `null` ``
-     * @returns {boolean} True
+     * @returns {null} the null value
      * @function null
      */
     null: {
@@ -1657,7 +1658,7 @@ export default function functions(
      * * array: original array
      * @param {array} elements array of elements on which the expression will be evaluated
      * @param {expression} expr reducer expression to be executed on each element
-     * @param {any} initialValue the accumulated value to pass to the first array element
+     * @param {any} [initialValue] the accumulated value to pass to the first array element
      * @return {any}
      * @function reduce
      * @example
@@ -1847,7 +1848,7 @@ export default function functions(
     /**
      * Reverses the order of an array or the order of code points in a string
      * @param {string|array} subject the source to be reversed
-     * @return {array} The resulting reversed array or string
+     * @return {string|array} The resulting reversed array or string
      * @function reverse
      * @example
      * reverse(["a", "b", "c"]) // returns ["c", "b", "a"]
@@ -1945,6 +1946,9 @@ export default function functions(
      *
      * * The start position of the found text and the text string that was found.
      * * If a match was not found, an empty array is returned.
+     *
+     * When the parameters are arrays, the operation is vectorized and an array of these
+     * results is returned.
      * @function search
      * @example
      * search("a?c", "acabc") // returns [2, "abc"]
@@ -2013,10 +2017,10 @@ export default function functions(
     },
 
     /**
-     * This function accepts an array values and returns an
+     * This function accepts an array of values and returns an
      * array with the elements in sorted order.
      * If there are mixed data types, the values will be grouped in order:
-     * numbers, strings, booleans, nulls
+     * numbers, strings, booleans, nulls.
      * String sorting is based on code points and is not locale-sensitive.
      * Numbers and strings are each sorted within their group. Booleans are grouped
      * together but are not sorted among themselves -- they retain their original
@@ -2194,9 +2198,9 @@ export default function functions(
     /**
      * Estimates standard deviation based on a sample.
      * `stdev` assumes that its arguments are a sample of the entire population.
-     * If your data represents a entire population,
+     * If your data represents the entire population,
      * then compute the standard deviation using [stdevp]{@link stdevp}.
-     * Non-numeric values (text, boolean, null etc) are ignored.
+     * Non-numeric values (text, boolean, null, etc.) are ignored.
      * If there are nested arrays, they are flattened.
      * @param {any[]} values The array containing numbers comprising the population.
      * Array size must be greater than 1.
@@ -2225,7 +2229,7 @@ export default function functions(
     /**
      * Estimates standard deviation based on a sample.
      * `stdev` assumes that its arguments are a sample of the entire population.
-     * If your data represents a entire population,
+     * If your data represents the entire population,
      * then compute the standard deviation using [stdevpA]{@link stdevpA}.
      * Nested arrays are flattened.
      * Null values are ignored. All other parameters are converted to number.
@@ -2263,7 +2267,7 @@ export default function functions(
      * `stdevp` assumes that its arguments are the entire population.
      * If your data represents a sample of the population,
      * then compute the standard deviation using [stdev]{@link stdev}.
-     * Non-numeric values (text, boolean, null etc) are ignored.
+     * Non-numeric values (text, boolean, null, etc.) are ignored.
      * If there are nested arrays, they are flattened.
      * @param {any[]} values The array containing numbers comprising the population.
      * An empty array is not allowed.
@@ -2302,7 +2306,7 @@ export default function functions(
      * @param {number[]} numbers The array of numbers comprising the population.
      * An empty array is not allowed.
      * @returns {number} Calculated standard deviation
-     * @function stdevp
+     * @function stdevpA
      * @example
      * stdevpA([1345, "1301", 1368]) // returns 27.797
      * stdevA([1345, 1301, "1368"]) // returns 34.044
@@ -2342,8 +2346,8 @@ export default function functions(
      * @function substitute
      * @example
      * substitute("Sales Data", "Sales", "Cost") // returns "Cost Data"
-     * substitute("Quarter 1, 2001", "1", "2", 1)" // returns "Quarter 1, 2002"
-     * substitute("Quarter 1, 2011", "1", "2", 2)" // returns "Quarter 1, 2012"
+     * substitute("Quarter 1, 2001", "1", "2", 1) // returns "Quarter 1, 2002"
+     * substitute("Quarter 1, 2011", "1", "2", 2) // returns "Quarter 1, 2012"
      */
     substitute: {
       _func: resolvedArgs => {
@@ -2539,6 +2543,7 @@ export default function functions(
     /**
      * Converts the provided arg to a number.
      * The conversions follow the <<_type_coercion_rules,type coercion rules>> but will also:
+     *
      * * Convert arrays to arrays of numbers
      *
      * As described by the coercion rules, an empty string converts to zero, while a
@@ -2548,7 +2553,8 @@ export default function functions(
      * @param {integer|integer[]} [base=10] If the input `arg` is a string,
      * the base to use to convert to number.
      * One of: 2, 8, 10, 16. Defaults to 10.
-     * @return {number} The resulting number.  If conversion to number fails, return null.
+     * @return {number|number[]} The resulting number, or an array of numbers when `value`
+     * is an array.  If conversion to number fails, return null.
      * @function toNumber
      * @example
      * toNumber(1) // returns 1

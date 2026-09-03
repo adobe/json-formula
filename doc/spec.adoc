@@ -55,7 +55,7 @@ json-formula supports all the JSON types:
 * number: All numbers are internally represented as double-precision floating-point
 * string
 * boolean: `true` or `false`
-* array: an ordered, sequence of values
+* array: an ordered sequence of values
 * object: an unordered collection of key value pairs
 * `null`
 
@@ -384,16 +384,16 @@ The following comparison operators are supported:
 
 Two representations of the equality and inequality operators are supported: `=` and `==` are equivalent in functionality.  Both variations are supported in order to provide familiarity to users with experience with similar grammars. Similarly, `!=` and `<>` function identically. Note that there is no ambiguity with the `=` operator, since json-formula does not have an assignment operator.
 
-* A `string` is equal to another `string` if they they have the exact same sequence
+* A `string` is equal to another `string` if they have the exact same sequence
 of code points
 * `number` values are compared for an exact match.  When comparing fractional values, authors should take into account <<Floating Point Precision,floating point precision>> considerations.
 * The literal values `true/false/null` are equal only to their
 own literal values
 * Two JSON objects are equal if they have the same set of
-keys and values. Two JSON objects `x` and `y`, are consider equal if they have the same number of key/value pairs and if, for each key value
+keys and values. Two JSON objects `x` and `y` are considered equal if they have the same number of key/value pairs and if, for each key value
 pair `(i, j)` in `x`, there exists an equivalent pair `(i, j)` in `y`
 * Two JSON arrays are equal if they have equal elements in the same order. Two arrays `x` and `y` are considered equal if they have the same length and, for each `i` from `0` until `length(x)`, `x[i] == y[i]`
-* The comparison of array and objects is a deep comparison.  That is, where nested arrays or objects are found, the nested elements will included in the comparison.
+* The comparison of array and objects is a deep comparison.  That is, where nested arrays or objects are found, the nested elements will be included in the comparison.
 
 ==== Ordering Operators
 
