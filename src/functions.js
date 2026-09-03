@@ -1869,7 +1869,6 @@ export default function functions(
      * @param {string|array} subject The text/array containing the code points/elements to extract
      * @param {integer} [elements=1] number of elements to pick
      * @return {string|array} The extracted substring or array subset
-     * Returns null if the number of elements is less than 0
      * @function right
      * @example
      * right("Sale Price", 4) // returns "rice"
