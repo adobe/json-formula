@@ -2016,6 +2016,11 @@ export default function functions(
      * If there are mixed data types, the values will be grouped in order:
      * numbers, strings, booleans, nulls
      * String sorting is based on code points and is not locale-sensitive.
+     * Numbers and strings are each sorted within their group. Booleans are grouped
+     * together but are not sorted among themselves -- they retain their original
+     * relative order from the input, so a run of booleans is left in input order even
+     * though `false` is less than `true`. (All null values are identical, so their
+     * order is not observable.)
      * If the sort encounters any objects or arrays, it will throw an evaluation error.
      * @param {any[]} list to be sorted
      * @return {any[]} The ordered result
@@ -2027,9 +2032,9 @@ export default function functions(
     sort: {
       _func: resolvedArgs => {
         /*
-        numbers sort first
-        strings sort second
-        Booleans sort third
+        numbers sort first (sorted within the group)
+        strings sort second (sorted within the group)
+        Booleans sort third (grouped, but not sorted among themselves -- input order kept)
         nulls sort last
         */
         const typeVals = resolvedArgs[0].map(value => {
