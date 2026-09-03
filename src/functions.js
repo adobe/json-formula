@@ -2577,11 +2577,13 @@ export default function functions(
               decimal = parseInt(parts[1], base) * base ** -parts[1].length;
             }
 
-            // The fractional part shares the sign of the whole number, so for a
-            // negative value it must be subtracted.  Derive the sign from the string
-            // (not from the parsed integer) so that values like "-0.01" work correctly.
+            // The integer part may be omitted (".01") or sign-only ("-.01"), in which
+            // case it contributes 0.  Apply the sign to the whole magnitude so that the
+            // fractional part shares it -- e.g. "-10.01" base 2 is -(2 + 0.25).
+            const magnitude = parts[0].replace(/^[+-]/, '');
+            const integer = magnitude === '' ? 0 : parseInt(magnitude, base);
             const sign = parts[0].startsWith('-') ? -1 : 1;
-            const result = parseInt(parts[0], base) + sign * decimal;
+            const result = sign * (integer + decimal);
             if (parts.length > 2 || Number.isNaN(result)) {
               debug.push(`Failed to convert "${num}" base "${base}" to number`);
               return null;

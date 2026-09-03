@@ -1100,6 +1100,22 @@
         "result": -0.5
       },
       {
+        "expression": "toNumber(\".01\", 2)",
+        "result": 0.25
+      },
+      {
+        "expression": "toNumber(\".01\", 8)",
+        "result": 0.015625
+      },
+      {
+        "expression": "toNumber(\".01\", 16)",
+        "result": 0.00390625
+      },
+      {
+        "expression": "toNumber(\"-.01\", 2)",
+        "result": -0.25
+      },
+      {
         "expression": "toNumber(\"FF.EE.AA\", 16)",
         "result": null
       },
