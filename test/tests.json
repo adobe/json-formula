@@ -1654,6 +1654,26 @@
         "error": "TypeError"
       },
       {
+        "expression": "hasProperty(\"abc\", 0)",
+        "result": true
+      },
+      {
+        "expression": "hasProperty(`false`, 0)",
+        "result": true
+      },
+      {
+        "expression": "hasProperty(42, 0)",
+        "result": true
+      },
+      {
+        "expression": "hasProperty(42, 5)",
+        "result": false
+      },
+      {
+        "expression": "hasProperty(42, \"x\")",
+        "error": "TypeError"
+      },
+      {
         "data": "`{\"two\": 2.6}`",
         "expression": "left(\"12345\", two)",
         "result": "12"
