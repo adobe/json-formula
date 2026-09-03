@@ -2537,8 +2537,10 @@ export default function functions(
     /**
      * Converts the provided arg to a number.
      * The conversions follow the <<_type_coercion_rules,type coercion rules>> but will also:
-     * * Convert non-numeric strings to zero
      * * Convert arrays to arrays of numbers
+     *
+     * As described by the coercion rules, an empty string converts to zero, while a
+     * string that is not a well-formed number fails to convert and yields `null`.
      *
      * @param {any|any[]} value to convert to number
      * @param {integer|integer[]} [base=10] If the input `arg` is a string,
