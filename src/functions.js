@@ -1109,8 +1109,7 @@ export default function functions(
     },
 
     /**
-     * Generates an array of the keys of the input object. If the
-     * object is null, the value return an empty array
+     * Generates an array of the keys of the input object.
      * @param {object} obj the object to examine
      * @return {array} the array of all the key names
      * @function keys
