@@ -2577,7 +2577,11 @@ export default function functions(
               decimal = parseInt(parts[1], base) * base ** -parts[1].length;
             }
 
-            const result = parseInt(parts[0], base) + decimal;
+            // The fractional part shares the sign of the whole number, so for a
+            // negative value it must be subtracted.  Derive the sign from the string
+            // (not from the parsed integer) so that values like "-0.01" work correctly.
+            const sign = parts[0].startsWith('-') ? -1 : 1;
+            const result = parseInt(parts[0], base) + sign * decimal;
             if (parts.length > 2 || Number.isNaN(result)) {
               debug.push(`Failed to convert "${num}" base "${base}" to number`);
               return null;

@@ -1084,6 +1084,22 @@
         "result": 1.25
       },
       {
+        "expression": "toNumber(\"-10.01\", 2)",
+        "result": -2.25
+      },
+      {
+        "expression": "toNumber(\"-10.01\", 8)",
+        "result": -8.015625
+      },
+      {
+        "expression": "toNumber(\"-10.01\", 16)",
+        "result": -16.00390625
+      },
+      {
+        "expression": "toNumber(\"-0.1\", 2)",
+        "result": -0.5
+      },
+      {
         "expression": "toNumber(\"FF.EE.AA\", 16)",
         "result": null
       },
