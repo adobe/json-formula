@@ -1060,6 +1060,14 @@
         "result": 255
       },
       {
+        "expression": "toNumber(\"11\", [2, 8, 10, 16])",
+        "result": [3, 9, 11, 17]
+      },
+      {
+        "expression": "toNumber([\"11\", \"20\"], [2, 8])",
+        "result": [3, 16]
+      },
+      {
         "expression": "toNumber(\"ff\", 16)",
         "result": 255
       },

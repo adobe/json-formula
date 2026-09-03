@@ -2599,7 +2599,7 @@ export default function functions(
         let base = 10;
         if (resolvedArgs.length > 1) {
           base = Array.isArray(resolvedArgs[1])
-            ? resolvedArgs.map(toInteger)
+            ? resolvedArgs[1].map(toInteger)
             : toInteger(resolvedArgs[1]);
         }
         return evaluate([resolvedArgs[0], base], toNumberFn);
