@@ -608,11 +608,17 @@ export default function functions(
      *
      * * `y` the number of whole years between `start_date` and `end_date`
      * * `m` the number of whole months between `start_date` and `end_date`.
-     * * `d` the number of days between `start_date` and `end_date`
+     * * `d` the number of whole 24-hour periods between `start_date` and `end_date`.
+     * This measures elapsed time, so any time-of-day component is significant: two
+     * date/time values that are less than 24 hours apart evaluate to `0` even when they
+     * fall on different calendar days. This differs from the `DATEDIF` function in
+     * spreadsheet applications such as Excel and LibreOffice Calc, which count the number
+     * of calendar days regardless of the time of day.
      * * `ym` the number of whole months between `start_date` and `end_date`
      * after subtracting whole years.
-     * * `yd` the number of days between `start_date` and `end_date`, assuming `start_date`
-     * and `end_date` were no more than one year apart
+     * * `yd` the number of whole 24-hour periods between `start_date` and `end_date`,
+     * assuming `start_date` and `end_date` were no more than one year apart. As with `d`,
+     * this measures elapsed time rather than calendar days.
      * @param {number|number[]} start_date The starting <<_date_and_time_values, date/time value>>.
      * Date/time values can be generated using the
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
