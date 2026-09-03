@@ -2616,9 +2616,10 @@ export default function functions(
         };
         let base = 10;
         if (resolvedArgs.length > 1) {
-          base = Array.isArray(resolvedArgs[1])
-            ? resolvedArgs[1].map(toInteger)
-            : toInteger(resolvedArgs[1]);
+          // Convert each base to an integer while preserving the array hierarchy --
+          // toNumber is non-aggregating, so nested base arrays must not be collapsed.
+          const toIntegerDeep = b => (Array.isArray(b) ? b.map(toIntegerDeep) : toInteger(b));
+          base = toIntegerDeep(resolvedArgs[1]);
         }
         return evaluate([resolvedArgs[0], base], toNumberFn);
       },
