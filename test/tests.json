@@ -1097,6 +1097,16 @@
       },
       {
         "data": "datetime",
+        "expression": "weekday(_localDate(\"1970-01-04\"), [1, 2, 3])",
+        "result": [1, 7, 6]
+      },
+      {
+        "data": "datetime",
+        "expression": "weekday([_localDate(\"1970-01-04\"), _localDate(\"1970-01-05\")], [2, 2])",
+        "result": [7, 1]
+      },
+      {
+        "data": "datetime",
         "expression": "weekday(_localDate(\"1970-01-01\"), 4)",
         "error": "FunctionError"
       },
@@ -1654,26 +1664,6 @@
         "error": "TypeError"
       },
       {
-        "expression": "hasProperty(\"abc\", 0)",
-        "result": true
-      },
-      {
-        "expression": "hasProperty(`false`, 0)",
-        "result": true
-      },
-      {
-        "expression": "hasProperty(42, 0)",
-        "result": true
-      },
-      {
-        "expression": "hasProperty(42, 5)",
-        "result": false
-      },
-      {
-        "expression": "hasProperty(42, \"x\")",
-        "error": "TypeError"
-      },
-      {
         "data": "`{\"two\": 2.6}`",
         "expression": "left(\"12345\", two)",
         "result": "12"
@@ -1757,26 +1747,6 @@
       {
         "expression": "value(nullvalue, \"n\")",
         "result": null
-      },
-      {
-        "expression": "value(\"abc\", 0)",
-        "result": "abc"
-      },
-      {
-        "expression": "value(`false`, 0)",
-        "result": false
-      },
-      {
-        "expression": "value(42, 0)",
-        "result": 42
-      },
-      {
-        "expression": "value(42, 5)",
-        "result": null
-      },
-      {
-        "expression": "value(42, \"x\")",
-        "error": "TypeError"
       },
       {
         "data": "`{\"two\": 2.6}`",

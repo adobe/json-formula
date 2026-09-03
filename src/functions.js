@@ -2845,7 +2845,7 @@ export default function functions(
       },
       _signature: [
         { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
-        { types: [TYPE_NUMBER], optional: true },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER], optional: true },
       ],
     },
 
