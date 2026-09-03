@@ -164,11 +164,11 @@ export default function functions(
   }
 
   function endsWithFn(searchArg, suffixArg) {
-    const searchStr = valueOf(searchArg);
-    const suffix = valueOf(suffixArg);
-    // make sure the comparison is based on code points
-    const search = Array.from(searchStr).reverse();
-    const ending = Array.from(suffix).reverse();
+    // make sure the comparison is based on code points.
+    // use toString (not valueOf) so that null operands -- e.g. the padding
+    // introduced when balancing arrays of unequal length -- coerce to ''.
+    const search = Array.from(toString(searchArg)).reverse();
+    const ending = Array.from(toString(suffixArg)).reverse();
     return ending.every((c, i) => c === search[i]);
   }
 

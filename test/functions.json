@@ -2217,6 +2217,14 @@
          "result": [true, [false, false]]
         },
         {
+         "expression": "endsWith([\"ABC\"], [\"C\", \"3\"])",
+         "result": [true, false]
+        },
+        {
+         "expression": "endsWith([\"ABC\", \"123\"], [\"C\"])",
+         "result": [true, true]
+        },
+        {
           "expression": "datetime(2024, 10, 12) | day([@, @ + 1])",
          "result": [12, 13]
         },
