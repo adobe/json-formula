@@ -600,6 +600,14 @@
         "result": { "a": 2 }
       },
       {
+        "expression": "merge(`{\"a\": 1, \"b\": 2}`, `{\"c\": 3, \"d\": 4}`, `null`)",
+        "result": { "a": 1, "b": 2, "c": 3, "d": 4 }
+      },
+      {
+        "expression": "merge(`null`, `{\"a\": 1}`, `null`)",
+        "result": { "a": 1 }
+      },
+      {
         "expression": "merge(`{\"a\": 1, \"b\": 2}`, `{\"a\": 2, \"c\": 3}`, `{\"d\": 4}`)",
         "result": { "a": 2, "b": 2, "c": 3, "d": 4 }
       },

@@ -1309,12 +1309,14 @@ export default function functions(
      * and each key value pair from each subsequent object
      * are added to the first object.  Duplicate keys in subsequent objects will
      * override those found in earlier objects.
-     * @param {...object} args
+     * A `null` argument is permitted; it is ignored and contributes no keys to the result.
+     * @param {...(object|null)} args
      * @return {object} The combined object
      * @function merge
      * @example
      * merge({a: 1, b: 2}, {c : 3, d: 4}) // returns {a :1, b: 2, c: 3, d: 4}
      * merge({a: 1, b: 2}, {a : 3, d: 4}) // returns {a :3, b: 2, d: 4}
+     * merge({a: 1, b: 2}, {c : 3, d: 4}, null()) // returns {a: 1, b: 2, c: 3, d: 4}
      */
     merge: {
       _func: resolvedArgs => {
