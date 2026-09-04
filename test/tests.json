@@ -794,6 +794,8 @@
       { "expression": "stdevA(`[1,[[\"2\",3]]]`)", "result": 1 },
       { "expression": "stdevA(`[1]`)", "error": "EvaluationError" },
       { "expression": "stdevA(`[]`)", "error": "EvaluationError" },
+      { "expression": "stdevA(`[1, 2, 3, {\"a\": 1}]`)", "error": "TypeError" },
+      { "expression": "stdevpA(`[1, 2, 3, {\"a\": 1}]`)", "error": "TypeError" },
       {
         "data": "'purchase-order'",
         "expression": "stdev(items[*].quantity)",
@@ -884,6 +886,10 @@
         "expression": "fromCodePoint(9.123)",
         "result": "\t"
       },
+      { "expression": "fromCodePoint(`[65, 66, 67]`)", "result": "ABC" },
+      { "expression": "fromCodePoint(`[65, [66], [67]]`)", "result": "ABC" },
+      { "expression": "fromCodePoint(`[65, [66, 67]]`)", "result": "ABC" },
+      { "expression": "fromCodePoint(`[65, [66, [67]]]`)", "result": "ABC" },
       {
         "data": "'purchase-order'",
         "expression": "fromCodePoint(missing)",
@@ -1097,6 +1103,16 @@
       },
       {
         "data": "datetime",
+        "expression": "weekday(_localDate(\"1970-01-04\"), [1, 2, 3])",
+        "result": [1, 7, 6]
+      },
+      {
+        "data": "datetime",
+        "expression": "weekday([_localDate(\"1970-01-04\"), _localDate(\"1970-01-05\")], [2, 2])",
+        "result": [7, 1]
+      },
+      {
+        "data": "datetime",
         "expression": "weekday(_localDate(\"1970-01-01\"), 4)",
         "error": "FunctionError"
       },
@@ -1298,7 +1314,7 @@
       {
         "data": "'purchase-order'.items[*]",
         "expression": "[].quantity ~ {a: 4}",
-        "error": "TypeError"
+        "result": [2, 3, { "a": 4 }]
       },
       {
         "data": "`{\"root\": {\"valueOf\": 42}}`",

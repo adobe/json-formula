@@ -44,6 +44,11 @@
         "result": [0, 1, 2, null]
       },
       {
+        "expression": "a ~ {b: 4}",
+        "data": { "a": [0, 1, 2] },
+        "result": [0, 1, 2, { "b": 4 }]
+      },
+      {
         "expression": "\"truth is \" & `true`",
         "result": "truth is true"
       },

@@ -600,6 +600,14 @@
         "result": { "a": 2 }
       },
       {
+        "expression": "merge(`{\"a\": 1, \"b\": 2}`, `{\"c\": 3, \"d\": 4}`, `null`)",
+        "result": { "a": 1, "b": 2, "c": 3, "d": 4 }
+      },
+      {
+        "expression": "merge(`null`, `{\"a\": 1}`, `null`)",
+        "result": { "a": 1 }
+      },
+      {
         "expression": "merge(`{\"a\": 1, \"b\": 2}`, `{\"a\": 2, \"c\": 3}`, `{\"d\": 4}`)",
         "result": { "a": 2, "b": 2, "c": 3, "d": 4 }
       },
@@ -1060,6 +1068,26 @@
         "result": 255
       },
       {
+        "expression": "toNumber(\"11\", [2, 8, 10, 16])",
+        "result": [3, 9, 11, 17]
+      },
+      {
+        "expression": "toNumber([\"11\", \"20\"], [2, 8])",
+        "result": [3, 16]
+      },
+      {
+        "expression": "toNumber(\"11\", `[[2]]`)",
+        "result": [[3]]
+      },
+      {
+        "expression": "toNumber(\"11\", `[[2], [8]]`)",
+        "result": [[3], [9]]
+      },
+      {
+        "expression": "toNumber([\"11\", \"20\"], `[[2], [8]]`)",
+        "result": [[3], [16]]
+      },
+      {
         "expression": "toNumber(\"ff\", 16)",
         "result": 255
       },
@@ -1074,6 +1102,38 @@
       {
         "expression": "toNumber(\"1.2\", 8)",
         "result": 1.25
+      },
+      {
+        "expression": "toNumber(\"-10.01\", 2)",
+        "result": -2.25
+      },
+      {
+        "expression": "toNumber(\"-10.01\", 8)",
+        "result": -8.015625
+      },
+      {
+        "expression": "toNumber(\"-10.01\", 16)",
+        "result": -16.00390625
+      },
+      {
+        "expression": "toNumber(\"-0.1\", 2)",
+        "result": -0.5
+      },
+      {
+        "expression": "toNumber(\".01\", 2)",
+        "result": 0.25
+      },
+      {
+        "expression": "toNumber(\".01\", 8)",
+        "result": 0.015625
+      },
+      {
+        "expression": "toNumber(\".01\", 16)",
+        "result": 0.00390625
+      },
+      {
+        "expression": "toNumber(\"-.01\", 2)",
+        "result": -0.25
       },
       {
         "expression": "toNumber(\"FF.EE.AA\", 16)",
@@ -2215,6 +2275,14 @@
         {
          "expression": "endsWith([\"abc\", [\"def\", \"ghi\"]], \"c\")",
          "result": [true, [false, false]]
+        },
+        {
+         "expression": "endsWith([\"ABC\"], [\"C\", \"3\"])",
+         "result": [true, false]
+        },
+        {
+         "expression": "endsWith([\"ABC\", \"123\"], [\"C\"])",
+         "result": [true, true]
         },
         {
           "expression": "datetime(2024, 10, 12) | day([@, @ + 1])",

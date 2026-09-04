@@ -164,11 +164,11 @@ export default function functions(
   }
 
   function endsWithFn(searchArg, suffixArg) {
-    const searchStr = valueOf(searchArg);
-    const suffix = valueOf(suffixArg);
-    // make sure the comparison is based on code points
-    const search = Array.from(searchStr).reverse();
-    const ending = Array.from(suffix).reverse();
+    // make sure the comparison is based on code points.
+    // use toString (not valueOf) so that null operands -- e.g. the padding
+    // introduced when balancing arrays of unequal length -- coerce to ''.
+    const search = Array.from(toString(searchArg)).reverse();
+    const ending = Array.from(toString(suffixArg)).reverse();
     return ending.every((c, i) => c === search[i]);
   }
 
@@ -412,7 +412,7 @@ export default function functions(
      * @return {number|number[]} The inverse sine angle in radians between -PI/2 and PI/2
      * @function asin
      * @example
-     * Math.asin(0) => 0
+     * asin(0) => 0
      */
     asin: {
       _func: args => evaluate(args, n => validNumber(Math.asin(n), 'asin')),
@@ -467,9 +467,10 @@ export default function functions(
 
     /**
      * Finds the average of the elements in an array, converting strings and booleans to number.
-     * If any conversions to number fail, a type error is thrown.
+     * Null values are ignored. All other values are converted to number;
+     * if any conversion to number fails, a type error is thrown.
      * If there are nested arrays, they are flattened.
-     * If the array is empty, an evaluation error is thrown
+     * If there are no non-null values, an evaluation error is thrown.
      * @param {number[]} elements array of numeric values
      * @return {number} average value
      * @function avgA
@@ -608,11 +609,17 @@ export default function functions(
      *
      * * `y` the number of whole years between `start_date` and `end_date`
      * * `m` the number of whole months between `start_date` and `end_date`.
-     * * `d` the number of days between `start_date` and `end_date`
+     * * `d` the number of whole 24-hour periods between `start_date` and `end_date`.
+     * This measures elapsed time, so any time-of-day component is significant: two
+     * date/time values that are less than 24 hours apart evaluate to `0` even when they
+     * fall on different calendar days. This differs from the `DATEDIF` function in
+     * spreadsheet applications such as Excel and LibreOffice Calc, which count the number
+     * of calendar days regardless of the time of day.
      * * `ym` the number of whole months between `start_date` and `end_date`
      * after subtracting whole years.
-     * * `yd` the number of days between `start_date` and `end_date`, assuming `start_date`
-     * and `end_date` were no more than one year apart
+     * * `yd` the number of whole 24-hour periods between `start_date` and `end_date`,
+     * assuming `start_date` and `end_date` were no more than one year apart. As with `d`,
+     * this measures elapsed time rather than calendar days.
      * @param {number|number[]} start_date The starting <<_date_and_time_values, date/time value>>.
      * Date/time values can be generated using the
      * [datetime]{@link datetime}, [toDate]{@link todate}, [today]{@link today}, [now]{@link now}
@@ -917,6 +924,8 @@ export default function functions(
 
     /**
      * Create a string from a code point.
+     * The code points are collapsed into a single string, so -- like the aggregating
+     * functions -- any nested arrays are flattened.
      * @param {integer|integer[]} codePoint An integer or array of integers
      * between 0 and 0x10FFFF (inclusive) representing Unicode code point(s).
      * @return {string} A string from the given code point(s)
@@ -928,7 +937,7 @@ export default function functions(
     fromCodePoint: {
       _func: args => {
         try {
-          const points = Array.isArray(args[0]) ? args[0] : [args[0]];
+          const points = Array.isArray(args[0]) ? args[0].flat(Infinity) : [args[0]];
           return String.fromCodePoint(...points.map(toInteger));
         } catch (e) {
           throw evaluationError(`Invalid code point: "${args[0]}"`);
@@ -988,6 +997,8 @@ export default function functions(
     /**
      * Determine if an object has a property or if an array index is in range.
      * @param {object|array|null} subject source object or array.
+     * `subject` must be a container type: scalar values (boolean, number, string) are not
+     * coerced to a single-element array and will result in a TypeError.
      * When querying for <<_hidden_properties,hidden properties>>, `subject` may be any data type.
      * @param {string|integer} name The name (or index position) of the element to find.
      * if `subject` is an array, `name` must be an integer;
@@ -1103,8 +1114,7 @@ export default function functions(
     },
 
     /**
-     * Generates an array of the keys of the input object. If the
-     * object is null, the value return an empty array
+     * Generates an array of the keys of the input object.
      * @param {object} obj the object to examine
      * @return {array} the array of all the key names
      * @function keys
@@ -1119,7 +1129,7 @@ export default function functions(
      * Return a substring from the start of a string or the left-most elements of an array
      * @param {string|array} subject The source text/array of code points/elements
      * @param {integer} [elements=1] number of elements to pick
-     * @return {string|array}
+     * @return {string|array} The extracted substring or left-most array elements
      * @function left
      * @example
      * left("Sale Price", 4) // returns "Sale"
@@ -1183,7 +1193,7 @@ export default function functions(
 
     /**
      * Compute the base 10 logarithm of a number.
-     * @param {number|number[]} num A number greater than or equal to zero
+     * @param {number|number[]} num A number greater than zero
      * @return {number|number[]} The base 10 log result
      * @function log10
      * @example
@@ -1233,13 +1243,13 @@ export default function functions(
      * Any values that are not numbers (null, boolean, strings, objects) will be ignored.
      * If any parameters are arrays, the arrays will be flattened.
      * If no numbers are provided, the function will return zero.
-     * @param {...(array|any)} collection values/array(s) in which the maximum
+     * @param {...any} collection values/array(s) in which the maximum
      * element is to be calculated
      * @return {number} the largest value found
      * @function max
      * @example
      * max([1, 2, 3], [4, 5, 6]) // returns 6
-     * max([\"a\", \"a1\", \"b\"], null(), true())) // returns 0
+     * max(["a", "a1", "b"], null(), true()) // returns 0
      * max(8, 10, 12, "14") // returns 12
      */
     max: {
@@ -1303,12 +1313,14 @@ export default function functions(
      * and each key value pair from each subsequent object
      * are added to the first object.  Duplicate keys in subsequent objects will
      * override those found in earlier objects.
-     * @param {...object} args
+     * A `null` argument is permitted; it is ignored and contributes no keys to the result.
+     * @param {...(object|null)} args
      * @return {object} The combined object
      * @function merge
      * @example
      * merge({a: 1, b: 2}, {c : 3, d: 4}) // returns {a :1, b: 2, c: 3, d: 4}
      * merge({a: 1, b: 2}, {a : 3, d: 4}) // returns {a :3, b: 2, d: 4}
+     * merge({a: 1, b: 2}, {c : 3, d: 4}, null()) // returns {a: 1, b: 2, c: 3, d: 4}
      */
     merge: {
       _func: resolvedArgs => {
@@ -1331,7 +1343,7 @@ export default function functions(
      * or element to extract.
      * @param {integer} length The number of code points or elements to return from the
      * string or array.
-     * If greater then the length of `subject` the length of the subject is used.
+     * If greater than the length of `subject` the length of the subject is used.
      * @return {string|array} The resulting substring or array subset of elements
      * @function mid
      * @example
@@ -1382,7 +1394,7 @@ export default function functions(
      * Any values that are not numbers (null, boolean, string, object) will be ignored.
      * If any parameters are arrays, the arrays will be flattened.
      * If no numbers are provided, the function will return zero.
-     * @param {...(any[]|any)} collection
+     * @param {...any} collection
      * Values/arrays to search for the minimum value
      * @return {number} the smallest value found
      * @function min
@@ -1413,9 +1425,9 @@ export default function functions(
      * the function will fail with a type error.
      * If any parameters are arrays, the arrays will be flattened.
      * If no numbers are provided, the function will return zero.
-     * @param {...(any[]|any)} collection values/array(s) in which the maximum
+     * @param {...any} collection values/array(s) in which the minimum
      * element is to be calculated
-     * @return {number} the largest value found
+     * @return {number} the smallest value found
      * @function minA
      * @example
      * minA([1, 2, 3], [4, 5, 6]) // returns 1
@@ -1467,7 +1479,7 @@ export default function functions(
      * @param {number|number[]} divisor The number by which to divide number.
      * @return {number|number[]} Computes the remainder of `dividend`/`divisor`.
      * If `dividend` is negative, the result will also be negative.
-     * If `dividend` is zero, an error is thrown.
+     * If `divisor` is zero, an error is thrown.
      * @function mod
      * @example
      * mod(3, 2) // returns 1
@@ -1554,7 +1566,7 @@ export default function functions(
     /**
      * Return constant null value.
      * Expressions may also use the JSON literal: `` `null` ``
-     * @returns {boolean} True
+     * @returns {null} the null value
      * @function null
      */
     null: {
@@ -1648,7 +1660,7 @@ export default function functions(
      * * array: original array
      * @param {array} elements array of elements on which the expression will be evaluated
      * @param {expression} expr reducer expression to be executed on each element
-     * @param {any} initialValue the accumulated value to pass to the first array element
+     * @param {any} [initialValue] the accumulated value to pass to the first array element
      * @return {any}
      * @function reduce
      * @example
@@ -1838,7 +1850,7 @@ export default function functions(
     /**
      * Reverses the order of an array or the order of code points in a string
      * @param {string|array} subject the source to be reversed
-     * @return {array} The resulting reversed array or string
+     * @return {string|array} The resulting reversed array or string
      * @function reverse
      * @example
      * reverse(["a", "b", "c"]) // returns ["c", "b", "a"]
@@ -1862,7 +1874,6 @@ export default function functions(
      * @param {string|array} subject The text/array containing the code points/elements to extract
      * @param {integer} [elements=1] number of elements to pick
      * @return {string|array} The extracted substring or array subset
-     * Returns null if the number of elements is less than 0
      * @function right
      * @example
      * right("Sale Price", 4) // returns "rice"
@@ -1937,6 +1948,9 @@ export default function functions(
      *
      * * The start position of the found text and the text string that was found.
      * * If a match was not found, an empty array is returned.
+     *
+     * When the parameters are arrays, the operation is vectorized and an array of these
+     * results is returned.
      * @function search
      * @example
      * search("a?c", "acabc") // returns [2, "abc"]
@@ -2005,11 +2019,16 @@ export default function functions(
     },
 
     /**
-     * This function accepts an array values and returns an
+     * This function accepts an array of values and returns an
      * array with the elements in sorted order.
      * If there are mixed data types, the values will be grouped in order:
-     * numbers, strings, booleans, nulls
+     * numbers, strings, booleans, nulls.
      * String sorting is based on code points and is not locale-sensitive.
+     * Numbers and strings are each sorted within their group. Booleans are grouped
+     * together but are not sorted among themselves -- they retain their original
+     * relative order from the input, so a run of booleans is left in input order even
+     * though `false` is less than `true`. (All null values are identical, so their
+     * order is not observable.)
      * If the sort encounters any objects or arrays, it will throw an evaluation error.
      * @param {any[]} list to be sorted
      * @return {any[]} The ordered result
@@ -2021,9 +2040,9 @@ export default function functions(
     sort: {
       _func: resolvedArgs => {
         /*
-        numbers sort first
-        strings sort second
-        Booleans sort third
+        numbers sort first (sorted within the group)
+        strings sort second (sorted within the group)
+        Booleans sort third (grouped, but not sorted among themselves -- input order kept)
         nulls sort last
         */
         const typeVals = resolvedArgs[0].map(value => {
@@ -2181,9 +2200,9 @@ export default function functions(
     /**
      * Estimates standard deviation based on a sample.
      * `stdev` assumes that its arguments are a sample of the entire population.
-     * If your data represents a entire population,
+     * If your data represents the entire population,
      * then compute the standard deviation using [stdevp]{@link stdevp}.
-     * Non-numeric values (text, boolean, null etc) are ignored.
+     * Non-numeric values (text, boolean, null, etc.) are ignored.
      * If there are nested arrays, they are flattened.
      * @param {any[]} values The array containing numbers comprising the population.
      * Array size must be greater than 1.
@@ -2212,7 +2231,7 @@ export default function functions(
     /**
      * Estimates standard deviation based on a sample.
      * `stdev` assumes that its arguments are a sample of the entire population.
-     * If your data represents a entire population,
+     * If your data represents the entire population,
      * then compute the standard deviation using [stdevpA]{@link stdevpA}.
      * Nested arrays are flattened.
      * Null values are ignored. All other parameters are converted to number.
@@ -2227,14 +2246,12 @@ export default function functions(
      */
     stdevA: {
       _func: args => {
-        let values;
-        try {
-          values = args.flat(Infinity)
-            .filter(a => getType(a) !== TYPE_NULL)
-            .map(toNumber);
-        } catch (_e) {
-          throw evaluationError('stdevA() received non-numeric parameters');
-        }
+        // Null values are ignored; all other values are converted to number.
+        // A non-numeric value (e.g. an object) fails conversion and throws a TypeError,
+        // consistent with stdevpA().
+        const values = args.flat(Infinity)
+          .filter(a => getType(a) !== TYPE_NULL)
+          .map(toNumber);
 
         if (values.length <= 1) throw evaluationError('stdevA() must have at least two values');
         const mean = values.reduce((a, b) => a + b, 0) / values.length;
@@ -2252,7 +2269,7 @@ export default function functions(
      * `stdevp` assumes that its arguments are the entire population.
      * If your data represents a sample of the population,
      * then compute the standard deviation using [stdev]{@link stdev}.
-     * Non-numeric values (text, boolean, null etc) are ignored.
+     * Non-numeric values (text, boolean, null, etc.) are ignored.
      * If there are nested arrays, they are flattened.
      * @param {any[]} values The array containing numbers comprising the population.
      * An empty array is not allowed.
@@ -2291,7 +2308,7 @@ export default function functions(
      * @param {number[]} numbers The array of numbers comprising the population.
      * An empty array is not allowed.
      * @returns {number} Calculated standard deviation
-     * @function stdevp
+     * @function stdevpA
      * @example
      * stdevpA([1345, "1301", 1368]) // returns 27.797
      * stdevA([1345, 1301, "1368"]) // returns 34.044
@@ -2331,8 +2348,8 @@ export default function functions(
      * @function substitute
      * @example
      * substitute("Sales Data", "Sales", "Cost") // returns "Cost Data"
-     * substitute("Quarter 1, 2001", "1", "2", 1)" // returns "Quarter 1, 2002"
-     * substitute("Quarter 1, 2011", "1", "2", 2)" // returns "Quarter 1, 2012"
+     * substitute("Quarter 1, 2001", "1", "2", 1) // returns "Quarter 1, 2002"
+     * substitute("Quarter 1, 2011", "1", "2", 2) // returns "Quarter 1, 2012"
      */
     substitute: {
       _func: resolvedArgs => {
@@ -2527,15 +2544,18 @@ export default function functions(
 
     /**
      * Converts the provided arg to a number.
-     * The conversions follow the <<_type_coercion_rules,type coercion rules>> but will also:
-     * * Convert non-numeric strings to zero
-     * * Convert arrays to arrays of numbers
+     * The conversions follow the <<_type_coercion_rules,type coercion rules>> but will also
+     * Convert arrays to arrays of numbers
+     *
+     * As described by the coercion rules, an empty string converts to zero, while a
+     * string that is not a well-formed number fails to convert and yields `null`.
      *
      * @param {any|any[]} value to convert to number
      * @param {integer|integer[]} [base=10] If the input `arg` is a string,
      * the base to use to convert to number.
      * One of: 2, 8, 10, 16. Defaults to 10.
-     * @return {number} The resulting number.  If conversion to number fails, return null.
+     * @return {number|number[]} The resulting number, or an array of numbers when `value`
+     * is an array.  If conversion to number fails, return null.
      * @function toNumber
      * @example
      * toNumber(1) // returns 1
@@ -2568,7 +2588,13 @@ export default function functions(
               decimal = parseInt(parts[1], base) * base ** -parts[1].length;
             }
 
-            const result = parseInt(parts[0], base) + decimal;
+            // The integer part may be omitted (".01") or sign-only ("-.01"), in which
+            // case it contributes 0.  Apply the sign to the whole magnitude so that the
+            // fractional part shares it -- e.g. "-10.01" base 2 is -(2 + 0.25).
+            const magnitude = parts[0].replace(/^[+-]/, '');
+            const integer = magnitude === '' ? 0 : parseInt(magnitude, base);
+            const sign = parts[0].startsWith('-') ? -1 : 1;
+            const result = sign * (integer + decimal);
             if (parts.length > 2 || Number.isNaN(result)) {
               debug.push(`Failed to convert "${num}" base "${base}" to number`);
               return null;
@@ -2589,9 +2615,10 @@ export default function functions(
         };
         let base = 10;
         if (resolvedArgs.length > 1) {
-          base = Array.isArray(resolvedArgs[1])
-            ? resolvedArgs.map(toInteger)
-            : toInteger(resolvedArgs[1]);
+          // Convert each base to an integer while preserving the array hierarchy --
+          // toNumber is non-aggregating, so nested base arrays must not be collapsed.
+          const toIntegerDeep = b => (Array.isArray(b) ? b.map(toIntegerDeep) : toInteger(b));
+          base = toIntegerDeep(resolvedArgs[1]);
         }
         return evaluate([resolvedArgs[0], base], toNumberFn);
       },
@@ -2751,6 +2778,8 @@ export default function functions(
     /**
      * Perform an indexed lookup on an object or array
      * @param {object | array | null} subject on which to perform the lookup.
+     * `subject` must be a container type: scalar values (boolean, number, string) are not
+     * coerced to a single-element array and will result in a TypeError.
      * When querying for <<_hidden_properties,hidden properties>>, `subject` may be any data type.
      * @param {string | integer} index if `subject` is an object, `index` must be a string
      * indicating the key name to search for.
@@ -2845,7 +2874,7 @@ export default function functions(
       },
       _signature: [
         { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER] },
-        { types: [TYPE_NUMBER], optional: true },
+        { types: [TYPE_NUMBER, TYPE_ARRAY_NUMBER], optional: true },
       ],
     },
 

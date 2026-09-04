@@ -55,7 +55,7 @@ json-formula supports all the JSON types:
 * number: All numbers are internally represented as double-precision floating-point
 * string
 * boolean: `true` or `false`
-* array: an ordered, sequence of values
+* array: an ordered sequence of values
 * object: an unordered collection of key value pairs
 * `null`
 
@@ -71,7 +71,7 @@ If the supplied data is not correct for the execution context, json-formula will
 
 * Operands of the concatenation operator (`&`) shall be coerced to a string, except when an operand is an array. Arrays shall be coerced to an array of strings.
 * Operands of numeric operators (`+`, `-`, `*`, `/`) shall be coerced to numbers except when the operand is an array. Arrays shall be coerced to an array of numbers.
-* Operands of the union operator (`~`) shall be coerced to an array
+* Operands of the union operator (`~`) that are not already arrays are treated as single-element arrays
 * The left-hand operand of ordering comparison operators (`>`, `>=`, `<`, `\<=`) must be a string or number.  Any other type shall be coerced to a number.
 * If the operands of an ordering comparison are different, they shall both be coerced to a number
 * Parameters to functions shall be coerced when there is a single viable coercion available.  For example, if a null value is provided to a function that accepts a number or string, then coercion shall not happen, since a null value can be coerced to both types.  Conversely if a string is provided to a function that accepts a number or array of numbers, then the string shall be coerced to a number, since there is no supported coercion to convert it to an array of numbers.
@@ -384,16 +384,16 @@ The following comparison operators are supported:
 
 Two representations of the equality and inequality operators are supported: `=` and `==` are equivalent in functionality.  Both variations are supported in order to provide familiarity to users with experience with similar grammars. Similarly, `!=` and `<>` function identically. Note that there is no ambiguity with the `=` operator, since json-formula does not have an assignment operator.
 
-* A `string` is equal to another `string` if they they have the exact same sequence
+* A `string` is equal to another `string` if they have the exact same sequence
 of code points
 * `number` values are compared for an exact match.  When comparing fractional values, authors should take into account <<Floating Point Precision,floating point precision>> considerations.
 * The literal values `true/false/null` are equal only to their
 own literal values
 * Two JSON objects are equal if they have the same set of
-keys and values. Two JSON objects `x` and `y`, are consider equal if they have the same number of key/value pairs and if, for each key value
+keys and values. Two JSON objects `x` and `y` are considered equal if they have the same number of key/value pairs and if, for each key value
 pair `(i, j)` in `x`, there exists an equivalent pair `(i, j)` in `y`
 * Two JSON arrays are equal if they have equal elements in the same order. Two arrays `x` and `y` are considered equal if they have the same length and, for each `i` from `0` until `length(x)`, `x[i] == y[i]`
-* The comparison of array and objects is a deep comparison.  That is, where nested arrays or objects are found, the nested elements will included in the comparison.
+* The comparison of array and objects is a deep comparison.  That is, where nested arrays or objects are found, the nested elements will be included in the comparison.
 
 ==== Ordering Operators
 
@@ -449,7 +449,7 @@ The numeric and concatenation operators (`+`, `-`, `{asterisk}`, `/`, `&`) have 
 
 ==== Union Operator
 
-The union operator (`~`) returns an array formed by concatenating the contents of two arrays.
+The union operator (`~`) returns an array formed by concatenating the contents of two arrays. An operand that is not already an array is treated as a single-element array. This applies to all non-array types, including `null` and objects.
 
 [source%unbreakable]
 ----
@@ -458,6 +458,7 @@ The union operator (`~`) returns an array formed by concatenating the contents o
   eval(a[] ~ b[], {"a": [[0,1,2]], "b": [[3,4,5]]}) -> [0,1,2,3,4,5]
   eval(a ~ 10, {"a": [0,1,2]}) -> [0,1,2,10]
   eval(a ~ `null`, {"a": [0,1,2]}) -> [0,1,2,null]
+  eval(a ~ {b: 4}, {"a": [0,1,2]}) -> [0,1,2,{"b":4}]
 ----
 
 === Boolean Operators
